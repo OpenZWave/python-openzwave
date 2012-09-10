@@ -1,0 +1,989 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Welcome to py-openzwave’s documentation! &mdash; py-openzwave 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="py-openzwave 0.1 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="welcome-to-py-openzwave-s-documentation">
+<h1>Welcome to py-openzwave&#8217;s documentation!<a class="headerlink" href="#welcome-to-py-openzwave-s-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Contents:</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.node"></span><span class="target" id="module-openzwave.node"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.node.ZWaveNode">
+<em class="property">class </em><tt class="descclassname">openzwave.node.</tt><tt class="descname">ZWaveNode</tt><big>(</big><em>nodeId</em>, <em>network</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single Node within the Z-Wave Network</p>
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.basic">
+<tt class="descname">basic</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.basic" title="Permalink to this definition">¶</a></dt>
+<dd><p>The basic type of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.batteryLevel">
+<tt class="descname">batteryLevel</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.batteryLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The battery level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.capabilities">
+<tt class="descname">capabilities</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.capabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>The capabilities of the node.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.commandClasses">
+<tt class="descname">commandClasses</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.commandClasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>The commandClasses of the node.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.generic">
+<tt class="descname">generic</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>The generic type of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.groups">
+<tt class="descname">groups</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>The groups of the node.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.hasCommandClass">
+<tt class="descname">hasCommandClass</tt><big>(</big><em>commandClass</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.hasCommandClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that this node use this commandClass.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isBeamingDevice">
+<tt class="descname">isBeamingDevice</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isBeamingDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a beaming device.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isBridgeController">
+<tt class="descname">isBridgeController</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isBridgeController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this controller using the bridge controller library.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isFrequentListeningDevice">
+<tt class="descname">isFrequentListeningDevice</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isFrequentListeningDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a frequent listening device.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isListeningDevice">
+<tt class="descname">isListeningDevice</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isListeningDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a listening device.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isLocked">
+<tt class="descname">isLocked</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isLocked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node locked.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isOn">
+<tt class="descname">isOn</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isOn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node On.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isPrimaryController">
+<tt class="descname">isPrimaryController</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isPrimaryController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a primary controller of the network.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isRoutingDevice">
+<tt class="descname">isRoutingDevice</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isRoutingDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a routing device.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isSecurityDevice">
+<tt class="descname">isSecurityDevice</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isSecurityDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a security device.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isSleeping">
+<tt class="descname">isSleeping</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isSleeping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node sleeping.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isStaticUpdateController">
+<tt class="descname">isStaticUpdateController</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isStaticUpdateController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this controller a static update controller (SUC).
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.level">
+<tt class="descname">level</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of the node.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.location">
+<tt class="descname">location</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>The location of the node.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.manufacturerId">
+<tt class="descname">manufacturerId</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.manufacturerId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manufacturer id of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.manufacturerName">
+<tt class="descname">manufacturerName</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.manufacturerName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manufacturer name of the node.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the node.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.neighbors">
+<tt class="descname">neighbors</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><p>The neighbors of the node.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.numGroups">
+<tt class="descname">numGroups</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.numGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of association groups reported by this node.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.productId">
+<tt class="descname">productId</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.productId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product Id of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.productName">
+<tt class="descname">productName</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.productName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product name of the node.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.productType">
+<tt class="descname">productType</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.productType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product type of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.refreshInfo">
+<tt class="descname">refreshInfo</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.refreshInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request a refresh for node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.requestConfig">
+<tt class="descname">requestConfig</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.requestConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request config parameters for node.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.security">
+<tt class="descname">security</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.security" title="Permalink to this definition">¶</a></dt>
+<dd><p>The security type of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.signalStrength">
+<tt class="descname">signalStrength</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.signalStrength" title="Permalink to this definition">¶</a></dt>
+<dd><p>The signal strenght of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.specific">
+<tt class="descname">specific</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.specific" title="Permalink to this definition">¶</a></dt>
+<dd><p>The specific type of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.values">
+<tt class="descname">values</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>The values of the node.
+:rtype: list()()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.version">
+<tt class="descname">version</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version of the node.
+:rtype: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.controller"></span><span class="target" id="module-openzwave.network"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.controller.ZWaveController">
+<em class="property">class </em><tt class="descclassname">openzwave.controller.</tt><tt class="descname">ZWaveController</tt><big>(</big><em>network</em>, <em>controllerId=None</em>, <em>devicePath=None</em>, <em>userPath=None</em>, <em>configPath=None</em>, <em>options=None</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController" title="Permalink to this definition">¶</a></dt>
+<dd><p>The driver objet.
+Hold options of the manager
+Also used to retrieve informations about the library, ...</p>
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.capabilities">
+<tt class="descname">capabilities</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.capabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>The capabilities of the controller.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.devicePath">
+<tt class="descname">devicePath</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.devicePath" title="Permalink to this definition">¶</a></dt>
+<dd><p>The device path.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.libraryConfigPath">
+<tt class="descname">libraryConfigPath</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.libraryConfigPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>The library Config path.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.libraryDescription">
+<tt class="descname">libraryDescription</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.libraryDescription" title="Permalink to this definition">¶</a></dt>
+<dd><p>The description of the library.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.libraryTypeName">
+<tt class="descname">libraryTypeName</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.libraryTypeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the library.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.libraryUserPath">
+<tt class="descname">libraryUserPath</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.libraryUserPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>The library User path.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.libraryVersion">
+<tt class="descname">libraryVersion</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.libraryVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version of the library.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.node">
+<tt class="descname">node</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.node" title="Permalink to this definition">¶</a></dt>
+<dd><p>The node controller on the network.
+:rtype: ZWaveNode</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.nodeId">
+<tt class="descname">nodeId</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.nodeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The node Id of the controller on the network.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.nodeName">
+<tt class="descname">nodeName</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.nodeName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the controller on the network.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.optionsManager">
+<tt class="descname">optionsManager</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.optionsManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The options manager.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.pythonLibraryVersion">
+<tt class="descname">pythonLibraryVersion</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.pythonLibraryVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version of the python library.
+:rtype: str</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.scene"></span><span class="target" id="module-openzwave.scene"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.scene.ZWaveScene">
+<em class="property">class </em><tt class="descclassname">openzwave.scene.</tt><tt class="descname">ZWaveScene</tt><big>(</big><em>sceneId</em>, <em>network=None</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single scene within the Z-Wave Network</p>
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.activate">
+<tt class="descname">activate</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.activate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate the zwave scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.addValue">
+<tt class="descname">addValue</tt><big>(</big><em>valueid</em>, <em>valueData</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.addValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a value to the zwave scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.create">
+<tt class="descname">create</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new zwave scene and update the objectId field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.scene.ZWaveScene.label">
+<tt class="descname">label</tt><a class="headerlink" href="#openzwave.scene.ZWaveScene.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label of the scene.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.setValue">
+<tt class="descname">setValue</tt><big>(</big><em>valueid</em>, <em>valueData</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.setValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a value to the zwave scene.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.scene.ZWaveScene.values">
+<tt class="descname">values</tt><a class="headerlink" href="#openzwave.scene.ZWaveScene.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>The values used in the scene.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.value"></span><span class="target" id="module-openzwave.value"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.value.ZWaveValue">
+<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>valueId</em>, <em>network=None</em>, <em>nodeId=None</em><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single value.
+Must be updated to use the cachedObject facilities.</p>
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.asString">
+<tt class="descname">asString</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.asString" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value as String.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.data">
+<tt class="descname">data</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data of the value.
+:rtype: depending of the type of the value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.value.ZWaveValue.getValue">
+<tt class="descname">getValue</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The valueData of the value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.help">
+<tt class="descname">help</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>The help of the value.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.label">
+<tt class="descname">label</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label of the value.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.max">
+<tt class="descname">max</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>The max of the value.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.min">
+<tt class="descname">min</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>The min of the value.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.nodeId">
+<tt class="descname">nodeId</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.nodeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodeId of the value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.units">
+<tt class="descname">units</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.units" title="Permalink to this definition">¶</a></dt>
+<dd><p>The units of the value.
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.value.ZWaveValue.update">
+<tt class="descname">update</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update node value from callback arguments.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.group"></span><span class="target" id="module-openzwave.group"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.group.ZWaveGroup">
+<em class="property">class </em><tt class="descclassname">openzwave.group.</tt><tt class="descname">ZWaveGroup</tt><big>(</big><em>groupIndex</em>, <em>network=None</em>, <em>nodeId=None</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>The driver objet.
+Hold options of the manager
+Also used to retrieve informations about the library, ...</p>
+<dl class="method">
+<dt id="openzwave.group.ZWaveGroup.addAssociation">
+<tt class="descname">addAssociation</tt><big>(</big><em>targetNodeId</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.addAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The members of associations.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.index">
+<tt class="descname">index</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>The index of the group.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.label">
+<tt class="descname">label</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.label" title="Permalink to this definition">¶</a></dt>
+<dd><p>The label of the group.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.maxAssociations">
+<tt class="descname">maxAssociations</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.maxAssociations" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of associations.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.members">
+<tt class="descname">members</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.members" title="Permalink to this definition">¶</a></dt>
+<dd><p>The members of associations.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.group.ZWaveGroup.removeAssociation">
+<tt class="descname">removeAssociation</tt><big>(</big><em>targetNodeId</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.removeAssociation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The members of associations.
+:rtype: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.network"></span><span class="target" id="module-openzwave.network"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.network.ZWaveNetwork">
+<em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>networkId</em>, <em>devicePath='/dev/zwave'</em>, <em>userPath='.'</em>, <em>configPath=None</em>, <em>log=None</em>, <em>options='--logging true'</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network objet = homeid.
+It contains a reference to the manager</p>
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.controller">
+<tt class="descname">controller</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>The controller of the network.
+:rtype:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.homeId">
+<tt class="descname">homeId</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.homeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The homeId of the network.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.manager">
+<tt class="descname">manager</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manager of the network.
+:rtype:</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodes">
+<tt class="descname">nodes</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes of the network.
+:rtype: list()</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodesCount">
+<tt class="descname">nodesCount</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodesCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes count of the network.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.sleepingNodesCount">
+<tt class="descname">sleepingNodesCount</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.sleepingNodesCount" title="Permalink to this definition">¶</a></dt>
+<dd><p>The count of sleeping nodes on the network.
+:rtype: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-openzwave.object"></span><span class="target" id="module-openzwave.object"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows (to confirm)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.object.NullLoggingHandler">
+<em class="property">class </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">NullLoggingHandler</tt><big>(</big><em>level=0</em><big>)</big><a class="headerlink" href="#openzwave.object.NullLoggingHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Null Logging Handler</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveException</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#openzwave.object.ZWaveException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveCacheException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveCacheException</tt><big>(</big><em>value</em><big>)</big><a class="headerlink" href="#openzwave.object.ZWaveCacheException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.object.ZwaveObject">
+<em class="property">class </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZwaveObject</tt><big>(</big><em>objectId</em>, <em>network=None</em>, <em>useCache=True</em><big>)</big><a class="headerlink" href="#openzwave.object.ZwaveObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a Zwave object. Values, nodes, ... can be changer by
+other managers on the network.</p>
+<dl class="method">
+<dt id="openzwave.object.ZwaveObject.cacheProperty">
+<tt class="descname">cacheProperty</tt><big>(</big><em>prop</em><big>)</big><a class="headerlink" href="#openzwave.object.ZwaveObject.cacheProperty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add this property to the cache manager.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZwaveObject.homeId">
+<tt class="descname">homeId</tt><a class="headerlink" href="#openzwave.object.ZwaveObject.homeId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The homeId of the node.
+:rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZwaveObject.isOutdated">
+<tt class="descname">isOutdated</tt><big>(</big><em>prop</em><big>)</big><a class="headerlink" href="#openzwave.object.ZwaveObject.isOutdated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if property information is outdated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZwaveObject.lastUpdate">
+<tt class="descname">lastUpdate</tt><a class="headerlink" href="#openzwave.object.ZwaveObject.lastUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last update date of the device.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZwaveObject.objectId">
+<tt class="descname">objectId</tt><a class="headerlink" href="#openzwave.object.ZwaveObject.objectId" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the object.
+objectId could be None, when creating a scene for example.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZwaveObject.outdate">
+<tt class="descname">outdate</tt><big>(</big><em>prop</em><big>)</big><a class="headerlink" href="#openzwave.object.ZwaveObject.outdate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says that the property information is outdated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZwaveObject.outdated">
+<tt class="descname">outdated</tt><a class="headerlink" href="#openzwave.object.ZwaveObject.outdated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Are the informations of this object outdated.</p>
+<p>How to manage the cache ?</p>
+<p>2 ways of doing it :
+- refresh informations when setting the property
+- refresh informations when getting gtting property.
+Maybe whe could implement the 2 methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZwaveObject.update">
+<tt class="descname">update</tt><big>(</big><em>prop</em><big>)</big><a class="headerlink" href="#openzwave.object.ZwaveObject.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says that the property are updated.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZwaveObject.useCache">
+<tt class="descname">useCache</tt><a class="headerlink" href="#openzwave.object.ZwaveObject.useCache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Should this object use cache from property</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-libopenzwave"></span><span class="target" id="module-libopenzwave"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: maartendamen</em></p>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="data">
+<dt id="libopenzwave.PyNotifications">
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyNotifications</tt><em class="property"> = ['ValueAdded', 'ValueRemoved', 'ValueChanged', 'ValueRefreshed', 'Group', 'NodeNew', 'NodeAdded', 'NodeRemoved', 'NodeProtocolInfo', 'NodeNaming', 'NodeEvent', 'PollingDisabled', 'PollingEnabled', 'CreateButton', 'DeleteButton', 'ButtonOn', 'ButtonOff', 'DriverReady', 'DriverFailed', 'riverReset', 'MsgComplete', 'EssentialNodeQueriesComplete', 'NodeQueriesComplete', 'AwakeNodesQueried', 'AllNodesQueried', 'Error']</em><a class="headerlink" href="#libopenzwave.PyNotifications" title="Permalink to this definition">¶</a></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="libopenzwave.PyGenres">
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyGenres</tt><em class="property"> = ['Basic', 'User', 'Config', 'System']</em><a class="headerlink" href="#libopenzwave.PyGenres" title="Permalink to this definition">¶</a></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="libopenzwave.PyValueTypes">
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyValueTypes</tt><em class="property"> = ['Bool', 'Byte', 'Decimal', 'Int', 'List', 'Schedule', 'Short', 'String', 'Button']</em><a class="headerlink" href="#libopenzwave.PyValueTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to py-openzwave&#8217;s documentation!</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/openzwave.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, bibi21000.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
