@@ -14,7 +14,8 @@ To compile the openzwave library, look at their documentation.
 Get the sources
 ===============
 After that you can download the python-openzwave code :
-#hg clone http://hg.domogik.org/domogik/
+#hg clone https://code.google.com/p/python-openzwave/
+
 
 Automatic installation
 ======================
@@ -49,7 +50,7 @@ Examples have not been updated and they must
 How to contribute
 =================
 Get the sources
-#hg clone http://hg.domogik.org/domogik/
+#hg clone https://code.google.com/p/python-openzwave/
 
 Developp, test, debug, test, ... :)
 
