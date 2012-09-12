@@ -6,7 +6,7 @@ This file is part of **python-openzwave** project http://code.google.com/p/pytho
     :sinopsis: openzwave wrapper
 
 .. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
-.. moduleauthor:: maarten damen
+.. moduleauthor:: Maarten Damen <m.damen@gmail.com>
 
 License : GPL(v3)
 

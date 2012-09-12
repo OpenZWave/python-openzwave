@@ -82,9 +82,9 @@ else:
 
 setup(
   name = 'python-openzwave',
-  author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com> / Maarten Damen <m.damen@gmail.com>',
+  author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
-  url='http://projects.maartendamen.com/projects/pyopenzwave/',
+  url='http://code.google.com/p/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,
   package_dir = {'openzwave': 'src'},
