@@ -11,14 +11,20 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
-.. automodule:: openzwave.node
-    :members: ZWaveNode
+.. automodule:: openzwave.network
+    :members: ZWaveNetwork
 
 .. automodule:: openzwave.controller
     :members: ZWaveController
 
+.. automodule:: openzwave.option
+    :members: ZWaveOption
+
 .. automodule:: openzwave.scene
     :members: ZWaveScene
+
+.. automodule:: openzwave.node
+    :members: ZWaveNode
 
 .. automodule:: openzwave.value
     :members: ZWaveValue
@@ -26,8 +32,8 @@ Contents:
 .. automodule:: openzwave.group
     :members: ZWaveGroup
 
-.. automodule:: openzwave.network
-    :members: ZWaveNetwork
+.. automodule:: openzwave.option
+    :members: ZWaveOption
 
 .. automodule:: openzwave.object
     :members: NullLoggingHandler, ZWaveException, ZWaveCacheException, ZwaveObject
@@ -36,6 +42,7 @@ Contents:
 .. autodata:: PyNotifications
 .. autodata:: PyGenres
 .. autodata:: PyValueTypes
+.. autodata:: PyLogLevels
 
 Indices and tables
 ==================

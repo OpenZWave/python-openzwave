@@ -46,7 +46,7 @@ import os.path
 
 # Déclaration de tuple nomée pour la clarification des infos des noeuds zwave (node)
 # Juste à rajouter ici la déclaration pour future extension.
-OZWPLuginVers = "0.1b"
+OZWPLuginVers = "0.1b1"
 NamedPair = namedtuple('NamedPair', ['id', 'name'])
 NodeInfo = namedtuple('NodeInfo', ['generic','basic','specific','security','version'])
 GroupInfo = namedtuple('GroupInfo', ['index','label','maxAssociations','members'])
@@ -468,9 +468,13 @@ class OZWavemanager(threading.Thread):
         
     def _getPyOZWLibVersion(self):
         """Renvoi les versions des librairies py-openzwave ainsi que la version d'openzwave"""
-        self._pyOzwlibVersion = self._manager.getPythonLibraryVersion ()
+        try :
+            self._pyOzwlibVersion = self._manager.getPythonLibraryVersion ()
+        except :
+            self._pyOzwlibVersion  =  'Unknown'
+            return 'py-openzwave : < 0.1 check for update, OZW revision : Unknown'
         if self._pyOzwlibVersion :
-            return 'py-openzwave : {0} , OZW revision : r532'.format(self._pyOzwlibVersion )
+            return 'py-openzwave : {0} , OZW revision : r539'.format(self._pyOzwlibVersion )
         else:
             return 'Unknown'
             
@@ -713,9 +717,10 @@ class OZWavemanager(threading.Thread):
         values = node.getValuesForCommandClass('COMMAND_CLASS_BASIC')
         print "*************** Node event handle *******"
         print node.productType
-        print node._commandClasses 
+        if len(node.commandClasses) == 0 : self._updateNodeCommandClasses(node)
+        print node.commandClasses 
         args2 = ""
-        for classId in node._commandClasses :
+        for classId in node.commandClasses :
             if PyManager.COMMAND_CLASS_DESC[classId] in CmdsClassBasicType :
                 valuebasic = node.getValuesForCommandClass(PyManager.COMMAND_CLASS_DESC[classId] )
                 args2 = dict(args)
@@ -942,6 +947,7 @@ class OZWavemanager(threading.Thread):
         if self.ready :
             node = self._getNode(self.homeId,  nodeID)
             self._updateNodeInfo(node) # mise à jour selon OZW
+            self._updateNodeCommandClasses(node)
             retval["HomeID"] ="0x%.8x" % node.homeId
             retval["Model"]= node.manufacturer + " -- " + node.product
             retval["State sleeping"] = 'true' if node.isSleeping else 'false'

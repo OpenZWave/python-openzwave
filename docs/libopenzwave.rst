@@ -20,6 +20,8 @@ Contents:
     :noindex:
 .. autodata:: PyValueTypes
     :noindex:
+.. autodata:: PyLogLevels
+    :noindex:
 
 Indices and tables
 ==================

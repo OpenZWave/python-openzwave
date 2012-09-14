@@ -30,7 +30,7 @@ import sys, os
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
 logging.basicConfig(level=logging.DEBUG)
 
-logger1 = logging.getLogger('openzwave')
+logger = logging.getLogger('openzwave')
 
 #Insert your build directory here (it depends of your python distribution)
 #To get one, run the make_doc.sh command
@@ -44,14 +44,22 @@ from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
+from openzwave.option import ZWaveOption
+
+#Define some manager options
+options = ZWaveOption(device="/tmp/zwave", \
+  config_path="/home/sebastien/devel/python-openzwave/openzwave/config", \
+  userPath=".", cmd_line="")
+options.setLogFile("OZW_Log.txt")
+options.setAppendLogFile(True)
+options.setSaveLogLevel('Debug')
+options.setLogging(True)
+options.setConsoleOutput(True)
+options.lock()
 
 #Create a network object
-network = ZWaveNetwork(None, devicePath="/tmp/zwave", userPath=".", \
-        configPath="/home/sebastien/devel/python-openzwave/openzwave/config", \
-        log=None, options="--logging true")
+network = ZWaveNetwork(options, log=None)
 
-print "Use python library : %s" % network.controller.pythonLibraryVersion
+print "Use python library : %s" % network.controller.python_library_version
 
-print "Use python library : %s" % network.controller.pythonLibraryVersion
-
-#print "Use library : %s" % network.controller.libraryDescription
+#print "Use library : %s" % network.controller.library_description

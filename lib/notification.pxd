@@ -1,24 +1,20 @@
-""" This file is part of py-openzwave project (https://github.com/maartendamen/py-openzwave).
+"""
+This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
 
-License
-=======
+License : GPL(v3)
 
-py-openzwave is free software: you can redistribute it and/or modify
+**python-openzwave** is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-py-openzwave is distributed in the hope that it will be useful,
+**python-openzwave** is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
-along with py-openzwave. If not, see U{http://www.gnu.org/licenses}.
+along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
-@author: maartendamen
-@author: bibi21000 <bibi21000@gmail.com>
-@license: GPL(v3)
 """
 from mylibc cimport uint32, uint64, int32, int16, uint8, int8
 from mylibc cimport string
@@ -29,7 +25,7 @@ cdef extern from *:
     ctypedef char* const_notification "OpenZWave::Notification const*"
 
 ctypedef void (*pfnOnNotification_t)(const_notification _pNotification, void* _context )
-        
+
 cdef extern from "Notification.h" namespace "OpenZWave::Notification":
 
    cdef enum NotificationType:
@@ -46,10 +42,10 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_NodeEvent = 10                     # A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification.
         Type_PollingDisabled = 11               # Polling of a node has been successfully turned off by a call to Manager::DisablePoll
         Type_PollingEnabled = 12                # Polling of a node has been successfully turned on by a call to Manager::EnablePoll
-        Type_CreateButton = 13                  # Handheld controller button event created 
-        Type_DeleteButton = 14                  # Handheld controller button event deleted 
+        Type_CreateButton = 13                  # Handheld controller button event created
+        Type_DeleteButton = 14                  # Handheld controller button event deleted
         Type_ButtonOn = 15                      # Handheld controller button on pressed event
-        Type_ButtonOff = 16                     # Handheld controller button off pressed event 
+        Type_ButtonOff = 16                     # Handheld controller button off pressed event
         Type_DriverReady = 17                   # A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods.
         Type_DriverFailed = 18                  # Driver failed to load
         Type_DriverReset = 19                   # All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications.

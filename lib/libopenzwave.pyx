@@ -23,7 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-
 from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
@@ -36,9 +35,10 @@ from notification cimport Notification, NotificationType, Type_Group, Type_NodeE
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
+from log cimport LogLevel
 import os
 
-PYLIBRARY = "0.2.1"
+PYLIBRARY = "0.2.2"
 OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 
 cdef extern from "Manager.h" namespace "OpenZWave":
@@ -200,15 +200,6 @@ cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()
     Manager* Get()
 
-cdef class PyOptions:
-    cdef Options *options
-
-    def create(self, char *a, char *b, char *c):
-        self.options = Create(string(a), string(b), string(c))
-
-    def lock(self):
-        return self.options.Lock()
-
 class EnumWithDoc(str):
     def setDoc(self, doc):
         self.__doc__ = doc
@@ -234,7 +225,7 @@ PyNotifications = [
     EnumWithDoc('ButtonOff').setDoc("Handheld controller button off pressed event."),
     EnumWithDoc('DriverReady').setDoc("A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods."),
     EnumWithDoc('DriverFailed').setDoc("Driver failed to load."),
-    EnumWithDoc('riverReset').setDoc("All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications."),
+    EnumWithDoc('DriverReset').setDoc("All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications."),
     EnumWithDoc('MsgComplete').setDoc("The last message that was sent is now complete."),
     EnumWithDoc('EssentialNodeQueriesComplete').setDoc("The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages."),
     EnumWithDoc('NodeQueriesComplete').setDoc("All the initialisation queries on a node have been completed."),
@@ -243,62 +234,72 @@ PyNotifications = [
     EnumWithDoc('Error').setDoc("An error has occured that we need to report."),
     ]
 
-
 PyGenres = [
-    EnumWithDoc('Basic').setDoc(  "The 'level' as controlled by basic commands.  Usually duplicated by another command class."),
-    EnumWithDoc('User').setDoc(   "Basic values an ordinary user would be interested in."),
-    EnumWithDoc('Config').setDoc( "Device-specific configuration parameters.  These cannot be automatically discovered via Z-Wave, and are usually described in the user manual instead."),
-    EnumWithDoc('System').setDoc( "Values of significance only to users who understand the Z-Wave protocol"),
+    EnumWithDoc('Basic').setDoc("The 'level' as controlled by basic commands.  Usually duplicated by another command class."),
+    EnumWithDoc('User').setDoc("Basic values an ordinary user would be interested in."),
+    EnumWithDoc('Config').setDoc("Device-specific configuration parameters.  These cannot be automatically discovered via Z-Wave, and are usually described in the user manual instead."),
+    EnumWithDoc('System').setDoc("Values of significance only to users who understand the Z-Wave protocol"),
     ]
 
 PyValueTypes = [
-    EnumWithDoc('Bool').setDoc(     "Boolean, true or false"),
-    EnumWithDoc('Byte').setDoc(     "8-bit unsigned value"),
-    EnumWithDoc('Decimal').setDoc(  "Represents a non-integer value as a string, to avoid floating point accuracy issues."),
-    EnumWithDoc('Int').setDoc(      "32-bit signed value"),
-    EnumWithDoc('List').setDoc(     "List from which one item can be selected"),
-    EnumWithDoc('Schedule').setDoc( "Complex type used with the Climate Control Schedule command class"),
-    EnumWithDoc('Short').setDoc(    "16-bit signed value"),
-    EnumWithDoc('String').setDoc(   "Text string"),
-    EnumWithDoc('Button').setDoc(   "A write-only value that is the equivalent of pressing a button to send a command to a device"),
+    EnumWithDoc('Bool').setDoc("Boolean, true or false"),
+    EnumWithDoc('Byte').setDoc("8-bit unsigned value"),
+    EnumWithDoc('Decimal').setDoc("Represents a non-integer value as a string, to avoid floating point accuracy issues."),
+    EnumWithDoc('Int').setDoc("32-bit signed value"),
+    EnumWithDoc('List').setDoc("List from which one item can be selected"),
+    EnumWithDoc('Schedule').setDoc("Complex type used with the Climate Control Schedule command class"),
+    EnumWithDoc('Short').setDoc("16-bit signed value"),
+    EnumWithDoc('String').setDoc("Text string"),
+    EnumWithDoc('Button').setDoc("A write-only value that is the equivalent of pressing a button to send a command to a device"),
     ]
+
+PyLogLevels = {
+    'None' : 0,
+    'Always' : 1,
+    'Fatal' : 2,
+    'Error' : 3,
+    'Warning' : 4,
+    'Alert' : 5,
+    'Info' : 6,
+    'Detail' : 7,
+    'Debug' : 8,
+    'Internal' : 9,
+    }
 
 cdef map[uint64, ValueID] values_map
 
 cdef getValueFromType(Manager *manager, valueId):
-        cdef float type_float
-        cdef bool type_bool
-        cdef uint8 type_byte
-        cdef int32 type_int
-        cdef int16 type_short
-        cdef string type_string
-        ret = None
-        if values_map.find(valueId) != values_map.end():
-            datatype = PyValueTypes[values_map.at(valueId).GetType()]
-
-            if datatype == "Bool":
-                cret = manager.GetValueAsBool(values_map.at(valueId), &type_bool)
-                ret = type_bool if cret else None
-            elif datatype == "Byte":
-                cret = manager.GetValueAsByte(values_map.at(valueId), &type_byte)
-                ret = type_byte if cret else None
-            elif datatype == "Decimal":
-                cret = manager.GetValueAsFloat(values_map.at(valueId), &type_float)
-                ret = type_float if cret else None
-            elif datatype == "Int":
-                cret = manager.GetValueAsInt(values_map.at(valueId), &type_int)
-                ret = type_int if cret else None
-            elif datatype == "Short":
-                cret = manager.GetValueAsShort(values_map.at(valueId), &type_short)
-                ret = type_short if cret else None
-            elif datatype == "String":
-                cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
-                ret = type_string.c_str() if cret else None
-            else :
-                cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
-                ret = type_string.c_str() if cret else None
-
-        return ret
+    cdef float type_float
+    cdef bool type_bool
+    cdef uint8 type_byte
+    cdef int32 type_int
+    cdef int16 type_short
+    cdef string type_string
+    ret = None
+    if values_map.find(valueId) != values_map.end():
+        datatype = PyValueTypes[values_map.at(valueId).GetType()]
+        if datatype == "Bool":
+            cret = manager.GetValueAsBool(values_map.at(valueId), &type_bool)
+            ret = type_bool if cret else None
+        elif datatype == "Byte":
+            cret = manager.GetValueAsByte(values_map.at(valueId), &type_byte)
+            ret = type_byte if cret else None
+        elif datatype == "Decimal":
+            cret = manager.GetValueAsFloat(values_map.at(valueId), &type_float)
+            ret = type_float if cret else None
+        elif datatype == "Int":
+            cret = manager.GetValueAsInt(values_map.at(valueId), &type_int)
+            ret = type_int if cret else None
+        elif datatype == "Short":
+            cret = manager.GetValueAsShort(values_map.at(valueId), &type_short)
+            ret = type_short if cret else None
+        elif datatype == "String":
+            cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
+            ret = type_string.c_str() if cret else None
+        else :
+            cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
+            ret = type_string.c_str() if cret else None
+    return ret
 
 cdef addValueId(ValueID v, n):
     #cdef string value
@@ -342,6 +343,83 @@ cdef void callback(const_notification _notification, void* _context) with gil:
 
 cpdef object driverData():
     cdef DriverData data
+
+cdef class PyOptions:
+    """
+    Manage options manager
+    """
+
+    cdef Options *options
+
+    def create(self, char *a, char *b, char *c):
+        """
+        Create an option object used to start the manager
+
+        :param a: The path of the config directory
+        :type a: str
+        :param b: The path of the user directory
+        :type b: str
+        :param c: The "command line" options of the openzwave library
+        :type c: str
+
+        """
+        self.options = Create(string(a), string(b), string(c))
+
+    def lock(self):
+        """
+        Lock the options. Needed to start the manager
+
+        :returns: The result of the operation.
+        :rtype: bool
+
+        """
+        return self.options.Lock()
+
+    def addOptionBool(self, char *name, value):
+        """
+        Add a boolean option.
+
+        :param name: The name of the option.
+        :type name: str
+        :param value: The value of the option.
+        :type value: boolean
+        :returns: The result of the operation.
+        :rtype: bool
+
+        """
+        return self.options.AddOptionBool(string(name), value )
+
+    def addOptionInt(self, char *name, value):
+        """
+        Add an integer option.
+
+        :param name: The name of the option.
+        :type name: str
+        :param value: The value of the option.
+        :type value: boolean
+        :returns: The result of the operation.
+        :rtype: bool
+
+        """
+        return self.options.AddOptionInt(string(name), value )
+
+    def addOptionString(self, char *name, char *value, append):
+        """
+        Add a string option.
+
+        :param name: The name of the option.  Option names are case insensitive and must be unique.
+        :type name: str
+        :param value: The value of the option.
+        :type value: str
+        :param append: Setting append to true will cause values read from the command line
+         or XML file to be concatenated into a comma delimited list.  If _append is false,
+         newer values will overwrite older ones.
+        :type append: boolean
+        :returns: The result of the operation.
+        :rtype: bool
+
+        """
+        return self.options.AddOptionString(string(name), string(value), append )
 
 cdef class PyManager:
     '''
@@ -476,6 +554,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
     }
     '''
     The command classes
+
     '''
 
     CALLBACK_DESC = ('value added','value removed','value changed','groups changed','new node','node added',
@@ -499,6 +578,7 @@ created and Locked first, otherwise the call to Manager::Create will fail.
 Once the Manager has been created, call AddWatcher to install a notification
 callback handler, and then call the AddDriver method for each attached PC
 Z-Wave controller in turn.
+
         '''
         self.manager = Create()
         PyEval_InitThreads()
@@ -552,6 +632,7 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :type serialport: str
 :returns: bool -- True if a new driver was created
 :see: removeDriver_
+
         '''
         self.manager.AddDriver(string(serialport))
 
@@ -568,6 +649,7 @@ handled automatically.
 :type serialport: str
 :returns: bool -- True if the driver was removed, False if it could not be found.
 :see: addDriver_
+
         '''
         self.manager.RemoveDriver(string(serialport))
 
@@ -580,6 +662,7 @@ Get the node ID of the Z-Wave controller.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: int -- the node ID of the Z-Wave controller
+
         '''
         return self.manager.GetControllerNodeId(homeid)
 
@@ -603,6 +686,7 @@ Calls to BeginControllerCommand will fail if the controller is not the primary.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: bool -- True if it is a primary controller, False if not.
+
         '''
         return self.manager.IsPrimaryController(homeid)
 
@@ -619,6 +703,7 @@ about network changes.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: bool -- True if it is a static update controller, False if not.
+
         '''
         return self.manager.IsStaticUpdateController(homeid)
 
@@ -634,6 +719,7 @@ with other controllers to enable events to be passed on.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: bool -- True if it is a bridge controller, False if not.
+
         '''
         return self.manager.IsBridgeController(homeid)
 
@@ -647,6 +733,7 @@ Get the version of the Z-Wave API library used by a controller.
 :type homeId: int
 :returns: str -- A string containing the library version. For example, "Z-Wave 2.48".
 :see: getLibraryConfigPath_, getLibraryTypeName_, getPythonLibraryVersion_, getLibraryTypeName_
+
         '''
         cdef string c_string = self.manager.GetLibraryVersion(homeid)
         return c_string.c_str()
@@ -659,6 +746,7 @@ Retrieve the libray config path. This the directory holding the xml files.
 
 :returns: str -- A string containing the library config path or None.
 :see: getLibraryVersion_, getLibraryTypeName_, getPythonLibraryVersion_, getLibraryTypeName_
+
         '''
         if os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
             return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
@@ -675,6 +763,7 @@ Get the version of the python library.
 
 :returns: str -- A string containing the python library version. For example, "0.1".
 :see: getLibraryVersion_, getLibraryTypeName_, getLibraryConfigPath_, getLibraryTypeName_
+
         '''
         return PYLIBRARY
 
@@ -702,6 +791,7 @@ method.
 :type homeId: int
 :returns: str -- A string containing the library type.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryConfigPath_
+
         '''
         cdef string c_string = self.manager.GetLibraryTypeName(homeid)
         return c_string.c_str()
@@ -715,6 +805,7 @@ Get count of messages in the outgoing send queue.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: int -- Message count
+
         '''
         return self.manager.GetSendQueueCount(homeid)
 
@@ -726,6 +817,7 @@ Send current driver statistics to the log file.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
+
         '''
         self.manager.LogDriverStatistics(homeid)
 
@@ -758,6 +850,7 @@ Statistics:
 :type data: int
 :return dict(): A dict containing statistics of the driver.
 :see: setNodeName
+
        '''
         cdef DriverData_t data
         self.manager.GetDriverStatistics( homeId, &data );
@@ -793,6 +886,7 @@ Get the time period between polls of a nodes state
 
 :returns: int -- The number of milliseconds between polls
 :see: setPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_
+
         '''
         return self.manager.GetPollInterval()
 
@@ -832,6 +926,7 @@ Enable the polling of a device's state.
 :type intensity: int
 :returns: bool -- True if polling was enabled.
 :see: getPollInterval_, setPollInterval_, isPolled_, setPollIntensity_, disablePoll_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.EnablePoll(values_map.at(id), intensity)
@@ -848,6 +943,7 @@ Disable the polling of a device's state.
 :type id: int
 :returns: bool -- True if polling was disabled.
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, setPollIntensity_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.DisablePoll(values_map.at(id))
@@ -864,6 +960,7 @@ Determine the polling of a device's state.
 :type id: int
 :return: bool -- True if polling is active.
 :see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.isPolled(values_map.at(id))
@@ -882,6 +979,7 @@ Set the frequency of polling (0=none, 1=every time through the list, 2-every oth
 :type intensity: int
 :returns: bool -- True if polling is active.
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, disablePoll_
+
         '''
         if values_map.find(id) != values_map.end():
             self.manager.SetPollIntensity(values_map.at(id), intensity)
@@ -911,6 +1009,7 @@ first run.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the request was sent successfully.
+
         '''
         return self.manager.RequestNodeDynamic(homeid, nodeid)
 
@@ -932,6 +1031,7 @@ first run.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the request was sent successfully.
+
         '''
         return self.manager.RefreshNodeInfo(homeid, nodeid)
 
@@ -948,6 +1048,7 @@ same as the query state starting from the dynamic state.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the request was sent successfully.
+
         '''
         return self.manager.RequestNodeState(homeid, nodeid)
 
@@ -962,6 +1063,7 @@ Get whether the node is a beam capable device.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the node is a beaming device
+
         '''
         return self.manager.IsNodeBeamingDevice(homeid, nodeid)
 
@@ -977,6 +1079,7 @@ Get whether the node is a listening device that does not go to sleep
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if it is a listening node.
+
         '''
         return self.manager.IsNodeListeningDevice(homeid, nodeid)
 
@@ -992,6 +1095,7 @@ can be woken up by a beam. Useful to determine node and controller consistency.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if it is a frequent listening node.
+
         '''
         return self.manager.IsNodeFrequentListeningDevice(homeid, nodeid)
 
@@ -1006,6 +1110,7 @@ Get the security attribute for a node. True if node supports security features.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if security features implemented.
+
         '''
         return self.manager.IsNodeSecurityDevice(homeid, nodeid)
 
@@ -1020,6 +1125,7 @@ Get whether the node is a routing device that passes messages to other nodes
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the node is a routing device
+
         '''
         return self.manager.IsNodeRoutingDevice(homeid, nodeid)
 
@@ -1034,6 +1140,7 @@ Get the maximum baud rate of a nodes communications
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: int -- The baud rate in bits per second.
+
         '''
         return self.manager.GetNodeMaxBaudRate(homeid, nodeid)
 
@@ -1048,6 +1155,7 @@ Get the version number of a node
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: int -- The node version number
+
         '''
         return self.manager.GetNodeVersion(homeid, nodeid)
 
@@ -1062,6 +1170,7 @@ Get the security byte for a node.  Bit meanings are still to be determined.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: int -- The node security byte
+
         '''
         return self.manager.GetNodeSecurity(homeid, nodeid)
 
@@ -1076,6 +1185,7 @@ Get the basic type of a node.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: int -- The node basic type.
+
         '''
         return self.manager.GetNodeBasic(homeid, nodeid)
 
@@ -1090,6 +1200,7 @@ Get the generic type of a node.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: int -- The node generic type.
+
         '''
         return self.manager.GetNodeGeneric(homeid, nodeid)
 
@@ -1104,6 +1215,7 @@ Get the specific type of a node.
 :param nodeId: The ID of the node to query.
 :type homeId: int
 :returns: int -- The node specific type.
+
         '''
         return self.manager.GetNodeSpecific(homeid, nodeid)
 
@@ -1121,6 +1233,7 @@ on which of those values are specified by the node.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the label text.
+
         '''
         cdef string c_string = self.manager.GetNodeType(homeid, nodeid)
         return c_string.c_str()
@@ -1138,6 +1251,7 @@ Old release. Do not free memory after allocating it.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: tuple - A tuple containing neighboring node IDs
+
         '''
         retval = None
         # TODO: proper initialization of this pointer.  Underlying code creates new uint8[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
@@ -1151,7 +1265,7 @@ Old release. Do not free memory after allocating it.
                 data = list()
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    data.add(p[0])
+                    data.append(p[0])
                     p += 1
                 retval = tuple(data)
             finally:
@@ -1179,6 +1293,7 @@ Get the bitmap of this node's neighbors.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: list() - A set containing neighboring node IDs
+
         '''
         data = list()
         #Allocate memory
@@ -1222,6 +1337,7 @@ class Value object.
 :type nodeId: int
 :returns: str -- A string containing the nodes manufacturer name.
 :see: setNodeManufacturerName_, getNodeProductName_, setNodeProductName_
+
         '''
         cdef string manufacturer_string = self.manager.GetNodeManufacturerName(homeid, nodeid)
         return manufacturer_string.c_str()
@@ -1246,6 +1362,7 @@ class Value object.
 :type nodeId: int
 :returns: str -- A string containing the nodes product name.
 :see: setNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
+
         '''
         cdef string productname_string = self.manager.GetNodeProductName(homeid, nodeid)
         return productname_string.c_str()
@@ -1269,6 +1386,7 @@ characters.
 :type nodeId: int
 :returns: str -- A string containing the node name.
 :see: setNodeName_, getNodeLocation_, setNodeLocation_
+
         '''
         cdef string c_string = self.manager.GetNodeName(homeid, nodeid)
         return c_string.c_str()
@@ -1291,6 +1409,7 @@ reporting it via a command class Value object.
 :type nodeId: int
 :returns: str -- A string containing the nodes location.
 :see: setNodeLocation, getNodeName, setNodeName
+
         '''
         cdef string c_string = self.manager.GetNodeLocation(homeid, nodeid)
         return c_string.c_str()
@@ -1315,6 +1434,7 @@ specific data.
 :type nodeId: int
 :returns: str -- A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.
 :see: getNodeProductType, getNodeProductId, getNodeManufacturerName, getNodeProductName
+
         '''
         cdef string c_string = self.manager.GetNodeManufacturerId(homeid, nodeid)
         return c_string.c_str()
@@ -1339,6 +1459,7 @@ data.
 :type nodeId: int
 :returns: str -- A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.
 :see: getNodeManufacturerId_, getNodeProductId_, getNodeManufacturerName_, getNodeProductName_
+
         '''
         cdef string c_string = self.manager.GetNodeProductType(homeid, nodeid)
         return c_string.c_str()
@@ -1363,6 +1484,7 @@ data.
 :type nodeId: int
 :returns: str -- A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.
 :see: getNodeManufacturerId_, getNodeProductType_, getNodeManufacturerName_, getNodeProductName_
+
         '''
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
         return c_string.c_str()
@@ -1388,6 +1510,7 @@ class Value object.
 :param manufacturerName: A string containing the nodess manufacturer name.
 :type manufacturerName: str
 :see: getNodeManufacturerName_, getNodeProductName_, setNodeProductName_
+
         '''
         self.manager.SetNodeManufacturerName(homeid, nodeid, string(manufacturerName))
 
@@ -1412,6 +1535,7 @@ class Value object.
 :param productName: A string containing the nodes product name.
 :type productName: str
 :see: getNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
+
         '''
         self.manager.SetNodeProductName(homeid, nodeid, string(productName))
 
@@ -1436,6 +1560,7 @@ node name is 16 characters.
 :param nodeName: A string containing the nodes name.
 :type nodeName: str
 :see: getNodeName_, getNodeLocation_, setNodeLocation_
+
         '''
         self.manager.SetNodeName(homeid, nodeid, string(name))
 
@@ -1459,6 +1584,7 @@ Node Naming command class, the new location will be sent to the node.
 :param location: A string containing the nodes location.
 :type location: int
 :see: getNodeLocation_, getNodeName_, setNodeName_
+
         '''
         self.manager.SetNodeLocation(homeid, nodeid, string(location))
 
@@ -1479,6 +1605,7 @@ device, otherwise it will turn it on at 100%.
 :param nodeId: The ID of the node to be changed.
 :type nodeId: int
 :see: setNodeOff, setNodeLevel
+
         '''
         self.manager.SetNodeOn(homeid, nodeid)
 
@@ -1497,6 +1624,7 @@ zero, and will generate a ValueChanged notification from that class.
 :param nodeId: The ID of the node to be changed.
 :type nodeId: int
 :see: setNodeOn, setNodeLevel
+
         '''
         self.manager.SetNodeOff(homeid, nodeid)
 
@@ -1517,6 +1645,7 @@ and will generate a ValueChanged notification from that class.
 :param level: The level to set the node.  Valid values are 0-99 and 255.  Zero is off and 99 is fully on.  255 will turn on the device at its last known level (if supported).
 :type level: int
 :see: setNodeOn, setNodeOff
+
         '''
         self.manager.SetNodeLevel(homeid, nodeid, level)
 
@@ -1531,6 +1660,7 @@ Get whether the node information has been received
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: bool -- True if the node information has been received yet
+
         '''
         return self.manager.IsNodeInfoReceived(homeid, nodeid)
 
@@ -1552,6 +1682,7 @@ Helper method to return whether a particular class is available in a node
 :param classVersion: (optional, default=None) specific class version
 :type classVersion: int
 :returns: bool -- True if the node does have the class instantiated, will return name & version
+
         '''
         cdef uint8 oclassVersion
         cdef string oclassName
@@ -1585,6 +1716,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
 :param value: The value to set.
 :type value: int
 :returns: int -- An integer representing the result of the operation  0 : The C method fails, 1 : The C method succeed, 2 : Can't find id in the map
+
         '''
         cdef float type_float
         cdef bool type_bool
@@ -1633,6 +1765,7 @@ of the specified ValueID (just like a poll, except only one-time, not recurring)
 :param id: The unique identifier of the value to be refreshed.
 :type id: int
 :returns: bool -- True if the driver and node were found; false otherwise
+
         '''
         return self.manager.RefreshValue(values_map.at(id))
 
@@ -1646,6 +1779,7 @@ Gets the user-friendly label for the value
 :type id: int
 :returns: str -- A string containing the user-friendly label of the value
  :see: setValueLabel_
+
        '''
         cdef string c_string
         if values_map.find(id) != values_map.end():
@@ -1665,6 +1799,7 @@ Sets the user-friendly label for the value
 :param label: The label of the value.
 :type label: str
 :see: getValueLabel_
+
         '''
         if values_map.find(id) != values_map.end():
             self.manager.SetValueLabel(values_map.at(id), string(label))
@@ -1679,6 +1814,7 @@ Gets the units that the value is measured in.
 :type id: int
 :returns: str -- A string containing the value of the units.
 :see: getValueUnits_
+
         '''
         cdef string c_string
         if values_map.find(id) != values_map.end():
@@ -1698,6 +1834,7 @@ Sets the units that the value is measured in.
 :param label: The new value of the units.
 :type label: str
 :see: setValueUnits_
+
         '''
         if values_map.find(id) != values_map.end():
             self.manager.SetValueUnits(values_map.at(id), string(unit))
@@ -1712,6 +1849,7 @@ Gets a help string describing the value's purpose and usage.
 :type id: int
 :returns: str -- A string containing the value help text.
 :see: getValueHelp
+
         '''
         cdef string c_string
         if values_map.find(id) != values_map.end():
@@ -1731,6 +1869,7 @@ Sets a help string describing the value's purpose and usage.
 :param help: The new value of the help text.
 :type help: str
 :see: setValueHelp
+
         '''
         if values_map.find(id) != values_map.end():
             self.manager.SetValueHelp(values_map.at(id), string(help))
@@ -1744,6 +1883,7 @@ Gets the minimum that this value may contain.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value minimum.
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.GetValueMin(values_map.at(id))
@@ -1759,6 +1899,7 @@ Gets the maximum that this value may contain.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value maximum.
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.GetValueMax(values_map.at(id))
@@ -1775,6 +1916,7 @@ Test whether the value is read-only.
 :type id: int
 :returns: bool -- True if the value cannot be changed by the user.
 :see: isValueWriteOnly_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.IsValueReadOnly(values_map.at(id))
@@ -1791,6 +1933,7 @@ Test whether the value is write-only.
 :type id: int
 :returns: bool -- True if the value can only be written to and not read.
 :see: isValueReadOnly_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.IsValueWriteOnly(values_map.at(id))
@@ -1808,6 +1951,7 @@ Test whether the value has been set.
 :returns: bool -- True if the value has actually been set by a status message from the device, rather than simply being the default.
 :see: getValue_, getValueAsBool_, getValueAsByte_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.IsValueSet(values_map.at(id))
@@ -1843,6 +1987,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :type id: int
 :see: isValueSet_, getValue_, getValueAsByte_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+
         '''
         cdef bool type_bool
 
@@ -1866,6 +2011,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+
         '''
         cdef uint8 type_byte
 
@@ -1889,6 +2035,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueAsShort_, getValueAsInt_, getValueAsString_
+
         '''
         cdef float type_float
 
@@ -1913,6 +2060,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueAsFloat_, getValueAsInt_, getValueAsString_
+
         '''
         cdef int16 type_short
 
@@ -1937,6 +2085,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueAsFloat_, getValueAsShort_, getValueAsString_
+
         '''
         cdef int32 type_int
 
@@ -1961,6 +2110,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 :returns: str -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_
+
         '''
         cdef string type_string
 
@@ -1993,6 +2143,7 @@ no notification callbacks are sent.
 :param id: The ID of an integer value.
 :type id: int
 :returns: bool -- True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.PressButton(values_map.at(id))
@@ -2048,6 +2199,7 @@ Set a switch point in the schedule.
 :type setback: int
 :returns: bool -- True if the switch point is set.
 :see: removeSwitchPoint_, clearSwitchPoints_, getSwitchPoint_, getNumSwitchPoints_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.SetSwitchPoint(values_map.at(id), hours, minutes, setback)
@@ -2068,6 +2220,7 @@ Remove a switch point from the schedule
 :type minutes: int
 :returns: bool -- True if the switch point is removed.
 :see: setSwitchPoint_, clearSwitchPoints_, getSwitchPoint_, getNumSwitchPoints_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.RemoveSwitchPoint(values_map.at(id), hours, minutes)
@@ -2084,6 +2237,7 @@ Clears all switch points from the schedule
 :type id: int
 :returns: bool -- True if all switch points are clear.
 :see: setSwitchPoint_, removeSwitchPoint_, getSwitchPoint_, getNumSwitchPoints_
+
         '''
         if values_map.find(id) != values_map.end():
             self.manager.ClearSwitchPoints(values_map.at(id))
@@ -2106,6 +2260,7 @@ Gets switch point data from the schedule
 :type setback: int
 :returns: bool -- True if successful.  Returns False if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
 :see: setSwitchPoint_, removeSwitchPoint_, clearSwitchPoints_, getNumSwitchPoints_
+
         '''
         cdef uint8 ohours
         cdef uint8 ominutes
@@ -2132,6 +2287,7 @@ Get the number of switch points defined in a schedule
 :type id: int
 :returns: The number of switch points defined in this schedule.  Returns zero if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
 :see: setSwitchPoint_, removeSwitchPoint_, clearSwitchPoints_, getSwitchPoint_
+
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.GetNumSwitchPoints(values_map.at(id))
@@ -2157,6 +2313,7 @@ will be turned on.
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
 :see: switchAllOff_
+
         '''
         self.manager.SwitchAllOn(homeid)
 
@@ -2170,6 +2327,7 @@ will be turned off.
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
 :see: switchAllOn_
+
         '''
         self.manager.SwitchAllOff(homeid)
 
@@ -2206,6 +2364,7 @@ has been made.
 :type value: int
 :returns: bool -- True if the a message setting the value was sent to the device.
 :see: requestConfigParam_, requestAllConfigParams_
+
         '''
         return self.manager.SetConfigParam(homeid, nodeid, param, value)
 
@@ -2232,6 +2391,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.
 :param param: The index of the parameter.
 :type param: int
 :see: requestAllConfigParams_, setConfigParam_, valueID_, notification_
+
         '''
         self.manager.RequestConfigParam(homeid, nodeid, param)
 
@@ -2246,6 +2406,7 @@ Request the values of all known configurable parameters from a device.
 :param nodeId: The ID of the node to configure.
 :type nodeId: int
 :see: requestConfigParam_, setConfigParam_, valueID_, notification_
+
         '''
         self.manager.RequestAllConfigParams(homeid, nodeid)
 #
@@ -2270,6 +2431,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 :type nodeId: int
 :returns: int -- The number of groups.
 :see: getAssociations, getMaxAssociations, addAssociation, removeAssociation
+
         '''
         return self.manager.GetNumGroups(homeid, nodeid)
 
@@ -2287,6 +2449,7 @@ Gets the associations for a group
 :type groupIdx: int
 :returns: set -- A set containing IDs of members of the group
 :see: getNumGroups, addAssociation, removeAssociation, getMaxAssociations
+
         '''
         retval = None
         cdef uint32 size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
@@ -2303,7 +2466,7 @@ Gets the associations for a group
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
                     retuint8[i] = p[0]
-                    data.add(retuint8[i])
+                    data.append(retuint8[i])
                     p += 1
                 retval = tuple(data)
             finally:
@@ -2326,6 +2489,7 @@ Gets the maximum number of associations for a group.
 :type groupIdx: int
 :returns: int -- The maximum number of nodes that can be associated into the group.
 :see: getNumGroups, addAssociation, removeAssociation, getAssociations
+
         '''
         return self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
 
@@ -2344,6 +2508,7 @@ This label is populated by the device specific configuration files.
 :param groupIdx: One-based index of the group (because Z-Wave product manuals use one-based group numbering).
 :type groupIdx: int
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, addAssociation_
+
         '''
         cdef string c_string = self.manager.GetGroupLabel(homeid, nodeid, groupidx)
         return c_string.c_str()
@@ -2369,6 +2534,7 @@ both cases.
 :param targetNodeId: Identifier for the node that will be added to the association group.
 :type targetNodeId: int
 :see: getNumGroups, getAssociations, getMaxAssociations, removeAssociation
+
         '''
         self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
 
@@ -2393,6 +2559,7 @@ in both cases.
 :param targetNodeId: Identifier for the node that will be removed from the association group.
 :type targetNodeId: int
 :see: getNumGroups, getAssociations, getMaxAssociations, addAssociation
+
         '''
         self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
 #
@@ -2415,6 +2582,7 @@ add a single watcher - all notifications will be reported to it.
 :param pythonfunc: Watcher pointer to a function that will be called by the notification system.
 :type pythonfunc: callback
 :see: removeWatcher_, notification_
+
         '''
         self._watcherCallback = pythonfunc # need to keep a reference to this
         if not self.manager.AddWatcher(callback, <void*>pythonfunc):
@@ -2437,6 +2605,7 @@ controller becomes a primary controller ready to add devices to a new network.
 :param homeId: The Home ID of the Z-Wave controller to be reset.
 :type homeId: int
 :see: softResetController_
+
         '''
         self.manager.ResetController(homeid)
 
@@ -2451,6 +2620,7 @@ Resets a controller without erasing its network configuration settings.
 :param homeId: The Home ID of the Z-Wave controller to be reset.
 :type homeId: int
 :see: resetController_
+
         '''
         self.manager.SoftReset(homeid)
 
@@ -2464,8 +2634,10 @@ Cancels any in-progress command running on a controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: bool -- True if a command was running and was cancelled.
+:returns: True if a command was running and was cancelled.
+:rtype: bool
 :see: beginControllerCommand_
+
         '''
         return self.manager.CancelControllerCommand(homeid)
 
@@ -2479,7 +2651,8 @@ Cancels any in-progress command running on a controller.
 
 Gets the number of scenes that have been defined
 
-:returns: int -- The number of scenes.
+:returns: The number of scenes.
+:rtype: int
 :see: getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2487,6 +2660,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
        '''
         return self.manager.GetNumScenes()
 
@@ -2496,7 +2670,8 @@ sceneGetValueAsString_
 
 Gets a list of all the SceneIds
 
-:returns: list() -- A list() containing neighboring scene IDs
+:returns: A list() containing neighboring scene IDs
+:rtype: list()
 :see: getNumScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2504,6 +2679,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         retval = None
         cdef uint32 size = self.manager.GetNumScenes()
@@ -2520,7 +2696,7 @@ sceneGetValueAsString_
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
                     retuint8[i] = p[0]
-                    data.add(retuint8[i])
+                    data.append(retuint8[i])
                     p += 1
                 retval = data
             finally:
@@ -2535,7 +2711,8 @@ sceneGetValueAsString_
 
 Create a new Scene passing in Scene ID
 
-:returns: int -- Scene ID used to reference the scene. 0 is failure result.
+:returns: Scene ID used to reference the scene. 0 is failure result.
+:rtype: int
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2543,6 +2720,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
        '''
         return self.manager.CreateScene()
 
@@ -2554,7 +2732,8 @@ Remove an existing Scene.
 
 :param sceneId: The unique Scene ID to be removed.
 :type sceneId: int
-:returns: bool -- True if scene was removed.
+:returns: True if scene was removed.
+:rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2562,6 +2741,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         return self.manager.RemoveScene(homeid)
 
@@ -2579,10 +2759,11 @@ Actually I don't know how to use it :)
 :type valueId: int
 :param value: The value to set
 :type value: bool, int, float, string
-:returns: int -- An integer representing the result of the operation
+:returns: An integer representing the result of the operation
     0 : The C method fails
     1 : The C method succeed
     2 : Can't find id in the map
+:rtype: int
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2590,6 +2771,7 @@ removeSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         cdef float type_float
         cdef bool type_bool
@@ -2638,10 +2820,11 @@ Set a value to an existing scene's ValueID.
 :type valueId: int
 :param value: The value to set
 :type value: bool, int, float, string
-:returns: int -- An integer representing the result of the operation
+:returns: An integer representing the result of the operation
     0 : The C method fails
     1 : The C method succeed
     2 : Can't find id in the map
+:rtype: int
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2649,6 +2832,7 @@ removeSceneValue_, addSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         cdef float type_float
         cdef bool type_bool
@@ -2695,7 +2879,8 @@ Returns a label for the particular scene.
 :type sceneId: int
 :param value: The value to set
 :type value: int
-:returns: str -- The label string.
+:returns: The label string.
+:rtype: str
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
 setSceneLabel_ \
@@ -2703,6 +2888,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
         return c_string.c_str()
@@ -2724,6 +2910,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         self.manager.SetSceneLabel(sceneid, string(label))
 
@@ -2735,7 +2922,8 @@ Check if a Scene ID is defined.
 
 :param sceneId: The ID of the scene to check.
 :type sceneId: int
-:returns: bool -- True if Scene ID exists.
+:returns: True if Scene ID exists.
+:rtype: bool
 :see: getNumScenes_, getAllScenes_, \
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2743,6 +2931,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         return self.manager.SceneExists(sceneid)
 
@@ -2754,7 +2943,8 @@ Activate given scene to perform all its actions.
 
 :param sceneId: The ID of the scene to activate.
 :type sceneId: int
-:returns: bool -- True if it is successful.
+:returns: True if it is successful.
+:rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2762,6 +2952,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
+
         '''
         return self.manager.ActivateScene(sceneid)
 

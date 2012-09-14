@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" 
+"""
 .. module:: openzwave.wrapper
 
 This file is part of **py-openzwave** project https://github.com/maartendamen/py-openzwave.
@@ -37,7 +37,7 @@ import logging
 
 NamedPair = namedtuple('NamedPair', ['id', 'name'])
 NodeInfo = namedtuple('NodeInfo', ['generic','basic','specific','security','version'])
-GroupInfo = namedtuple('GroupInfo', ['index','label','maxAssociations','members'])
+GroupInfo = namedtuple('GroupInfo', ['index','label','max_associations','members'])
 
 class ZWaveWrapperException(Exception):
     '''Exception class for ZWave Wrapper'''
@@ -52,47 +52,47 @@ class ZWaveWrapperException(Exception):
 # TODO: allow value identification by device/index/instance
 class ZWaveValueNode:
     '''Represents a single value for an OZW node element'''
-    def __init__(self, homeId, nodeId, valueData):
+    def __init__(self, home_id, node_id, value_data):
         '''
         Initialize value node
         @param homeid: ID of home/driver
         @param nodeid: ID of node
-        @param valueData: valueId dict (see libopenzwave.pyx)
+        @param value_data: valueId dict (see libopenzwave.pyx)
         '''
-        self._homeId = homeId
-        self._nodeId = nodeId
-        self._valueData = valueData
+        self._home_id = home_id
+        self._node_id = node_id
+        self._value_data = value_data
         self._lastUpdate = None
 
-    homeId = property(lambda self: self._homeId)
-    nodeId = property(lambda self: self._nodeId)
+    home_id = property(lambda self: self._home_id)
+    node_id = property(lambda self: self._node_id)
     lastUpdate = property(lambda self: self._lastUpdate)
-    valueData = property(lambda self: self._valueData)
+    value_data = property(lambda self: self._value_data)
 
     def getValue(self, key):
-        return self.valueData[key] if self._valueData.has_key(key) else None
-    
+        return self.value_data[key] if self._value_data.has_key(key) else None
+
     def update(self, args):
         '''Update node value from callback arguments'''
-        self._valueData = args['valueId']
+        self._value_data = args['valueId']
         self._lastUpdate = time.time()
 
     def __str__(self):
-        return 'homeId: [{0}]  nodeId: [{1}]  valueData: {2}'.format(self._homeId, self._nodeId, self._valueData)
-        
+        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self._home_id, self._node_id, self._value_data)
+
 
 class ZWaveNode:
     '''Represents a single device within the Z-Wave Network'''
 
-    def __init__(self, homeId, nodeId):
+    def __init__(self, home_id, node_id):
         '''
         Initialize zwave node
-        @param homeId: ID of home/driver
-        @param nodeId: ID of node
+        @param home_id: ID of home/driver
+        @param node_id: ID of node
         '''
         self._lastUpdate = None
-        self._homeId = homeId
-        self._nodeId = nodeId
+        self._home_id = home_id
+        self._node_id = node_id
         self._capabilities = set()
         self._commandClasses = set()
         self._neighbors = set()
@@ -105,14 +105,14 @@ class ZWaveNode:
         self._groups = list()
         self._sleeping = True
 
-    id = property(lambda self: self._nodeId)
+    id = property(lambda self: self._node_id)
     name = property(lambda self: self._name)
     location = property(lambda self: self._location)
     product = property(lambda self: self._product.name if self._product else '')
     productType = property(lambda self: self._productType.name if self._productType else '')
     lastUpdate = property(lambda self: self._lastUpdate)
-    homeId = property(lambda self: self._homeId)
-    nodeId = property(lambda self: self._nodeId)
+    home_id = property(lambda self: self._home_id)
+    node_id = property(lambda self: self._node_id)
     capabilities = property(lambda self: ', '.join(self._capabilities))
     commandClasses = property(lambda self: self._commandClasses)
     neighbors = property(lambda self:self._neighbors)
@@ -120,7 +120,7 @@ class ZWaveNode:
     manufacturer = property(lambda self: self._manufacturer.name if self._manufacturer else '')
     groups = property(lambda self:self._groups)
     isSleeping = property(lambda self: self._sleeping)
-    isLocked = property(lambda self: self._getIsLocked())
+    is_locked = property(lambda self: self._getIsLocked())
     level = property(lambda self: self._getLevel())
     isOn = property(lambda self: self._getIsOn())
     batteryLevel = property(lambda self: self._getBatteryLevel())
@@ -133,7 +133,7 @@ class ZWaveNode:
         retval = list()
         classStr = PyManager.COMMAND_CLASS_DESC[classId]
         for value in self._values.itervalues():
-            vdic = value.valueData
+            vdic = value.value_data
             if vdic and vdic.has_key('commandClass') and vdic['commandClass'] == classStr:
                 retval.append(value)
         return retval
@@ -142,7 +142,7 @@ class ZWaveNode:
         values = self._getValuesForCommandClass(0x26)  # COMMAND_CLASS_SWITCH_MULTILEVEL
         if values:
             for value in values:
-                vdic = value.valueData
+                vdic = value.value_data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
                     return int(vdic['value'])
         return 0
@@ -151,7 +151,7 @@ class ZWaveNode:
         values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
         if values:
             for value in values:
-                vdic = value.valueData
+                vdic = value.value_data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
                     return int(vdic['value'])
         return -1
@@ -163,7 +163,7 @@ class ZWaveNode:
         values = self._getValuesForCommandClass(0x25)  # COMMAND_CLASS_SWITCH_BINARY
         if values:
             for value in values:
-                vdic = value.valueData
+                vdic = value.value_data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
                     return vdic['value'] == 'True'
         return False
@@ -210,15 +210,15 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
             self._log = logging.getLogger(__name__)
             self._log.addHandler(NullHandler())
         self._initialized = False
-        self._homeId = None
+        self._home_id = None
         self._controllerNodeId = None
         self._controller = None
         self._nodes = dict()
-        self._libraryTypeName = 'Unknown'
-        self._libraryVersion = 'Unknown'
+        self._library_type_name = 'Unknown'
+        self._library_version = 'Unknown'
         self._device = device
         options = libopenzwave.PyOptions()
-        options.create(config, '', '--logging false') 
+        options.create(config, '', '--logging false')
         options.lock()
         self._manager = libopenzwave.PyManager()
         self._manager.create()
@@ -229,12 +229,12 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
     nodeCount = property(lambda self: len(self._nodes))
     nodeCountDescription = property(lambda self: self._getNodeCountDescription())
     sleepingNodeCount = property(lambda self: self._getSleepingNodeCount())
-    homeId = property(lambda self: self._homeId)
+    home_id = property(lambda self: self._home_id)
     controllerNode = property(lambda self: self._controller)
     controllerNodeId = property(lambda self: self._controllerNodeId)
-    libraryDescription = property(lambda self: self._getLibraryDescription())
-    libraryTypeName = property(lambda self: self._libraryTypeName)
-    libraryVersion = property(lambda self: self._libraryVersion)
+    library_description = property(lambda self: self._getLibraryDescription())
+    library_type_name = property(lambda self: self._library_type_name)
+    library_version = property(lambda self: self._library_version)
     initialized = property(lambda self: self._initialized)
     nodes = property(lambda self: self._nodes)
     device = property(lambda self: self._device)
@@ -247,8 +247,8 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
         return retval - 1 if retval > 0 else 0
 
     def _getLibraryDescription(self):
-        if self._libraryTypeName and self._libraryVersion:
-            return '{0} Library Version {1}'.format(self._libraryTypeName, self._libraryVersion)
+        if self._library_type_name and self._library_version:
+            return '{0} Library Version {1}'.format(self._library_type_name, self._library_version)
         else:
             return 'Unknown'
 
@@ -261,7 +261,7 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
 
     def _getControllerDescription(self):
         if self._controllerNodeId:
-            node = self._getNode(self._homeId, self._controllerNodeId)
+            node = self._getNode(self._home_id, self._controllerNodeId)
             if node and node._product:
                 return node._product.name
         return 'Unknown Controller'
@@ -273,7 +273,7 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
             import sys, traceback
             print '\n'.join(traceback.format_exception(*sys.exc_info()))
             raise
-    
+
     def _zwcallback(self, args):
         '''
         Callback Handler
@@ -282,9 +282,9 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
         '''
 
         notifyType = args['notificationType']
-        self._log.debug('\n%s\n%s (node %s)\n%s', '-' * 30, notifyType, args['nodeId'], '-' * 30)
+        self._log.debug('\n%s\n%s (node %s)\n%s', '-' * 30, notifyType, args['node_id'], '-' * 30)
         if notifyType == 'DriverReady':
-            self._handleDriverReady(args)
+            self._handle_driver_ready(args)
         elif notifyType in ('NodeAdded', 'NodeNew'):
             self._handleNodeChanged(args)
         elif notifyType == 'ValueAdded':
@@ -305,107 +305,107 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
         # TODO: handle node removed
         # TODO: handle config params
 
-    def _handleDriverReady(self, args):
+    def _handle_driver_ready(self, args):
         '''
         Called once OZW has queried capabilities and determined startup values.  HomeID
         and NodeID of controller are known at this point.
         '''
-        self._homeId = args['homeId']
-        self._controllerNodeId = args['nodeId']
-        self._controller = self._fetchNode(self._homeId, self._controllerNodeId)
-        self._libraryVersion = self._manager.getLibraryVersion(self._homeId)
-        self._libraryTypeName = self._manager.getLibraryTypeName(self._homeId)
-        self._log.info('Driver ready.  homeId is 0x%0.8x, controller node id is %d, using %s library version %s', self._homeId, self._controllerNodeId, self._libraryTypeName, self._libraryVersion)
+        self._home_id = args['home_id']
+        self._controllerNodeId = args['node_id']
+        self._controller = self._fetchNode(self._home_id, self._controllerNodeId)
+        self._library_version = self._manager.getLibraryVersion(self._home_id)
+        self._library_type_name = self._manager.getLibraryTypeName(self._home_id)
+        self._log.info('Driver ready.  home_id is 0x%0.8x, controller node id is %d, using %s library version %s', self._home_id, self._controllerNodeId, self._library_type_name, self._library_version)
         self._log.info('OpenZWave Initialization Begins.')
         self._log.info('The initialization process could take several minutes.  Please be patient.')
-        dispatcher.send(self.SIGNAL_DRIVER_READY, **{'homeId': self._homeId, 'nodeId': self._controllerNodeId})
+        dispatcher.send(self.SIGNAL_DRIVER_READY, **{'home_id': self._home_id, 'node_id': self._controllerNodeId})
 
     def _handleNodeQueryComplete(self, args):
-        node = self._getNode(self._homeId, args['nodeId'])
+        node = self._getNode(self._home_id, args['node_id'])
         self._updateNodeCapabilities(node)
         self._updateNodeCommandClasses(node)
         self._updateNodeNeighbors(node)
         self._updateNodeInfo(node)
         self._updateNodeGroups(node)
         self._log.info('Z-Wave Device Node {0} is ready.'.format(node.id))
-        dispatcher.send(self.SIGNAL_NODE_READY, **{'homeId': self._homeId, 'nodeId': args['nodeId']})
+        dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
 
-    def _getNode(self, homeId, nodeId):
-        return self._nodes[nodeId] if self._nodes.has_key(nodeId) else None
+    def _getNode(self, home_id, node_id):
+        return self._nodes[node_id] if self._nodes.has_key(node_id) else None
 
-    def _fetchNode(self, homeId, nodeId):
+    def _fetchNode(self, home_id, node_id):
         '''
         Build a new node and store it in nodes dict
         '''
-        retval = self._getNode(homeId, nodeId)
+        retval = self._getNode(home_id, node_id)
         if retval is None:
-            retval = ZWaveNode(homeId, nodeId)
-            self._log.debug('Created new node with homeId 0x%0.8x, nodeId %d', homeId, nodeId)
-            self._nodes[nodeId] = retval
+            retval = ZWaveNode(home_id, node_id)
+            self._log.debug('Created new node with home_id 0x%0.8x, node_id %d', home_id, node_id)
+            self._nodes[node_id] = retval
         return retval
 
     def _handleNodeChanged(self, args):
-        node = self._fetchNode(args['homeId'], args['nodeId'])
+        node = self._fetchNode(args['home_id'], args['node_id'])
         node._lastUpdate = time.time()
-        dispatcher.send(self.SIGNAL_NODE_ADDED, **{'homeId': args['homeId'], 'nodeId': args['nodeId']})
+        dispatcher.send(self.SIGNAL_NODE_ADDED, **{'home_id': args['home_id'], 'node_id': args['node_id']})
 
-    def _getValueNode(self, homeId, nodeId, valueId):
-        node = self._getNode(homeId, nodeId)
+    def _getValueNode(self, home_id, node_id, valueId):
+        node = self._getNode(home_id, node_id)
         if node is None:
-            raise ZWaveWrapperException('Value notification received before node creation (homeId %.8x, nodeId %d)' % (homeId, nodeId))
+            raise ZWaveWrapperException('Value notification received before node creation (home_id %.8x, node_id %d)' % (home_id, node_id))
         vid = valueId['id']
         if node._values.has_key(vid):
             retval = node._values[vid]
         else:
-            retval = ZWaveValueNode(homeId, nodeId, valueId)
-            self._log.debug('Created new value node with homeId %0.8x, nodeId %d, valueId %s', homeId, nodeId, valueId)
+            retval = ZWaveValueNode(home_id, node_id, valueId)
+            self._log.debug('Created new value node with home_id %0.8x, node_id %d, valueId %s', home_id, node_id, valueId)
             node._values[vid] = retval
         return retval
 
     def _handleValueAdded(self, args):
-        homeId = args['homeId']
-        controllerNodeId = args['nodeId']
+        home_id = args['home_id']
+        controllerNodeId = args['node_id']
         valueId = args['valueId']
-        node = self._fetchNode(homeId, controllerNodeId)
+        node = self._fetchNode(home_id, controllerNodeId)
         node._lastUpdate = time.time()
-        valueNode = self._getValueNode(homeId, controllerNodeId, valueId)
+        valueNode = self._getValueNode(home_id, controllerNodeId, valueId)
         valueNode.update(args)
 
     def _handleValueChanged(self, args):
-        homeId = args['homeId']
-        controllerNodeId = args['nodeId']
+        home_id = args['home_id']
+        controllerNodeId = args['node_id']
         valueId = args['valueId']
-        node = self._fetchNode(homeId, controllerNodeId)
+        node = self._fetchNode(home_id, controllerNodeId)
         node._sleeping = False
         node._lastUpdate = time.time()
-        valueNode = self._getValueNode(homeId, controllerNodeId, valueId)
+        valueNode = self._getValueNode(home_id, controllerNodeId, valueId)
         valueNode.update(args)
         if self._initialized:
-            dispatcher.send(self.SIGNAL_VALUE_CHANGED, **{'homeId': homeId, 'nodeId': controllerNodeId, 'valueId': valueId})
+            dispatcher.send(self.SIGNAL_VALUE_CHANGED, **{'home_id': home_id, 'node_id': controllerNodeId, 'valueId': valueId})
 
     def _updateNodeCapabilities(self, node):
         '''Update node's capabilities set'''
         nodecaps = set()
-        if self._manager.isNodeListeningDevice(node._homeId, node._nodeId): nodecaps.add('listening')
-        if self._manager.isNodeRoutingDevice(node._homeId, node._nodeId): nodecaps.add('routing')
+        if self._manager.isNodeListeningDevice(node._home_id, node._node_id): nodecaps.add('listening')
+        if self._manager.isNodeRoutingDevice(node._home_id, node._node_id): nodecaps.add('routing')
 
         node._capabilities = nodecaps
-        self._log.debug('Node [%d] capabilities are: %s', node._nodeId, node._capabilities)
+        self._log.debug('Node [%d] capabilities are: %s', node._node_id, node._capabilities)
 
     def _updateNodeCommandClasses(self, node):
         '''Update node's command classes'''
         classSet = set()
         for cls in PyManager.COMMAND_CLASS_DESC:
-            if self._manager.getNodeClassInformation(node._homeId, node._nodeId, cls):
+            if self._manager.getNodeClassInformation(node._home_id, node._node_id, cls):
                 classSet.add(cls)
         node._commandClasses = classSet
-        self._log.debug('Node [%d] command classes are: %s', node._nodeId, node._commandClasses)
+        self._log.debug('Node [%d] command classes are: %s', node._node_id, node._commandClasses)
         # TODO: add command classes as string
 
     def _updateNodeNeighbors(self, node):
         '''Update node's neighbor list'''
         # TODO: I believe this is an OZW bug, but sleeping nodes report very odd (and long) neighbor lists
-        neighborstr = str(self._manager.getNodeNeighbors(node._homeId, node._nodeId))
+        neighborstr = str(self._manager.getNodeNeighbors(node._home_id, node._node_id))
         if neighborstr is None or neighborstr == 'None':
             node._neighbors = None
         else:
@@ -414,46 +414,46 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
         if node.isSleeping and node._neighbors is not None and len(node._neighbors) > 10:
             self._log.warning('Probable OZW bug: Node [%d] is sleeping and reports %d neighbors; marking neighbors as none.', node.id, len(node._neighbors))
             node._neighbors = None
-            
-        self._log.debug('Node [%d] neighbors are: %s', node._nodeId, node._neighbors)
+
+        self._log.debug('Node [%d] neighbors are: %s', node._node_id, node._neighbors)
 
     def _updateNodeInfo(self, node):
         '''Update general node information'''
-        node._name = self._manager.getNodeName(node._homeId, node._nodeId)
-        node._location = self._manager.getNodeLocation(node._homeId, node._nodeId)
-        node._manufacturer = NamedPair(id=self._manager.getNodeManufacturerId(node._homeId, node._nodeId), name=self._manager.getNodeManufacturerName(node._homeId, node._nodeId))
-        node._product = NamedPair(id=self._manager.getNodeProductId(node._homeId, node._nodeId), name=self._manager.getNodeProductName(node._homeId, node._nodeId))
-        node._productType = NamedPair(id=self._manager.getNodeProductType(node._homeId, node._nodeId), name=self._manager.getNodeType(node._homeId, node._nodeId))
+        node._name = self._manager.getNodeName(node._home_id, node._node_id)
+        node._location = self._manager.getNodeLocation(node._home_id, node._node_id)
+        node._manufacturer = NamedPair(id=self._manager.getNodeManufacturerId(node._home_id, node._node_id), name=self._manager.getNodeManufacturerName(node._home_id, node._node_id))
+        node._product = NamedPair(id=self._manager.getNodeProductId(node._home_id, node._node_id), name=self._manager.getNodeProductName(node._home_id, node._node_id))
+        node._productType = NamedPair(id=self._manager.getNodeProductType(node._home_id, node._node_id), name=self._manager.getNodeType(node._home_id, node._node_id))
         node._nodeInfo = NodeInfo(
-            generic = self._manager.getNodeGeneric(node._homeId, node._nodeId),
-            basic = self._manager.getNodeBasic(node._homeId, node._nodeId),
-            specific = self._manager.getNodeSpecific(node._homeId, node._nodeId),
-            security = self._manager.getNodeSecurity(node._homeId, node._nodeId),
-            version = self._manager.getNodeVersion(node._homeId, node._nodeId)
+            generic = self._manager.getNodeGeneric(node._home_id, node._node_id),
+            basic = self._manager.getNodeBasic(node._home_id, node._node_id),
+            specific = self._manager.getNodeSpecific(node._home_id, node._node_id),
+            security = self._manager.getNodeSecurity(node._home_id, node._node_id),
+            version = self._manager.getNodeVersion(node._home_id, node._node_id)
         )
 
     def _updateNodeGroups(self, node):
         '''Update node group/association information'''
         groups = list()
-        for i in range(0, self._manager.getNumGroups(node._homeId, node._nodeId)):
+        for i in range(0, self._manager.getNumGroups(node._home_id, node._node_id)):
             groups.append(GroupInfo(
                 index = i,
-                label = self._manager.getGroupLabel(node._homeId, node._nodeId, i),
-                maxAssociations = self._manager.getMaxAssociations(node._homeId, node._nodeId, i),
-                members = self._manager.getAssociations(node._homeId, node._nodeId, i)
+                label = self._manager.getGroupLabel(node._home_id, node._node_id, i),
+                max_associations = self._manager.getMaxAssociations(node._home_id, node._node_id, i),
+                members = self._manager.getAssociations(node._home_id, node._node_id, i)
             ))
         node._groups = groups
-        self._log.debug('Node [%d] groups are: %s', node._nodeId, node._groups)
+        self._log.debug('Node [%d] groups are: %s', node._node_id, node._groups)
 
     def _updateNodeConfig(self, node):
-        self._log.debug('Requesting config params for node [%d]', node._nodeId)
-        self._manager.requestAllConfigParams(node._homeId, node._nodeId)
+        self._log.debug('Requesting config params for node [%d]', node._node_id)
+        self._manager.requestAllConfigParams(node._home_id, node._node_id)
 
     def _handleInitializationComplete(self, args):
         controllercaps = set()
-        if self._manager.isPrimaryController(self._homeId): controllercaps.add('primaryController')
-        if self._manager.isStaticUpdateController(self._homeId): controllercaps.add('staticUpdateController')
-        if self._manager.isBridgeController(self._homeId): controllercaps.add('bridgeController')
+        if self._manager.is_primary_controller(self._home_id): controllercaps.add('primaryController')
+        if self._manager.is_static_update_controller(self._home_id): controllercaps.add('staticUpdateController')
+        if self._manager.is_bridge_controller(self._home_id): controllercaps.add('bridgeController')
         self._controllerCaps = controllercaps
         self._log.debug('Controller capabilities are: %s', controllercaps)
         for node in self._nodes.values():
@@ -465,25 +465,25 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
             self._updateNodeConfig(node)
         self._initialized = True
         self._log.info("OpenZWave initialization is complete.  Found {0} Z-Wave Device Nodes ({1} sleeping)".format(self.nodeCount, self.sleepingNodeCount))
-        dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'homeId': self._homeId})
-        self._manager.writeConfig(self._homeId)
+        dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self._home_id})
+        self._manager.writeConfig(self._home_id)
         # TODO: write config on shutdown as well
 
     def refresh(self, node):
         self._log.debug('Requesting refresh for node {0}'.format(node.id))
-        self._manager.refreshNodeInfo(node.homeId, node.id)
+        self._manager.refreshNodeInfo(node.home_id, node.id)
 
     def setNodeOn(self, node):
         self._log.debug('Requesting setNodeOn for node {0}'.format(node.id))
-        self._manager.setNodeOn(node.homeId, node.id)
+        self._manager.setNodeOn(node.home_id, node.id)
 
     def setNodeOff(self, node):
         self._log.debug('Requesting setNodeOff for node {0}'.format(node.id))
-        self._manager.setNodeOff(node.homeId, node.id)
+        self._manager.setNodeOff(node.home_id, node.id)
 
     def setNodeLevel(self, node, level):
         self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
-        self._manager.setNodeLevel(node.homeId, node.id, level)
+        self._manager.setNodeLevel(node.home_id, node.id, level)
 
     def getCommandClassName(self, commandClassCode):
         return PyManager.COMMAND_CLASS_DESC[commandClassCode]
@@ -551,4 +551,4 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
 #                                         |
 #   {REPEATS FOR EACH NODE} --------------+
 #
-#   [awakeNodesQueried] or [allNodesQueried] (with nodeId 255)
+#   [awakeNodesQueried] or [allNodesQueried] (with node_id 255)

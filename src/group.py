@@ -23,7 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-
 from collections import namedtuple
 import thread
 import os
@@ -43,7 +42,7 @@ class ZWaveGroup(ZwaveObject):
     Also used to retrieve informations about the library, ...
     '''
 
-    def __init__(self, groupIndex, network=None, nodeId=None):
+    def __init__(self, group_index, network=None, node_id=None):
         '''
         Initialize driver object
 
@@ -51,28 +50,31 @@ class ZWaveGroup(ZwaveObject):
         :type devicePath: str
         :param userPath: path to user directory
         :type userPath: str
-        :param configPath: path to the config path
-        :type configPath: str
+        :param config_path: path to the config path
+        :type config_path: str
         :param options: options of the manager
         :type options: str
+
         '''
 
         super(ZWaveController, self).__init__(groupId, network)
 
-        self._nodeId = nodeId
-        self._index = groupIndex
+        self._node_id = node_id
+        self._index = group_index
         self._label = None
-        self.cacheProperty(lambda: self.label)
-        self._maxAssociations = list()
-        self.cacheProperty(lambda: self.maxAssociations)
+        self.cache_property(lambda: self.label)
+        self._max_associations = list()
+        self.cache_property(lambda: self.max_associations)
         self._members = list()
-        self.cacheProperty(lambda: self.members)
+        self.cache_property(lambda: self.members)
 
     @property
     def index(self):
         """
         The index of the group.
+
         :rtype: int
+
         """
         return self._node
 
@@ -80,49 +82,73 @@ class ZWaveGroup(ZwaveObject):
     def label(self):
         """
         The label of the group.
+
         :rtype: int
+
         """
-        if self.isOutdated(lambda: self.label):
-            self._label = self._network.manager.getGroupLabel(node._homeId, node._nodeId, self.index)
+        if self.is_outdated(lambda: self.label):
+            self._label = self._network.manager.getGroupLabel(node._home_id, node._node_id, self.index)
             self.update(lambda: self.label)
         return self._label
 
     @property
-    def maxAssociations(self):
+    def max_associations(self):
         """
         The number of associations.
+
         :rtype: int
+
         """
-        if self.isOutdated(lambda: self.maxAssociations):
-            self._maxAssociations = self._network.manager.getMaxAssociations(node._homeId, node._nodeId, self.index)
-            self.update(lambda: self.maxAssociations)
-        return self._maxAssociations
+        if self.is_outdated(lambda: self.max_associations):
+            self._max_associations = self._network.manager.getMaxAssociations(node._home_id, node._node_id, self.index)
+            self.update(lambda: self.max_associations)
+        return self._max_associations
 
     @property
     def members(self):
         """
         The members of associations.
+
         :rtype: int
+
         """
-        if self.isOutdated(lambda: self.members):
-            self._members = self._network.manager.getAssociations(node._homeId, node._nodeId, self.index)
+        if self.is_outdated(lambda: self.members):
+            self._members = self._network.manager.getAssociations(node._home_id, node._node_id, self.index)
             self.update(lambda: self.members)
         return self._members
 
-    def addAssociation(self, targetNodeId):
+    def addAssociation(self, target_node_id):
         """
-        The members of associations.
-        :rtype: int
-        """
-        self._network.manager.addAssociation(node._homeId, node._nodeId, self.index, targetNodeId)
-        self.outdate(lambda: self.members)
-        self.outdate(lambda: self.maxAssociations)
+        Adds a node to an association group.
 
-    def removeAssociation(self, targetNodeId):
+        Due to the possibility of a device being asleep, the command is assumed to
+        suceeed, and the association data held in this class is updated directly.  This
+        will be reverted by a future Association message from the device if the Z-Wave
+        message actually failed to get through.  Notification callbacks will be sent in
+        both cases.
+
+        :param target_node_id: Identifier for the node that will be added to the association group.
+        :type target_node_id: int
+
         """
-        The members of associations.
-        :rtype: int
-        """
-        self._network.manager.removeAssociation(node._homeId, node._nodeId, self.index, targetNodeId)
+        self._network.manager.addAssociation(node._home_id, node._node_id, self.index, target_node_id)
         self.outdate(lambda: self.members)
-        self.outdate(lambda: self.maxAssociations)
+        self.outdate(lambda: self.max_associations)
+
+    def removeAssociation(self, target_node_id):
+        """
+        Removes a node from an association group.
+
+        Due to the possibility of a device being asleep, the command is assumed to
+        succeed, and the association data held in this class is updated directly.  This
+        will be reverted by a future Association message from the device if the Z-Wave
+        message actually failed to get through.   Notification callbacks will be sent
+        in both cases.
+
+        :param target_node_id: Identifier for the node that will be removed from the association group.
+        :type target_node_id: int
+
+        """
+        self._network.manager.removeAssociation(node._home_id, node._node_id, self.index, target_node_id)
+        self.outdate(lambda: self.members)
+        self.outdate(lambda: self.max_associations)

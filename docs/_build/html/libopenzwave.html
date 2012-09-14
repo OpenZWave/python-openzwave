@@ -54,12 +54,12 @@
 </ul>
 </div>
 <span class="target" id="module-libopenzwave"></span><span class="target" id="module-libopenzwave"></span><dl class="docutils">
-<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
 </tr>
 <tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
 </tr>
@@ -67,19 +67,19 @@
 </table>
 </dd>
 </dl>
-<p><em>Module author: maartendamen</em></p>
 <p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p><em>Module author: Maarten Damen &lt;<a class="reference external" href="mailto:m&#46;damen&#37;&#52;&#48;gmail&#46;com">m<span>&#46;</span>damen<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
 <p>License : GPL(v3)</p>
-<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.</p>
-<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
-along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="class">
 <dt id="libopenzwave.PyManager">
 <em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">PyManager</tt><a class="headerlink" href="#libopenzwave.PyManager" title="Permalink to this definition">¶</a></dt>
@@ -129,9 +129,11 @@ sleeping) have been polled, an &#8220;AllNodesQueried&#8221; notification is sen
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sceneId</strong> (<em>int</em>) &#8211; The ID of the scene to activate.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if it is successful.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is successful.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id3"><span class="problematic" id="id4">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id5"><span class="problematic" id="id6">sceneGetValues_</span></a>, <a href="#id7"><span class="problematic" id="id8">SceneGetValueAsBool_</span></a>, <a href="#id9"><span class="problematic" id="id10">sceneGetValueAsByte_</span></a>, <a href="#id11"><span class="problematic" id="id12">sceneGetValueAsFloat_</span></a>, <a href="#id13"><span class="problematic" id="id14">sceneGetValueAsInt_</span></a>, <a href="#id15"><span class="problematic" id="id16">sceneGetValueAsShort_</span></a>, <a href="#id17"><span class="problematic" id="id18">sceneGetValueAsString_</span></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id5"><span class="problematic" id="id6">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id7"><span class="problematic" id="id8">sceneGetValues_</span></a>, <a href="#id9"><span class="problematic" id="id10">SceneGetValueAsBool_</span></a>, <a href="#id11"><span class="problematic" id="id12">sceneGetValueAsByte_</span></a>, <a href="#id13"><span class="problematic" id="id14">sceneGetValueAsFloat_</span></a>, <a href="#id15"><span class="problematic" id="id16">sceneGetValueAsInt_</span></a>, <a href="#id17"><span class="problematic" id="id18">sceneGetValueAsShort_</span></a>, <a href="#id19"><span class="problematic" id="id20">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -206,13 +208,16 @@ Home ID is required by most of the OpenZWave Manager class methods.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; An integer representing the result of the operation
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An integer representing the result of the operation
 0 : The C method fails
 1 : The C method succeed
 2 : Can&#8217;t find id in the map</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id19"><span class="problematic" id="id20">removeSceneValue_</span></a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id21"><span class="problematic" id="id22">sceneGetValues_</span></a>, <a href="#id23"><span class="problematic" id="id24">SceneGetValueAsBool_</span></a>, <a href="#id25"><span class="problematic" id="id26">sceneGetValueAsByte_</span></a>, <a href="#id27"><span class="problematic" id="id28">sceneGetValueAsFloat_</span></a>, <a href="#id29"><span class="problematic" id="id30">sceneGetValueAsInt_</span></a>, <a href="#id31"><span class="problematic" id="id32">sceneGetValueAsShort_</span></a>, <a href="#id33"><span class="problematic" id="id34">sceneGetValueAsString_</span></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id21"><span class="problematic" id="id22">removeSceneValue_</span></a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id23"><span class="problematic" id="id24">sceneGetValues_</span></a>, <a href="#id25"><span class="problematic" id="id26">SceneGetValueAsBool_</span></a>, <a href="#id27"><span class="problematic" id="id28">sceneGetValueAsByte_</span></a>, <a href="#id29"><span class="problematic" id="id30">sceneGetValueAsFloat_</span></a>, <a href="#id31"><span class="problematic" id="id32">sceneGetValueAsInt_</span></a>, <a href="#id33"><span class="problematic" id="id34">sceneGetValueAsShort_</span></a>, <a href="#id35"><span class="problematic" id="id36">sceneGetValueAsString_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -233,7 +238,7 @@ add a single watcher - all notifications will be reported to it.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pythonfunc</strong> (<em>callback</em>) &#8211; Watcher pointer to a function that will be called by the notification system.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a href="#id35"><span class="problematic" id="id36">removeWatcher_</span></a>, <a href="#id37"><span class="problematic" id="id38">notification_</span></a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a href="#id37"><span class="problematic" id="id38">removeWatcher_</span></a>, <a href="#id39"><span class="problematic" id="id40">notification_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -249,9 +254,11 @@ add a single watcher - all notifications will be reported to it.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if a command was running and was cancelled.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if a command was running and was cancelled.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a href="#id39"><span class="problematic" id="id40">beginControllerCommand_</span></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a href="#id41"><span class="problematic" id="id42">beginControllerCommand_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -296,9 +303,11 @@ Z-Wave controller in turn.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; Scene ID used to reference the scene. 0 is failure result.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Scene ID used to reference the scene. 0 is failure result.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id41"><span class="problematic" id="id42">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id43"><span class="problematic" id="id44">sceneGetValues_</span></a>, <a href="#id45"><span class="problematic" id="id46">SceneGetValueAsBool_</span></a>, <a href="#id47"><span class="problematic" id="id48">sceneGetValueAsByte_</span></a>, <a href="#id49"><span class="problematic" id="id50">sceneGetValueAsFloat_</span></a>, <a href="#id51"><span class="problematic" id="id52">sceneGetValueAsInt_</span></a>, <a href="#id53"><span class="problematic" id="id54">sceneGetValueAsShort_</span></a>, <a href="#id55"><span class="problematic" id="id56">sceneGetValueAsString_</span></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id43"><span class="problematic" id="id44">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id45"><span class="problematic" id="id46">sceneGetValues_</span></a>, <a href="#id47"><span class="problematic" id="id48">SceneGetValueAsBool_</span></a>, <a href="#id49"><span class="problematic" id="id50">sceneGetValueAsByte_</span></a>, <a href="#id51"><span class="problematic" id="id52">sceneGetValueAsFloat_</span></a>, <a href="#id53"><span class="problematic" id="id54">sceneGetValueAsInt_</span></a>, <a href="#id55"><span class="problematic" id="id56">sceneGetValueAsShort_</span></a>, <a href="#id57"><span class="problematic" id="id58">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -354,9 +363,11 @@ Z-Wave controller in turn.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">list() &#8211; A list() containing neighboring scene IDs</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list() containing neighboring scene IDs</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id57"><span class="problematic" id="id58">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id59"><span class="problematic" id="id60">sceneGetValues_</span></a>, <a href="#id61"><span class="problematic" id="id62">SceneGetValueAsBool_</span></a>, <a href="#id63"><span class="problematic" id="id64">sceneGetValueAsByte_</span></a>, <a href="#id65"><span class="problematic" id="id66">sceneGetValueAsFloat_</span></a>, <a href="#id67"><span class="problematic" id="id68">sceneGetValueAsInt_</span></a>, <a href="#id69"><span class="problematic" id="id70">sceneGetValueAsShort_</span></a>, <a href="#id71"><span class="problematic" id="id72">sceneGetValueAsString_</span></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list()</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id59"><span class="problematic" id="id60">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id61"><span class="problematic" id="id62">sceneGetValues_</span></a>, <a href="#id63"><span class="problematic" id="id64">SceneGetValueAsBool_</span></a>, <a href="#id65"><span class="problematic" id="id66">sceneGetValueAsByte_</span></a>, <a href="#id67"><span class="problematic" id="id68">sceneGetValueAsFloat_</span></a>, <a href="#id69"><span class="problematic" id="id70">sceneGetValueAsInt_</span></a>, <a href="#id71"><span class="problematic" id="id72">sceneGetValueAsShort_</span></a>, <a href="#id73"><span class="problematic" id="id74">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -1035,9 +1046,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The number of scenes.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of scenes.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id73"><span class="problematic" id="id74">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id75"><span class="problematic" id="id76">sceneGetValues_</span></a>, <a href="#id77"><span class="problematic" id="id78">SceneGetValueAsBool_</span></a>, <a href="#id79"><span class="problematic" id="id80">sceneGetValueAsByte_</span></a>, <a href="#id81"><span class="problematic" id="id82">sceneGetValueAsFloat_</span></a>, <a href="#id83"><span class="problematic" id="id84">sceneGetValueAsInt_</span></a>, <a href="#id85"><span class="problematic" id="id86">sceneGetValueAsShort_</span></a>, <a href="#id87"><span class="problematic" id="id88">sceneGetValueAsString_</span></a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id75"><span class="problematic" id="id76">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id77"><span class="problematic" id="id78">sceneGetValues_</span></a>, <a href="#id79"><span class="problematic" id="id80">SceneGetValueAsBool_</span></a>, <a href="#id81"><span class="problematic" id="id82">sceneGetValueAsByte_</span></a>, <a href="#id83"><span class="problematic" id="id84">sceneGetValueAsFloat_</span></a>, <a href="#id85"><span class="problematic" id="id86">sceneGetValueAsInt_</span></a>, <a href="#id87"><span class="problematic" id="id88">sceneGetValueAsShort_</span></a>, <a href="#id89"><span class="problematic" id="id90">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -1107,10 +1120,13 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str &#8211; The label string.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The label string.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id89"><span class="problematic" id="id90">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id91"><span class="problematic" id="id92">sceneGetValues_</span></a>, <a href="#id93"><span class="problematic" id="id94">SceneGetValueAsBool_</span></a>, <a href="#id95"><span class="problematic" id="id96">sceneGetValueAsByte_</span></a>, <a href="#id97"><span class="problematic" id="id98">sceneGetValueAsFloat_</span></a>, <a href="#id99"><span class="problematic" id="id100">sceneGetValueAsInt_</span></a>, <a href="#id101"><span class="problematic" id="id102">sceneGetValueAsShort_</span></a>, <a href="#id103"><span class="problematic" id="id104">sceneGetValueAsString_</span></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id91"><span class="problematic" id="id92">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id93"><span class="problematic" id="id94">sceneGetValues_</span></a>, <a href="#id95"><span class="problematic" id="id96">SceneGetValueAsBool_</span></a>, <a href="#id97"><span class="problematic" id="id98">sceneGetValueAsByte_</span></a>, <a href="#id99"><span class="problematic" id="id100">sceneGetValueAsFloat_</span></a>, <a href="#id101"><span class="problematic" id="id102">sceneGetValueAsInt_</span></a>, <a href="#id103"><span class="problematic" id="id104">sceneGetValueAsShort_</span></a>, <a href="#id105"><span class="problematic" id="id106">sceneGetValueAsString_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -1790,9 +1806,11 @@ handled automatically.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sceneId</strong> (<em>int</em>) &#8211; The unique Scene ID to be removed.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if scene was removed.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if scene was removed.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id105"><span class="problematic" id="id106">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id107"><span class="problematic" id="id108">sceneGetValues_</span></a>, <a href="#id109"><span class="problematic" id="id110">SceneGetValueAsBool_</span></a>, <a href="#id111"><span class="problematic" id="id112">sceneGetValueAsByte_</span></a>, <a href="#id113"><span class="problematic" id="id114">sceneGetValueAsFloat_</span></a>, <a href="#id115"><span class="problematic" id="id116">sceneGetValueAsInt_</span></a>, <a href="#id117"><span class="problematic" id="id118">sceneGetValueAsShort_</span></a>, <a href="#id119"><span class="problematic" id="id120">sceneGetValueAsString_</span></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id107"><span class="problematic" id="id108">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id109"><span class="problematic" id="id110">sceneGetValues_</span></a>, <a href="#id111"><span class="problematic" id="id112">SceneGetValueAsBool_</span></a>, <a href="#id113"><span class="problematic" id="id114">sceneGetValueAsByte_</span></a>, <a href="#id115"><span class="problematic" id="id116">sceneGetValueAsFloat_</span></a>, <a href="#id117"><span class="problematic" id="id118">sceneGetValueAsInt_</span></a>, <a href="#id119"><span class="problematic" id="id120">sceneGetValueAsShort_</span></a>, <a href="#id121"><span class="problematic" id="id122">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -1837,7 +1855,7 @@ handled automatically.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id121"><span class="problematic" id="id122">valueID_</span></a>, <a href="#id123"><span class="problematic" id="id124">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id123"><span class="problematic" id="id124">valueID_</span></a>, <a href="#id125"><span class="problematic" id="id126">notification_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -1868,7 +1886,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id125"><span class="problematic" id="id126">valueID_</span></a>, <a href="#id127"><span class="problematic" id="id128">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id127"><span class="problematic" id="id128">valueID_</span></a>, <a href="#id129"><span class="problematic" id="id130">notification_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -1953,9 +1971,11 @@ controller becomes a primary controller ready to add devices to a new network.</
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sceneId</strong> (<em>int</em>) &#8211; The ID of the scene to check.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if Scene ID exists.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if Scene ID exists.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id129"><span class="problematic" id="id130">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id131"><span class="problematic" id="id132">sceneGetValues_</span></a>, <a href="#id133"><span class="problematic" id="id134">SceneGetValueAsBool_</span></a>, <a href="#id135"><span class="problematic" id="id136">sceneGetValueAsByte_</span></a>, <a href="#id137"><span class="problematic" id="id138">sceneGetValueAsFloat_</span></a>, <a href="#id139"><span class="problematic" id="id140">sceneGetValueAsInt_</span></a>, <a href="#id141"><span class="problematic" id="id142">sceneGetValueAsShort_</span></a>, <a href="#id143"><span class="problematic" id="id144">sceneGetValueAsString_</span></a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id131"><span class="problematic" id="id132">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id133"><span class="problematic" id="id134">sceneGetValues_</span></a>, <a href="#id135"><span class="problematic" id="id136">SceneGetValueAsBool_</span></a>, <a href="#id137"><span class="problematic" id="id138">sceneGetValueAsByte_</span></a>, <a href="#id139"><span class="problematic" id="id140">sceneGetValueAsFloat_</span></a>, <a href="#id141"><span class="problematic" id="id142">sceneGetValueAsInt_</span></a>, <a href="#id143"><span class="problematic" id="id144">sceneGetValueAsShort_</span></a>, <a href="#id145"><span class="problematic" id="id146">sceneGetValueAsString_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -2249,7 +2269,7 @@ does not have to cope with more than one poll per second).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a> <a href="#id145"><span class="problematic" id="id146">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id147"><span class="problematic" id="id148">sceneGetValues_</span></a>, <a href="#id149"><span class="problematic" id="id150">SceneGetValueAsBool_</span></a>, <a href="#id151"><span class="problematic" id="id152">sceneGetValueAsByte_</span></a>, <a href="#id153"><span class="problematic" id="id154">sceneGetValueAsFloat_</span></a>, <a href="#id155"><span class="problematic" id="id156">sceneGetValueAsInt_</span></a>, <a href="#id157"><span class="problematic" id="id158">sceneGetValueAsShort_</span></a>, <a href="#id159"><span class="problematic" id="id160">sceneGetValueAsString_</span></a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a> <a href="#id147"><span class="problematic" id="id148">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a href="#id149"><span class="problematic" id="id150">sceneGetValues_</span></a>, <a href="#id151"><span class="problematic" id="id152">SceneGetValueAsBool_</span></a>, <a href="#id153"><span class="problematic" id="id154">sceneGetValueAsByte_</span></a>, <a href="#id155"><span class="problematic" id="id156">sceneGetValueAsFloat_</span></a>, <a href="#id157"><span class="problematic" id="id158">sceneGetValueAsInt_</span></a>, <a href="#id159"><span class="problematic" id="id160">sceneGetValueAsShort_</span></a>, <a href="#id161"><span class="problematic" id="id162">sceneGetValueAsString_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -2271,13 +2291,16 @@ does not have to cope with more than one poll per second).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; An integer representing the result of the operation
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An integer representing the result of the operation
 0 : The C method fails
 1 : The C method succeed
 2 : Can&#8217;t find id in the map</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id161"><span class="problematic" id="id162">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a href="#id163"><span class="problematic" id="id164">sceneGetValues_</span></a>, <a href="#id165"><span class="problematic" id="id166">SceneGetValueAsBool_</span></a>, <a href="#id167"><span class="problematic" id="id168">sceneGetValueAsByte_</span></a>, <a href="#id169"><span class="problematic" id="id170">sceneGetValueAsFloat_</span></a>, <a href="#id171"><span class="problematic" id="id172">sceneGetValueAsInt_</span></a>, <a href="#id173"><span class="problematic" id="id174">sceneGetValueAsShort_</span></a>, <a href="#id175"><span class="problematic" id="id176">sceneGetValueAsString_</span></a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a href="#id163"><span class="problematic" id="id164">removeSceneValue_</span></a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a href="#id165"><span class="problematic" id="id166">sceneGetValues_</span></a>, <a href="#id167"><span class="problematic" id="id168">SceneGetValueAsBool_</span></a>, <a href="#id169"><span class="problematic" id="id170">sceneGetValueAsByte_</span></a>, <a href="#id171"><span class="problematic" id="id172">sceneGetValueAsFloat_</span></a>, <a href="#id173"><span class="problematic" id="id174">sceneGetValueAsInt_</span></a>, <a href="#id175"><span class="problematic" id="id176">sceneGetValueAsShort_</span></a>, <a href="#id177"><span class="problematic" id="id178">sceneGetValueAsString_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -2475,7 +2498,7 @@ etc.</p>
 
 <dl class="data">
 <dt>
-<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyNotifications</tt><em class="property"> = ['ValueAdded', 'ValueRemoved', 'ValueChanged', 'ValueRefreshed', 'Group', 'NodeNew', 'NodeAdded', 'NodeRemoved', 'NodeProtocolInfo', 'NodeNaming', 'NodeEvent', 'PollingDisabled', 'PollingEnabled', 'CreateButton', 'DeleteButton', 'ButtonOn', 'ButtonOff', 'DriverReady', 'DriverFailed', 'riverReset', 'MsgComplete', 'EssentialNodeQueriesComplete', 'NodeQueriesComplete', 'AwakeNodesQueried', 'AllNodesQueried', 'Error']</em></dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyNotifications</tt><em class="property"> = ['ValueAdded', 'ValueRemoved', 'ValueChanged', 'ValueRefreshed', 'Group', 'NodeNew', 'NodeAdded', 'NodeRemoved', 'NodeProtocolInfo', 'NodeNaming', 'NodeEvent', 'PollingDisabled', 'PollingEnabled', 'CreateButton', 'DeleteButton', 'ButtonOn', 'ButtonOff', 'DriverReady', 'DriverFailed', 'DriverReset', 'MsgComplete', 'EssentialNodeQueriesComplete', 'NodeQueriesComplete', 'AwakeNodesQueried', 'AllNodesQueried', 'Error']</em></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
@@ -2492,6 +2515,25 @@ list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 <tt class="descclassname">libopenzwave.</tt><tt class="descname">PyValueTypes</tt><em class="property"> = ['Bool', 'Byte', 'Decimal', 'Int', 'List', 'Schedule', 'Short', 'String', 'Button']</em></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyLogLevels</tt><em class="property"> = {'Info': 6, 'None': 0, 'Internal': 9, 'Always': 1, 'Detail': 7, 'Alert': 5, 'Warning': 4, 'Error': 3, 'Debug': 8, 'Fatal': 2}</em></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object&#8217;s</p>
+<blockquote>
+<div>(key, value) pairs</div></blockquote>
+<dl class="docutils">
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt>
+<dd><p class="first">d = {}
+for k, v in iterable:</p>
+<blockquote class="last">
+<div>d[k] = v</div></blockquote>
+</dd>
+<dt>dict(<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt>
+<dd>in the keyword argument list.  For example:  dict(one=1, two=2)</dd>
+</dl>
 </dd></dl>
 
 </div>

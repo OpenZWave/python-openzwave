@@ -23,7 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import datetime
 import logging
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
@@ -45,20 +44,19 @@ class ZWaveException(Exception):
         self.value = value
 
     def __str__(self):
-        return repr(self.msg+' '+self.value)
+        return repr(self.msg+' : '+self.value)
 
 class ZWaveCacheException(ZWaveException):
     '''
     Exception class for OpenZWave
     '''
     def __init__(self, value):
-        Exception.__init__(self)
+        ZWaveException.__init__(self)
         self.msg = "Zwave Cache Exception"
         self.value = value
 
     def __str__(self):
-        return repr(self.msg+' '+self.value)
-
+        return repr(self.msg+' : '+self.value)
 
 class ZwaveObject(object):
     '''
@@ -66,53 +64,66 @@ class ZwaveObject(object):
     other managers on the network.
     '''
 
-    def __init__(self, objectId, network = None, useCache = True):
+    def __init__(self, object_id, network = None, use_cache = True):
         '''
         Initialize a Zwave object
 
-        :param objectId: ID of the object
-        :type objectId: int
+        :param object_id: ID of the object
+        :type object_id: int
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
+
         '''
         self._network = network
-        self._lastUpdate = None
+        self._last_update = None
         self._outdated = True
-        self._useCache = useCache
-        self._objectId = objectId
-        if self._useCache:
-            self._cachedProperties = dict()
+        self._use_cache = use_cache
+        self._object_id = object_id
+        if self._use_cache:
+            self._cached_properties = dict()
         else :
-            self._cachedProperties = None
+            self._cached_properties = None
 
     @property
-    def homeId(self):
+    def home_id(self):
         """
-        The homeId of the node.
+        The home_id of the node.
+
         :rtype: int
+
         """
-        return self._network.objectId if self._network!=None else None
+        return self._network.object_id if self._network != None else None
 
     @property
-    def useCache(self):
+    def use_cache(self):
         """
         Should this object use cache from property
+
+        :rtype: bool
+
         """
-        return self._useCache
+        return self._use_cache
 
     @property
-    def lastUpdate(self):
+    def last_update(self):
         """
         The last update date of the device.
-        """
-        return self._lastUpate
 
-    @lastUpdate.setter
-    def lastUpdate(self, value):
+        :rtype: time
+
+        """
+        return self._last_update
+
+    @last_update.setter
+    def last_update(self, value):
         """
         Set the last update date of the device.
+
+        :param value: The time of last update
+        :type value: time
+
         """
-        self._lastUpate = value
+        self._last_update = value
 
     @property
     def outdated(self):
@@ -123,8 +134,10 @@ class ZwaveObject(object):
 
         2 ways of doing it :
         - refresh informations when setting the property
-        - refresh informations when getting gtting property.
+        - refresh informations when getting getting property.
         Maybe whe could implement the 2 methods.
+
+        :rtype: int
 
         """
         return self._outdated
@@ -132,33 +145,46 @@ class ZwaveObject(object):
     @outdated.setter
     def outdated(self, value):
         """
-        Set that informations are outdated.
+        Set that this object ist outdated.
+
+        :param value: True
+        :type value: bool - True
+
         """
-        if self._useCache :
+        if self._use_cache :
             if value :
-                for prop in self._cachedProperties:
-                    self._cachedProperties[prop] = True
+                for prop in self._cached_properties:
+                    self._cached_properties[prop] = True
                 self._outdated = value
             else:
                 raise ZWaveCacheException("Can't set outdated to False manualy. It is done automatically.")
         else:
             raise ZWaveCacheException("Cache not enabled")
 
-    def isOutdated(self, prop):
+    def is_outdated(self, prop):
         """
         Check if property information is outdated.
+
+        :param prop: The property to check
+        :type value: lambda
+        :rtype: bool
+
         """
-        if self._useCache :
-            return self._cachedProperties[str(prop)]
+        if self._use_cache :
+            return self._cached_properties[str(prop)]
         else:
             raise ZWaveCacheException("Cache not enabled")
 
     def outdate(self, prop):
         """
         Says that the property information is outdated.
+
+        :param prop: The property to outdate
+        :type value: lambda
+
         """
-        if self._useCache :
-            self._cachedProperties[str(prop)] = True
+        if self._use_cache :
+            self._cached_properties[str(prop)] = True
             self._outdated = True
         else:
             raise ZWaveCacheException("Cache not enabled")
@@ -166,32 +192,43 @@ class ZwaveObject(object):
     def update(self, prop):
         """
         Says that the property are updated.
+
+        :param prop: The property to update
+        :type value: lambda
+
         """
-        if self._useCache :
-            self._cachedProperties[str(prop)] = False
+        if self._use_cache :
+            self._cached_properties[str(prop)] = False
             #logging.debug("Data %s is updated." % str(prop))
             outd = False
-            for p in self._cachedProperties:
-                if self._cachedProperties[p]:
+            for prop in self._cached_properties:
+                if self._cached_properties[prop]:
                     outd = True
                     break
             self._outdated = outd
         else:
             raise ZWaveCacheException("Cache not enabled")
 
-    def cacheProperty(self, prop):
+    def cache_property(self, prop):
         """
         Add this property to the cache manager.
+
+        :param prop: The property to cache
+        :type value: lambda
+
         """
-        if self._useCache :
-            self._cachedProperties[str(prop)] = True
+        if self._use_cache :
+            self._cached_properties[str(prop)] = True
         else:
             raise ZWaveCacheException("Cache not enabled")
 
     @property
-    def objectId(self):
+    def object_id(self):
         """
         The id of the object.
-        objectId could be None, when creating a scene for example.
-        """
+        object_id could be None, when creating a scene for example.
 
+        :rtype: int
+
+        """
+        return self._object_id

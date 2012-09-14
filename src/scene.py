@@ -23,7 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-
 import libopenzwave
 from collections import namedtuple
 import thread
@@ -39,20 +38,21 @@ class ZWaveScene(ZwaveObject):
     Represents a single scene within the Z-Wave Network
     '''
 
-    def __init__(self, sceneId, network=None):
+    def __init__(self, scene_id, network=None):
         '''
         Initialize zwave scene
 
-        :param sceneId: ID of the scene
-        :type sceneId: int
+        :param scene_id: ID of the scene
+        :type scene_id: int
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
+
         '''
-        self.objectId = sceneId
-        self.logDebug("Create object scene (sceneId:%s)" % (sceneId))
+        self.object_id = scene_id
+        logging.debug("Create object scene (scene_id:%s)" % (scene_id))
         self._values = dict()
         self._label = ''
-        super(ZWaveScene, self).__init__(sceneId, network)
+        ZwaveObject.__init__(scene_id, network)
 
     @property
     def label(self):
@@ -72,19 +72,25 @@ class ZWaveScene(ZwaveObject):
 
     def create(self, name):
         '''
-        Create a new zwave scene and update the objectId field
+        Create a new zwave scene and update the object_id field
         '''
-        self._sceneId = sceneId
+        self._scene_id = scene_id
         self._name = ''
 
-    def addValue(self, valueid, valueData):
+    def add_value(self, value_id, value_data):
         '''
         Add a value to the zwave scene.
         '''
 
-    def setValue(self, valueid, valueData):
+    def set_value(self, value_id, value_data):
         '''
         Set a value to the zwave scene.
+
+        :param value_id: ID of the value
+        :type value_id: int
+        :param network: The network object to access the manager
+        :type network: ZWaveNetwork
+
         '''
 
     def activate(self):
