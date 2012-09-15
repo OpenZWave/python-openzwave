@@ -13,5 +13,5 @@ diff --git a/setup.py b/setup.py
 +                             extra_objects=['/usr/lib/libopenzwave.a'],
 +                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
      )]
-
+ 
  setup(
