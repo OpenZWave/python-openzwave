@@ -1,0 +1,34 @@
+diff -Nru py-openzwave.orig//openzwave.pyx py-openzwave/openzwave.pyx
+--- py-openzwave.orig//openzwave.pyx    2012-08-04 23:49:48.000000000 +0200
++++ py-openzwave/openzwave.pyx  2012-08-08 17:56:15.000000000 +0200
+@@ -113,7 +113,7 @@
+         string GetLibraryTypeName(uint32 homeid)
+         # // Polling
+         uint32 GetPollInterval()
+-        void SetPollInterval(uint8 seconds)
++        void SetPollInterval(uint32 milliseconds, bint bIntervalBetweenPolls)
+         bint EnablePoll(ValueID& valueId)
+         bint DisablePoll(ValueID& valueId)
+         bint isPolled(ValueID& valueId)
+@@ -644,7 +644,7 @@
+         '''Get the time period between polls of a nodes state'''
+         return self.manager.GetPollInterval()
+
+-    def setPollInterval(self, seconds):
++    def setPollInterval(self, milliseconds, bIntervalBetweenPolls ):
+         '''
+ Set the time period between polls of a nodes state.
+
+@@ -657,9 +657,10 @@
+ set shorter than the number of polled devices in seconds (so that the network
+ does not have to cope with more than one poll per second).
+
+-@param seconds The length of the polling interval in seconds.
++@param milliseconds The length of the polling interval in milliseconds.
++@param bIntervalBetweenPolls Don't know what it is.
+         '''
+-        self.manager.SetPollInterval(seconds)
++        self.manager.SetPollInterval(milliseconds, bIntervalBetweenPolls)
+
+ #        bint EnablePoll(ValueID& valueId)
+ #        bint DisablePoll(ValueID& valueId)

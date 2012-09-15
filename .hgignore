@@ -1,0 +1,16 @@
+syntax: glob
+*.orig
+*.rej
+*~
+*.o
+*.pyc
+tests/*.err
+openzwave/*
+build/*
+python_openzwave.egg-info/*
+docs/_build/doctrees/*
+OZW_Log.txt
+lib/libopenzwave.cpp
+
+syntax: regexp
+.*\#.*\#$

@@ -1,0 +1,459 @@
+--- python-openzwave-20120828.orig/openzwave.pyx	2012-09-01 02:30:07.000000000 +0200
++++ python-openzwave-20120828/openzwave.pyx	2012-09-01 02:42:36.000000000 +0200
+@@ -23,273 +23,12 @@
+ 
+ from cython.operator cimport dereference as deref
+ from libcpp.map cimport map, pair
++from libc.stdint import int8_t, int16_t, int32_t, uint8_t, uint32_t, uint64_t
++cimport mylibc
++cimport libopenzwave
+ 
+ PYLIBRARY = 0.1
+ 
+-cdef extern from "<string>" namespace "std":
+-    cdef cppclass string:
+-        string()
+-        string(char *)
+-        string (size_t n, char c)
+-        char * c_str()
+-
+-cdef extern from "stdlib.h":
+-    void* malloc(size_t size)
+-    void free(void* ptr)
+-
+-ctypedef unsigned int uint32
+-ctypedef unsigned long uint64
+-ctypedef int int32
+-ctypedef short int16
+-ctypedef unsigned char uint8
+-ctypedef signed char int8
+-
+-cdef extern from "Options.h" namespace "OpenZWave":
+-    cdef cppclass Options:
+-        bint Lock()
+-
+-cdef extern from "Python.h":
+-    void PyEval_InitThreads()
+-
+-cdef extern from "Options.h" namespace "OpenZWave::Options":
+-    Options* Create(string a, string b, string c)
+-
+-cdef extern from *:
+-    ctypedef char* const_notification "OpenZWave::Notification const*"
+-
+-cdef extern from "Notification.h" namespace "OpenZWave::Notification":
+-
+-   cdef enum NotificationType:
+-        Type_ValueAdded = 0                     # A new node value has been added to OpenZWave's list. These notifications occur after a node has been discovered, and details of its command classes have been received.  Each command class may generate one or more values depending on the complexity of the item being represented.
+-        Type_ValueRemoved = 1                   # A node value has been removed from OpenZWave's list.  This only occurs when a node is removed.
+-        Type_ValueChanged = 2                   # A node value has been updated from the Z-Wave network and it is different from the previous value.
+-        Type_ValueRefreshed = 3                 # A node value has been updated from the Z-Wave network.
+-        Type_Group = 4                          # The associations for the node have changed. The application should rebuild any group information it holds about the node.
+-        Type_NodeNew = 5                        # A new node has been found (not already stored in zwcfg*.xml file)
+-        Type_NodeAdded = 6                      # A new node has been added to OpenZWave's list.  This may be due to a device being added to the Z-Wave network, or because the application is initializing itself.
+-        Type_NodeRemoved = 7                    # A node has been removed from OpenZWave's list.  This may be due to a device being removed from the Z-Wave network, or because the application is closing.
+-        Type_NodeProtocolInfo = 8               # Basic node information has been receievd, such as whether the node is a listening device, a routing device and its baud rate and basic, generic and specific types. It is after this notification that you can call Manager::GetNodeType to obtain a label containing the device description.
+-        Type_NodeNaming = 9                     # One of the node names has changed (name, manufacturer, product).
+-        Type_NodeEvent = 10                     # A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification.
+-        Type_PollingDisabled = 11               # Polling of a node has been successfully turned off by a call to Manager::DisablePoll
+-        Type_PollingEnabled = 12                # Polling of a node has been successfully turned on by a call to Manager::EnablePoll
+-        Type_CreateButton = 13                  # Handheld controller button event created 
+-        Type_DeleteButton = 14                  # Handheld controller button event deleted 
+-        Type_ButtonOn = 15                      # Handheld controller button on pressed event
+-        Type_ButtonOff = 16                     # Handheld controller button off pressed event 
+-        Type_DriverReady = 17                   # A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods.
+-        Type_DriverFailed = 18                  # Driver failed to load
+-        Type_DriverReset = 19                   # All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications.
+-        Type_MsgComplete = 20                   # The last message that was sent is now complete.
+-        Type_EssentialNodeQueriesComplete = 21  # The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages.
+-        Type_NodeQueriesComplete = 22           # All the initialisation queries on a node have been completed.
+-        Type_AwakeNodesQueried = 23             # All awake nodes have been queried, so client application can expected complete data for these nodes.
+-        Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
+-        Type_Error = 25                         # An error has occured that we need to report.
+-
+-
+-cdef extern from "ValueID.h" namespace "OpenZWave":
+-
+-    cdef enum ValueGenre:
+-        ValueGenre_Basic = 0                # The 'level' as controlled by basic commands.  Usually duplicated by another command class.
+-        ValueGenre_User = 1                 # Basic values an ordinary user would be interested in. 
+-        ValueGenre_Config = 2               # Device-specific configuration parameters.  These cannot be automatically discovered via Z-Wave, and are usually described in the user manual instead.
+-        ValueGenre_System = 3               # Values of significance only to users who understand the Z-Wave protocol.
+-        ValueGenre_Count = 4                # A count of the number of genres defined.  Not to be used as a genre itself.
+-
+-    cdef enum ValueType:
+-        ValueType_Bool = 0                  # Boolean, true or false
+-        ValueType_Byte = 1                  # 8-bit unsigned value
+-        ValueType_Decimal = 2               # Represents a non-integer value as a string, to avoid floating point accuracy issues.
+-        ValueType_Int = 3                   # 32-bit signed value
+-        ValueType_List = 4                  # List from which one item can be selected
+-        ValueType_Schedule = 5              # Complex type used with the Climate Control Schedule command class
+-        ValueType_Short = 6                 # 16-bit signed value
+-        ValueType_String = 7                # Text string
+-        ValueType_Button = 8                # A write-only value that is the equivalent of pressing a button to send a command to a device
+-        ValueType_Max = ValueType_Button    # The highest-number type defined.  Not to be used as a type itself.
+-
+-    cdef cppclass ValueID:
+-        uint32 GetHomeId()
+-        uint8 GetNodeId()
+-        ValueGenre GetGenre()
+-        uint8 GetCommandClassId()
+-        uint8 GetInstance()
+-        uint8 GetIndex()
+-        ValueType GetType()
+-        uint64 GetId()
+-
+-cdef extern from "Notification.h" namespace "OpenZWave":
+-
+-    cdef cppclass Notification:
+-        NotificationType GetType()
+-        uint32 GetHomeId()
+-        uint8 GetNodeId()
+-        ValueID& GetValueID()
+-        uint8 GetGroupIdx()
+-        uint8 GetEvent()
+-        uint8 GetButtonId()
+-        uint8 GetErrorCode()
+-        uint8 GetByte()
+-
+-ctypedef void (*pfnOnNotification_t)(const_notification _pNotification, void* _context )
+-
+-cdef extern from "Manager.h" namespace "OpenZWave":
+-
+-    cdef cppclass Manager:
+-        # // Configuration
+-        void WriteConfig(uint32 homeid)
+-        # Options* GetOptions()
+-        # // Drivers
+-        bint AddDriver(string serialport)
+-        bint RemoveDriver(string controllerPath)
+-        uint8 GetControllerNodeId(uint32 homeid)
+-        bint IsPrimaryController(uint32 homeid)
+-        bint IsStaticUpdateController(uint32 homeid)
+-        bint IsBridgeController(uint32 homeid)
+-        string GetLibraryVersion(uint32 homeid)
+-        string GetLibraryTypeName(uint32 homeid)
+-        int32 GetSendQueueCount( uint32 homeId )
+-        void LogDriverStatistics( uint32 homeId )
+-        # // Polling
+-        uint32 GetPollInterval()
+-        void SetPollInterval(uint32 milliseconds, bint bIntervalBetweenPolls)
+-        bint EnablePoll(ValueID& valueId, uint8 intensity)
+-        bint DisablePoll(ValueID& valueId)
+-        bint isPolled(ValueID& valueId)
+-        void SetPollIntensity( ValueID& valueId, uint8 intensity)
+-        # // Node Information
+-        bint RefreshNodeInfo(uint32 homeid, uint8 nodeid)
+-        void RequestNodeState(uint32 homeid, uint8 nodeid)
+-        void RequestNodeDynamic( uint32 homeId, uint8 nodeId )
+-        bint IsNodeListeningDevice(uint32 homeid, uint8 nodeid)
+-        bint IsNodeFrequentListeningDevice( uint32 homeId, uint8 nodeId )
+-        bint IsNodeBeamingDevice( uint32 homeId, uint8 nodeId )
+-        bint IsNodeRoutingDevice(uint32 homeid, uint8 nodeid)
+-        bint IsNodeSecurityDevice( uint32 homeId, uint8 nodeId )
+-        uint32 GetNodeMaxBaudRate(uint32 homeid, uint8 nodeid)
+-        uint8 GetNodeVersion(uint32 homeid, uint8 nodeid)
+-        uint8 GetNodeSecurity(uint32 homeid, uint8 nodeid)
+-        uint8 GetNodeBasic(uint32 homeid, uint8 nodeid)
+-        uint8 GetNodeGeneric(uint32 homeid, uint8 nodeid)
+-        uint8 GetNodeSpecific(uint32 homeid, uint8 nodeid)
+-        string GetNodeType(uint32 homeid, uint8 nodeid)
+-        uint32 GetNodeNeighbors(uint32 homeid, uint8 nodeid, uint8** nodeNeighbors)
+-        string GetNodeManufacturerName(uint32 homeid, uint8 nodeid)
+-        string GetNodeProductName(uint32 homeid, uint8 nodeid)
+-        string GetNodeName(uint32 homeid, uint8 nodeid)
+-        string GetNodeLocation(uint32 homeid, uint8 nodeid)
+-        string GetNodeManufacturerId(uint32 homeid, uint8 nodeid)
+-        string GetNodeProductType(uint32 homeid, uint8 nodeid)
+-        string GetNodeProductId(uint32 homeid, uint8 nodeid)
+-        void SetNodeManufacturerName(uint32 homeid, uint8 nodeid, string manufacturerName)
+-        void SetNodeProductName(uint32 homeid, uint8 nodeid, string productName)
+-        void SetNodeName(uint32 homeid, uint8 nodeid, string productName)
+-        void SetNodeLocation(uint32 homeid, uint8 nodeid, string location)
+-        void SetNodeOn(uint32 homeid, uint8 nodeid)
+-        void SetNodeOff(uint32 homeid, uint8 nodeid)
+-        void SetNodeLevel(uint32 homeid, uint8 nodeid, uint8 level)
+-        bint IsNodeInfoReceived(uint32 homeid, uint8 nodeid)
+-        bint GetNodeClassInformation(uint32 homeid, uint8 nodeid, uint8 commandClassId, string className = NULL, uint8 *classVersion = NULL)
+-        # // Values
+-        string GetValueLabel(ValueID& valueid)
+-        void SetValueLabel(ValueID& valueid, string value)
+-        string GetValueUnits(ValueID& valueid)
+-        void SetValueUnits(ValueID& valueid, string value)
+-        string GetValueHelp(ValueID& valueid)
+-        void SetValueHelp(ValueID& valueid, string value)
+-        uint32 GetValueMin(ValueID& valueid)
+-        uint32 GetValueMax(ValueID& valueid)
+-        bint IsValueReadOnly(ValueID& valueid)
+-        bint IsValueWriteOnly(ValueID& valueid)
+-        bint IsValueSet(ValueID& valueid)
+-        bint IsValuePolled( ValueID& valueid )
+-        bint GetValueAsBool(ValueID& valueid, bint* o_value)
+-        bint GetValueAsByte(ValueID& valueid, uint8* o_value)
+-        bint GetValueAsFloat(ValueID& valueid, float* o_value)
+-        bint GetValueAsInt(ValueID& valueid, uint32* o_value)
+-        bint GetValueAsShort(ValueID& valueid, uint32* o_value)
+-        bint GetValueAsString(ValueID& valueid, string* o_value)
+-        bint GetValueListSelection(ValueID& valueid, string* o_value)
+-        bint GetValueListSelection(ValueID& valueid, uint32* o_value)
+-        #bint GetValueListItems(ValueID& valueid, vector<string>* o_value)
+-        bint SetValue(ValueID& valueid, bint value)
+-        bint SetValue(ValueID& valueid, uint8 value)
+-        bint SetValue(ValueID& valueid, float value)
+-        bint SetValue(ValueID& valueid, int32 value)
+-        bint SetValue(ValueID& valueid, int16 value)
+-        bint SetValue(ValueID& valueid, string value)
+-        bint SetValueListSelection(ValueID& valueid, string selecteditem)
+-        bint RefreshValue(ValueID& valueid)
+-        void SetChangeVerified(ValueID& valueid, bint verify)
+-        bint PressButton(ValueID& valueid)
+-        bint ReleaseButton(ValueID& valueid)
+-        # // Climate Control
+-        uint8 GetNumSwitchPoints(ValueID& valueid)
+-        bint SetSwitchPoint(ValueID& valueid, uint8 hours, uint8 minutes, uint8 setback)
+-        bint RemoveSwitchPoint(ValueID& valueid, uint8 hours, uint8 minutes)
+-        bint ClearSwitchPoints(ValueID& valueid)
+-        bint GetSwitchPoint(ValueID& valueid, uint8 idx, uint8* o_hours, uint8* o_minutes, int8* o_setback)
+-        # // SwitchAll
+-        void SwitchAllOn(uint32 homeid)
+-        void SwitchAllOff(uint32 homeid)
+-        # // Configuration Parameters
+-        bint SetConfigParam(uint32 homeid, uint8 nodeid, uint8 param, uint32 value, uint8 size = 2)
+-        void RequestConfigParam(uint32 homeid, uint8 nodeid, uint8 aram)
+-        void RequestAllConfigParams(uint32 homeid, uint8 nodeid)
+-        # // Groups
+-        uint8 GetNumGroups(uint32 homeid, uint8 nodeid)
+-        uint32 GetAssociations(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8** o_associations)
+-        uint8 GetMaxAssociations(uint32 homeid, uint8 nodeid, uint8 groupidx)
+-        string GetGroupLabel(uint32 homeid, uint8 nodeid, uint8 groupidx)
+-        void AddAssociation(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8 targetnodeid)
+-        void RemoveAssociation(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8 targetnodeid)
+-        bint AddWatcher(pfnOnNotification_t notification, void* context)
+-        bint RemoveWatcher(pfnOnNotification_t notification, void* context)
+-        # // Controller Commands
+-        void ResetController(uint32 homeid)
+-        void SoftReset(uint32 homeid)
+-        #bint BeginControllerCommand(uint32 homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8 _nodeId = 0xff )
+-        bint CancelControllerCommand(uint32 homeid)
+-        # // Scene commands
+-        uint8 GetNumScenes()
+-        uint8 GetAllScenes(uint8** sceneIds)
+-        uint8 CreateScene()
+-        bint RemoveScene(uint8 sceneId)
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, bint value)
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, uint8 value)
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, float value )
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, int32 value )
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, int16 value )
+-        bint AddSceneValue( uint8 sceneId, ValueID& valueId, string value )
+-        bint AddSceneValueListSelection( uint8 sceneId, ValueID& valueId, string value )
+-        bint AddSceneValueListSelection( uint8 sceneId, ValueID& valueId, int32 value )
+-        bint RemoveSceneValue( uint8 sceneId, ValueID& valueId )
+-        #int SceneGetValues( uint8 sceneId, vector<ValueID>* o_value )
+-        bint SceneGetValueAsBool( uint8 sceneId, ValueID& valueId, bint value )
+-        bint SceneGetValueAsByte( uint8 sceneId, ValueID& valueId, uint8* o_value )
+-        bint SceneGetValueAsFloat( uint8 sceneId, ValueID& valueId, float* o_value )
+-        bint SceneGetValueAsInt( uint8 sceneId, ValueID& valueId, int32* o_value )
+-        bint SceneGetValueAsShort( uint8 sceneId, ValueID& valueId, int16* o_value )
+-        bint SceneGetValueAsString( uint8 sceneId, ValueID& valueId, string* o_value )
+-        bint SceneGetValueListSelection( uint8 sceneId, ValueID& valueId, string* o_value )
+-        bint SceneGetValueListSelection( uint8 sceneId, ValueID& valueId, int32* o_value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, bint value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, uint8 value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, float value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, int32 value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, int16 value )
+-        bint SetSceneValue( uint8 sceneId, ValueID& valueId, string value )
+-        bint SetSceneValueListSelection( uint8 sceneId, ValueID& valueId, string value )
+-        bint SetSceneValueListSelection( uint8 sceneId, ValueID& valueId, int32 value )
+-        string GetSceneLabel( uint8 sceneId )
+-        void SetSceneLabel( uint8 sceneId, string value )
+-        bint SceneExists( uint8 sceneId )
+-        bint ActivateScene( uint8 sceneId )
+-
+-cdef extern from "Manager.h" namespace "OpenZWave::Manager":
+-    Manager* Create()
+-    Manager* Get()
+ 
+ cdef class PyOptions:
+     cdef Options *options
+@@ -353,7 +92,7 @@
+     EnumWithDoc('Button').setDoc(   "A write-only value that is the equivalent of pressing a button to send a command to a device"),
+     ]
+ 
+-cdef map[uint64, ValueID] values_map 
++cdef map[uint64_t, ValueID] values_map 
+ 
+ cdef addValueId(ValueID v, n):
+     cdef string value
+@@ -377,7 +116,7 @@
+                     'readOnly': manager.IsValueReadOnly(v),
+                     }   
+     
+-    values_map.insert ( pair[uint64, ValueID] (v.GetId(), v)) 
++    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v)) 
+ 
+ cdef void callback(const_notification _notification, void* _context) with gil:
+     cdef Notification* notification = <Notification*>_notification
+@@ -952,12 +691,12 @@
+ @return A tuple containing neighboring node IDs
+         '''
+         retval = None
+-        # TODO: proper initialization of this pointer.  Underlying code creates new uint8[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
+-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8))
+-        # return value is pointer to uint8[]
+-        cdef uint32 count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
+-        cdef uint8* p
+-        cdef uint32 start = 0
++        # TODO: proper initialization of this pointer.  Underlying code creates new uint8_t[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
++        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t))
++        # return value is pointer to uint8_t[]
++        cdef uint32_t count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
++        cdef uint8_t* p
++        cdef uint32_t start = 0
+         if count:
+             try:
+                 data = set()
+@@ -1282,9 +1021,9 @@
+         '''
+         cdef float type_float
+         cdef bint type_bool
+-        cdef uint8 type_byte
+-        cdef int32 type_int
+-        cdef int16 type_short
++        cdef uint8_t type_byte
++        cdef int32_t type_int
++        cdef int16_t type_short
+         cdef string type_string
+         ret = 2
+         if values_map.find(id) != values_map.end(): 
+@@ -1461,18 +1200,18 @@
+             return None
+ 
+ #        bint GetValueAsBool(ValueID& valueid, bint* o_value)
+-#        bint GetValueAsByte(ValueID& valueid, uint8* o_value)
++#        bint GetValueAsByte(ValueID& valueid, uint8_t* o_value)
+ #        bint GetValueAsFloat(ValueID& valueid, float* o_value)
+-#        bint GetValueAsInt(ValueID& valueid, uint32* o_value)
+-#        bint GetValueAsShort(ValueID& valueid, uint32* o_value)
++#        bint GetValueAsInt(ValueID& valueid, uint32_t* o_value)
++#        bint GetValueAsShort(ValueID& valueid, uint32_t* o_value)
+ #        bint GetValueAsString(ValueID& valueid, string* o_value)
+ #        bint GetValueListSelection(ValueID& valueid, string* o_value)
+-#        bint GetValueListSelection(ValueID& valueid, uint32* o_value)
++#        bint GetValueListSelection(ValueID& valueid, uint32_t* o_value)
+ #        bint GetValueListItems(ValueID& valueid, vector<string>* o_value)
+-#        bint SetValue(ValueID& valueid, uint8 value)
++#        bint SetValue(ValueID& valueid, uint8_t value)
+ #        bint SetValue(ValueID& valueid, float value)
+ #        bint SetValue(ValueID& valueid, uint16 value)
+-#        bint SetValue(ValueID& valueid, uint32 value)
++#        bint SetValue(ValueID& valueid, uint32_t value)
+ #        bint SetValue(ValueID& valueid, string value)
+ #        bint SetValueListSelection(ValueID& valueid, string selecteditem)
+ 
+@@ -1578,9 +1317,9 @@
+ @return true if data is retrieved.
+ 
+         '''
+-        cdef uint8 ohours
+-        cdef uint8 ominutes
+-        cdef int8 osetback
++        cdef uint8_t ohours
++        cdef uint8_t ominutes
++        cdef int8_t osetback
+         if values_map.find(id) != values_map.end(): 
+             ret=self.manager.GetSwitchPoint(values_map.at(id), idx, \
+                 &ohours, &ominutes, &osetback)
+@@ -1726,12 +1465,12 @@
+ @see getNumGroups, addAssociation, removeAssociation, getMaxAssociations
+         '''
+         retval = None
+-        # TODO: proper initialization of this pointer.  Underlying code creates new uint8[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
+-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8))
+-        # return value is pointer to uint8[]
+-        cdef uint32 count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+-        cdef uint8* p
+-        cdef uint32 start = 0
++        # TODO: proper initialization of this pointer.  Underlying code creates new uint8_t[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
++        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t))
++        # return value is pointer to uint8_t[]
++        cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
++        cdef uint8_t* p
++        cdef uint32_t start = 0
+         if count:
+             try:
+                 data = set()
+@@ -1863,7 +1602,7 @@
+         '''
+         self.manager.SoftReset(homeid)
+ 
+-#        #bint BeginControllerCommand(uint32 homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8 _nodeId = 0xff )
++#        #bint BeginControllerCommand(uint32_t homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8_t _nodeId = 0xff )
+ 
+     def cancelControllerCommand(self, homeid):
+         '''
+@@ -1893,13 +1632,13 @@
+         '''
+         retval = None
+         # TODO: proper initialization of this pointer.  
+-        # Underlying code creates new uint8[] at this address, 
++        # Underlying code creates new uint8_t[] at this address, 
+         # but segfaults if passed in value is null.  Boy, is my C rusty.
+-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8))
+-        # return value is pointer to uint8[]
+-        cdef uint32 count = self.manager.GetAllScenes(dbuf)
+-        cdef uint8* p
+-        cdef uint32 start = 0
++        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t))
++        # return value is pointer to uint8_t[]
++        cdef uint32_t count = self.manager.GetAllScenes(dbuf)
++        cdef uint8_t* p
++        cdef uint32_t start = 0
+         if count:
+             try:
+                 data = set()
+@@ -1932,7 +1671,7 @@
+         '''
+         return self.manager.RemoveScene(homeid)
+ 
+-    def addSceneValue(self, uint8 sceneid, id, value):
++    def addSceneValue(self, uint8_t sceneid, id, value):
+         '''
+ Add a ValueID of value to an existing scene.
+ 
+@@ -1949,9 +1688,9 @@
+         '''
+         cdef float type_float
+         cdef bint type_bool
+-        cdef uint8 type_byte
+-        cdef int32 type_int
+-        cdef int16 type_short
++        cdef uint8_t type_byte
++        cdef int32_t type_int
++        cdef int16_t type_short
+         cdef string type_string
+         ret = 2
+         if values_map.find(id) != values_map.end(): 
+@@ -1982,7 +1721,7 @@
+                 ret = 1 if cret else 0
+         return ret
+         
+-    def setSceneValue(self, uint8 sceneid, id, value):
++    def setSceneValue(self, uint8_t sceneid, id, value):
+         '''
+ Set a value to an existing scene's ValueID.
+ 
+@@ -1997,9 +1736,9 @@
+         '''
+         cdef float type_float
+         cdef bint type_bool
+-        cdef uint8 type_byte
+-        cdef int32 type_int
+-        cdef int16 type_short
++        cdef uint8_t type_byte
++        cdef int32_t type_int
++        cdef int16_t type_short
+         cdef string type_string
+         ret = 2
+         if values_map.find(id) != values_map.end(): 
