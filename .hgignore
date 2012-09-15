@@ -3,6 +3,7 @@ syntax: glob
 *.rej
 *~
 *.o
+*.pyc
 tests/*.err
 openzwave/*
 build/*
