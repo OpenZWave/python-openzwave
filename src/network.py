@@ -43,6 +43,9 @@ class ZWaveNetwork(ZWaveObject):
     The network objet = homeid.
     It contains a reference to the manager
     '''
+    SIGNAL_NETWORK_FAILED = 'networkFailed'
+    SIGNAL_NETWORK_READY = 'networkReady'
+
     SIGNAL_DRIVER_FAILED = 'driverFailed'
     SIGNAL_DRIVER_READY = 'driverReady'
     SIGNAL_DRIVER_RESET = 'driverReset'
@@ -92,13 +95,13 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.addDriver(options.device)
         #self._ready = False
         self._semaphore_nodes = threading.Semaphore()
-        self._nodes = list()
+        self._nodes = dict()
         #self._started = False
 
-        self._semaphore_on_ready = threading.Semaphore()
-        self._callback_on_ready = list()
-        self._semaphore_on_fail = threading.Semaphore()
-        self._callback_on_fail = list()
+        #self._semaphore_on_ready = threading.Semaphore()
+        #self._callback_on_ready = list()
+        #self._semaphore_on_fail = threading.Semaphore()
+        #self._callback_on_fail = list()
 
     @property
     def home_id(self):
@@ -313,7 +316,9 @@ class ZWaveNetwork(ZWaveObject):
         logging.error('Z-Wave Notification DriverFailed : %s' % (args))
         self._manager = None
         self._controller = None
-        raise ZWaveException("Fail to load driver %s" % 1)
+        dispatcher.send(self.SIGNAL_DRIVER_FAILED, **{'network': self, 'controller': self._controller})
+        #Don't think it's a good idea to raise exception on notification
+        #raise ZWaveException("Fail to load driver %s" % 1)
 
     def _handle_driver_ready(self, args):
         '''
@@ -327,11 +332,16 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification DriverReady : %s' % (args))
         self._object_id = args['home_id']
-        self._controller.node = ZWaveNode(args['node_id'], network=self)
-        self.nodes = list()
-        self.nodes.append(self._controller.node)
-        logging.info('Driver ready using library %s' % self._controller.library_description )
-        logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
+		try :
+			self._controller.node = ZWaveNode(args['node_id'], network=self)
+			self._semaphore_nodes.acquire()
+			self.nodes = list()
+			self.nodes.append(self._controller.node)
+			logging.info('Driver ready using library %s' % self._controller.library_description )
+			logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
+			dispatcher.send(self.SIGNAL_DRIVER_READY, **{'network': self, 'controller': self._controller})
+		finally :
+			self._semaphore_nodes.release()
 
     def _handle_driver_reset(self, args):
         '''
@@ -344,8 +354,13 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification Driver Reset : %s' % (args))
-        self.nodes = list()
-        self.nodes.append(self._controller.node)
+		try :
+			self._semaphore_nodes.acquire()
+			self.nodes = list()
+			self.nodes.append(self._controller.node)
+			dispatcher.send(self.SIGNAL_DRIVER_RESET, **{'network': self, 'controller': self._controller})
+		finally :
+			self._semaphore_nodes.release()
 
     def _handle_node_added(self, args):
         '''
@@ -358,8 +373,14 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification Node Added : %s' % (args))
-
-
+		try :
+			node = ZWaveNode(args['node_id'], network=self)
+			self._semaphore_nodes.acquire()
+			self.nodes = list()
+			self.nodes.append(node)
+			dispatcher.send(self.SIGNAL_NODE_ADDED, **{'network': self, 'node': self._node})
+		finally :
+			self._semaphore_nodes.release()
 
     def _handle_node_event(self, args):
         '''
@@ -382,8 +403,8 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification Node Naming : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
+        logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
+        dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
     def _handle_node_new(self, args):
         '''
@@ -393,7 +414,8 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification Node New : %s' % (args))
+        logging.debug('Z-Wave Notification NodeNew : %s' % (args))
+		dispatcher.send(self.SIGNAL_NODE_NEW, **{'network': self, 'node': self._node})
         #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
     def _handle_node_protocol_info(self, args):
@@ -434,12 +456,12 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
-        try:
-            self._semaphore_on_ready.acquire()
-            for callback in self._callback_on_ready:
-                callback(*args, **kwargs)
-        finally:
-            self._semaphore_on_ready.release()
+        #try:
+        #    self._semaphore_on_ready.acquire()
+        #    for callback in self._callback_on_ready:
+        #        callback(*args, **kwargs)
+        #finally:
+        #    self._semaphore_on_ready.release()
         #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
     def _handle_awake_nodes_queried(self, args):

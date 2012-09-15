@@ -1,14 +1,48 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from collections import namedtuple
+"""
 
+This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
+    :platform: Unix, Windows, MacOS X
+    :sinopsis: openzwave wrapper
+
+.. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor:: Maarten Damen <m.damen@gmail.com>
+
+License : GPL(v3)
+
+**python-openzwave** is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+**python-openzwave** is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see http://www.gnu.org/licenses.
+
+"""
+from collections import namedtuple
 import curses
 import curses.panel
 import logging
 import threading
 import time
 from louie import dispatcher, All
-from openzwave.wrapper.wrapper import ZWaveWrapper
+#Insert your build directory here (it depends of your python distribution)
+#To get one, run the make_doc.sh command
+sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
+sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
+sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
+sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
+from openzwave.node import ZWaveNode
+from openzwave.value import ZWaveValue
+from openzwave.scene import ZWaveScene
+from openzwave.controller import ZWaveController
+from openzwave.network import ZWaveNetwork
+from openzwave.option import ZWaveOption
 
 padcoords = namedtuple('padcoords', ['sminrow','smincol','smaxrow','smaxcol'])
 colorlevels = namedtuple('colorlevels', ['error','warning'])
@@ -18,7 +52,7 @@ class ZWaveCommander:
         self._curAlert = False
         self._alertStack = list()
         self._driverInitialized = False
-        self._wrapper = None
+        self._network = None
         self._listMode = True
         self._screen = stdscr
         self._version = '0.1 Beta 1'
@@ -105,7 +139,7 @@ class ZWaveCommander:
             newLevel = curLevel - 10
             if newLevel < 0: newLevel = 0
             self._wrapper.setNodeLevel(self._selectedNode, newLevel)
-        
+
     def _setTimer(self, context, duration, callback):
         newTimer = threading.Thread(None, self._delayloop, 'cb-thread-%s' % context, (context, duration, callback), {})
         newTimer.setDaemon(True)
@@ -366,7 +400,7 @@ class ZWaveCommander:
             # TODO: handle keys here... cancel/etc
 
     def _runLoop(self):
-        while not self._stop.isSet():   
+        while not self._stop.isSet():
             key = self._screen.getch()
             if key == curses.KEY_DOWN: self._switchItem(1)
             elif key == curses.KEY_UP: self._switchItem(-1)
@@ -472,7 +506,7 @@ class ZWaveCommander:
         if len(retval) > width:
             retval = retval[:width]
         return retval
-        
+
     def _getListItemColor(self, drawSelected):
         return curses.color_pair(self.COLOR_NORMAL) | curses.A_STANDOUT if drawSelected \
             else curses.color_pair(self.COLOR_NORMAL)
@@ -520,7 +554,7 @@ class ZWaveCommander:
     def _drawSignalStrength(self, node, drawSelected):
         clr = self._getListItemColor(drawSelected)
         self._listpad.addstr(self._fixColumn('', self._colwidths[7]), clr)
-        
+
     def _drawDeviceNodeLine(self, node, drawSelected):
         clr = self._getListItemColor(drawSelected)
         self._listpad.addstr(' ', clr)
@@ -652,7 +686,7 @@ class ZWaveCommander:
     def _updateDetail_Events(self, pad):
         pad.addstr(3,3,'Event view not yet implemented')
         # event detail tab:
-        # timestamp  commandClass  notificationType 
+        # timestamp  commandClass  notificationType
 
     def _updateDeviceDetail(self):
         # TODO: detail needs to be scrollable, but to accomplish that a couple of changes need to be made.  First, the detail header band needs to be moved into a static shared section (above the detail pad); second, a new dict of 'top' positions needs to be created; finally, positioning code needs to be written to correctly offset the pad.
@@ -688,7 +722,7 @@ def main(stdscr):
     # TODO: prune log file
     commander = ZWaveCommander(stdscr)
     commander.main()
-    
+
 curses.wrapper(main)
 
 class DeleteMe:
