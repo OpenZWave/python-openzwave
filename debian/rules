@@ -5,3 +5,16 @@
 
 override_dh_auto_clean:
 	true
+
+override_dh_auto_configure:
+	patch -p1 <debian/patches/setup.py
+	dh_auto_configure
+
+override_dh_auto_clean:
+	dh_auto_clean
+	patch -R -p1 <debian/patches/setup.py
+
+override_dh_auto_installdocs:
+	cd docs && make html
+	dh_auto_install
+	dh_auto_installdocs

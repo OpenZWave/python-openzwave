@@ -11,6 +11,7 @@ python_openzwave.egg-info/*
 docs/_build/doctrees/*
 OZW_Log.txt
 lib/libopenzwave.cpp
+debian/python-openzwave
 
 syntax: regexp
 .*\#.*\#$

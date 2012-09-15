@@ -81,10 +81,10 @@ elif platform_system() == 'Darwin':
     )]
 else:
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
-                             libraries=['udev', 'stdc++', 'openzwave'],
+                             libraries=['udev', 'stdc++'],
                              language="c++",
-                             extra_objects=['/usr/lib/libopenzwave.a'],
-                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
+                             extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
+                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 
 setup(

@@ -40,7 +40,8 @@ from log cimport LogLevel
 import os
 
 PYLIBRARY = "0.2.3"
-OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
+PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
+OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
 class EnumWithDoc(str):
     def setDoc(self, doc):
@@ -273,8 +274,12 @@ Retrieve the config path. This directory hold the xml files.
 :rtype: str
 
         '''
-        if os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
+        if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
         elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
             return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
         else:
