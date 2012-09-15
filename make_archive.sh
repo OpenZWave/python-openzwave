@@ -13,8 +13,8 @@ hg archive \
     -p python-openzwave-$PYLIBRARY \
     -r $R023 \
     -I . \
-    -X make_archive.*.sh \
-    -X make_docs.*.sh \
+    -X make_archive.sh \
+    -X make_distdir.sh \
     -X .hg_archival.txt  \
     -X .coverage  \
     -X .hgignore  \
