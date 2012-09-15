@@ -38,14 +38,13 @@ class ZWaveOption(libopenzwave.PyOptions):
     Represents a Zwave option configuration.
 
     '''
-
     def __init__(self, device=None, config_path=None, user_path=".", cmd_line=""):
         '''
         Create an option object and check that parameters are valid.
 
         :param device: The device to use
         :type device: str
-        :param config_path: The openzwave config directory
+        :param config_path: The openzwave config directory. If None, try to configure automatically.
         :type config_path: str
         :param userPath: The user directory
         :type userPath: str
@@ -64,24 +63,28 @@ class ZWaveOption(libopenzwave.PyOptions):
         except:
             raise ZWaveException("Can't find device %s" % device)
         try:
+            if config_path == None:
+                config_path = self.getConfigPath()
             if os.path.exists(config_path):
                 self._config_path = config_path
+                if not os.path.exists(os.path.join(config_path,"zwcfg.xsd")):
+                    raise ZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
             else:
                 raise ZWaveException("Can't retrieve config from %s" % config_path)
         except:
             raise ZWaveException("Can't retrieve config from %s" % config_path)
         try:
-            if os.path.exists(userPath):
-                if os.access(userPath, os.W_OK):
-                    self._userPath = userPath
+            if os.path.exists(user_path):
+                if os.access(user_path, os.W_OK):
+                    self._user_path = user_path
                 else:
-                    raise ZWaveException("Can't write in user path %s" % userPath)
+                    raise ZWaveException("Can't write in user directory %s" % user_path)
             else:
-                raise ZWaveException("Can't find user path %s" % userPath)
+                raise ZWaveException("Can't find user directory %s" % user_path)
         except:
-            raise ZWaveException("Can't find user path %s" % userPath)
+            raise ZWaveException("Can't find user directory %s" % user_path)
         self._cmd_line = cmd_line
-        self.create(self._config_path, self._userPath, self._cmd_line)
+        self.create(self._config_path, self._user_path, self._cmd_line)
 
     def set_log_file(self, logfile):
         '''
@@ -113,7 +116,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         '''
         return self.addOptionBool("AppendLogFile", status)
 
-    def setConsoleOutput(self, status):
+    def set_console_output(self, status):
         '''
         Display log information on console (as well as save to disk).
 
@@ -293,3 +296,22 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         return self._device
 
+    @property
+    def config_path(self):
+        """
+        The config path.
+
+        :rtype: str
+
+        """
+        return self._config_path
+
+    @property
+    def user_path(self):
+        """
+        The config path.
+
+        :rtype: str
+
+        """
+        return self._user_path

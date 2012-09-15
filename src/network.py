@@ -28,16 +28,17 @@ import thread
 import time
 from louie import dispatcher, All
 import logging
+import threading
 import libopenzwave
 import openzwave
-from openzwave.object import ZWaveException, ZwaveObject, NullLoggingHandler
+from openzwave.object import ZWaveException, ZWaveObject, NullLoggingHandler
 from openzwave.controller import ZWaveController
 from openzwave.node import ZWaveNode
 from openzwave.option import ZWaveOption
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveNetwork(ZwaveObject):
+class ZWaveNetwork(ZWaveObject):
     '''
     The network objet = homeid.
     It contains a reference to the manager
@@ -83,14 +84,21 @@ class ZWaveNetwork(ZwaveObject):
         '''
         logging.debug("Create network object.")
         self.log = log
-        super(ZWaveNetwork, self).__init__(None, self)
+        ZWaveObject.__init__(self, None, self)
         self._controller = ZWaveController(1, self, options)
         self._manager = libopenzwave.PyManager()
         self._manager.create()
         self._manager.addWatcher(self.zwcallback)
         self._manager.addDriver(options.device)
-        self._nodes = dict()
-        self._started = False
+        #self._ready = False
+        self._semaphore_nodes = threading.Semaphore()
+        self._nodes = list()
+        #self._started = False
+
+        self._semaphore_on_ready = threading.Semaphore()
+        self._callback_on_ready = list()
+        self._semaphore_on_fail = threading.Semaphore()
+        self._callback_on_fail = list()
 
     @property
     def home_id(self):
@@ -102,7 +110,7 @@ class ZWaveNetwork(ZwaveObject):
         """
         return self._object_id
 
-    @property.setter
+    @home_id.setter
     def home_id(self, value):
         """
         The home_id of the network.
@@ -114,6 +122,19 @@ class ZWaveNetwork(ZwaveObject):
         self._object_id = value
 
     @property
+    def manager(self):
+        """
+        The manager to use to communicate with the lib c++.
+
+        :rtype: ZWaveManager
+
+        """
+        if self._manager != None and self._controller.node != None:
+            return self._manager
+        else:
+            raise ZWaveException("Manager not initialised")
+
+    @property
     def controller(self):
         """
         The controller of the network.
@@ -121,7 +142,10 @@ class ZWaveNetwork(ZwaveObject):
         :rtype: ZWaveController
 
         """
-        return self._controller
+        if self._controller != None:
+            return self._controller
+        else:
+            raise ZWaveException("Controller not initialised")
 
 #    @controller.setter
 #    def controller(self, value):
@@ -145,7 +169,7 @@ class ZWaveNetwork(ZwaveObject):
         return self._nodes
 
     @property
-    def nodesCount(self):
+    def nodes_count(self):
         """
         The nodes count of the network.
 
@@ -198,55 +222,55 @@ class ZWaveNetwork(ZwaveObject):
             elif notifyType == 'DriverReady':
                 self._handle_driver_ready(args)
             elif notifyType == 'DriverReset':
-                self._handleDriverReset(args)
-            elif notifyType in 'NodeAdded':
-                self._handleNodeAdded(args)
-            elif notifyType in 'NodeChanged':
+                self._handle_driver_reset(args)
+            elif notifyType == 'NodeAdded':
+                self._handle_node_added(args)
+            elif notifyType == 'NodeChanged':
                 self._handleNodeChanged(args)
-            elif notifyType in 'NodeEvent':
-                self._handleNodeEvent(args)
-            elif notifyType in 'NodeNaming':
-                self._handleNodeNaming(args)
-            elif notifyType in 'NodeNew':
-                self._handleNodeNew(args)
-            elif notifyType in 'NodeProtocolInfo':
-                self._handleNodeProtocolInfo(args)
-            elif notifyType in 'NodeReady':
+            elif notifyType == 'NodeEvent':
+                self._handle_node_event(args)
+            elif notifyType == 'NodeNaming':
+                self._handle_node_naming(args)
+            elif notifyType == 'NodeNew':
+                self._handle_node_new(args)
+            elif notifyType == 'NodeProtocolInfo':
+                self._handle_node_protocol_info(args)
+            elif notifyType == 'NodeReady':
                 self._handleNodeReady(args)
-            elif notifyType in 'NodeRemoved':
-                self._handleNodeRemoved(args)
+            elif notifyType == 'NodeRemoved':
+                self._handle_node_removed(args)
             elif notifyType == 'ValueAdded':
-                self._handleValueAdded(args)
+                self._handle_value_added(args)
             elif notifyType == 'ValueChanged':
-                self._handleValueChanged(args)
+                self._handle_value_changed(args)
             elif notifyType == 'valueRefreshed':
-                self._handleValueRefreshed(args)
+                self._handle_value_refreshed(args)
             elif notifyType == 'ValueRemoved':
-                self._handleValueRemoved(args)
-            elif notifyType in 'PollingDisabled':
-                self._handlePollingDisabled(args)
-            elif notifyType in 'PollingEnabled':
-                self._handlePollingEnabled(args)
-            elif notifyType in 'CreateButton':
-                self._handleCreateButton(args)
-            elif notifyType in 'DeleteButton':
-                self._handleDeleteButton(args)
-            elif notifyType in 'ButtonOn':
-                self._handleButtonOn(args)
-            elif notifyType in 'ButtonOff':
-                self._handleButtonOff(args)
-            elif notifyType in 'AllNodesQueried':
-                self._handleAllNodesQueried(args)
-            elif notifyType in 'AwakeNodesQueried':
-                self._handleAwakeNodesQueried(args)
+                self._handle_value_removed(args)
+            elif notifyType == 'PollingDisabled':
+                self._handle_polling_disabled(args)
+            elif notifyType == 'PollingEnabled':
+                self._handle_polling_enabled(args)
+            elif notifyType == 'CreateButton':
+                self._handle_create_button(args)
+            elif notifyType == 'DeleteButton':
+                self._handle_delete_button(args)
+            elif notifyType == 'ButtonOn':
+                self._handle_button_on(args)
+            elif notifyType == 'ButtonOff':
+                self._handle_button_off(args)
+            elif notifyType == 'AllNodesQueried':
+                self._handle_all_nodes_queried(args)
+            elif notifyType == 'AwakeNodesQueried':
+                self._handle_awake_nodes_queried(args)
             elif notifyType == 'EssentialNodeQueriesComplete':
-                self._handleEssentialNodeQueriesComplete(args)
+                self._handle_essential_node_queries_complete(args)
             elif notifyType == 'NodeQueriesComplete':
-                self._handleNodeQueriesComplete(args)
-            elif notifyType in 'MsgComplete':
-                self._handleMsgComplete(args)
-            elif notifyType in 'Error':
-                self._handleError(args)
+                self._handle_node_queries_complete(args)
+            elif notifyType == 'MsgComplete':
+                self._handle_msg_complete(args)
+            elif notifyType == 'Error':
+                self._handle_error(args)
             else:
                 logging.warning('Skipping unhandled notification type [%s]', notifyType)
         except:
@@ -257,20 +281,21 @@ class ZWaveNetwork(ZwaveObject):
         '''
         Callback Handler
 
-        n['valueId'] = {'home_id' : v.GetHomeId(),
-                'node_id' : v.GetNodeId(),
-                'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-                'instance' : v.GetInstance(),
-                'index' : v.GetIndex(),
-                'id' : v.GetId(),
-                'genre' : PyGenres[v.GetGenre()],
-                'type' : PyValueTypes[v.GetType()],
-#                    'value' : value.c_str(),
-                'value' : getValueFromType(manager,v.GetId()),
-                'label' : label.c_str(),
-                'units' : units.c_str(),
-                'readOnly': manager.IsValueReadOnly(v),
-                }
+        n['valueId'] = {
+        'home_id' : v.GetHomeId(),
+        'node_id' : v.GetNodeId(),
+        'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+        'instance' : v.GetInstance(),
+        'index' : v.GetIndex(),
+        'id' : v.GetId(),
+        'genre' : PyGenres[v.GetGenre()],
+        'type' : PyValueTypes[v.GetType()],
+        #'value' : value.c_str(),
+        'value' : getValueFromType(manager,v.GetId()),
+        'label' : label.c_str(),
+        'units' : units.c_str(),
+        'readOnly': manager.IsValueReadOnly(v)
+        }
 
         :param args: Callback function
         :type args: dict()
@@ -286,6 +311,8 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.error('Z-Wave Notification DriverFailed : %s' % (args))
+        self._manager = None
+        self._controller = None
         raise ZWaveException("Fail to load driver %s" % 1)
 
     def _handle_driver_ready(self, args):
@@ -306,7 +333,7 @@ class ZWaveNetwork(ZwaveObject):
         logging.info('Driver ready using library %s' % self._controller.library_description )
         logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
 
-    def _handleDriverReset(self, args):
+    def _handle_driver_reset(self, args):
         '''
         All nodes and values for this driver have been removed.
         This is sent instead of potentially hundreds of individual node
@@ -317,8 +344,10 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification Driver Reset : %s' % (args))
+        self.nodes = list()
+        self.nodes.append(self._controller.node)
 
-    def _handleNodeAdded(self, args):
+    def _handle_node_added(self, args):
         '''
         A new node has been added to OpenZWave's list.
         This may be due to a device being added to the Z-Wave network,
@@ -328,9 +357,11 @@ class ZWaveNetwork(ZwaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification NodeAdded : %s' % (args))
+        logging.debug('Z-Wave Notification Node Added : %s' % (args))
 
-    def _handleNodeEvent(self, args):
+
+
+    def _handle_node_event(self, args):
         '''
         A node has triggered an event.  This is commonly caused when a
         node sends a Basic_Set command to the controller.
@@ -340,10 +371,10 @@ class ZWaveNetwork(ZwaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification NodeEvent : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        logging.debug('Z-Wave Notification Node Event : %s' % (args))
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleNodeNaming(self, args):
+    def _handle_node_naming(self, args):
         '''
         One of the node names has changed (name, manufacturer, product).
 
@@ -351,10 +382,10 @@ class ZWaveNetwork(ZwaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        logging.debug('Z-Wave Notification Node Naming : %s' % (args))
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleNodeNew(self, args):
+    def _handle_node_new(self, args):
         '''
         A new node has been found (not already stored in zwcfg*.xml file).
 
@@ -362,10 +393,10 @@ class ZWaveNetwork(ZwaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification NodeNew : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        logging.debug('Z-Wave Notification Node New : %s' % (args))
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleNodeProtocolInfo(self, args):
+    def _handle_node_protocol_info(self, args):
         '''
         Basic node information has been received, such as whether
         the node is a listening device, a routing device and its baud rate
@@ -378,9 +409,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeProtocolInfo : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleNodeRemoved(self, args):
+    def _handle_node_removed(self, args):
         '''
         A node has been removed from OpenZWave's list.
         This may be due to a device being removed from the Z-Wave network,
@@ -391,9 +422,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeRemoved : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleAllNodesQueried(self, args):
+    def _handle_all_nodes_queried(self, args):
         '''
         All nodes have been queried, so client application can expected
         complete data.
@@ -403,9 +434,15 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        try:
+            self._semaphore_on_ready.acquire()
+            for callback in self._callback_on_ready:
+                callback(*args, **kwargs)
+        finally:
+            self._semaphore_on_ready.release()
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleAwakeNodesQueried(self, args):
+    def _handle_awake_nodes_queried(self, args):
         '''
         All awake nodes have been queried, so client application can
         expected complete data for these nodes.
@@ -415,9 +452,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification AwakeNodesQueried : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleEssentialNodeQueriesComplete(self, args):
+    def _handle_essential_node_queries_complete(self, args):
         '''
         The queries on a node that are essential to its operation have
         been completed. The node can now handle incoming messages.
@@ -427,9 +464,10 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification EssentialNodeQueriesComplete : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        self.nodes[args['node_id']].outdated = True
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleNodeQueriesComplete(self, args):
+    def _handle_node_queries_complete(self, args):
         '''
         All the initialisation queries on a node have been completed.
 
@@ -438,9 +476,10 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeQueriesComplete : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        self.nodes[args['node_id']].outdated = True
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handlePollingDisabled(self, args):
+    def _handle_polling_disabled(self, args):
         '''
         Polling of a node has been successfully turned off by a call
         to Manager::DisablePoll.
@@ -450,9 +489,10 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingDisabled : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        self.outdate(lambda: self.is_polled)
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handlePollingEnabled(self, args):
+    def _handle_polling_enabled(self, args):
         '''
         Polling of a node has been successfully turned on by a call
         to Manager::EnablePoll.
@@ -462,9 +502,10 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingEnabled : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        self.outdate(lambda: self.is_polled)
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleCreateButton(self, args):
+    def _handle_create_button(self, args):
         '''
         Handheld controller button event created.
 
@@ -473,9 +514,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification CreateButton : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleDeleteButton(self, args):
+    def _handle_delete_button(self, args):
         '''
         Handheld controller button event deleted.
 
@@ -484,9 +525,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification DeleteButton : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleButtonOn(self, args):
+    def _handle_button_on(self, args):
         '''
         Handheld controller button on pressed event.
 
@@ -495,9 +536,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification ButtonOn : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleButtonOff(self, args):
+    def _handle_button_off(self, args):
         '''
         Handheld controller button off pressed event.
 
@@ -506,9 +547,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification ButtonOff : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleValueAdded(self, args):
+    def _handle_value_added(self, args):
         '''
         A new node value has been added to OpenZWave's list.
         These notifications occur after a node has been discovered,
@@ -525,11 +566,11 @@ class ZWaveNetwork(ZwaveObject):
         controllerNodeId = args['node_id']
         valueId = args['valueId']
         node = self._fetchNode(home_id, controllerNodeId)
-        node._lastUpdate = time.time()
-        valueNode = self._getValueNode(home_id, controllerNodeId, valueId)
+        node._last_update = time.time()
+        valueNode = self._get_value_node(home_id, controllerNodeId, valueId)
         valueNode.update(args)
 
-    def _handleValueChanged(self, args):
+    def _handle_value_changed(self, args):
         '''
         A node value has been updated from the Z-Wave network and it is
         different from the previous value.
@@ -544,14 +585,14 @@ class ZWaveNetwork(ZwaveObject):
         valueId = args['valueId']
         node = self._fetchNode(home_id, controllerNodeId)
         node._sleeping = False
-        node._lastUpdate = time.time()
-        valueNode = self._getValueNode(home_id, controllerNodeId, valueId)
+        node._last_update = time.time()
+        valueNode = self._get_value_node(home_id, controllerNodeId, valueId)
         valueNode.update(args)
         #if self._initialized:
         #    dispatcher.send(self.SIGNAL_VALUE_CHANGED, \
         #    **{'home_id': home_id, 'node_id': controllerNodeId, 'valueId': valueId})
 
-    def _handleValueRefreshed(self, args):
+    def _handle_value_refreshed(self, args):
         '''
         A node value has been updated from the Z-Wave network.
 
@@ -560,9 +601,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRefreshed : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleValueRemoved(self, args):
+    def _handle_value_removed(self, args):
         '''
         A node value has been removed from OpenZWave's list.
         This only occurs when a node is removed.
@@ -572,9 +613,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRemoved : %s' % (args))
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleError(self, args):
+    def _handle_error(self, args):
         '''
         Called when a node query is complete.
 
@@ -583,9 +624,9 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification Error : %s' % (args))
-        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _handleMsgComplete(self, args):
+    def _handle_msg_complete(self, args):
         '''
         The last message that was sent is now complete.
 
@@ -594,9 +635,41 @@ class ZWaveNetwork(ZwaveObject):
 
         '''
         logging.debug('Z-Wave Notification MsgComplete : %s' % (args))
-        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
-    def _getValueNode(self, home_id, node_id, valueId):
+    def register_on_ready(self, callback):
+        '''
+        Register a callback function to the on_ready event.
+
+        :param callback: The callback function
+        :type callback: lambda
+
+        '''
+        logging.debug('Register on ready callback : %s' % (callback))
+        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
+        try:
+            self._semaphore_on_ready.acquire()
+            self._callback_on_ready.append(callback)
+        finally:
+            self._semaphore_on_ready.release()
+
+    def register_on_fail(self, callback):
+        '''
+        Register a callback function to the on_fail event.
+
+        :param callback: The callback function
+        :type callback: lambda
+
+        '''
+        logging.debug('Register on fail callback : %s' % (callback))
+        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
+        try:
+            self._semaphore_on_fail.acquire()
+            self._callback_on_fail.append(callback)
+        finally:
+            self._semaphore_on_fail.release()
+
+    def _get_value_node(self, home_id, node_id, valueId):
         """
         """
         node = self._getNode(home_id, node_id)
@@ -632,8 +705,8 @@ class ZWaveNetwork(ZwaveObject):
         logging.info("Initialization completed.  Found %s Z-Wave Device Nodes (%s sleeping)" % \
             (self.nodesCount, self.sleeping_nodes_count))
         self._initialized = True
-        #dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self._home_id})
-        self.manager.writeConfig(self._home_id)
+        #dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self.home_id})
+        self.manager.writeConfig(self.home_id)
         # TODO: write config on shutdown as well
 
     def setNodeOn(self, node):

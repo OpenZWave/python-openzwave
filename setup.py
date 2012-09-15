@@ -46,8 +46,8 @@ def data_files_config(target, source, pattern):
     dirs = _getDirs(source)
     if len(dirs):
         for d in dirs:
-            #print d
-            rd = d.replace(source+'/', "", 1)
+            #print os.path.abspath(d)
+            rd = d.replace(source+os.sep, "", 1)
             #print target,rd
             #print os.path.join(target,rd)
             ret.extend(data_files_config(os.path.join(target,rd), \
@@ -56,6 +56,13 @@ def data_files_config(target, source, pattern):
 
 data_files = data_files_config('share/python-openzwave/config','openzwave/config','*.xml')
 data_files.extend(data_files_config('share/python-openzwave/config','openzwave/config','*.xsd'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.html'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.js'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','inv'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.txt'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.png'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.css'))
+data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
 if os_name == 'nt':
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],

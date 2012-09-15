@@ -31,11 +31,11 @@ from louie import dispatcher, All
 import logging
 import libopenzwave
 import openzwave
-from openzwave.object import ZWaveException, ZwaveObject, NullLoggingHandler
+from openzwave.object import ZWaveException, ZWaveObject, NullLoggingHandler
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveGroup(ZwaveObject):
+class ZWaveGroup(ZWaveObject):
     '''
     The driver objet.
     Hold options of the manager
@@ -57,7 +57,7 @@ class ZWaveGroup(ZwaveObject):
 
         '''
 
-        super(ZWaveController, self).__init__(groupId, network)
+        ZWaveObject.__init__(self, groupId, network)
 
         self._node_id = node_id
         self._index = group_index

@@ -28,12 +28,12 @@ from collections import namedtuple
 import thread
 import time
 import logging
-from openzwave.object import ZwaveObject
+from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveNode(ZwaveObject):
+class ZWaveNode(ZWaveObject):
     '''
     Represents a single Node within the Z-Wave Network
     '''
@@ -49,7 +49,7 @@ class ZWaveNode(ZwaveObject):
 
         '''
         logging.debug("Create object node (node_id:%s)" % (node_id))
-        super(ZWaveNode, self).__init__(node_id, network)
+        ZWaveObject.__init__(self, node_id, network)
         self._command_classes = list()
         self.cache_property(self._command_classes)
         self._values = dict()
@@ -77,9 +77,11 @@ class ZWaveNode(ZwaveObject):
         self._is_frequent_listening_device = False
         self.cache_property(lambda: self.is_frequent_listening_device)
         self._is_security_device = False
-        self.cache_property(lambda: self.is_node_security_device)
+        self.cache_property(lambda: self.is_security_device)
         self._is_beaming_device = False
         self.cache_property(lambda: self.is_beaming_device)
+        self._is_polled = False
+        self.cache_property(lambda: self.is_polled)
         self._generic = 0
         self.cache_property(lambda: self.generic)
         self._basic = 0
@@ -113,7 +115,7 @@ class ZWaveNode(ZwaveObject):
         return self._name
 
     @name.setter
-    def name(self,value):
+    def name(self, value):
         """
         Set the name of the node.
 
@@ -138,7 +140,7 @@ class ZWaveNode(ZwaveObject):
         return self._location
 
     @location.setter
-    def location(self,value):
+    def location(self, value):
         """
         Set the location of the node.
 
@@ -162,7 +164,7 @@ class ZWaveNode(ZwaveObject):
             self.update(lambda: self.product_name)
         return self._product_name
 
-    @productName.setter
+    @product_name.setter
     def product_name(self, value):
         """
         Set the product name of the node.
@@ -209,11 +211,16 @@ class ZWaveNode(ZwaveObject):
 
         """
         caps = list()
-        if self.is_routing_device(): caps.add('routing')
-        if self.is_listening_device(): caps.add('listening')
-        if self.is_frequent_listening_device(): caps.add('frequent')
-        if self.is_security_device(): caps.add('security')
-        if self.is_beaming_device(): caps.add('beaming')
+        if self.is_routing_device():
+            caps.add('routing')
+        if self.is_listening_device():
+            caps.add('listening')
+        if self.is_frequent_listening_device():
+            caps.add('frequent')
+        if self.is_security_device():
+            caps.add('security')
+        if self.is_beaming_device():
+            caps.add('beaming')
         return caps
 
     @property
@@ -443,7 +450,7 @@ class ZWaveNode(ZwaveObject):
         return self._is_listening_device
 
     @property
-    def isBeamingDevice(self):
+    def is_beaming_device(self):
         """
         Is this node a beaming device.
 
@@ -532,7 +539,20 @@ class ZWaveNode(ZwaveObject):
         if self.is_outdated(lambda: self.is_bridge_controller):
             self._is_bridge_controller = self._network.manager.is_bridge_controller(self.home_id)
             self.update(lambda: self.is_bridge_controller)
-        return self._isBridgeController
+        return self.is_bridge_controller
+
+    @property
+    def is_polled(self):
+        """
+        Is this node polled.
+
+        :rtype: bool
+
+        """
+        if self.is_outdated(lambda: self.is_polled):
+            self._is_polled = self._network.manager.is_polled(self.home_id)
+            self.update(lambda: self.is_polled)
+        return self._is_polled
 
     @property
     def is_locked(self):
@@ -542,7 +562,7 @@ class ZWaveNode(ZwaveObject):
         :rtype: bool
 
         """
-        return self._isLocked
+        return self.is_locked
 
     @property
     def is_sleeping(self):
@@ -552,7 +572,7 @@ class ZWaveNode(ZwaveObject):
         :rtype: bool
 
         """
-        return self._isSleeping
+        return self.is_sleeping
 
     @property
     def level(self):

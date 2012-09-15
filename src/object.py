@@ -58,7 +58,7 @@ class ZWaveCacheException(ZWaveException):
     def __str__(self):
         return repr(self.msg+' : '+self.value)
 
-class ZwaveObject(object):
+class ZWaveObject(object):
     '''
     Represents a Zwave object. Values, nodes, ... can be changer by
     other managers on the network.
@@ -171,7 +171,11 @@ class ZwaveObject(object):
 
         """
         if self._use_cache :
-            return self._cached_properties[str(prop)]
+            if str(prop) in self._cached_properties:
+                return self._cached_properties[str(prop)]
+            else:
+                #This property is not cached so return true
+                return True
         else:
             raise ZWaveCacheException("Cache not enabled")
 
@@ -184,8 +188,9 @@ class ZwaveObject(object):
 
         """
         if self._use_cache :
-            self._cached_properties[str(prop)] = True
-            self._outdated = True
+            if str(prop) in self._cached_properties:
+                self._cached_properties[str(prop)] = True
+                self._outdated = True
         else:
             raise ZWaveCacheException("Cache not enabled")
 
@@ -197,15 +202,16 @@ class ZwaveObject(object):
         :type value: lambda
 
         """
-        if self._use_cache :
-            self._cached_properties[str(prop)] = False
-            #logging.debug("Data %s is updated." % str(prop))
-            outd = False
-            for prop in self._cached_properties:
-                if self._cached_properties[prop]:
-                    outd = True
-                    break
-            self._outdated = outd
+        if self._use_cache:
+            if str(prop) in self._cached_properties :
+                self._cached_properties[str(prop)] = False
+                #logging.debug("Data %s is updated." % str(prop))
+                outd = False
+                for prop in self._cached_properties:
+                    if self._cached_properties[prop]:
+                        outd = True
+                        break
+                self._outdated = outd
         else:
             raise ZWaveCacheException("Cache not enabled")
 

@@ -13,6 +13,8 @@ Contents:
 
 .. automodule:: libopenzwave
     :members: PyManager
+    :members: PyOptions
+    :members: ListAlloc
 
 .. autodata:: PyNotifications
     :noindex:

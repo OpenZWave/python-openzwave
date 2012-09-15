@@ -49,17 +49,18 @@ from openzwave.option import ZWaveOption
 #Define some manager options
 options = ZWaveOption(device="/tmp/zwave", \
   config_path="/home/sebastien/devel/python-openzwave/openzwave/config", \
-  userPath=".", cmd_line="")
-options.setLogFile("OZW_Log.txt")
-options.setAppendLogFile(True)
-options.setSaveLogLevel('Debug')
-options.setLogging(True)
-options.setConsoleOutput(True)
+#use automatic
+#  config_path=None, \
+  user_path=".", cmd_line="")
+options.set_log_file("OZW_Log.txt")
+options.set_append_log_file(False)
+options.set_save_log_level('Debug')
+options.set_logging(True)
 options.lock()
 
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
 print "Use python library : %s" % network.controller.python_library_version
-
-#print "Use library : %s" % network.controller.library_description
+print "Nodes in network : %s" % network.nodes_count
+print "Driver statistics : %s" % network.controller.stats

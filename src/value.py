@@ -26,16 +26,15 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 from collections import namedtuple
 import thread
 import time
-import libopenzwave
 import openzwave
 import logging
-from openzwave.object import ZwaveObject
+from openzwave.object import ZWaveObject
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 # TODO: don't report controller node as sleeping
 # TODO: allow value identification by device/index/instance
-class ZWaveValue(ZwaveObject):
+class ZWaveValue(ZWaveObject):
     '''
     Represents a single value.
     Must be updated to use the cachedObject facilities.
@@ -67,7 +66,7 @@ class ZWaveValue(ZwaveObject):
         :type nodeid: int
 
         '''
-        ZwaveObject.__init__(value_id, network)
+        ZWaveObject.__init__(self, value_id, network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
         self._node_id = node_id
         #self._value_data = value_data
@@ -278,4 +277,4 @@ class ZWaveValue(ZwaveObject):
         return self.value_data[key] if self._value_data.has_key(key) else None
 
     def __str__(self):
-        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self._home_id, self._node_id, self._value_data)
+        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self.home_id, self._node_id, self._value_data)

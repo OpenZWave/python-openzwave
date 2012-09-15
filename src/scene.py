@@ -29,11 +29,11 @@ import thread
 import time
 import openzwave
 import logging
-from openzwave.object import ZwaveObject
+from openzwave.object import ZWaveObject
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveScene(ZwaveObject):
+class ZWaveScene(ZWaveObject):
     '''
     Represents a single scene within the Z-Wave Network
     '''
@@ -48,11 +48,10 @@ class ZWaveScene(ZwaveObject):
         :type network: ZWaveNetwork
 
         '''
-        self.object_id = scene_id
+        ZWaveObject.__init__(self, scene_id, network)
         logging.debug("Create object scene (scene_id:%s)" % (scene_id))
         self._values = dict()
         self._label = ''
-        ZwaveObject.__init__(scene_id, network)
 
     @property
     def label(self):

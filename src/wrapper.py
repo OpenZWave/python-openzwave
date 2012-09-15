@@ -59,12 +59,12 @@ class ZWaveValueNode:
         @param nodeid: ID of node
         @param value_data: valueId dict (see libopenzwave.pyx)
         '''
-        self._home_id = home_id
+        self.home_id = home_id
         self._node_id = node_id
         self._value_data = value_data
         self._lastUpdate = None
 
-    home_id = property(lambda self: self._home_id)
+    home_id = property(lambda self: self.home_id)
     node_id = property(lambda self: self._node_id)
     lastUpdate = property(lambda self: self._lastUpdate)
     value_data = property(lambda self: self._value_data)
@@ -78,7 +78,7 @@ class ZWaveValueNode:
         self._lastUpdate = time.time()
 
     def __str__(self):
-        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self._home_id, self._node_id, self._value_data)
+        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self.home_id, self._node_id, self._value_data)
 
 
 class ZWaveNode:
@@ -91,7 +91,7 @@ class ZWaveNode:
         @param node_id: ID of node
         '''
         self._lastUpdate = None
-        self._home_id = home_id
+        self.home_id = home_id
         self._node_id = node_id
         self._capabilities = set()
         self._commandClasses = set()
@@ -111,7 +111,7 @@ class ZWaveNode:
     product = property(lambda self: self._product.name if self._product else '')
     productType = property(lambda self: self._productType.name if self._productType else '')
     lastUpdate = property(lambda self: self._lastUpdate)
-    home_id = property(lambda self: self._home_id)
+    home_id = property(lambda self: self.home_id)
     node_id = property(lambda self: self._node_id)
     capabilities = property(lambda self: ', '.join(self._capabilities))
     commandClasses = property(lambda self: self._commandClasses)
@@ -210,7 +210,7 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
             self._log = logging.getLogger(__name__)
             self._log.addHandler(NullHandler())
         self._initialized = False
-        self._home_id = None
+        self.home_id = None
         self._controllerNodeId = None
         self._controller = None
         self._nodes = dict()
@@ -229,7 +229,7 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
     nodeCount = property(lambda self: len(self._nodes))
     nodeCountDescription = property(lambda self: self._getNodeCountDescription())
     sleepingNodeCount = property(lambda self: self._getSleepingNodeCount())
-    home_id = property(lambda self: self._home_id)
+    home_id = property(lambda self: self.home_id)
     controllerNode = property(lambda self: self._controller)
     controllerNodeId = property(lambda self: self._controllerNodeId)
     library_description = property(lambda self: self._getLibraryDescription())
@@ -261,7 +261,7 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
 
     def _getControllerDescription(self):
         if self._controllerNodeId:
-            node = self._getNode(self._home_id, self._controllerNodeId)
+            node = self._getNode(self.home_id, self._controllerNodeId)
             if node and node._product:
                 return node._product.name
         return 'Unknown Controller'
@@ -310,25 +310,25 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
         Called once OZW has queried capabilities and determined startup values.  HomeID
         and NodeID of controller are known at this point.
         '''
-        self._home_id = args['home_id']
+        self.home_id = args['home_id']
         self._controllerNodeId = args['node_id']
-        self._controller = self._fetchNode(self._home_id, self._controllerNodeId)
-        self._library_version = self._manager.getLibraryVersion(self._home_id)
-        self._library_type_name = self._manager.getLibraryTypeName(self._home_id)
-        self._log.info('Driver ready.  home_id is 0x%0.8x, controller node id is %d, using %s library version %s', self._home_id, self._controllerNodeId, self._library_type_name, self._library_version)
+        self._controller = self._fetchNode(self.home_id, self._controllerNodeId)
+        self._library_version = self._manager.getLibraryVersion(self.home_id)
+        self._library_type_name = self._manager.getLibraryTypeName(self.home_id)
+        self._log.info('Driver ready.  home_id is 0x%0.8x, controller node id is %d, using %s library version %s', self.home_id, self._controllerNodeId, self._library_type_name, self._library_version)
         self._log.info('OpenZWave Initialization Begins.')
         self._log.info('The initialization process could take several minutes.  Please be patient.')
-        dispatcher.send(self.SIGNAL_DRIVER_READY, **{'home_id': self._home_id, 'node_id': self._controllerNodeId})
+        dispatcher.send(self.SIGNAL_DRIVER_READY, **{'home_id': self.home_id, 'node_id': self._controllerNodeId})
 
     def _handleNodeQueryComplete(self, args):
-        node = self._getNode(self._home_id, args['node_id'])
+        node = self._getNode(self.home_id, args['node_id'])
         self._updateNodeCapabilities(node)
         self._updateNodeCommandClasses(node)
         self._updateNodeNeighbors(node)
         self._updateNodeInfo(node)
         self._updateNodeGroups(node)
         self._log.info('Z-Wave Device Node {0} is ready.'.format(node.id))
-        dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self._home_id, 'node_id': args['node_id']})
+        dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
 
     def _getNode(self, home_id, node_id):
         return self._nodes[node_id] if self._nodes.has_key(node_id) else None
@@ -451,9 +451,9 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
 
     def _handleInitializationComplete(self, args):
         controllercaps = set()
-        if self._manager.is_primary_controller(self._home_id): controllercaps.add('primaryController')
-        if self._manager.is_static_update_controller(self._home_id): controllercaps.add('staticUpdateController')
-        if self._manager.is_bridge_controller(self._home_id): controllercaps.add('bridgeController')
+        if self._manager.is_primary_controller(self.home_id): controllercaps.add('primaryController')
+        if self._manager.is_static_update_controller(self.home_id): controllercaps.add('staticUpdateController')
+        if self._manager.is_bridge_controller(self.home_id): controllercaps.add('bridgeController')
         self._controllerCaps = controllercaps
         self._log.debug('Controller capabilities are: %s', controllercaps)
         for node in self._nodes.values():
@@ -465,8 +465,8 @@ class ZWaveWrapper(wrapper_singleton.Singleton):
             self._updateNodeConfig(node)
         self._initialized = True
         self._log.info("OpenZWave initialization is complete.  Found {0} Z-Wave Device Nodes ({1} sleeping)".format(self.nodeCount, self.sleepingNodeCount))
-        dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self._home_id})
-        self._manager.writeConfig(self._home_id)
+        dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self.home_id})
+        self._manager.writeConfig(self.home_id)
         # TODO: write config on shutdown as well
 
     def refresh(self, node):

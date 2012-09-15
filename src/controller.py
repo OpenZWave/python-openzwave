@@ -23,20 +23,16 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from collections import namedtuple
-import thread
-import os
-import time
 from louie import dispatcher, All
 import logging
 import libopenzwave
 import openzwave
-from openzwave.object import ZWaveException, ZwaveObject, NullLoggingHandler
+from openzwave.object import ZWaveException, ZWaveObject
 from openzwave.node import ZWaveNode
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveController(ZwaveObject):
+class ZWaveController(ZWaveObject):
     '''
         The driver objet.
         Hold options of the manager
@@ -57,15 +53,15 @@ class ZWaveController(ZwaveObject):
         '''
         if controller_id == None:
             controller_id = 1
-        ZwaveObject.__init__(controller_id, network)
+        ZWaveObject.__init__(self, controller_id, network)
         self._node = None
         self._options = options
         self._library_type_name = None
-        self.cache_property(lambda: self.library_type_name)
+        #self.cache_property(lambda: self.library_type_name)
         self._library_version = None
-        self.cache_property(lambda: self.library_version)
+        #self.cache_property(lambda: self.library_version)
         self._python_library_version = None
-        self.cache_property(lambda: self.python_library_version)
+        #self.cache_property(lambda: self.python_library_version)
 
     @property
     def node(self):
@@ -87,7 +83,7 @@ class ZWaveController(ZwaveObject):
         """
         if type(value) == type(ZWaveNode) or value == None:
             self._node = value
-            self._home_id = self._node.home_id
+            self.home_id = self._node.home_id
         else:
             raise ZWaveException("Can't update node. Bad object type %s" % type(value))
 
@@ -99,7 +95,10 @@ class ZWaveController(ZwaveObject):
         :rtype: int
 
         """
-        return self.node.object_id if self.node != None else None
+        if self.node != None:
+            return self.node.object_id
+        else:
+            raise ZWaveException("Controller node not initialised")
 
     @property
     def node_name(self):
@@ -109,7 +108,10 @@ class ZWaveController(ZwaveObject):
         :rtype: str
 
         """
-        return self.node.name if self.node != None else None
+        if self.node != None:
+            return self.node.name
+        else:
+            raise ZWaveException("Controller node not initialised")
 
     @property
     def library_type_name(self):
@@ -120,7 +122,7 @@ class ZWaveController(ZwaveObject):
 
         """
         if self.is_outdated(lambda: self.library_type_name):
-            self._library_type_name = self._network.manager.getLibraryTypeName(self._home_id)
+            self._library_type_name = self._network.manager.getLibraryTypeName(self.home_id)
             self.update(lambda: self.library_type_name)
         return self._library_type_name
 
@@ -143,7 +145,7 @@ class ZWaveController(ZwaveObject):
 
         """
         if self.is_outdated(lambda: self.library_version):
-            self._library_version = self._network.manager.getLibraryVersion(self._home_id)
+            self._library_version = self._network.manager.getLibraryVersion(self.home_id)
             self.update(lambda: self.library_version)
         return self._library_version
 
@@ -168,28 +170,10 @@ class ZWaveController(ZwaveObject):
         :rtype: str
 
         """
-        return self._library_config_path
-
-    @library_config_path.setter
-    def library_config_path(self, value):
-        """
-        Set the library config path.
-
-        :param value: The new library config path
-        :type value: str
-
-        """
-        if value == None :
-            value = self._network.manager.getLibraryConfigPath()
-            if value == None :
-                raise ZWaveException("Can't retrieve config path from library")
-            else:
-                self._library_config_path = value
-        else:
-            if os.path.exists(value):
-                self._library_config_path = value
-            else:
-                raise ZWaveException("Can't retrieve config from %s" % value)
+        if self._options != None :
+            return self._options.config_path
+        else :
+            return None
 
     @property
     def library_user_path(self):
@@ -199,26 +183,10 @@ class ZWaveController(ZwaveObject):
         :rtype: str
 
         """
-        return self._library_user_path
-
-    @library_user_path.setter
-    def library_user_path(self, value):
-        """
-        Set the library User path.
-
-        :param value: The new library user path
-        :type value: str
-
-        """
-        if value == None :
-            self._library_user_path = None
-        elif os.path.exists(value):
-            if os.access(value, os.W_OK):
-                self._library_user_path = value
-            else:
-                raise ZWaveException("Can't write in user path %s" % value)
-        else:
-            raise ZWaveException("Can't find user path %s" % value)
+        if self._options != None :
+            return self._options.user_path
+        else :
+            return None
 
     @property
     def device(self):
@@ -228,47 +196,46 @@ class ZWaveController(ZwaveObject):
         :rtype: str
 
         """
-        return self._device
-
-    @device.setter
-    def device(self, value):
-        """
-        Set the device path.
-
-        :param value: The new device.
-        :type value: str
-
-        """
-        if value == None :
-            self._device = None
-        elif os.path.exists(value):
-            if os.access(value, os.W_OK):
-                self._device_path = value
-            else:
-                raise ZWaveException("Can't write to device %s" % value)
-        else:
-            raise ZWaveException("Can't find device %s" % value)
+        if self._options != None :
+            return self._options.device
+        else :
+            return None
 
     @property
-    def options_manager(self):
+    def options(self):
         """
-        The options manager.
+        The starting options of the manager.
 
-        :rtype: str
-
-        """
-        return self._options_manager
-
-    @options_manager.setter
-    def options_manager(self, value):
-        """
-        Set the options manager.
-
-        :param value: The new option manager.
-        :type value: str
+        :rtype: ZWaveOption
 
         """
-        self._options_manager = value
+        return self._options
+
+    @property
+    def stats(self):
+        """
+        Retrieve statistics from driver.
+
+        Statistics:
+        s_SOFCnt                         Number of SOF bytes received
+        s_ACKWaiting                     Number of unsolicited messages while waiting for an ACK
+        s_readAborts                     Number of times read were aborted due to timeouts
+        s_badChecksum                    Number of bad checksums
+        s_readCnt                        Number of messages successfully read
+        s_writeCnt                       Number of messages successfully sent
+        s_CANCnt                         Number of CAN bytes received
+        s_NAKCnt                         Number of NAK bytes received
+        s_ACKCnt                         Number of ACK bytes received
+        s_OOFCnt                         Number of bytes out of framing
+        s_dropped                        Number of messages dropped & not delivered
+        s_retries                        Number of messages retransmitted
+        s_controllerReadCnt              Number of controller messages read
+        s_controllerWriteCnt             Number of controller messages sent
+
+        :rtype: dict()
+
+        """
+        return self._network.manager.getDriverStatistics(self.home_id)
 
     @property
     def capabilities(self):

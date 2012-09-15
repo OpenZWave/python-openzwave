@@ -39,3 +39,4 @@ cdef extern from "Driver.h" namespace "OpenZWave::Driver":
         uint32 s_controllerWriteCnt             # Number of controller messages sent
 
 ctypedef DriverData DriverData_t
+

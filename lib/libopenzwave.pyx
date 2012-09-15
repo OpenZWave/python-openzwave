@@ -35,170 +35,12 @@ from notification cimport Notification, NotificationType, Type_Group, Type_NodeE
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
+from manager cimport Manager, Create, Get
 from log cimport LogLevel
 import os
 
-PYLIBRARY = "0.2.2"
+PYLIBRARY = "0.2.3"
 OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
-
-cdef extern from "Manager.h" namespace "OpenZWave":
-
-    cdef cppclass Manager:
-        # // Configuration
-        void WriteConfig(uint32 homeid)
-        Options* GetOptions()
-        # // Drivers
-        bint AddDriver(string serialport)
-        bint RemoveDriver(string controllerPath)
-        uint8 GetControllerNodeId(uint32 homeid)
-        bint IsPrimaryController(uint32 homeid)
-        bint IsStaticUpdateController(uint32 homeid)
-        bint IsBridgeController(uint32 homeid)
-        string GetLibraryVersion(uint32 homeid)
-        string GetLibraryTypeName(uint32 homeid)
-        int32 GetSendQueueCount( uint32 homeId )
-        void LogDriverStatistics( uint32 homeId )
-        void GetDriverStatistics( uint32 homeId, DriverData* data )
-        # // Polling
-        uint32 GetPollInterval()
-        void SetPollInterval(uint32 milliseconds, bIntervalBetweenPolls)
-        bint EnablePoll(ValueID& valueId, uint8 intensity)
-        bool DisablePoll(ValueID& valueId)
-        bool isPolled(ValueID& valueId)
-        void SetPollIntensity( ValueID& valueId, uint8 intensity)
-        # // Node Information
-        bool RefreshNodeInfo(uint32 homeid, uint8 nodeid)
-        bool RequestNodeState(uint32 homeid, uint8 nodeid)
-        bool RequestNodeDynamic( uint32 homeId, uint8 nodeId )
-        bool IsNodeListeningDevice(uint32 homeid, uint8 nodeid)
-        bool IsNodeFrequentListeningDevice( uint32 homeId, uint8 nodeId )
-        bool IsNodeBeamingDevice( uint32 homeId, uint8 nodeId )
-        bool IsNodeRoutingDevice(uint32 homeid, uint8 nodeid)
-        bool IsNodeSecurityDevice( uint32 homeId, uint8 nodeId )
-        uint32 GetNodeMaxBaudRate(uint32 homeid, uint8 nodeid)
-        uint8 GetNodeVersion(uint32 homeid, uint8 nodeid)
-        uint8 GetNodeSecurity(uint32 homeid, uint8 nodeid)
-        uint8 GetNodeBasic(uint32 homeid, uint8 nodeid)
-        uint8 GetNodeGeneric(uint32 homeid, uint8 nodeid)
-        uint8 GetNodeSpecific(uint32 homeid, uint8 nodeid)
-        string GetNodeType(uint32 homeid, uint8 nodeid)
-        uint32 GetNodeNeighbors(uint32 homeid, uint8 nodeid, uint8** nodeNeighbors)
-        string GetNodeManufacturerName(uint32 homeid, uint8 nodeid)
-        string GetNodeProductName(uint32 homeid, uint8 nodeid)
-        string GetNodeName(uint32 homeid, uint8 nodeid)
-        string GetNodeLocation(uint32 homeid, uint8 nodeid)
-        string GetNodeManufacturerId(uint32 homeid, uint8 nodeid)
-        string GetNodeProductType(uint32 homeid, uint8 nodeid)
-        string GetNodeProductId(uint32 homeid, uint8 nodeid)
-        void SetNodeManufacturerName(uint32 homeid, uint8 nodeid, string manufacturerName)
-        void SetNodeProductName(uint32 homeid, uint8 nodeid, string productName)
-        void SetNodeName(uint32 homeid, uint8 nodeid, string productName)
-        void SetNodeLocation(uint32 homeid, uint8 nodeid, string location)
-        void SetNodeOn(uint32 homeid, uint8 nodeid)
-        void SetNodeOff(uint32 homeid, uint8 nodeid)
-        void SetNodeLevel(uint32 homeid, uint8 nodeid, uint8 level)
-        bool IsNodeInfoReceived(uint32 homeid, uint8 nodeid)
-        bool GetNodeClassInformation( uint32 homeId, uint8 nodeId, uint8 commandClassId,
-                          string *className = NULL, uint8 *classVersion = NULL)
-        # // Values
-        string GetValueLabel(ValueID& valueid)
-        void SetValueLabel(ValueID& valueid, string value)
-        string GetValueUnits(ValueID& valueid)
-        void SetValueUnits(ValueID& valueid, string value)
-        string GetValueHelp(ValueID& valueid)
-        void SetValueHelp(ValueID& valueid, string value)
-        uint32 GetValueMin(ValueID& valueid)
-        uint32 GetValueMax(ValueID& valueid)
-        bool IsValueReadOnly(ValueID& valueid)
-        bool IsValueWriteOnly(ValueID& valueid)
-        bool IsValueSet(ValueID& valueid)
-        bool IsValuePolled( ValueID& valueid )
-        bool GetValueAsBool(ValueID& valueid, bool* o_value)
-        bool GetValueAsByte(ValueID& valueid, uint8* o_value)
-        bool GetValueAsFloat(ValueID& valueid, float* o_value)
-        bool GetValueAsInt(ValueID& valueid, int32* o_value)
-        bool GetValueAsShort(ValueID& valueid, int16* o_value)
-        bool GetValueAsString(ValueID& valueid, string* o_value)
-        bool GetValueListSelection(ValueID& valueid, string* o_value)
-        bool GetValueListSelection(ValueID& valueid, uint32* o_value)
-        #bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
-        bool SetValue(ValueID& valueid, bool value)
-        bool SetValue(ValueID& valueid, uint8 value)
-        bool SetValue(ValueID& valueid, float value)
-        bool SetValue(ValueID& valueid, int32 value)
-        bool SetValue(ValueID& valueid, int16 value)
-        bool SetValue(ValueID& valueid, string value)
-        bool SetValueListSelection(ValueID& valueid, string selecteditem)
-        bool RefreshValue(ValueID& valueid)
-        void SetChangeVerified(ValueID& valueid, bool verify)
-        bool PressButton(ValueID& valueid)
-        bool ReleaseButton(ValueID& valueid)
-        # // Climate Control
-        uint8 GetNumSwitchPoints(ValueID& valueid)
-        bool SetSwitchPoint(ValueID& valueid, uint8 hours, uint8 minutes, uint8 setback)
-        bool RemoveSwitchPoint(ValueID& valueid, uint8 hours, uint8 minutes)
-        bool ClearSwitchPoints(ValueID& valueid)
-        bool GetSwitchPoint(ValueID& valueid, uint8 idx, uint8* o_hours, uint8* o_minutes, int8* o_setback)
-        # // SwitchAll
-        void SwitchAllOn(uint32 homeid)
-        void SwitchAllOff(uint32 homeid)
-        # // Configuration Parameters
-        bool SetConfigParam(uint32 homeid, uint8 nodeid, uint8 param, uint32 value, uint8 size = 2)
-        void RequestConfigParam(uint32 homeid, uint8 nodeid, uint8 aram)
-        void RequestAllConfigParams(uint32 homeid, uint8 nodeid)
-        # // Groups
-        uint8 GetNumGroups(uint32 homeid, uint8 nodeid)
-        uint32 GetAssociations(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8** o_associations)
-        uint8 GetMaxAssociations(uint32 homeid, uint8 nodeid, uint8 groupidx)
-        string GetGroupLabel(uint32 homeid, uint8 nodeid, uint8 groupidx)
-        void AddAssociation(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8 targetnodeid)
-        void RemoveAssociation(uint32 homeid, uint8 nodeid, uint8 groupidx, uint8 targetnodeid)
-        bool AddWatcher(pfnOnNotification_t notification, void* context)
-        bool RemoveWatcher(pfnOnNotification_t notification, void* context)
-        # // Controller Commands
-        void ResetController(uint32 homeid)
-        void SoftReset(uint32 homeid)
-        #bool BeginControllerCommand(uint32 homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8 _nodeId = 0xff )
-        bool CancelControllerCommand(uint32 homeid)
-        # // Scene commands
-        uint8 GetNumScenes()
-        uint8 GetAllScenes(uint8** sceneIds)
-        uint8 CreateScene()
-        bool RemoveScene(uint8 sceneId)
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, bool value)
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, uint8 value)
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, float value )
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, int32 value )
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, int16 value )
-        bool AddSceneValue( uint8 sceneId, ValueID& valueId, string value )
-        bool AddSceneValueListSelection( uint8 sceneId, ValueID& valueId, string value )
-        bool AddSceneValueListSelection( uint8 sceneId, ValueID& valueId, int32 value )
-        bool RemoveSceneValue( uint8 sceneId, ValueID& valueId )
-        #int SceneGetValues( uint8 sceneId, vector<ValueID>* o_value )
-        bool SceneGetValueAsBool( uint8 sceneId, ValueID& valueId, bool value )
-        bool SceneGetValueAsByte( uint8 sceneId, ValueID& valueId, uint8* o_value )
-        bool SceneGetValueAsFloat( uint8 sceneId, ValueID& valueId, float* o_value )
-        bool SceneGetValueAsInt( uint8 sceneId, ValueID& valueId, int32* o_value )
-        bool SceneGetValueAsShort( uint8 sceneId, ValueID& valueId, int16* o_value )
-        bool SceneGetValueAsString( uint8 sceneId, ValueID& valueId, string* o_value )
-        bool SceneGetValueListSelection( uint8 sceneId, ValueID& valueId, string* o_value )
-        bool SceneGetValueListSelection( uint8 sceneId, ValueID& valueId, int32* o_value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, bool value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, uint8 value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, float value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, int32 value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, int16 value )
-        bool SetSceneValue( uint8 sceneId, ValueID& valueId, string value )
-        bool SetSceneValueListSelection( uint8 sceneId, ValueID& valueId, string value )
-        bool SetSceneValueListSelection( uint8 sceneId, ValueID& valueId, int32 value )
-        string GetSceneLabel( uint8 sceneId )
-        void SetSceneLabel( uint8 sceneId, string value )
-        bool SceneExists( uint8 sceneId )
-        bool ActivateScene( uint8 sceneId )
-
-cdef extern from "Manager.h" namespace "OpenZWave::Manager":
-    Manager* Create()
-    Manager* Get()
 
 class EnumWithDoc(str):
     def setDoc(self, doc):
@@ -420,6 +262,40 @@ cdef class PyOptions:
 
         """
         return self.options.AddOptionString(string(name), string(value), append )
+
+    def getConfigPath(self):
+        '''
+.. _getConfigPath:
+
+Retrieve the config path. This directory hold the xml files.
+
+:returns: A string containing the library config path or None.
+:rtype: str
+
+        '''
+        if os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
+        else:
+            return None
+
+cdef class ListAlloc:
+    """
+    Map an array of uint8 used when retrieving lists.
+    Allocate memory at init and free it when no more reference to it exist.
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg
+
+    """
+    cdef uint32 siz
+    cdef uint8* data
+
+    def __cinit__(self,  uint32 siz):
+        self.siz = siz
+        self.data = <uint8*>malloc(sizeof(uint8) * siz)
+
+    def __dealloc__(self):
+        free(self.data)
 
 cdef class PyManager:
     '''
@@ -737,23 +613,6 @@ Get the version of the Z-Wave API library used by a controller.
         '''
         cdef string c_string = self.manager.GetLibraryVersion(homeid)
         return c_string.c_str()
-
-    def getLibraryConfigPath(self):
-        '''
-.. _getLibraryConfigPath:
-
-Retrieve the libray config path. This the directory holding the xml files.
-
-:returns: str -- A string containing the library config path or None.
-:see: getLibraryVersion_, getLibraryTypeName_, getPythonLibraryVersion_, getLibraryTypeName_
-
-        '''
-        if os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
-        elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-        else:
-            return None
 
     def getPythonLibraryVersion(self):
         '''
@@ -1288,28 +1147,41 @@ Get the bitmap of this node's neighbors.
     * param _nodeNeighbors An array of 29 uint8s to hold the neighbor bitmap
     */
 
+:todo:
+    cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
+    How to free memory ? Create a child of list. 2 parameters : address of the
+    value and size. Sur le __del__ on "free" la memory
+    Fix ???
+    When no entries found, should we return an empty list or None
+
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: list() - A set containing neighboring node IDs
+:returns: A set containing neighboring node IDs
+:rtype: list()
 
         '''
         data = list()
-        #Allocate memory
+        #Allocate memory for the c++ function
+        #Return value is pointer to uint8[]
         cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*29)
-        # return value is pointer to uint8[]
+        #Get the number of neigbors
         cdef uint32 count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
+        if count == 0:
+            #Don't need to allocate memory.
+            return data
         #Allocate memory for the returned values
-        cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
+        cdef ListAlloc retuint8 = ListAlloc(count)
         cdef uint8* p
         cdef uint32 start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8[i] = p[0]
-                    data.add(retuint8[i])
+                    #cdef uint8 = retuint8[i]
+                    retuint8.data[i] = p[0]
+                    data.add(retuint8.data[i])
                     p += 1
             finally:
                 #Free memory
@@ -1684,9 +1556,9 @@ Helper method to return whether a particular class is available in a node
 :returns: bool -- True if the node does have the class instantiated, will return name & version
 
         '''
-        cdef uint8 oclassVersion
         cdef string oclassName
-        ret=self.manager.GetNodeClassInformation(homeid, nodeid, commandClassId)
+        cdef uint8 oclassVersion
+        ret=self.manager.GetNodeClassInformation(homeid, nodeid, commandClassId, &oclassName, &oclassVersion)
         if ret :
             className = oclassName.c_str()
             classVersion = oclassVersion
@@ -2362,11 +2234,12 @@ has been made.
 :type param: int
 :param value: The value to which the parameter should be set.
 :type value: int
-:returns: bool -- True if the a message setting the value was sent to the device.
+:returns: True if the message setting the value was sent to the device.
+:rtype: bool
 :see: requestConfigParam_, requestAllConfigParams_
 
         '''
-        return self.manager.SetConfigParam(homeid, nodeid, param, value)
+        return self.manager.SetConfigParam(homeid, nodeid, param, value, 2)
 
     def requestConfigParam(self, homeid, nodeid, param):
         '''
