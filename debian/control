@@ -10,7 +10,8 @@ Homepage: http://code.google.com/p/python-openzwave
 Package: python-openzwave
 Architecture: any
 Depends: libopenzwave1.0, python, ${misc:Depends}, ${python:Depends}
-Description: python-openzwave is a python wrapper around the openzwave project.
+Description: python-openzwave is another python wrapper around the openzwave project.
  The wrapper allows you to control a z-wave network from python.
- This wrapper is still a work in progress, but the basic skeleton is
- in place (network scanning, and turning a device on or off).
+ The one-to-one library is in beta state. You can try it.
+ The new wrapper is in early developpement stage. So don't use it, but
+ join us on http://code.google.com/p/python-openzwave.
