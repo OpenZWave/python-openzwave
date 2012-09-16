@@ -9,24 +9,17 @@ Welcome to py-openzwave's documentation!
 Contents:
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
 .. automodule:: libopenzwave
-    :members: PyManager
-    :members: PyOptions
-    :members: ListAlloc
+    :members: PyManager, PyOptions, RetAlloc
 
-.. autodata:: PyNotifications
-    :noindex:
-.. autodata:: PyGenres
-    :noindex:
-.. autodata:: PyValueTypes
-    :noindex:
-.. autodata:: PyLogLevels
-    :noindex:
-
-Indices and tables
-==================
-
-* :ref:`genindex`
+    .. autodata:: PyNotifications
+        :noindex:
+    .. autodata:: PyGenres
+        :noindex:
+    .. autodata:: PyValueTypes
+        :noindex:
+    .. autodata:: PyLogLevels
+        :noindex:
 

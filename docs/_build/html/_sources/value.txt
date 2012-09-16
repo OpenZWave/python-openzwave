@@ -3,21 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-API documentation
-=================
+Value documentation
+===================
 
-Contents:
+The value.
 
 .. toctree::
     :maxdepth: 2
 
-    network <network>
-    controller <controller>
-    option <option>
-    node <node>
-    group <group>
-    value <value>
-    scene <scene>
-    object and Exceptions <object>
-    common definitions <data>
+.. automodule:: openzwave.value
+    :members: ZWaveValue
 

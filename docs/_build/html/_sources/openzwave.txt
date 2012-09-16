@@ -3,49 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to py-openzwave's documentation!
-========================================
+API documentation
+=================
 
 Contents:
 
 .. toctree::
     :maxdepth: 2
 
-.. automodule:: openzwave.network
-    :members: ZWaveNetwork
-
-.. automodule:: openzwave.controller
-    :members: ZWaveController
-
-.. automodule:: openzwave.option
-    :members: ZWaveOption
-
-.. automodule:: openzwave.scene
-    :members: ZWaveScene
-
-.. automodule:: openzwave.node
-    :members: ZWaveNode
-
-.. automodule:: openzwave.value
-    :members: ZWaveValue
-
-.. automodule:: openzwave.group
-    :members: ZWaveGroup
-
-.. automodule:: openzwave.option
-    :members: ZWaveOption
-
-.. automodule:: openzwave.object
-    :members: NullLoggingHandler, ZWaveException, ZWaveCacheException, ZwaveObject
-
-.. automodule:: libopenzwave
-.. autodata:: PyNotifications
-.. autodata:: PyGenres
-.. autodata:: PyValueTypes
-.. autodata:: PyLogLevels
-
-Indices and tables
-==================
-
-* :ref:`genindex`
+    network <network>
+    controller <controller>
+    option <option>
+    node <node>
+    group <group>
+    value <value>
+    scene <scene>
+    object and Exceptions <object>
+    common definitions <data>
 

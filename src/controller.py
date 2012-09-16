@@ -242,14 +242,15 @@ class ZWaveController(ZWaveObject):
         """
         The capabilities of the controller.
 
-        :rtype: list()
+        :returns: The capabilities of the controller
+        :rtype: set()
 
         """
-        caps = list()
+        caps = set()
         if self.node.is_primary_controller():
-            caps.append('primaryController')
+            caps.add('primaryController')
         if self.node.is_static_update_controller():
-            caps.append('staticUpdateController')
+            caps.add('staticUpdateController')
         if self.node.is_bridge_controller():
-            caps.append('bridgeController')
+            caps.add('bridgeController')
         return caps

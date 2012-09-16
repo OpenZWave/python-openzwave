@@ -3,21 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-API documentation
-=================
+Data documentation
+===================
 
-Contents:
+The common data structures and defitions.
 
 .. toctree::
     :maxdepth: 2
 
-    network <network>
-    controller <controller>
-    option <option>
-    node <node>
-    group <group>
-    value <value>
-    scene <scene>
-    object and Exceptions <object>
-    common definitions <data>
-
+.. automodule:: libopenzwave
+.. autodata:: PyNotifications
+.. autodata:: PyGenres
+.. autodata:: PyValueTypes
+.. autodata:: PyLogLevels

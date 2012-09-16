@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Network documentation &mdash; py-openzwave 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="py-openzwave 0.1 documentation" href="index.html" />
+    <link rel="up" title="API documentation" href="openzwave.html" />
+    <link rel="next" title="Controller documentation" href="controller.html" />
+    <link rel="prev" title="API documentation" href="openzwave.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controller.html" title="Controller documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="openzwave.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="network-documentation">
+<h1>Network documentation<a class="headerlink" href="#network-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This is the central point. Everything is attached to a network.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.network"></span><span class="target" id="module-openzwave.network"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.network.ZWaveNetwork">
+<em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>options</em>, <em>log=None</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network objet = homeid.
+It contains a reference to the manager</p>
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.controller">
+<tt class="descname">controller</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>The controller of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveController</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.getCommandClassCode">
+<tt class="descname">getCommandClassCode</tt><big>(</big><em>commandClassName</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.getCommandClassCode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.getCommandClassName">
+<tt class="descname">getCommandClassName</tt><big>(</big><em>commandClassCode</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.getCommandClassName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.get_node">
+<tt class="descname">get_node</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.get_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a node from its id.
+This function does NOT lock the nodes list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node_id</strong> (<em>int</em>) &#8211; The node identifier</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ZWaveNode object or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveNode</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.home_id">
+<tt class="descname">home_id</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.home_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home_id of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.initialised">
+<tt class="descname">initialised</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.initialised" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says if the driver is ready.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.manager">
+<tt class="descname">manager</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manager to use to communicate with the lib c++.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveManager</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodes">
+<tt class="descname">nodes</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodes_count">
+<tt class="descname">nodes_count</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodes_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes count of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.setNodeLevel">
+<tt class="descname">setNodeLevel</tt><big>(</big><em>node</em>, <em>level</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.setNodeLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.setNodeOff">
+<tt class="descname">setNodeOff</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.setNodeOff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.setNodeOn">
+<tt class="descname">setNodeOn</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.setNodeOn" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.sleeping_nodes_count">
+<tt class="descname">sleeping_nodes_count</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.sleeping_nodes_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The count of sleeping nodes on the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.started">
+<tt class="descname">started</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.started" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says if all the nodes are queried.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.zwcallback">
+<tt class="descname">zwcallback</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.zwcallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>The callback function used with the libopenzwave.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>n[&#8216;valueId&#8217;] = {&#8216;home_id&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">v.GetHomeId(),</span></dt>
+<dd>&#8216;node_id&#8217; : v.GetNodeId(),
+&#8216;commandClass&#8217; : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+&#8216;instance&#8217; : v.GetInstance(),
+&#8216;index&#8217; : v.GetIndex(),
+&#8216;id&#8217; : v.GetId(),
+&#8216;genre&#8217; : PyGenres[v.GetGenre()],
+&#8216;type&#8217; : PyValueTypes[v.GetType()],</dd>
+</dl>
+</div></blockquote>
+<dl class="docutils">
+<dt>#                    &#8216;value&#8217; <span class="classifier-delimiter">:</span> <span class="classifier">value.c_str(),</span></dt>
+<dd><blockquote class="first">
+<div>&#8216;value&#8217; : getValueFromType(manager,v.GetId()),
+&#8216;label&#8217; : label.c_str(),
+&#8216;units&#8217; : units.c_str(),
+&#8216;readOnly&#8217;: manager.IsValueReadOnly(v),
+}</div></blockquote>
+<table class="last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param args:</th><td class="field-body">Callback parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">type args:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="openzwave.html"
+                        title="previous chapter">API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controller.html"
+                        title="next chapter">Controller documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/network.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controller.html" title="Controller documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="openzwave.html" title="API documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, bibi21000.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

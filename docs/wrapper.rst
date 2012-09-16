@@ -3,8 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to py-openzwave's documentation!
-========================================
+Wrapper Documentation
+=====================
+This examples came from the original repository. Don't know if it works
+but don't think so. For documentation only.
 
 Contents:
 
@@ -16,9 +18,3 @@ Contents:
 
 .. automodule:: openzwave.wrapper_singleton
     :members: Singleton
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-

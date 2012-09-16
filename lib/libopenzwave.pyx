@@ -96,6 +96,9 @@ PyValueTypes = [
     EnumWithDoc('Button').setDoc("A write-only value that is the equivalent of pressing a button to send a command to a device"),
     ]
 
+"""
+The log levels
+"""
 PyLogLevels = {
     'None' : 0,
     'Always' : 1,
@@ -285,7 +288,7 @@ Retrieve the config path. This directory hold the xml files.
         else:
             return None
 
-cdef class ListAlloc:
+cdef class RetAlloc:
     """
     Map an array of uint8 used when retrieving lists.
     Allocate memory at init and free it when no more reference to it exist.
@@ -1175,9 +1178,10 @@ Get the bitmap of this node's neighbors.
         cdef uint32 count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
         if count == 0:
             #Don't need to allocate memory.
+            free(dbuf)
             return data
         #Allocate memory for the returned values
-        cdef ListAlloc retuint8 = ListAlloc(count)
+        cdef RetAlloc retuint8 = RetAlloc(count)
         cdef uint8* p
         cdef uint32 start = 0
         if count:
@@ -2338,8 +2342,9 @@ Gets the associations for a group
         cdef uint32 count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
             #Don't need to allocate memory.
+            free(dbuf)
             return data
-        cdef ListAlloc retuint8 = ListAlloc(count)
+        cdef RetAlloc retuint8 = RetAlloc(count)
         cdef uint8* p
         cdef uint32 start = 0
         if count:
@@ -2349,12 +2354,11 @@ Gets the associations for a group
                     retuint8[i] = p[0]
                     data.add(retuint8[i])
                     p += 1
-                retval = tuple(data)
             finally:
                 # Free memory
                 free(dbuf)
                 pass
-        return retval
+        return data
 
     def getAssociationsOld(self, homeid, nodeid, groupidx):
         '''
@@ -2610,24 +2614,23 @@ sceneGetValueAsString_
         cdef uint32 count = self.manager.GetAllScenes(dbuf)
         if count == 0:
             #Don't need to allocate memory.
+            free(dbuf)
             return data
-        cdef ListAlloc retuint8 = ListAlloc(count)
+        cdef RetAlloc retuint8 = RetAlloc(count)
         cdef uint8* p
         cdef uint32 start = 0
         if count:
             try:
-                data = list()
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
                     retuint8[i] = p[0]
                     data.add(retuint8[i])
                     p += 1
-                retval = data
             finally:
                 # Free memory
                 free(dbuf)
                 pass
-        return retval
+        return data
 
     def getAllScenesOld(self):
         '''
