@@ -26,7 +26,7 @@ from os import name as os_name
 #from distutils.core import setup, find_packages
 from platform import system as platform_system
 from setuptools import setup, find_packages
-from distutils.command import build_py
+#from distutils.command import build_py
 from Cython.Distutils import extension
 from Cython.Distutils import build_ext
 import os
@@ -72,7 +72,7 @@ if os_name == 'nt':
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 elif platform_system() == 'Darwin':
-    ext_modules = [extension.Extension("openzwave", ["openzwave.pyx"],
+    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
