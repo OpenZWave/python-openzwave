@@ -187,8 +187,8 @@ cdef void callback(const_notification _notification, void* _context) with gil:
     addValueId(notification.GetValueID(), n)
     (<object>_context)(n)
 
-#cpdef object driverData():
-#    cdef DriverData data
+cpdef object driverData():
+    cdef DriverData data
 
 cdef class PyOptions:
     """
