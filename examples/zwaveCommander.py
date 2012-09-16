@@ -33,6 +33,7 @@ import time
 from louie import dispatcher, All
 #Insert your build directory here (it depends of your python distribution)
 #To get one, run the make_doc.sh command
+import sys, os
 sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
 sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
 sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
@@ -52,6 +53,7 @@ class ZWaveCommander:
         self._curAlert = False
         self._alertStack = list()
         self._driverInitialized = False
+        self._options = None
         self._network = None
         self._listMode = True
         self._screen = stdscr
@@ -74,10 +76,18 @@ class ZWaveCommander:
             'Q' : 'Quit'
         }
 
-        self._config = {
-            'device': '/dev/keyspan-2',
-            'config': '../openzwave/config/',
-        }
+        #self._network = ZWaveWrapper.getInstance(device=self._config['device'], config=self._config['config'], log=None)
+        self._options = ZWaveOption( \
+            device="/tmp/zwave", \
+            config_path="openzwave/config", \
+            user_path=".", \
+            cmd_line="")
+        self._options.set_log_file("OZW_Log.txt")
+        self._options.set_append_log_file(False)
+        self._options.set_save_log_level('Debug')
+        self._options.set_console_output(False)
+        self._options.set_logging(True)
+        self._options.lock()
 
         # TODO: add log level to config
         # TODO: add log enable/disable to config
@@ -92,8 +102,7 @@ class ZWaveCommander:
         self._log.info('%sZWaveCommander Version %s Starting%s', self._logbar, self._version, self._logbar)
         self._initCurses(self._screen)
         try:
-            self._checkConfig()
-            self._checkInterface()
+            self._startNetwork()
             self._runLoop()
         finally:
             self._shutdown()
@@ -116,29 +125,29 @@ class ZWaveCommander:
 
     def _handleRefresh(self):
         if self._selectedNode:
-            self._wrapper.refresh(self._selectedNode)
+            self._network.refresh(self._selectedNode)
 
     def _handleOn(self):
         if self._selectedNode:
-            self._wrapper.setNodeOn(self._selectedNode)
+            self._network.setNodeOn(self._selectedNode)
 
     def _handleOff(self):
         if self._selectedNode:
-            self._wrapper.setNodeOff(self._selectedNode)
+            self._network.setNodeOff(self._selectedNode)
 
     def _handleIncrease(self):
         if self._selectedNode:
             curLevel = self._selectedNode.level
             newLevel = curLevel + 10
             if newLevel > 99: newLevel = 99
-            self._wrapper.setNodeLevel(self._selectedNode, newLevel)
+            self._network.setNodeLevel(self._selectedNode, newLevel)
 
     def _handleDecrease(self):
         if self._selectedNode:
             curLevel = self._selectedNode.level
             newLevel = curLevel - 10
             if newLevel < 0: newLevel = 0
-            self._wrapper.setNodeLevel(self._selectedNode, newLevel)
+            self._network.setNodeLevel(self._selectedNode, newLevel)
 
     def _setTimer(self, context, duration, callback):
         newTimer = threading.Thread(None, self._delayloop, 'cb-thread-%s' % context, (context, duration, callback), {})
@@ -264,10 +273,6 @@ class ZWaveCommander:
 
         self._layoutScreen()
 
-    def _checkConfig(self):
-        # TODO: check if configuration exists and is valid.  If not, then go directly to handleSetup().  Loop until user cancels or enters valid config.
-        pass
-
     def _handleSetup(self):
         self._alert('handleSetup not yet implemented')
 
@@ -280,15 +285,14 @@ class ZWaveCommander:
         else:
             self._log.info('OpenZWave initialized successfully.')
 
-    def _notifyDriverReady(self, homeId):
-        self._log.info('OpenZWave Driver is Ready; homeid is %0.8x.  %d nodes were found.', homeId, self._wrapper.nodeCount)
+    def _notifyDriverReady(self, network, controller):
+        self._log.info('OpenZWave Driver is Ready; homeid is %0.8x.  %d nodes were found.' % (network.home_id, network.nodes_count))
         self._driverInitialized = True
-        self._addDialogText(2,'Driver initialized with homeid {0}'.format(hex(homeId)))
-        self._addDialogText(3,'Node Count is now {0}'.format(self._wrapper.nodeCount))
-        self._readyNodeCount = 0
+        self._addDialogText(2,'Driver initialized with homeid %0.8x' % network.home_id)
+        self._addDialogText(3,'Node Count is now %' % network.nodes_count)
 
-    def _notifyNodeAdded(self, homeId, nodeId):
-        self._addDialogText(3,'Node Count is now {0}'.format(self._wrapper.nodeCount))
+    def _notifyNodeAdded(self, network, node):
+        self._addDialogText(3,'Node Count is now %s'.format(network.nodes_count))
         self._updateSystemInfo()
 
     def _redrawAll(self):
@@ -298,16 +302,21 @@ class ZWaveCommander:
         self._updateColumnHeaders()
         self._updateDeviceDetail()
 
-    def _notifySystemReady(self):
+    def _notifyNetworkReady(self, network, controller):
         self._log.info('OpenZWave Initialization Complete.')
         self._alert('OpenZWave Initialization Complete.')
         self._redrawAll()
 
-    def _notifyNodeReady(self, homeId, nodeId):
+    def _notifyNetworkFailed(self, network):
+        self._log.info('OpenZWave Initialization failed.')
+        self._alert('OpenZWave Initialization failed.')
+        #self._redrawAll()
+
+    def _notifyNodeReady(self, network, node):
         self._readyNodeCount += 1
         self._addDialogText(2, 'OpenZWave is querying associated devices')
-        self._addDialogText(3,'Node {0} is now ready'.format(nodeId))
-        self._addDialogProgress(5, self._readyNodeCount, self._wrapper.nodeCount)
+        self._addDialogText(3,'Node %s is now ready' % node.node_id)
+        self._addDialogProgress(5, self._readyNodeCount, network.nodes_count)
         self._updateDeviceList()
 
     def _notifyValueChanged(self, signal, **kw):
@@ -383,19 +392,21 @@ class ZWaveCommander:
                 self._dialogpad.addstr(row, lh, pctstr, curses.color_pair(self.COLOR_NORMAL) | curses.A_BOLD)
             self._updateDialog()
 
-    def _checkInterface(self):
-        dispatcher.connect(self._notifyDriverReady, ZWaveWrapper.SIGNAL_DRIVER_READY)
-        dispatcher.connect(self._notifySystemReady, ZWaveWrapper.SIGNAL_SYSTEM_READY)
-        dispatcher.connect(self._notifyNodeReady, ZWaveWrapper.SIGNAL_NODE_READY)
-        dispatcher.connect(self._notifyValueChanged, ZWaveWrapper.SIGNAL_VALUE_CHANGED)
-        dispatcher.connect(self._notifyNodeAdded, ZWaveWrapper.SIGNAL_NODE_ADDED)
+    def _startNetwork(self):
+        dispatcher.connect(self._notifyDriverReady, ZWaveNetwork.SIGNAL_DRIVER_READY)
+        dispatcher.connect(self._notifyNetworkReady, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._notifyNetworkFailed, ZWaveNetwork.SIGNAL_NETWORK_FAILED)
+        dispatcher.connect(self._notifyNodeReady, ZWaveNetwork.SIGNAL_NODE_READY)
+        dispatcher.connect(self._notifyValueChanged, ZWaveNetwork.SIGNAL_VALUE_CHANGED)
+        dispatcher.connect(self._notifyNodeAdded, ZWaveNetwork.SIGNAL_NODE_ADDED)
         self._initDialog(10,60,['Cancel'],'Progress')
         self._addDialogText(2,'Initializing OpenZWave')
-        self._log.info('Initializing OpenZWave via wrapper')
-        self._wrapper = ZWaveWrapper.getInstance(device=self._config['device'], config=self._config['config'], log=None)
+        self._log.info('Initializing OpenZWave')
+        self._network = ZWaveNetwork(self._options, log=self._log)
+        #self._network = ZWaveWrapper.getInstance(device=self._config['device'], config=self._config['config'], log=None)
         self._setTimer('initCheck', 3, self._checkIfInitialized)
 
-        while not self._stop.isSet() and not self._wrapper.initialized:
+        while not self._stop.isSet() and not self._driverInitialized:
             time.sleep(0.1)
             # TODO: handle keys here... cancel/etc
 
@@ -470,16 +481,23 @@ class ZWaveCommander:
         self._screen.addstr(row, self._screensize[1] - len(data), data, attrs)
 
     def _updateSystemInfo(self):
-        self._screen.addstr(0,1,'{0} on {1}'.format(self._wrapper.controllerDescription, self._config['device']), curses.color_pair(self.COLOR_NORMAL))
-        self._screen.addstr(1,1,'Home ID 0x%0.8x' % self._wrapper.homeId, curses.color_pair(self.COLOR_NORMAL))
+        self._screen.addstr(0,1,'%s on %s' % \
+            (self._network.controller.description, self._network.controller.device), \
+            curses.color_pair(self.COLOR_NORMAL))
+        self._screen.addstr(1,1,'Home ID 0x%0.8x' % \
+            (self._network.self._network.home_id), \
+            curses.color_pair(self.COLOR_NORMAL))
         self._screen.move(2,1)
-        self._screen.addstr('{0} Registered Nodes'.format(self._wrapper.nodeCount), curses.color_pair(self.COLOR_NORMAL))
-        if self._wrapper.initialized:
-            sleepcount = self._wrapper.sleepingNodeCount
-            if sleepcount:
-                self._screen.addstr(' ({0} Sleeping)'.format(sleepcount),curses.color_pair(self.COLOR_NORMAL) | curses.A_DIM)
-        self._rightPrint(0, '{0} Library'.format(self._wrapper.libraryTypeName))
-        self._rightPrint(1, 'Version {0}'.format(self._wrapper.libraryVersion))
+        self._screen.addstr('%s Registered Nodes' % \
+            (self._network.nodes_count), \
+            curses.color_pair(self.COLOR_NORMAL))
+        self._screen.addstr(' (%s Sleeping)' % \
+            (self._network.sleeping_nodes_count), \
+            curses.color_pair(self.COLOR_NORMAL) | curses.A_DIM)
+        self._rightPrint(0, 'Library' % \
+            (self._network.controller.library_description))
+        self._rightPrint(1, 'Python Library Version %s' % \
+            (self._network.controller.python_library_version))
         self._screen.refresh()
 
     def _updateColumnHeaders(self):
@@ -533,20 +551,20 @@ class ZWaveCommander:
 
     def _drawNodeStatus(self, node, drawSelected):
         clr = self._getListItemColor(drawSelected)
-        if node.isSleeping:
+        if node.is_sleeping:
             self._listpad.addstr(self._fixColumn('(sleeping)', self._colwidths[5]), clr | curses.A_LOW)
-        elif node.hasCommandClass(0x76): # lock
-            self._listpad.addstr(self._fixColumn('Locked' if node.isLocked else 'Unlocked', self._colwidths[5]), clr)
-        elif node.hasCommandClass(0x26): # multi-level switch
+        elif node.has_command_class(0x76): # lock
+            self._listpad.addstr(self._fixColumn('Locked' if node.is_locked else 'Unlocked', self._colwidths[5]), clr)
+        elif node.has_command_class(0x26): # multi-level switch
             self._drawMiniBar(node.level, 0, 99, self._colwidths[5], drawSelected)
-        elif node.hasCommandClass(0x25): # binary switch
-            self._listpad.addstr(self._fixColumn('ON' if node.isOn else 'OFF', self._colwidths[5]), clr)
+        elif node.has_command_class(0x25): # binary switch
+            self._listpad.addstr(self._fixColumn('ON' if node.is_on else 'OFF', self._colwidths[5]), clr)
         else:
             self._listpad.addstr(self._fixColumn('OK', self._colwidths[5]), clr)
 
     def _drawBatteryStatus(self, node, drawSelected):
         clr = self._getListItemColor(drawSelected)
-        if node.hasCommandClass(0x80):
+        if node.has_command_class(0x80):
             self._drawMiniBar(node.batteryLevel, 0, 100, self._colwidths[6], drawSelected, colorLevels=colorlevels(error=0.10,warning=0.40))
         else:
             self._listpad.addstr(self._fixColumn('', self._colwidths[6]), clr)
@@ -567,9 +585,9 @@ class ZWaveCommander:
         self._drawSignalStrength(node, drawSelected)
 
     def _updateDeviceList(self):
-        self._listcount = self._wrapper.nodeCount
+        self._listcount = self._network.nodes_count
         idx = 0
-        for node in self._wrapper._nodes.itervalues():
+        for node in self._network._nodes.itervalues():
             if idx == self._listindex:
                 self._selectedNode = node
             self._listpad.move(idx,0)
@@ -672,7 +690,7 @@ class ZWaveCommander:
             if self._detailpos[self._detailview] >= len(node.commandClasses): self._detailpos[self._detailview]=len(node.commandClasses)-1
             i = 0
             for cc in node.commandClasses:
-                pad.addstr(i + 1, 0, ' {0:<{width}}'.format(self._wrapper.getCommandClassName(cc), width=30),
+                pad.addstr(i + 1, 0, ' {0:<{width}}'.format(self._network.getCommandClassName(cc), width=30),
                            self._getListItemColor(i == self._detailpos[self._detailview]))
                 i += 1
 

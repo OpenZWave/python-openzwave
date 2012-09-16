@@ -3,7 +3,7 @@
 echo "-----------------------------------------------------------------"
 echo "|   Retrieve sources of openzwave                               |"
 echo "-----------------------------------------------------------------"
-svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+[ ! -d openzwave ] && svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
 
 echo "-----------------------------------------------------------------"
 echo "|   Build openzwave                                             |"

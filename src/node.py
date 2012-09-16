@@ -102,6 +102,16 @@ class ZWaveNode(ZWaveObject):
         self.cache_property(lambda: self.groups)
 
     @property
+    def node_id(self):
+        """
+        The id of the node.
+
+        :rtype: int
+
+        """
+        return self._object_id
+
+    @property
     def name(self):
         """
         The name of the node.

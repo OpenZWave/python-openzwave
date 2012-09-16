@@ -6,6 +6,6 @@ echo "------------------------------------------------------------"
 python setup.py install --root=build/tmp
 
 echo "------------------------------------------------------------"
-echo "|   Run api_demo                                           |"
+echo "|   Run zwaveCommander                                     |"
 echo "------------------------------------------------------------"
-./examples/api_demo.py
+./examples/zwaveCommander.py

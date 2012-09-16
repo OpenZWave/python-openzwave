@@ -45,15 +45,15 @@ from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
+import time
 
 #Define some manager options
 options = ZWaveOption(device="/tmp/zwave", \
-  config_path="/home/sebastien/devel/python-openzwave/openzwave/config", \
-#use automatic
-#  config_path=None, \
+  config_path="openzwave/config", \
   user_path=".", cmd_line="")
-options.set_log_file("OZW_Log.txt")
+options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
+options.set_console_output(False)
 options.set_save_log_level('Debug')
 options.set_logging(True)
 options.lock()
@@ -61,6 +61,35 @@ options.lock()
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
+print "Waiting for driver : "
+for i in range(0,20):
+    if network.initialised:
+        print " done"
+        break
+    else:
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        time.sleep(1.0)
+if not network.initialised:
+    print "."
+    print "Can't initialise driver! Look at the logs in OZW_Log.log"
+    quit(1)
 print "Use python library : %s" % network.controller.python_library_version
+print "Use openzwave library : %s" % network.controller.library_description
+print "Waiting for network : "
+for i in range(0,30):
+    if network.started:
+        print " done"
+        break
+    else:
+        sys.stdout.write(".")
+        sys.stdout.write(network.nodes_count)
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        time.sleep(1.0)
+if not network.started:
+    print "."
+    print "Can't start network! Look at the logs in OZW_Log.log"
+    quit(2)
 print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
