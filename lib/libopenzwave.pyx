@@ -1574,8 +1574,6 @@ Helper method to return whether a particular class is available in a node
             return ret
         else :
             return False
-        return
-
 #
 # -----------------------------------------------------------------------------
 # Values

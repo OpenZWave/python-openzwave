@@ -17,12 +17,15 @@ echo "|   Build py-openzwave                                          |"
 echo "-----------------------------------------------------------------"
 python setup.py build
 
+if [ u != $(which sphinx-build)u ] ; then
 echo "-----------------------------------------------------------------"
 echo "|   Make documentation                                          |"
 echo "-----------------------------------------------------------------"
-cd docs
-make html
-cd ..
+	python setup.py install --root=build/tmp
+	cd docs
+	make html
+	cd ..
+fi
 
 echo "-----------------------------------------------------------------"
 echo "|   You can now install py-openzwave                            |"
