@@ -93,7 +93,38 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dt id="openzwave.network.ZWaveNetwork">
 <em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>options</em>, <em>log=None</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p>The network objet = homeid.
-It contains a reference to the manager</p>
+It contains a reference to the manager and the controller.</p>
+<p>It dispatch the following louie signals :</p>
+<ul class="simple">
+<li>SIGNAL_NETWORK_FAILED = &#8216;NetworkFailed&#8217;</li>
+<li>SIGNAL_NETWORK_READY = &#8216;NetworkReady&#8217;</li>
+<li>SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</li>
+<li>SIGNAL_DRIVER_READY = &#8216;DriverReady&#8217;</li>
+<li>SIGNAL_DRIVER_RESET = &#8216;DriverReset&#8217;</li>
+<li>SIGNAL_NODE_ADDED = &#8216;NodeAdded&#8217;</li>
+<li>SIGNAL_NODE_EVENT = &#8216;NodeEvent&#8217;</li>
+<li>SIGNAL_NODE_NAMING = &#8216;NodeNaming&#8217;</li>
+<li>SIGNAL_NODE_NEW = &#8216;NodeNew&#8217;</li>
+<li>SIGNAL_NODE_PROTOCOL_INFO = &#8216;NodeProtocolInfo&#8217;</li>
+<li>SIGNAL_NODE_READY = &#8216;NodeReady&#8217;</li>
+<li>SIGNAL_NODE_REMOVED = &#8216;NodeRemoved&#8217;</li>
+<li>SIGNAL_VALUE_ADDED = &#8216;ValueAdded&#8217;</li>
+<li>SIGNAL_VALUE_CHANGED = &#8216;ValueChanged&#8217;</li>
+<li>SIGNAL_VALUE_REFRESHED = &#8216;ValueRefreshed&#8217;</li>
+<li>SIGNAL_VALUE_REMOVED = &#8216;ValueRemoved&#8217;</li>
+<li>SIGNAL_POLLING_ENABLED = &#8216;PollingEnabled&#8217;</li>
+<li>SIGNAL_POLLING_DISABLED = &#8216;PollingDisabled&#8217;</li>
+<li>SIGNAL_CREATE_BUTTON = &#8216;CreateButton&#8217;</li>
+<li>SIGNAL_DELETE_BUTTON = &#8216;DeleteButton&#8217;</li>
+<li>SIGNAL_BUTTON_ON = &#8216;ButtonOn&#8217;</li>
+<li>SIGNAL_BUTTON_OFF = &#8216;ButtonOff&#8217;</li>
+<li>SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = &#8216;EssentialNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_NODE_QUERIES_COMPLETE = &#8216;NodeQueriesComplete&#8217;</li>
+<li>SIGNAL_AWAKE_NODE_QUERIES_COMPLETE = &#8216;AwakeNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_ALL_NODES_QUERIES_COMPLETE = &#8216;AllNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_MSG_COMPLETE = &#8216;MsgComplete&#8217;</li>
+<li>SIGNAL_ERROR = &#8216;Error&#8217;</li>
+</ul>
 <dl class="attribute">
 <dt id="openzwave.network.ZWaveNetwork.controller">
 <tt class="descname">controller</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.controller" title="Permalink to this definition">¶</a></dt>

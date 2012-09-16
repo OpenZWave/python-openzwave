@@ -217,20 +217,21 @@ class ZWaveController(ZWaveObject):
         Retrieve statistics from driver.
 
         Statistics:
-        s_SOFCnt                         Number of SOF bytes received
-        s_ACKWaiting                     Number of unsolicited messages while waiting for an ACK
-        s_readAborts                     Number of times read were aborted due to timeouts
-        s_badChecksum                    Number of bad checksums
-        s_readCnt                        Number of messages successfully read
-        s_writeCnt                       Number of messages successfully sent
-        s_CANCnt                         Number of CAN bytes received
-        s_NAKCnt                         Number of NAK bytes received
-        s_ACKCnt                         Number of ACK bytes received
-        s_OOFCnt                         Number of bytes out of framing
-        s_dropped                        Number of messages dropped & not delivered
-        s_retries                        Number of messages retransmitted
-        s_controllerReadCnt              Number of controller messages read
-        s_controllerWriteCnt             Number of controller messages sent
+
+        * s_SOFCnt                         : Number of SOF bytes received
+        * s_ACKWaiting                     : Number of unsolicited messages while waiting for an ACK
+        * s_readAborts                     : Number of times read were aborted due to timeouts
+        * s_badChecksum                    : Number of bad checksums
+        * s_readCnt                        : Number of messages successfully read
+        * s_writeCnt                       : Number of messages successfully sent
+        * s_CANCnt                         : Number of CAN bytes received
+        * s_NAKCnt                         : Number of NAK bytes received
+        * s_ACKCnt                         : Number of ACK bytes received
+        * s_OOFCnt                         : Number of bytes out of framing
+        * s_dropped                        : Number of messages dropped & not delivered
+        * s_retries                        : Number of messages retransmitted
+        * s_controllerReadCnt              : Number of controller messages read
+        * s_controllerWriteCnt             : Number of controller messages sent
 
         :rtype: dict()
 

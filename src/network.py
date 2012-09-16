@@ -41,11 +41,42 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 class ZWaveNetwork(ZWaveObject):
     '''
     The network objet = homeid.
-    It contains a reference to the manager
+    It contains a reference to the manager and the controller.
+
+    It dispatch the following louie signals :
+
+    * SIGNAL_NETWORK_FAILED = 'NetworkFailed'
+    * SIGNAL_NETWORK_READY = 'NetworkReady'
+    * SIGNAL_DRIVER_FAILED = 'DriverFailed'
+    * SIGNAL_DRIVER_READY = 'DriverReady'
+    * SIGNAL_DRIVER_RESET = 'DriverReset'
+    * SIGNAL_NODE_ADDED = 'NodeAdded'
+    * SIGNAL_NODE_EVENT = 'NodeEvent'
+    * SIGNAL_NODE_NAMING = 'NodeNaming'
+    * SIGNAL_NODE_NEW = 'NodeNew'
+    * SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
+    * SIGNAL_NODE_READY = 'NodeReady'
+    * SIGNAL_NODE_REMOVED = 'NodeRemoved'
+    * SIGNAL_VALUE_ADDED = 'ValueAdded'
+    * SIGNAL_VALUE_CHANGED = 'ValueChanged'
+    * SIGNAL_VALUE_REFRESHED = 'ValueRefreshed'
+    * SIGNAL_VALUE_REMOVED = 'ValueRemoved'
+    * SIGNAL_POLLING_ENABLED = 'PollingEnabled'
+    * SIGNAL_POLLING_DISABLED = 'PollingDisabled'
+    * SIGNAL_CREATE_BUTTON = 'CreateButton'
+    * SIGNAL_DELETE_BUTTON = 'DeleteButton'
+    * SIGNAL_BUTTON_ON = 'ButtonOn'
+    * SIGNAL_BUTTON_OFF = 'ButtonOff'
+    * SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
+    * SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
+    * SIGNAL_AWAKE_NODE_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
+    * SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
+    * SIGNAL_MSG_COMPLETE = 'MsgComplete'
+    * SIGNAL_ERROR = 'Error'
+
     '''
     SIGNAL_NETWORK_FAILED = 'NetworkFailed'
     SIGNAL_NETWORK_READY = 'NetworkReady'
-
     SIGNAL_DRIVER_FAILED = 'DriverFailed'
     SIGNAL_DRIVER_READY = 'DriverReady'
     SIGNAL_DRIVER_RESET = 'DriverReset'
@@ -323,19 +354,21 @@ class ZWaveNetwork(ZWaveObject):
         Callback Handler
 
         n['valueId'] = {
-        'home_id' : v.GetHomeId(),
-        'node_id' : v.GetNodeId(),
-        'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-        'instance' : v.GetInstance(),
-        'index' : v.GetIndex(),
-        'id' : v.GetId(),
-        'genre' : PyGenres[v.GetGenre()],
-        'type' : PyValueTypes[v.GetType()],
-        #'value' : value.c_str(),
-        'value' : getValueFromType(manager,v.GetId()),
-        'label' : label.c_str(),
-        'units' : units.c_str(),
-        'readOnly': manager.IsValueReadOnly(v)
+
+			* 'home_id' : v.GetHomeId(),
+			* 'node_id' : v.GetNodeId(),
+			* 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+			* 'instance' : v.GetInstance(),
+			* 'index' : v.GetIndex(),
+			* 'id' : v.GetId(),
+			* 'genre' : PyGenres[v.GetGenre()],
+			* 'type' : PyValueTypes[v.GetType()],
+			* #'value' : value.c_str(),
+			* 'value' : getValueFromType(manager,v.GetId()),
+			* 'label' : label.c_str(),
+			* 'units' : units.c_str(),
+			* 'readOnly': manager.IsValueReadOnly(v)
+
         }
 
         :param args: Callback function

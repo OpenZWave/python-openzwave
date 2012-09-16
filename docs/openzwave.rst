@@ -18,6 +18,6 @@ Contents:
     group <group>
     value <value>
     scene <scene>
-    object and Exceptions <object>
+    object and exceptions <object>
     common definitions <data>
 
