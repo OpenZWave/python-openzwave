@@ -1164,10 +1164,10 @@ Get the bitmap of this node's neighbors.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: A set containing neighboring node IDs
-:rtype: list()
+:rtype: set()
 
         '''
-        data = list()
+        data = set()
         #Allocate memory for the c++ function
         #Return value is pointer to uint8[]
         cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*29)
@@ -2325,6 +2325,49 @@ Gets the associations for a group
 :type nodeId: int
 :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
 :type groupIdx: int
+:returns: A set containing IDs of members of the group
+:rtype: set()
+:see: getNumGroups, addAssociation, removeAssociation, getMaxAssociations
+
+        '''
+        data = set()
+        cdef uint32 size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
+        #Allocate memory
+        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8) * size)
+        # return value is pointer to uint8[]
+        cdef uint32 count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+        if count == 0:
+            #Don't need to allocate memory.
+            return data
+        cdef ListAlloc retuint8 = ListAlloc(count)
+        cdef uint8* p
+        cdef uint32 start = 0
+        if count:
+            try:
+                p = dbuf[0] # p is now pointing at first element of array
+                for i in range(start, count):
+                    retuint8[i] = p[0]
+                    data.add(retuint8[i])
+                    p += 1
+                retval = tuple(data)
+            finally:
+                # Free memory
+                free(dbuf)
+                pass
+        return retval
+
+    def getAssociationsOld(self, homeid, nodeid, groupidx):
+        '''
+.. _getAssociations:
+
+Gets the associations for a group
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node whose associations we are interested in.
+:type nodeId: int
+:param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
+:type groupIdx: int
 :returns: set -- A set containing IDs of members of the group
 :see: getNumGroups, addAssociation, removeAssociation, getMaxAssociations
 
@@ -2543,6 +2586,50 @@ sceneGetValueAsString_
         return self.manager.GetNumScenes()
 
     def getAllScenes(self):
+        '''
+.. _getAllScenes:
+
+Gets a set of all the SceneIds
+
+:returns: A set() containing neighboring scene IDs
+:rtype: set()
+:see: getNumScenes_, sceneExists_, \
+createScene_, removeScene_, activateScene_, \
+getSceneLabel_, setSceneLabel_ \
+removeSceneValue_, addSceneValue_, setSceneValue_, \
+sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
+sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
+sceneGetValueAsString_
+
+        '''
+        data = set()
+        cdef uint32 size = self.manager.GetNumScenes()
+        # Allocate memory
+        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*size)
+        # return value is pointer to uint8[]
+        cdef uint32 count = self.manager.GetAllScenes(dbuf)
+        if count == 0:
+            #Don't need to allocate memory.
+            return data
+        cdef ListAlloc retuint8 = ListAlloc(count)
+        cdef uint8* p
+        cdef uint32 start = 0
+        if count:
+            try:
+                data = list()
+                p = dbuf[0] # p is now pointing at first element of array
+                for i in range(start, count):
+                    retuint8[i] = p[0]
+                    data.add(retuint8[i])
+                    p += 1
+                retval = data
+            finally:
+                # Free memory
+                free(dbuf)
+                pass
+        return retval
+
+    def getAllScenesOld(self):
         '''
 .. _getAllScenes:
 
