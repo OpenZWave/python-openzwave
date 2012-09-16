@@ -27,7 +27,8 @@ from os import name as os_name
 from platform import system as platform_system
 from setuptools import setup, find_packages
 #from distutils.command import build_py
-from Cython.Distutils import extension
+#from Cython.Distutils import extension
+from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import os
 import glob
@@ -64,15 +65,18 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.css'))
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
+cmdclass = { }
+ext_modules = [ ]
+
 if os_name == 'nt':
-    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules += [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/cpp/lib/windows-mingw32/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 elif platform_system() == 'Darwin':
-    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules += [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
@@ -80,19 +84,21 @@ elif platform_system() == 'Darwin':
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 else:
-    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules += [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 
+cmdclass.update({ 'build_ext': build_ext })
+
 setup(
   name = 'python-openzwave',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='http://code.google.com/p/python-openzwave',
-  cmdclass = {'build_ext': build_ext},
+  cmdclass = cmdclass,
   ext_modules = ext_modules,
   package_dir = {'openzwave': 'src'},
   #The following line install config drectory in share/python-openzwave
