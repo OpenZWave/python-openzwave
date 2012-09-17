@@ -1108,41 +1108,6 @@ on which of those values are specified by the node.
         cdef string c_string = self.manager.GetNodeType(homeid, nodeid)
         return c_string.c_str()
 
-    def getNodeNeighborsOld(self, homeid, nodeid):
-        '''
-.. _getNodeNeighborsOld:
-
-Get the bitmap of this node's neighbors.
-
-Old release. Do not free memory after allocating it.
-
-:param homeId: The Home ID of the Z-Wave controller that manages the node.
-:type homeId: int
-:param nodeId: The ID of the node to query.
-:type nodeId: int
-:returns: tuple - A tuple containing neighboring node IDs
-
-        '''
-        retval = None
-        # TODO: proper initialization of this pointer.  Underlying code creates new uint8[] at this address, but segfaults if passed in value is null.  Boy, is my C rusty.
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8))
-        # return value is pointer to uint8[]
-        cdef uint32 count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
-        cdef uint8* p
-        cdef uint32 start = 0
-        if count:
-            try:
-                data = list()
-                p = dbuf[0] # p is now pointing at first element of array
-                for i in range(start, count):
-                    data.append(p[0])
-                    p += 1
-                retval = tuple(data)
-            finally:
-                # TODO: caller is responsible for deleting returned array via call to delete()
-                pass
-        return retval
-
     def getNodeNeighbors(self, homeid, nodeid):
         '''
 .. _getNodeNeighbors:
@@ -1871,15 +1836,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
-        cdef bool type_bool
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsBool(values_map.at(id), &type_bool):
-                return type_bool
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
     def getValueAsByte(self, id):
         '''
@@ -1895,15 +1852,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
-        cdef uint8 type_byte
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsByte(values_map.at(id), &type_byte):
-                return type_byte
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
     def getValueAsFloat(self, id):
         '''
@@ -1919,15 +1868,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
-        cdef float type_float
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsFloat(values_map.at(id), &type_float):
-                return type_float
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
     def getValueAsShort(self, id):
         '''
@@ -1944,15 +1885,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsFloat_, getValueAsInt_, getValueAsString_
 
         '''
-        cdef int16 type_short
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsShort(values_map.at(id), &type_short):
-                return type_short
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
     def getValueAsInt(self, id):
         '''
@@ -1969,15 +1902,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsFloat_, getValueAsShort_, getValueAsString_
 
         '''
-        cdef int32 type_int
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsInt(values_map.at(id), &type_int):
-                return type_int
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
     def getValueAsString(self, id):
         '''
@@ -1994,15 +1919,7 @@ TODO : Use getValueFromType(self.manager,id) when it will be ok
 getValueAsFloat_, getValueAsShort_, getValueAsInt_
 
         '''
-        cdef string type_string
-
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueAsString(values_map.at(id), &type_string):
-                return type_string.c_str()
-            else :
-                return None
-        else :
-            return None
+        return getValueFromType(self.manager,id)
 
 #        bool GetValueListSelection(ValueID& valueid, string* o_value)
 #        bool GetValueListSelection(ValueID& valueid, uint32* o_value)
@@ -2361,46 +2278,6 @@ Gets the associations for a group
                 pass
         return data
 
-    def getAssociationsOld(self, homeid, nodeid, groupidx):
-        '''
-.. _getAssociations:
-
-Gets the associations for a group
-
-:param homeId: The Home ID of the Z-Wave controller that manages the node.
-:type homeId: int
-:param nodeId: The ID of the node whose associations we are interested in.
-:type nodeId: int
-:param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
-:type groupIdx: int
-:returns: set -- A set containing IDs of members of the group
-:see: getNumGroups, addAssociation, removeAssociation, getMaxAssociations
-
-        '''
-        retval = None
-        cdef uint32 size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
-        #Allocate memory
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8) * size)
-        # return value is pointer to uint8[]
-        cdef uint32 count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
-        cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
-        cdef uint8* p
-        cdef uint32 start = 0
-        if count:
-            try:
-                data = list()
-                p = dbuf[0] # p is now pointing at first element of array
-                for i in range(start, count):
-                    retuint8[i] = p[0]
-                    data.append(retuint8[i])
-                    p += 1
-                retval = tuple(data)
-            finally:
-                # Free memory
-                free(dbuf)
-                pass
-        return retval
-
     def getMaxAssociations(self, homeid, nodeid, groupidx):
         '''
 .. _getMaxAssociations:
@@ -2632,47 +2509,6 @@ sceneGetValueAsString_
                 free(dbuf)
                 pass
         return data
-
-    def getAllScenesOld(self):
-        '''
-.. _getAllScenes:
-
-Gets a list of all the SceneIds
-
-:returns: A list() containing neighboring scene IDs
-:rtype: list()
-:see: getNumScenes_, sceneExists_, \
-createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
-removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
-
-        '''
-        retval = None
-        cdef uint32 size = self.manager.GetNumScenes()
-        # Allocate memory
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*size)
-        # return value is pointer to uint8[]
-        cdef uint32 count = self.manager.GetAllScenes(dbuf)
-        cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
-        cdef uint8* p
-        cdef uint32 start = 0
-        if count:
-            try:
-                data = list()
-                p = dbuf[0] # p is now pointing at first element of array
-                for i in range(start, count):
-                    retuint8[i] = p[0]
-                    data.append(retuint8[i])
-                    p += 1
-                retval = data
-            finally:
-                # Free memory
-                free(dbuf)
-                pass
-        return retval
 
     def createScene(self):
         '''
