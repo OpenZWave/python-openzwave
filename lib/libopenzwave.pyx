@@ -39,7 +39,7 @@ from manager cimport Manager, Create, Get
 from log cimport LogLevel
 import os
 
-PYLIBRARY = "0.2.3"
+PYLIBRARY = "0.2.4"
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
@@ -1546,7 +1546,7 @@ Get whether the node information has been received
         return self.manager.IsNodeInfoReceived(homeid, nodeid)
 
 
-    def getNodeClassInformation(self, homeid, nodeid, commandClassId, className, classVersion):
+    def getNodeClassInformation(self, homeid, nodeid, commandClassId, className = None, classVersion = None):
         '''
 .. _getNodeClassInformation:
 
@@ -2349,8 +2349,8 @@ Gets the associations for a group
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8[i] = p[0]
-                    data.add(retuint8[i])
+                    retuint8.data[i] = p[0]
+                    data.add(retuint8.data[i])
                     p += 1
             finally:
                 # Free memory
@@ -2621,8 +2621,8 @@ sceneGetValueAsString_
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8[i] = p[0]
-                    data.add(retuint8[i])
+                    retuint8.data[i] = p[0]
+                    data.add(retuint8.data[i])
                     p += 1
             finally:
                 # Free memory
