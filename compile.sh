@@ -18,13 +18,19 @@ echo "-----------------------------------------------------------------"
 python setup.py build
 
 if [ u != $(which sphinx-build)u ] ; then
-echo "-----------------------------------------------------------------"
-echo "|   Make documentation                                          |"
-echo "-----------------------------------------------------------------"
+	echo "-----------------------------------------------------------------"
+	echo "|   Make documentation                                          |"
+	echo "-----------------------------------------------------------------"
 	python setup.py install --root=build/tmp
 	cd docs
 	make html
 	cd ..
+else
+	echo "-----------------------------------------------------------------"
+	echo "|   sphinx not found                                            |"
+	echo "|   No documentation general                                    |"
+	echo "-----------------------------------------------------------------"
+
 fi
 
 echo "-----------------------------------------------------------------"
@@ -32,5 +38,7 @@ echo "|   You can now install py-openzwave                            |"
 echo "|   Run the following command                                   |"
 echo "|   sudo python setup.py install                                |"
 echo "|   config directory : /usr/local/share/python-openzwave        |"
-echo "|   API documentation : /usr/local/share/doc/python-openzwave   |"
+if [ u != $(which sphinx-build)u ] ; then
+	echo "|   API documentation : /usr/local/share/doc/python-openzwave   |"
+fi
 echo "-----------------------------------------------------------------"

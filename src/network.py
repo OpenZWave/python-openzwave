@@ -69,10 +69,92 @@ class ZWaveNetwork(ZWaveObject):
     * SIGNAL_BUTTON_OFF = 'ButtonOff'
     * SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
     * SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
-    * SIGNAL_AWAKE_NODE_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
+    * SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
     * SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
     * SIGNAL_MSG_COMPLETE = 'MsgComplete'
     * SIGNAL_ERROR = 'Error'
+
+    The table presented below lists notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.
+
+    Driver Initialization Notification
+
+    The notification below is sent when OpenZWave has successfully connected to a physical ZWave controller.
+
+    DriverReady
+
+    [always sent] 	Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
+    At the time this notification is sent, only certain information about the controller itself is known:
+
+        * Controller Z-Wave version
+        * Network HomeID
+        * Controller capabilities
+        * Controller Application Version & Manufacturer/Product ID
+        * Nodes included in the network
+
+    Node Initialization Notifications
+
+    As OpenZWave starts, it identifies and reads information about each node in the network. The following notifications may be sent during the initialization process.
+
+    NodeNew
+
+    [potentially sent] 	Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
+    At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.
+
+    NodeAdded
+
+    [always sent (for each node associated with the controller)] 	Sent when a node has been added to OpenZWave’s list of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
+    As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.
+
+    NodeProtocolInfo
+
+    [potentially sent] 	Sent after a node’s protocol information has been successfully read from the controller.
+    At the time this notification is sent, only certain information about the node is known:
+
+        * Whether it is a “listening” or “sleeping” device
+        * Whether the node is capable of routing messages
+        * Maximum baud rate for communication
+        * Version number
+        * Security byte
+
+    NodeNaming
+
+    [potentially sent] 	Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).
+
+    ValueAdded
+
+    [potentially sent] 	Sent when a new value has been associated with the node.
+    At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.
+
+    NodeQueriesComplete
+
+    [always sent (for each node associated with the controller that has been successfully queried)] 	Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.
+
+    Initialization Complete Notifications
+
+    As indicated above, when OpenZWave starts it reads certain information from a file, from the controller and from the network.  The following notifications identify when this initialization/querying process is complete.
+
+    AwakeNodesQueried
+
+    [always sent] 	Sent when all “listening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)
+
+    AllNodesQueried
+
+    [potentially sent] 	Sent when all nodes have been successfully queried.
+
+    This notification should be sent relatively quickly if there are no “sleeping” nodes. But it might be sent quite a while after start-up if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.
+
+    Other Notifications
+
+    In addition to the notifications described above, which are primarily “initialization” notifications that are sent during program start-up, the following notifications may be sent as a result of user actions, external program control, etc.
+
+    * ValueChanged 	Sent when a value associated with a node has changed. Receipt of this notification indicates that it may be a good time to read the new value and display or otherwise process it accordingly.
+    * ValueRemoved 	Sent when a value associated with a node has been removed.
+    * Group 	Sent when a node’s group association has changed.
+    * NodeRemoved 	Sent when a node has been removed from the ZWave network.
+    * NodeEvent 	Sent when a node sends a Basic_Set command to the controller.  This notification can be generated by certain sensors, for example, motion detectors, to indicate that an event has been sensed.
+    * PollingEnabled 	Sent when node/value polling has been enabled.
+    * PollingDisabled 	Sent when node/value polling has been disabled.
+    * DriverReset 	Sent to indicate when a controller has been reset.  This notification is intended to replace the potentially hundreds of notifications representing each value and node removed from the network.
 
     '''
     SIGNAL_NETWORK_FAILED = 'NetworkFailed'
@@ -99,10 +181,17 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_BUTTON_OFF = 'ButtonOff'
     SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
     SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
-    SIGNAL_AWAKE_NODE_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
+    SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodesQueriesComplete'
     SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
     SIGNAL_ERROR = 'Error'
+
+    STATE_STOPPED = 0
+    STATE_FAILED = 1
+    STATE_INITIALISED = 2
+    STATE_RESET = 4
+    STATE_AWAKE = 7
+    STATE_READY = 10
 
     ignoreSubsequent = True
 
@@ -124,8 +213,9 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.create()
         self._manager.addWatcher(self.zwcallback)
         self._manager.addDriver(options.device)
-        self._initialised = False
-        self._started = False
+        self._state = False
+        #self._initialised = False
+        #self._started = False
         #self._ready = False
         self._semaphore_nodes = threading.Semaphore()
         self.nodes = None
@@ -146,25 +236,79 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._object_id
 
+#    @property
+#    def initialised(self):
+#        """
+#        Says if the driver is ready.
+#
+#        :rtype: bool
+#
+#        """
+#        return self._initialised
+#
+#    @property
+#    def started(self):
+#        """
+#        Says if all the nodes are queried.
+#
+#        :rtype: bool
+#
+#        """
+#        return self._started
+
     @property
-    def initialised(self):
+    def is_ready(self):
         """
-        Says if the driver is ready.
+        Says if the network is ready for operations.
 
         :rtype: bool
 
         """
-        return self._initialised
+        return self._state>=STATE_READY
 
     @property
-    def started(self):
+    def state(self):
         """
-        Says if all the nodes are queried.
+        The state of the network. Values may be changed in the future,
+        only order is important.
+        You can safely ask node informations when state >= STATE_READY
 
-        :rtype: bool
+        * STATE_STOPPED = 0
+        * STATE_FAILED = 1
+        * STATE_INITIALISED = 2
+        * STATE_RESET = 4
+        * STATE_AWAKE = 7
+        * STATE_READY = 10
+
+        :rtype: int
 
         """
-        return self._started
+        return self._state
+
+    @property
+    def state_str(self):
+        """
+        The state of the network. Values may be changed in the future,
+        only order is important.
+        You can safely ask node informations when state >= STATE_READY
+
+        :rtype: int
+
+        """
+        if self._state == 0:
+            return "Network is stopped"
+        elif self._state == 1:
+            return "Driver failed"
+        elif self._state == 2:
+            return "Driver initialised"
+        elif self._state == 4:
+            return "Driver reseted"
+        elif self._state == 7:
+            return "Topology loaded"
+        elif self._state == 10:
+            return "Network ready"
+        else:
+            return "Unkown state"
 
     @home_id.setter
     def home_id(self, value):
@@ -355,19 +499,19 @@ class ZWaveNetwork(ZWaveObject):
 
         n['valueId'] = {
 
-			* 'home_id' : v.GetHomeId(),
-			* 'node_id' : v.GetNodeId(),
-			* 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-			* 'instance' : v.GetInstance(),
-			* 'index' : v.GetIndex(),
-			* 'id' : v.GetId(),
-			* 'genre' : PyGenres[v.GetGenre()],
-			* 'type' : PyValueTypes[v.GetType()],
-			* #'value' : value.c_str(),
-			* 'value' : getValueFromType(manager,v.GetId()),
-			* 'label' : label.c_str(),
-			* 'units' : units.c_str(),
-			* 'readOnly': manager.IsValueReadOnly(v)
+            * 'home_id' : v.GetHomeId(),
+            * 'node_id' : v.GetNodeId(),
+            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+            * 'instance' : v.GetInstance(),
+            * 'index' : v.GetIndex(),
+            * 'id' : v.GetId(),
+            * 'genre' : PyGenres[v.GetGenre()],
+            * 'type' : PyValueTypes[v.GetType()],
+            * #'value' : value.c_str(),
+            * 'value' : getValueFromType(manager,v.GetId()),
+            * 'label' : label.c_str(),
+            * 'units' : units.c_str(),
+            * 'readOnly': manager.IsValueReadOnly(v)
 
         }
 
@@ -388,6 +532,7 @@ class ZWaveNetwork(ZWaveObject):
         self._manager = None
         self._controller = None
         self.nodes = None
+        self._state = self.STATE_FAILED
         dispatcher.send(self.SIGNAL_DRIVER_FAILED, **{'network': self})
         dispatcher.send(self.SIGNAL_NETWORK_FAILED, **{'network': self})
 
@@ -407,7 +552,7 @@ class ZWaveNetwork(ZWaveObject):
             self._controller.node = ZWaveNode(args['node_id'], network=self)
             self._semaphore_nodes.acquire()
             self.nodes = None
-            self._initialised = True
+            self._state = self.STATE_INITIALISED
             self.nodes[args['node_id']] = self._controller.node
             logging.info('Driver ready using library %s' % self._controller.library_description )
             logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
@@ -430,8 +575,7 @@ class ZWaveNetwork(ZWaveObject):
         try :
             self._semaphore_nodes.acquire()
             self.nodes = None
-            self._initialised = True
-            self._started = True
+            self._state = self.STATE_RESET
             self.nodes[args['node_id']] = self._controller.node
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
                 **{'network': self, 'controller': self._controller})
@@ -541,7 +685,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
-        self._started = True
+        self._state = self.STATE_READY
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_ALL_NODES_QUERIES_COMPLETE, \
             **{'network': self, 'controller': self._controller})
@@ -563,6 +707,9 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification AwakeNodesQueried : %s' % (args))
+        self._state = self.STATE_AWAKE
+        self._state = self.STATE_READY
+        dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIES_COMPLETE, \
             **{'network': self})
 
@@ -917,35 +1064,37 @@ class ZWaveNetwork(ZWaveObject):
 # - what is COMMAND_CLASS_INDICATOR used for?
 # - wake up duration sent via COMMAND_CLASS_WAKE_UP
 
-#   initialization callback sequence:
-#
-#   [driverReady]
-#
-#   [nodeAdded] <-------------------------+ This cycle is extremely quick, well under one second.
-#       [nodeProtocolInfo]                |
-#       [nodeNaming]                      |
-#       [valueAdded] <---------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH VALUE} ----+    |
-#                                         |
-#       [group] <--------------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH GROUP} ----+    |
-#                                         |
-#   {REPEATS FOR EACH NODE} --------------+
-#
-#   [? (no notification)] <---------------+ (no notification announces the beginning of this cycle)
-#                                         |
-#       [valueChanged] <-------------+    | This cycle can take some time, especially if some nodes
-#                                    |    | are sleeping or slow to respond.
-#       {REPEATS FOR EACH VALUE} ----+    |
-#                                         |
-#       [group] <--------------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH GROUP} ----+    |
-#                                         |
-#   [nodeQueriesComplete]                 |
-#                                         |
-#   {REPEATS FOR EACH NODE} --------------+
-#
-#   [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
+"""
+   initialization callback sequence:
+
+   [driverReady]
+
+   [nodeAdded] <-------------------------+ This cycle is extremely quick, well under one second.
+       [nodeProtocolInfo]                |
+       [nodeNaming]                      |
+       [valueAdded] <---------------+    |
+                                    |    |
+       {REPEATS FOR EACH VALUE} ----+    |
+                                         |
+       [group] <--------------------+    |
+                                    |    |
+       {REPEATS FOR EACH GROUP} ----+    |
+                                         |
+   {REPEATS FOR EACH NODE} --------------+
+
+   [? (no notification)] <---------------+ (no notification announces the beginning of this cycle)
+                                         |
+       [valueChanged] <-------------+    | This cycle can take some time, especially if some nodes
+                                    |    | are sleeping or slow to respond.
+       {REPEATS FOR EACH VALUE} ----+    |
+                                         |
+       [group] <--------------------+    |
+                                    |    |
+       {REPEATS FOR EACH GROUP} ----+    |
+                                         |
+   [nodeQueriesComplete]                 |
+                                         |
+   {REPEATS FOR EACH NODE} --------------+
+
+   [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
+"""

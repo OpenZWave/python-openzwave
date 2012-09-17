@@ -1,10 +1,10 @@
 diff --git a/setup.py b/setup.py
 --- a/setup.py
 +++ b/setup.py
-@@ -81,10 +81,10 @@
+@@ -87,10 +87,10 @@
      )]
  else:
-     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+     ext_modules += [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
 -                             libraries=['udev', 'stdc++'],
 +                             libraries=['udev', 'stdc++', 'openzwave'],
                               language="c++",
@@ -13,5 +13,5 @@ diff --git a/setup.py b/setup.py
 +                             extra_objects=['/usr/lib/libopenzwave.a'],
 +                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
      )]
- 
+
  setup(
