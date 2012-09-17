@@ -250,3 +250,22 @@ class ZWaveObject(object):
 
         """
         return self._object_id
+
+class ZWaveNodeInterface(object):
+    '''
+    Represents an interface of a node. An interface can manage
+    specific commandClasses (ie a switch, a dimmer, a thermostat, ...).
+    Don't know what to do with it now but sure it must exist
+    '''
+
+    def __init__(self):
+        '''
+        Initialize a Zwave Node Interface
+
+        :param object_id: ID of the object
+        :type object_id: int
+        :param network: The network object to access the manager
+        :type network: ZWaveNetwork
+
+        '''
+        self._class = "unknown"

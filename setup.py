@@ -6,7 +6,7 @@ This file is part of **python-openzwave** project http://code.google.com/p/pytho
 
 .. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 
-License : GPL(v3) 
+License : GPL(v3)
 
 **python-openzwave** is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,7 +23,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from os import name as os_name
 from distutils.core import setup
-from Cython.Distutils import extension
+#from Cython.Distutils import extension
+from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from platform import system as platform_system
 import glob
@@ -79,10 +80,11 @@ elif platform_system() == 'Darwin':
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 else:
-    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+#    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'], 
+                             extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 

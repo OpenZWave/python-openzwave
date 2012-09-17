@@ -649,71 +649,41 @@ class ZWaveNode(ZWaveObject):
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
         self.outdated = True
 
+#    def setNodeOn(self, node):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeOn for node {0}'.format(node.id))
+#        self._manager.setNodeOn(node.home_id, node.id)
 
-        # decorator?
-        #self._batteryLevel = None # if COMMAND_CLASS_BATTERY
-        #self._level = None # if COMMAND_CLASS_SWITCH_MULTILEVEL - maybe state? off - ramped - on?
-        #self._powerLevel = None # hmm...
-        # sensor multilevel?  instance/index
-        # meter?
-        # sensor binary?
+#    def setNodeOff(self, node):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeOff for node {0}'.format(node.id))
+#        self._manager.setNodeOff(node.home_id, node.id)
 
+#    def setNodeLevel(self, node, level):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
+#        self._manager.setNodeLevel(node.home_id, node.id, level)
 
-# commands:
-# - refresh node
-# - request node state
-# - request config param/request all config params
-# - set node level
-# - set node on/off
-# - switch all on/off
-# - add node, remove node (needs command support)
+class ZWaveNode(ZWaveObject):
+    '''
+    Represents a single Node within the Z-Wave Network
+    '''
 
-# editing:
-# - add association, remove association
-# - set config param
-# - set node manufacturer name
-# - set node name
-# - set node location
-# - set node product name
-# - set poll interval
-# - set wake up interval (needs command support)
+    def __init__(self, node_id, network ):
+        '''
+        Initialize zwave node
 
-# questions:
-# - can powerlevel be queried directly? See PowerLevel.cpp in command classes
-# - need more detail about notification events!
-# - what is COMMAND_CLASS_HAIL used for?
-# - what is COMMAND_CLASS_INDICATOR used for?
-# - wake up duration sent via COMMAND_CLASS_WAKE_UP
+        :param node_id: ID of the node
+        :type node_id: int
+        :param network: The network object to access the manager
+        :type network: ZWaveNetwork
 
-#   initialization callback sequence:
-#
-#   [driverReady]
-#
-#   [nodeAdded] <-------------------------+ This cycle is extremely quick, well under one second.
-#       [nodeProtocolInfo]                |
-#       [nodeNaming]                      |
-#       [valueAdded] <---------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH VALUE} ----+    |
-#                                         |
-#       [group] <--------------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH GROUP} ----+    |
-#                                         |
-#   {REPEATS FOR EACH NODE} --------------+
-#
-#   [? (no notification)] <---------------+ (no notification announces the beginning of this cycle)
-#                                         |
-#       [valueChanged] <-------------+    | This cycle can take some time, especially if some nodes
-#                                    |    | are sleeping or slow to respond.
-#       {REPEATS FOR EACH VALUE} ----+    |
-#                                         |
-#       [group] <--------------------+    |
-#                                    |    |
-#       {REPEATS FOR EACH GROUP} ----+    |
-#                                         |
-#   [nodeQueriesComplete]                 |
-#                                         |
-#   {REPEATS FOR EACH NODE} --------------+
-#
-#   [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
+        '''
+        logging.debug("Create object node (node_id:%s)" % (node_id))
+        ZWaveObject.__init__(self, node_id, network)
+        self._command_classes = list()
+        self.cache_property(self._command_classes)
+        self._values = dict()

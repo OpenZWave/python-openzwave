@@ -1007,24 +1007,6 @@ class ZWaveNetwork(ZWaveObject):
 #        self.manager.writeConfig(self.home_id)
 #        # TODO: write config on shutdown as well
 
-#    def setNodeOn(self, node):
-#        """
-#        """
-#        self._log.debug('Requesting setNodeOn for node {0}'.format(node.id))
-#        self._manager.setNodeOn(node.home_id, node.id)
-
-#    def setNodeOff(self, node):
-#        """
-#        """
-#        self._log.debug('Requesting setNodeOff for node {0}'.format(node.id))
-#        self._manager.setNodeOff(node.home_id, node.id)
-
-#    def setNodeLevel(self, node, level):
-#        """
-#        """
-#        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
-#        self._manager.setNodeLevel(node.home_id, node.id, level)
-
     def getCommandClassName(self, commandClassCode):
         """
         """
