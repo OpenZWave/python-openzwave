@@ -99,8 +99,8 @@ setup(
   url='http://code.google.com/p/python-openzwave',
   cmdclass = cmdclass,
   ext_modules = ext_modules,
-  package_dir = {'libopenzwave':'lib', 'openzwave': 'src'},
+  package_dir = {'libopenzwave' : 'lib', 'openzwave' : 'src'},
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
-  packages = ['openzwave']
+  packages = ['libopenzwave','openzwave']
 )

@@ -24,6 +24,8 @@ sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-pa
 sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages/openzwave'))
 sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
 sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages/openzwave'))
+#sys.path.insert(0, os.path.abspath('../src'))
+#sys.path.insert(1, os.path.abspath('../lib'))
 
 # -- General configuration -----------------------------------------------------
 

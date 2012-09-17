@@ -236,6 +236,17 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._object_id
 
+    @home_id.setter
+    def home_id(self, value):
+        """
+        The home_id of the network.
+
+        :param value: new home_id
+        :type value: int
+
+        """
+        self._object_id = value
+
 #    @property
 #    def initialised(self):
 #        """
@@ -309,17 +320,6 @@ class ZWaveNetwork(ZWaveObject):
             return "Network ready"
         else:
             return "Unkown state"
-
-    @home_id.setter
-    def home_id(self, value):
-        """
-        The home_id of the network.
-
-        :param value: new home_id
-        :type value: int
-
-        """
-        self._object_id = value
 
     @property
     def manager(self):
@@ -943,87 +943,87 @@ class ZWaveNetwork(ZWaveObject):
 #        finally:
 #            self._semaphore_on_fail.release()
 
-    def get_node(self, node_id):
-        """
-        Retrieve a node from its id.
-        This function does NOT lock the nodes list.
+#    def get_node(self, node_id):
+#        """
+#        Retrieve a node from its id.
+#        This function does NOT lock the nodes list.
+#
+#        :param node_id: The node identifier
+#        :type node_id: int
+#        :returns: The ZWaveNode object or None
+#        :rtype: ZWaveNode
+#
+#        """
+#        node = self._getNode(home_id, node_id)
+#        if node is None:
+#            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
+#        vid = valueId['id']
+#        if node._values.has_key(vid):
+#            retval = node._values[vid]
+#        else:
+#            retval = ZWaveValueNode(home_id, node_id, valueId)
+#            self._log.debug('Created new value node with home_id %0.8x, ' + \
+#                'node_id %d, valueId %s' % (home_id, node_id, valueId))
+#            node._values[vid] = retval
+#        return retval
 
-        :param node_id: The node identifier
-        :type node_id: int
-        :returns: The ZWaveNode object or None
-        :rtype: ZWaveNode
+#    def _get_value_node(self, home_id, node_id, valueId):
+#        """
+#        """
+#        node = self._getNode(home_id, node_id)
+#        if node is None:
+#            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
+#        vid = valueId['id']
+#        if node._values.has_key(vid):
+#            retval = node._values[vid]
+#        else:
+#            retval = ZWaveValueNode(home_id, node_id, valueId)
+#            self._log.debug('Created new value node with home_id %0.8x, ' + \
+#                'node_id %d, valueId %s' % (home_id, node_id, valueId))
+#            node._values[vid] = retval
+#        return retval
 
-        """
-        node = self._getNode(home_id, node_id)
-        if node is None:
-            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
-        vid = valueId['id']
-        if node._values.has_key(vid):
-            retval = node._values[vid]
-        else:
-            retval = ZWaveValueNode(home_id, node_id, valueId)
-            self._log.debug('Created new value node with home_id %0.8x, ' + \
-                'node_id %d, valueId %s' % (home_id, node_id, valueId))
-            node._values[vid] = retval
-        return retval
+#    def _updateNodeCommandClasses(self, node):
+#        '''
+#        Update node's command classes.
+#        '''
+#        classSet = list()()
+#        for cls in PyManager.COMMAND_CLASS_DESC:
+#            if self._manager.getNodeClassInformation(node._home_id, node._node_id, cls):
+#                classSet.add(cls)
+#        node._commandClasses = classSet
+#        self._log.debug('Node [%d] command classes are: %s' % \
+#            (node._node_id, node._commandClasses))
+#        # TODO: add command classes as string
 
-    def _get_value_node(self, home_id, node_id, valueId):
-        """
-        """
-        node = self._getNode(home_id, node_id)
-        if node is None:
-            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
-        vid = valueId['id']
-        if node._values.has_key(vid):
-            retval = node._values[vid]
-        else:
-            retval = ZWaveValueNode(home_id, node_id, valueId)
-            self._log.debug('Created new value node with home_id %0.8x, ' + \
-                'node_id %d, valueId %s' % (home_id, node_id, valueId))
-            node._values[vid] = retval
-        return retval
+#    def _handleInitializationComplete(self, args):
+#        """
+#        """
+#        logging.debug('Controller capabilities are: %s' % self.manager.controller.capabilities)
+#        logging.info("Initialization completed.  Found %s Z-Wave Device Nodes (%s sleeping)" % \
+#            (self.nodesCount, self.sleeping_nodes_count))
+#        self._initialized = True
+#        #dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self.home_id})
+#        self.manager.writeConfig(self.home_id)
+#        # TODO: write config on shutdown as well
 
-    def _updateNodeCommandClasses(self, node):
-        '''
-        Update node's command classes.
-        '''
-        classSet = list()()
-        for cls in PyManager.COMMAND_CLASS_DESC:
-            if self._manager.getNodeClassInformation(node._home_id, node._node_id, cls):
-                classSet.add(cls)
-        node._commandClasses = classSet
-        self._log.debug('Node [%d] command classes are: %s' % \
-            (node._node_id, node._commandClasses))
-        # TODO: add command classes as string
+#    def setNodeOn(self, node):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeOn for node {0}'.format(node.id))
+#        self._manager.setNodeOn(node.home_id, node.id)
 
-    def _handleInitializationComplete(self, args):
-        """
-        """
-        logging.debug('Controller capabilities are: %s' % self.manager.controller.capabilities)
-        logging.info("Initialization completed.  Found %s Z-Wave Device Nodes (%s sleeping)" % \
-            (self.nodesCount, self.sleeping_nodes_count))
-        self._initialized = True
-        #dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self.home_id})
-        self.manager.writeConfig(self.home_id)
-        # TODO: write config on shutdown as well
+#    def setNodeOff(self, node):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeOff for node {0}'.format(node.id))
+#        self._manager.setNodeOff(node.home_id, node.id)
 
-    def setNodeOn(self, node):
-        """
-        """
-        self._log.debug('Requesting setNodeOn for node {0}'.format(node.id))
-        self._manager.setNodeOn(node.home_id, node.id)
-
-    def setNodeOff(self, node):
-        """
-        """
-        self._log.debug('Requesting setNodeOff for node {0}'.format(node.id))
-        self._manager.setNodeOff(node.home_id, node.id)
-
-    def setNodeLevel(self, node, level):
-        """
-        """
-        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
-        self._manager.setNodeLevel(node.home_id, node.id, level)
+#    def setNodeLevel(self, node, level):
+#        """
+#        """
+#        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
+#        self._manager.setNodeLevel(node.home_id, node.id, level)
 
     def getCommandClassName(self, commandClassCode):
         """

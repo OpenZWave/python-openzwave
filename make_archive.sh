@@ -1,12 +1,22 @@
 #!/bin/bash -e
 
 echo $PYLIBRARY
-#The release number of python-openzwave
+#Archive history
 RY023="cc56d65fbff4"
-#The release number of openzwave
 RZ023="539"
 
-PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx  | sed -e "s|PYLIBRARY = ||"  | sed -e "s|\"||g")
+#Last archive
+#The release number of python-openzwave
+RY024="50a9d95db236"
+#The release number of openzwave
+RZ024="540"
+
+#Current archive
+RY=$(echo $RY024)
+RZ=$(echo $RZ024)
+
+#Define variables
+PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx | sed -e "s|PYLIBRARY = ||" | sed -e "s|\"||g" | sed -e "s|^M$||g")
 ARCHIVEDIR=python-openzwave-${PYLIBRARY}
 ARCHIVE=python-openzwave-${PYLIBRARY}.tgz
 
@@ -20,7 +30,7 @@ echo "|   Make python-openzwave archive                               |"
 echo "-----------------------------------------------------------------"
 hg archive \
     -p ${ARCHIVEDIR} \
-    -r ${RY023} \
+    -r ${RY} \
     -I . \
     -X make_archive.sh \
     -X make_distdir.sh \
@@ -41,15 +51,23 @@ echo "-----------------------------------------------------------------"
 [ ! -d build ] && mkdir build
 cd build
 tar xvzf ../${ARCHIVE}
-echo "OPZW=r${RZ023}" >${ARCHIVEDIR}/VERSIONS
+echo "OPZW=r${RZ}" >${ARCHIVEDIR}/VERSIONS
 echo "PYOZW=${PYLIBRARY}" >>${ARCHIVEDIR}/VERSIONS
 cd ..
 
 echo "-----------------------------------------------------------------"
 echo "|   Checkout openwave repository                                |"
 echo "-----------------------------------------------------------------"
+if [ -d openzwave ] ; then
+	echo "Update openzwave directory"
+	svn update http://open-zwave.googlecode.com/svn/trunk/ openzwave
+else
+	echo "Checkout openzwave directory"
+	svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+fi
+
 svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
-svn export -r ${RZ023} openzwave build/${ARCHIVEDIR}/openzwave
+svn export -r ${RZ} openzwave build/${ARCHIVEDIR}/openzwave
 
 echo "-----------------------------------------------------------------"
 echo "|   Compress to $ARCHIVE                                        |"
