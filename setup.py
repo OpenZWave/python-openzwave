@@ -23,7 +23,6 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from os import name as os_name
 from distutils.core import setup
-#from Cython.Distutils import extension
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from platform import system as platform_system
@@ -61,18 +60,15 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.css'))
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
-cmdclass = { }
-ext_modules = [ ]
-
 if os_name == 'nt':
-    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/cpp/lib/windows-mingw32/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 elif platform_system() == 'Darwin':
-    ext_modules += [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
@@ -80,7 +76,6 @@ elif platform_system() == 'Darwin':
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
     )]
 else:
-#    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
     ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
