@@ -1,0 +1,27 @@
+--- python-openzwave-20120828.orig/openzwave.pyx	2012-08-28 22:29:46.000000000 +0200
++++ python-openzwave-20120828//openzwave.pyx	2012-08-28 23:01:08.000000000 +0200
+@@ -1,6 +1,8 @@
+ from cython.operator cimport dereference as deref
+ from libcpp.map cimport map, pair
+ 
++PYLIBRARY = 0.1
++
+ cdef extern from "<string>" namespace "std":
+     cdef cppclass string:
+         string()
+@@ -657,6 +659,15 @@
+         cdef string c_string = self.manager.GetLibraryVersion(homeid)
+         return c_string.c_str()
+ 
++    def getPythonLibraryVersion(self):
++        '''
++Get the version of the python library used by a controller.
++
++@return a string containing the python library version. For example, "0.1".
++        '''
++        return str(PYLIBRARY)
++
++
+     def getLibraryTypeName(self, homeid):
+         '''
+ Get a string containing the Z-Wave API library type used by a controller.
