@@ -45,34 +45,34 @@ class ZWaveNetwork(ZWaveObject):
 
     It dispatch the following louie signals :
 
-    * SIGNAL_NETWORK_FAILED = 'NetworkFailed'
-    * SIGNAL_NETWORK_READY = 'NetworkReady'
-    * SIGNAL_DRIVER_FAILED = 'DriverFailed'
-    * SIGNAL_DRIVER_READY = 'DriverReady'
-    * SIGNAL_DRIVER_RESET = 'DriverReset'
-    * SIGNAL_NODE_ADDED = 'NodeAdded'
-    * SIGNAL_NODE_EVENT = 'NodeEvent'
-    * SIGNAL_NODE_NAMING = 'NodeNaming'
-    * SIGNAL_NODE_NEW = 'NodeNew'
-    * SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
-    * SIGNAL_NODE_READY = 'NodeReady'
-    * SIGNAL_NODE_REMOVED = 'NodeRemoved'
-    * SIGNAL_VALUE_ADDED = 'ValueAdded'
-    * SIGNAL_VALUE_CHANGED = 'ValueChanged'
-    * SIGNAL_VALUE_REFRESHED = 'ValueRefreshed'
-    * SIGNAL_VALUE_REMOVED = 'ValueRemoved'
-    * SIGNAL_POLLING_ENABLED = 'PollingEnabled'
-    * SIGNAL_POLLING_DISABLED = 'PollingDisabled'
-    * SIGNAL_CREATE_BUTTON = 'CreateButton'
-    * SIGNAL_DELETE_BUTTON = 'DeleteButton'
-    * SIGNAL_BUTTON_ON = 'ButtonOn'
-    * SIGNAL_BUTTON_OFF = 'ButtonOff'
-    * SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
-    * SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
-    * SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
-    * SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
-    * SIGNAL_MSG_COMPLETE = 'MsgComplete'
-    * SIGNAL_ERROR = 'Error'
+        * SIGNAL_NETWORK_FAILED = 'NetworkFailed'
+        * SIGNAL_NETWORK_READY = 'NetworkReady'
+        * SIGNAL_DRIVER_FAILED = 'DriverFailed'
+        * SIGNAL_DRIVER_READY = 'DriverReady'
+        * SIGNAL_DRIVER_RESET = 'DriverReset'
+        * SIGNAL_NODE_ADDED = 'NodeAdded'
+        * SIGNAL_NODE_EVENT = 'NodeEvent'
+        * SIGNAL_NODE_NAMING = 'NodeNaming'
+        * SIGNAL_NODE_NEW = 'NodeNew'
+        * SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
+        * SIGNAL_NODE_READY = 'NodeReady'
+        * SIGNAL_NODE_REMOVED = 'NodeRemoved'
+        * SIGNAL_VALUE_ADDED = 'ValueAdded'
+        * SIGNAL_VALUE_CHANGED = 'ValueChanged'
+        * SIGNAL_VALUE_REFRESHED = 'ValueRefreshed'
+        * SIGNAL_VALUE_REMOVED = 'ValueRemoved'
+        * SIGNAL_POLLING_ENABLED = 'PollingEnabled'
+        * SIGNAL_POLLING_DISABLED = 'PollingDisabled'
+        * SIGNAL_CREATE_BUTTON = 'CreateButton'
+        * SIGNAL_DELETE_BUTTON = 'DeleteButton'
+        * SIGNAL_BUTTON_ON = 'ButtonOn'
+        * SIGNAL_BUTTON_OFF = 'ButtonOff'
+        * SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
+        * SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
+        * SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
+        * SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
+        * SIGNAL_MSG_COMPLETE = 'MsgComplete'
+        * SIGNAL_ERROR = 'Error'
 
     The table presented below sets notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.
 
@@ -80,7 +80,7 @@ class ZWaveNetwork(ZWaveObject):
 
     The notification below is sent when OpenZWave has successfully connected to a physical ZWave controller.
 
-    DriverReady
+    * DriverReady
 
     [always sent]   Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
     At the time this notification is sent, only certain information about the controller itself is known:
@@ -95,17 +95,17 @@ class ZWaveNetwork(ZWaveObject):
 
     As OpenZWave starts, it identifies and reads information about each node in the network. The following notifications may be sent during the initialization process.
 
-    NodeNew
+    * NodeNew
 
     [potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
     At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.
 
-    NodeAdded
+    * NodeAdded
 
     [always sent (for each node associated with the controller)]    Sent when a node has been added to OpenZWave’s set of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
     As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.
 
-    NodeProtocolInfo
+    * NodeProtocolInfo
 
     [potentially sent]  Sent after a node’s protocol information has been successfully read from the controller.
     At the time this notification is sent, only certain information about the node is known:
@@ -120,12 +120,12 @@ class ZWaveNetwork(ZWaveObject):
 
     [potentially sent]  Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).
 
-    ValueAdded
+    * ValueAdded
 
     [potentially sent]  Sent when a new value has been associated with the node.
     At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.
 
-    NodeQueriesComplete
+    * NodeQueriesComplete
 
     [always sent (for each node associated with the controller that has been successfully queried)]     Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.
 
@@ -133,11 +133,11 @@ class ZWaveNetwork(ZWaveObject):
 
     As indicated above, when OpenZWave starts it reads certain information from a file, from the controller and from the network.  The following notifications identify when this initialization/querying process is complete.
 
-    AwakeNodesQueried
+    * AwakeNodesQueried
 
     [always sent]   Sent when all “setening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)
 
-    AllNodesQueried
+    * AllNodesQueried
 
     [potentially sent]  Sent when all nodes have been successfully queried.
 
