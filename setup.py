@@ -28,6 +28,17 @@ from Cython.Distutils import build_ext
 from platform import system as platform_system
 import glob
 import os
+import sys
+
+DEBIAN_PACKAGE = False
+filtered_args = []
+
+for arg in sys.argv:
+    if arg == "--debian-package":
+        DEBIAN_PACKAGE = True
+    else:
+        filtered_args.append(arg)
+sys.argv = filtered_args
 
 def _getDirs(base):
     return [x for x in glob.iglob(os.path.join( base, '*')) if os.path.isdir(x) ]
@@ -74,6 +85,13 @@ elif platform_system() == 'Darwin':
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
                              extra_objects=['openzwave/cpp/lib/mac/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
+    )]
+elif DEBIAN_PACKAGE == True:
+    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+                             libraries=['udev', 'stdc++', 'openzwave'],
+                             language="c++",
+                             extra_objects=['/usr/lib/libopenzwave.a'],
+                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
     )]
 else:
     ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
