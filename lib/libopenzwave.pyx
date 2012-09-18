@@ -186,9 +186,10 @@ cdef void callback(const_notification _notification, void* _context) with gil:
          }
     if notification.GetType() == Type_Group:
         n['groupIdx'] = notification.GetGroupIdx()
-    if notification.GetType() == Type_NodeEvent:
+    elif notification.GetType() == Type_NodeEvent:
         n['event'] = notification.GetEvent()
-
+    elif notification.GetType() == Type_Error:
+        n['errorCode'] = notification.GetErrorCode()
     addValueId(notification.GetValueID(), n)
     (<object>_context)(n)
 
