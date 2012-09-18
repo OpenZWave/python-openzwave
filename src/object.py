@@ -70,6 +70,18 @@ class ZWaveTypeException(ZWaveException):
     def __str__(self):
         return repr(self.msg+' : '+self.value)
 
+class ZWaveCommandClassException(ZWaveException):
+    '''
+    Exception class for OpenZWave
+    '''
+    def __init__(self, value):
+        ZWaveException.__init__(self)
+        self.msg = "Zwave Command Class Exception"
+        self.value = value
+
+    def __str__(self):
+        return repr(self.msg+' : '+self.value)
+
 class ZWaveObject(object):
     '''
     Represents a Zwave object. Values, nodes, ... can be changer by

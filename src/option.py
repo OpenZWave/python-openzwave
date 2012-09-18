@@ -198,7 +198,7 @@ class ZWaveOption(libopenzwave.PyOptions):
 
     def set_exclude(self, commandClass):
         '''
-        Remove support for the listed command classes.
+        Remove support for the seted command classes.
 
         :param commandClass: The command class to exclude
         :type commandClass: str
@@ -208,7 +208,7 @@ class ZWaveOption(libopenzwave.PyOptions):
 
     def set_include(self, commandClass):
         '''
-        Only handle the specified command classes.  The Exclude option is ignored if anything is listed here.
+        Only handle the specified command classes.  The Exclude option is ignored if anything is seted here.
 
         :param commandClass: The location of the log file
         :type commandClass: str
@@ -270,7 +270,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         '''
         Notifications when transaction complete is reported.
 
-        :param status: if false, try to execute the entire poll list within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls
+        :param status: if false, try to execute the entire poll set within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls
         :type status: bool
 
         '''

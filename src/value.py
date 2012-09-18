@@ -39,36 +39,36 @@ class ZWaveValue(ZWaveObject):
     Represents a single value.
     Must be updated to use the cachedObject facilities.
     '''
-    def __init__(self, value_id, network=None, node_id=None):
+    def __init__(self, value_id, network=None, parent_id=None):
         '''
         Initialize value
 
         n['valueId'] = {'home_id' : v.GetHomeId(),
-                'node_id' : v.GetNodeId(),
-                'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-                'instance' : v.GetInstance(),
-                'index' : v.GetIndex(),
-                'id' : v.GetId(),
-                'genre' : PyGenres[v.GetGenre()],
-                'type' : PyValueTypes[v.GetType()],
-#                    'value' : value.c_str(),
-                'value' : getValueFromType(manager,v.GetId()),
-                'label' : label.c_str(),
-                'units' : units.c_str(),
-                'readOnly': manager.IsValueReadOnly(v),
-                }
+            * 'parent_id' : v.GetNodeId(),
+            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+            * 'instance' : v.GetInstance(),
+            * 'index' : v.GetIndex(),
+            * 'id' : v.GetId(),
+            * 'genre' : PyGenres[v.GetGenre()],
+            * 'type' : PyValueTypes[v.GetType()],
+            * #'value' : value.c_str(),
+            * 'value' : getValueFromType(manager,v.GetId()),
+            * 'label' : label.c_str(),
+            * 'units' : units.c_str(),
+            * 'readOnly': manager.IsValueReadOnly(v),
+            }
 
-        :param valueId: ID of the value
-        :type valueId: int
+        :param value_id: ID of the value
+        :type value_id: int
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
-        :param nodeid: ID of node
-        :type nodeid: int
+        :param parent_id: ID of parent (node or scene)
+        :type parent_id: int
 
         '''
         ZWaveObject.__init__(self, value_id, network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
-        self._node_id = node_id
+        self._parent_id = parent_id
         #self._value_data = value_data
         #self.n = valueId
         #self._values = dict()
@@ -90,11 +90,19 @@ class ZWaveValue(ZWaveObject):
         self.cache_property(lambda: self.data)
 
     @property
-    def node_id(self):
+    def parent_id(self):
         """
-        The node_id of the value.
+        The parent_id of the value.
         """
-        return self._node_id
+        return self._parent_id
+
+    @property
+    def value_id(self):
+        """
+        The value_id of the value.
+        """
+        return self._object_id
+
 
     @property
     def label(self):
@@ -105,7 +113,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.label):
-            self._label = self._network.manager.getValueLabel(self.object_id)
+            self._label = self._network.manager.getValueLabel(self.value_id)
             self.update(lambda: self.label)
         return self._label
 
@@ -118,7 +126,7 @@ class ZWaveValue(ZWaveObject):
         :type value: str
 
         """
-        self._network.manager.setValueLabel(self.object_id, value)
+        self._network.manager.setValueLabel(self.value_id, value)
         self.outdate(lambda: self.label)
 
     @property
@@ -130,7 +138,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.help):
-            self._help = self._network.manager.getValueHelp(self.object_id)
+            self._help = self._network.manager.getValueHelp(self.value_id)
             self.update(lambda: self.help)
         return self._help
 
@@ -143,7 +151,7 @@ class ZWaveValue(ZWaveObject):
         :type value: str
 
         """
-        self._network.manager.setValueHelp(self.object_id, value)
+        self._network.manager.setValueHelp(self.value_id, value)
         self.outdate(lambda: self.help)
 
     @property
@@ -155,7 +163,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.units):
-            self._units = self._network.manager.getValueUnits(self.object_id)
+            self._units = self._network.manager.getValueUnits(self.value_id)
             self.update(lambda: self.units)
         return self._units
 
@@ -168,7 +176,7 @@ class ZWaveValue(ZWaveObject):
         :type value: str
 
         """
-        self._network.manager.setValueUnits(self.object_id, value)
+        self._network.manager.setValueUnits(self.value_id, value)
         self.outdate(lambda: self.units)
 
     @property
@@ -180,7 +188,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.max):
-            self._max = self._network.manager.getValueMax(self.object_id)
+            self._max = self._network.manager.getValueMax(self.value_id)
             self.update(lambda: self.max)
         return self._min
 
@@ -193,22 +201,9 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.min):
-            self._min = self._network.manager.getValueMin(self.object_id)
+            self._min = self._network.manager.getValueMin(self.value_id)
             self.update(lambda: self.min)
         return self._min
-
-    @property
-    def as_string(self):
-        """
-        The value as String.
-
-        :rtype: str
-
-        """
-        if self.is_outdated(lambda: self.asString):
-            self._as_string = self._network.manager.getValueAsString(self.object_id)
-            self.update(lambda: self.as_string)
-        return self._as_string
 
     @property
     def data(self):
@@ -219,7 +214,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.data):
-            self._data = self._network.manager.getValue(self.object_id)
+            self._data = self._network.manager.getValue(self.value_id)
             self.update(lambda: self.data)
         return self._data
 
@@ -232,8 +227,21 @@ class ZWaveValue(ZWaveObject):
         :type value: str
 
         """
-        self._network.manager.setValue(self.object_id, value)
+        self._network.manager.setValue(self.value_id, value)
         self.outdate(lambda: self.data)
+
+    @property
+    def data_as_string(self):
+        """
+        The value data as String.
+
+        :rtype: str
+
+        """
+        if self.is_outdated(lambda: self.asString):
+            self._as_string = self._network.manager.getValueAsString(self.value_id)
+            self.update(lambda: self.as_string)
+        return self._as_string
 
     @property
     def poll_intensity(self):
@@ -245,18 +253,7 @@ class ZWaveValue(ZWaveObject):
         """
         return self._poll_intensity
 
-    @data.setter
-    def poll_intensity(self, value):
-        """
-        Set the poll intensity of the value (0=none, 1=every time through the list, 2-every other time, etc)
-
-        :param value: The new poll intensity of the value
-        :type value: int
-
-        """
-        self._poll_intensity = value
-        self._network.manager.SetPollIntensity(self.object_id, value)
-
+    @property
     def is_polled(self):
         """
         Verify that the value is polled.
@@ -264,17 +261,37 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-        return self._network.manager.isPolled(self.object_id)
+        return self._network.manager.isPolled(self.value_id)
 
-    def get_value(self, key):
+    def enable_poll(self, intensity):
         """
-        The value_data of the value.
+        Enable poll off this value.
 
-        :param key: The key to check
-        :type value: int
+        :rtype: bool
 
         """
-        return self.value_data[key] if self._value_data.has_key(key) else None
+        self._poll_intensity = intensity
+        return self._network.manager.enablePoll(self.value_id, intensity)
+
+    def enable_poll(self, intensity):
+        """
+        Enable poll off this value.
+
+        :rtype: bool
+
+        """
+        self._poll_intensity = 0
+        return self._network.manager.disablePoll(self.value_id)
+
+#    def get_value(self, key):
+#        """
+#        The value_data of the value.
+#
+#        :param key: The key to check
+#        :type value: int
+#
+#        """
+#        return self.value_data[key] if self._value_data.has_key(key) else None
 
     def __str__(self):
-        return 'home_id: [{0}]  node_id: [{1}]  value_data: {2}'.format(self.home_id, self._node_id, self._value_data)
+        return 'home_id: [{0}]  parent_id: [{1}]  value_data: {2}'.format(self.home_id, self._parent_id, self._value_data)

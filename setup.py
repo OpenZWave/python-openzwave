@@ -22,7 +22,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from os import name as os_name
-from distutils.core import setup
+#from distutils.core import setup
+from setuptools import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from platform import system as platform_system
@@ -111,5 +112,9 @@ setup(
   package_dir = {'libopenzwave' : 'lib', 'openzwave' : 'src'},
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
-  packages = ['libopenzwave','openzwave']
+  packages = ['libopenzwave', 'openzwave'],
+  install_requires=['setuptools',
+					'cython >= 0.14',
+                    'python-louie >= 1.1'
+                    ]
 )

@@ -28,12 +28,17 @@ from collections import namedtuple
 import thread
 import time
 import logging
-from openzwave.object import ZWaveObject
+from openzwave.object import ZWaveException, ZWaveCommandClassException
+from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
 from openzwave.group import ZWaveGroup
+from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch, ZWaveNodeSensor
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
-class ZWaveNode(ZWaveObject):
+class ZWaveNode( ZWaveObject,
+                 ZWaveNodeBasic, ZWaveNodeSwitch,
+                 ZWaveNodeSensor
+                 ):
     '''
     Represents a single Node within the Z-Wave Network
     '''
@@ -50,7 +55,7 @@ class ZWaveNode(ZWaveObject):
         '''
         logging.debug("Create object node (node_id:%s)" % (node_id))
         ZWaveObject.__init__(self, node_id, network)
-        self._command_classes = list()
+        self._command_classes = set()
         self.cache_property(self._command_classes)
         self._values = dict()
 
@@ -72,10 +77,10 @@ class ZWaveNode(ZWaveObject):
         self.cache_property(lambda: self.product_type)
         self._is_routing_device = False
         self.cache_property(lambda: self.is_routing_device)
-        self._is_listening_device = False
-        self.cache_property(lambda: self.is_listening_device)
-        self._is_frequent_listening_device = False
-        self.cache_property(lambda: self.is_frequent_listening_device)
+        self._is_setening_device = False
+        self.cache_property(lambda: self.is_setening_device)
+        self._is_frequent_setening_device = False
+        self.cache_property(lambda: self.is_frequent_setening_device)
         self._is_security_device = False
         self.cache_property(lambda: self.is_security_device)
         self._is_beaming_device = False
@@ -92,13 +97,13 @@ class ZWaveNode(ZWaveObject):
         self.cache_property(lambda: self.security)
         self._version = 0
         self.cache_property(lambda: self.version)
-        self._command_classes = list()
+        self._command_classes = set()
         self.cache_property(lambda: self.command_classes)
-        self._neighbors = list()
+        self._neighbors = set()
         self.cache_property(lambda: self.neighbors)
-        self._num_groups = list()
+        self._num_groups = int
         self.cache_property(lambda: self.num_groups)
-        self._groups = list()
+        self._groups = set()
         self.cache_property(lambda: self.groups)
 
     @property
@@ -217,15 +222,15 @@ class ZWaveNode(ZWaveObject):
         """
         The capabilities of the node.
 
-        :rtype: list()
+        :rtype: set()
 
         """
-        caps = list()
+        caps = set()
         if self.is_routing_device():
             caps.add('routing')
-        if self.is_listening_device():
-            caps.add('listening')
-        if self.is_frequent_listening_device():
+        if self.is_setening_device():
+            caps.add('setening')
+        if self.is_frequent_setening_device():
             caps.add('frequent')
         if self.is_security_device():
             caps.add('security')
@@ -238,7 +243,7 @@ class ZWaveNode(ZWaveObject):
         """
         The neighbors of the node.
 
-        :rtype: list()
+        :rtype: set()
 
         """
         if self.is_outdated(lambda: self.neighbors):
@@ -251,11 +256,11 @@ class ZWaveNode(ZWaveObject):
         """
         Gets the number of association groups reported by this node.
 
-        :rtype: list()
+        :rtype: int
 
         """
         if self.is_outdated(lambda: self.num_groups):
-            self._num_groups = self._network.manager.getNodeNeighbors(self.home_id, self.object_id)
+            self._num_groups = self._network.manager.getMaxAssociations(self.home_id, self.object_id)
             self.update(lambda: self.num_groups)
         return self._num_groups
 
@@ -264,10 +269,10 @@ class ZWaveNode(ZWaveObject):
         """
         The groups of the node.
 
-        :rtype: list()
+        :rtype: set()
 
         """
-        node._groups = list()
+        node._groups = set()
         for i in range(0, self.num_groups()):
             node._groups.append(ZWaveGroup(i,network=self._network))
         return node._groups
@@ -277,11 +282,11 @@ class ZWaveNode(ZWaveObject):
         """
         The commandClasses of the node.
 
-        :rtype: list()
+        :rtype: set()
 
         """
         if self.is_outdated(lambda: self.command_classes):
-            self._command_classes = list()
+            self._command_classes = set()
             for cls in self._network.manager.COMMAND_CLASS_DESC:
                 if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                     self._command_classes.add(cls)
@@ -293,11 +298,11 @@ class ZWaveNode(ZWaveObject):
         """
         Return the command classes of the node as string.
 
-        :rtype: list()
+        :rtype: set()
 
         """
         if self.is_outdated(lambda: self.command_classes):
-            self._command_classes = list()
+            self._command_classes = set()
             for cls in self._network.manager.COMMAND_CLASS_DESC:
                 if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                     self._command_classes.add(cls)
@@ -310,26 +315,72 @@ class ZWaveNode(ZWaveObject):
         The values of the node.
         Todo
 
-        :rtype: list()
+        :rtype: set()
 
         """
+        return self._values
 
-    def values_for_command_class(self, class_id):
+    def get_values_for_command_class(self, class_id):
         """
-        Retrieve the list of values for a command class
+        Retrieve the set of values for a command class
 
         :param class_id: the COMMAND_CLASS to get values
         :type class_id: hexadecimal code
-        :rtype: list() of classId
+        :rtype: set() of classId
 
         """
-        ret = list()
+        ret = set()
         for value in self._values:
             val = value.data
             if val and val.has_key('commandClass') and \
               val['commandClass'] == self._network.manager.COMMAND_CLASS_DESC[classId]:
                 ret.append(value)
         return ret
+
+    def add_value(self, value_id):
+        """
+        Add a value to the node
+
+        :param value_id: The id of the value to add
+        :type value_id: int
+        :rtype: bool
+
+        """
+        value = ZWaveValue(args['value_id'], network=self.network, parent_id=self.node_id)
+        self.values[args['value_id']] = value
+
+    def change_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+        pass
+
+    def refresh_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+        pass
+
+    def remove_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+        pass
 
     def has_command_class(self, class_id):
         """
@@ -341,6 +392,24 @@ class ZWaveNode(ZWaveObject):
 
         """
         return class_id in self.command_classes
+
+    def handle_command_class(self, class_id):
+        """
+        Check that this node use this commandClass and the method is implemented.
+
+        :param classId: the COMMAND_CLASS to check
+        :type classId: hexadecimal code
+        :rtype: bool or None (if class_id is supported but not implemented).
+
+        """
+        if self.has_command_class(class_id) :
+            try :
+                eval("self.command_class_%s()" % class_id)
+                return True
+            except AttributeError:
+                logging.error("CommandCLass %s not supported by API" % class_id)
+                return None
+        return False
 
     @property
     def manufacturer_id(self):
@@ -447,17 +516,17 @@ class ZWaveNode(ZWaveObject):
         return self._version
 
     @property
-    def is_listening_device(self):
+    def is_setening_device(self):
         """
-        Is this node a listening device.
+        Is this node a setening device.
 
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_listening_device):
-            self._is_listening_device = self._network.manager.isNodeListeningDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_listening_device)
-        return self._is_listening_device
+        if self.is_outdated(lambda: self.is_setening_device):
+            self._is_setening_device = self._network.manager.isNodeListeningDevice(self.home_id, self.object_id)
+            self.update(lambda: self.is_setening_device)
+        return self._is_setening_device
 
     @property
     def is_beaming_device(self):
@@ -475,7 +544,7 @@ class ZWaveNode(ZWaveObject):
     @property
     def is_frequent_listening_device(self):
         """
-        Is this node a frequent listening device.
+        Is this node a frequent setening device.
 
         :rtype: bool
 
@@ -521,7 +590,7 @@ class ZWaveNode(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.is_primary_controller):
-            self._is_primary_controller = self._network.manager.is_primary_controller(self.home_id)
+            self._is_primary_controller = self._network.manager.isPrimaryController(self.home_id)
             self.update(lambda: self.is_primary_controller)
         return self._is_primary_controller
 
@@ -534,7 +603,7 @@ class ZWaveNode(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.is_static_update_controller):
-            self._is_static_update_controller = self._network.manager.is_static_update_controller(self.home_id)
+            self._is_static_update_controller = self._network.manager.isStaticUpdateController(self.home_id)
             self.update(lambda: self.is_static_update_controller)
         return self._is_static_update_controller
 
@@ -547,22 +616,9 @@ class ZWaveNode(ZWaveObject):
 
         """
         if self.is_outdated(lambda: self.is_bridge_controller):
-            self._is_bridge_controller = self._network.manager.is_bridge_controller(self.home_id)
+            self._is_bridge_controller = self._network.manager.isBridgeController(self.home_id)
             self.update(lambda: self.is_bridge_controller)
         return self.is_bridge_controller
-
-    @property
-    def is_polled(self):
-        """
-        Is this node polled.
-
-        :rtype: bool
-
-        """
-        if self.is_outdated(lambda: self.is_polled):
-            self._is_polled = self._network.manager.is_polled(self.home_id)
-            self.update(lambda: self.is_polled)
-        return self._is_polled
 
     @property
     def is_locked(self):
@@ -584,47 +640,47 @@ class ZWaveNode(ZWaveObject):
         """
         return self.is_sleeping
 
-    @property
-    def level(self):
-        """
-        The level of the node.
-        Todo
-        """
-        values = self._getValuesForCommandClass(0x26)  # COMMAND_CLASS_SWITCH_MULTILEVEL
-        if values:
-            for value in values:
-                vdic = value.value_data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
-                    return int(vdic['value'])
-        return 0
+#    @property
+#    def level(self):
+#        """
+#        The level of the node.
+#        Todo
+#        """
+#        values = self._getValuesForCommandClass(0x26)  # COMMAND_CLASS_SWITCH_MULTILEVEL
+#        if values:
+#            for value in values:
+#                vdic = value.value_data
+#                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
+#                    return int(vdic['value'])
+#        return 0
 
-    @property
-    def is_on(self):
-        """
-        Is this node On.
-        Todo
-        """
-        values = self._getValuesForCommandClass(0x25)  # COMMAND_CLASS_SWITCH_BINARY
-        if values:
-            for value in values:
-                vdic = value.value_data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
-                    return vdic['value'] == 'True'
-        return False
+#    @property
+#    def is_on(self):
+#        """
+#        Is this node On.
+#        Todo
+#        """
+#        values = self._getValuesForCommandClass(0x25)  # COMMAND_CLASS_SWITCH_BINARY
+#        if values:
+#            for value in values:
+#                vdic = value.value_data
+#                if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
+#                    return vdic['value'] == 'True'
+#        return False
 
-    @property
-    def battery_level(self):
-        """
-        The battery level of this node.
-        Todo
-        """
-        values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
-        if values:
-            for value in values:
-                vdic = value.value_data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
-                    return int(vdic['value'])
-        return -1
+#    @property
+#    def battery_level(self):
+#        """
+#        The battery level of this node.
+#        Todo
+#        """
+#        values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
+#        if values:
+#            for value in values:
+#                vdic = value.value_data
+#                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
+#                    return int(vdic['value'])
+#        return -1
 
     @property
     def signal_strength(self):
@@ -666,24 +722,3 @@ class ZWaveNode(ZWaveObject):
 #        """
 #        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
 #        self._manager.setNodeLevel(node.home_id, node.id, level)
-
-class ZWaveNode(ZWaveObject):
-    '''
-    Represents a single Node within the Z-Wave Network
-    '''
-
-    def __init__(self, node_id, network ):
-        '''
-        Initialize zwave node
-
-        :param node_id: ID of the node
-        :type node_id: int
-        :param network: The network object to access the manager
-        :type network: ZWaveNetwork
-
-        '''
-        logging.debug("Create object node (node_id:%s)" % (node_id))
-        ZWaveObject.__init__(self, node_id, network)
-        self._command_classes = list()
-        self.cache_property(self._command_classes)
-        self._values = dict()

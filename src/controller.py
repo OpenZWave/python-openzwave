@@ -27,7 +27,7 @@ from louie import dispatcher, All
 import logging
 import libopenzwave
 import openzwave
-from openzwave.object import ZWaveException, ZWaveObject
+from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
 from openzwave.node import ZWaveNode
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
@@ -68,6 +68,7 @@ class ZWaveController(ZWaveObject):
         """
         The node controller on the network.
 
+        :returns: The node controller on the network
         :rtype: ZWaveNode
 
         """
@@ -78,20 +79,23 @@ class ZWaveController(ZWaveObject):
         """
         The node controller on the network.
 
-        :rtype: ZWaveNode
+        :param value: The node of the controller on the network
+        :type value: ZWaveNode
 
         """
         if type(value) == type(ZWaveNode) or value == None:
             self._node = value
-            self.home_id = self._node.home_id
+            if value != None:
+				self.home_id = self._node.home_id
         else:
-            raise ZWaveException("Can't update node. Bad object type %s" % type(value))
+            raise ZWaveTypeException("Can't update node's controller %s" % type(value))
 
     @property
     def node_id(self):
         """
         The node Id of the controller on the network.
 
+        :returns: The node id of the controller on the network
         :rtype: int
 
         """
@@ -101,10 +105,11 @@ class ZWaveController(ZWaveObject):
             raise ZWaveException("Controller node not initialised")
 
     @property
-    def node_name(self):
+    def name(self):
         """
-        The name of the controller on the network.
+        The node name of the controller on the network.
 
+        :returns: The node's name of the controller on the network
         :rtype: str
 
         """
@@ -118,6 +123,7 @@ class ZWaveController(ZWaveObject):
         """
         The name of the library.
 
+        :returns: The c++ library name
         :rtype: str
 
         """
@@ -131,6 +137,7 @@ class ZWaveController(ZWaveObject):
         """
         The description of the library.
 
+        :returns: The c++ library description (name and version)
         :rtype: str
 
         """
@@ -141,6 +148,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the library.
 
+        :returns: The c++ library version
         :rtype: str
 
         """
@@ -154,6 +162,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the python library.
 
+        :returns: The python library version
         :rtype: str
 
         """
@@ -167,6 +176,7 @@ class ZWaveController(ZWaveObject):
         """
         The library Config path.
 
+        :returns: The library config directory
         :rtype: str
 
         """
@@ -180,6 +190,7 @@ class ZWaveController(ZWaveObject):
         """
         The library User path.
 
+        :returns: The user directory to store user configuration
         :rtype: str
 
         """
@@ -193,6 +204,7 @@ class ZWaveController(ZWaveObject):
         """
         The device path.
 
+        :returns: The device (ie /dev/zwave)
         :rtype: str
 
         """
@@ -206,6 +218,7 @@ class ZWaveController(ZWaveObject):
         """
         The starting options of the manager.
 
+        :returns: The options used to start the manager
         :rtype: ZWaveOption
 
         """
@@ -233,6 +246,7 @@ class ZWaveController(ZWaveObject):
         * s_controllerReadCnt              : Number of controller messages read
         * s_controllerWriteCnt             : Number of controller messages sent
 
+        :returns: Statistics of the controller
         :rtype: dict()
 
         """

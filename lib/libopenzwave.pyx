@@ -52,15 +52,15 @@ class EnumWithDoc(str):
         return self
 
 PyNotifications = [
-    EnumWithDoc('ValueAdded').setDoc("A new node value has been added to OpenZWave's list. These notifications occur after a node has been discovered, and details of its command classes have been received.  Each command class may generate one or more values depending on the complexity of the item being represented."),
-    EnumWithDoc('ValueRemoved').setDoc("A node value has been removed from OpenZWave's list.  This only occurs when a node is removed."),
+    EnumWithDoc('ValueAdded').setDoc("A new node value has been added to OpenZWave's set. These notifications occur after a node has been discovered, and details of its command classes have been received.  Each command class may generate one or more values depending on the complexity of the item being represented."),
+    EnumWithDoc('ValueRemoved').setDoc("A node value has been removed from OpenZWave's set.  This only occurs when a node is removed."),
     EnumWithDoc('ValueChanged').setDoc("A node value has been updated from the Z-Wave network and it is different from the previous value."),
     EnumWithDoc('ValueRefreshed').setDoc("A node value has been updated from the Z-Wave network."),
     EnumWithDoc('Group').setDoc("The associations for the node have changed. The application should rebuild any group information it holds about the node."),
     EnumWithDoc('NodeNew').setDoc("A new node has been found (not already stored in zwcfg*.xml file)."),
-    EnumWithDoc('NodeAdded').setDoc("A new node has been added to OpenZWave's list.  This may be due to a device being added to the Z-Wave network, or because the application is initializing itself."),
-    EnumWithDoc('NodeRemoved').setDoc("A node has been removed from OpenZWave's list.  This may be due to a device being removed from the Z-Wave network, or because the application is closing."),
-    EnumWithDoc('NodeProtocolInfo').setDoc("Basic node information has been receievd, such as whether the node is a listening device, a routing device and its baud rate and basic, generic and specific types. It is after this notification that you can call Manager::GetNodeType to obtain a label containing the device description."),
+    EnumWithDoc('NodeAdded').setDoc("A new node has been added to OpenZWave's set.  This may be due to a device being added to the Z-Wave network, or because the application is initializing itself."),
+    EnumWithDoc('NodeRemoved').setDoc("A node has been removed from OpenZWave's set.  This may be due to a device being removed from the Z-Wave network, or because the application is closing."),
+    EnumWithDoc('NodeProtocolInfo').setDoc("Basic node information has been receievd, such as whether the node is a setening device, a routing device and its baud rate and basic, generic and specific types. It is after this notification that you can call Manager::GetNodeType to obtain a label containing the device description."),
     EnumWithDoc('NodeNaming').setDoc("One of the node names has changed (name, manufacturer, product)."),
     EnumWithDoc('NodeEvent').setDoc("A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification."),
     EnumWithDoc('PollingDisabled').setDoc("Polling of a node has been successfully turned off by a call to Manager::DisablePoll."),
@@ -118,6 +118,9 @@ PyLogLevels = {
 cdef map[uint64, ValueID] values_map
 
 cdef getValueFromType(Manager *manager, valueId):
+    """
+    Translate a value in the right type
+    """
     cdef float type_float
     cdef bool type_bool
     cdef uint8 type_byte
@@ -172,7 +175,6 @@ cdef addValueId(ValueID v, n):
                     'units' : units.c_str(),
                     'readOnly': manager.IsValueReadOnly(v),
                     }
-
     values_map.insert ( pair[uint64, ValueID] (v.GetId(), v))
 
 cdef void callback(const_notification _notification, void* _context) with gil:
@@ -261,7 +263,7 @@ cdef class PyOptions:
         :param value: The value of the option.
         :type value: str
         :param append: Setting append to true will cause values read from the command line
-         or XML file to be concatenated into a comma delimited list.  If _append is false,
+         or XML file to be concatenated into a comma delimited set.  If _append is false,
          newer values will overwrite older ones.
         :type append: boolean
         :returns: The result of the operation.
@@ -293,7 +295,7 @@ Retrieve the config path. This directory hold the xml files.
 
 cdef class RetAlloc:
     """
-    Map an array of uint8 used when retrieving lists.
+    Map an array of uint8 used when retrieving sets.
     Allocate memory at init and free it when no more reference to it exist.
     Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg
 
@@ -350,7 +352,7 @@ have been polled, an "AllAwakeNodesQueried" notification is sent.  This is when
 a client application can expect all of the node information (both static
 information, like the physical device's capabilities, session information (like
 [associations and/or names] and dynamic information (like temperature or on/off
-state) to be available.  Finally, after all nodes (whether listening or
+state) to be available.  Finally, after all nodes (whether setening or
 sleeping) have been polled, an "AllNodesQueried" notification is sent.
     '''
     COMMAND_CLASS_DESC = {
@@ -510,7 +512,7 @@ Creates a new driver for a Z-Wave controller.
 This method creates a Driver object for handling communications with a single
 Z-Wave controller.  In the background, the driver first tries to read
 configuration data saved during a previous run.  It then queries the controller
-directly for any missing information, and a refresh of the list of nodes that
+directly for any missing information, and a refresh of the set of nodes that
 it controls.  Once this information has been received, a DriverReady
 notification callback is sent, containing the Home ID of the controller.  This
 Home ID is required by most of the OpenZWave Manager class methods.
@@ -807,9 +809,9 @@ Enable the polling of a device's state.
         '''
 .. _disablePoll:
 
-Disable the polling of a device's state.
+Disable polling of a value.
 
-:param id: Disable the polling of a device's state.
+:param id: The ID of the value to disable polling.
 :type id: int
 :returns: bool -- True if polling was disabled.
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, setPollIntensity_
@@ -824,7 +826,7 @@ Disable the polling of a device's state.
         '''
 .. _isPolled:
 
-Determine the polling of a device's state.
+Check polling status of a value
 
 :param id: The ID of the value to check polling.
 :type id: int
@@ -841,7 +843,7 @@ Determine the polling of a device's state.
         '''
 .. _setPollIntensity:
 
-Set the frequency of polling (0=none, 1=every time through the list, 2-every other time, etc)
+Set the frequency of polling (0=none, 1=every time through the set, 2-every other time, etc)
 
 :param id: The ID of the value whose intensity should be set
 :type id: int
@@ -942,13 +944,13 @@ Get whether the node is a beam capable device.
         '''
 .. _isNodeListeningDevice:
 
-Get whether the node is a listening device that does not go to sleep
+Get whether the node is a setening device that does not go to sleep
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if it is a listening node.
+:returns: bool -- True if it is a setening node.
 
         '''
         return self.manager.IsNodeListeningDevice(homeid, nodeid)
@@ -957,14 +959,14 @@ Get whether the node is a listening device that does not go to sleep
         '''
 .. _isNodeFrequentListeningDevice:
 
-Get whether the node is a frequent listening device that goes to sleep but
+Get whether the node is a frequent setening device that goes to sleep but
 can be woken up by a beam. Useful to determine node and controller consistency.
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if it is a frequent listening node.
+:returns: bool -- True if it is a frequent setening node.
 
         '''
         return self.manager.IsNodeFrequentListeningDevice(homeid, nodeid)
@@ -1125,10 +1127,10 @@ Get the bitmap of this node's neighbors.
 
 :todo:
     cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
-    How to free memory ? Create a child of list. 2 parameters : address of the
+    How to free memory ? Create a child of set. 2 parameters : address of the
     value and size. Sur le __del__ on "free" la memory
     Fix ???
-    When no entries found, should we return an empty list or None
+    When no entries found, should we return an empty set or None
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int

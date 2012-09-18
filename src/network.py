@@ -74,7 +74,7 @@ class ZWaveNetwork(ZWaveObject):
     * SIGNAL_MSG_COMPLETE = 'MsgComplete'
     * SIGNAL_ERROR = 'Error'
 
-    The table presented below lists notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.
+    The table presented below sets notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.
 
     Driver Initialization Notification
 
@@ -82,7 +82,7 @@ class ZWaveNetwork(ZWaveObject):
 
     DriverReady
 
-    [always sent] 	Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
+    [always sent]   Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
     At the time this notification is sent, only certain information about the controller itself is known:
 
         * Controller Z-Wave version
@@ -97,20 +97,20 @@ class ZWaveNetwork(ZWaveObject):
 
     NodeNew
 
-    [potentially sent] 	Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
+    [potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
     At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.
 
     NodeAdded
 
-    [always sent (for each node associated with the controller)] 	Sent when a node has been added to OpenZWave’s list of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
+    [always sent (for each node associated with the controller)]    Sent when a node has been added to OpenZWave’s set of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
     As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.
 
     NodeProtocolInfo
 
-    [potentially sent] 	Sent after a node’s protocol information has been successfully read from the controller.
+    [potentially sent]  Sent after a node’s protocol information has been successfully read from the controller.
     At the time this notification is sent, only certain information about the node is known:
 
-        * Whether it is a “listening” or “sleeping” device
+        * Whether it is a “setening” or “sleeping” device
         * Whether the node is capable of routing messages
         * Maximum baud rate for communication
         * Version number
@@ -118,16 +118,16 @@ class ZWaveNetwork(ZWaveObject):
 
     NodeNaming
 
-    [potentially sent] 	Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).
+    [potentially sent]  Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).
 
     ValueAdded
 
-    [potentially sent] 	Sent when a new value has been associated with the node.
+    [potentially sent]  Sent when a new value has been associated with the node.
     At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.
 
     NodeQueriesComplete
 
-    [always sent (for each node associated with the controller that has been successfully queried)] 	Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.
+    [always sent (for each node associated with the controller that has been successfully queried)]     Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.
 
     Initialization Complete Notifications
 
@@ -135,11 +135,11 @@ class ZWaveNetwork(ZWaveObject):
 
     AwakeNodesQueried
 
-    [always sent] 	Sent when all “listening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)
+    [always sent]   Sent when all “setening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)
 
     AllNodesQueried
 
-    [potentially sent] 	Sent when all nodes have been successfully queried.
+    [potentially sent]  Sent when all nodes have been successfully queried.
 
     This notification should be sent relatively quickly if there are no “sleeping” nodes. But it might be sent quite a while after start-up if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.
 
@@ -147,14 +147,14 @@ class ZWaveNetwork(ZWaveObject):
 
     In addition to the notifications described above, which are primarily “initialization” notifications that are sent during program start-up, the following notifications may be sent as a result of user actions, external program control, etc.
 
-    * ValueChanged 	Sent when a value associated with a node has changed. Receipt of this notification indicates that it may be a good time to read the new value and display or otherwise process it accordingly.
-    * ValueRemoved 	Sent when a value associated with a node has been removed.
-    * Group 	Sent when a node’s group association has changed.
-    * NodeRemoved 	Sent when a node has been removed from the ZWave network.
-    * NodeEvent 	Sent when a node sends a Basic_Set command to the controller.  This notification can be generated by certain sensors, for example, motion detectors, to indicate that an event has been sensed.
-    * PollingEnabled 	Sent when node/value polling has been enabled.
-    * PollingDisabled 	Sent when node/value polling has been disabled.
-    * DriverReset 	Sent to indicate when a controller has been reset.  This notification is intended to replace the potentially hundreds of notifications representing each value and node removed from the network.
+    * ValueChanged  Sent when a value associated with a node has changed. Receipt of this notification indicates that it may be a good time to read the new value and display or otherwise process it accordingly.
+    * ValueRemoved  Sent when a value associated with a node has been removed.
+    * Group     Sent when a node’s group association has changed.
+    * NodeRemoved   Sent when a node has been removed from the ZWave network.
+    * NodeEvent     Sent when a node sends a Basic_Set command to the controller.  This notification can be generated by certain sensors, for example, motion detectors, to indicate that an event has been sensed.
+    * PollingEnabled    Sent when node/value polling has been enabled.
+    * PollingDisabled   Sent when node/value polling has been disabled.
+    * DriverReset   Sent to indicate when a controller has been reset.  This notification is intended to replace the potentially hundreds of notifications representing each value and node removed from the network.
 
     '''
     SIGNAL_NETWORK_FAILED = 'NetworkFailed'
@@ -222,9 +222,9 @@ class ZWaveNetwork(ZWaveObject):
         #self._started = False
 
         #self._semaphore_on_ready = threading.Semaphore()
-        #self._callback_on_ready = list()
+        #self._callback_on_ready = set()
         #self._semaphore_on_fail = threading.Semaphore()
-        #self._callback_on_fail = list()
+        #self._callback_on_fail = set()
 
     @property
     def home_id(self):
@@ -410,24 +410,27 @@ class ZWaveNetwork(ZWaveObject):
 
     def zwcallback(self, args):
         """
-        The callback function used with the libopenzwave.
+        The Callback Handler used with the libopenzwave.
 
-        n['valueId'] = {'home_id' : v.GetHomeId(),
-                'node_id' : v.GetNodeId(),
-                'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-                'instance' : v.GetInstance(),
-                'index' : v.GetIndex(),
-                'id' : v.GetId(),
-                'genre' : PyGenres[v.GetGenre()],
-                'type' : PyValueTypes[v.GetType()],
-#                    'value' : value.c_str(),
-                'value' : getValueFromType(manager,v.GetId()),
-                'label' : label.c_str(),
-                'units' : units.c_str(),
-                'readOnly': manager.IsValueReadOnly(v),
-                }
+        n['valueId'] = {
 
-        :param args: Callback parameters
+            * 'home_id' : v.GetHomeId(),
+            * 'node_id' : v.GetNodeId(),
+            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+            * 'instance' : v.GetInstance(),
+            * 'index' : v.GetIndex(),
+            * 'id' : v.GetId(),
+            * 'genre' : PyGenres[v.GetGenre()],
+            * 'type' : PyValueTypes[v.GetType()],
+            * #'value' : value.c_str(),
+            * 'value' : getValueFromType(manager,v.GetId()),
+            * 'label' : label.c_str(),
+            * 'units' : units.c_str(),
+            * 'readOnly': manager.IsValueReadOnly(v)
+
+        }
+
+        :param args: Callback function
         :type args: dict()
 
         """
@@ -493,33 +496,6 @@ class ZWaveNetwork(ZWaveObject):
             import sys, traceback
             raise ZWaveException("Callback exception %s" % traceback.format_exception(*sys.exc_info()))
 
-    def _zwcallback(self, args):
-        '''
-        Callback Handler
-
-        n['valueId'] = {
-
-            * 'home_id' : v.GetHomeId(),
-            * 'node_id' : v.GetNodeId(),
-            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-            * 'instance' : v.GetInstance(),
-            * 'index' : v.GetIndex(),
-            * 'id' : v.GetId(),
-            * 'genre' : PyGenres[v.GetGenre()],
-            * 'type' : PyValueTypes[v.GetType()],
-            * #'value' : value.c_str(),
-            * 'value' : getValueFromType(manager,v.GetId()),
-            * 'label' : label.c_str(),
-            * 'units' : units.c_str(),
-            * 'readOnly': manager.IsValueReadOnly(v)
-
-        }
-
-        :param args: Callback function
-        :type args: dict()
-
-        '''
-
     def _handle_driver_failed(self, args):
         '''
         Driver failed to load.
@@ -584,7 +560,7 @@ class ZWaveNetwork(ZWaveObject):
 
     def _handle_node_added(self, args):
         '''
-        A new node has been added to OpenZWave's list.
+        A new node has been added to OpenZWave's set.
         This may be due to a device being added to the Z-Wave network,
         or because the application is initializing itself.
 
@@ -643,7 +619,7 @@ class ZWaveNetwork(ZWaveObject):
     def _handle_node_protocol_info(self, args):
         '''
         Basic node information has been received, such as whether
-        the node is a listening device, a routing device and its baud rate
+        the node is a setening device, a routing device and its baud rate
         and basic, generic and specific types.
         It is after this notification that you can call Manager::GetNodeType
         to obtain a label containing the device description.
@@ -658,7 +634,7 @@ class ZWaveNetwork(ZWaveObject):
 
     def _handle_node_removed(self, args):
         '''
-        A node has been removed from OpenZWave's list.
+        A node has been removed from OpenZWave's set.
         This may be due to a device being removed from the Z-Wave network,
         or because the application is closing.
 
@@ -817,7 +793,7 @@ class ZWaveNetwork(ZWaveObject):
 
     def _handle_value_added(self, args):
         '''
-        A new node value has been added to OpenZWave's list.
+        A new node value has been added to OpenZWave's set.
         These notifications occur after a node has been discovered,
         and details of its command classes have been received.
         Each command class may generate one or more values depending
@@ -828,15 +804,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueAdded : %s' % (args))
-        #home_id = args['home_id']
-        #controllerNodeId = args['node_id']
-        #valueId = args['valueId']
-        #node = self._fetchNode(home_id, controllerNodeId)
-        #node._last_update = time.time()
-        #valueNode = self._get_value_node(home_id, controllerNodeId, valueId)
-        #valueNode.update(args)
+        self.nodes.add_value(args['node_id'])
         dispatcher.send(self.SIGNAL_VALUE_ADDED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['node_id']], \
+                'value' : self.nodes[args['node_id']].values[args['value_id']]})
 
     def _handle_value_changed(self, args):
         '''
@@ -848,19 +819,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueChanged : %s' % (args))
-        #home_id = args['home_id']
-        #controllerNodeId = args['node_id']
-        #valueId = args['valueId']
-        #node = self._fetchNode(home_id, controllerNodeId)
-        #node._sleeping = False
-        #node._last_update = time.time()
-        #valueNode = self._get_value_node(home_id, controllerNodeId, valueId)
-        #valueNode.update(args)
-        #if self._initialized:
-        #    dispatcher.send(self.SIGNAL_VALUE_CHANGED, \
-        #    **{'home_id': home_id, 'node_id': controllerNodeId, 'valueId': valueId})
+        self.nodes[args['node_id']].change_value(args['value_id'])
         dispatcher.send(self.SIGNAL_VALUE_CHANGED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['node_id']], \
+                'value' : self.nodes[args['node_id']].values[args['value_id']]})
 
     def _handle_value_refreshed(self, args):
         '''
@@ -871,12 +833,14 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRefreshed : %s' % (args))
+        self.nodes[args['node_id']].refresh_value(args['value_id'])
         dispatcher.send(self.SIGNAL_VALUE_REFRESHED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['node_id']], \
+                'value' : self.nodes[args['node_id']].values[args['value_id']]})
 
     def _handle_value_removed(self, args):
         '''
-        A node value has been removed from OpenZWave's list.
+        A node value has been removed from OpenZWave's set.
         This only occurs when a node is removed.
 
         :param args: data sent by the notification
@@ -884,8 +848,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRemoved : %s' % (args))
+        self.nodes[args['node_id']].remove_value(args['value_id'])
         dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['node_id']], \
+                'value' : self.nodes[args['node_id']].values[args['value_id']]})
 
     def _handle_error(self, args):
         '''
@@ -946,7 +912,7 @@ class ZWaveNetwork(ZWaveObject):
 #    def get_node(self, node_id):
 #        """
 #        Retrieve a node from its id.
-#        This function does NOT lock the nodes list.
+#        This function does NOT lock the nodes set.
 #
 #        :param node_id: The node identifier
 #        :type node_id: int
@@ -987,7 +953,7 @@ class ZWaveNetwork(ZWaveObject):
 #        '''
 #        Update node's command classes.
 #        '''
-#        classSet = list()()
+#        classSet = set()()
 #        for cls in PyManager.COMMAND_CLASS_DESC:
 #            if self._manager.getNodeClassInformation(node._home_id, node._node_id, cls):
 #                classSet.add(cls)
