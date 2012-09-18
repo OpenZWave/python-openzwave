@@ -9,4 +9,3 @@ informations on it : library, statistics, ...
 
 .. automodule:: openzwave.controller
     :members: ZWaveController
-

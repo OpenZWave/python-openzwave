@@ -115,6 +115,6 @@ setup(
   packages = ['libopenzwave', 'openzwave'],
   install_requires=['setuptools',
 					'cython >= 0.14',
-                    'python-louie >= 1.1'
+                    'Louie >= 1.1'
                     ]
 )

@@ -406,7 +406,8 @@ class ZWaveNetwork(ZWaveObject):
         for node in self.nodes:
             if node.is_sleeping:
                 retval += 1
-        return retval - 1 if retval > 0 else 0
+        return retval
+#        return retval - 1 if retval > 0 else 0
 
     def zwcallback(self, args):
         """
