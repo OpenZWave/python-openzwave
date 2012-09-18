@@ -31,7 +31,8 @@ from mylibc cimport string
 from mylibc cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from driver cimport DriverData_t, DriverData
-from notification cimport Notification, NotificationType, Type_Group, Type_NodeEvent
+from notification cimport Notification, NotificationType
+from notification cimport Type_Error, Type_Group, Type_NodeEvent
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
