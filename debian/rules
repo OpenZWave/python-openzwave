@@ -7,5 +7,6 @@ override_dh_auto_build:
 	dh_auto_build build -- --debian-package
 
 override_dh_auto_install:
+	dh_auto_install install -- --debian-package
 	cd docs && make html
 	dh_auto_install install -- --debian-package
