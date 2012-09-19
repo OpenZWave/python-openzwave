@@ -42,7 +42,7 @@ class ZWaveController(ZWaveObject):
 
     def __init__(self, controller_id, network, options=None):
         '''
-        Initialize driver object
+        Initialize controller object
 
         :param controller_id: The Id of the controller
         :type controller_id: int
@@ -124,7 +124,7 @@ class ZWaveController(ZWaveObject):
         """
         The name of the library.
 
-        :returns: The c++ library name
+        :returns: The cpp library name
         :rtype: str
 
         """
@@ -138,7 +138,7 @@ class ZWaveController(ZWaveObject):
         """
         The description of the library.
 
-        :returns: The c++ library description (name and version)
+        :returns: The cpp library description (name and version)
         :rtype: str
 
         """
@@ -149,7 +149,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the library.
 
-        :returns: The c++ library version
+        :returns: The cpp library version
         :rtype: str
 
         """
