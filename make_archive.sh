@@ -16,7 +16,7 @@ RY=$(echo $RY024)
 RZ=$(echo $RZ024)
 
 #Define variables
-PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx | sed -e "s|PYLIBRARY = ||" | sed 's/\x0D$//' | sed -e "s|^M$||" | sed -e "s|\"||g")
+PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx | sed -e "s|PYLIBRARY = ||" | sed "s/\x0D$//" | sed -e "s|^M$||" | sed -e "s|\"||g")
 ARCHIVEDIR=python-openzwave-${PYLIBRARY}
 ARCHIVE=python-openzwave-${PYLIBRARY}.tgz
 

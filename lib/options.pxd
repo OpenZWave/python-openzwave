@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from mylibc cimport uint32, uint64, int32, int16, uint8, int8
+from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 from libcpp cimport bool
 
@@ -24,7 +24,7 @@ cdef extern from "Options.h" namespace "OpenZWave":
     cdef cppclass Options:
         bool Lock()
         bool AddOptionBool( string name, bool default )
-        bool AddOptionInt( string name, int32 default )
+        bool AddOptionInt( string name, int32_t default )
         bool AddOptionString( string name, string default, bool append )
 
 cdef extern from "Options.h" namespace "OpenZWave::Options":

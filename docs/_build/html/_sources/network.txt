@@ -8,4 +8,3 @@ This is the central point. Everything is attached to a network.
 
 .. automodule:: openzwave.network
     :members: ZWaveNetwork
-

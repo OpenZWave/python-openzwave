@@ -95,7 +95,8 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dd><p>The network objet = homeid.
 It contains a reference to the manager and the controller.</p>
 <p>It dispatch the following louie signals :</p>
-<ul class="simple">
+<blockquote>
+<div><ul class="simple">
 <li>SIGNAL_NETWORK_FAILED = &#8216;NetworkFailed&#8217;</li>
 <li>SIGNAL_NETWORK_READY = &#8216;NetworkReady&#8217;</li>
 <li>SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</li>
@@ -125,10 +126,13 @@ It contains a reference to the manager and the controller.</p>
 <li>SIGNAL_MSG_COMPLETE = &#8216;MsgComplete&#8217;</li>
 <li>SIGNAL_ERROR = &#8216;Error&#8217;</li>
 </ul>
+</div></blockquote>
 <p>The table presented below sets notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.</p>
 <p>Driver Initialization Notification</p>
 <p>The notification below is sent when OpenZWave has successfully connected to a physical ZWave controller.</p>
-<p>DriverReady</p>
+<ul class="simple">
+<li>DriverReady</li>
+</ul>
 <p>[always sent]   Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
 At the time this notification is sent, only certain information about the controller itself is known:</p>
 <blockquote>
@@ -142,13 +146,19 @@ At the time this notification is sent, only certain information about the contro
 </div></blockquote>
 <p>Node Initialization Notifications</p>
 <p>As OpenZWave starts, it identifies and reads information about each node in the network. The following notifications may be sent during the initialization process.</p>
-<p>NodeNew</p>
+<ul class="simple">
+<li>NodeNew</li>
+</ul>
 <p>[potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
 At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.</p>
-<p>NodeAdded</p>
+<ul class="simple">
+<li>NodeAdded</li>
+</ul>
 <p>[always sent (for each node associated with the controller)]    Sent when a node has been added to OpenZWave’s set of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
 As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.</p>
-<p>NodeProtocolInfo</p>
+<ul class="simple">
+<li>NodeProtocolInfo</li>
+</ul>
 <p>[potentially sent]  Sent after a node’s protocol information has been successfully read from the controller.
 At the time this notification is sent, only certain information about the node is known:</p>
 <blockquote>
@@ -162,16 +172,24 @@ At the time this notification is sent, only certain information about the node i
 </div></blockquote>
 <p>NodeNaming</p>
 <p>[potentially sent]  Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).</p>
-<p>ValueAdded</p>
+<ul class="simple">
+<li>ValueAdded</li>
+</ul>
 <p>[potentially sent]  Sent when a new value has been associated with the node.
 At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.</p>
-<p>NodeQueriesComplete</p>
+<ul class="simple">
+<li>NodeQueriesComplete</li>
+</ul>
 <p>[always sent (for each node associated with the controller that has been successfully queried)]     Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.</p>
 <p>Initialization Complete Notifications</p>
 <p>As indicated above, when OpenZWave starts it reads certain information from a file, from the controller and from the network.  The following notifications identify when this initialization/querying process is complete.</p>
-<p>AwakeNodesQueried</p>
+<ul class="simple">
+<li>AwakeNodesQueried</li>
+</ul>
 <p>[always sent]   Sent when all “setening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)</p>
-<p>AllNodesQueried</p>
+<ul class="simple">
+<li>AllNodesQueried</li>
+</ul>
 <p>[potentially sent]  Sent when all nodes have been successfully queried.</p>
 <p>This notification should be sent relatively quickly if there are no “sleeping” nodes. But it might be sent quite a while after start-up if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.</p>
 <p>Other Notifications</p>

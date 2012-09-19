@@ -26,9 +26,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
-from mylibc cimport uint32, uint64, int32, int16, uint8, int8
+from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
-from mylibc cimport malloc, free
+from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from driver cimport DriverData_t, DriverData
 from notification cimport Notification, NotificationType
@@ -42,7 +42,7 @@ import os
 
 #Don't update it.
 #It will be done when releasing only.
-#Need to modifiy make_archive.sh too.
+#Need to modifiy make_archive.sh and setup.py too.
 PYLIBRARY = "0.2.4"
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
@@ -116,7 +116,7 @@ PyLogLevels = {
     'Internal' : 9,
     }
 
-cdef map[uint64, ValueID] values_map
+cdef map[uint64_t, ValueID] values_map
 
 cdef getValueFromType(Manager *manager, valueId):
     """
@@ -124,9 +124,9 @@ cdef getValueFromType(Manager *manager, valueId):
     """
     cdef float type_float
     cdef bool type_bool
-    cdef uint8 type_byte
-    cdef int32 type_int
-    cdef int16 type_short
+    cdef uint8_t type_byte
+    cdef int32_t type_int
+    cdef int16_t type_short
     cdef string type_string
     ret = None
     if values_map.find(valueId) != values_map.end():
@@ -176,7 +176,7 @@ cdef addValueId(ValueID v, n):
                     'units' : units.c_str(),
                     'readOnly': manager.IsValueReadOnly(v),
                     }
-    values_map.insert ( pair[uint64, ValueID] (v.GetId(), v))
+    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
 
 cdef void callback(const_notification _notification, void* _context) with gil:
     cdef Notification* notification = <Notification*>_notification
@@ -297,17 +297,17 @@ Retrieve the config path. This directory hold the xml files.
 
 cdef class RetAlloc:
     """
-    Map an array of uint8 used when retrieving sets.
+    Map an array of uint8_t used when retrieving sets.
     Allocate memory at init and free it when no more reference to it exist.
     Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg
 
     """
-    cdef uint32 siz
-    cdef uint8* data
+    cdef uint32_t siz
+    cdef uint8_t* data
 
-    def __cinit__(self,  uint32 siz):
+    def __cinit__(self,  uint32_t siz):
         self.siz = siz
-        self.data = <uint8*>malloc(sizeof(uint8) * siz)
+        self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz)
 
     def __dealloc__(self):
         free(self.data)
@@ -1118,7 +1118,7 @@ on which of those values are specified by the node.
 
 Get the bitmap of this node's neighbors.
 
-    uint32 GetNodeNeighbors( uint32 const _homeId, uint8 const _nodeId, uint8** _nodeNeighbors );
+    uint32_t GetNodeNeighbors( uint32_t const _homeId, uint8_t const _nodeId, uint8_t** _nodeNeighbors );
     /**
     * brief Get the bitmap of this node's neighbors
     *
@@ -1128,7 +1128,7 @@ Get the bitmap of this node's neighbors.
     */
 
 :todo:
-    cdef uint8* retuint8 = <uint8*>malloc(sizeof(uint8)*count)
+    cdef uint8_t* retuint8 = <uint8_t*>malloc(sizeof(uint8_t)*count)
     How to free memory ? Create a child of set. 2 parameters : address of the
     value and size. Sur le __del__ on "free" la memory
     Fix ???
@@ -1144,23 +1144,23 @@ Get the bitmap of this node's neighbors.
         '''
         data = set()
         #Allocate memory for the c++ function
-        #Return value is pointer to uint8[]
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*29)
+        #Return value is pointer to uint8_t[]
+        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t)*29)
         #Get the number of neigbors
-        cdef uint32 count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
+        cdef uint32_t count = self.manager.GetNodeNeighbors(homeid, nodeid, dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
         #Allocate memory for the returned values
         cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8* p
-        cdef uint32 start = 0
+        cdef uint8_t* p
+        cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    #cdef uint8 = retuint8[i]
+                    #cdef uint8_t = retuint8[i]
                     retuint8.data[i] = p[0]
                     data.add(retuint8.data[i])
                     p += 1
@@ -1538,7 +1538,7 @@ Helper method to return whether a particular class is available in a node
 
         '''
         cdef string oclassName
-        cdef uint8 oclassVersion
+        cdef uint8_t oclassVersion
         ret=self.manager.GetNodeClassInformation(homeid, nodeid, commandClassId, &oclassName, &oclassVersion)
         if ret :
             className = oclassName.c_str()
@@ -1571,9 +1571,9 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
         '''
         cdef float type_float
         cdef bool type_bool
-        cdef uint8 type_byte
-        cdef int32 type_int
-        cdef int16 type_short
+        cdef uint8_t type_byte
+        cdef int32_t type_int
+        cdef int16_t type_short
         cdef string type_string
         ret = 2
         if values_map.find(id) != values_map.end():
@@ -1926,12 +1926,12 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_
         return getValueFromType(self.manager,id)
 
 #        bool GetValueListSelection(ValueID& valueid, string* o_value)
-#        bool GetValueListSelection(ValueID& valueid, uint32* o_value)
+#        bool GetValueListSelection(ValueID& valueid, uint32_t* o_value)
 #        bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
-#        bool SetValue(ValueID& valueid, uint8 value)
+#        bool SetValue(ValueID& valueid, uint8_t value)
 #        bool SetValue(ValueID& valueid, float value)
 #        bool SetValue(ValueID& valueid, uint16 value)
-#        bool SetValue(ValueID& valueid, uint32 value)
+#        bool SetValue(ValueID& valueid, uint32_t value)
 #        bool SetValue(ValueID& valueid, string value)
 #        bool SetValueListSelection(ValueID& valueid, string selecteditem)
 
@@ -2065,9 +2065,9 @@ Gets switch point data from the schedule
 :see: setSwitchPoint_, removeSwitchPoint_, clearSwitchPoints_, getNumSwitchPoints_
 
         '''
-        cdef uint8 ohours
-        cdef uint8 ominutes
-        cdef int8 osetback
+        cdef uint8_t ohours
+        cdef uint8_t ominutes
+        cdef int8_t osetback
         if values_map.find(id) != values_map.end():
             ret=self.manager.GetSwitchPoint(values_map.at(id), idx, \
                 &ohours, &ominutes, &osetback)
@@ -2257,18 +2257,18 @@ Gets the associations for a group
 
         '''
         data = set()
-        cdef uint32 size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
+        cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
         #Allocate memory
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8) * size)
-        # return value is pointer to uint8[]
-        cdef uint32 count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+        # return value is pointer to uint8_t[]
+        cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
         cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8* p
-        cdef uint32 start = 0
+        cdef uint8_t* p
+        cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
@@ -2431,7 +2431,7 @@ Resets a controller without erasing its network configuration settings.
         '''
         self.manager.SoftReset(homeid)
 
-#        #bool BeginControllerCommand(uint32 homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8 _nodeId = 0xff )
+#        #bool BeginControllerCommand(uint32_t homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8_t _nodeId = 0xff )
 
     def cancelControllerCommand(self, homeid):
         '''
@@ -2489,18 +2489,18 @@ sceneGetValueAsString_
 
         '''
         data = set()
-        cdef uint32 size = self.manager.GetNumScenes()
+        cdef uint32_t size = self.manager.GetNumScenes()
         # Allocate memory
-        cdef uint8** dbuf = <uint8**>malloc(sizeof(uint8)*size)
-        # return value is pointer to uint8[]
-        cdef uint32 count = self.manager.GetAllScenes(dbuf)
+        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t)*size)
+        # return value is pointer to uint8_t[]
+        cdef uint32_t count = self.manager.GetAllScenes(dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
         cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8* p
-        cdef uint32 start = 0
+        cdef uint8_t* p
+        cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
@@ -2554,7 +2554,7 @@ sceneGetValueAsString_
         '''
         return self.manager.RemoveScene(homeid)
 
-    def addSceneValue(self, uint8 sceneid, id, value):
+    def addSceneValue(self, uint8_t sceneid, id, value):
         '''
 .. _addSceneValue:
 
@@ -2584,9 +2584,9 @@ sceneGetValueAsString_
         '''
         cdef float type_float
         cdef bool type_bool
-        cdef uint8 type_byte
-        cdef int32 type_int
-        cdef int16 type_short
+        cdef uint8_t type_byte
+        cdef int32_t type_int
+        cdef int16_t type_short
         cdef string type_string
         ret = 2
         if values_map.find(id) != values_map.end():
@@ -2617,7 +2617,7 @@ sceneGetValueAsString_
                 ret = 1 if cret else 0
         return ret
 
-    def setSceneValue(self, uint8 sceneid, id, value):
+    def setSceneValue(self, uint8_t sceneid, id, value):
         '''
 .. _setSceneValue:
 
@@ -2645,9 +2645,9 @@ sceneGetValueAsString_
         '''
         cdef float type_float
         cdef bool type_bool
-        cdef uint8 type_byte
-        cdef int32 type_int
-        cdef int16 type_short
+        cdef uint8_t type_byte
+        cdef int32_t type_int
+        cdef int16_t type_short
         cdef string type_string
         ret = 2
         if values_map.find(id) != values_map.end():

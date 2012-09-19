@@ -16,8 +16,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from mylibc cimport uint32, uint64, int32, int16, uint8, int8
-
+from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 
 cdef extern from "ValueID.h" namespace "OpenZWave":
 
@@ -41,11 +40,11 @@ cdef extern from "ValueID.h" namespace "OpenZWave":
         ValueType_Max = ValueType_Button    # The highest-number type defined.  Not to be used as a type itself.
 
     cdef cppclass ValueID:
-        uint32 GetHomeId()
-        uint8 GetNodeId()
+        uint32_t GetHomeId()
+        uint8_t GetNodeId()
         ValueGenre GetGenre()
-        uint8 GetCommandClassId()
-        uint8 GetInstance()
-        uint8 GetIndex()
+        uint8_t GetCommandClassId()
+        uint8_t GetInstance()
+        uint8_t GetIndex()
         ValueType GetType()
-        uint64 GetId()
+        uint64_t GetId()

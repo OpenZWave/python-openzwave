@@ -16,13 +16,18 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-
-ctypedef unsigned int uint32
-ctypedef unsigned long uint64
-ctypedef int int32
-ctypedef short int16
-ctypedef unsigned char uint8
-ctypedef signed char int8
+#stdlib uint32_t
+#ctypedef unsigned int uint32_t
+#stdlib uint64_t
+#ctypedef unsigned long uint64_t
+#stdlib int32_t
+#ctypedef signed int int32_t
+#stdlib int16_t
+#ctypedef signed short int16_t
+#stdlib uint8_t
+#ctypedef unsigned char uint8_t
+#stdlib int8_t
+#ctypedef signed char int8_t
 
 cdef extern from "Python.h":
     void PyEval_InitThreads()
@@ -34,9 +39,9 @@ cdef extern from "<string>" namespace "std":
         string (size_t n, char c)
         char * c_str()
 
-cdef extern from "stdlib.h":
-    void* malloc(size_t size)
-    void free(void* ptr)
+#cdef extern from "stdlib.h":
+#    void* malloc(size_t size)
+#    void free(void* ptr)
 
 cdef extern from "<new>" namespace "std":
     void* new(size_t size)

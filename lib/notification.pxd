@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from mylibc cimport uint32, uint64, int32, int16, uint8, int8
+from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 from libcpp cimport bool
 from values cimport ValueID
@@ -60,12 +60,12 @@ cdef extern from "Notification.h" namespace "OpenZWave":
 
     cdef cppclass Notification:
         NotificationType GetType()
-        uint32 GetHomeId()
-        uint8 GetNodeId()
+        uint32_t GetHomeId()
+        uint8_t GetNodeId()
         ValueID& GetValueID()
-        uint8 GetGroupIdx()
-        uint8 GetEvent()
-        uint8 GetButtonId()
-        uint8 GetErrorCode()
-        uint8 GetByte()
+        uint8_t GetGroupIdx()
+        uint8_t GetEvent()
+        uint8_t GetButtonId()
+        uint8_t GetErrorCode()
+        uint8_t GetByte()
 

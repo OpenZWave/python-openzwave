@@ -823,7 +823,7 @@ characters.</p>
 <tt class="descname">getNodeNeighbors</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeNeighbors" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getnodeneighbors">Get the bitmap of this node&#8217;s neighbors.</p>
 <blockquote>
-<div>uint32 GetNodeNeighbors( uint32 const _homeId, uint8 const _nodeId, uint8** _nodeNeighbors );
+<div>uint32_t GetNodeNeighbors( uint32_t const _homeId, uint8_t const _nodeId, uint8_t** _nodeNeighbors );
 /**
 * brief Get the bitmap of this node&#8217;s neighbors
 *
@@ -835,7 +835,7 @@ characters.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Todo :</th><td class="field-body"><p class="first">cdef uint8* retuint8 = &lt;uint8*&gt;malloc(sizeof(uint8)*count)
+<tr class="field-odd field"><th class="field-name">Todo :</th><td class="field-body"><p class="first">cdef uint8_t* retuint8 = &lt;uint8_t*&gt;malloc(sizeof(uint8_t)*count)
 How to free memory ? Create a child of set. 2 parameters : address of the
 value and size. Sur le __del__ on &#8220;free&#8221; la memory
 Fix ???
@@ -2660,7 +2660,7 @@ newer values will overwrite older ones.</li>
 <dl class="class">
 <dt id="libopenzwave.RetAlloc">
 <em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">RetAlloc</tt><a class="headerlink" href="#libopenzwave.RetAlloc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Map an array of uint8 used when retrieving sets.
+<dd><p>Map an array of uint8_t used when retrieving sets.
 Allocate memory at init and free it when no more reference to it exist.
 Give it to lion as Nico0084 says : <a class="reference external" href="http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg">http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg</a></p>
 </dd></dl>
