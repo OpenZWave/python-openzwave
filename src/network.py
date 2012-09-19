@@ -566,7 +566,7 @@ class ZWaveNetwork(ZWaveObject):
         The application should rebuild any group information
         it holds about the node.
 
-		To do
+        To do
 
         :param args: data sent by the notification
         :type args: dict()
@@ -626,7 +626,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
         self.nodes[args['node_id']].outdate(\
-			lambda: self.nodes[args['node_id']].name)
+            lambda: self.nodes[args['node_id']].name)
         dispatcher.send(self.SIGNAL_NODE_NAMING, \
             **{'home_id': self.home_id, 'node_id': args['node_id']})
 
@@ -999,18 +999,18 @@ class ZWaveNetwork(ZWaveObject):
 #        self.manager.writeConfig(self.home_id)
 #        # TODO: write config on shutdown as well
 
-    def getCommandClassName(self, commandClassCode):
-        """
-        """
-        return PyManager.COMMAND_CLASS_DESC[commandClassCode]
+#    def getCommandClassName(self, commandClassCode):
+#        """
+#        """
+#        return PyManager.COMMAND_CLASS_DESC[commandClassCode]
 
-    def getCommandClassCode(self, commandClassName):
-        """
-        """
-        for k, v in PyManager.COMMAND_CLASS_DESC.iteritems():
-            if v == commandClassName:
-                return k
-        return None
+#    def getCommandClassCode(self, commandClassName):
+#        """
+#        """
+#        for k, v in PyManager.COMMAND_CLASS_DESC.iteritems():
+#            if v == commandClassName:
+#                return k
+#        return None
 
 # commands:
 # - refresh node

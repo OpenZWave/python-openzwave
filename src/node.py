@@ -268,7 +268,7 @@ class ZWaveNode( ZWaveObject,
     def groups(self):
         """
         The groups of the node.
-		to do
+        to do
 
         :rtype: set()
 
@@ -349,7 +349,7 @@ class ZWaveNode( ZWaveObject,
         """
         value = ZWaveValue(args['value_id'], network=self.network, parent_id=self.node_id)
         self.values[args['value_id']] = value
-		self.values[args['value_id']].oudated = True
+        self.values[args['value_id']].oudated = True
 
     def change_value(self, value_id):
         """
@@ -360,7 +360,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-		self.values[args['value_id']].oudated = True
+        self.values[args['value_id']].oudated = True
 
     def refresh_value(self, value_id):
         """
@@ -371,7 +371,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-		self.values[args['value_id']].oudated = True
+        self.values[args['value_id']].oudated = True
 
     def remove_value(self, value_id):
         """

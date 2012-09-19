@@ -58,11 +58,11 @@ class ZWaveValue(ZWaveObject):
             * 'readOnly': manager.IsValueReadOnly(v),
             }
 
-		Cache management :
-		We must developp a special mechanism for caching values.
-		Values are updated or created by notifications and attached to nodes.
+        Cache management :
+        We must developp a special mechanism for caching values.
+        Values are updated or created by notifications and attached to nodes.
 
-		Cache management in nodes : no cache for values.
+        Cache management in nodes : no cache for values.
 
         :param value_id: ID of the value
         :type value_id: int
