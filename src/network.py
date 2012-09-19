@@ -162,6 +162,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_DRIVER_FAILED = 'DriverFailed'
     SIGNAL_DRIVER_READY = 'DriverReady'
     SIGNAL_DRIVER_RESET = 'DriverReset'
+    SIGNAL_GROUP = 'Group'
     SIGNAL_NODE_ADDED = 'NodeAdded'
     SIGNAL_NODE_EVENT = 'NodeEvent'
     SIGNAL_NODE_NAMING = 'NodeNaming'
@@ -559,6 +560,28 @@ class ZWaveNetwork(ZWaveObject):
         finally :
             self._semaphore_nodes.release()
 
+    def _handle_group(self, args):
+        '''
+        The associations for the node have changed.
+        The application should rebuild any group information
+        it holds about the node.
+
+		To do
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('Z-Wave Notification Grou : %s' % (args))
+        #try :
+        #    node = ZWaveNode(args['node_id'], network=self)
+        #    self._semaphore_nodes.acquire()
+        #    self.nodes[args['node_id']] = node
+        #finally :
+        #    self._semaphore_nodes.release()
+        dispatcher.send(self.SIGNAL_GROUP, \
+                **{'network': self, 'node': self._node})
+
     def _handle_node_added(self, args):
         '''
         A new node has been added to OpenZWave's set.
@@ -602,7 +625,9 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
-        dispatcher.send(self.SIGNAL_NODE_READY, \
+        self.nodes[args['node_id']].outdate(\
+			lambda: self.nodes[args['node_id']].name)
+        dispatcher.send(self.SIGNAL_NODE_NAMING, \
             **{'home_id': self.home_id, 'node_id': args['node_id']})
 
     def _handle_node_new(self, args):

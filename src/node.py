@@ -57,8 +57,8 @@ class ZWaveNode( ZWaveObject,
         ZWaveObject.__init__(self, node_id, network)
         self._command_classes = set()
         self.cache_property(self._command_classes)
+        #No cache management for values in nodes
         self._values = dict()
-
         self._is_sleeping = False
         self._is_locked = False
         self._name = None
@@ -268,13 +268,14 @@ class ZWaveNode( ZWaveObject,
     def groups(self):
         """
         The groups of the node.
+		to do
 
         :rtype: set()
 
         """
         node._groups = set()
         for i in range(0, self.num_groups()):
-            node._groups.append(ZWaveGroup(i,network=self._network))
+            node._groups.append(ZWaveGroup(i, network=self._network))
         return node._groups
 
     @property
@@ -290,7 +291,7 @@ class ZWaveNode( ZWaveObject,
             for cls in self._network.manager.COMMAND_CLASS_DESC:
                 if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                     self._command_classes.add(cls)
-            self.update(lambda: self.neighbors)
+            self.update(lambda: self.command_classes)
         return self._command_classes
 
     @property
@@ -348,6 +349,7 @@ class ZWaveNode( ZWaveObject,
         """
         value = ZWaveValue(args['value_id'], network=self.network, parent_id=self.node_id)
         self.values[args['value_id']] = value
+		self.values[args['value_id']].oudated = True
 
     def change_value(self, value_id):
         """
@@ -358,7 +360,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        pass
+		self.values[args['value_id']].oudated = True
 
     def refresh_value(self, value_id):
         """
@@ -369,7 +371,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        pass
+		self.values[args['value_id']].oudated = True
 
     def remove_value(self, value_id):
         """
@@ -380,7 +382,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        pass
+        del(self.values[args['value_id']])
 
     def has_command_class(self, class_id):
         """

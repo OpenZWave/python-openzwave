@@ -58,6 +58,12 @@ class ZWaveValue(ZWaveObject):
             * 'readOnly': manager.IsValueReadOnly(v),
             }
 
+		Cache management :
+		We must developp a special mechanism for caching values.
+		Values are updated or created by notifications and attached to nodes.
+
+		Cache management in nodes : no cache for values.
+
         :param value_id: ID of the value
         :type value_id: int
         :param network: The network object to access the manager
@@ -84,8 +90,8 @@ class ZWaveValue(ZWaveObject):
         self.cache_property(lambda: self.units)
         self._poll_intensity = None
         self.cache_property(lambda: self.poll_intensity)
-        self._as_string = None
-        self.cache_property(lambda: self.as_string)
+        self._data_as_string = None
+        self.cache_property(lambda: self.data_as_string)
         self._data = None
         self.cache_property(lambda: self.data)
 
@@ -102,7 +108,6 @@ class ZWaveValue(ZWaveObject):
         The value_id of the value.
         """
         return self._object_id
-
 
     @property
     def label(self):
@@ -273,9 +278,9 @@ class ZWaveValue(ZWaveObject):
         self._poll_intensity = intensity
         return self._network.manager.enablePoll(self.value_id, intensity)
 
-    def enable_poll(self, intensity):
+    def disable_poll(self, intensity):
         """
-        Enable poll off this value.
+        Disable poll off this value.
 
         :rtype: bool
 
