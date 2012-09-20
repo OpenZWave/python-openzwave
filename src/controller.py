@@ -34,9 +34,9 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveController(ZWaveObject):
     '''
-	The driver objet.
-	Hold options of the manager
-	Also used to retrieve informations about the library, ...
+    The driver objet.
+    Hold options of the manager
+    Also used to retrieve informations about the library, ...
 
     '''
 
@@ -84,12 +84,9 @@ class ZWaveController(ZWaveObject):
         :type value: ZWaveNode
 
         """
-        if type(value) == type(ZWaveNode) or value == None:
-            self._node = value
-            if value != None:
-				self.home_id = self._node.home_id
-        else:
-            raise ZWaveTypeException("Can't update node's controller %s" % type(value))
+        self._node = value
+        #if value != None:
+        #   self.home_id = self._node.home_id
 
     @property
     def node_id(self):
@@ -103,7 +100,7 @@ class ZWaveController(ZWaveObject):
         if self.node != None:
             return self.node.object_id
         else:
-            raise ZWaveException("Controller node not initialised")
+            return None
 
     @property
     def name(self):
@@ -117,7 +114,7 @@ class ZWaveController(ZWaveObject):
         if self.node != None:
             return self.node.name
         else:
-            raise ZWaveException("Controller node not initialised")
+            return None
 
     @property
     def library_type_name(self):
@@ -232,20 +229,20 @@ class ZWaveController(ZWaveObject):
 
         Statistics:
 
-			* s_SOFCnt                         : Number of SOF bytes received
-			* s_ACKWaiting                     : Number of unsolicited messages while waiting for an ACK
-			* s_readAborts                     : Number of times read were aborted due to timeouts
-			* s_badChecksum                    : Number of bad checksums
-			* s_readCnt                        : Number of messages successfully read
-			* s_writeCnt                       : Number of messages successfully sent
-			* s_CANCnt                         : Number of CAN bytes received
-			* s_NAKCnt                         : Number of NAK bytes received
-			* s_ACKCnt                         : Number of ACK bytes received
-			* s_OOFCnt                         : Number of bytes out of framing
-			* s_dropped                        : Number of messages dropped & not delivered
-			* s_retries                        : Number of messages retransmitted
-			* s_controllerReadCnt              : Number of controller messages read
-			* s_controllerWriteCnt             : Number of controller messages sent
+            * s_SOFCnt                         : Number of SOF bytes received
+            * s_ACKWaiting                     : Number of unsolicited messages while waiting for an ACK
+            * s_readAborts                     : Number of times read were aborted due to timeouts
+            * s_badChecksum                    : Number of bad checksums
+            * s_readCnt                        : Number of messages successfully read
+            * s_writeCnt                       : Number of messages successfully sent
+            * s_CANCnt                         : Number of CAN bytes received
+            * s_NAKCnt                         : Number of NAK bytes received
+            * s_ACKCnt                         : Number of ACK bytes received
+            * s_OOFCnt                         : Number of bytes out of framing
+            * s_dropped                        : Number of messages dropped & not delivered
+            * s_retries                        : Number of messages retransmitted
+            * s_controllerReadCnt              : Number of controller messages read
+            * s_controllerWriteCnt             : Number of controller messages sent
 
         :returns: Statistics of the controller
         :rtype: dict()
@@ -263,10 +260,10 @@ class ZWaveController(ZWaveObject):
 
         """
         caps = set()
-        if self.node.is_primary_controller():
+        if self.node.is_primary_controller:
             caps.add('primaryController')
-        if self.node.is_static_update_controller():
+        if self.node.is_static_update_controller:
             caps.add('staticUpdateController')
-        if self.node.is_bridge_controller():
+        if self.node.is_bridge_controller:
             caps.add('bridgeController')
         return caps

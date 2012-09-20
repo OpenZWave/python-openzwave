@@ -29,6 +29,7 @@ import sys, os
 
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
 logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
@@ -48,20 +49,23 @@ from openzwave.option import ZWaveOption
 import time
 
 #Define some manager options
-options = ZWaveOption(device="/tmp/zwave", \
+options = ZWaveOption(device="/dev/zwave-aeon-s2", \
   config_path="openzwave/config", \
   user_path=".", cmd_line="")
 options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
 options.set_console_output(False)
 options.set_save_log_level('Debug')
+#options.set_save_log_level('Info')
 options.set_logging(True)
 options.lock()
 
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
+print "------------------------------------------------------------"
 print "Waiting for driver : "
+print "------------------------------------------------------------"
 for i in range(0,20):
     if network.state>=network.STATE_INITIALISED:
         print " done"
@@ -74,30 +78,44 @@ if network.state<network.STATE_INITIALISED:
     print "."
     print "Can't initialise driver! Look at the logs in OZW_Log.log"
     quit(1)
+print "------------------------------------------------------------"
 print "Use python library : %s" % network.controller.python_library_version
 print "Use openzwave library : %s" % network.controller.library_description
 print "Network home_id : %s" % network.home_id
 print "Controller node_id : %s" % network.controller.node.node_id
+print "Nodes in network : %s" % network.nodes_count
+print "------------------------------------------------------------"
 print "Waiting for network to come ready : "
-for i in range(0,30):
+print "------------------------------------------------------------"
+for i in range(0,90):
     if network.state>=network.STATE_READY:
         print " done"
         break
     else:
         sys.stdout.write(".")
-        sys.stdout.write(network.state)
-        sys.stdout.write("(")
-        sys.stdout.write(network.nodes_count)
-        sys.stdout.write(")")
-        sys.stdout.write(".")
+        #sys.stdout.write(network.state_str)
+        #sys.stdout.write("(")
+        #sys.stdout.write(str(network.nodes_count))
+        #sys.stdout.write(")")
+        #sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
-if not network.ready:
+if not network.is_ready:
     print "."
     print "Can't start network! Look at the logs in OZW_Log.log"
     quit(2)
+print "------------------------------------------------------------"
+print "Controller capabilities : %s" % network.controller.capabilities
+print "Controller node capabilities : %s" % network.controller.node.capabilities
 print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
-
+print "------------------------------------------------------------"
 for node in network.nodes:
-	print "%s:%s" % (node.node_id,node.name)
+    print "%s - Name : %s" % (network.nodes[node].node_id,network.nodes[node].name)
+    print "%s - Manufacturer name / id : %s / %s" % (network.nodes[node].node_id,network.nodes[node].manufacturer_name, network.nodes[node].manufacturer_id)
+    print "%s - Product name / id / type : %s / %s / %s" % (network.nodes[node].node_id,network.nodes[node].product_name, network.nodes[node].product_id, network.nodes[node].product_type)
+    print "%s - Command classes : %s" % (network.nodes[node].node_id,network.nodes[node].command_classes_as_string)
+    print "%s - Neigbors : %s" % (network.nodes[node].node_id,network.nodes[node].neighbors)
+print "------------------------------------------------------------"
+print "Driver statistics : %s" % network.controller.stats
+print "------------------------------------------------------------"

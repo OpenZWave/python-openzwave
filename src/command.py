@@ -47,7 +47,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
     Its command class is 0x80.
 
     A user should write
-    if handle_command_class(self, class_id):
+    if self.handle_command_class(class_id):
         ret=commandclass(...)
 
     The classic way to do it is a classique method of registering. But

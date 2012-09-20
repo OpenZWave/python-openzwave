@@ -78,11 +78,11 @@ class ZWaveCommander:
 
         #self._network = ZWaveWrapper.getInstance(device=self._config['device'], config=self._config['config'], log=None)
         self._options = ZWaveOption( \
-            device="/tmp/zwave", \
+            device="/dev/zwave-aeon-s2", \
             config_path="openzwave/config", \
             user_path=".", \
             cmd_line="")
-        self._options.set_log_file("OZW_Log.txt")
+        self._options.set_log_file("OZW_Log.log")
         self._options.set_append_log_file(False)
         self._options.set_save_log_level('Debug')
         self._options.set_console_output(False)
@@ -93,7 +93,7 @@ class ZWaveCommander:
         # TODO: add log enable/disable to config
         # TODO: logging - can ozw log be redirected to file?  If so, we can add ability to view/tail log
         FORMAT='%(asctime)s\t%(levelname)s\t%(name)s\t%(message)s'
-        logging.basicConfig(filename='test.log', level=logging.DEBUG, format=FORMAT)
+        logging.basicConfig(filename='zwaveCommander.log', level=logging.DEBUG, format=FORMAT)
         self._log = logging.getLogger('ZWaveCommander')
         self._logbar ='\n%s\n' % ('-'*60)
 
@@ -310,7 +310,7 @@ class ZWaveCommander:
     def _notifyNetworkFailed(self, network):
         self._log.info('OpenZWave Initialization failed.')
         self._alert('OpenZWave Initialization failed.')
-        #self._redrawAll()
+        self._redrawAll()
 
     def _notifyNodeReady(self, network, node):
         self._readyNodeCount += 1

@@ -42,7 +42,7 @@ import os
 
 #Don't update it.
 #It will be done when releasing only.
-#Need to modifiy make_archive.sh and setup.py too.
+#Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
 PYLIBRARY = "0.2.4"
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
@@ -192,6 +192,7 @@ cdef void callback(const_notification _notification, void* _context) with gil:
     elif notification.GetType() == Type_Error:
         n['errorCode'] = notification.GetErrorCode()
     addValueId(notification.GetValueID(), n)
+    #print n
     (<object>_context)(n)
 
 cpdef object driverData():

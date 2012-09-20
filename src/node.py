@@ -31,6 +31,7 @@ import logging
 from openzwave.object import ZWaveException, ZWaveCommandClassException
 from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
 from openzwave.group import ZWaveGroup
+from openzwave.value import ZWaveValue
 from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch, ZWaveNodeSensor
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
@@ -55,56 +56,63 @@ class ZWaveNode( ZWaveObject,
         '''
         logging.debug("Create object node (node_id:%s)" % (node_id))
         ZWaveObject.__init__(self, node_id, network)
-        self._command_classes = set()
-        self.cache_property(self._command_classes)
         #No cache management for values in nodes
         self._values = dict()
         self._is_sleeping = False
         self._is_locked = False
         self._name = None
-        self.cache_property(lambda: self.name)
+        self.cache_property("self.name")
         self._location = None
-        self.cache_property(lambda: self.location)
+        self.cache_property("self.location")
         self._product_name = None
-        self.cache_property(lambda: self.product_name)
+        self.cache_property("self.product_name")
         self._manufacturer_id = None
-        self.cache_property(lambda: self.manufacturer_id)
+        self.cache_property("self.manufacturer_id")
         self._manufacturer_name = None
-        self.cache_property(lambda: self.manufacturer_name)
+        self.cache_property("self.manufacturer_name")
         self._product_id = None
-        self.cache_property(lambda: self.product_id)
+        self.cache_property("self.product_id")
         self._product_type = None
-        self.cache_property(lambda: self.product_type)
+        self.cache_property("self.product_type")
         self._is_routing_device = False
-        self.cache_property(lambda: self.is_routing_device)
-        self._is_setening_device = False
-        self.cache_property(lambda: self.is_setening_device)
-        self._is_frequent_setening_device = False
-        self.cache_property(lambda: self.is_frequent_setening_device)
+        self.cache_property("self.is_routing_device")
+        self._is_listening_device = False
+        self.cache_property("self.is_listening_device")
+        self._is_frequent_listening_device = False
+        self.cache_property("self.is_frequent_listening_device")
         self._is_security_device = False
-        self.cache_property(lambda: self.is_security_device)
+        self.cache_property("self.is_security_device")
         self._is_beaming_device = False
-        self.cache_property(lambda: self.is_beaming_device)
+        self.cache_property("self.is_beaming_device")
+
+        self._is_primary_controller = False
+        self.cache_property("self.is_primary_controller")
+        self._is_bridge_controller = False
+        self.cache_property("self.is_bridge_controller")
+        self._is_static_update_controller = False
+        self.cache_property("self.is_static_update_controller")
+
         self._is_polled = False
-        self.cache_property(lambda: self.is_polled)
+        self.cache_property("self.is_polled")
         self._generic = 0
-        self.cache_property(lambda: self.generic)
+        self.cache_property("self.generic")
         self._basic = 0
-        self.cache_property(lambda: self.basic)
+        self.cache_property("self.basic")
         self._specific = 0
-        self.cache_property(lambda: self.specific)
+        self.cache_property("self.specific")
         self._security = 0
-        self.cache_property(lambda: self.security)
+        self.cache_property("self.security")
         self._version = 0
-        self.cache_property(lambda: self.version)
+        self.cache_property("self.version")
+
         self._command_classes = set()
-        self.cache_property(lambda: self.command_classes)
+        self.cache_property("self.command_classes")
         self._neighbors = set()
-        self.cache_property(lambda: self.neighbors)
+        self.cache_property("self.neighbors")
         self._num_groups = int
-        self.cache_property(lambda: self.num_groups)
+        self.cache_property("self.num_groups")
         self._groups = set()
-        self.cache_property(lambda: self.groups)
+        self.cache_property("self.groups")
 
     @property
     def node_id(self):
@@ -124,9 +132,11 @@ class ZWaveNode( ZWaveObject,
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.name):
+        if self.is_outdated("self.name"):
+            #print "No cache"
             self._name = self._network.manager.getNodeName(self.home_id, self.object_id)
-            self.update(lambda: self.name)
+            self.update("self.name")
+        #print "self._name"
         return self._name
 
     @name.setter
@@ -139,7 +149,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         self._network.manager.setNodeName(self.home_id, self.object_id, value)
-        self.outdate(lambda: self.name)
+        self.outdate("self.name")
 
     @property
     def location(self):
@@ -149,9 +159,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.location):
+        if self.is_outdated("self.location"):
             self._location = self._network.manager.getNodeLocation(self.home_id, self.object_id)
-            self.update(lambda: self.location)
+            self.update("self.location")
         return self._location
 
     @location.setter
@@ -164,7 +174,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         self._network.manager.setNodeLocation(self.home_id, self.object_id, value)
-        self.outdate(lambda: self.location)
+        self.outdate("self.location")
 
     @property
     def product_name(self):
@@ -174,9 +184,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.product_name):
+        if self.is_outdated("self.product_name"):
             self._product_name = self._network.manager.getNodeProductName(self.home_id, self.object_id)
-            self.update(lambda: self.product_name)
+            self.update("self.product_name")
         return self._product_name
 
     @product_name.setter
@@ -189,7 +199,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         self._network.manager.setNodeProductName(self.home_id, self.object_id, value)
-        self.outdate(lambda: self.product_name)
+        self.outdate("self.product_name")
 
     @property
     def product_type(self):
@@ -199,9 +209,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.product_type):
+        if self.is_outdated("self.product_type"):
             self._product_type = self._network.manager.getNodeProductType(self.home_id, self.object_id)
-            self.update(lambda: self.product_type)
+            self.update("self.product_type")
         return self._product_type
 
     @property
@@ -212,9 +222,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.product_id):
-            self._product_id = self._network.manager.product_id(self.home_id, self.object_id)
-            self.update(lambda: self.product_id)
+        if self.is_outdated("self.product_id"):
+            self._product_id = self._network.manager.getNodeProductId(self.home_id, self.object_id)
+            self.update("self.product_id")
         return self._product_id
 
     @property
@@ -226,15 +236,15 @@ class ZWaveNode( ZWaveObject,
 
         """
         caps = set()
-        if self.is_routing_device():
+        if self.is_routing_device:
             caps.add('routing')
-        if self.is_setening_device():
-            caps.add('setening')
-        if self.is_frequent_setening_device():
+        if self.is_listening_device:
+            caps.add('listening')
+        if self.is_frequent_listening_device:
             caps.add('frequent')
-        if self.is_security_device():
+        if self.is_security_device:
             caps.add('security')
-        if self.is_beaming_device():
+        if self.is_beaming_device:
             caps.add('beaming')
         return caps
 
@@ -246,9 +256,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: set()
 
         """
-        if self.is_outdated(lambda: self.neighbors):
+        if self.is_outdated("self.neighbors"):
             self._neighbors = self._network.manager.getNodeNeighbors(self.home_id, self.object_id)
-            self.update(lambda: self.neighbors)
+            self.update("self.neighbors")
         return self._neighbors
 
     @property
@@ -259,9 +269,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.num_groups):
+        if self.is_outdated("self.num_groups"):
             self._num_groups = self._network.manager.getMaxAssociations(self.home_id, self.object_id)
-            self.update(lambda: self.num_groups)
+            self.update("self.num_groups")
         return self._num_groups
 
     @property
@@ -286,12 +296,14 @@ class ZWaveNode( ZWaveObject,
         :rtype: set()
 
         """
-        if self.is_outdated(lambda: self.command_classes):
+        if self.is_outdated("self.command_classes"):
+            #print "no cache"
             self._command_classes = set()
             for cls in self._network.manager.COMMAND_CLASS_DESC:
                 if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                     self._command_classes.add(cls)
-            self.update(lambda: self.command_classes)
+            self.update("self.command_classes")
+        #print "command_classes : ",self._command_classes
         return self._command_classes
 
     @property
@@ -302,13 +314,10 @@ class ZWaveNode( ZWaveObject,
         :rtype: set()
 
         """
-        if self.is_outdated(lambda: self.command_classes):
-            self._command_classes = set()
-            for cls in self._network.manager.COMMAND_CLASS_DESC:
-                if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
-                    self._command_classes.add(cls)
-            self.update(lambda: self.neighbors)
-        return self._command_classes
+        command_str = set()
+        for cls in self.command_classes :
+            command_str.add(self._network.manager.COMMAND_CLASS_DESC[cls])
+        return command_str
 
     @property
     def values(self):
@@ -347,9 +356,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        value = ZWaveValue(args['value_id'], network=self.network, parent_id=self.node_id)
-        self.values[args['value_id']] = value
-        self.values[args['value_id']].oudated = True
+        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id)
+        self.values[value_id] = value
+        self.values[value_id].oudated = True
 
     def change_value(self, value_id):
         """
@@ -360,7 +369,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        self.values[args['value_id']].oudated = True
+        self.values[value_id].oudated = True
 
     def refresh_value(self, value_id):
         """
@@ -371,7 +380,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        self.values[args['value_id']].oudated = True
+        self.values[value_id].oudated = True
 
     def remove_value(self, value_id):
         """
@@ -382,7 +391,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        del(self.values[args['value_id']])
+        del(self.values[value_id])
 
     def has_command_class(self, class_id):
         """
@@ -409,7 +418,7 @@ class ZWaveNode( ZWaveObject,
                 eval("self.command_class_%s()" % class_id)
                 return True
             except AttributeError:
-                logging.error("CommandCLass %s not supported by API" % class_id)
+                logging.error("CommandCLass %s not supported by API (Report a bug to developpers.)." % class_id)
                 return None
         return False
 
@@ -421,9 +430,10 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.manufacturer_id):
+        if self.is_outdated("self.manufacturer_id"):
+            #print "No cache"
             self._manufacturer_id = self._network.manager.getNodeManufacturerId(self.home_id, self.object_id)
-            self.update(lambda: self.manufacturer_id)
+            self.update("self.manufacturer_id")
         return self._manufacturer_id
 
     @property
@@ -434,10 +444,11 @@ class ZWaveNode( ZWaveObject,
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.manufacturer_name):
+        if self.is_outdated("self.manufacturer_name"):
+            #print "No cache"
             self._manufacturer_name = \
                 self._network.manager.getNodeManufacturerName(self.home_id, self.object_id)
-            self.update(lambda: self.manufacturer_name)
+            self.update("self.manufacturer_name")
         return self._manufacturer_name
 
     @manufacturer_name.setter
@@ -450,7 +461,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         self._network.manager.setNodeManufacturerName(self.home_id, self.object_id, value)
-        self.outdate(lambda: self.manufacturer_name)
+        self.outdate("self.manufacturer_name")
 
     @property
     def generic(self):
@@ -460,9 +471,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.generic):
+        if self.is_outdated("self.generic"):
             self._generic = self._network.manager.getNodeGeneric(self.home_id, self.object_id)
-            self.update(lambda: self.generic)
+            self.update("self.generic")
         return self._generic
 
     @property
@@ -473,9 +484,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.basic):
+        if self.is_outdated("self.basic"):
             self._basic = self._network.manager.getNodeBasic(self.home_id, self.object_id)
-            self.update(lambda: self.basic)
+            self.update("self.basic")
         return self._basic
 
     @property
@@ -486,9 +497,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.specific):
+        if self.is_outdated("self.specific"):
             self._specific = self._network.manager.getNodeSpecific(self.home_id, self.object_id)
-            self.update(lambda: self.specific)
+            self.update("self.specific")
         return self._specific
 
     @property
@@ -499,9 +510,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.security):
+        if self.is_outdated("self.security"):
             self._security = self._network.manager.getNodeSecurity(self.home_id, self.object_id)
-            self.update(lambda: self.security)
+            self.update("self.security")
         return self._security
 
     @property
@@ -512,23 +523,23 @@ class ZWaveNode( ZWaveObject,
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.version):
+        if self.is_outdated("self.version"):
             self._version = self._network.manager.getNodeVersion(self.home_id, self.object_id)
-            self.update(lambda: self.version)
+            self.update("self.version")
         return self._version
 
     @property
-    def is_setening_device(self):
+    def is_listening_device(self):
         """
         Is this node a setening device.
 
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_setening_device):
-            self._is_setening_device = self._network.manager.isNodeListeningDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_setening_device)
-        return self._is_setening_device
+        if self.is_outdated("self.is_listening_device"):
+            self._is_listening_device = self._network.manager.isNodeListeningDevice(self.home_id, self.object_id)
+            self.update("self.is_listening_device")
+        return self._is_listening_device
 
     @property
     def is_beaming_device(self):
@@ -538,9 +549,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_beaming_device):
+        if self.is_outdated("self.is_beaming_device"):
             self._is_beaming_device = self._network.manager.isNodeBeamingDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_beaming_device)
+            self.update("self.is_beaming_device")
         return self._is_beaming_device
 
     @property
@@ -551,10 +562,10 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_frequent_listening_device):
+        if self.is_outdated("self.is_frequent_listening_device"):
             self._is_frequent_listening_device = \
                 self._network.manager.isNodeFrequentListeningDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_frequent_listening_device)
+            self.update("self.is_frequent_listening_device")
         return self._is_frequent_listening_device
 
     @property
@@ -565,9 +576,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_security_device):
+        if self.is_outdated("self.is_security_device"):
             self._is_security_device = self._network.manager.isNodeSecurityDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_security_device)
+            self.update("self.is_security_device")
         return self._is_security_device
 
     @property
@@ -578,9 +589,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_routing_device):
+        if self.is_outdated("self.is_routing_device"):
             self._is_routing_device = self._network.manager.isNodeRoutingDevice(self.home_id, self.object_id)
-            self.update(lambda: self.is_routing_device)
+            self.update("self.is_routing_device")
         return self._is_routing_device
 
     @property
@@ -591,9 +602,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_primary_controller):
+        if self.is_outdated("self.is_primary_controller"):
             self._is_primary_controller = self._network.manager.isPrimaryController(self.home_id)
-            self.update(lambda: self.is_primary_controller)
+            self.update("self.is_primary_controller")
         return self._is_primary_controller
 
     @property
@@ -604,9 +615,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_static_update_controller):
+        if self.is_outdated("self.is_static_update_controller"):
             self._is_static_update_controller = self._network.manager.isStaticUpdateController(self.home_id)
-            self.update(lambda: self.is_static_update_controller)
+            self.update("self.is_static_update_controller")
         return self._is_static_update_controller
 
     @property
@@ -617,10 +628,10 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if self.is_outdated(lambda: self.is_bridge_controller):
+        if self.is_outdated("self.is_bridge_controller"):
             self._is_bridge_controller = self._network.manager.isBridgeController(self.home_id)
-            self.update(lambda: self.is_bridge_controller)
-        return self.is_bridge_controller
+            self.update("self.is_bridge_controller")
+        return self._is_bridge_controller
 
     @property
     def is_locked(self):

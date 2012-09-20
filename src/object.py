@@ -119,6 +119,16 @@ class ZWaveObject(object):
         return self._network.object_id if self._network != None else None
 
     @property
+    def network(self):
+        """
+        The network of the node.
+
+        :rtype: ZWaveNetwork
+
+        """
+        return self._network
+
+    @property
     def use_cache(self):
         """
         Should this object use cache from property
@@ -196,6 +206,7 @@ class ZWaveObject(object):
         """
         if self._use_cache :
             if str(prop) in self._cached_properties:
+                #print "property in cache %s" % self._cached_properties[str(prop)]
                 return self._cached_properties[str(prop)]
             else:
                 #This property is not cached so return true
@@ -248,6 +259,7 @@ class ZWaveObject(object):
 
         """
         if self._use_cache :
+            #print "cache_property %s" % prop
             self._cached_properties[str(prop)] = True
         else:
             raise ZWaveCacheException("Cache not enabled")

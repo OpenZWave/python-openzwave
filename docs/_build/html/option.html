@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Option documentation &mdash; py-openzwave 0.1 documentation</title>
+    <title>Option documentation &mdash; python-openzwave 0.2.4 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.2.4',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="py-openzwave 0.1 documentation" href="index.html" />
+    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="openzwave.html" />
     <link rel="next" title="Node documentation" href="node.html" />
     <link rel="prev" title="Controller documentation" href="controller.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="controller.html" title="Controller documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -92,7 +92,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dl class="class">
 <dt id="openzwave.option.ZWaveOption">
 <em class="property">class </em><tt class="descclassname">openzwave.option.</tt><tt class="descname">ZWaveOption</tt><big>(</big><em>device=None</em>, <em>config_path=None</em>, <em>user_path='.'</em>, <em>cmd_line=''</em><big>)</big><a class="headerlink" href="#openzwave.option.ZWaveOption" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a Zwave option configuration.</p>
+<dd><p>Represents a Zwave option used to start the manager.</p>
 <dl class="attribute">
 <dt id="openzwave.option.ZWaveOption.config_path">
 <tt class="descname">config_path</tt><a class="headerlink" href="#openzwave.option.ZWaveOption.config_path" title="Permalink to this definition">¶</a></dt>
@@ -186,15 +186,15 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<em>PyLogLevels
-&#8216;None&#8217;:&#8221;Disable all logging&#8221;
-&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221;
-&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221;
-&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221;
-&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221;
-&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221;
-&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221;
-&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221;
-&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221;
+&#8216;None&#8217;:&#8221;Disable all logging&#8221; /
+&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221; /
+&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221; /
+&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221; /
+&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221; /
+&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221; /
+&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221; /
+&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221; /
+&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221; /
 &#8216;Internal&#8217;:&#8221;Used only within the log class (uses existing timestamp, etc.)&#8221;</em>) &#8211; </td>
 </tr>
 </tbody>
@@ -322,15 +322,15 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<em>PyLogLevels
-&#8216;None&#8217;:&#8221;Disable all logging&#8221;
-&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221;
-&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221;
-&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221;
-&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221;
-&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221;
-&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221;
-&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221;
-&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221;
+&#8216;None&#8217;:&#8221;Disable all logging&#8221; /
+&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221; /
+&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221; /
+&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221; /
+&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221; /
+&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221; /
+&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221; /
+&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221; /
+&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221; /
 &#8216;Internal&#8217;:&#8221;Used only within the log class (uses existing timestamp, etc.)&#8221;</em>) &#8211; </td>
 </tr>
 </tbody>
@@ -360,15 +360,15 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<em>PyLogLevels
-&#8216;None&#8217;:&#8221;Disable all logging&#8221;
-&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221;
-&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221;
-&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221;
-&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221;
-&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221;
-&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221;
-&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221;
-&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221;
+&#8216;None&#8217;:&#8221;Disable all logging&#8221; /
+&#8216;Always&#8217;:&#8221;These messages should always be shown&#8221; /
+&#8216;Fatal&#8217;:&#8221;A likely fatal issue in the library&#8221; /
+&#8216;Error&#8217;:&#8221;A serious issue with the library or the network&#8221; /
+&#8216;Warning&#8217;:&#8221;A minor issue from which the library should be able to recover&#8221; /
+&#8216;Alert&#8217;:&#8221;Something unexpected by the library about which the controlling application should be aware&#8221; /
+&#8216;Info&#8217;:&#8221;Everything&#8217;s working fine...these messages provide streamlined feedback on each message&#8221; /
+&#8216;Detail&#8217;:&#8221;Detailed information on the progress of each message&#8221; /
+&#8216;Debug&#8217;:&#8221;Very detailed information on progress that will create a huge log file quickly&#8221; /
 &#8216;Internal&#8217;:&#8221;Used only within the log class (uses existing timestamp, etc.)&#8221;</em>) &#8211; </td>
 </tr>
 </tbody>
@@ -456,7 +456,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
         <li class="right" >
           <a href="controller.html" title="Controller documentation"
              >previous</a> |</li>
-        <li><a href="index.html">py-openzwave 0.1 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>

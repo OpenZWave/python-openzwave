@@ -276,7 +276,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: bool
 
         """
-        return self._state>=STATE_READY
+        return self._state>=self.STATE_READY
 
     @property
     def state(self):
@@ -380,10 +380,8 @@ class ZWaveNetwork(ZWaveObject):
         """
         if value == None:
             self._nodes = dict()
-        elif type(value) == type(dict()):
-            self._nodes = value
         else:
-            raise ZWaveTypeException("Can't update _nodes (%s)" % type(value))
+            self._nodes = value
 
     @property
     def nodes_count(self):
@@ -460,6 +458,8 @@ class ZWaveNetwork(ZWaveObject):
                 self._handleNodeReady(args)
             elif notify_type == 'NodeRemoved':
                 self._handle_node_removed(args)
+            elif notify_type == 'Group':
+                self._handle_group(args)
             elif notify_type == 'ValueAdded':
                 self._handle_value_added(args)
             elif notify_type == 'ValueChanged':
@@ -525,17 +525,21 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification DriverReady : %s' % (args))
-        self._object_id = args['home_id']
+        self._object_id = args['homeId']
         try :
-            self._controller.node = ZWaveNode(args['node_id'], network=self)
+            self._controller.node = ZWaveNode(args['nodeId'], network=self)
             self._semaphore_nodes.acquire()
             self.nodes = None
+            #print "nodes= ",self.nodes
+            self.nodes[args['nodeId']] = self._controller.node
             self._state = self.STATE_INITIALISED
-            self.nodes[args['node_id']] = self._controller.node
             logging.info('Driver ready using library %s' % self._controller.library_description )
             logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
             dispatcher.send(self.SIGNAL_DRIVER_READY, \
                 **{'network': self, 'controller': self._controller})
+        except:
+            import sys, traceback
+            logging.error('Z-Wave Notification DriverReady : %s' % (traceback.format_exception(*sys.exc_info())))
         finally :
             self._semaphore_nodes.release()
 
@@ -554,7 +558,7 @@ class ZWaveNetwork(ZWaveObject):
             self._semaphore_nodes.acquire()
             self.nodes = None
             self._state = self.STATE_RESET
-            self.nodes[args['node_id']] = self._controller.node
+            self.nodes[args['nodeId']] = self._controller.node
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
                 **{'network': self, 'controller': self._controller})
         finally :
@@ -572,15 +576,15 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification Grou : %s' % (args))
+        logging.debug('Z-Wave Notification Group : %s' % (args))
         #try :
-        #    node = ZWaveNode(args['node_id'], network=self)
+        #    node = ZWaveNode(args['nodeId'], network=self)
         #    self._semaphore_nodes.acquire()
-        #    self.nodes[args['node_id']] = node
+        #    self.nodes[args['nodeId']] = node
         #finally :
         #    self._semaphore_nodes.release()
         dispatcher.send(self.SIGNAL_GROUP, \
-                **{'network': self, 'node': self._node})
+                **{'network': self, 'node': self.nodes[args['nodeId']]})
 
     def _handle_node_added(self, args):
         '''
@@ -594,11 +598,11 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification NodeAdded : %s' % (args))
         try :
-            node = ZWaveNode(args['node_id'], network=self)
+            node = ZWaveNode(args['nodeId'], network=self)
             self._semaphore_nodes.acquire()
-            self.nodes[args['node_id']] = node
+            self.nodes[args['nodeId']] = node
             dispatcher.send(self.SIGNAL_NODE_ADDED, \
-                **{'network': self, 'node': self._node})
+                **{'network': self, 'node': node})
         finally :
             self._semaphore_nodes.release()
 
@@ -614,7 +618,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification NodeEvent : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_EVENT, \
-            **{'home_id': self.home_id, 'node_id': args['node_id']})
+            **{'network': self, 'node': self.nodes[args['nodeId']]})
 
     def _handle_node_naming(self, args):
         '''
@@ -625,10 +629,9 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
-        self.nodes[args['node_id']].outdate(\
-            lambda: self.nodes[args['node_id']].name)
+        self.nodes[args['nodeId']].outdate("self.name")
         dispatcher.send(self.SIGNAL_NODE_NAMING, \
-            **{'home_id': self.home_id, 'node_id': args['node_id']})
+            **{'network': self, 'node': self.nodes[args['nodeId']]})
 
     def _handle_node_new(self, args):
         '''
@@ -640,7 +643,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification NodeNew : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_NEW, \
-            **{'network': self, 'node': self._node})
+            **{'network': self, 'node_id': args['nodeId']})
 
     def _handle_node_protocol_info(self, args):
         '''
@@ -656,7 +659,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification NodeProtocolInfo : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_PROTOCOL_INFO, \
-            **{'network': self, 'node': self._node})
+            **{'network': self, 'node': self.nodes[args['nodeId']]})
 
     def _handle_node_removed(self, args):
         '''
@@ -671,11 +674,38 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification NodeRemoved : %s' % (args))
         try :
             self._semaphore_nodes.acquire()
-            self.nodes[args['node_id']] = ZWaveNode(args['node_id'], network=self)
+            self.nodes[args['nodeId']] = ZWaveNode(args['nodeId'], network=self)
             dispatcher.send(self.SIGNAL_NODE_REMOVED, \
-                **{'network': self, 'node_id': args['node_id']})
+                **{'network': self, 'node_id': args['nodeId']})
         finally :
             self._semaphore_nodes.release()
+
+    def _handle_essential_node_queries_complete(self, args):
+        '''
+        The queries on a node that are essential to its operation have
+        been completed. The node can now handle incoming messages.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('Z-Wave Notification EssentialNodeQueriesComplete : %s' % (args))
+        self.nodes[args['nodeId']].outdated = True
+        dispatcher.send(self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE, \
+            **{'network': self, 'node': self.nodes[args['nodeId']]})
+
+    def _handle_node_queries_complete(self, args):
+        '''
+        All the initialisation queries on a node have been completed.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('Z-Wave Notification NodeQueriesComplete : %s' % (args))
+        self.nodes[args['nodeId']].outdated = True
+        dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
+            **{'network': self, 'node': self.nodes[args['nodeId']]})
 
     def _handle_all_nodes_queried(self, args):
         '''
@@ -697,7 +727,7 @@ class ZWaveNetwork(ZWaveObject):
         #        callback(*args, **kwargs)
         #finally:
         #    self._semaphore_on_ready.release()
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['node_id']})
+        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['nodeId']})
 
     def _handle_awake_nodes_queried(self, args):
         '''
@@ -713,33 +743,7 @@ class ZWaveNetwork(ZWaveObject):
         self._state = self.STATE_READY
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIES_COMPLETE, \
-            **{'network': self})
-
-    def _handle_essential_node_queries_complete(self, args):
-        '''
-        The queries on a node that are essential to its operation have
-        been completed. The node can now handle incoming messages.
-
-        :param args: data sent by the notification
-        :type args: dict()
-
-        '''
-        logging.debug('Z-Wave Notification EssentialNodeQueriesComplete : %s' % (args))
-        dispatcher.send(self.SIGNAL_ESSENTIAL_NODES_QUERIES_COMPLETE, \
-            **{'network': self})
-
-    def _handle_node_queries_complete(self, args):
-        '''
-        All the initialisation queries on a node have been completed.
-
-        :param args: data sent by the notification
-        :type args: dict()
-
-        '''
-        logging.debug('Z-Wave Notification NodeQueriesComplete : %s' % (args))
-        self.nodes[args['node_id']].outdated = True
-        dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
-            **{'network': self})
+            **{'network': self, 'controller': self._controller})
 
     def _handle_polling_disabled(self, args):
         '''
@@ -751,9 +755,9 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingDisabled : %s' % (args))
-        self.nodes[args['node_id']].outdate(lambda: self.is_polled)
+        self.nodes[args['nodeId']].outdate("self.is_polled")
         dispatcher.send(self.SIGNAL_POLLING_DISABLED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_polling_enabled(self, args):
         '''
@@ -765,9 +769,9 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingEnabled : %s' % (args))
-        self.nodes[args['node_id']].outdate(lambda: self.is_polled)
+        self.nodes[args['nodeId']].outdate("self.is_polled")
         dispatcher.send(self.SIGNAL_POLLING_ENABLED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_create_button(self, args):
         '''
@@ -779,7 +783,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification CreateButton : %s' % (args))
         dispatcher.send(self.SIGNAL_CREATE_BUTTON, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_delete_button(self, args):
         '''
@@ -791,7 +795,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification DeleteButton : %s' % (args))
         dispatcher.send(self.SIGNAL_DELETE_BUTTON, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_button_on(self, args):
         '''
@@ -803,7 +807,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification ButtonOn : %s' % (args))
         dispatcher.send(self.SIGNAL_BUTTON_ON, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_button_off(self, args):
         '''
@@ -815,7 +819,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification ButtonOff : %s' % (args))
         dispatcher.send(self.SIGNAL_BUTTON_OFF, \
-            **{'network': self, 'node' : self.nodes[args['node_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
     def _handle_value_added(self, args):
         '''
@@ -830,10 +834,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueAdded : %s' % (args))
-        self.nodes.add_value(args['node_id'])
+        self.nodes[args['nodeId']].add_value(args['valueId']['id'])
         dispatcher.send(self.SIGNAL_VALUE_ADDED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']], \
-                'value' : self.nodes[args['node_id']].values[args['value_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
 
     def _handle_value_changed(self, args):
         '''
@@ -845,10 +849,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueChanged : %s' % (args))
-        self.nodes[args['node_id']].change_value(args['value_id'])
+        self.nodes[args['nodeId']].change_value(args['valueId']['id'])
         dispatcher.send(self.SIGNAL_VALUE_CHANGED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']], \
-                'value' : self.nodes[args['node_id']].values[args['value_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
 
     def _handle_value_refreshed(self, args):
         '''
@@ -859,10 +863,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRefreshed : %s' % (args))
-        self.nodes[args['node_id']].refresh_value(args['value_id'])
+        self.nodes[args['nodeId']].refresh_value(args['valueId']['id'])
         dispatcher.send(self.SIGNAL_VALUE_REFRESHED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']], \
-                'value' : self.nodes[args['node_id']].values[args['value_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
 
     def _handle_value_removed(self, args):
         '''
@@ -874,10 +878,10 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRemoved : %s' % (args))
-        self.nodes[args['node_id']].remove_value(args['value_id'])
+        self.nodes[args['nodeId']].remove_value(args['valueId']['id'])
         dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
-            **{'network': self, 'node' : self.nodes[args['node_id']], \
-                'value' : self.nodes[args['node_id']].values[args['value_id']]})
+            **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                'value_id' : args['valueId']['id']})
 
     def _handle_error(self, args):
         '''
@@ -912,7 +916,7 @@ class ZWaveNetwork(ZWaveObject):
 #
 #        '''
 #        logging.debug('Register on ready callback : %s' % (callback))
-#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
+#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['nodeId']})
 #        try:
 #            self._semaphore_on_ready.acquire()
 #            self._callback_on_ready.append(callback)
@@ -928,7 +932,7 @@ class ZWaveNetwork(ZWaveObject):
 #
 #        '''
 #        logging.debug('Register on fail callback : %s' % (callback))
-#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['node_id']})
+#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['nodeId']})
 #        try:
 #            self._semaphore_on_fail.acquire()
 #            self._callback_on_fail.append(callback)
