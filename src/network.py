@@ -834,7 +834,8 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueAdded : %s' % (args))
-        self.nodes[args['nodeId']].add_value(args['valueId']['id'])
+        self.nodes[args['nodeId']].add_value(args['valueId']['id'], \
+            args['valueId']['commandClass'])
         dispatcher.send(self.SIGNAL_VALUE_ADDED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})

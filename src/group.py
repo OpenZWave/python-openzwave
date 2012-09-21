@@ -46,27 +46,27 @@ class ZWaveGroup(ZWaveObject):
         '''
         Initialize driver object
 
-        :param devicePath: path to the ZWave Device
-        :type devicePath: str
-        :param userPath: path to user directory
-        :type userPath: str
-        :param config_path: path to the config path
-        :type config_path: str
-        :param options: options of the manager
-        :type options: str
+        :param group_index: index of the group
+        :type group_index: int
+        :param network: The network object to access the manager
+        :type network: ZWaveNetwork
+        :param node_id: ID of node
+        :type node_id: int
 
         '''
 
-        ZWaveObject.__init__(self, groupId, network)
+        ZWaveObject.__init__(self, group_index, network)
 
         self._node_id = node_id
         self._index = group_index
         self._label = None
-        self.cache_property(lambda: self.label)
-        self._max_associations = list()
-        self.cache_property(lambda: self.max_associations)
-        self._members = list()
-        self.cache_property(lambda: self.members)
+        self.cache_property("self.label")
+        self._max_associations = set()
+        self.cache_property("self.max_associations")
+        #self._members = set()
+        #self.cache_property("self.members")
+        self._associations = set()
+        self.cache_property("self.associations")
 
     @property
     def index(self):
@@ -76,7 +76,7 @@ class ZWaveGroup(ZWaveObject):
         :rtype: int
 
         """
-        return self._node
+        return self._index
 
     @property
     def label(self):
@@ -86,9 +86,9 @@ class ZWaveGroup(ZWaveObject):
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.label):
-            self._label = self._network.manager.getGroupLabel(node._home_id, node._node_id, self.index)
-            self.update(lambda: self.label)
+        if self.is_outdated("self.label"):
+            self._label = self._network.manager.getGroupLabel(self.home_id, self._node_id, self.index)
+            self.update("self.label")
         return self._label
 
     @property
@@ -99,23 +99,36 @@ class ZWaveGroup(ZWaveObject):
         :rtype: int
 
         """
-        if self.is_outdated(lambda: self.max_associations):
-            self._max_associations = self._network.manager.getMaxAssociations(node._home_id, node._node_id, self.index)
-            self.update(lambda: self.max_associations)
+        if self.is_outdated("self.max_associations"):
+            self._max_associations = self._network.manager.getMaxAssociations(self.home_id, self._node_id, self.index)
+            self.update("self.max_associations")
         return self._max_associations
 
+#    @property
+#    def members(self):
+#        """
+#        The members of associations.
+#
+#        :rtype: int
+#
+#        """
+#        if self.is_outdated("self.members"):
+#            self._members = self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
+#            self.update("self.members")
+#        return self._members
+
     @property
-    def members(self):
+    def associations(self):
         """
         The members of associations.
 
-        :rtype: int
+        :rtype: set()
 
         """
-        if self.is_outdated(lambda: self.members):
-            self._members = self._network.manager.getAssociations(node._home_id, node._node_id, self.index)
-            self.update(lambda: self.members)
-        return self._members
+        if self.is_outdated("self.associations"):
+            self._associations = self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
+            self.update("self.associations")
+        return self._associations
 
     def addAssociation(self, target_node_id):
         """
@@ -131,9 +144,9 @@ class ZWaveGroup(ZWaveObject):
         :type target_node_id: int
 
         """
-        self._network.manager.addAssociation(node._home_id, node._node_id, self.index, target_node_id)
-        self.outdate(lambda: self.members)
-        self.outdate(lambda: self.max_associations)
+        self._network.manager.addAssociation(self.home_id, self._node_id, self.index, target_node_id)
+        self.outdate("self.associations")
+        self.outdate("self.max_associations")
 
     def removeAssociation(self, target_node_id):
         """
@@ -149,6 +162,6 @@ class ZWaveGroup(ZWaveObject):
         :type target_node_id: int
 
         """
-        self._network.manager.removeAssociation(node._home_id, node._node_id, self.index, target_node_id)
-        self.outdate(lambda: self.members)
-        self.outdate(lambda: self.max_associations)
+        self._network.manager.removeAssociation(self._home_id, self._node_id, self.index, target_node_id)
+        self.outdate("self.associations")
+        self.outdate("self.max_associations")

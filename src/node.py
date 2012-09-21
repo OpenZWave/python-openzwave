@@ -111,7 +111,7 @@ class ZWaveNode( ZWaveObject,
         self.cache_property("self.neighbors")
         self._num_groups = int
         self.cache_property("self.num_groups")
-        self._groups = set()
+        self._groups = dict()
         self.cache_property("self.groups")
 
     @property
@@ -270,7 +270,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         if self.is_outdated("self.num_groups"):
-            self._num_groups = self._network.manager.getMaxAssociations(self.home_id, self.object_id)
+            self._num_groups = self._network.manager.getNumGroups(self.home_id, self.object_id)
             self.update("self.num_groups")
         return self._num_groups
 
@@ -280,13 +280,14 @@ class ZWaveNode( ZWaveObject,
         The groups of the node.
         to do
 
-        :rtype: set()
+        :rtype: dict()
 
         """
-        node._groups = set()
-        for i in range(0, self.num_groups()):
-            node._groups.append(ZWaveGroup(i, network=self._network))
-        return node._groups
+        if self.is_outdated("self.groups"):
+            self._groups = dict()
+            for i in range(0, self.num_groups):
+                self._groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
+        return self._groups
 
     @property
     def command_classes(self):
@@ -319,6 +320,17 @@ class ZWaveNode( ZWaveObject,
             command_str.add(self._network.manager.COMMAND_CLASS_DESC[cls])
         return command_str
 
+    def get_command_class_as_string(self, class_id):
+        """
+        Return the command class representation as string.
+
+        :param class_id: the COMMAND_CLASS to get string representation
+        :type class_id: hexadecimal code
+        :rtype: str
+
+        """
+        return self._network.manager.COMMAND_CLASS_DESC[class_id]
+
     @property
     def values(self):
         """
@@ -335,19 +347,29 @@ class ZWaveNode( ZWaveObject,
         Retrieve the set of values for a command class
 
         :param class_id: the COMMAND_CLASS to get values
-        :type class_id: hexadecimal code
+        :type class_id: hexadecimal code or string
         :rtype: set() of classId
 
         """
-        ret = set()
-        for value in self._values:
-            val = value.data
-            if val and val.has_key('commandClass') and \
-              val['commandClass'] == self._network.manager.COMMAND_CLASS_DESC[classId]:
-                ret.append(value)
+        ret = dict()
+        for value in self.values:
+            #print "self.values[value].command_class= ",self.values[value].command_class
+            #print "class_id= ",class_id
+            if self.values[value].command_class==self._network.manager.COMMAND_CLASS_DESC[class_id]:
+                ret[value] = self.values[value]
+#        for value in self._values:
+#            print "type(class_id)= ",type(class_id)
+#            if type(class_id)==type(''):
+#                for cls in self._network.manager.COMMAND_CLASS_DESC :
+#                    if self._network.manager.COMMAND_CLASS_DESC[cls]==class_id:
+#                        if self.values[value].command_class==cls:
+#                            ret.add(self.values[value])
+#            elif type(class_id)==type(0):
+#                if self.values[value].command_class==class_id:
+#                    ret.add(self.values[value])
         return ret
 
-    def add_value(self, value_id):
+    def add_value(self, value_id, command_class):
         """
         Add a value to the node
 
@@ -356,7 +378,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id)
+        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id, command_class=command_class)
         self.values[value_id] = value
         self.values[value_id].oudated = True
 

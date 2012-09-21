@@ -85,7 +85,7 @@ print "Network home_id : %s" % network.home_id
 print "Controller node_id : %s" % network.controller.node.node_id
 print "Nodes in network : %s" % network.nodes_count
 print "------------------------------------------------------------"
-print "Waiting for network to come ready : "
+print "Waiting for network to become ready : "
 print "------------------------------------------------------------"
 for i in range(0,90):
     if network.state>=network.STATE_READY:
@@ -111,11 +111,49 @@ print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"
 for node in network.nodes:
+    print
+    print "------------------------------------------------------------"
     print "%s - Name : %s" % (network.nodes[node].node_id,network.nodes[node].name)
     print "%s - Manufacturer name / id : %s / %s" % (network.nodes[node].node_id,network.nodes[node].manufacturer_name, network.nodes[node].manufacturer_id)
     print "%s - Product name / id / type : %s / %s / %s" % (network.nodes[node].node_id,network.nodes[node].product_name, network.nodes[node].product_id, network.nodes[node].product_type)
     print "%s - Command classes : %s" % (network.nodes[node].node_id,network.nodes[node].command_classes_as_string)
+    print "%s - Capabilities : %s" % (network.nodes[node].node_id,network.nodes[node].capabilities)
     print "%s - Neigbors : %s" % (network.nodes[node].node_id,network.nodes[node].neighbors)
+    groups = {}
+    for grp in network.nodes[node].groups :
+        groups[network.nodes[node].groups[grp].index] = {'label':network.nodes[node].groups[grp].label, 'associations':network.nodes[node].groups[grp].associations}
+    print "%s - Groups : %s" % (network.nodes[node].node_id, groups)
+    values = {}
+    for val in network.nodes[node].values :
+        values[network.nodes[node].values[val].object_id] = {
+            'label':network.nodes[node].values[val].label,
+           'command_class':network.nodes[node].values[val].command_class,
+            'max':network.nodes[node].values[val].max,
+            'min':network.nodes[node].values[val].min,
+            'units':network.nodes[node].values[val].units,
+            'data':network.nodes[node].values[val].data_as_string,
+            'ispolled':network.nodes[node].values[val].is_polled
+            }
+    #print "%s - Values : %s" % (network.nodes[node].node_id, values)
+    #print "------------------------------------------------------------"
+    for cmd in network.nodes[node].command_classes:
+        print "   ---------   "
+        #print "cmd = ",cmd
+        values = {}
+        for val in network.nodes[node].get_values_for_command_class(cmd) :
+            values[network.nodes[node].values[val].object_id] = {
+                'label':network.nodes[node].values[val].label,
+                'max':network.nodes[node].values[val].max,
+                'min':network.nodes[node].values[val].min,
+                'units':network.nodes[node].values[val].units,
+                'data':network.nodes[node].values[val].data_as_string,
+                'ispolled':network.nodes[node].values[val].is_polled
+                }
+        print "%s - Values for command class : %s : %s" % (network.nodes[node].node_id,
+                                    network.nodes[node].get_command_class_as_string(cmd),
+                                    values)
+    print "------------------------------------------------------------"
+print
 print "------------------------------------------------------------"
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"

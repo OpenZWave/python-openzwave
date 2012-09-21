@@ -1833,8 +1833,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
 Gets a value as a bool.
 
-TODO : Use getValueFromType(self.manager,id) when it will be ok
-
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsByte_, \
@@ -1848,8 +1846,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 .. _getValueAsByte:
 
 Gets a value as an 8-bit unsigned integer.
-
-TODO : Use getValueFromType(self.manager,id) when it will be ok
 
 :param id: The ID of a value.
 :type id: int
@@ -1865,8 +1861,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
 Gets a value as a float.
 
-TODO : Use getValueFromType(self.manager,id) when it will be ok
-
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
@@ -1880,8 +1874,6 @@ getValueAsShort_, getValueAsInt_, getValueAsString_
 .. _getValueAsShort:
 
 Gets a value as a 16-bit signed integer.
-
-TODO : Use getValueFromType(self.manager,id) when it will be ok
 
 :param id: The ID of a value.
 :type id: int
@@ -1898,8 +1890,6 @@ getValueAsFloat_, getValueAsInt_, getValueAsString_
 
 Gets a value as a 32-bit signed integer.
 
-TODO : Use getValueFromType(self.manager,id) when it will be ok
-
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value.
@@ -1914,8 +1904,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsString_
 .. _getValueAsString:
 
 Gets a value as a string.
-
-TODO : Use getValueFromType(self.manager,id) when it will be ok
 
 :param id: The ID of a value.
 :type id: int
