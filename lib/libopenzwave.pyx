@@ -162,6 +162,7 @@ cdef addValueId(ValueID v, n):
     #manager.GetValueAsString(v, &value)
     label = manager.GetValueLabel(v)
     units = manager.GetValueUnits(v)
+    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     n['valueId'] = {'homeId' : v.GetHomeId(),
                     'nodeId' : v.GetNodeId(),
                     'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
@@ -176,11 +177,10 @@ cdef addValueId(ValueID v, n):
                     'units' : units.c_str(),
                     'readOnly': manager.IsValueReadOnly(v),
                     }
-    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
+ #   values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
 
 cdef void callback(const_notification _notification, void* _context) with gil:
     cdef Notification* notification = <Notification*>_notification
-
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
@@ -192,7 +192,7 @@ cdef void callback(const_notification _notification, void* _context) with gil:
     elif notification.GetType() == Type_Error:
         n['errorCode'] = notification.GetErrorCode()
     addValueId(notification.GetValueID(), n)
-    #print n
+
     (<object>_context)(n)
 
 cpdef object driverData():
