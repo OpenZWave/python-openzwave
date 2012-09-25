@@ -28,6 +28,14 @@ That's all
 You can unistall python-openzwave using the command :
 #sudo ./uninstall.sh
 
+Update
+======
+If you have already compile python-openzwave and want to update it to the
+new upstream, use the command
+#./update.sh
+
+After that, compile and install it again
+
 Manual installation
 ===================
 -Retrieve the sources of openzwave :
