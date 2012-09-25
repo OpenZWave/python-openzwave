@@ -181,8 +181,6 @@ cdef addValueId(ValueID v, n):
                     'readOnly': manager.IsValueReadOnly(v),
                     }
 
-#cdef extern char* ozw_vers
-
 def configPath():
     '''
 Retrieve the config path. This directory hold the xml files.
