@@ -16,30 +16,35 @@ Get the sources
 After that you can download the python-openzwave code :
 #hg clone https://code.google.com/p/python-openzwave/
 
-
 Automatic installation
 ======================
-You can build python-openzwave with the install.sh script.
-#./install.sh
+You can build python-openzwave with the compile.sh script.
+#./compile.sh
+
 If the build process succeed, run the following command to install
-#sudo python setup.py install
+#sudo ./install.sh
 That's all
-You can generate some documentation using the command : ./make_doc.sh
+
+You can unistall python-openzwave using the command :
+#sudo ./uninstall.sh
 
 Manual installation
 ===================
 -Retrieve the sources of openzwave :
 #svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+
 -Build openzwave
 #cd openzwave/cpp/build/linux
 #make
 #cd ../../../..
+
 -Build python-openzwave
 #python setup.py build
+
 -And install it if compilation succeed
 #sudo python setup.py install
-There is a copy of the openzwave's directory in /usr/local/share/python-openzwave
-API documentation is in /usr/local/share/doc/python-openzwave
+There is a copy of the openzwave's config directory in /usr/local/share/python-openzwave
+Documentation is in /usr/local/share/doc/python-openzwave
 
 Installation on debian/ubuntu
 =============================
@@ -52,7 +57,7 @@ API documentation is in /usr/share/doc/python-openzwave
 
 Examples
 ========
-Examples have not been updated and they must
+Work in progress
 
 How to contribute
 =================
