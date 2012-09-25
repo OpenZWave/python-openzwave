@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0
+Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='jquery.jgrowl.css') }}">
+        <link rel=stylesheet type=text/css href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/vader/jquery-ui.css">
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jqueryui.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.jgrowl_google.js') }}"></script>
+        {% block extra_script %}{% endblock %}
+    </head>
+
+    <body>
+        <div id='stripe'></div>
+        <div id='header'>
+            <div class='header-content'><span id='logo'><a href='/' title='home'>home</a></span>
+                <!--<ul id='main-menu'><li style="margin:-1px 20px 0 0"> </li></ul>
+                    TODO: / should redirect to node list
+
+                    Menus:
+                    -- nodes (home)
+                    -- status (info)
+                    -- configure (equalizer)
+                    -- add device (plus)
+                    -- all on (lightbulb)
+                    -- all off (lightbulb-fill)
+                    -- refresh all (loop_alt2) (spin?)
+
+                    TODO: how to style forms via themeroller?
+                -->
+            </div>
+        </div>
+        <div class='flash'>
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+        </div>
+        <div id='wrap'>
+            <div id='content'>
+            {% block content %}{% endblock %}
+            </div>
+            <div class='cl'></div>
+        </div>
+        <div id='footer'>
+            <div class='footer-content'>
+                <div class='left'>
+                    <ul>
+                        <li><a href='/about/'>About</a></li>
+                        <li><a href='/api/'>API</a></li>
+                        <li><a href='#'>Blog</a></li>
+                        <li><a href='#'>Mobile</a></li>
+                    </ul>
+                    <div class='cl'></div>
+                </div>
+            </div>
+        </div>
+        <div class='cl'></div>
+    </body>
+</html>

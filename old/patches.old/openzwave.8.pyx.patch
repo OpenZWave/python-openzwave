@@ -1,0 +1,70 @@
+--- python-openzwave-20120828.orig/openzwave.pyx	2012-08-30 22:50:42.000000000 +0200
++++ python-openzwave-20120828//openzwave.pyx	2012-08-30 23:49:38.000000000 +0200
+@@ -661,13 +661,12 @@
+ 
+     def getPythonLibraryVersion(self):
+         '''
+-Get the version of the python library used by a controller.
++Get the version of the python library.
+ 
+ @return a string containing the python library version. For example, "0.1".
+         '''
+         return str(PYLIBRARY)
+ 
+-
+     def getLibraryTypeName(self, homeid):
+         '''
+ Get a string containing the Z-Wave API library type used by a controller.
+@@ -1204,9 +1203,9 @@
+ @param id the ID of a value.
+ @param value the value to set
+ @return an integer representing the result of the operation 
+-	0 : The C method fails
+-	1 : The C method succeed
+-	2 : Can't find id in the map
++    0 : The C method fails
++    1 : The C method succeed
++    2 : Can't find id in the map
+         '''
+         cdef float type_float
+         cdef bint type_bool
+@@ -1215,31 +1214,35 @@
+         cdef int16 type_short
+         cdef string type_string
+ 
+-        cret = 2
+-		
++        ret = 2
+         if values_map.find(id) != values_map.end(): 
+             datatype = PyValueTypes[values_map.at(id).GetType()]
+             
+             if datatype == "Bool":
+                 type_bool = value
+                 cret = self.manager.SetValue(values_map.at(id), type_bool)
++                ret = 1 if cret else 0
+             elif datatype == "Byte":
+                 type_byte = value
+                 cret = self.manager.SetValue(values_map.at(id), type_byte)            
++                ret = 1 if cret else 0
+             elif datatype == "Decimal":
+                 type_float = value
+                 cret = self.manager.SetValue(values_map.at(id), type_float)
++                ret = 1 if cret else 0
+             elif datatype == "Int":
+                 type_int = value
+                 cret = self.manager.SetValue(values_map.at(id), type_int)
++                ret = 1 if cret else 0
+             elif datatype == "Short":
+                 type_short = value
+                 cret = self.manager.SetValue(values_map.at(id), type_short)
++                ret = 1 if cret else 0
+             elif datatype == "String":
+                 type_string = string(value)
+                 cret = self.manager.SetValue(values_map.at(id), type_string)
+-
+-        return cret
++                ret = 1 if cret else 0
++        return ret
+ 
+     def refreshValue(self, id):
+         '''

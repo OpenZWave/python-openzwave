@@ -1,0 +1,217 @@
+--- python-openzwave-20120828.orig/openzwave.pyx	2012-09-02 02:17:15.000000000 +0200
++++ python-openzwave-20120828/openzwave.pyx	2012-09-02 11:25:23.000000000 +0200
+@@ -23,6 +23,7 @@
+ 
+ from cython.operator cimport dereference as deref
+ from libcpp.map cimport map, pair
++from libcpp cimport bool
+ 
+ PYLIBRARY = 0.1
+ 
+@@ -153,15 +154,15 @@
+         void LogDriverStatistics( uint32 homeId )
+         # // Polling
+         uint32 GetPollInterval()
+-        void SetPollInterval(uint32 milliseconds, bint bIntervalBetweenPolls)
++        void SetPollInterval(uint32 milliseconds, bIntervalBetweenPolls)
+         bint EnablePoll(ValueID& valueId, uint8 intensity)
+         bint DisablePoll(ValueID& valueId)
+         bint isPolled(ValueID& valueId)
+         void SetPollIntensity( ValueID& valueId, uint8 intensity)
+         # // Node Information
+         bint RefreshNodeInfo(uint32 homeid, uint8 nodeid)
+-        void RequestNodeState(uint32 homeid, uint8 nodeid)
+-        void RequestNodeDynamic( uint32 homeId, uint8 nodeId )
++        bint RequestNodeState(uint32 homeid, uint8 nodeid)
++        bint RequestNodeDynamic( uint32 homeId, uint8 nodeId )
+         bint IsNodeListeningDevice(uint32 homeid, uint8 nodeid)
+         bint IsNodeFrequentListeningDevice( uint32 homeId, uint8 nodeId )
+         bint IsNodeBeamingDevice( uint32 homeId, uint8 nodeId )
+@@ -204,7 +205,7 @@
+         bint IsValueWriteOnly(ValueID& valueid)
+         bint IsValueSet(ValueID& valueid)
+         bint IsValuePolled( ValueID& valueid )
+-        bint GetValueAsBool(ValueID& valueid, bint* o_value)
++        bint GetValueAsBool(ValueID& valueid, bool* o_value)
+         bint GetValueAsByte(ValueID& valueid, uint8* o_value)
+         bint GetValueAsFloat(ValueID& valueid, float* o_value)
+         bint GetValueAsInt(ValueID& valueid, uint32* o_value)
+@@ -266,7 +267,7 @@
+         bint AddSceneValueListSelection( uint8 sceneId, ValueID& valueId, int32 value )
+         bint RemoveSceneValue( uint8 sceneId, ValueID& valueId )
+         #int SceneGetValues( uint8 sceneId, vector<ValueID>* o_value )
+-        bint SceneGetValueAsBool( uint8 sceneId, ValueID& valueId, bint value )
++        bint SceneGetValueAsBool( uint8 sceneId, ValueID& valueId, bool value )
+         bint SceneGetValueAsByte( uint8 sceneId, ValueID& valueId, uint8* o_value )
+         bint SceneGetValueAsFloat( uint8 sceneId, ValueID& valueId, float* o_value )
+         bint SceneGetValueAsInt( uint8 sceneId, ValueID& valueId, int32* o_value )
+@@ -745,6 +746,8 @@
+     def getPollInterval(self):
+         '''
+ Get the time period between polls of a nodes state
++
++@return
+         '''
+         return self.manager.GetPollInterval()
+ 
+@@ -820,6 +823,24 @@
+ # -----------------------------------------------------------------------------
+ # Methods for accessing information on indivdual nodes.
+ #
++
++    def requestNodeDynamic(self, homeid, nodeid):
++        '''
++Trigger the fetching of fixed data about a node.
++
++Causes the nodes data to be obtained from the Z-Wave network in the same way
++as if it had just been added.  This method would normally be called
++automatically by OpenZWave, but if you know that a node has been changed,
++calling this method will force a refresh of the data held by the library.  This
++can be especially useful for devices that were asleep when the application was
++first run.
++
++@param homeId The Home ID of the Z-Wave controller that manages the node.
++@param nodeId The ID of the node to query.
++@return True if the request was sent successfully.
++        '''
++        return self.manager.RequestNodeDynamic(homeid, nodeid)
++
+     def refreshNodeInfo(self, homeid, nodeid):
+         '''
+ Trigger the fetching of fixed data about a node.
+@@ -839,14 +860,26 @@
+ 
+     def requestNodeState(self, homeid, nodeid):
+         '''
+-Trigger the fetching of dynamic value data for a node.
++Trigger the fetching of just the dynamic value data for a node.
++Causes the node's values to be requested from the Z-Wave network. This is the
++same as the query state starting from the dynamic state.
++
++@param homeId The Home ID of the Z-Wave controller that manages the node.
++@param nodeId The ID of the node to query.
++@return return True if the request was sent successfully.
++        '''
++        return self.manager.RequestNodeState(homeid, nodeid)
+ 
+-Causes the nodes values to be requested from the Z-Wave network.
++    def isNodeBeamingDevice(self, homeid, nodeid):
++        '''
++Get whether the node is a beam capable device.
+ 
+ @param homeId The Home ID of the Z-Wave controller that manages the node.
+ @param nodeId The ID of the node to query.
++@return True if the node is a beaming device
+         '''
+-        self.manager.RequestNodeState(homeid, nodeid)
++        return self.manager.IsNodeBeamingDevice(homeid, nodeid)
++
+ 
+     def isNodeListeningDevice(self, homeid, nodeid):
+         '''
+@@ -858,6 +891,27 @@
+         '''
+         return self.manager.IsNodeListeningDevice(homeid, nodeid)
+ 
++    def isNodeFrequentListeningDevice(self, homeid, nodeid):
++        '''
++Get whether the node is a frequent listening device that goes to sleep but
++can be woken up by a beam. Useful to determine node and controller consistency.
++
++@param homeId The Home ID of the Z-Wave controller that manages the node.
++@param nodeId The ID of the node to query.
++@return True if it is a frequent listening node.
++        '''
++        return self.manager.IsNodeFrequentListeningDevice(homeid, nodeid)
++
++    def isNodeSecurityDevice(self, homeid, nodeid):
++        '''
++Get the security attribute for a node. True if node supports security features.
++
++@param homeId The Home ID of the Z-Wave controller that manages the node.
++@param nodeId The ID of the node to query.
++@return true if security features implemented.
++        '''
++        return self.manager.IsNodeSecurityDevice(homeid, nodeid)
++
+     def isNodeRoutingDevice(self, homeid, nodeid):
+         '''
+ Get whether the node is a routing device that passes messages to other nodes
+@@ -944,9 +998,8 @@
+ 
+     def getNodeNeighbors(self, homeid, nodeid):
+         '''
+-Retrieve a list of neighbor node ids
+-
+-
++Get the bitmap of this node's neighbors.
++		 
+ @param homeId The Home ID of the Z-Wave controller that manages the node.
+ @param nodeId The ID of the node to query.
+ @return A tuple containing neighboring node IDs
+@@ -1232,7 +1285,6 @@
+ @param level The level to set the node.  Valid values are 0-99 and 255.  Zero
+ is off and 99 is fully on.  255 will turn on the device at its last known level
+ (if supported).
+-
+ @see setNodeOn, setNodeOff
+         '''
+         self.manager.SetNodeLevel(homeid, nodeid, level)
+@@ -1273,6 +1325,7 @@
+ Due to the possibility of a device being asleep, the command is assumed to suceeed, and the value
+ held by the node is updated directly.  This will be reverted by a future status message from the device
+ if the Z-Wave message actually failed to get through.  Notification callbacks will be sent in both cases.
++
+ @param id the ID of a value.
+ @param value the value to set
+ @return an integer representing the result of the operation 
+@@ -1281,7 +1334,7 @@
+     2 : Can't find id in the map
+         '''
+         cdef float type_float
+-        cdef bint type_bool
++        cdef bool type_bool
+         cdef uint8 type_byte
+         cdef int32 type_int
+         cdef int16 type_short
+@@ -1325,7 +1378,7 @@
+ @param id The unique identifier of the value to be refreshed.
+ @return true if the driver and node were found; false otherwise
+         '''
+-        return bool(self.manager.RefreshValue(values_map.at(id)))
++        return self.manager.RefreshValue(values_map.at(id))
+ 
+     def getValueLabel(self, id):
+         '''
+@@ -1936,7 +1989,7 @@
+         '''
+ Add a ValueID of value to an existing scene.
+ 
+-Actually I don't know how to use it. So do nothing.
++Actually I don't know how to use it :)
+ 
+ @param sceneId the ID of a scene.
+ @param valueId the ID of a value.
+@@ -1948,7 +2001,7 @@
+ @see GetNumScenes, GetAllScenes, CreateScene, RemoveScene, RemoveSceneValue, SceneGetValues, SceneGetValueAsBool, SceneGetValueAsByte, SceneGetValueAsFloat, SceneGetValueAsInt, SceneGetValueAsShort, SceneGetValueAsString, SetSceneValue, GetSceneLabel, SetSceneLabel, SceneExists, ActivateScene
+         '''
+         cdef float type_float
+-        cdef bint type_bool
++        cdef bool type_bool
+         cdef uint8 type_byte
+         cdef int32 type_int
+         cdef int16 type_short
+@@ -1996,7 +2049,7 @@
+ @see GetNumScenes, GetAllScenes, CreateScene, RemoveScene, RemoveSceneValue, SceneGetValues, SceneGetValueAsBool, SceneGetValueAsByte, SceneGetValueAsFloat, SceneGetValueAsInt, SceneGetValueAsShort, SceneGetValueAsString, SetSceneValue, GetSceneLabel, SetSceneLabel, SceneExists, ActivateScene
+         '''
+         cdef float type_float
+-        cdef bint type_bool
++        cdef bool type_bool
+         cdef uint8 type_byte
+         cdef int32 type_int
+         cdef int16 type_short
+@@ -2071,4 +2124,3 @@
+ @see GetNumScenes, GetAllScenes, CreateScene, RemoveScene, RemoveSceneValue, SceneGetValues, SceneGetValueAsBool, SceneGetValueAsByte, SceneGetValueAsFloat, SceneGetValueAsInt, SceneGetValueAsShort, SceneGetValueAsString, SetSceneValue, GetSceneLabel, SetSceneLabel, SceneExists, ActivateScene
+         '''
+         return self.manager.ActivateScene(sceneid)
+-

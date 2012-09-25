@@ -1,0 +1,24 @@
+Format: http://dep.debian.net/deps/dep5
+Upstream-Name: python-openzwave
+Source: http://code.google.com/p/python-openzwave
+
+Files: *
+Copyright: (C) 2012 bibi21000 aka Sébastien GALLET <sgallet@gmail.com>
+License: GPL-3
+
+File: debian/*
+Copyright: (c) 2012 Sébastien GALLET <sgallet@gmail.com>
+License: GPL-2
+
+License: GPL-2
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, version 2.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ On Debian systems, the complete text of the GNU General Public License
+ can be found in the /usr/share/common-licenses/GPL-2 file.

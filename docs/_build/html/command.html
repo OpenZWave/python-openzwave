@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Command documentation &mdash; python-openzwave 0.2.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
+    <link rel="up" title="API documentation" href="openzwave.html" />
+    <link rel="next" title="Group documentation" href="group.html" />
+    <link rel="prev" title="Node documentation" href="node.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="group.html" title="Group documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="node.html" title="Node documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="command-documentation">
+<h1>Command documentation<a class="headerlink" href="#command-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The commands to use with nodes.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.command"></span><span class="target" id="module-openzwave.command"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeBasic">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeBasic</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an interface to BasicCommands
+I known it&#8217;s not necessary as they can be included in the node directly.
+But it&#8217;s a good starting point.</p>
+<p>What I want to do is provide an automatic mapping system hidding
+the mapping classes.</p>
+<p>First example, the battery level, it&#8217;s not a basic command but don&#8217;t care.
+Its command class is 0x80.</p>
+<p>A user should write
+if self.handle_command_class(class_id):</p>
+<blockquote>
+<div>ret=commandclass(...)</div></blockquote>
+<p>The classic way to do it is a classique method of registering. But</p>
+<p>Another way : using heritage multiple</p>
+<p>ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)
+The interface will implement methods
+command_class_0x80(paramm1,param2,...)
+That&#8217;s the first thing to do
+We also can define a property wtih a fiendly name</p>
+<p>handle_command_class will do the rest</p>
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeBasic.battery_level">
+<tt class="descname">battery_level</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.battery_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The battery level of this node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.command_class_0x80">
+<tt class="descname">command_class_0x80</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.command_class_0x80" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x80 (COMMAND_CLASS_BATTERY) level of this node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSwitch">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSwitch</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an interface to Switch Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x25">
+<tt class="descname">command_class_0x25</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.command_class_0x25" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x26">
+<tt class="descname">command_class_0x26</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.command_class_0x26" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeSwitch.is_on">
+<tt class="descname">is_on</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.is_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node On.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeSwitch.level">
+<tt class="descname">level</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of the node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSensor">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSensor</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents an interface to Sensor Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x30">
+<tt class="descname">command_class_0x30</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor.command_class_0x30" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x31">
+<tt class="descname">command_class_0x31</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor.command_class_0x31" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) level of this node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="node.html"
+                        title="previous chapter">Node documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="group.html"
+                        title="next chapter">Group documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/command.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="group.html" title="Group documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="node.html" title="Node documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, bibi21000.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

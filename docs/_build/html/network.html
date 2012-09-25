@@ -1,0 +1,440 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Network documentation &mdash; python-openzwave 0.2.4 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2.4',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
+    <link rel="up" title="API documentation" href="openzwave.html" />
+    <link rel="next" title="Controller documentation" href="controller.html" />
+    <link rel="prev" title="API documentation" href="openzwave.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controller.html" title="Controller documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="openzwave.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="network-documentation">
+<h1>Network documentation<a class="headerlink" href="#network-documentation" title="Permalink to this headline">¶</a></h1>
+<p>This is the central point. Everything is attached to a network.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.network"></span><span class="target" id="module-openzwave.network"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p><em>Module author: bibi21000 aka Sébastien GALLET &lt;<a class="reference external" href="mailto:bibi21000&#37;&#52;&#48;gmail&#46;com">bibi21000<span>&#64;</span>gmail<span>&#46;</span>com</a>&gt;</em></p>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.network.ZWaveNetwork">
+<em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>options</em>, <em>log=None</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p>The network objet = homeid.
+It contains a reference to the manager and the controller.</p>
+<p>It dispatch the following louie signals :</p>
+<blockquote>
+<div><ul class="simple">
+<li>SIGNAL_NETWORK_FAILED = &#8216;NetworkFailed&#8217;</li>
+<li>SIGNAL_NETWORK_READY = &#8216;NetworkReady&#8217;</li>
+<li>SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</li>
+<li>SIGNAL_DRIVER_READY = &#8216;DriverReady&#8217;</li>
+<li>SIGNAL_DRIVER_RESET = &#8216;DriverReset&#8217;</li>
+<li>SIGNAL_NODE_ADDED = &#8216;NodeAdded&#8217;</li>
+<li>SIGNAL_NODE_EVENT = &#8216;NodeEvent&#8217;</li>
+<li>SIGNAL_NODE_NAMING = &#8216;NodeNaming&#8217;</li>
+<li>SIGNAL_NODE_NEW = &#8216;NodeNew&#8217;</li>
+<li>SIGNAL_NODE_PROTOCOL_INFO = &#8216;NodeProtocolInfo&#8217;</li>
+<li>SIGNAL_NODE_READY = &#8216;NodeReady&#8217;</li>
+<li>SIGNAL_NODE_REMOVED = &#8216;NodeRemoved&#8217;</li>
+<li>SIGNAL_VALUE_ADDED = &#8216;ValueAdded&#8217;</li>
+<li>SIGNAL_VALUE_CHANGED = &#8216;ValueChanged&#8217;</li>
+<li>SIGNAL_VALUE_REFRESHED = &#8216;ValueRefreshed&#8217;</li>
+<li>SIGNAL_VALUE_REMOVED = &#8216;ValueRemoved&#8217;</li>
+<li>SIGNAL_POLLING_ENABLED = &#8216;PollingEnabled&#8217;</li>
+<li>SIGNAL_POLLING_DISABLED = &#8216;PollingDisabled&#8217;</li>
+<li>SIGNAL_CREATE_BUTTON = &#8216;CreateButton&#8217;</li>
+<li>SIGNAL_DELETE_BUTTON = &#8216;DeleteButton&#8217;</li>
+<li>SIGNAL_BUTTON_ON = &#8216;ButtonOn&#8217;</li>
+<li>SIGNAL_BUTTON_OFF = &#8216;ButtonOff&#8217;</li>
+<li>SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = &#8216;EssentialNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_NODE_QUERIES_COMPLETE = &#8216;NodeQueriesComplete&#8217;</li>
+<li>SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = &#8216;AwakeNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_ALL_NODES_QUERIES_COMPLETE = &#8216;AllNodeQueriesComplete&#8217;</li>
+<li>SIGNAL_MSG_COMPLETE = &#8216;MsgComplete&#8217;</li>
+<li>SIGNAL_ERROR = &#8216;Error&#8217;</li>
+</ul>
+</div></blockquote>
+<p>The table presented below sets notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.</p>
+<p>Driver Initialization Notification</p>
+<p>The notification below is sent when OpenZWave has successfully connected to a physical ZWave controller.</p>
+<ul class="simple">
+<li>DriverReady</li>
+</ul>
+<p>[always sent]   Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
+At the time this notification is sent, only certain information about the controller itself is known:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Controller Z-Wave version</li>
+<li>Network HomeID</li>
+<li>Controller capabilities</li>
+<li>Controller Application Version &amp; Manufacturer/Product ID</li>
+<li>Nodes included in the network</li>
+</ul>
+</div></blockquote>
+<p>Node Initialization Notifications</p>
+<p>As OpenZWave starts, it identifies and reads information about each node in the network. The following notifications may be sent during the initialization process.</p>
+<ul class="simple">
+<li>NodeNew</li>
+</ul>
+<p>[potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
+At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.</p>
+<ul class="simple">
+<li>NodeAdded</li>
+</ul>
+<p>[always sent (for each node associated with the controller)]    Sent when a node has been added to OpenZWave’s set of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
+As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.</p>
+<ul class="simple">
+<li>NodeProtocolInfo</li>
+</ul>
+<p>[potentially sent]  Sent after a node’s protocol information has been successfully read from the controller.
+At the time this notification is sent, only certain information about the node is known:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Whether it is a “setening” or “sleeping” device</li>
+<li>Whether the node is capable of routing messages</li>
+<li>Maximum baud rate for communication</li>
+<li>Version number</li>
+<li>Security byte</li>
+</ul>
+</div></blockquote>
+<p>NodeNaming</p>
+<p>[potentially sent]  Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).</p>
+<ul class="simple">
+<li>ValueAdded</li>
+</ul>
+<p>[potentially sent]  Sent when a new value has been associated with the node.
+At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.</p>
+<ul class="simple">
+<li>NodeQueriesComplete</li>
+</ul>
+<p>[always sent (for each node associated with the controller that has been successfully queried)]     Sent when a node’s values and attributes have been fully queried. At the time this notification is sent, the node’s information has been fully read at least once.  So this notification might trigger “full” display of the node’s information, values, etc. If this notification is not sent, it indicates that there has been a problem initializing the device.  The most common issue is that the node is a “sleeping” device.  The NodeQueriesComplete notification will be sent when the node wakes up and the query process completes.</p>
+<p>Initialization Complete Notifications</p>
+<p>As indicated above, when OpenZWave starts it reads certain information from a file, from the controller and from the network.  The following notifications identify when this initialization/querying process is complete.</p>
+<ul class="simple">
+<li>AwakeNodesQueried</li>
+</ul>
+<p>[always sent]   Sent when all “setening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)</p>
+<ul class="simple">
+<li>AllNodesQueried</li>
+</ul>
+<p>[potentially sent]  Sent when all nodes have been successfully queried.</p>
+<p>This notification should be sent relatively quickly if there are no “sleeping” nodes. But it might be sent quite a while after start-up if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.</p>
+<p>Other Notifications</p>
+<p>In addition to the notifications described above, which are primarily “initialization” notifications that are sent during program start-up, the following notifications may be sent as a result of user actions, external program control, etc.</p>
+<ul class="simple">
+<li>ValueChanged  Sent when a value associated with a node has changed. Receipt of this notification indicates that it may be a good time to read the new value and display or otherwise process it accordingly.</li>
+<li>ValueRemoved  Sent when a value associated with a node has been removed.</li>
+<li>Group     Sent when a node’s group association has changed.</li>
+<li>NodeRemoved   Sent when a node has been removed from the ZWave network.</li>
+<li>NodeEvent     Sent when a node sends a Basic_Set command to the controller.  This notification can be generated by certain sensors, for example, motion detectors, to indicate that an event has been sensed.</li>
+<li>PollingEnabled    Sent when node/value polling has been enabled.</li>
+<li>PollingDisabled   Sent when node/value polling has been disabled.</li>
+<li>DriverReset   Sent to indicate when a controller has been reset.  This notification is intended to replace the potentially hundreds of notifications representing each value and node removed from the network.</li>
+</ul>
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.controller">
+<tt class="descname">controller</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>The controller of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveController</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.home_id">
+<tt class="descname">home_id</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.home_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The home_id of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.is_ready">
+<tt class="descname">is_ready</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.is_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Says if the network is ready for operations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.manager">
+<tt class="descname">manager</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.manager" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manager to use to communicate with the lib c++.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveManager</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodes">
+<tt class="descname">nodes</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.nodes_count">
+<tt class="descname">nodes_count</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.nodes_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The nodes count of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.sleeping_nodes_count">
+<tt class="descname">sleeping_nodes_count</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.sleeping_nodes_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The count of sleeping nodes on the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.state">
+<tt class="descname">state</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The state of the network. Values may be changed in the future,
+only order is important.
+You can safely ask node informations when state &gt;= STATE_READY</p>
+<ul class="simple">
+<li>STATE_STOPPED = 0</li>
+<li>STATE_FAILED = 1</li>
+<li>STATE_INITIALISED = 2</li>
+<li>STATE_RESET = 4</li>
+<li>STATE_AWAKE = 7</li>
+<li>STATE_READY = 10</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.network.ZWaveNetwork.state_str">
+<tt class="descname">state_str</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.state_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>The state of the network. Values may be changed in the future,
+only order is important.
+You can safely ask node informations when state &gt;= STATE_READY</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.zwcallback">
+<tt class="descname">zwcallback</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.zwcallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Callback Handler used with the libopenzwave.</p>
+<p>n[&#8216;valueId&#8217;] = {</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;home_id&#8217; : v.GetHomeId(),</li>
+<li>&#8216;node_id&#8217; : v.GetNodeId(),</li>
+<li>&#8216;commandClass&#8217; : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],</li>
+<li>&#8216;instance&#8217; : v.GetInstance(),</li>
+<li>&#8216;index&#8217; : v.GetIndex(),</li>
+<li>&#8216;id&#8217; : v.GetId(),</li>
+<li>&#8216;genre&#8217; : PyGenres[v.GetGenre()],</li>
+<li>&#8216;type&#8217; : PyValueTypes[v.GetType()],</li>
+<li>#&#8217;value&#8217; : value.c_str(),</li>
+<li>&#8216;value&#8217; : getValueFromType(manager,v.GetId()),</li>
+<li>&#8216;label&#8217; : label.c_str(),</li>
+<li>&#8216;units&#8217; : units.c_str(),</li>
+<li>&#8216;readOnly&#8217;: manager.IsValueReadOnly(v)</li>
+</ul>
+</div></blockquote>
+<p>}</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<em>dict()</em>) &#8211; Callback function</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="openzwave.html"
+                        title="previous chapter">API documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controller.html"
+                        title="next chapter">Controller documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/network.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controller.html" title="Controller documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="openzwave.html" title="API documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+          <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, bibi21000.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>
