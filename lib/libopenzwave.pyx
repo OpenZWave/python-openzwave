@@ -165,6 +165,7 @@ cdef addValueId(ValueID v, n):
     #manager.GetValueAsString(v, &value)
     label = manager.GetValueLabel(v)
     units = manager.GetValueUnits(v)
+    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     n['valueId'] = {'homeId' : v.GetHomeId(),
                     'nodeId' : v.GetNodeId(),
                     'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
@@ -179,7 +180,6 @@ cdef addValueId(ValueID v, n):
                     'units' : units.c_str(),
                     'readOnly': manager.IsValueReadOnly(v),
                     }
-    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
 
 #cdef extern char* ozw_vers
 
