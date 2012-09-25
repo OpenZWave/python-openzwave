@@ -96,6 +96,12 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dd><p>The driver objet.
 Hold options of the manager
 Also used to retrieve informations about the library, ...</p>
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.cancel_command">
+<tt class="descname">cancel_command</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.cancel_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels any in-progress command running on a controller.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.controller.ZWaveController.capabilities">
 <tt class="descname">capabilities</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.capabilities" title="Permalink to this definition">¶</a></dt>
@@ -126,6 +132,14 @@ Also used to retrieve informations about the library, ...</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.hard_reset">
+<tt class="descname">hard_reset</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.hard_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hard Reset a PC Z-Wave Controller.
+Resets a controller and erases its network configuration settings.  The
+controller becomes a primary controller ready to add devices to a new network.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -286,6 +300,13 @@ Also used to retrieve informations about the library, ...</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.soft_reset">
+<tt class="descname">soft_reset</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.soft_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Soft Reset a PC Z-Wave Controller.
+Resets a controller without erasing its network configuration settings.</p>
 </dd></dl>
 
 <dl class="attribute">

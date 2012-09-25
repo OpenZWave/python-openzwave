@@ -85,8 +85,9 @@ if network.state<network.STATE_INITIALISED:
     print "Can't initialise driver! Look at the logs in OZW_Log.log"
     quit(1)
 print "------------------------------------------------------------"
+print "Use openzwave library : %s" % network.controller.ozw_library_version
 print "Use python library : %s" % network.controller.python_library_version
-print "Use openzwave library : %s" % network.controller.library_description
+print "Use ZWave library : %s" % network.controller.library_description
 print "Network home id : %s" % network.home_id
 print "Controller node id : %s" % network.controller.node.node_id
 print "Controller node version : %s" % (network.controller.node.version)

@@ -91,9 +91,23 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="class">
 <dt id="openzwave.value.ZWaveValue">
-<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent_id=None</em><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent_id=None</em>, <em>command_class=0</em><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a single value.
 Must be updated to use the cachedObject facilities.</p>
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.command_class">
+<tt class="descname">command_class</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.command_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>The commandclass of the value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.data">
 <tt class="descname">data</tt><a class="headerlink" href="#openzwave.value.ZWaveValue.data" title="Permalink to this definition">¶</a></dt>

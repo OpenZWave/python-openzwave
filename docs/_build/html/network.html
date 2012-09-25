@@ -163,7 +163,7 @@ As with NodeNew, very little is known about the node at the time the notificatio
 At the time this notification is sent, only certain information about the node is known:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Whether it is a “setening” or “sleeping” device</li>
+<li>Whether it is a “listening” or “sleeping” device</li>
 <li>Whether the node is capable of routing messages</li>
 <li>Maximum baud rate for communication</li>
 <li>Version number</li>
@@ -311,8 +311,8 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 <ul class="simple">
 <li>STATE_STOPPED = 0</li>
 <li>STATE_FAILED = 1</li>
-<li>STATE_INITIALISED = 2</li>
-<li>STATE_RESET = 4</li>
+<li>STATE_RESET = 3</li>
+<li>STATE_INITIALISED = 5</li>
 <li>STATE_AWAKE = 7</li>
 <li>STATE_READY = 10</li>
 </ul>
@@ -337,6 +337,20 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.write_config">
+<tt class="descname">write_config</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.write_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>The last message that was sent is now complete.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<em>dict()</em>) &#8211; data sent by the notification</td>
 </tr>
 </tbody>
 </table>

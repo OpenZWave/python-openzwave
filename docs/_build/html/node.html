@@ -95,7 +95,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dd><p>Represents a single Node within the Z-Wave Network</p>
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.add_value">
-<tt class="descname">add_value</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_value</tt><big>(</big><em>value_id</em>, <em>command_class</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value to the node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -196,6 +196,22 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_command_class_as_string">
+<tt class="descname">get_command_class_as_string</tt><big>(</big><em>class_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_command_class_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the command class representation as string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_id</strong> (<em>hexadecimal code</em>) &#8211; the COMMAND_CLASS to get string representation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.node.ZWaveNode.get_values_for_command_class">
 <tt class="descname">get_values_for_command_class</tt><big>(</big><em>class_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values_for_command_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the set of values for a command class</p>
@@ -203,7 +219,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_id</strong> (<em>hexadecimal code</em>) &#8211; the COMMAND_CLASS to get values</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_id</strong> (<em>hexadecimal code or string</em>) &#8211; the COMMAND_CLASS to get values</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">set() of classId</td>
 </tr>
@@ -220,7 +236,7 @@ to do</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
 </table>

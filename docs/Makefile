@@ -92,7 +92,7 @@ devhelp:
 	@echo "# devhelp"
 
 joomla:
-	$(SPHINXBUILD) -b html -D html_theme="joomla" $(ALLSPHINXOPTS) $(BUILDDIR)/joomla
+	$(SPHINXBUILD) -b html -D html_theme="joomla" -D html_add_permalinks="" $(ALLSPHINXOPTS) $(BUILDDIR)/joomla
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/joomla."
 

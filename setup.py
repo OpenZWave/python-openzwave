@@ -99,7 +99,7 @@ else:
                              libraries=['udev', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
+                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
     )]
 
 setup(
@@ -107,6 +107,7 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='http://code.google.com/p/python-openzwave',
+  #Need to update libopenzwave.pyx too
   version = '0.2.4',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,

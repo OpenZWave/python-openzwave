@@ -28,6 +28,7 @@ from libcpp.map cimport map, pair
 from libcpp cimport bool
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
+from vers cimport ozw_vers
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from driver cimport DriverData_t, DriverData
@@ -39,6 +40,7 @@ from options cimport Options, Create
 from manager cimport Manager, Create, Get
 from log cimport LogLevel
 import os
+import sys
 
 #Don't update it.
 #It will be done when releasing only.
@@ -179,6 +181,35 @@ cdef addValueId(ValueID v, n):
                     }
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
 
+#cdef extern char* ozw_vers
+
+def configPath():
+    '''
+Retrieve the config path. This directory hold the xml files.
+
+:returns: A string containing the library config path or None.
+:rtype: str
+
+    '''
+    if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
+    else:
+        for pythonpath in sys.path:
+            try:
+                for afile in os.listdir(pythonpath):
+                    fullpath = os.path.join(pythonpath, afile)
+                    if os.path.exists(os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)):
+                        return os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)
+            except :
+                pass
+    return None
+
 cdef void callback(const_notification _notification, void* _context) with gil:
     """
     Callback to the C++ library
@@ -292,16 +323,7 @@ Retrieve the config path. This directory hold the xml files.
 :rtype: str
 
         '''
-        if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
-        elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
-        elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-        elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-        else:
-            return None
+        return configPath()
 
 cdef class RetAlloc:
     """
@@ -634,7 +656,7 @@ Get the version of the Z-Wave API library used by a controller.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: str -- A string containing the library version. For example, "Z-Wave 2.48".
-:see: getPythonLibraryVersion_, getLibraryTypeName_
+:see: getPythonLibraryVersion_, getLibraryTypeName_, getOzwLibraryVersion_
 
         '''
         cdef string c_string = self.manager.GetLibraryVersion(homeid)
@@ -647,10 +669,22 @@ Get the version of the Z-Wave API library used by a controller.
 Get the version of the python library.
 
 :returns: str -- A string containing the python library version. For example, "0.1".
-:see: getLibraryTypeName_, getLibraryVersion_
+:see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_
 
         '''
-        return PYLIBRARY
+        return "python-openzwave version %s" % PYLIBRARY
+
+    def getOzwLibraryVersion(self):
+        '''
+.. _getOzwLibraryVersion:
+
+Get a string containing the openzwave library version.
+
+:returns: str -- A string containing the library type.
+:see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
+
+        '''
+        return ozw_vers
 
     def getLibraryTypeName(self, homeid):
         '''
@@ -675,7 +709,7 @@ method.
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
 :returns: str -- A string containing the library type.
-:see: getLibraryVersion_, getPythonLibraryVersion_
+:see: getLibraryVersion_, getPythonLibraryVersion_, getOzwLibraryVersion_
 
         '''
         cdef string c_string = self.manager.GetLibraryTypeName(homeid)

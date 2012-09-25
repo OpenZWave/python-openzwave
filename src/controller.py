@@ -58,11 +58,11 @@ class ZWaveController(ZWaveObject):
         self._node = None
         self._options = options
         self._library_type_name = None
-        #self.cache_property(lambda: self.library_type_name)
+        #self.cache_property("self.library_type_name")
         self._library_version = None
-        #self.cache_property(lambda: self.library_version)
+        #self.cache_property("self.library_version")
         self._python_library_version = None
-        #self.cache_property(lambda: self.python_library_version)
+        #self.cache_property("self.python_library_version")
 
     @property
     def node(self):
@@ -125,9 +125,9 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.library_type_name):
+        if self.is_outdated("self.library_type_name"):
             self._library_type_name = self._network.manager.getLibraryTypeName(self.home_id)
-            self.update(lambda: self.library_type_name)
+            self.update("self.library_type_name")
         return self._library_type_name
 
     @property
@@ -139,7 +139,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        return '%s Version %s' % (self.library_type_name, self.library_version)
+        return '%s version %s' % (self.library_type_name, self.library_version)
 
     @property
     def library_version(self):
@@ -150,9 +150,9 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.library_version):
+        if self.is_outdated("self.library_version"):
             self._library_version = self._network.manager.getLibraryVersion(self.home_id)
-            self.update(lambda: self.library_version)
+            self.update("self.library_version")
         return self._library_version
 
     @property
@@ -164,10 +164,24 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self.is_outdated(lambda: self.python_library_version):
+        if self.is_outdated("self.python_library_version"):
             self._python_library_version = self._network.manager.getPythonLibraryVersion()
-            self.update(lambda: self.python_library_version)
+            self.update("self.python_library_version")
         return self._python_library_version
+
+    @property
+    def ozw_library_version(self):
+        """
+        The version of the openzwave library.
+
+        :returns: The openzwave library version
+        :rtype: str
+
+        """
+        if self.is_outdated("self.ozw_library_version"):
+            self._ozw_library_version = self._network.manager.getOzwLibraryVersion()
+            self.update("self.ozw_library_version")
+        return self._ozw_library_version
 
     @property
     def library_config_path(self):
