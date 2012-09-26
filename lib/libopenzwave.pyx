@@ -163,9 +163,9 @@ cdef addValueId(ValueID v, n):
     cdef string units
     cdef Manager *manager = Get()
     #manager.GetValueAsString(v, &value)
+    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     label = manager.GetValueLabel(v)
     units = manager.GetValueUnits(v)
-    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     n['valueId'] = {'homeId' : v.GetHomeId(),
                     'nodeId' : v.GetNodeId(),
                     'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
