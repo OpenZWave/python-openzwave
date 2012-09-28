@@ -1,0 +1,129 @@
+
+
+	
+  <div class="section" id="command-documentation">
+<h1>Command documentation</h1>
+<p>The commands to use with nodes.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.command"></span><span class="target" id="module-openzwave.command"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeBasic">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeBasic</tt></dt>
+<dd><p>Represents an interface to BasicCommands
+I known it&#8217;s not necessary as they can be included in the node directly.
+But it&#8217;s a good starting point.</p>
+<p>What I want to do is provide an automatic mapping system hidding
+the mapping classes.</p>
+<p>First example, the battery level, it&#8217;s not a basic command but don&#8217;t care.
+Its command class is 0x80.</p>
+<p>A user should write
+if self.handle_command_class(class_id):</p>
+<blockquote>
+<div>ret=commandclass(...)</div></blockquote>
+<p>The classic way to do it is a classique method of registering. But</p>
+<p>Another way : using heritage multiple</p>
+<p>ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)
+The interface will implement methods
+command_class_0x80(paramm1,param2,...)
+That&#8217;s the first thing to do
+We also can define a property wtih a fiendly name</p>
+<p>handle_command_class will do the rest</p>
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeBasic.battery_level">
+<tt class="descname">battery_level</tt></dt>
+<dd><p>The battery level of this node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.command_class_0x80">
+<tt class="descname">command_class_0x80</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x80 (COMMAND_CLASS_BATTERY) level of this node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSwitch">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSwitch</tt></dt>
+<dd><p>Represents an interface to Switch Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x25">
+<tt class="descname">command_class_0x25</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x26">
+<tt class="descname">command_class_0x26</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeSwitch.is_on">
+<tt class="descname">is_on</tt></dt>
+<dd><p>Is this node On.
+Todo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.command.ZWaveNodeSwitch.level">
+<tt class="descname">level</tt></dt>
+<dd><p>The level of the node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSensor">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSensor</tt></dt>
+<dd><p>Represents an interface to Sensor Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x30">
+<tt class="descname">command_class_0x30</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) level of this node.
+Todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x31">
+<tt class="descname">command_class_0x31</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) level of this node.
+Todo</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+

@@ -6,8 +6,8 @@ This file is part of **py-openzwave** project https://github.com/maartendamen/py
     :platform: Unix, Windows
     :sinopsis: openzwave wrapper
 
-.. moduleauthor:: maartendamen
-.. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: maartendamen
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 
 License : GPL(v3)
 

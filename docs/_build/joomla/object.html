@@ -1,0 +1,231 @@
+
+
+	
+  <div class="section" id="object-documentation">
+<h1>Object documentation</h1>
+<p>The low level object. Implements cache mechanism.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.object"></span><span class="target" id="module-openzwave.object"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.object.ZWaveObject">
+<em class="property">class </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveObject</tt><big>(</big><em>object_id</em>, <em>network=None</em>, <em>use_cache=True</em><big>)</big></dt>
+<dd><p>Represents a Zwave object. Values, nodes, ... can be changer by
+other managers on the network.</p>
+<dl class="method">
+<dt id="openzwave.object.ZWaveObject.cache_property">
+<tt class="descname">cache_property</tt><big>(</big><em>prop</em><big>)</big></dt>
+<dd><p>Add this property to the cache manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to cache</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.home_id">
+<tt class="descname">home_id</tt></dt>
+<dd><p>The home_id of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZWaveObject.is_outdated">
+<tt class="descname">is_outdated</tt><big>(</big><em>prop</em><big>)</big></dt>
+<dd><p>Check if property information is outdated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.last_update">
+<tt class="descname">last_update</tt></dt>
+<dd><p>The last update date of the device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">time</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.network">
+<tt class="descname">network</tt></dt>
+<dd><p>The network of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ZWaveNetwork</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.object_id">
+<tt class="descname">object_id</tt></dt>
+<dd><p>The id of the object.
+object_id could be None, when creating a scene for example.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZWaveObject.outdate">
+<tt class="descname">outdate</tt><big>(</big><em>prop</em><big>)</big></dt>
+<dd><p>Says that the property information is outdated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to outdate</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.outdated">
+<tt class="descname">outdated</tt></dt>
+<dd><p>Are the informations of this object outdated.</p>
+<p>How to manage the cache ?</p>
+<p>2 ways of doing it :
+- refresh informations when setting the property
+- refresh informations when getting getting property.
+Maybe whe could implement the 2 methods.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.object.ZWaveObject.update">
+<tt class="descname">update</tt><big>(</big><em>prop</em><big>)</big></dt>
+<dd><p>Says that the property are updated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to update</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.object.ZWaveObject.use_cache">
+<tt class="descname">use_cache</tt></dt>
+<dd><p>Should this object use cache from property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.object.ZWaveNodeInterface">
+<em class="property">class </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveNodeInterface</tt></dt>
+<dd><p>Represents an interface of a node. An interface can manage
+specific commandClasses (ie a switch, a dimmer, a thermostat, ...).
+Don&#8217;t know what to do with it now but sure it must exist</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveException</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveTypeException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveTypeException</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveCacheException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveCacheException</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openzwave.object.ZWaveCommandClassException">
+<em class="property">exception </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">ZWaveCommandClassException</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Exception class for OpenZWave</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.object.NullLoggingHandler">
+<em class="property">class </em><tt class="descclassname">openzwave.object.</tt><tt class="descname">NullLoggingHandler</tt><big>(</big><em>level=0</em><big>)</big></dt>
+<dd><p>A Null Logging Handler</p>
+</dd></dl>
+
+</div>
+
+

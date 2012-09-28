@@ -4,9 +4,9 @@
 
 This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
     :platform: Unix, Windows, MacOS X
-    :sinopsis: openzwave wrapper
+    :sinopsis: openzwave API
 
-.. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 
 License : GPL(v3)
 
@@ -74,15 +74,22 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_MSG_COMPLETE = 'MsgComplete'
         * SIGNAL_ERROR = 'Error'
 
-    The table presented below sets notifications in the order they might typically be received, and grouped into a few logically related categories.  Of course, given the variety of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).  The descriptions below the notification name (in square brackets) identify whether the notification is always sent (unless there’s a significant error in the network or software) or potentially sent during the execution sequence.
+    The table presented below sets notifications in the order they might typically be received,
+    and grouped into a few logically related categories.  Of course, given the variety
+    of ZWave controllers, devices and network configurations the actual sequence will vary (somewhat).
+    The descriptions below the notification name (in square brackets) identify whether the
+    notification is always sent (unless there’s a significant error in the network or software)
+    or potentially sent during the execution sequence.
 
     Driver Initialization Notification
 
-    The notification below is sent when OpenZWave has successfully connected to a physical ZWave controller.
+    The notification below is sent when OpenZWave has successfully connected
+    to a physical ZWave controller.
 
     * DriverReady
 
-    [always sent]   Sent when the driver (representing a connection between OpenZWave and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
+    [always sent]   Sent when the driver (representing a connection between OpenZWave
+    and a Z-Wave controller attached to the specified serial (or HID) port) has been initialized.
     At the time this notification is sent, only certain information about the controller itself is known:
 
         * Controller Z-Wave version
@@ -93,21 +100,32 @@ class ZWaveNetwork(ZWaveObject):
 
     Node Initialization Notifications
 
-    As OpenZWave starts, it identifies and reads information about each node in the network. The following notifications may be sent during the initialization process.
+    As OpenZWave starts, it identifies and reads information about each node in the network.
+    The following notifications may be sent during the initialization process.
 
     * NodeNew
 
-    [potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.  It is not sent if the node was identified in a prior execution of the OpenZWave library and stored in the zwcfg*.xml file.
-    At the time this notification is sent, very little is known about the node itself...only that it is new to OpenZWave. This message is sent once for each new node identified.
+    [potentially sent]  Sent when a new node has been identified as part of the Z-Wave network.
+    It is not sent if the node was identified in a prior execution of the OpenZWave library
+    and stored in the zwcfg*.xml file.
+    At the time this notification is sent, very little is known about the node itself...
+    only that it is new to OpenZWave. This message is sent once for each new node identified.
 
     * NodeAdded
 
-    [always sent (for each node associated with the controller)]    Sent when a node has been added to OpenZWave’s set of nodes.  It can be triggered either as the zwcfg*.xml file is being read, when a new node is found on startup (see NodeNew notification above), or if a new node is included in the network while OpenZWave is running.
-    As with NodeNew, very little is known about the node at the time the notification is sent…just the fact that a new node has been identified and its assigned NodeID.
+    [always sent (for each node associated with the controller)]
+    Sent when a node has been added to OpenZWave’s set of nodes.  It can be
+    triggered either as the zwcfg*.xml file is being read, when a new node
+    is found on startup (see NodeNew notification above), or if a new node
+    is included in the network while OpenZWave is running.
+    As with NodeNew, very little is known about the node at the time the
+    notification is sent…just the fact that a new node has been identified
+    and its assigned NodeID.
 
     * NodeProtocolInfo
 
-    [potentially sent]  Sent after a node’s protocol information has been successfully read from the controller.
+    [potentially sent]  Sent after a node’s protocol information has been
+    successfully read from the controller.
     At the time this notification is sent, only certain information about the node is known:
 
         * Whether it is a “listening” or “sleeping” device
@@ -118,12 +136,16 @@ class ZWaveNetwork(ZWaveObject):
 
     NodeNaming
 
-    [potentially sent]  Sent when a node’s name has been set or changed (although it may be “set” to “” or NULL).
+    [potentially sent]  Sent when a node’s name has been set or changed
+    (although it may be “set” to “” or NULL).
 
     * ValueAdded
 
     [potentially sent]  Sent when a new value has been associated with the node.
-    At the time this notification is sent, the new value may or may not have “live” data associated with it. It may be populated, but it may alternatively just be a placeholder for a value that has not been read at the time the notification is sent.
+    At the time this notification is sent, the new value may or may not
+    have “live” data associated with it. It may be populated, but it may
+    alternatively just be a placeholder for a value that has not been read
+    at the time the notification is sent.
 
     * NodeQueriesComplete
 
@@ -131,21 +153,34 @@ class ZWaveNetwork(ZWaveObject):
 
     Initialization Complete Notifications
 
-    As indicated above, when OpenZWave starts it reads certain information from a file, from the controller and from the network.  The following notifications identify when this initialization/querying process is complete.
+    As indicated above, when OpenZWave starts it reads certain information
+    from a file, from the controller and from the network.  The following
+    notifications identify when this initialization/querying process is complete.
 
     * AwakeNodesQueried
 
-    [always sent]   Sent when all “setening”—always-on—devices have been queried successfully.  It also indicates, by implication, that there are some “sleeping” nodes that will not complete their queries until they wake up. This notification should be sent relatively quickly after start-up. (Of course, it depends on the number of devices on the ZWave network and whether there are any messages that “time out” without a proper response.)
+    [always sent]   Sent when all “listening” -always-on-devices have been
+    queried successfully.  It also indicates, by implication, that there
+    are some “sleeping” nodes that will not complete their queries until
+    they wake up. This notification should be sent relatively quickly
+    after start-up. (Of course, it depends on the number of devices on
+    the ZWave network and whether there are any messages that “time out”
+    without a proper response.)
 
     * AllNodesQueried
 
     [potentially sent]  Sent when all nodes have been successfully queried.
 
-    This notification should be sent relatively quickly if there are no “sleeping” nodes. But it might be sent quite a while after start-up if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.
+    This notification should be sent relatively quickly if there are
+    no “sleeping” nodes. But it might be sent quite a while after start-up
+    if there are sleeping nodes and at least one of these nodes has a long “wake-up” interval.
 
     Other Notifications
 
-    In addition to the notifications described above, which are primarily “initialization” notifications that are sent during program start-up, the following notifications may be sent as a result of user actions, external program control, etc.
+    In addition to the notifications described above, which are primarily
+    “initialization” notifications that are sent during program start-up,
+    the following notifications may be sent as a result of user actions,
+    external program control, etc.
 
     * ValueChanged  Sent when a value associated with a node has changed. Receipt of this notification indicates that it may be a good time to read the new value and display or otherwise process it accordingly.
     * ValueRemoved  Sent when a value associated with a node has been removed.
@@ -667,7 +702,7 @@ class ZWaveNetwork(ZWaveObject):
     def _handle_node_protocol_info(self, args):
         '''
         Basic node information has been received, such as whether
-        the node is a setening device, a routing device and its baud rate
+        the node is a listening device, a routing device and its baud rate
         and basic, generic and specific types.
         It is after this notification that you can call Manager::GetNodeType
         to obtain a label containing the device description.

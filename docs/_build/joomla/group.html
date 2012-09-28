@@ -1,0 +1,140 @@
+
+
+	
+  <div class="section" id="group-documentation">
+<h1>Group documentation</h1>
+<p>The group is used in associations.</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.group"></span><span class="target" id="module-openzwave.group"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.group.ZWaveGroup">
+<em class="property">class </em><tt class="descclassname">openzwave.group.</tt><tt class="descname">ZWaveGroup</tt><big>(</big><em>group_index</em>, <em>network=None</em>, <em>node_id=None</em><big>)</big></dt>
+<dd><p>The driver objet.
+Hold options of the manager
+Also used to retrieve informations about the library, ...</p>
+<dl class="method">
+<dt id="openzwave.group.ZWaveGroup.addAssociation">
+<tt class="descname">addAssociation</tt><big>(</big><em>target_node_id</em><big>)</big></dt>
+<dd><p>Adds a node to an association group.</p>
+<p>Due to the possibility of a device being asleep, the command is assumed to
+suceeed, and the association data held in this class is updated directly.  This
+will be reverted by a future Association message from the device if the Z-Wave
+message actually failed to get through.  Notification callbacks will be sent in
+both cases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be added to the association group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.associations">
+<tt class="descname">associations</tt></dt>
+<dd><p>The members of associations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.index">
+<tt class="descname">index</tt></dt>
+<dd><p>The index of the group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.label">
+<tt class="descname">label</tt></dt>
+<dd><p>The label of the group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.max_associations">
+<tt class="descname">max_associations</tt></dt>
+<dd><p>The number of associations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.group.ZWaveGroup.removeAssociation">
+<tt class="descname">removeAssociation</tt><big>(</big><em>target_node_id</em><big>)</big></dt>
+<dd><p>Removes a node from an association group.</p>
+<p>Due to the possibility of a device being asleep, the command is assumed to
+succeed, and the association data held in this class is updated directly.  This
+will be reverted by a future Association message from the device if the Z-Wave
+message actually failed to get through.   Notification callbacks will be sent
+in both cases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be removed from the association group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+

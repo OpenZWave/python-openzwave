@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+CLEAN=0
+[ 'u'$1 == 'uclean' ] && CLEAN=1
+
 echo "-----------------------------------------------------------------"
 echo "|   Retrieve sources of openzwave                               |"
 echo "-----------------------------------------------------------------"
@@ -9,12 +12,17 @@ echo "-----------------------------------------------------------------"
 echo "|   Build openzwave                                             |"
 echo "-----------------------------------------------------------------"
 cd openzwave/cpp/build/linux
+[ $CLEAN -eq 1 ] && make clean
 make
 cd ../../../..
 
 echo "-----------------------------------------------------------------"
 echo "|   Build python-openzwave                                      |"
 echo "-----------------------------------------------------------------"
+[ $CLEAN -eq 1 ] && python setup.py clean
+[ $CLEAN -eq 1 ] && rm -Rf build/
+[ $CLEAN -eq 1 ] && rm -Rf docs/_build
+[ $CLEAN -eq 1 ] && rm lib/libopenzwave.cpp
 python setup.py build
 
 if [ u != $(which sphinx-build)u ] ; then

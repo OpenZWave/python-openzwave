@@ -3,10 +3,10 @@
 
 This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
     :platform: Unix, Windows, MacOS X
-    :sinopsis: openzwave wrapper
+    :sinopsis: openzwave C++
 
-.. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
-.. moduleauthor:: Maarten Damen <m.damen@gmail.com>
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: Maarten Damen <m.damen@gmail.com>
 
 License : GPL(v3)
 
