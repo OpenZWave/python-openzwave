@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 .. module:: openzwave.controller
+.. _openzwaveController:
 
 This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
     :platform: Unix, Windows, MacOS X

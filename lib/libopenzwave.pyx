@@ -327,7 +327,7 @@ cdef class RetAlloc:
     """
     Map an array of uint8_t used when retrieving sets.
     Allocate memory at init and free it when no more reference to it exist.
-    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-content/uploads/2011/11/MemoryLeaks3.jpg
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
 
     """
     cdef uint32_t siz
