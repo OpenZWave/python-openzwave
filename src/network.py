@@ -396,7 +396,6 @@ class ZWaveNetwork(ZWaveObject):
 
         :returns: The controller of the network
         :rtype: ZWaveController
-		:see: openzwaveController_
 
         """
         if self._controller != None:
