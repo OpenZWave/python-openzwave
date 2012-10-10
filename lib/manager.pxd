@@ -18,6 +18,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
+from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 #from mylibc cimport malloc, free
@@ -113,7 +114,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueAsString(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, uint32_t* o_value)
-        #bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
+        bool GetValueListItems(ValueID& valueid, vector[string]* o_value)
         bool SetValue(ValueID& valueid, bool value)
         bool SetValue(ValueID& valueid, uint8_t value)
         bool SetValue(ValueID& valueid, float value)

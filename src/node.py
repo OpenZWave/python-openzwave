@@ -64,8 +64,6 @@ class ZWaveNode( ZWaveObject,
         self.cache_property("self.name")
         self._location = None
         self.cache_property("self.location")
-        self._product_name = None
-        self.cache_property("self.product_name")
         self._manufacturer_id = None
         self.cache_property("self.manufacturer_id")
         self._manufacturer_name = None
@@ -74,6 +72,8 @@ class ZWaveNode( ZWaveObject,
         self.cache_property("self.product_id")
         self._product_type = None
         self.cache_property("self.product_type")
+        self._product_name = None
+        self.cache_property("self.product_name")
         self._is_routing_device = False
         self.cache_property("self.is_routing_device")
         self._is_listening_device = False
@@ -113,6 +113,11 @@ class ZWaveNode( ZWaveObject,
         self.cache_property("self.num_groups")
         self._groups = dict()
         self.cache_property("self.groups")
+
+        self._signal_strength = None
+        self.cache_property("self.signal_strength")
+        self._battery_level = None
+        self.cache_property("self.battery_level")
 
     @property
     def node_id(self):
@@ -703,19 +708,19 @@ class ZWaveNode( ZWaveObject,
 #                    return vdic['value'] == 'True'
 #        return False
 
-#    @property
-#    def battery_level(self):
-#        """
-#        The battery level of this node.
-#        Todo
-#        """
-#        values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
-#        if values:
-#            for value in values:
-#                vdic = value.value_data
-#                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
-#                    return int(vdic['value'])
-#        return -1
+    @property
+    def battery_level(self):
+        """
+        The battery level of this node.
+        Todo
+        """
+        values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
+        if values:
+            for value in values:
+                vdic = value.value_data
+                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
+                    return int(vdic['value'])
+        return -1
 
     @property
     def signal_strength(self):

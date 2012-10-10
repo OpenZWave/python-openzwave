@@ -32,6 +32,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 cdef extern from "Python.h":
     void PyEval_InitThreads()
 
+cdef extern from *:
+    ctypedef char* const_char_ptr "const char*"
+
 cdef extern from "<string>" namespace "std":
     cdef cppclass string:
         string()

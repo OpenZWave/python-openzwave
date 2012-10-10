@@ -26,6 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
+from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 from vers cimport ozw_vers
@@ -41,6 +42,8 @@ from manager cimport Manager, Create, Get
 from log cimport LogLevel
 import os
 import sys
+
+
 
 #Don't update it.
 #It will be done when releasing only.
@@ -425,10 +428,10 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x50: 'COMMAND_CLASS_BASIC_WINDOW_COVERING',
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
         0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
-        0x61: 'COMMAND_CLASS_DISPLAY', 
+        0x61: 'COMMAND_CLASS_DISPLAY',
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
         0x63: 'COMMAND_CLASS_USER_CODE',
-        0x64: 'COMMAND_CLASS_GARAGE_DOOR', 
+        0x64: 'COMMAND_CLASS_GARAGE_DOOR',
         0x70: 'COMMAND_CLASS_CONFIGURATION',
         0x71: 'COMMAND_CLASS_ALARM',
         0x72: 'COMMAND_CLASS_MANUFACTURER_SPECIFIC',
@@ -436,8 +439,8 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x75: 'COMMAND_CLASS_PROTECTION',
         0x76: 'COMMAND_CLASS_LOCK',
         0x77: 'COMMAND_CLASS_NODE_NAMING',
-        0x78: 'COMMAND_CLASS_ACTUATOR_MULTILEVEL', 
-        0x79: 'COMMAND_CLASS_KICK', 
+        0x78: 'COMMAND_CLASS_ACTUATOR_MULTILEVEL',
+        0x79: 'COMMAND_CLASS_KICK',
         0x7A: 'COMMAND_CLASS_FIRMWARE_UPDATE_MD',
         0x7B: 'COMMAND_CLASS_GROUPING_NAME',
         0x7C: 'COMMAND_CLASS_REMOTE_ASSOCIATION_ACTIVATE',
@@ -1845,7 +1848,7 @@ Test whether the value has been set.
 :param id: the ID of a value.
 :type id: int
 :returns: bool -- True if the value has actually been set by a status message from the device, rather than simply being the default.
-:see: getValue_, getValueAsBool_, getValueAsByte_, \
+:see: getValue_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1865,7 +1868,7 @@ Gets a value.
 :param value: The value to set.
 :type value: int
 :returns: multiple -- Depending of the type of the valueId, None otherwise
-:see: isValueSet_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1879,7 +1882,7 @@ Gets a value as a bool.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1893,7 +1896,7 @@ Gets a value as an 8-bit unsigned integer.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsBool_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1908,7 +1911,7 @@ Gets a value as a float.
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1923,7 +1926,7 @@ Gets a value as a 16-bit signed integer.
 :type id: int
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueAsFloat_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1938,7 +1941,7 @@ Gets a value as a 32-bit signed integer.
 :type id: int
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueAsFloat_, getValueAsShort_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1953,14 +1956,38 @@ Gets a value as a string.
 :type id: int
 :returns: str -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_
 
         '''
         return getValueFromType(self.manager,id)
 
+    def getValueListItems(self, id):
+        '''
+.. _getValueListItems:
+
+Gets the list of items from a list value
+
+:param id: The ID of a value.
+:type id: int
+:returns: Set -- The list of items.
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+
+        '''
+        cdef vector[string]* vect
+        ret = set()
+        if values_map.find(id) != values_map.end():
+            if self.manager.GetValueListItems(values_map.at(id), vect):
+                while not vect.empty() :
+                    temp = vect.back()
+                    ret.add(temp.c_str())
+                    vect.pop_back();
+        return ret
+#        bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
+
+
 #        bool GetValueListSelection(ValueID& valueid, string* o_value)
 #        bool GetValueListSelection(ValueID& valueid, uint32_t* o_value)
-#        bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
 #        bool SetValue(ValueID& valueid, uint8_t value)
 #        bool SetValue(ValueID& valueid, float value)
 #        bool SetValue(ValueID& valueid, uint16 value)
