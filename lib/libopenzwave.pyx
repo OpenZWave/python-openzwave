@@ -1600,6 +1600,12 @@ Helper method to return whether a particular class is available in a node
 # -----------------------------------------------------------------------------
 # Methods for accessing device values.  All the methods require a ValueID, which will have been provided
 # in the ValueAdded Notification callback when the the value was first discovered by OpenZWave.
+#        bool SetValue(ValueID& valueid, uint8_t value)
+#        bool SetValue(ValueID& valueid, float value)
+#        bool SetValue(ValueID& valueid, uint16 value)
+#        bool SetValue(ValueID& valueid, uint32_t value)
+#        bool SetValue(ValueID& valueid, string value)
+#        bool SetValueListSelection(ValueID& valueid, string selecteditem)
 
     def setValue(self, id, value):
         '''
@@ -1650,6 +1656,10 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
             elif datatype == "String":
                 type_string = string(value)
                 cret = self.manager.SetValue(values_map.at(id), type_string)
+                ret = 1 if cret else 0
+            elif datatype == "List":
+                type_string = string(value)
+                cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
 
@@ -1868,7 +1878,7 @@ Gets a value.
 :param value: The value to set.
 :type value: int
 :returns: multiple -- Depending of the type of the valueId, None otherwise
-:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1882,7 +1892,7 @@ Gets a value as a bool.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
+:see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1896,7 +1906,7 @@ Gets a value as an 8-bit unsigned integer.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
@@ -1910,7 +1920,7 @@ Gets a value as a float.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_
 
         '''
@@ -1925,7 +1935,7 @@ Gets a value as a 16-bit signed integer.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_
 
         '''
@@ -1940,7 +1950,7 @@ Gets a value as a 32-bit signed integer.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_
 
         '''
@@ -1955,11 +1965,51 @@ Gets a value as a string.
 :param id: The ID of a value.
 :type id: int
 :returns: str -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_
 
         '''
         return getValueFromType(self.manager,id)
+
+    def getValueListSelectionStr(self,  id):
+        '''
+.. GetValueListSelectionStr:
+
+Gets value of items from a list value
+
+:param id: The ID of a value.
+:type id: int
+:returns: string items selected.
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionNum_, getValueListItems_\
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+    '''
+        cdef string c_string
+        ret=""
+        if values_map.find(id) != values_map.end():
+            if self.manager.GetValueListSelection(values_map.at(id), &c_string):
+                ret = c_string.c_str()
+        print "//////// Value Str list item : " ,  ret
+        return ret
+
+    def getValueListSelectionNum(self,  id):
+        '''
+.. GetValueListSelectionNum:
+
+Gets value of items from a list value
+
+:param id: The ID of a value.
+:type id: int
+:returns: int  value of items selected.
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_, getValueListItems_\
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+    '''
+        cdef int32_t type_int
+        ret=-1
+        if values_map.find(id) != values_map.end():
+            if self.manager.GetValueListSelection(values_map.at(id), &type_int):
+                ret = type_int
+        print "//////// Value Num list item : " ,  ret
+        return ret
 
     def getValueListItems(self, id):
         '''
@@ -1970,30 +2020,21 @@ Gets the list of items from a list value
 :param id: The ID of a value.
 :type id: int
 :returns: Set -- The list of items.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_,getValueListSelectionStr_ ,getValueListSelectionNum_ \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
-        cdef vector[string]* vect
+        print "**** libopenzwave.GetValueListItems ******"
+        cdef vector[string] vect
         ret = set()
         if values_map.find(id) != values_map.end():
-            if self.manager.GetValueListItems(values_map.at(id), vect):
+            if self.manager.GetValueListItems(values_map.at(id), &vect):
                 while not vect.empty() :
                     temp = vect.back()
                     ret.add(temp.c_str())
                     vect.pop_back();
+            print "++++ list des items : " ,  ret
         return ret
-#        bool GetValueListItems(ValueID& valueid, vector<string>* o_value)
-
-
-#        bool GetValueListSelection(ValueID& valueid, string* o_value)
-#        bool GetValueListSelection(ValueID& valueid, uint32_t* o_value)
-#        bool SetValue(ValueID& valueid, uint8_t value)
-#        bool SetValue(ValueID& valueid, float value)
-#        bool SetValue(ValueID& valueid, uint16 value)
-#        bool SetValue(ValueID& valueid, uint32_t value)
-#        bool SetValue(ValueID& valueid, string value)
-#        bool SetValueListSelection(ValueID& valueid, string selecteditem)
 
     def pressButton(self, id):
         '''
