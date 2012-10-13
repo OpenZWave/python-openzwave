@@ -1,8 +1,10 @@
 
 
 	
-  <div class="section" id="installing-python-openzwave-from-repositories">
-<h1>Installing python-openzwave from repositories</h1>
+  <div class="section" id="manual-installation-instructions">
+<h1>Manual installation instructions</h1>
+<p>If you can&#8217;t build python-openzwave using other instruction you can try to
+install it using this method.</p>
 <div class="section" id="install-the-needed-tools">
 <h2>Install the needed tools</h2>
 <p>You must install mercurial and subversion to get sources of python-openzwave
@@ -25,36 +27,32 @@ and the libudev developments headers.</p>
 <blockquote>
 <div>sudo apt-get install build-essential libudev-dev g++</div></blockquote>
 </div>
-<div class="section" id="get-sources-of-python-openzwave">
-<h2>Get sources of python-openzwave</h2>
+<div class="section" id="get-sources-of-python-openzwave-and-open-zwave">
+<h2>Get sources of python-openzwave and open-zwave</h2>
 <p>You are now ready to download sources of python-openzwave :</p>
 <blockquote>
 <div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
-<p>The previous command will create a copy of the official repository on your
-computer in a directory called python-openzwave.</p>
+<p>Go to the python-openzwave directory and grab the sources of openzwave</p>
+<blockquote>
+<div>svn checkout <a class="reference external" href="http://open-zwave.googlecode.com/svn/trunk/">http://open-zwave.googlecode.com/svn/trunk/</a> openzwave</div></blockquote>
 </div>
-<div class="section" id="update-and-build-process">
-<h2>Update and build process</h2>
-<p>Go to the previously created directory</p>
+<div class="section" id="build-openzwave-and-python-openzwave">
+<h2>Build openzwave and python-openzwave</h2>
+<p>Go to the openzwave directory and build it :</p>
 <blockquote>
-<div>cd python-openzwave</div></blockquote>
-<p>The following command will update your local repository to the last release
-of python-openzwave and openzwave.</p>
+<div>cd openzwave/cpp/build/linux
+make
+cd ../../../..</div></blockquote>
+<p>Build python-openzwave</p>
 <blockquote>
-<div>./update.sh</div></blockquote>
-<p>When update process is done you can compile sources</p>
-<blockquote>
-<div>./compile.sh</div></blockquote>
+<div>python setup-lib.py build
+python setup-api.py build</div></blockquote>
 </div>
-<div class="section" id="installation">
-<h2>Installation</h2>
-<p>You can now install the packages using the following command will.</p>
+<div class="section" id="and-install-them">
+<h2>And install them</h2>
 <blockquote>
-<div>sudo ./install.sh</div></blockquote>
-<p>The installation script create a list of installed files. So you can remove
-python-openzwave using the following command :</p>
-<blockquote>
-<div>sudo ./uninstall.sh</div></blockquote>
+<div>sudo python setup-lib.py install
+sudo python setup-api.py install</div></blockquote>
 </div>
 </div>
 

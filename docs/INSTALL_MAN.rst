@@ -1,6 +1,9 @@
-=============================================
-Installing python-openzwave from repositories
-=============================================
+================================
+Manual installation instructions
+================================
+
+If you can't build python-openzwave using other instruction you can try to
+install it using this method.
 
 Install the needed tools
 ========================
@@ -31,40 +34,33 @@ On a debian like distribution :
 
     sudo apt-get install build-essential libudev-dev g++
 
-Get sources of python-openzwave
-===============================
+Get sources of python-openzwave and open-zwave
+==============================================
 
 You are now ready to download sources of python-openzwave :
 
     hg clone https://code.google.com/p/python-openzwave/
 
-The previous command will create a copy of the official repository on your
-computer in a directory called python-openzwave.
+Go to the python-openzwave directory and grab the sources of openzwave
 
-Update and build process
-========================
+	svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
 
-Go to the previously created directory
+Build openzwave and python-openzwave
+====================================
 
-	cd python-openzwave
+Go to the openzwave directory and build it :
 
-The following command will update your local repository to the last release
-of python-openzwave and openzwave.
+	cd openzwave/cpp/build/linux
+	make
+	cd ../../../..
 
-    ./update.sh
+Build python-openzwave
 
-When update process is done you can compile sources
+	python setup-lib.py build
+	python setup-api.py build
 
-    ./compile.sh
+And install them
+================
 
-Installation
-============
-
-You can now install the packages using the following command will.
-
-    sudo ./install.sh
-
-The installation script create a list of installed files. So you can remove
-python-openzwave using the following command :
-
-    sudo ./uninstall.sh
+	sudo python setup-lib.py install
+	sudo python setup-api.py install

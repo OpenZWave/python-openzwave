@@ -16,7 +16,7 @@ When your modification is functional, you are ready to submit a patch
 
 Sync you repository :
 
-   hg pull hg update
+   hg pull https://code.google.com/p/python-openzwave/ hg update
 
 Generate the patch
 

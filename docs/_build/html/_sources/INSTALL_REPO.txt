@@ -44,6 +44,10 @@ computer in a directory called python-openzwave.
 Update and build process
 ========================
 
+Go to the previously created directory
+
+	cd python-openzwave
+
 The following command will update your local repository to the last release
 of python-openzwave and openzwave.
 
