@@ -297,15 +297,16 @@ class FrameCommand(urwid.BoxWidget):
         return urwid.CanvasCombine(combinelist)
 
 
-    def key_tab(self, key, prv, nxt):
+    def key_tab(self, key, current_focus):
         """
         Intercept the 'tab' and 'shift tab' keys.
         """
         handle = False
         if key == 'tab':
-            #if nxt == 'command' :
-                #We must setfocus to the column widget
-                #self._columns.set_focus()
+            if current_focus == 'body' :
+                if self._columns == None :
+                    #We must setfocus to the column widget
+                    self._columns.set_focus()
             self.tab_leave()
             self._tab_next.tab_activate()
             handle = True

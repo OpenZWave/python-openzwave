@@ -62,9 +62,7 @@ def data_files_config(target, source, pattern):
                 os.path.join(source,rd), pattern))
     return ret
 
-data_files = data_files_config('share/python-openzwave/config','openzwave/config','*.xml')
-data_files.extend(data_files_config('share/python-openzwave/config','openzwave/config','*.xsd'))
-data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.html'))
+data_files = data_files_config('share/doc/python-openzwave','docs/_build/html','*.html')
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.js'))
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','inv'))
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.txt'))
@@ -72,51 +70,18 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.css'))
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
-if os_name == 'nt':
-    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
-                             libraries=['setupapi', 'stdc++'],
-                             language="c++",
-                             extra_objects=['openzwave/cpp/lib/windows-mingw32/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
-    )]
-elif platform_system() == 'Darwin':
-    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
-                             libraries=['stdc++'],
-                             language="c++",
-                             extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
-                             extra_objects=['openzwave/cpp/lib/mac/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform']
-    )]
-elif DEBIAN_PACKAGE == True:
-    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
-                             libraries=['udev', 'stdc++', 'openzwave'],
-                             language="c++",
-                             extra_objects=['/usr/lib/libopenzwave.a'],
-                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
-    )]
-else:
-    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
-                             libraries=['udev', 'stdc++'],
-                             language="c++",
-                             extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
-    )]
-
 setup(
-  name = 'python-openzwave',
+  name = 'python-api-openzwave',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='http://code.google.com/p/python-openzwave',
   #Need to update libopenzwave.pyx too
   version = '0.2.4',
-  cmdclass = {'build_ext': build_ext},
-  ext_modules = ext_modules,
-  package_dir = {'libopenzwave' : 'lib', 'openzwave' : 'api'},
+  package_dir = {'openzwave' : 'api', 'pyozwman' : 'manager' },
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
-  packages = ['libopenzwave', 'openzwave'],
-  install_requires=['setuptools',
-                    'cython >= 0.14',
-                    'Louie >= 1.1'
+  packages = ['openzwave', 'pyozwman' ],
+  install_requires=[
+                    'Louie >= 1.1',
                     ]
 )

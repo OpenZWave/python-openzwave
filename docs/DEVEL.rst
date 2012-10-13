@@ -1,0 +1,83 @@
+=======================
+Developpers information
+=======================
+
+How to develop patches
+======================
+
+Get the sources
+
+    hg clone https://code.google.com/p/python-openzwave/
+
+Developp, test, debug, test, ... :)
+
+When your modification is functional, you are ready to submit a patch
+
+Sync you repository :
+
+    hg pull
+    hg update
+
+Generate the patch
+
+    hgdiff > somewordstoexplainwhatthepatchdoes.patch
+
+As the code of python-openzwave is under developpment, submit atomic patches.
+Otherwise, you should have merge problems when syncing your repository.
+
+This will generate a file in the current directory.
+Send it to the developpers team.
+
+Using a developper account
+==========================
+
+Contact the developpers for more informations.
+
+Documentation
+=============
+
+Documentation is managed with sphinx. Don't utpdate txt files (README, INSTALL, ...)
+, update the sources (*.rst) in docs. Use the following commands to generate
+all docs files (txt, html and joomla)
+
+    ./make_docs.sh
+
+Packagers
+=========
+
+If you want to package python-openzwave for your distribution,
+look at the make_dist.sh script. It build a distribution directory
+with documentation in build/distdir.
+
+You can also submit your script here, they will be added to the main code.
+
+You can build python-openzwave using
+
+Static vs dynamic (or shared)
+=============================
+
+The openzwave (c++) lib needs to run as a singleton : it means that it
+MUST have only one instance of the manager running on your computer.
+
+There is 2 ways of linking libraries with a program :
+
+    * static : includes a copy of the library in your binary program. This means
+    that your program has its own instance of the library. This the way the
+    install.sh runs. So you CAN'T have another program (like the control-panel)
+    running when using the python-openzwave library
+
+    * dynamic or shared : includes a link to the library in your binary program.
+    This means that your program share the library with other programs. In this
+    case, the instance is owned directly by the library. This the way the
+    debian package works. So you CAN have another program running when
+    using the python-openzwave library. Of course, this program MUST use
+    the shared library.
+
+History
+=======
+
+The original script was from maarten damen :
+https://github.com/maartendamen/python-openzwave
+The openzwave package is now a wrapper to access Nodes, Network, Scenes, ...
+To update your old code, change "import openzwave" by
+"import libopenzwave"

@@ -1,116 +1,18 @@
+
+python-openzwave
+****************
+
 This is the new generation of python-openzwave.
 
-python-openzwave is a python wrapper for the openzwave library.
+python-openzwave is a python wrapper for the openzwave library. It's
+also contains an api (object representation of Zwave network) and a
+manager (using the api).
 
-Install the needed tools
-========================
-You must install mercurial and subversion to get sources of python-openzwave
-and openzwave. Look at the documentation of your Linux distribution to do them.
+You can install python-openzwave in two ways :
+   * From repository : you need to install mercurial, subversion and
+     the common builds tools. Look at INSTALL_REPO to do such
+     installation
 
-You need cython (at least 0.14.1) to compile the python library (libopenzwave.pyx)
-You need sphinx and make to make the documentation
-To compile the openzwave library, look at their documentation.
-
-Get the sources
-===============
-After that you can download the python-openzwave code :
-$hg clone https://code.google.com/p/python-openzwave/
-
-Automatic installation
-======================
-You can build python-openzwave with the compile.sh script.
-$./compile.sh
-
-If the build process succeed, run the following command to install
-$sudo ./install.sh
-That's all
-
-You can unistall python-openzwave using the command :
-$sudo ./uninstall.sh
-
-Update
-======
-If you have already compile python-openzwave and want to update it to the
-new upstream, use the command
-$./update.sh
-
-After that, compile and install it again
-
-Manual installation
-===================
--Retrieve the sources of openzwave :
-$svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
-
--Build openzwave
-$cd openzwave/cpp/build/linux
-$make
-$cd ../../../..
-
--Build python-openzwave
-$python setup.py build
-
--And install it if compilation succeed
-$sudo python setup.py install
-There is a copy of the openzwave's config directory in /usr/local/share/python-openzwave
-Documentation is in /usr/local/share/doc/python-openzwave
-
-Installation on debian/ubuntu
-=============================
-You need to compile and install openzwave as a package to generate python-openzwave.
-After that, make the python-openzwave package
-$dpkg-buildpackage -rfakeroot
-You can now install the package with
-$sudo dpkg -i python-openzwave*.deb
-API documentation is in /usr/share/doc/python-openzwave
-
-Examples
-========
-Work in progress
-
-How to contribute
-=================
-Get the sources
-$hg clone https://code.google.com/p/python-openzwave/
-
-Developp, test, debug, test, ... :)
-
-When your modification is functional, you are ready to submit a patch
-
-Sync you repository :
-$hg pull
-$hg update
-
-Generate the patch
-$hgdiff > somewordstoexplainwhatthepatchdoes.patch
-
-As the code of python-openzwave is under developpment, submit atomic patches.
-Otherwise, you should have merge problems when syncing your repository.
-
-This will generate a file in the current directory.
-Send it to the developpers team.
-
-Static vs dynamic (or shared)
-=============================
-The openzwave (c++) lib needs to run as a singleton : it means that it
-MUST have only one instance of the manager running on your computer.
-
-There is 2 ways of linking libraries with a program :
--static : includes a copy of the library in your binary program. This means
-that your program has its own instance of the library. This the way the
-install.sh runs. So you CAN'T have another program (like the control-panel)
-running when using the python-openzwave library
-
--dynamic or shared : includes a link to the library in your binary program.
-This means that your program share the library with other programs. In this
-case, the instance is owned directly by the library. This the way the
-debian package works. So you CAN have another program running when
-using the python-openzwave library. Of course, this program MUST use
-the shared library.
-
-History
-=======
-The original script was from maarten damen :
-https://github.com/maartendamen/python-openzwave
-The openzwave package is now a wrapper to access Nodes, Network, Scenes, ...
-To update your old code, change "import openzwave" by
-"import libopenzwave"
+   * From an archive : you don't need to install mercurial,
+     subversion. Only the common builds tools are needed. Look at
+     INSTALL_ARCH to do such installation

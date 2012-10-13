@@ -1,0 +1,77 @@
+
+
+	
+  <div class="section" id="developpers-information">
+<h1>Developpers information</h1>
+<div class="section" id="how-to-develop-patches">
+<h2>How to develop patches</h2>
+<p>Get the sources</p>
+<blockquote>
+<div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
+<p>Developp, test, debug, test, ... :)</p>
+<p>When your modification is functional, you are ready to submit a patch</p>
+<p>Sync you repository :</p>
+<blockquote>
+<div>hg pull
+hg update</div></blockquote>
+<p>Generate the patch</p>
+<blockquote>
+<div>hgdiff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
+<p>As the code of python-openzwave is under developpment, submit atomic patches.
+Otherwise, you should have merge problems when syncing your repository.</p>
+<p>This will generate a file in the current directory.
+Send it to the developpers team.</p>
+</div>
+<div class="section" id="using-a-developper-account">
+<h2>Using a developper account</h2>
+<p>Contact the developpers for more informations.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation</h2>
+<p>Documentation is managed with sphinx. Don&#8217;t utpdate txt files (README, INSTALL, ...)
+, update the sources (<a href="#id1"><span class="problematic" id="id2">*</span></a>.rst) in docs. Use the following commands to generate
+all docs files (txt, html and joomla)</p>
+<blockquote>
+<div>./make_docs.sh</div></blockquote>
+</div>
+<div class="section" id="packagers">
+<h2>Packagers</h2>
+<p>If you want to package python-openzwave for your distribution,
+look at the make_dist.sh script. It build a distribution directory
+with documentation in build/distdir.</p>
+<p>You can also submit your script here, they will be added to the main code.</p>
+<p>You can build python-openzwave using</p>
+</div>
+<div class="section" id="static-vs-dynamic-or-shared">
+<h2>Static vs dynamic (or shared)</h2>
+<p>The openzwave (c++) lib needs to run as a singleton : it means that it
+MUST have only one instance of the manager running on your computer.</p>
+<p>There is 2 ways of linking libraries with a program :</p>
+<blockquote>
+<div><ul class="simple">
+<li>static : includes a copy of the library in your binary program. This means</li>
+</ul>
+<p>that your program has its own instance of the library. This the way the
+install.sh runs. So you CAN&#8217;T have another program (like the control-panel)
+running when using the python-openzwave library</p>
+<ul class="simple">
+<li>dynamic or shared : includes a link to the library in your binary program.</li>
+</ul>
+<p>This means that your program share the library with other programs. In this
+case, the instance is owned directly by the library. This the way the
+debian package works. So you CAN have another program running when
+using the python-openzwave library. Of course, this program MUST use
+the shared library.</p>
+</div></blockquote>
+</div>
+<div class="section" id="history">
+<h2>History</h2>
+<p>The original script was from maarten damen :
+<a class="reference external" href="https://github.com/maartendamen/python-openzwave">https://github.com/maartendamen/python-openzwave</a>
+The openzwave package is now a wrapper to access Nodes, Network, Scenes, ...
+To update your old code, change &#8220;import openzwave&#8221; by
+&#8220;import libopenzwave&#8221;</p>
+</div>
+</div>
+
+

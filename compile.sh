@@ -19,25 +19,28 @@ cd ../../../..
 echo "-----------------------------------------------------------------"
 echo "|   Build python-openzwave                                      |"
 echo "-----------------------------------------------------------------"
-[ $CLEAN -eq 1 ] && python setup.py clean
+[ $CLEAN -eq 1 ] && python setup-lib.py clean
+[ $CLEAN -eq 1 ] && python setup-api.py clean
 [ $CLEAN -eq 1 ] && rm -Rf build/
 [ $CLEAN -eq 1 ] && rm -Rf docs/_build
 [ $CLEAN -eq 1 ] && rm lib/libopenzwave.cpp
-python setup.py build
+python setup-lib.py build
+python setup-api.py build
 
 if [ u != $(which sphinx-build)u ] ; then
-	echo "-----------------------------------------------------------------"
-	echo "|   Make documentation                                          |"
-	echo "-----------------------------------------------------------------"
-	python setup.py install --root=build/tmp
-	cd docs
-	make html
-	cd ..
+    echo "-----------------------------------------------------------------"
+    echo "|   Make documentation                                          |"
+    echo "-----------------------------------------------------------------"
+    python setup-lib.py install --root=build/tmp
+    python setup-api.py install --root=build/tmp
+    cd docs
+    make html
+    cd ..
 else
-	echo "-----------------------------------------------------------------"
-	echo "|   sphinx not found                                            |"
-	echo "|   No documentation general                                    |"
-	echo "-----------------------------------------------------------------"
+    echo "-----------------------------------------------------------------"
+    echo "|   sphinx not found                                            |"
+    echo "|   No documentation general                                    |"
+    echo "-----------------------------------------------------------------"
 
 fi
 
@@ -48,6 +51,6 @@ echo "|   sudo ./install.sh                                           |"
 echo "|   Installation directories :                                  |"
 echo "|   config directory : /usr/local/share/python-openzwave        |"
 if [ u != $(which sphinx-build)u ] ; then
-	echo "|   Documentation : /usr/local/share/doc/python-openzwave       |"
+    echo "|   Documentation : /usr/local/share/doc/python-openzwave       |"
 fi
 echo "-----------------------------------------------------------------"

@@ -3,10 +3,20 @@
 echo "------------------------------------------------------------"
 echo "|   Install openzwave in tmp                               |"
 echo "------------------------------------------------------------"
-python setup.py install --root=build/tmp
+python setup-lib.py install --root=build/tmp
+python setup-api.py install --root=build/tmp
 
 cd docs
 rm -Rf _build
+echo "-----------------------------------------------------------------"
+echo "|   Generate txt docs                                           |"
+echo "-----------------------------------------------------------------"
+make text
+cp _build/text/README.txt ../README
+cp _build/text/INSTALL_REPO.txt ../INSTALL_REPO
+cp _build/text/COPYRIGHT.txt ../COPYRIGHT
+cp _build/text/DEVEL.txt ../DEVEL
+
 echo "-----------------------------------------------------------------"
 echo "|   Generate html docs                                          |"
 echo "-----------------------------------------------------------------"

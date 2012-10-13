@@ -34,6 +34,7 @@ hg archive \
     -I . \
     -X make_archive.sh \
     -X make_distdir.sh \
+    -X make_docs.sh \
     -X .hg_archival.txt  \
     -X .coverage  \
     -X .hgignore  \
@@ -41,8 +42,8 @@ hg archive \
     -X old/ \
     -t tgz ${ARCHIVE}
 if [ $? -ne 0 ] ; then
-	echo "Error : can't create archive python-openzwave ... exiting"
-	exit 1
+    echo "Error : can't create archive python-openzwave ... exiting"
+    exit 1
 fi
 
 echo "-----------------------------------------------------------------"
@@ -59,11 +60,11 @@ echo "-----------------------------------------------------------------"
 echo "|   Checkout openwave repository                                |"
 echo "-----------------------------------------------------------------"
 if [ -d openzwave ] ; then
-	echo "Update openzwave directory"
-	svn update http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    echo "Update openzwave directory"
+    svn update http://open-zwave.googlecode.com/svn/trunk/ openzwave
 else
-	echo "Checkout openzwave directory"
-	svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    echo "Checkout openzwave directory"
+    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
 fi
 svn export -r ${RZ} openzwave build/${ARCHIVEDIR}/openzwave
 

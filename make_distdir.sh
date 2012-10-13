@@ -3,7 +3,8 @@
 echo "------------------------------------------------------------"
 echo "|   Build openzwave in build/tmp                       |"
 echo "------------------------------------------------------------"
-python setup.py install --root=build/tmp
+python setup-lib.py install --root=build/tmp
+python setup-api.py install --root=build/tmp
 
 echo "------------------------------------------------------------"
 echo "|   Generate documentation                                 |"
@@ -15,7 +16,8 @@ cd ..
 echo "------------------------------------------------------------"
 echo "|   Install openzwave in build/distdir                     |"
 echo "------------------------------------------------------------"
-python setup.py install --root=build/distdir
+python setup-lib.py install --root=build/distdir
+python setup-api.py install --root=build/distdir
 
 echo "------------------------------------------------------------"
 echo "|   Files are in build/distdir                             |"
