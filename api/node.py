@@ -714,7 +714,7 @@ class ZWaveNode( ZWaveObject,
         The battery level of this node.
         Todo
         """
-        values = self._getValuesForCommandClass(0x80)  # COMMAND_CLASS_BATTERY
+        values = self.get_values_for_command_class(0x80)  # COMMAND_CLASS_BATTERY
         if values:
             for value in values:
                 vdic = value.value_data

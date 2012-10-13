@@ -111,7 +111,7 @@ setup(
   version = '0.2.4',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,
-  package_dir = {'libopenzwave' : 'lib', 'openzwave' : 'src'},
+  package_dir = {'libopenzwave' : 'lib', 'openzwave' : 'api'},
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
   packages = ['libopenzwave', 'openzwave'],
