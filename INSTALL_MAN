@@ -57,14 +57,22 @@ Build openzwave and python-openzwave
 
 Go to the openzwave directory and build it :
 
-   cd openzwave/cpp/build/linux make cd ../../../..
+   cd openzwave/cpp/build/linux
+
+   make
+
+   cd ../../../..
 
 Build python-openzwave
 
-   python setup-lib.py build python setup-api.py build
+   python setup-lib.py build
+
+   python setup-api.py build
 
 
 And install them
 ================
 
-   sudo python setup-lib.py install sudo python setup-api.py install
+   sudo python setup-lib.py install
+
+   sudo python setup-api.py install
