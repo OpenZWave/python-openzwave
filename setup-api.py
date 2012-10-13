@@ -71,7 +71,7 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
 setup(
-  name = 'python-api-openzwave',
+  name = 'python-openzwave-api',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='http://code.google.com/p/python-openzwave',
