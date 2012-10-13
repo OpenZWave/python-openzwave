@@ -84,6 +84,42 @@ There is 2 ways of linking libraries with a program :
    program MUST use the shared library.
 
 
+Migrate from py-openzwave to python-openzwave
+=============================================
+
+Remove the old py-openzwave
+
+   find /usr -iname openzwave.so
+
+This command show the list of files naming openzwave.so in /usr, ie
+/usr/local/lib/python2.7/dist-package/openzwave.so
+
+Remove it :
+
+   sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so
+
+Install the new version of python-openzwave : look at README
+
+Update your code :
+
+Everywhere in your code replace :
+
+   "import openzwave" to "import libopenzwave" "from openzwave" to
+   "from libopenzwave"
+
+notifications :
+
+In Maarten py-openzwave librairy, value is a string but in python-
+openzwave, it's a value of the right type :
+
+      # 'value' : value.c_str(),
+
+   'value' : getValueFromType(manager,v.GetId?()),
+
+wrapper : The wrapper is no longer supported. Now high level acces to
+ZWave network is provided by the API (work in progress)
+
+
 History
 =======
 

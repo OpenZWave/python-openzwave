@@ -64,6 +64,30 @@ using the python-openzwave library. Of course, this program MUST use
 the shared library.</p>
 </div></blockquote>
 </div>
+<div class="section" id="migrate-from-py-openzwave-to-python-openzwave">
+<h2>Migrate from py-openzwave to python-openzwave</h2>
+<p>Remove the old py-openzwave</p>
+<blockquote>
+<div>find /usr -iname openzwave.so</div></blockquote>
+<p>This command show the list of files naming openzwave.so in /usr, ie /usr/local/lib/python2.7/dist-package/openzwave.so</p>
+<p>Remove it :</p>
+<blockquote>
+<div>sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so</div></blockquote>
+<p>Install the new version of python-openzwave : look at README</p>
+<p>Update your code :</p>
+<p>Everywhere in your code replace :</p>
+<blockquote>
+<div>&#8220;import openzwave&#8221; to &#8220;import libopenzwave&#8221; &#8220;from openzwave&#8221; to &#8220;from libopenzwave&#8221;</div></blockquote>
+<p>notifications :</p>
+<p>In Maarten py-openzwave librairy, value is a string but in python-openzwave, it&#8217;s a value of the right type :</p>
+<blockquote>
+<div><blockquote>
+<div># &#8216;value&#8217; : value.c_str(),</div></blockquote>
+<p>&#8216;value&#8217; : getValueFromType(manager,v.GetId?()),</p>
+</div></blockquote>
+<p>wrapper : The wrapper is no longer supported.
+Now high level acces to ZWave network is provided by the API (work in progress)</p>
+</div>
 <div class="section" id="history">
 <h2>History</h2>
 <p>The original script was from maarten damen :
