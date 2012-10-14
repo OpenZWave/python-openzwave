@@ -1722,7 +1722,7 @@ Gets the units that the value is measured in.
 :param id: The ID of a value.
 :type id: int
 :returns: str -- A string containing the value of the units.
-:see: getValueUnits_
+:see: setValueUnits_
 
         '''
         cdef string c_string
@@ -1742,7 +1742,7 @@ Sets the units that the value is measured in.
 :type id: int
 :param label: The new value of the units.
 :type label: str
-:see: setValueUnits_
+:see: getValueUnits_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1757,7 +1757,7 @@ Gets a help string describing the value's purpose and usage.
 :param id: The ID of a value.
 :type id: int
 :returns: str -- A string containing the value help text.
-:see: getValueHelp
+:see: setValueHelp_
 
         '''
         cdef string c_string
@@ -1777,7 +1777,7 @@ Sets a help string describing the value's purpose and usage.
 :type id: int
 :param help: The new value of the help text.
 :type help: str
-:see: setValueHelp
+:see: getValueHelp_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1792,6 +1792,7 @@ Gets the minimum that this value may contain.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value minimum.
+:see: getValueMax_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1808,6 +1809,7 @@ Gets the maximum that this value may contain.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value maximum.
+:see: getValueMin_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1988,7 +1990,7 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
         if values_map.find(id) != values_map.end():
             if self.manager.GetValueListSelection(values_map.at(id), &c_string):
                 ret = c_string.c_str()
-        print "//////// Value Str list item : " ,  ret
+        #print "//////// Value Str list item : " ,  ret
         return ret
 
     def getValueListSelectionNum(self,  id):
@@ -2008,7 +2010,7 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
         if values_map.find(id) != values_map.end():
             if self.manager.GetValueListSelection(values_map.at(id), &type_int):
                 ret = type_int
-        print "//////// Value Num list item : " ,  ret
+        #print "//////// Value Num list item : " ,  ret
         return ret
 
     def getValueListItems(self, id):
@@ -2024,7 +2026,7 @@ Gets the list of items from a list value
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
 
         '''
-        print "**** libopenzwave.GetValueListItems ******"
+        #print "**** libopenzwave.GetValueListItems ******"
         cdef vector[string] vect
         ret = set()
         if values_map.find(id) != values_map.end():
@@ -2033,7 +2035,7 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
                     temp = vect.back()
                     ret.add(temp.c_str())
                     vect.pop_back();
-            print "++++ list des items : " ,  ret
+            #print "++++ list des items : " ,  ret
         return ret
 
     def pressButton(self, id):
@@ -2047,6 +2049,7 @@ no notification callbacks are sent.
 :param id: The ID of an integer value.
 :type id: int
 :returns: bool -- True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:see: releaseButton_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -2065,6 +2068,7 @@ no notification callbacks are sent.
 :param id: the ID of an integer value.
 :type id: int
 :returns: bool -- True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:see: pressButton_
 
         '''
         if values_map.find(id) != values_map.end():

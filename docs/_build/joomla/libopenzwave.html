@@ -1302,7 +1302,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the value help text.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body">getValueHelp</td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvaluehelp">setValueHelp</a></td>
 </tr>
 </tbody>
 </table>
@@ -1391,6 +1391,8 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value maximum.</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemin">getValueMin</a></td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1406,6 +1408,8 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value minimum.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemax">getValueMax</a></td>
 </tr>
 </tbody>
 </table>
@@ -1423,7 +1427,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the value of the units.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvalueunits">getValueUnits</a></td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvalueunits">setValueUnits</a></td>
 </tr>
 </tbody>
 </table>
@@ -1738,6 +1742,8 @@ no notification callbacks are sent.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#releasebutton">releaseButton</a></td>
+</tr>
 </tbody>
 </table>
 </dd></dl>
@@ -1800,6 +1806,8 @@ no notification callbacks are sent.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; the ID of an integer value.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#pressbutton">pressButton</a></td>
 </tr>
 </tbody>
 </table>
@@ -2450,7 +2458,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">setValueHelp</p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getvaluehelp">getValueHelp</a></p>
 </td>
 </tr>
 </tbody>
@@ -2492,7 +2500,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setvalueunits">setValueUnits</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getvalueunits">getValueUnits</a></p>
 </td>
 </tr>
 </tbody>
