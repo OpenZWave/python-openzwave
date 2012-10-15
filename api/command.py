@@ -92,7 +92,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         values = self.get_values_for_command_class(0x80)  # COMMAND_CLASS_BATTERY
         if values:
             for value in values:
-                vdic = value.value_data
+                vdic = value.data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
                     return int(vdic['value'])
         return -1
@@ -132,7 +132,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         values = self.get_values_for_command_class(0x25)  # COMMAND_CLASS_SWITCH_BINARY
         if values:
             for value in values:
-                vdic = value.value_data
+                vdic = value.data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
                     return vdic['value'] == 'True'
         return False
@@ -153,7 +153,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         values = self.get_values_for_command_class(0x26)  # COMMAND_CLASS_SWITCH_MULTILEVEL
         if values:
             for value in values:
-                vdic = value.value_data
+                vdic = value.data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
                     return int(vdic['value'])
         return 0
@@ -180,7 +180,7 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         values = self.get_values_for_command_class(0x30)  # COMMAND_CLASS_SENSOR_BINARY
         if values:
             for value in values:
-                vdic = value.value_data
+                vdic = value.data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
                     return vdic['value'] == 'True'
         return False
@@ -193,7 +193,7 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         values = self.get_values_for_command_class(0x31)  # COMMAND_CLASS_SENSOR_MULTILEVEL
         if values:
             for value in values:
-                vdic = value.value_data
+                vdic = value.data
                 if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
                     return vdic['value'] == 'True'
         return False

@@ -16,7 +16,9 @@ When your modification is functional, you are ready to submit a patch
 
 Sync you repository :
 
-   hg pull https://code.google.com/p/python-openzwave/ hg update
+   hg pull https://code.google.com/p/python-openzwave/
+
+   hg update
 
 Generate the patch
 
@@ -112,7 +114,7 @@ notifications :
 In Maarten py-openzwave librairy, value is a string but in python-
 openzwave, it's a value of the right type :
 
-      # 'value' : value.c_str(),
+   # 'value' : value.c_str(),
 
    'value' : getValueFromType(manager,v.GetId?()),
 
@@ -124,6 +126,4 @@ History
 =======
 
 The original script was from maarten damen :
-https://github.com/maartendamen/python-openzwave The openzwave package
-is now a wrapper to access Nodes, Network, Scenes, ... To update your
-old code, change "import openzwave" by "import libopenzwave"
+https://github.com/maartendamen/python-openzwave

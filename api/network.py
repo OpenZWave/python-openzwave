@@ -283,6 +283,16 @@ class ZWaveNetwork(ZWaveObject):
         """
         self._object_id = value
 
+    @property
+    def home_id_str(self):
+        """
+        The home_id of the network as string.
+
+        :rtype: str
+
+        """
+        return "%0.8x" % self._object_id
+
 #    @property
 #    def initialised(self):
 #        """

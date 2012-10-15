@@ -57,8 +57,9 @@
 <p>When your modification is functional, you are ready to submit a patch</p>
 <p>Sync you repository :</p>
 <blockquote>
-<div>hg pull <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a>
-hg update</div></blockquote>
+<div><p>hg pull <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></p>
+<p>hg update</p>
+</div></blockquote>
 <p>Generate the patch</p>
 <blockquote>
 <div>hgdiff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
@@ -126,8 +127,7 @@ the shared library.</p>
 <p>notifications :</p>
 <p>In Maarten py-openzwave librairy, value is a string but in python-openzwave, it&#8217;s a value of the right type :</p>
 <blockquote>
-<div><blockquote>
-<div># &#8216;value&#8217; : value.c_str(),</div></blockquote>
+<div><p># &#8216;value&#8217; : value.c_str(),</p>
 <p>&#8216;value&#8217; : getValueFromType(manager,v.GetId?()),</p>
 </div></blockquote>
 <p>wrapper : The wrapper is no longer supported.
@@ -136,10 +136,7 @@ Now high level acces to ZWave network is provided by the API (work in progress)<
 <div class="section" id="history">
 <h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
 <p>The original script was from maarten damen :
-<a class="reference external" href="https://github.com/maartendamen/python-openzwave">https://github.com/maartendamen/python-openzwave</a>
-The openzwave package is now a wrapper to access Nodes, Network, Scenes, ...
-To update your old code, change &#8220;import openzwave&#8221; by
-&#8220;import libopenzwave&#8221;</p>
+<a class="reference external" href="https://github.com/maartendamen/python-openzwave">https://github.com/maartendamen/python-openzwave</a></p>
 </div>
 </div>
 

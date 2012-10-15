@@ -94,7 +94,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dd><p>Represents a single Node within the Z-Wave Network</p>
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.add_value">
-<tt class="descname">add_value</tt><big>(</big><em>value_id</em>, <em>command_class</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_value</tt><big>(</big><em>value_id</em>, <em>command_class</em>, <em>type</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value to the node</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -120,13 +120,6 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.battery_level">
-<tt class="descname">battery_level</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.battery_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>The battery level of this node.
-Todo</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -460,6 +453,12 @@ to do</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.max_baud_rate">
+<tt class="descname">max_baud_rate</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.max_baud_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the maximum baud rate of a nodes communications</p>
 </dd></dl>
 
 <dl class="attribute">

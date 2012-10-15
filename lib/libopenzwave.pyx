@@ -134,6 +134,7 @@ cdef getValueFromType(Manager *manager, valueId):
     cdef int32_t type_int
     cdef int16_t type_short
     cdef string type_string
+    cdef vector[string] vect
     ret = None
     if values_map.find(valueId) != values_map.end():
         datatype = PyValueTypes[values_map.at(valueId).GetType()]
@@ -143,18 +144,27 @@ cdef getValueFromType(Manager *manager, valueId):
         elif datatype == "Byte":
             cret = manager.GetValueAsByte(values_map.at(valueId), &type_byte)
             ret = type_byte if cret else None
+            return ret
         elif datatype == "Decimal":
             cret = manager.GetValueAsFloat(values_map.at(valueId), &type_float)
             ret = type_float if cret else None
+            return ret
         elif datatype == "Int":
             cret = manager.GetValueAsInt(values_map.at(valueId), &type_int)
             ret = type_int if cret else None
+            return ret
         elif datatype == "Short":
             cret = manager.GetValueAsShort(values_map.at(valueId), &type_short)
             ret = type_short if cret else None
+            return ret
         elif datatype == "String":
             cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
             ret = type_string.c_str() if cret else None
+            return ret
+        elif datatype == "List":
+            cret = manager.GetValueListSelection(values_map.at(valueId), &type_string)
+            ret = type_string.c_str() if cret else None
+            return ret
         else :
             cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
             ret = type_string.c_str() if cret else None
@@ -1237,7 +1247,8 @@ class Value object.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes manufacturer name.
-:see: setNodeManufacturerName_, getNodeProductName_, setNodeProductName_
+:see: setNodeManufacturerName_, getNodeProductName_, setNodeProductName_, \
+    getNodeManufacturerId_, getNodeProductId_, getNodeProductType_
 
         '''
         cdef string manufacturer_string = self.manager.GetNodeManufacturerName(homeid, nodeid)
@@ -1262,7 +1273,8 @@ class Value object.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes product name.
-:see: setNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
+:see: setNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_, \
+    getNodeManufacturerId_, getNodeProductId_, getNodeProductType_
 
         '''
         cdef string productname_string = self.manager.GetNodeProductName(homeid, nodeid)
@@ -1309,7 +1321,7 @@ reporting it via a command class Value object.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes location.
-:see: setNodeLocation, getNodeName, setNodeName
+:see: setNodeLocation_, getNodeName_, setNodeName_
 
         '''
         cdef string c_string = self.manager.GetNodeLocation(homeid, nodeid)
@@ -1334,7 +1346,8 @@ specific data.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.
-:see: getNodeProductType, getNodeProductId, getNodeManufacturerName, getNodeProductName
+:see: getNodeProductType_, getNodeProductId_, getNodeManufacturerName_, setNodeManufacturerName_, \
+    getNodeProductName_, setNodeProductName_
 
         '''
         cdef string c_string = self.manager.GetNodeManufacturerId(homeid, nodeid)
@@ -1359,7 +1372,8 @@ data.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.
-:see: getNodeManufacturerId_, getNodeProductId_, getNodeManufacturerName_, getNodeProductName_
+:see: getNodeManufacturerId_, getNodeProductId_, getNodeManufacturerName_, setNodeManufacturerName_, \
+    getNodeProductName_, setNodeProductName_
 
         '''
         cdef string c_string = self.manager.GetNodeProductType(homeid, nodeid)
@@ -1384,7 +1398,7 @@ data.
 :param nodeId: The ID of the node to query.
 :type nodeId: int
 :returns: str -- A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.
-:see: getNodeManufacturerId_, getNodeProductType_, getNodeManufacturerName_, getNodeProductName_
+:see: getNodeManufacturerId_, getNodeProductType_, getNodeManufacturerName_, setNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
@@ -1505,7 +1519,7 @@ device, otherwise it will turn it on at 100%.
 :type homeId: int
 :param nodeId: The ID of the node to be changed.
 :type nodeId: int
-:see: setNodeOff, setNodeLevel
+:see: setNodeOff_, setNodeLevel_
 
         '''
         self.manager.SetNodeOn(homeid, nodeid)
@@ -1524,7 +1538,7 @@ zero, and will generate a ValueChanged notification from that class.
 :type homeId: int
 :param nodeId: The ID of the node to be changed.
 :type nodeId: int
-:see: setNodeOn, setNodeLevel
+:see: setNodeOn_, setNodeLevel_
 
         '''
         self.manager.SetNodeOff(homeid, nodeid)
@@ -1545,7 +1559,7 @@ and will generate a ValueChanged notification from that class.
 :type nodeId: int
 :param level: The level to set the node.  Valid values are 0-99 and 255.  Zero is off and 99 is fully on.  255 will turn on the device at its last known level (if supported).
 :type level: int
-:see: setNodeOn, setNodeOff
+:see: setNodeOn_, setNodeOff_
 
         '''
         self.manager.SetNodeLevel(homeid, nodeid, level)
@@ -1861,11 +1875,31 @@ Test whether the value has been set.
 :type id: int
 :returns: bool -- True if the value has actually been set by a status message from the device, rather than simply being the default.
 :see: getValue_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
 
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.IsValueSet(values_map.at(id))
+        else :
+            return None
+
+    def getValueType(self, id):
+        '''
+.. _getValueType:
+
+Gets the type of the value
+
+:param id: The ID of a value.
+:type id: int
+:returns: str -- A string containing the type of the value
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValue_
+
+       '''
+        cdef string c_string
+        if values_map.find(id) != values_map.end():
+            datatype = PyValueTypes[values_map.at(id).GetType()]
+            return datatype
         else :
             return None
 
@@ -1881,7 +1915,7 @@ Gets a value.
 :type value: int
 :returns: multiple -- Depending of the type of the valueId, None otherwise
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1895,7 +1929,7 @@ Gets a value as a bool.
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1909,7 +1943,7 @@ Gets a value as an 8-bit unsigned integer.
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1923,7 +1957,7 @@ Gets a value as a float.
 :param id: The ID of a value.
 :type id: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_
+getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1938,7 +1972,7 @@ Gets a value as a 16-bit signed integer.
 :type id: int
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_
+getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1953,7 +1987,7 @@ Gets a value as a 32-bit signed integer.
 :type id: int
 :returns: int -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_
+getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1968,7 +2002,7 @@ Gets a value as a string.
 :type id: int
 :returns: str -- The value.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, getValueType_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1983,15 +2017,9 @@ Gets value of items from a list value
 :type id: int
 :returns: string items selected.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionNum_, getValueListItems_\
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
     '''
-        cdef string c_string
-        ret=""
-        if values_map.find(id) != values_map.end():
-            if self.manager.GetValueListSelection(values_map.at(id), &c_string):
-                ret = c_string.c_str()
-        #print "//////// Value Str list item : " ,  ret
-        return ret
+        return getValueFromType(self.manager,id)
 
     def getValueListSelectionNum(self,  id):
         '''
@@ -2003,7 +2031,7 @@ Gets value of items from a list value
 :type id: int
 :returns: int  value of items selected.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_, getValueListItems_\
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
     '''
         cdef int32_t type_int
         ret=-1
@@ -2023,7 +2051,7 @@ Gets the list of items from a list value
 :type id: int
 :returns: Set -- The list of items.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_,getValueListSelectionStr_ ,getValueListSelectionNum_ \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
 
         '''
         #print "**** libopenzwave.GetValueListItems ******"

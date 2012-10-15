@@ -108,7 +108,7 @@ class LeftHeader(urwid.WidgetWrap):
     def __init__(self):
         self.controller = "%s"
         self.controller_urwid = urwid.Text(self.controller % "")
-        self.homeid = "HomeId  %0.8x"
+        self.homeid = "HomeId  %s"
         self.homeid_urwid = urwid.Text(self.homeid % 0)
         self.nodes = "%d node(s) (%d sleeping)"
         self.nodes_urwid = urwid.Text(self.nodes % (0,0))
@@ -164,7 +164,7 @@ class DetailsWidget(urwid.WidgetWrap):
         self.neighbors_urwid = urwid.Text(self.neighbors % "", wrap='clip')
         self.version      = "Version      : %s"
         self.version_urwid = urwid.Text(self.version % "", wrap='clip')
-        self.signal       = "Signal       : %s"
+        self.signal       = "Bauds        : %s"
         self.signal_urwid = urwid.Text(self.signal % "", wrap='clip')
         self.display_widget = urwid.Pile([\
             self.nodeid_urwid, \
@@ -212,23 +212,23 @@ class DetailsWidget(urwid.WidgetWrap):
                 snodeid = txtid.split(':')[1]
                 nodeid = int(snodeid)
                 if self.display_widget.get_focus()==self.name_urwid :
-                    self.parent.status_bar.update('Node name update')
+                    self.parent.frame.set_status_bar('Node name update')
                     self.parent.network.nodes[nodeid].name = \
                         self.name_urwid.get_edit_text()
                 elif self.display_widget.get_focus()==self.location_urwid :
-                    self.parent.status_bar.update('Node location update')
+                    self.parent.frame.set_status_bar('Node location update')
                     self.parent.network.nodes[nodeid].location = \
                         self.location_urwid.get_edit_text()
                 elif self.display_widget.get_focus()==self.manufacturer_urwid :
-                    self.parent.status_bar.update('Node manufacturer name update')
+                    self.parent.frame.set_status_bar('Node manufacturer name update')
                     self.parent.network.nodes[nodeid].manufacturer_name = \
                         self.manufacturer_urwid.get_edit_text()
                 elif self.display_widget.get_focus()==self.product_urwid :
-                    self.parent.status_bar.update('Node product name update')
+                    self.parent.frame.set_status_bar('Node product name update')
                     self.parent.network.nodes[nodeid].product_name = \
                         self.product_urwid.get_edit_text()
                 else :
-                    self.parent.status_bar.update('Warning : unknown update from DetailsWidget')
+                    self.parent.frame.set_status_bar('Warning : unknown update from DetailsWidget')
                 return
             else :
                 rc = self.__super.keypress(size, key)
@@ -386,9 +386,12 @@ class MenuWidget(urwid.WidgetWrap):
         self.details_urwid = urwid.Button(self.details)
         self.commands = "Commands"
         self.commands_urwid = urwid.Button(self.commands)
+        self.neighbors = "Neighbors"
+        self.neighbors_urwid = urwid.Button(self.neighbors)
         self.display_widget = urwid.Pile([ \
             urwid.AttrWrap(self.details_urwid, 'menu', 'focus'), \
             urwid.AttrWrap(self.commands_urwid, 'menu', 'focus'), \
+            urwid.AttrWrap(self.neighbors_urwid, 'menu', 'focus'), \
             ])
         urwid.WidgetWrap.__init__(self, self.display_widget)
 
@@ -405,7 +408,7 @@ class MenuWidget(urwid.WidgetWrap):
 class StatusBar(urwid.WidgetWrap):
     def __init__(self):
         self.statusbar = "%s"
-        self.statusbar_urwid = urwid.Edit(self.statusbar % "")
+        self.statusbar_urwid = urwid.Text(self.statusbar % "")
         self.menu_urwid = urwid.Columns([
                 #urwid.AttrWrap(urwid.Text('F:', wrap='clip'), 'menu'),
                 urwid.AttrWrap(urwid.Text('1%s' % "Help", wrap='clip'), 'menu'),
@@ -429,7 +432,7 @@ class StatusBar(urwid.WidgetWrap):
         urwid.WidgetWrap.__init__(self, display_widget)
 
     def update(self, status):
-        self.statusbar_urwid.set_edit_text(self.statusbar % status)
+        self.statusbar_urwid.set_text(self.statusbar % status)
 
 class NodeItem (urwid.WidgetWrap):
 
@@ -453,7 +456,7 @@ class NodeItem (urwid.WidgetWrap):
                 urwid.AttrWrap(urwid.Text('%s' % "Id", wrap='clip'), 'node_header'), left=2)),
                 urwid.AttrWrap(urwid.Text('%s' % "Name", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Location", wrap='clip'), 'node_header'),
-                urwid.AttrWrap(urwid.Text('%s' % "Signal", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Baud", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Battery", wrap='clip'), 'node_header'),
         ]
         return urwid.Columns(self.item, dividechars=1)
@@ -522,7 +525,7 @@ class NodesWalker(urwid.ListWalker):
             self.nodes.append(NodeItem(network.nodes[node].node_id, \
                 network.nodes[node].name, \
                 network.nodes[node].location, \
-                network.nodes[node].signal_strength, \
+                network.nodes[node].max_baud_rate, \
                 network.nodes[node].battery_level, \
                 ))
             self.size += 1
@@ -553,9 +556,10 @@ class NodesBox(urwid.ListBox):
         return
 
 class MainWindow(Screen):
-    def __init__(self, device, name=None):
+    def __init__(self, device=None, footer=False, name=None):
         Screen.__init__(self)
         self.device = device
+        self.footer_display = footer
         self._define_log()
         self._define_screen()
         self._connect_louie()
@@ -603,10 +607,6 @@ class MainWindow(Screen):
         self.listbox = NodesBox(self, "body")
         self.menu = MenuWidget(self, "value")
 
-
-        #self.details.set_tab_next(self.listbox)
-        #self.listbox.set_tab_next(self.menu)
-        #self.menu.set_tab_next(self.details)
 
         self.nodes = []
         self.status_bar = StatusBar()
@@ -662,12 +662,17 @@ class MainWindow(Screen):
 
         self.frame = FrameApp(urwid.AttrWrap(self.listbox, 'body'), \
             header=self.header,\
-            command=self.menu,\
-            result=self.details,\
+            command=(self.menu,1),\
+            result=(self.details,5),\
 #            value=self.menu,\
-            footer=self.footer, \
+#            footer=self.footer, \
             log = self.log, \
-            focus_part=self.framefocus)
+            focus_part=self.framefocus,
+            status_bar=self.footer_display,
+            menu_f=self.footer_display,
+            )
+
+        self.frame.set_menu_f(f1="Help",f5="Refresh")
 
         self.loop = urwid.MainLoop(self.frame, \
             self._palette, \
@@ -688,7 +693,7 @@ class MainWindow(Screen):
                 product=self.network.nodes[nodeid].product_name, \
                 neighbors=self.network.nodes[nodeid].neighbors, \
                 version=self.network.nodes[nodeid].version, \
-                signal=self.network.nodes[nodeid].signal_strength, \
+                signal=self.network.nodes[nodeid].max_baud_rate, \
                 )
             self.log.info('Update node id=%d, product name=%s.' % \
                 (nodeid, self.network.nodes[nodeid].product_name))
@@ -718,7 +723,7 @@ class MainWindow(Screen):
         self.options.set_logging(True)
         self.options.lock()
         self.network = ZWaveNetwork(self.options, self.log)
-        self.status_bar.update('Start Network')
+        self.frame.set_status_bar('Start Network')
 
     def _connect_louie(self):
         dispatcher.connect(self._louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
@@ -734,12 +739,12 @@ class MainWindow(Screen):
         self.network = network
         self.left_header.update_controller("%s on %s" % \
             (network.controller.node.product_name, self.device))
-        self.left_header.update_homeid(network.home_id)
+        self.left_header.update_homeid(network.home_id_str)
         self.left_header.update_nodes(network.nodes_count,0)
         self.right_header.update(network.controller.library_description, \
             network.controller.ozw_library_version, \
             network.controller.python_library_version)
-        self.status_bar.update('OpenZWave driver is ready')
+        self.frame.set_status_bar('OpenZWave driver is ready')
         self.loop.draw_screen()
 
     def _louie_network_ready(self, network):
@@ -750,18 +755,25 @@ class MainWindow(Screen):
             (network.controller.node.product_name, self.device))
         self.left_header.update_nodes(network.nodes_count,0)
         #self.set_nodes()
-        self.status_bar.update('ZWave network is ready')
+        self.frame.set_status_bar('ZWave network is ready')
         self.loop.draw_screen()
         self._connect_louie_node()
 
     def _connect_louie_node(self):
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_EVENT)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_ADDED)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_NAMING)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_NEW)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_PROTOCOL_INFO)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_READY)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_REMOVED)
 
     def _louie_node_update(self, network, node):
         self.log.info('Node event %s' % node)
         self.network = network
         #self.set_nodes()
-        self.status_bar.update('Node event')
+        self.frame.set_status_bar('Node event')
+        self.refresh_nodes()
         self.loop.draw_screen()
 
     def _wrap(self, widget, attr_map):
@@ -778,12 +790,21 @@ class MainWindow(Screen):
 
 window = None
 def main():
-    device="/dev/zwave-aeon-s2"
+    device = "/dev/zwave-aeon-s2"
+    footer = True
     for arg in sys.argv:
+        if arg.startswith("--help") or arg.startswith("-h"):
+            print("Usage : ozwman [--device=/dev/zwave-aeon-s2] [--nofooter]")
+            print("   --device=path_to_your_zwave_stick")
+            print("   --nofooter : Don't display footer")
+            sys.exit("")
+
         if arg.startswith("--device"):
             temp,device = arg.split("=")
+        if arg.startswith("--nofooter"):
+            footer = False
     global window
-    window = MainWindow(device)
+    window = MainWindow(device=device,footer=footer)
     window.start()
     window.loop.run()
     window.stop()

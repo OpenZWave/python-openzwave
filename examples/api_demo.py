@@ -88,7 +88,7 @@ print "------------------------------------------------------------"
 print "Use openzwave library : %s" % network.controller.ozw_library_version
 print "Use python library : %s" % network.controller.python_library_version
 print "Use ZWave library : %s" % network.controller.library_description
-print "Network home id : %s" % network.home_id
+print "Network home id : %s" % network.home_id_str
 print "Controller node id : %s" % network.controller.node.node_id
 print "Controller node version : %s" % (network.controller.node.version)
 print "Nodes in network : %s" % network.nodes_count
@@ -136,7 +136,8 @@ for node in network.nodes:
     for val in network.nodes[node].values :
         values[network.nodes[node].values[val].object_id] = {
             'label':network.nodes[node].values[val].label,
-           'command_class':network.nodes[node].values[val].command_class,
+            'help':network.nodes[node].values[val].help,
+            'command_class':network.nodes[node].values[val].command_class,
             'max':network.nodes[node].values[val].max,
             'min':network.nodes[node].values[val].min,
             'units':network.nodes[node].values[val].units,
@@ -152,10 +153,13 @@ for node in network.nodes:
         for val in network.nodes[node].get_values_for_command_class(cmd) :
             values[network.nodes[node].values[val].object_id] = {
                 'label':network.nodes[node].values[val].label,
+                'help':network.nodes[node].values[val].help,
                 'max':network.nodes[node].values[val].max,
                 'min':network.nodes[node].values[val].min,
                 'units':network.nodes[node].values[val].units,
-                'data':network.nodes[node].values[val].data_as_string,
+                'data':network.nodes[node].values[val].data,
+                'data_str':network.nodes[node].values[val].data_as_string,
+                'type':network.nodes[node].values[val].type,
                 'ispolled':network.nodes[node].values[val].is_polled
                 }
         print "%s - Values for command class : %s : %s" % (network.nodes[node].node_id,

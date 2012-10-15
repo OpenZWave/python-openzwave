@@ -16,6 +16,7 @@ When your modification is functional, you are ready to submit a patch
 Sync you repository :
 
     hg pull https://code.google.com/p/python-openzwave/
+
     hg update
 
 Generate the patch
@@ -78,13 +79,13 @@ Migrate from py-openzwave to python-openzwave
 
 Remove the old py-openzwave
 
-	find /usr -iname openzwave.so
+    find /usr -iname openzwave.so
 
 This command show the list of files naming openzwave.so in /usr, ie /usr/local/lib/python2.7/dist-package/openzwave.so
 
 Remove it :
 
-	sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so
+    sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so
 
 Install the new version of python-openzwave : look at README
 
@@ -92,13 +93,14 @@ Update your code :
 
 Everywhere in your code replace :
 
-	"import openzwave" to "import libopenzwave" "from openzwave" to "from libopenzwave"
+    "import openzwave" to "import libopenzwave" "from openzwave" to "from libopenzwave"
 
 notifications :
 
 In Maarten py-openzwave librairy, value is a string but in python-openzwave, it's a value of the right type :
 
-	# 'value' : value.c_str(),
+    # 'value' : value.c_str(),
+
     'value' : getValueFromType(manager,v.GetId?()),
 
 wrapper : The wrapper is no longer supported.
@@ -109,6 +111,3 @@ History
 
 The original script was from maarten damen :
 https://github.com/maartendamen/python-openzwave
-The openzwave package is now a wrapper to access Nodes, Network, Scenes, ...
-To update your old code, change "import openzwave" by
-"import libopenzwave"
