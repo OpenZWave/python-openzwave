@@ -35,7 +35,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="class">
 <dt id="openzwave.value.ZWaveValue">
-<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent_id=None</em>, <em>command_class=0</em>, <em>type=None</em><big>)</big></dt>
+<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent_id=None</em>, <em>command_class=0</em><big>)</big></dt>
 <dd><p>Represents a single value.
 Must be updated to use the cachedObject facilities.</p>
 <dl class="attribute">
@@ -55,7 +55,7 @@ Must be updated to use the cachedObject facilities.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.data">
 <tt class="descname">data</tt></dt>
-<dd><p>The data of the value.</p>
+<dd><p>The current data of the value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -75,6 +75,22 @@ Must be updated to use the cachedObject facilities.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.data_items">
+<tt class="descname">data_items</tt></dt>
+<dd><p>When type of value is list, data_items contains a list of valid values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The valid values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
 </tr>
 </tbody>
 </table>
@@ -182,20 +198,6 @@ Must be updated to use the cachedObject facilities.</p>
 <dt id="openzwave.value.ZWaveValue.parent_id">
 <tt class="descname">parent_id</tt></dt>
 <dd><p>The parent_id of the value.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.value.ZWaveValue.poll_intensity">
-<tt class="descname">poll_intensity</tt></dt>
-<dd><p>The poll intensity of the value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int (0=none, 1=every time through the list, 2-every other time, etc)</td>
-</tr>
-</tbody>
-</table>
 </dd></dl>
 
 <dl class="attribute">

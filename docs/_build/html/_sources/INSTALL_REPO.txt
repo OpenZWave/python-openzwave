@@ -46,19 +46,19 @@ Update and build process
 
 Go to the previously created directory
 
-	cd python-openzwave
+    cd python-openzwave
 
 The following command will update your local repository to the last release
 of python-openzwave and openzwave.
 
     ./update.sh
 
-When update process is done you can compile sources
+When update process is done, you can compile sources
 
     ./compile.sh
 
-If you have already build python-openzwave in a previous installation, you can
-use the clean option to remove old builds.
+Or if you have already build python-openzwave in a previous installation,
+you can use the clean option to remove old builds.
 
     ./compile.sh clean
 

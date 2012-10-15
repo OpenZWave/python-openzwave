@@ -60,6 +60,8 @@ class ZWaveNode( ZWaveObject,
         self._values = dict()
         self._is_sleeping = False
         self._is_locked = False
+        self._commands = dict()
+        self._sensors = dict()
         #self._name = None
         #self.cache_property("self.name")
         #self._location = None

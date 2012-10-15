@@ -62,6 +62,13 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
 
     handle_command_class will do the rest
 
+    Another way to do it :
+    A node can manage commands (setOn, setOff, setLevel, ...)
+    and retrieve status (isOn, level, battery_level, consommation, tempertature)
+
+    So we need a kind of mechanism to retrive commands in a user friendly way
+    Same for sensors.
+
     '''
 
     def __init__(self):

@@ -55,6 +55,11 @@ command_class_0x80(paramm1,param2,...)
 That&#8217;s the first thing to do
 We also can define a property wtih a fiendly name</p>
 <p>handle_command_class will do the rest</p>
+<p>Another way to do it :
+A node can manage commands (setOn, setOff, setLevel, ...)
+and retrieve status (isOn, level, battery_level, consommation, tempertature)</p>
+<p>So we need a kind of mechanism to retrive commands in a user friendly way
+Same for sensors.</p>
 <dl class="attribute">
 <dt id="openzwave.command.ZWaveNodeBasic.battery_level">
 <tt class="descname">battery_level</tt></dt>
