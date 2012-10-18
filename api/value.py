@@ -402,6 +402,16 @@ class ZWaveValue(ZWaveObject):
         return self._network.manager.disablePoll(self.value_id)
 
     @property
+    def value_id(self):
+        """
+        The id of the value.
+
+        :rtype: int
+
+        """
+        return self._object_id
+
+    @property
     def command_class(self):
         """
         The commandclass of the value.

@@ -642,6 +642,7 @@ class NodeTree(OldestTree):
             if directory in self.childrens:
                 self.window.log.info("cd a values list key=%s" %directory)
                 self.childrens[directory]['widget_box'].walker.key=directory
+                self.childrens[directory]['widget_box'].walker.node_id=self.key
                 return self.childrens[directory]['widget_box']
         return None
 
@@ -805,6 +806,7 @@ class ValuesTree(OldestTree):
                                     'widget_box' : None},
                 }
         self._path = ""
+        self.node_id = 0
         self.key = 'user'
         self.value_header = ValuesItem()
         self.definition_user = {'id':'User',
@@ -832,7 +834,7 @@ class ValuesTree(OldestTree):
             parent.add_child('Basic', self.definition_basic)
             parent.add_child('Config', self.definition_config)
             parent.add_child('System', self.definition_system)
-        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
         self.refresh()
@@ -863,14 +865,19 @@ class ValuesTree(OldestTree):
         self.size += 1
         self.lines.append(self.value_header.get_header())
         self.size += 1
-        for node in self.window.network.nodes:
-            self.lines.append(NodesItem(self.window.network.nodes[node].node_id, \
-                self.window.network.nodes[node].name, \
-                self.window.network.nodes[node].location, \
-                self.window.network.nodes[node].max_baud_rate, \
-                self.window.network.nodes[node].battery_level, \
-                ))
+        values = self.window.network.nodes[self.node_id].get_values_by_command_classes(genre=self.key)
+        for cmd in values :
+            self.lines.append(urwid.Text(    "      %s" % (cmd), align='left'))
             self.size += 1
+            for val in values[cmd]:
+                self.lines.append(ValuesItem(values[cmd][val].value_id, \
+                    values[cmd][val].label, \
+                    values[cmd][val].help, \
+                    values[cmd][val].data, \
+                    values[cmd][val].type, \
+                    values[cmd][val].genre, \
+                    ))
+                self.size += 1
         self._modified()
 
     def exist(self, directory):

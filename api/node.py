@@ -390,14 +390,14 @@ class ZWaveNode( ZWaveObject,
 
         """
         values = dict()
-        for val in self.values :
+        for value in self.values :
             if (genre == 'All' or self.values[value].genre == genre) and \
               (type == 'All' or self.values[value].type == type) and \
               (readonly == 'All' or self.values[value].is_read_only == readonly) and \
               (writeonly == 'All' or self.values[value].is_write_only == writeonly):
-                if self.values[val].command_class not in values :
-                    values[self.values[val].command_class] = dict()
-                values[self.values[val].command_class][value] = self.values[value]
+                if self.values[value].command_class not in values :
+                    values[self.values[value].command_class] = dict()
+                values[self.values[value].command_class][value] = self.values[value]
         return values
 
     def get_values_for_command_class(self, class_id):
