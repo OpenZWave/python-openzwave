@@ -246,7 +246,7 @@ class ZWaveValue(ZWaveObject):
         """
         The genre of the value.
 
-        :return: genre of the value
+        :return: genre of the value (Basic, User, Config, System)
         :rtype: str
 
         """

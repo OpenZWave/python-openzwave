@@ -216,7 +216,7 @@ class RootTree(OldestTree):
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
-        self.read_lines()
+        self.refresh()
 
     def read_lines(self):
         self.size = 0
@@ -539,23 +539,7 @@ class NodeTree(OldestTree):
         self.childrens = { '..' : {'id':'..',
                                 'name':'..',
                                 'help':'Go to previous directory',
-                                'widget_box' : None},
-                'commands' : {'id':'cmds',
-                            'name':'command',
-                            'help':'Command classes and values management',
-                            'widget_box' : None},
-                'groups' : {'id':'grp',
-                            'name':'groups',
-                            'help':'Association management',
-                            'widget_box' : None},
-                'switches' : {'id':'swt',
-                            'name':'switches',
-                            'help':'Switches management',
-                            'widget_box' : None},
-                'sensors' : {'id':'sns',
-                            'name':'sensors',
-                            'help':'Sensors management',
-                            'widget_box' : None},
+                                'widget_box' : None}
                 }
         self._path = ""
         self.subdirs = ['..']
@@ -596,8 +580,7 @@ class NodeTree(OldestTree):
         self.size = 0
         #self.focus, self.oldfocus = self.oldfocus, self.focus
         self.lines = []
-        if self.window.network == None:
-            return
+        self.window.status_bar.update(status='subdirs %s' % self.subdirs)
         for child in self.subdirs:
             self.lines.append( \
                 RootDir(self.childrens[child]['id'], \
@@ -648,6 +631,19 @@ class NodeTree(OldestTree):
 
         """
         return "%s" % self.key
+
+    def cd(self, directory):
+        """
+        Change to directory and return the widget to display
+        """
+        if self.exist(directory) :
+            if directory == '..':
+                return self.parent.widget_box
+            if directory in self.childrens:
+                self.window.log.info("cd a values list key=%s" %directory)
+                self.childrens[directory]['widget_box'].walker.key=directory
+                return self.childrens[directory]['widget_box']
+        return None
 
 class ControllerBox(urwid.ListBox):
     """
@@ -808,15 +804,34 @@ class ValuesTree(OldestTree):
                                     'help':'Go to previous directory',
                                     'widget_box' : None},
                 }
-        self._path = "values"
-        self.node_header = NodesItem()
-        self.definition = {'id':'val',
-                                'name':'values',
-                                'help':'Values management',
+        self._path = ""
+        self.key = 'user'
+        self.value_header = ValuesItem()
+        self.definition_user = {'id':'User',
+                                'name':'User',
+                                'help':'User values management',
                                 'widget_box': self.widget_box
         }
-        if parent != None and self.definition != None :
-            parent.add_child(self.path, self.definition)
+        self.definition_basic = {'id':'Basic',
+                                'name':'Basic',
+                                'help':'Basic values management',
+                                'widget_box': self.widget_box
+        }
+        self.definition_config = {'id':'Config',
+                                'name':'Config',
+                                'help':'Config values management',
+                                'widget_box': self.widget_box
+        }
+        self.definition_system = {'id':'System',
+                                'name':'System',
+                                'help':'System values management',
+                                'widget_box': self.widget_box
+        }
+        if parent != None :
+            parent.add_child('User', self.definition_user)
+            parent.add_child('Basic', self.definition_basic)
+            parent.add_child('Config', self.definition_config)
+            parent.add_child('System', self.definition_system)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -830,7 +845,7 @@ class ValuesTree(OldestTree):
         #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_REMOVED)
 
     def _louie_node_update(self, network, node):
-        self.read_lines()
+        self.refresh()
 
     def read_lines(self):
         self.size = 0
@@ -846,7 +861,7 @@ class ValuesTree(OldestTree):
             self.size += 1
         self.lines.append(urwid.Divider("-"))
         self.size += 1
-        self.lines.append(self.node_header.get_header())
+        self.lines.append(self.value_header.get_header())
         self.size += 1
         for node in self.window.network.nodes:
             self.lines.append(NodesItem(self.window.network.nodes[node].node_id, \
@@ -862,13 +877,13 @@ class ValuesTree(OldestTree):
         """
         List directory content
         """
-        self.window.log.info("exist in NodesTree")
+        self.window.log.info("exist in ValuesTree")
         if OldestTree.exist(self, directory):
             return True
-        self.window.log.info("exist in NodesTree")
-        if int(directory) in self.window.network.nodes:
+        self.window.log.info("exist in ValuesTree")
+        if int(directory) in self.window.network.nodes.values:
             return True
-        self.window.log.info("exist in NodeTrees return false")
+        self.window.log.info("exist in ValuesTree return false")
         return False
 
     def cd(self, directory):
@@ -882,10 +897,20 @@ class ValuesTree(OldestTree):
                 self.window.log.info("cd %s" %directory)
                 return self.childrens[directory]['widget_box']
             if int(directory) in self.window.network.nodes:
-                self.window.log.info("cd a node id %s" %directory)
-                self.childrens['node']['widget_box'].walker.key=int(directory)
-                return self.childrens['node']['widget_box']
+                self.window.log.info("cd a value id %s" %directory)
+                #self.childrens['value']['widget_box'].walker.key=int(directory)
+                #return self.childrens['value']['widget_box']
         return None
+
+    @property
+    def path(self):
+        """
+        The path
+
+        :rtype: str
+
+        """
+        return "%s" % self.key
 
 
 #class NodesDir (urwid.WidgetWrap):
@@ -982,19 +1007,13 @@ class MainWindow(Screen):
         ('border','black','dark blue'),
         ('error','black','dark red'),
         ('FxKey','light cyan', 'dark blue', 'underline')]
-        #self.divider = urwid.Divider("-")
-        #self.left_header = LeftHeader()
-        #self.right_header = RightHeader()
-        #self.details = DetailsWidget(self, "result")
-        #self.menu = MenuWidget(self, "footer")
         self.network = None
         self.controller = None
-        #self.nodes_walker = NodesWalker(self, self.network)
-        #self.listbox_header = NodeItem()
         self.root_box = RootBox(self, None, "body")
         self.controller_box = ControllerBox(self, self.root_box, "body")
         self.nodes_box = NodesBox(self, self.root_box, "body")
         self.node_box = NodeBox(self, self.nodes_box, "body")
+        self.values_box = ValuesBox(self, self.node_box, "body")
         #self.menu = MenuWidget(self, "value")
 
 
@@ -1155,7 +1174,7 @@ class MainWindow(Screen):
             return False
 
     def refresh_nodes(self):
-        self.nodes_box.body.read_lines()
+        self.nodes_box.body.refresh()
         #self.update_node(self.nodes_box.walker.get_nodeid())
 
     def update_node(self, nodeid):

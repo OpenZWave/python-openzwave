@@ -368,6 +368,38 @@ class ZWaveNode( ZWaveObject,
 #        """
 #        return self._values
 
+    def get_values_by_command_classes(self, genre='All', \
+        type='All', readonly='All', writeonly='All'):
+        """
+        Retrieve values in a dict() of dicts(). The dict is indexed on the COMMAND_CLASS.
+        This allows to browse values grouped by the COMMAND_CLASS.You can optionnaly filter for a command class,
+        a genre and/or a type. You can also filter readonly and writeonly params.
+
+        This method always filter the values.
+        If you wan't to get all the node's values, use the property self.values instead.
+
+        :param genre: the genre of value
+        :type genre: 'All' or PyGenres
+        :param type: the type of value
+        :type type: 'All' or PyValueTypes
+        :param readonly: Is this value readonly
+        :type readonly: 'All' or True or False
+        :param writeonly: Is this value writeonly
+        :type writeonly: 'All' or True or False
+        :rtype: dict(command_class : dict(valueids))
+
+        """
+        values = dict()
+        for val in self.values :
+            if (genre == 'All' or self.values[value].genre == genre) and \
+              (type == 'All' or self.values[value].type == type) and \
+              (readonly == 'All' or self.values[value].is_read_only == readonly) and \
+              (writeonly == 'All' or self.values[value].is_write_only == writeonly):
+                if self.values[val].command_class not in values :
+                    values[self.values[val].command_class] = dict()
+                values[self.values[val].command_class][value] = self.values[value]
+        return values
+
     def get_values_for_command_class(self, class_id):
         """
         Retrieve the set of values for a command class.
