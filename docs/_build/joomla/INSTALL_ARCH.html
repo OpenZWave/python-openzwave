@@ -5,11 +5,6 @@
 <h1>Installing python-openzwave from repositories</h1>
 <div class="section" id="install-the-needed-tools">
 <h2>Install the needed tools</h2>
-<p>You must install mercurial and subversion to get sources of python-openzwave
-and openzwave. Look at the documentation of your Linux distribution to do that.</p>
-<p>On a debian like distribution :</p>
-<blockquote>
-<div>sudo apt-get install mercurial subversion</div></blockquote>
 <p>You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
 Some users have reported errors when using 0.16. You also need some python depencies</p>
 <p>On a debian like distribution :</p>
@@ -25,24 +20,22 @@ and the libudev developments headers.</p>
 <blockquote>
 <div>sudo apt-get install build-essential libudev-dev g++</div></blockquote>
 </div>
-<div class="section" id="get-sources-of-python-openzwave">
-<h2>Get sources of python-openzwave</h2>
-<p>You are now ready to download sources of python-openzwave :</p>
+<div class="section" id="get-archive-of-python-openzwave">
+<h2>Get archive of python-openzwave</h2>
+<p>You are now ready to download sources of python-openzwave here :</p>
 <blockquote>
-<div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
-<p>The previous command will create a copy of the official repository on your
-computer in a directory called python-openzwave.</p>
+<div><a class="reference external" href="http://code.google.com/p/python-openzwave/downloads/list">http://code.google.com/p/python-openzwave/downloads/list</a></div></blockquote>
+<p>This archive contains sources of python-openzwave and openzwave.</p>
+<blockquote>
+<div>tar xvzf python-openzwave-X.Y.Z.tar.gz</div></blockquote>
+<p>This command will extract all the needed sources.</p>
 </div>
-<div class="section" id="update-and-build-process">
-<h2>Update and build process</h2>
-<p>Go to the previously created directory</p>
+<div class="section" id="build-process">
+<h2>Build process</h2>
+<p>Go to the previously created directory :</p>
 <blockquote>
-<div>cd python-openzwave</div></blockquote>
-<p>The following command will update your local repository to the last release
-of python-openzwave and openzwave.</p>
-<blockquote>
-<div>./update.sh</div></blockquote>
-<p>When update process is done, you can compile sources</p>
+<div>cd python-openzwave-X.Y.Z.tar.gz</div></blockquote>
+<p>Now, you can compile sources :</p>
 <blockquote>
 <div>./compile.sh</div></blockquote>
 <p>Or if you have already build python-openzwave in a previous installation,

@@ -57,11 +57,9 @@ class ZWaveNode( ZWaveObject,
         logging.debug("Create object node (node_id:%s)" % (node_id))
         ZWaveObject.__init__(self, node_id, network)
         #No cache management for values in nodes
-        self._values = dict()
+        self.values = dict()
         self._is_sleeping = False
         self._is_locked = False
-        self._commands = dict()
-        self._sensors = dict()
         #self._name = None
         #self.cache_property("self.name")
         #self._location = None
@@ -359,31 +357,65 @@ class ZWaveNode( ZWaveObject,
         """
         return self._network.manager.COMMAND_CLASS_DESC[class_id]
 
-    @property
-    def values(self):
-        """
-        The values of the node.
-        Todo
-
-        :rtype: set()
-
-        """
-        return self._values
+#    @property
+#    def values(self):
+#        """
+#        The values of the node.
+#        Todo
+#
+#        :rtype: set()
+#
+#        """
+#        return self._values
 
     def get_values_for_command_class(self, class_id):
         """
-        Retrieve the set of values for a command class
+        Retrieve the set of values for a command class.
+        Deprecated
+        For backward compatibility only.
+        Use get_values instead
 
         :param class_id: the COMMAND_CLASS to get values
         :type class_id: hexadecimal code or string
+        :type writeonly: 'All' or True or False
         :rtype: set() of classId
+
+        """
+        #print class_id
+        return self.get_values(class_id=class_id)
+
+    def get_values(self, class_id='All', genre='All', \
+        type='All', readonly='All', writeonly='All'):
+        """
+        Retrieve the set of values. You can optionnaly filter for a command class,
+        a genre and/or a type. You can also filter readonly and writeonly params.
+
+        This method always filter the values.
+        If you wan't to get all the node's values, use self.values instead.
+
+        :param class_id: the COMMAND_CLASS to get values
+        :type class_id: hexadecimal code or string
+        :param genre: the genre of value
+        :type genre: 'All' or PyGenres
+        :param type: the type of value
+        :type type: 'All' or PyValueTypes
+        :param readonly: Is this value readonly
+        :type readonly: 'All' or True or False
+        :param writeonly: Is this value writeonly
+        :type writeonly: 'All' or True or False
+        :rtype: set() of Values
 
         """
         ret = dict()
         for value in self.values:
             #print "self.values[value].command_class= ",self.values[value].command_class
             #print "class_id= ",class_id
-            if self.values[value].command_class==self._network.manager.COMMAND_CLASS_DESC[class_id]:
+            if (class_id == 'All' or self.values[value].command_class == \
+                self._network.manager.COMMAND_CLASS_DESC[class_id]) and \
+              (genre == 'All' or self.values[value].genre == genre) and \
+              (type == 'All' or self.values[value].type == type) and \
+              (readonly == 'All' or self.values[value].is_read_only == readonly) and \
+              (writeonly == 'All' or self.values[value].is_write_only == writeonly):
                 ret[value] = self.values[value]
 #        for value in self._values:
 #            print "type(class_id)= ",type(class_id)
@@ -395,6 +427,9 @@ class ZWaveNode( ZWaveObject,
 #            elif type(class_id)==type(0):
 #                if self.values[value].command_class==class_id:
 #                    ret.add(self.values[value])
+        #if len(ret) == 0:
+        #   return None
+        #else :
         return ret
 
     def add_value(self, value_id, command_class):
@@ -444,6 +479,26 @@ class ZWaveNode( ZWaveObject,
 
         """
         del(self.values[value_id])
+
+    def set_field(self, field, value):
+        """
+        A helper to set a writable field : name, location, product_name, ...
+
+        :param field: The field to set : name, location, product_name, manufacturer_name
+        :type field: str
+        :param value: The value to set
+        :type value: str
+        :rtype: bool
+
+        """
+        if field == "name":
+            self.name=value
+        elif field == "location":
+            self.location=value
+        elif field == "product_name":
+            self.product_name=value
+        elif field == "manufacturer_name":
+            self.manufacturer_name=value
 
     def has_command_class(self, class_id):
         """

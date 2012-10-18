@@ -159,13 +159,53 @@ for node in network.nodes:
                 'units':network.nodes[node].values[val].units,
                 'data':network.nodes[node].values[val].data,
                 'data_str':network.nodes[node].values[val].data_as_string,
+                'genre':network.nodes[node].values[val].genre,
                 'type':network.nodes[node].values[val].type,
-                'ispolled':network.nodes[node].values[val].is_polled
+                'ispolled':network.nodes[node].values[val].is_polled,
+                'readonly':network.nodes[node].values[val].is_read_only,
+                'writeonly':network.nodes[node].values[val].is_write_only,
                 }
         print "%s - Values for command class : %s : %s" % (network.nodes[node].node_id,
                                     network.nodes[node].get_command_class_as_string(cmd),
                                     values)
     print "------------------------------------------------------------"
+print
+print "------------------------------------------------------------"
+print "Driver statistics : %s" % network.controller.stats
+print "------------------------------------------------------------"
+
+print "------------------------------------------------------------"
+print "Retrieve switches on the network"
+print "Nodes in network : %s" % network.nodes_count
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_switches() :
+        values[network.nodes[node].values[val].object_id] = {
+            'node_id':node,
+            'node_name':network.nodes[node].name,
+            'label':network.nodes[node].values[val].label,
+            'help':network.nodes[node].values[val].help,
+            }
+print "%s" % (values)
+
+print "------------------------------------------------------------"
+print "Activate the switches on the network"
+print "Nodes in network : %s" % network.nodes_count
+print "------------------------------------------------------------"
+for node in network.nodes:
+    for val in network.nodes[node].get_switches() :
+        print("Activate switch %s on node %s" % \
+                (network.nodes[node].values[val].label,node))
+        network.nodes[node].set_switch(val,True)
+        print("Sleep 10 seconds")
+        time.sleep(10.0)
+        print("Dectivate switch %s on node %s" % \
+                (network.nodes[node].values[val].label,node))
+        network.nodes[node].set_switch(val,False)
+print "%s" % ('Done')
+
+
 print
 print "------------------------------------------------------------"
 print "Driver statistics : %s" % network.controller.stats

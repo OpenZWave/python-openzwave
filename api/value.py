@@ -242,6 +242,21 @@ class ZWaveValue(ZWaveObject):
         return self._network.manager.getValueType(self.value_id)
 
     @property
+    def genre(self):
+        """
+        The genre of the value.
+
+        :return: genre of the value
+        :rtype: str
+
+        """
+#        if self.is_outdated("self.type"):
+#            self._type = self._network.manager.getValueType(self.value_id)
+#            self.update("self.type")
+#        return self._type
+        return self._network.manager.getValueGenre(self.value_id)
+
+    @property
     def data(self):
         """
         The current data of the value.
@@ -254,21 +269,6 @@ class ZWaveValue(ZWaveObject):
 #            self.update("self.data")
 #        return self._data
         return self._network.manager.getValue(self.value_id)
-
-    @property
-    def data_items(self):
-        """
-        When type of value is list, data_items contains a list of valid values
-
-        :returns: The valid values
-        :rtype: set()
-
-        """
-#        if self.is_outdated("self.data_items"):
-#            self._data_items = self._network.manager.getValueListItems(self.value_id)
-#            self.update("self.data_items")
-#        return self._data_items
-        return self._network.manager.getValueListItems(self.value_id)
 
     @data.setter
     def data(self, value):
@@ -296,6 +296,37 @@ class ZWaveValue(ZWaveObject):
 #        return self._as_string
         return self._network.manager.getValueAsString(self.value_id)
 
+    @property
+    def data_items(self):
+        """
+        When type of value is list, data_items contains a list of valid values
+
+        :returns: The valid values
+        :rtype: set()
+
+        """
+#        if self.is_outdated("self.data_items"):
+#            self._data_items = self._network.manager.getValueListItems(self.value_id)
+#            self.update("self.data_items")
+#        return self._data_items
+        return self._network.manager.getValueListItems(self.value_id)
+
+    def check_data(self):
+        """
+        Check that data is correct for this value.
+        Must be called
+
+        :returns: The valid values
+        :rtype: set()
+
+        """
+#        if self.is_outdated("self.data_items"):
+#            self._data_items = self._network.manager.getValueListItems(self.value_id)
+#            self.update("self.data_items")
+#        return self._data_items
+        return self._network.manager.getValueListItems(self.value_id)
+
+
 #    @property
 #    def poll_intensity(self):
 #        """
@@ -315,6 +346,40 @@ class ZWaveValue(ZWaveObject):
 
         """
         return self._network.manager.isPolled(self.value_id)
+
+    @property
+    def is_set(self):
+        """
+        Test whether the value has been set.
+
+        :returns: True if the value has actually been set by a status message
+        from the device, rather than simply being the default.
+        :rtype: bool
+
+        """
+        return self._network.manager.isValueSet(self.value_id)
+
+    @property
+    def is_read_only(self):
+        """
+        Test whether the value is read-only.
+
+        :returns: True if the value cannot be changed by the user.
+        :rtype: bool
+
+        """
+        return self._network.manager.isValueReadOnly(self.value_id)
+
+    @property
+    def is_write_only(self):
+        """
+        Test whether the value is write-only.
+
+        :returns: True if the value can only be written to and not read.
+        :rtype: bool
+
+        """
+        return self._network.manager.isValueWriteOnly(self.value_id)
 
     def enable_poll(self, intensity):
         """

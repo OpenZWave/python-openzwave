@@ -141,6 +141,7 @@ cdef getValueFromType(Manager *manager, valueId):
         if datatype == "Bool":
             cret = manager.GetValueAsBool(values_map.at(valueId), &type_bool)
             ret = type_bool if cret else None
+            return ret
         elif datatype == "Byte":
             cret = manager.GetValueAsByte(values_map.at(valueId), &type_byte)
             ret = type_byte if cret else None
@@ -160,6 +161,10 @@ cdef getValueFromType(Manager *manager, valueId):
         elif datatype == "String":
             cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
             ret = type_string.c_str() if cret else None
+            return ret
+        elif datatype == "Button":
+            cret = manager.GetValueAsBool(values_map.at(valueId), &type_bool)
+            ret = type_bool if cret else None
             return ret
         elif datatype == "List":
             cret = manager.GetValueListSelection(values_map.at(valueId), &type_string)
@@ -1671,6 +1676,10 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 type_string = string(value)
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
+            elif datatype == "Button":
+                type_bool = value
+                cret = self.manager.SetValue(values_map.at(id), type_bool)
+                ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
@@ -1883,6 +1892,29 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueT
         else :
             return None
 
+    def getValueGenre(self, id):
+        '''
+.. _getValueGenre:
+
+ Get the genre of the value.  The genre classifies a value to enable
+low-level system or configuration parameters to be filtered out
+by the application
+
+:param id: The ID of a value.
+:type id: int
+:returns: str -- A string containing the type of the value
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_,
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsString_, getValue_, getValueType_
+
+       '''
+        if values_map.find(id) != values_map.end():
+            genre = PyGenres[values_map.at(id).GetGenre()]
+            return genre
+        else :
+            return None
+
     def getValueType(self, id):
         '''
 .. _getValueType:
@@ -1896,7 +1928,6 @@ Gets the type of the value
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValue_
 
        '''
-        cdef string c_string
         if values_map.find(id) != values_map.end():
             datatype = PyValueTypes[values_map.at(id).GetType()]
             return datatype

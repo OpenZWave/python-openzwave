@@ -111,10 +111,203 @@ That&#8217;s the first thing to do
 We also can define a property wtih a fiendly name</p>
 <p>handle_command_class will do the rest</p>
 <p>Another way to do it :
-A node can manage commands (setOn, setOff, setLevel, ...)
-and retrieve status (isOn, level, battery_level, consommation, tempertature)</p>
+A node can manage actuators (switch, dimmer, ...)
+and sensors (temperature, consommation, temperature)</p>
 <p>So we need a kind of mechanism to retrive commands in a user friendly way
 Same for sensors.</p>
+<p>A good use caser is the AN158 Plug-in Meter Appliance Module
+We will study the following command classes :
+&#8216;COMMAND_CLASS_SWITCH_ALL&#8217;, &#8216;COMMAND_CLASS_SWITCH_BINARY&#8217;,
+&#8216;COMMAND_CLASS_METER&#8217;,</p>
+<p>the associated values are :</p>
+<dl class="docutils">
+<dt>COMMAND_CLASS_SWITCH_ALL <span class="classifier-delimiter">:</span> <span class="classifier">{</span></dt>
+<dd><dl class="first last docutils">
+<dt>72057594101481476L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: &#8216;On and Off Enabled&#8217;,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Switch All&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: &#8216;On and Off Enabled&#8217;,
+&#8216;type&#8217;: &#8216;List&#8217;}</dd>
+</dl>
+</dd>
+</dl>
+<p>}</p>
+<dl class="docutils">
+<dt>COMMAND_CLASS_SWITCH_BINARY <span class="classifier-delimiter">:</span> <span class="classifier">{</span></dt>
+<dd><dl class="first last docutils">
+<dt>72057594093060096L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: False,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Switch&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: False,
+&#8216;type&#8217;: &#8216;Bool&#8217;}</dd>
+</dl>
+</dd>
+</dl>
+<p>}</p>
+<dl class="docutils">
+<dt>COMMAND_CLASS_METER <span class="classifier-delimiter">:</span> <span class="classifier">{</span></dt>
+<dd><dl class="first last docutils">
+<dt>72057594093273600L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: False,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Exporting&#8217;,
+&#8216;readonly&#8217;: True,
+&#8216;data_str&#8217;: False,
+&#8216;type&#8217;: &#8216;Bool&#8217;},</dd>
+<dt>72057594101662232L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: &#8216;False&#8217;,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: True,
+&#8216;label&#8217;: &#8216;Reset&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: &#8216;False&#8217;,
+&#8216;type&#8217;: &#8216;Button&#8217;},</dd>
+<dt>72057594093273090L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;kWh&#8217;,
+&#8216;data&#8217;: 0.0,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Energy&#8217;,
+&#8216;readonly&#8217;: True,
+&#8216;data_str&#8217;: 0.0,
+&#8216;type&#8217;: &#8216;Decimal&#8217;},</dd>
+<dt>72057594093273218L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;W&#8217;,
+&#8216;data&#8217;: 0.0,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Power&#8217;,
+&#8216;readonly&#8217;: True,
+&#8216;data_str&#8217;: 0.0,
+&#8216;type&#8217;: &#8216;Decimal&#8217;}</dd>
+</dl>
+</dd>
+</dl>
+<p>}</p>
+<p>Another example from an homepro dimmer (not congifured in openzwave):
+COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>72057594109853736L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: &#8216;False&#8217;,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: True,
+&#8216;label&#8217;: &#8216;Dim&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: &#8216;False&#8217;,
+&#8216;type&#8217;: &#8216;Button&#8217;},</dd>
+<dt>72057594109853697L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 255L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: 69,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Level&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: 69,
+&#8216;type&#8217;: &#8216;Byte&#8217;},</dd>
+<dt>72057594118242369L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 255L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: 0,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Start Level&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: 0,
+&#8216;type&#8217;: &#8216;Byte&#8217;},</dd>
+<dt>72057594109853720L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: &#8216;False&#8217;,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: True,
+&#8216;label&#8217;: &#8216;Bright&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: &#8216;False&#8217;,
+&#8216;type&#8217;: &#8216;Button&#8217;},</dd>
+<dt>72057594118242352L: {</dt>
+<dd>&#8216;help&#8217;: &#8216;&#8217;,
+&#8216;max&#8217;: 0L,
+&#8216;ispolled&#8217;: False,
+&#8216;units&#8217;: &#8216;&#8217;,
+&#8216;data&#8217;: False,
+&#8216;min&#8217;: 0L,
+&#8216;writeonly&#8217;: False,
+&#8216;label&#8217;: &#8216;Ignore Start Level&#8217;,
+&#8216;readonly&#8217;: False,
+&#8216;data_str&#8217;: False,
+&#8216;type&#8217;: &#8216;Bool&#8217;}</dd>
+</dl>
+</div></blockquote>
+<p>}</p>
+<p>What about the conclusion :</p>
+<blockquote>
+<div><p>The COMMAND_CLASS_SWITCH_ALL is defined with the same label and
+use a list as parameter. This should be a configuration parameter.
+Don&#8217;t know what to do for this command class</p>
+<p>The COMMAND_CLASS_SWITCH_BINARY use a bool as parameter while
+COMMAND_CLASS_SWITCH_MULTILEVEL use 2 buttons : Dim and Bright.
+Dim and Bright must be done in 2 steps : set the level and activate
+the button.</p>
+<p>So we must add one or more lines in the actuators :</p>
+<p>Switch : {setter:self.set_command_class_0xYZ(valueId, new), getter:}
+We must find a way to access the value directly</p>
+<p>Bright
+Dim</p>
+<p>So for the COMMAND_CLASS_SWITCH_BINARY we must define a function called
+Switch (=the label of the value). What happen if we have 2 switches
+on the node : 2 values I suppose.</p>
+<p>COMMAND_CLASS_SWITCH_MULTILEVEL uses 2 commands : 4 when 2 dimmers on the
+done ? Don&#8217;t know but it can.</p>
+<p>COMMAND_CLASS_METER export many values : 2 of them sends a decimal
+and are readonly. They also have a Unit defined ans values are readonly</p>
+<p>COMMAND_CLASS_METER are used for sensors only. So we would map
+every values entries as defined before</p>
+<p>Programming :
+get_switches : retrieve the list of switches on the node
+is_switch (label) : says if the value with label=label is a switch
+get_switch (label) : retrive the value where label=label</p>
+</div></blockquote>
 <dl class="attribute">
 <dt id="openzwave.command.ZWaveNodeBasic.battery_level">
 <tt class="descname">battery_level</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.battery_level" title="Permalink to this definition">¶</a></dt>
@@ -135,24 +328,32 @@ Todo</p>
 <em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSwitch</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an interface to Switch Commands</p>
 <dl class="method">
-<dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x25">
-<tt class="descname">command_class_0x25</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.command_class_0x25" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) level of this node.
-Todo</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.command_class_0x26">
 <tt class="descname">command_class_0x26</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.command_class_0x26" title="Permalink to this definition">¶</a></dt>
 <dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) level of this node.
 Todo</p>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="openzwave.command.ZWaveNodeSwitch.is_on">
-<tt class="descname">is_on</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.is_on" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this node On.
-Todo</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switches">
+<tt class="descname">get_switches</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.get_switches" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Retrieve the list of values to consider as switches.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x25
+genre = &#8220;User&#8221;
+type = &#8220;Bool&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool</em>) &#8211; True or False</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -160,6 +361,21 @@ Todo</p>
 <tt class="descname">level</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of the node.
 Todo</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_switch">
+<tt class="descname">set_switch</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.set_switch" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Set switch to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool</em>) &#8211; True or False</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,49 @@
+
+python-openzwave
+****************
+
+You don't need to install (but building it) python-openzwave to test
+examples.
+
+
+ozwsh
+=====
+
+A shell manager for your ZWave network. It use urwid python extension.
+Type the following command to install it :
+
+   sudo pip install urwid
+
+Start ozwsh with :
+
+   ./ozwsh.sh --device=/dev/yourzwavestick
+
+It allows :
+
+   * Reset controller (hard and soft) and
+
+   * Change node informations (name, location, ... )
+
+
+api_demo
+========
+
+A test demo : it list all nodes/values on your network and activate
+your switches.
+
+Start it with :
+
+   ./api_demo.sh --device=/dev/yourzwavestick
+
+
+Other examples
+==============
+
+manager : my first try to use uwird. I don't think I will developp it
+anymore. Feel free to fork it.
+
+The old directory contains examples of py-openzwave (the ancestor of
+python-openzwave), feel free to upgrade them.
+
+If you develop some examples using python-openzwave library, send us
+the sources, they will be addes to examples.

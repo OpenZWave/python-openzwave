@@ -5,8 +5,10 @@ Manual installation instructions
 If you can't build python-openzwave using other instruction you can try to
 install it using this method.
 
+
 Install the needed tools
 ========================
+
 You must install mercurial and subversion to get sources of python-openzwave
 and openzwave. Look at the documentation of your Linux distribution to do that.
 
@@ -34,6 +36,7 @@ On a debian like distribution :
 
     sudo apt-get install build-essential libudev-dev g++
 
+
 Get sources of python-openzwave and open-zwave
 ==============================================
 
@@ -43,28 +46,30 @@ You are now ready to download sources of python-openzwave :
 
 Go to the python-openzwave directory and grab the sources of openzwave
 
-	svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+
 
 Build openzwave and python-openzwave
 ====================================
 
 Go to the openzwave directory and build it :
 
-	cd openzwave/cpp/build/linux
+    cd openzwave/cpp/build/linux
 
-	make
+    make
 
-	cd ../../../..
+    cd ../../../..
 
 Build python-openzwave
 
-	python setup-lib.py build
+    python setup-lib.py build
 
-	python setup-api.py build
+    python setup-api.py build
+
 
 And install them
 ================
 
-	sudo python setup-lib.py install
+    sudo python setup-lib.py install
 
-	sudo python setup-api.py install
+    sudo python setup-api.py install

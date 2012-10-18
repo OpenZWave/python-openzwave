@@ -6,13 +6,6 @@ Installing python-openzwave from repositories
 Install the needed tools
 ========================
 
-You must install mercurial and subversion to get sources of python-openzwave
-and openzwave. Look at the documentation of your Linux distribution to do that.
-
-On a debian like distribution :
-
-    sudo apt-get install mercurial subversion
-
 You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
 Some users have reported errors when using 0.16. You also need some python depencies
 
@@ -34,30 +27,28 @@ On a debian like distribution :
     sudo apt-get install build-essential libudev-dev g++
 
 
-Get sources of python-openzwave
+Get archive of python-openzwave
 ===============================
 
-You are now ready to download sources of python-openzwave :
+You are now ready to download sources of python-openzwave here :
 
-    hg clone https://code.google.com/p/python-openzwave/
+    http://code.google.com/p/python-openzwave/downloads/list
 
-The previous command will create a copy of the official repository on your
-computer in a directory called python-openzwave.
+This archive contains sources of python-openzwave and openzwave.
+
+    tar xvzf python-openzwave-X.Y.Z.tar.gz
+
+This command will extract all the needed sources.
 
 
-Update and build process
-========================
+Build process
+=============
 
-Go to the previously created directory
+Go to the previously created directory :
 
-    cd python-openzwave
+    cd python-openzwave-X.Y.Z.tar.gz
 
-The following command will update your local repository to the last release
-of python-openzwave and openzwave.
-
-    ./update.sh
-
-When update process is done, you can compile sources
+Now, you can compile sources :
 
     ./compile.sh
 
