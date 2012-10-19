@@ -2648,7 +2648,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
        '''
         return self.manager.GetNumScenes()
@@ -2667,7 +2667,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         data = set()
@@ -2710,7 +2710,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
        '''
         return self.manager.CreateScene()
@@ -2731,10 +2731,35 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         return self.manager.RemoveScene(sceneId)
+
+    def getSceneValues(self, id):
+        '''
+.. _getSceneValues:
+
+Retrieve the list of values from a scene
+
+:param id: The ID of a value.
+:type id: int
+:returns: Set -- The list of items.
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_,getValueListSelectionStr_ ,getValueListSelectionNum_ \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+
+        '''
+        #print "**** libopenzwave.GetValueListItems ******"
+        cdef vector[ValueID] vect
+        ret = set()
+        if self.manager.SceneGetValues(id, &vect):
+            while not vect.empty() :
+                value_id = vect.back().GetId()
+                #value_id = value.GetId()
+                ret.add(value_id)
+                vect.pop_back();
+            #print "++++ list des items : " ,  ret
+        return ret
 
     def addSceneValue(self, uint8_t sceneid, id, value):
         '''
@@ -2761,7 +2786,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         cdef float type_float
@@ -2822,7 +2847,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         cdef float type_float
@@ -2886,7 +2911,7 @@ setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
@@ -2908,7 +2933,7 @@ getSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         self.manager.SetSceneLabel(sceneid, string(label))
@@ -2929,7 +2954,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         return self.manager.SceneExists(sceneid)
@@ -2950,7 +2975,7 @@ getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
 sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_
+sceneGetValueAsString_, getSceneValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
