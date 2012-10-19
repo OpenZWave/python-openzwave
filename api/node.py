@@ -304,9 +304,20 @@ class ZWaveNode( ZWaveObject,
 #        return self._groups
         groups = dict()
         nbgroups = self.num_groups
-        for i in range(0, nbgroups):
+        for i in range(1, nbgroups):
             groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
         return groups
+
+    def add_group(self, target_node_id):
+        """
+        Add a new group containing the target node target_node_id.
+        to do
+
+        :param target_node_id: Identifier for the node that will be added to the association group.
+        :type target_node_id: int
+
+        """
+        self._network.manager.addAssociation(self.home_id, self.node_id, self.num_groups+1, target_node_id)
 
     @property
     def command_classes(self):

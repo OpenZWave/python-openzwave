@@ -325,8 +325,8 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             readonly = False
             writeonly = False
 
-        :param value: True or False
-        :type value: bool
+        :returns: The list of switches on this node
+        :rtype: dict()
 
         """
         return self.get_values(class_id=0x25, genre='User', \
@@ -384,28 +384,29 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         logging.debug("Create object interface for Sensor (node_id:%s)" % (self.node_id))
         ZWaveNodeInterface.__init__(self)
 
-    def command_class_0x30(self):
+    def get_sensors(self):
         """
-        The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) level of this node.
-        Todo
-        """
-        values = self.get_values_for_command_class(0x30)  # COMMAND_CLASS_SENSOR_BINARY
-        if values:
-            for value in values:
-                vdic = value.data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
-                    return vdic['value'] == 'True'
-        return False
+        The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+        The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+        The command 0x32 (COMMAND_CLASS_METER) of this node.
+        Retrieve the list of values to consider as sensors.
+        Filter rules are :
 
-    def command_class_0x31(self):
+            command_class = 0x30-32
+            genre = "User"
+            readonly = True
+            writeonly = False
+
+        :returns: The list of switches on this node
+        :rtype: dict()
+
         """
-        The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) level of this node.
-        Todo
-        """
-        values = self.get_values_for_command_class(0x31)  # COMMAND_CLASS_SENSOR_MULTILEVEL
-        if values:
-            for value in values:
-                vdic = value.data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Bool' and vdic.has_key('value'):
-                    return vdic['value'] == 'True'
-        return False
+        values = {}
+        values.update(self.get_values(class_id=0x30, genre='User', \
+            readonly=True, writeonly=False))
+        values.update(self.get_values(class_id=0x31, genre='User', \
+            readonly=True, writeonly=False))
+        values.update(self.get_values(class_id=0x32, genre='User', \
+            readonly=True, writeonly=False))
+        return values
+

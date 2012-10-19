@@ -50,36 +50,102 @@ class ZWaveScene(ZWaveObject):
         '''
         ZWaveObject.__init__(self, scene_id, network)
         logging.debug("Create object scene (scene_id:%s)" % (scene_id))
-        self._values = dict()
-        self._label = ''
+        self.values = dict()
+        #self._label = ''
+
+    @property
+    def scene_id(self):
+        """
+        The id of the scene.
+
+        :rtype: int
+
+        """
+        return self._object_id
 
     @property
     def label(self):
         """
         The label of the scene.
-        """
-        return self._label
 
-    @property
-    def values(self):
+        :rtype: str
+
         """
-        The values used in the scene.
+#        if self.is_outdated("self.name"):
+#            #print "No cache"
+#            self._name = self._network.manager.getNodeName(self.home_id, self.object_id)
+#            self.update("self.name")
+#        #print "self._name"
+#        return self._name
+        return self._network.manager.getSceneLabel(self.home_id, self.object_id)
+
+    @label.setter
+    def label(self, value):
         """
-        if self.outdated :
-            self.refresh()
-        return self._values
+        Set the label of the scene.
+
+        :param value: The new label of the scene
+        :type value: str
+
+        """
+        self._network.manager.setSceneLabel(self.home_id, self.object_id, value)
+#        self.outdate("self.name")
 
     def create(self, name):
         '''
-        Create a new zwave scene and update the object_id field
+        Create a new zwave scene on the network and update the object_id field
         '''
-        self._scene_id = scene_id
-        self._name = ''
+        sceneid = self._network.manager.createScene()
+        if sceneid != 0 :
+            self._scene_id = sceneid
 
     def add_value(self, value_id, value_data):
         '''
         Add a value to the zwave scene.
+
+        :param value_id: The id of the value to add
+        :type value_id: int
+        :rtype: bool
+
         '''
+        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id, command_class=command_class)
+        self.values[value_id] = value
+        #self.values[value_id].oudated = True
+
+    def change_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+#        self.values[value_id].oudated = True
+        pass
+
+    def refresh_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+#        self.values[value_id].oudated = True
+        pass
+
+    def remove_value(self, value_id):
+        """
+        Change a value of the node. Todo
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :rtype: bool
+
+        """
+        del(self.values[value_id])
 
     def set_value(self, value_id, value_data):
         '''

@@ -2858,6 +2858,14 @@ sceneGetValueAsString_
                 type_string = string(value)
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
+            elif datatype == "Button":
+                type_bool = value
+                cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_bool)
+                ret = 1 if cret else 0
+            elif datatype == "List":
+                type_string = string(value)
+                cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
+                ret = 1 if cret else 0
         return ret
 
     def getSceneLabel(self, sceneid):

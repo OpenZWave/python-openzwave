@@ -198,6 +198,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_DRIVER_READY = 'DriverReady'
     SIGNAL_DRIVER_RESET = 'DriverReset'
     SIGNAL_GROUP = 'Group'
+    SIGNAL_NODE = 'Node'
     SIGNAL_NODE_ADDED = 'NodeAdded'
     SIGNAL_NODE_EVENT = 'NodeEvent'
     SIGNAL_NODE_NAMING = 'NodeNaming'
@@ -205,6 +206,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
     SIGNAL_NODE_READY = 'NodeReady'
     SIGNAL_NODE_REMOVED = 'NodeRemoved'
+    SIGNAL_VALUE = 'Value'
     SIGNAL_VALUE_ADDED = 'ValueAdded'
     SIGNAL_VALUE_CHANGED = 'ValueChanged'
     SIGNAL_VALUE_REFRESHED = 'ValueRefreshed'
@@ -449,6 +451,30 @@ class ZWaveNetwork(ZWaveObject):
             self._nodes = value
 
     @property
+    def scenes(self):
+        """
+        The scenes of the network.
+
+        :rtype: dict()
+
+        """
+        return self._scenes
+
+    @nodes.setter
+    def scenes(self, value):
+        """
+        The self of the network.
+
+        :param value: The new value
+        :type value: dict() or None
+
+        """
+        if value == None:
+            self._self = dict()
+        else:
+            self._self = value
+
+    @property
     def nodes_count(self):
         """
         The nodes count of the network.
@@ -529,7 +555,7 @@ class ZWaveNetwork(ZWaveObject):
                 self._handle_value_added(args)
             elif notify_type == 'ValueChanged':
                 self._handle_value_changed(args)
-            elif notify_type == 'valueRefreshed':
+            elif notify_type == 'ValueRefreshed':
                 self._handle_value_refreshed(args)
             elif notify_type == 'ValueRemoved':
                 self._handle_value_removed(args)
@@ -651,6 +677,24 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_GROUP, \
                 **{'network': self, 'node': self.nodes[args['nodeId']]})
 
+    def _handle_node(self, args):
+        '''
+        Sent when a node is changed, added, removed, ...
+        If you don't interrest in nodes event details you can listen to this
+        signal only.
+
+        Signals supported : SIGNAL_NODE_EVENT, SIGNAL_NODE_ADDED,
+            SIGNAL_NODE_NAMING, SIGNAL_NODE_NEW, SIGNAL_NODE_PROTOCOL_INFO,
+            SIGNAL_NODE_READY, SIGNAL_NODE_REMOVED
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('Z-Wave Notification Value : %s' % (args))
+        dispatcher.send(self.SIGNAL_NODE, \
+                **{'network': self, 'node_id': args['nodeId']})
+
     def _handle_node_added(self, args):
         '''
         A new node has been added to OpenZWave's set.
@@ -668,6 +712,7 @@ class ZWaveNetwork(ZWaveObject):
             self.nodes[args['nodeId']] = node
             dispatcher.send(self.SIGNAL_NODE_ADDED, \
                 **{'network': self, 'node': node})
+            self._handle_node(args)
         finally :
             self._semaphore_nodes.release()
 
@@ -684,6 +729,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification NodeEvent : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_EVENT, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
+        self._handle_node(args)
 
     def _handle_node_naming(self, args):
         '''
@@ -697,6 +743,7 @@ class ZWaveNetwork(ZWaveObject):
         self.nodes[args['nodeId']].outdate("self.name")
         dispatcher.send(self.SIGNAL_NODE_NAMING, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
+        self._handle_node(args)
 
     def _handle_node_new(self, args):
         '''
@@ -709,6 +756,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification NodeNew : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_NEW, \
             **{'network': self, 'node_id': args['nodeId']})
+        self._handle_node(args)
 
     def _handle_node_protocol_info(self, args):
         '''
@@ -725,6 +773,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification NodeProtocolInfo : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_PROTOCOL_INFO, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
+        self._handle_node(args)
 
     def _handle_node_removed(self, args):
         '''
@@ -742,6 +791,7 @@ class ZWaveNetwork(ZWaveObject):
             self.nodes[args['nodeId']] = ZWaveNode(args['nodeId'], network=self)
             dispatcher.send(self.SIGNAL_NODE_REMOVED, \
                 **{'network': self, 'node_id': args['nodeId']})
+            self._handle_node(args)
         finally :
             self._semaphore_nodes.release()
 
@@ -886,6 +936,29 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_BUTTON_OFF, \
             **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
+    def _handle_value(self, args):
+        '''
+        Sent when a value is changed, addes, removed, ...
+        If you don't interrest in values event details you can listen to this
+        signal only.
+
+        Signals supported : SIGNAL_VALUE_ADDED, SIGNAL_VALUE_CHANGED,
+            SIGNAL_VALUE_REFRESHED, SIGNAL_VALUE_REMOVED
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('Z-Wave Notification Value : %s' % (args))
+        #logging.debug('Z-Wave Notification Value : %s' % (self.SIGNAL_VALUE))
+        #logging.debug('Z-Wave Notification Value : %s' % (self))
+        #logging.debug('Z-Wave Notification Value : %s' % (self.nodes[args['nodeId']]))
+        #logging.debug('Z-Wave Notification Value : %s' % (args['valueId']['id']))
+        dispatcher.send(self.SIGNAL_VALUE, \
+            **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                'value_id' : args['valueId']['id']})
+        #logging.debug('Z-Wave Notification Value : %s' % ('Done'))
+
     def _handle_value_added(self, args):
         '''
         A new node value has been added to OpenZWave's set.
@@ -904,6 +977,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE_ADDED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
+        self._handle_value(args)
 
     def _handle_value_changed(self, args):
         '''
@@ -919,6 +993,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE_CHANGED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
+        self._handle_value(args)
 
     def _handle_value_refreshed(self, args):
         '''
@@ -929,10 +1004,17 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueRefreshed : %s' % (args))
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % (self.SIGNAL_VALUE))
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % (self))
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % (self.nodes[args['nodeId']]))
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % (args['valueId']['id']))
         self.nodes[args['nodeId']].refresh_value(args['valueId']['id'])
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % ('Refresh'))
         dispatcher.send(self.SIGNAL_VALUE_REFRESHED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
+        self._handle_value(args)
+        #logging.debug('Z-Wave Notification ValueRefreshed : %s' % ('Done'))
 
     def _handle_value_removed(self, args):
         '''
@@ -948,6 +1030,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value_id' : args['valueId']['id']})
+        self._handle_value(args)
 
     def _handle_error(self, args):
         '''

@@ -274,11 +274,46 @@ class ZWaveValue(ZWaveObject):
     def data(self, value):
         """
         Set the data of the value.
+        Use check_data before setting it.
 
         :param value: The new data value
         :type value: str
 
         """
+        if self.type == "Bool":
+            if type(value) == type("") :
+                if value == "False" or value == "false" or value == "0":
+                    value = False
+                else :
+                    value = True
+        elif self.type == "Byte":
+            if type(value) == type("") :
+                try :
+                    value = int(value)
+                except :
+                    pass
+        elif self.type == "Decimal":
+            if type(value) == type("") or type(value) == type(0):
+                try :
+                    value = float(value)
+                except :
+                    pass
+        elif self.type == "Int":
+                try :
+                    value = int(value)
+                except :
+                    pass
+        elif self.type == "Short":
+                try :
+                    value = int(value)
+                except :
+                    pass
+        elif self.type == "Button":
+            if type(value) == type("") :
+                if value == "False" or value == "false" or value == "0":
+                    value = False
+                else :
+                    value = True
         self._network.manager.setValue(self.value_id, value)
 #        self.outdate("self.data")
 
@@ -309,22 +344,40 @@ class ZWaveValue(ZWaveObject):
 #            self._data_items = self._network.manager.getValueListItems(self.value_id)
 #            self.update("self.data_items")
 #        return self._data_items
-        return self._network.manager.getValueListItems(self.value_id)
+        if self.is_read_only :
+            return "Read only"
+        if self.type == "Bool":
+            return "True or False"
+        elif self.type == "Byte":
+            return "A byte between %s and %s" % (self.min,self.max)
+        elif self.type == "Decimal":
+            return "A decimal"
+        elif self.type == "Int":
+            return "An integer between %s and %s" % (self.min,self.max)
+        elif self.type == "Short":
+            return "A short between %s and %s" % (self.min,self.max)
+        elif self.type == "String":
+            return "A string"
+        elif self.type == "Button":
+            return "True or False"
+        elif self.type == "List":
+            return self._network.manager.getValueListItems(self.value_id)
+        else :
+            return "Unknown"
 
-    def check_data(self):
+    def check_data(self, data):
         """
         Check that data is correct for this value.
-        Must be called
+        Must be called before updating data of the value.
+        To do
 
-        :returns: The valid values
-        :rtype: set()
+        :returns: True if the data is correct.
+        :rtype: bool
 
         """
-#        if self.is_outdated("self.data_items"):
-#            self._data_items = self._network.manager.getValueListItems(self.value_id)
-#            self.update("self.data_items")
-#        return self._data_items
-        return self._network.manager.getValueListItems(self.value_id)
+        if self.is_read_only :
+            return False
+        return True
 
 
 #    @property

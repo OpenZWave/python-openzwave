@@ -757,7 +757,7 @@ class MainWindow(Screen):
         #self.set_nodes()
         self.frame.set_status_bar('ZWave network is ready')
         self.loop.draw_screen()
-        self._connect_louie_node()
+        #self._connect_louie_node()
 
     def _connect_louie_node(self):
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_EVENT)
