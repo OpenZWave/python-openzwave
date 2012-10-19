@@ -502,6 +502,19 @@ class ZWaveNetwork(ZWaveObject):
         sceneid = scene.create(label)
         return sceneid
 
+    def scene_exists(self, sceneid):
+        """
+        Check that the scene exists
+
+        :param sceneid: The id of the scene to check
+        :type sceneid: int
+        :returns: True if the scene exist. False in other cases
+        :rtype: bool
+
+        """
+        scene = ZWaveScene(None, network=self)
+        return scene.exists(sceneid)
+
     @property
     def nodes_count(self):
         """

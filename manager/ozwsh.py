@@ -182,17 +182,16 @@ class ScenesTree(OldestTree):
             return True
         else :
             self.window.status_bar.update(status="Can't create scene %s" % value)
-            return True
+            return False
 
     def delete(self, value):
-        scenes = self.window.network.get_scenes()
         try :
             value = int(value)
         except:
             self.window.status_bar.update(status='Invalid scene %s' % value)
             return False
-        if value in scenes:
-            ret = scenes[value].delete()
+        if self.window.network.scene_exists(value):
+            ret = self.window.network.get_scenes()[value].delete()
             if ret :
                 self.window.status_bar.update(status='Scene %s deleted' % value)
             return ret
@@ -201,14 +200,13 @@ class ScenesTree(OldestTree):
             return False
 
     def activate(self, value):
-        scenes = self.window.network.get_scenes()
         try :
             value = int(value)
         except:
             self.window.status_bar.update(status='Invalid scene %s' % value)
             return False
-        if value in scenes:
-            ret = scenes[value].activate()
+        if self.window.network.scene_exists(value):
+            ret = self.window.network.get_scenes()[value].activate()
             if ret :
                 self.window.status_bar.update(status='Scene %s activated' % value)
             return ret

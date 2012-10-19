@@ -2769,10 +2769,10 @@ Add a ValueID of value to an existing scene.
 
 Actually I don't know how to use it :)
 
-:param sceneId: The ID of a scene.
+:param sceneid: The ID of a scene.
+:type sceneid: int
+:param id: The ID of a value.
 :type id: int
-:param valueId: The ID of a value.
-:type valueId: int
 :param value: The value to set
 :type value: bool, int, float, string
 :returns: An integer representing the result of the operation
@@ -2822,6 +2822,14 @@ sceneGetValueAsString_, getSceneValues_
                 type_string = string(value)
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
+            elif datatype == "Button":
+                type_bool = value
+                cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_bool)
+                ret = 1 if cret else 0
+            elif datatype == "List":
+                type_string = string(value)
+                cret = self.manager.AddSceneValueListSelection(sceneid, values_map.at(id), type_string)
+                ret = 1 if cret else 0
         return ret
 
     def setSceneValue(self, uint8_t sceneid, id, value):
@@ -2830,10 +2838,10 @@ sceneGetValueAsString_, getSceneValues_
 
 Set a value to an existing scene's ValueID.
 
-:param sceneId: The ID of a scene.
+:param sceneid: The ID of a scene.
+:type sceneid: int
+:param id: The ID of a value.
 :type id: int
-:param valueId: The ID of a value.
-:type valueId: int
 :param value: The value to set
 :type value: bool, int, float, string
 :returns: An integer representing the result of the operation
@@ -2889,7 +2897,7 @@ sceneGetValueAsString_, getSceneValues_
                 ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
-                cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
+                cret = self.manager.SetSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
 

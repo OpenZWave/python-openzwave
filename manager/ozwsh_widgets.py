@@ -312,9 +312,8 @@ class GroupsTree(OldestTree):
             self.window.status_bar.update(status='Group %s updated' % param)
             return True
         else :
-            self.window.network.nodes[self.node_id].add_group(value)
-            self.window.status_bar.update(status='Group %s added' % param)
-            return True
+            self.window.status_bar.update(status="Group %s don't exist" % param)
+            return False
 
     def remove(self, param, value):
         try:
