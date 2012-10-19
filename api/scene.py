@@ -77,7 +77,7 @@ class ZWaveScene(ZWaveObject):
 #            self.update("self.name")
 #        #print "self._name"
 #        return self._name
-        return self._network.manager.getSceneLabel(self.home_id, self.object_id)
+        return self._network.manager.getSceneLabel(self.object_id)
 
     @label.setter
     def label(self, value):
@@ -88,16 +88,32 @@ class ZWaveScene(ZWaveObject):
         :type value: str
 
         """
-        self._network.manager.setSceneLabel(self.home_id, self.object_id, value)
+        self._network.manager.setSceneLabel(self.object_id, value)
 #        self.outdate("self.name")
 
-    def create(self, name):
+    def create(self, label=None):
         '''
         Create a new zwave scene on the network and update the object_id field
+        If label is set, also change the label of the scene
+
+        :param label: The new label
+        :type label: str or None
+        :returns: return the id of scene on the network. Return 0 if fails
+        :rtype: int
+
         '''
         sceneid = self._network.manager.createScene()
         if sceneid != 0 :
-            self._scene_id = sceneid
+            self._object_id = sceneid
+            if label != None:
+                self.label = label
+        return sceneid
+
+    def delete(self):
+        '''
+        Delete the scene on the network
+        '''
+        return self._network.manager.removeScene(self.object_id)
 
     def add_value(self, value_id, value_data):
         '''

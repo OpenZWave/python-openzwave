@@ -2715,7 +2715,7 @@ sceneGetValueAsString_
        '''
         return self.manager.CreateScene()
 
-    def removeScene(self, homeid):
+    def removeScene(self, sceneId):
         '''
 .. _removeScene:
 
@@ -2734,7 +2734,7 @@ sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
 sceneGetValueAsString_
 
         '''
-        return self.manager.RemoveScene(homeid)
+        return self.manager.RemoveScene(sceneId)
 
     def addSceneValue(self, uint8_t sceneid, id, value):
         '''

@@ -35,6 +35,7 @@ from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject, Nu
 from openzwave.controller import ZWaveController
 from openzwave.node import ZWaveNode
 from openzwave.option import ZWaveOption
+from openzwave.scene import ZWaveScene
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
@@ -450,29 +451,56 @@ class ZWaveNetwork(ZWaveObject):
         else:
             self._nodes = value
 
-    @property
-    def scenes(self):
+    def get_scenes(self):
         """
         The scenes of the network.
 
+        Scenes are generated directly from the lib. There is no notification
+        support to keep them up to date. So for a batch job, consider
+        storing them in a local variable.
+
+        :returns: return a dict() (that can be empty) of scene object. Return None if betwork is not ready
+        :rtype: dict() or None
+
+        """
+        if self.state < self.STATE_READY :
+            return None
+        else :
+            return self._load_scenes()
+
+    def _load_scenes(self):
+        """
+        Load the scenes of the network.
+
+        :returns: return a dict() (that can be empty) of scene object.
         :rtype: dict()
 
         """
-        return self._scenes
+        ret = {}
+        set_scenes = self._manager.getAllScenes()
+        logging.info('Load Scenes')
+        for sceneid in set_scenes :
+            oscene = ZWaveScene(sceneid, network=self)
+            ret[sceneid] = oscene
+        return ret
 
-    @nodes.setter
-    def scenes(self, value):
+    def create_scene(self, label=None):
         """
-        The self of the network.
+        Create a new scene on the network.
+        If label is set, also change the label of the scene
 
-        :param value: The new value
-        :type value: dict() or None
+        If you store your scenes on a local variable, get a new one
+        to get the scene id
+
+        :param label: The new label
+        :type label: str or None
+        :returns: return the id of scene on the network. Return 0 if fails
+        :rtype: int
 
         """
-        if value == None:
-            self._self = dict()
-        else:
-            self._self = value
+        scene = ZWaveScene(None, network=self)
+        sceneid = scene.create(label)
+        return sceneid
 
     @property
     def nodes_count(self):

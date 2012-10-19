@@ -60,6 +60,9 @@ class OldestTree(urwid.ListWalker):
             return None, None
 
     def get_nodeid(self):
+        return self.get_id()
+
+    def get_id(self):
         line,pos = self._get_at_pos(self.focus)
         return line.id
 
@@ -193,6 +196,12 @@ class OldestTree(urwid.ListWalker):
         return False
 
     def remove(self, param, value):
+        return False
+
+    def create(self, value):
+        return False
+
+    def delete(self, value):
         return False
 
 class GroupsBox(urwid.ListBox):

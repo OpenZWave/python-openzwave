@@ -71,6 +71,161 @@ MAIN_TITLE = "openzwave Shell"
 
 """
 
+class ScenesBox(urwid.ListBox):
+    """
+    ScenesBox show the walker
+    """
+    def __init__(self, window, parent, framefocus):
+        self.window = window
+        self.parent = parent
+        self._framefocus = framefocus
+        self.walker = ScenesTree(window, parent.walker, self)
+        self.__super.__init__(self.walker)
+
+class ScenesTree(OldestTree):
+
+    def __init__(self, window, parent, widget_box):
+        OldestTree.__init__(self, window, parent, widget_box)
+    #    self.window = window
+    #    self._framefocus = framefocus
+    #    self.read_scenes(None)
+        self.subdirs = ['..']
+        self.childrens = { '..' : {'id':'..',
+                                    'name':'..',
+                                    'help':'Go to previous directory',
+                                    'widget_box' : None}
+                }
+        self._path = "scenes"
+        self.scene_header = ScenesItem()
+        self.definition = {'id':'scenes',
+                                'name':'scenes',
+                                'help':'Scenes management',
+                                'widget_box': self.widget_box
+        }
+        if parent != None and self.definition != None :
+            parent.add_child(self.path, self.definition)
+        self.usage.append("create <scenelabel> : create a scene with label <scenelabel>")
+        self.usage.append("delete <scene_id> : delete the scene with id <scene_id>")
+         #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+
+    def _louie_network_ready(self, network):
+        self.window.log.info("ScenesTree _louie_network_ready")
+        self.refresh()
+        self.window.log.info("ScenesTree _louie_network_ready")
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_ADDED)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_NAMING)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_NEW)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_PROTOCOL_INFO)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_READY)
+        #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_REMOVED)
+
+    def _louie_node_update(self, network, node_id):
+        self.refresh()
+
+    def read_lines(self):
+        self.size = 0
+        #self.focus, self.oldfocus = self.oldfocus, self.focus
+        self.lines = []
+        if self.window.network == None:
+            return
+        self.show_directories()
+        self.lines.append(self.scene_header.get_header())
+        self.size += 1
+        scenes = self.window.network.get_scenes()
+        for scene in scenes:
+            self.lines.append(ScenesItem(scenes[scene].scene_id, \
+                scenes[scene].label, \
+                ))
+            self.size += 1
+        self._modified()
+
+    def exist(self, directory):
+        """
+        List directory content
+        """
+        self.window.log.info("exist in ScenesTree")
+        if OldestTree.exist(self, directory):
+            return True
+        self.window.log.info("exist in ScenesTree")
+        try :
+            if int(directory) in self.window.network.get_scenes():
+                return True
+        except :
+            pass
+        self.window.log.info("exist in NodeTrees return false")
+        return False
+
+    def cd(self, directory):
+        """
+        Change to directory and return the widget to display
+        """
+        if self.exist(directory) :
+            if directory == '..':
+                return self.parent.widget_box
+            if directory in self.childrens:
+                self.window.log.info("cd %s" %directory)
+                return self.childrens[directory]['widget_box']
+            try :
+                if int(directory) in self.window.network.get_scenes():
+                    self.window.log.info("cd a scene id %s" %directory)
+                    self.childrens['scene']['widget_box'].walker.key=int(directory)
+                    return self.childrens['scene']['widget_box']
+            except :
+                pass
+        return None
+
+    def create(self, value):
+        if self.window.network.create_scene(value)>0:
+            self.window.status_bar.update(status='Scene %s created' % value)
+            return True
+        else :
+            self.window.status_bar.update(status="Can't create scene %s" % value)
+            return True
+
+    def delete(self, value):
+        scenes = self.window.network.get_scenes()
+        try :
+            value = int(value)
+        except:
+            self.window.status_bar.update(status='Invalid scene %s' % value)
+            return False
+        if value in scenes:
+            ret = scenes[value].delete()
+            self.window.status_bar.update(status='Scene %s deleted' % value)
+            return ret
+        else :
+            self.window.status_bar.update(status="Can't delete scene %s" % value)
+            return True
+
+class ScenesItem (urwid.WidgetWrap):
+
+    def __init__ (self, id=0, name=None):
+        self.id = id
+        #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
+        self.item = [
+            ('fixed', 15, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % str(id), wrap='clip'), 'body', 'focus'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % name, wrap='clip'), 'body'),
+        ]
+        w = urwid.Columns(self.item, dividechars=1 )
+        self.__super.__init__(w)
+
+    def get_header (self):
+        self.item = [
+            ('fixed', 15, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % "Id", wrap='clip'), 'scene_header'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % "Name", wrap='clip'), 'scene_header'),
+        ]
+        return urwid.Columns(self.item, dividechars=1)
+
+    def selectable (self):
+        return True
+
+    def keypress(self, size, key):
+        return key
+
+
 class StatusBar(urwid.WidgetWrap):
     def __init__(self, window):
         self.window = window
@@ -160,6 +315,7 @@ class MainWindow(Screen):
         self.controller = None
         self.root_box = RootBox(self, None, "body")
         self.controller_box = ControllerBox(self, self.root_box, "body")
+        self.scenes_box = ScenesBox(self, self.root_box, "body")
         self.nodes_box = NodesBox(self, self.root_box, "body")
         self.switches_box = SwitchesBox(self, self.nodes_box, "body")
         self.sensors_box = SensorsBox(self, self.nodes_box, "body")
@@ -284,6 +440,38 @@ class MainWindow(Screen):
                 return True
             else:
                 self.status_bar.update(status='Unknown directory "%s"' % path)
+                return False
+        elif command.startswith('create') :
+            if ' ' in command :
+                cmd,value = command.split(' ',1)
+            else:
+                self.status_bar.update(status='Usage : create <value>')
+                return False
+            value = value.strip()
+            if len(value) == 0 :
+                self.status_bar.update(status='Usage : create <value>')
+                return False
+            if self.active_box.walker.create(value):
+                self.active_box.walker.ls("")
+                self.status_bar.set_command("")
+                return True
+            else :
+                return False
+        elif command.startswith('delete') :
+            if ' ' in command :
+                cmd,value = command.split(' ',1)
+            else:
+                self.status_bar.update(status='Usage : delete <value>')
+                return False
+            value = value.strip()
+            if len(value) == 0 :
+                self.status_bar.update(status='Usage : delete <value>')
+                return False
+            if self.active_box.walker.delete(value):
+                self.active_box.walker.ls("")
+                self.status_bar.set_command("")
+                return True
+            else :
                 return False
         elif command.startswith('set') :
             if ' ' in command :
