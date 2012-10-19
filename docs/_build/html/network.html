@@ -254,6 +254,46 @@ external program control, etc.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.create_scene">
+<tt class="descname">create_scene</tt><big>(</big><em>label=None</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.create_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new scene on the network.
+If label is set, also change the label of the scene</p>
+<p>If you store your scenes on a local variable, get a new one
+to get the scene id</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str or None</em>) &#8211; The new label</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">return the id of scene on the network. Return 0 if fails</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.get_scenes">
+<tt class="descname">get_scenes</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.get_scenes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scenes of the network.</p>
+<p>Scenes are generated directly from the lib. There is no notification
+support to keep them up to date. So for a batch job, consider
+storing them in a local variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">return a dict() (that can be empty) of scene object. Return None if betwork is not ready</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict() or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.network.ZWaveNetwork.home_id">
 <tt class="descname">home_id</tt><a class="headerlink" href="#openzwave.network.ZWaveNetwork.home_id" title="Permalink to this definition">¶</a></dt>

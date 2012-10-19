@@ -484,7 +484,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id, command_class=command_class)
+        value = ZWaveValue(value_id, network=self.network, parent=self, command_class=command_class)
         self.values[value_id] = value
         #self.values[value_id].oudated = True
 

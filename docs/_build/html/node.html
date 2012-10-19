@@ -93,6 +93,21 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <em class="property">class </em><tt class="descclassname">openzwave.node.</tt><tt class="descname">ZWaveNode</tt><big>(</big><em>node_id</em>, <em>network</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents a single Node within the Z-Wave Network</p>
 <dl class="method">
+<dt id="openzwave.node.ZWaveNode.add_group">
+<tt class="descname">add_group</tt><big>(</big><em>target_node_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new group containing the target node target_node_id.
+to do</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be added to the association group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.node.ZWaveNode.add_value">
 <tt class="descname">add_value</tt><big>(</big><em>value_id</em>, <em>command_class</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value to the node</p>
@@ -231,6 +246,33 @@ If you wan&#8217;t to get all the node&#8217;s values, use self.values instead.<
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">set() of Values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_values_by_command_classes">
+<tt class="descname">get_values_by_command_classes</tt><big>(</big><em>genre='All'</em>, <em>type='All'</em>, <em>readonly='All'</em>, <em>writeonly='All'</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values_by_command_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve values in a dict() of dicts(). The dict is indexed on the COMMAND_CLASS.
+This allows to browse values grouped by the COMMAND_CLASS.You can optionnaly filter for a command class,
+a genre and/or a type. You can also filter readonly and writeonly params.</p>
+<p>This method always filter the values.
+If you wan&#8217;t to get all the node&#8217;s values, use the property self.values instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>genre</strong> (<em>&#8216;All&#8217; or PyGenres</em>) &#8211; the genre of value</li>
+<li><strong>type</strong> (<em>&#8216;All&#8217; or PyValueTypes</em>) &#8211; the type of value</li>
+<li><strong>readonly</strong> (<em>&#8216;All&#8217; or True or False</em>) &#8211; Is this value readonly</li>
+<li><strong>writeonly</strong> (<em>&#8216;All&#8217; or True or False</em>) &#8211; Is this value writeonly</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict(command_class : dict(valueids))</p>
 </td>
 </tr>
 </tbody>

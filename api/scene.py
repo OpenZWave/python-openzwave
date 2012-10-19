@@ -177,4 +177,9 @@ class ZWaveScene(ZWaveObject):
     def activate(self):
         '''
         Activate the zwave scene.
+
+        :returns: True if the scene is acticated. False otherwise.
+        :rtype: bool
+
         '''
+        return self._network.manager.activateScene(self.object_id)

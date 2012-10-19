@@ -295,7 +295,9 @@ writeonly = False</div></blockquote>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool</em>) &#8211; True or False</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
 </table>
@@ -330,17 +332,28 @@ Set switch to value (using value value_id).</p>
 <em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSensor</tt></dt>
 <dd><p>Represents an interface to Sensor Commands</p>
 <dl class="method">
-<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x30">
-<tt class="descname">command_class_0x30</tt><big>(</big><big>)</big></dt>
-<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) level of this node.
-Todo</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="openzwave.command.ZWaveNodeSensor.command_class_0x31">
-<tt class="descname">command_class_0x31</tt><big>(</big><big>)</big></dt>
-<dd><p>The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) level of this node.
-Todo</p>
+<dt id="openzwave.command.ZWaveNodeSensor.get_sensors">
+<tt class="descname">get_sensors</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+The command 0x32 (COMMAND_CLASS_METER) of this node.
+Retrieve the list of values to consider as sensors.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x30-32
+genre = &#8220;User&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>

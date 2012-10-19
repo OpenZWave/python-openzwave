@@ -96,24 +96,133 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dt id="openzwave.scene.ZWaveScene.activate">
 <tt class="descname">activate</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.activate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Activate the zwave scene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the scene is acticated. False otherwise.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="openzwave.scene.ZWaveScene.add_value">
 <tt class="descname">add_value</tt><big>(</big><em>value_id</em>, <em>value_data</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.add_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a value to the zwave scene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.change_value">
+<tt class="descname">change_value</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.change_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change a value of the node. Todo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to change</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="openzwave.scene.ZWaveScene.create">
-<tt class="descname">create</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a new zwave scene and update the object_id field</p>
+<tt class="descname">create</tt><big>(</big><em>label=None</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new zwave scene on the network and update the object_id field
+If label is set, also change the label of the scene</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str or None</em>) &#8211; The new label</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">return the id of scene on the network. Return 0 if fails</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.delete">
+<tt class="descname">delete</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the scene on the network</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="openzwave.scene.ZWaveScene.label">
 <tt class="descname">label</tt><a class="headerlink" href="#openzwave.scene.ZWaveScene.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>The label of the scene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.refresh_value">
+<tt class="descname">refresh_value</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.refresh_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change a value of the node. Todo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to change</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.scene.ZWaveScene.remove_value">
+<tt class="descname">remove_value</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.scene.ZWaveScene.remove_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change a value of the node. Todo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to change</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.scene.ZWaveScene.scene_id">
+<tt class="descname">scene_id</tt><a class="headerlink" href="#openzwave.scene.ZWaveScene.scene_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the scene.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -132,12 +241,6 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </tr>
 </tbody>
 </table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.scene.ZWaveScene.values">
-<tt class="descname">values</tt><a class="headerlink" href="#openzwave.scene.ZWaveScene.values" title="Permalink to this definition">¶</a></dt>
-<dd><p>The values used in the scene.</p>
 </dd></dl>
 
 </dd></dl>

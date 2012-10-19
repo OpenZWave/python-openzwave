@@ -39,7 +39,7 @@ class ZWaveValue(ZWaveObject):
     Represents a single value.
     Must be updated to use the cachedObject facilities.
     '''
-    def __init__(self, value_id, network=None, parent_id=None, \
+    def __init__(self, value_id, network=None, parent=None, \
             command_class=0):
         '''
         Initialize value
@@ -75,7 +75,7 @@ class ZWaveValue(ZWaveObject):
         '''
         ZWaveObject.__init__(self, value_id, network=network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
-        self._parent_id = parent_id
+        self._parent = parent
         self._command_class = command_class
         #self._type = type
         #print command_class
@@ -111,7 +111,7 @@ class ZWaveValue(ZWaveObject):
         """
         The parent_id of the value.
         """
-        return self._parent_id
+        return self._parent.object_id
 
     @property
     def value_id(self):
@@ -119,6 +119,13 @@ class ZWaveValue(ZWaveObject):
         The value_id of the value.
         """
         return self._object_id
+
+    @property
+    def node(self):
+        """
+        The value_id of the value.
+        """
+        return self._parent
 
     @property
     def label(self):

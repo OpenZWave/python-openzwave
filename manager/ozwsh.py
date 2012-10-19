@@ -106,6 +106,7 @@ class ScenesTree(OldestTree):
             parent.add_child(self.path, self.definition)
         self.usage.append("create <scenelabel> : create a scene with label <scenelabel>")
         self.usage.append("delete <scene_id> : delete the scene with id <scene_id>")
+        self.usage.append("activate <scene_id> : activate the scene with id <scene_id>")
          #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -192,11 +193,28 @@ class ScenesTree(OldestTree):
             return False
         if value in scenes:
             ret = scenes[value].delete()
-            self.window.status_bar.update(status='Scene %s deleted' % value)
+            if ret :
+                self.window.status_bar.update(status='Scene %s deleted' % value)
             return ret
         else :
             self.window.status_bar.update(status="Can't delete scene %s" % value)
-            return True
+            return False
+
+    def activate(self, value):
+        scenes = self.window.network.get_scenes()
+        try :
+            value = int(value)
+        except:
+            self.window.status_bar.update(status='Invalid scene %s' % value)
+            return False
+        if value in scenes:
+            ret = scenes[value].activate()
+            if ret :
+                self.window.status_bar.update(status='Scene %s activated' % value)
+            return ret
+        else :
+            self.window.status_bar.update(status="Can't activate scene %s" % value)
+            return False
 
 class ScenesItem (urwid.WidgetWrap):
 
@@ -468,6 +486,22 @@ class MainWindow(Screen):
                 self.status_bar.update(status='Usage : delete <value>')
                 return False
             if self.active_box.walker.delete(value):
+                self.active_box.walker.ls("")
+                self.status_bar.set_command("")
+                return True
+            else :
+                return False
+        elif command.startswith('activate') :
+            if ' ' in command :
+                cmd,value = command.split(' ',1)
+            else:
+                self.status_bar.update(status='Usage : activate <value>')
+                return False
+            value = value.strip()
+            if len(value) == 0 :
+                self.status_bar.update(status='Usage : activate <value>')
+                return False
+            if self.active_box.walker.activate(value):
                 self.active_box.walker.ls("")
                 self.status_bar.set_command("")
                 return True

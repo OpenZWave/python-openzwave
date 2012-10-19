@@ -204,6 +204,9 @@ class OldestTree(urwid.ListWalker):
     def delete(self, value):
         return False
 
+    def activate(self, value):
+        return False
+
 class GroupsBox(urwid.ListBox):
     """
     GroupsBox show the walker
