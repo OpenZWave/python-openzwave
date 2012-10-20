@@ -8,10 +8,10 @@ You don't need to install (but building it) python-openzwave to test examples.
 ozwsh
 =====
 
-A shell manager for your ZWave network. It use urwid python extension.
-Type the following command to install it :
+A shell manager for your ZWave network. It use urwid and louie python extensions.
+If needed, type the following command to install them :
 
-    sudo pip install urwid
+    sudo pip install urwid louie
 
 Start ozwsh with :
 
@@ -22,6 +22,19 @@ It allows :
     * Reset controller (hard and soft) and
 
     * Change node informations (name, location, ... )
+
+    * view and change values informations
+
+    * view and change group informations
+
+    * Full management of scenes
+
+It's a shell like manager. You can visit your zwave network using the
+command cd. All available commands are displayed on every sceens.
+
+For the developpers : this a good example on how to use the api.
+Update are sent to uwird widget using louie notifications. ZWave data
+updates are done ine the set, add, delete, remove, ... methods.
 
 
 api_demo

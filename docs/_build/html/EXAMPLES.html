@@ -51,10 +51,10 @@
 <p>You don&#8217;t need to install (but building it) python-openzwave to test examples.</p>
 <div class="section" id="ozwsh">
 <h2>ozwsh<a class="headerlink" href="#ozwsh" title="Permalink to this headline">¶</a></h2>
-<p>A shell manager for your ZWave network. It use urwid python extension.
-Type the following command to install it :</p>
+<p>A shell manager for your ZWave network. It use urwid and louie python extensions.
+If needed, type the following command to install them :</p>
 <blockquote>
-<div>sudo pip install urwid</div></blockquote>
+<div>sudo pip install urwid louie</div></blockquote>
 <p>Start ozwsh with :</p>
 <blockquote>
 <div>./ozwsh.sh &#8211;device=/dev/yourzwavestick</div></blockquote>
@@ -63,8 +63,16 @@ Type the following command to install it :</p>
 <div><ul class="simple">
 <li>Reset controller (hard and soft) and</li>
 <li>Change node informations (name, location, ... )</li>
+<li>view and change values informations</li>
+<li>view and change group informations</li>
+<li>Full management of scenes</li>
 </ul>
 </div></blockquote>
+<p>It&#8217;s a shell like manager. You can visit your zwave network using the
+command cd. All available commands are displayed on every sceens.</p>
+<p>For the developpers : this a good example on how to use the api.
+Update are sent to uwird widget using louie notifications. ZWave data
+updates are done ine the set, add, delete, remove, ... methods.</p>
 </div>
 <div class="section" id="api-demo">
 <h2>api_demo<a class="headerlink" href="#api-demo" title="Permalink to this headline">¶</a></h2>

@@ -171,55 +171,10 @@ class MainWindow(Screen):
         self.node_box = NodeBox(self, self.nodes_box, "body")
         self.values_box = ValuesBox(self, self.node_box, "body")
         self.groups_box = GroupsBox(self, self.node_box, "body")
-        #self.menu = MenuWidget(self, "value")
 
-
-        #self.nodes = []
         self.status_bar = StatusBar(self)
         self.header_bar = HeaderBar(self)
-        #self.header = urwid.Pile([
-        #    #self.divider,
-        #    urwid.Columns([
-        #        ('weight', 2, urwid.AttrWrap(self.left_header, 'reverse')),
-        #        #('fixed', 1, urwid.Divider("|")),
-        #        ('weight', 2, urwid.AttrWrap(self.right_header, 'reverse'))
-        #    ], dividechars=2, min_width=8),
-        #    DIVIDER,
-        #    self.listbox_header.get_header()
-        #    ])
 
-#        self.footer_columns = urwid.Columns([
-#                ('weight', 1, urwid.AttrWrap(self.menu, 'reverse')),
-#                #('fixed', 1, urwid.Divider("|")),
-#                ('weight', 3,urwid.AttrWrap(self.details, 'reverse'))
-#            ], dividechars=2, min_width=8)
-
-        #self.sub_frame = urwid.Filler(urwid.Frame( \
-        #    urwid.AttrWrap(
-        #    self.details, 'sub_frame_body'), \
-        #        header=self.details.header_widget(),\
-        #        footer=self.details.footer_widget(), \
-        #        focus_part="body"),  height=9)
-
-        #self.footer_columns = urwid.Columns([
-        #        ('weight', 1, urwid.AttrWrap(self.menu, 'reverse')),
-                #('fixed', 1, urwid.Divider("|")),
-        #        ('weight', 3,urwid.AttrWrap(self.details, 'reverse'))
-        #    ], dividechars=2, min_width=8)
-#        self.footer = urwid.Pile([
-#            DIVIDER,
-#            self.footer_columns,
-#            DIVIDER,
-#            urwid.AttrWrap(self.status_bar, 'reverse'),
-#            #self.divider,
-#            #urwid.AttrWrap(urwid.Text(" > "), 'footer')
-#            ])
-#        self.footer = urwid.Pile([
-#            DIVIDER,
-#            urwid.AttrWrap(self.status_bar, 'reverse'),
-#            #self.divider,
-#            #urwid.AttrWrap(urwid.Text(" > "), 'footer')
-#            ])
         self.framefocus = 'footer'
 
         self._active_box = self.root_box
@@ -269,6 +224,9 @@ class MainWindow(Screen):
             self.active_box.walker.ls(options)
             self.status_bar.set_command("")
             return True
+        elif command.startswith('exit') :
+            self.network.write_config()
+            raise urwid.ExitMainLoop()
         elif command.startswith('cd') :
             if ' ' in command :
                 cmd,path = command.split(' ',1)
@@ -433,26 +391,6 @@ class MainWindow(Screen):
         else:
             self.status_bar.update(status='Unknown command "%s"' % command)
             return False
-
-    def refresh_nodes(self):
-        self.nodes_box.body.refresh()
-        #self.update_node(self.nodes_box.walker.get_nodeid())
-
-    def update_node(self, nodeid):
-        if nodeid != None :
-            self.details.update( \
-                nodeid=nodeid, \
-                name=self.network.nodes[nodeid].name, \
-                location=self.network.nodes[nodeid].location, \
-                manufacturer=self.network.nodes[nodeid].manufacturer_name, \
-                product=self.network.nodes[nodeid].product_name, \
-                neighbors=self.network.nodes[nodeid].neighbors, \
-                version=self.network.nodes[nodeid].version, \
-                signal=self.network.nodes[nodeid].max_baud_rate, \
-                )
-            self.log.info('Update node id=%d, product name=%s.' % \
-                (nodeid, self.network.nodes[nodeid].product_name))
-
     def _unhandled_input(self, key):
         if key == 'esc':
             self.network.write_config()
@@ -498,13 +436,6 @@ class MainWindow(Screen):
             (network.home_id, network.nodes_count))
         self.network = network
         self.controller = controller
-        #self.left_header.update_controller("%s on %s" % \
-        #    (network.controller.node.product_name, self.device))
-        #self.left_header.update_homeid(network.home_id_str)
-        #self.left_header.update_nodes(network.nodes_count,0)
-        #self.right_header.update(network.controller.library_description, \
-        #    network.controller.ozw_library_version, \
-        #    network.controller.python_library_version)
         self.status_bar.update(status='OpenZWave driver is ready')
         self.loop.draw_screen()
 
@@ -512,10 +443,6 @@ class MainWindow(Screen):
         self.log.info('ZWave network is ready : %d nodes were found.' % network.nodes_count)
         self.log.info('Controller name : %s' % network.controller.node.product_name)
         self.network = network
-        #self.left_header.update_controller("%s on %s" % \
-        #    (network.controller.node.product_name, self.device))
-        #self.left_header.update_nodes(network.nodes_count,0)
-        #self.set_nodes()
         self.status_bar.update(status='ZWave network is ready')
         self.loop.draw_screen()
         self._connect_louie_node_and_value()

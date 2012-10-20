@@ -39,7 +39,7 @@ class OldestTree(urwid.ListWalker):
         self.window = window
         self.parent = parent
         self.widget_box = widget_box
-        self.usage = ['ls : list directory', 'cd <directory> : change to directory <directory>' ]
+        self.usage = ['ls : list directory', 'cd <directory> : change to directory <directory>', 'exit : quit the program' ]
         self.childrens = {}
         self.subdirs = []
         self.definition = None
