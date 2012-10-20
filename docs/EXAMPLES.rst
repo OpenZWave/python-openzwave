@@ -34,7 +34,7 @@ command cd. All available commands are displayed on every sceens.
 
 For the developpers : this a good example on how to use the api.
 Update are sent to uwird widget using louie notifications. ZWave data
-updates are done ine the set, add, delete, remove, ... methods.
+updates are done in the set, add, delete, remove, ... methods.
 
 
 api_demo
