@@ -436,7 +436,7 @@ class MainWindow(Screen):
             (network.home_id, network.nodes_count))
         self.network = network
         self.controller = controller
-        self.status_bar.update(status='OpenZWave driver is ready')
+        self.status_bar.update(status='OpenZWave driver is ready ... Waiting for network')
         self.loop.draw_screen()
 
     def _louie_network_ready(self, network):
