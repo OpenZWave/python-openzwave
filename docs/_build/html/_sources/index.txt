@@ -1,13 +1,13 @@
-Welcome to py-openzwave's documentation!
-========================================
+Welcome to python-openzwave's documentation!
+============================================
 
 Contents:
 
 .. toctree::
     :maxdepth: 3
 
-    The new "pyx". It provides a low level to the ZWave network. Tests in progress. <libopenzwave>
-    The new API. Map a ZWave Network in objects. Work in early stage. <openzwave>
+    The new "pyx". It provides a low level to the ZWave network. <libopenzwave>
+    The new API. Map a ZWave Network in objects. <openzwave>
     The old wrapper. For documentation only. <wrapper>
 
 Indices and tables
