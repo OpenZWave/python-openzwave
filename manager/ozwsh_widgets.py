@@ -190,21 +190,27 @@ class OldestTree(urwid.ListWalker):
         self._path = value
 
     def set(self, param, value):
+        self.window.status_bar.update(status='Command "set" not supported')
         return False
 
     def add(self, param, value):
+        self.window.status_bar.update(status='Command "add" not supported')
         return False
 
     def remove(self, param, value):
+        self.window.status_bar.update(status='Command "remove" not supported')
         return False
 
     def create(self, value):
+        self.window.status_bar.update(status='Command "create" not supported')
         return False
 
     def delete(self, value):
+        self.window.status_bar.update(status='Command "delete" not supported')
         return False
 
     def activate(self, value):
+        self.window.status_bar.update(status='Command "activate" not supported')
         return False
 
 class GroupsBox(urwid.ListBox):
@@ -914,6 +920,7 @@ class ValuesTree(OldestTree):
             parent.add_child('All', self.definition_all)
         self.usage.append("set <valueid> to <data> : change value <valueid> to data")
         self.usage.append("set <label> to <data> : change value <label> to data")
+        self.usage.append("add <label> to <sceneid> : add value <label> to scene od id <sceneid> with current data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -972,6 +979,35 @@ class ValuesTree(OldestTree):
                 return self.childrens[directory]['widget_box']
         return None
 
+    def add(self, param, value):
+        """
+        Add a value to scene of id param
+        """
+        try:
+            param = int(param)
+        except:
+            self.window.status_bar.update(status="Invalid scene id %s" % (param))
+            return False
+        ok = False
+        for val in self.window.network.nodes[self.node_id].values:
+            if self.window.network.nodes[self.node_id].values[val].label == value:
+                value = val
+                ok = True
+                exit
+        if not ok :
+            self.window.status_bar.update(status="Invalid value ID %s" % (param))
+            return False
+        if self.window.network.scene_exists(param):
+            scene = self.window.network.get_scenes()[param]
+            ret = scene.add_value(value, \
+              self.window.network.nodes[self.node_id].values[value].data)
+            if ret :
+                self.window.status_bar.update(status='Value %s added to scene %s' % (value,param))
+            return ret
+        else :
+            self.window.status_bar.update(status="Scene %s doesn't exist" % param)
+            return False
+
     def set(self, param, value):
         try:
             param = long(param)
@@ -986,8 +1022,15 @@ class ValuesTree(OldestTree):
                 self.window.status_bar.update(status="Invalid value ID %s" % (param))
                 return False
         if param in self.window.network.nodes[self.node_id].values:
-            if self.window.network.nodes[self.node_id].values[param].check_data(value) :
-                self.window.network.nodes[self.node_id].values[param].data=value
+            newval = self.window.network.nodes[self.node_id].values[param].check_data(value)
+            self.window.log.info("param %s" %param)
+            self.window.log.info("type param %s" %type(param))
+            self.window.log.info("old_val %s" %value)
+            self.window.log.info("type old_val %s" %type(value))
+            self.window.log.info("newval %s" %newval)
+            self.window.log.info("type newval %s" %type(newval))
+            if newval != None :
+                self.window.network.nodes[self.node_id].values[param].data=newval
                 self.window.status_bar.update(status='Value %s updated' % param)
                 return True
             else :
@@ -1329,3 +1372,342 @@ class SensorsItem (urwid.WidgetWrap):
     def keypress(self, size, key):
         return key
 
+class SceneBox(urwid.ListBox):
+    """
+    SceneBox show the walker
+    """
+    def __init__(self, window, parent, framefocus):
+        self.window = window
+        self.parent = parent
+        self._framefocus = framefocus
+        self.walker = SceneTree(window, parent.walker, self)
+        self.__super.__init__(self.walker)
+
+
+class SceneTree(OldestTree):
+
+    def __init__(self, window, parent, widget_box):
+        OldestTree.__init__(self, window, parent, widget_box)
+        self.subdirs = ['..']
+        self.childrens = { '..' : {'id':'..',
+                                    'name':'..',
+                                    'help':'Go to previous directory',
+                                    'widget_box' : None},
+                }
+        self._path = ""
+        self.node_id = None
+        self.value_header = SceneItem()
+        self.definition = {'id':'<idx>',
+                        'name':'scene',
+                        'help':'Scene management',
+                        'widget_box': self.widget_box}
+        self.usage.append("set <value> to <data> : change the data of a value")
+        self.usage.append("delete <value> : Remove <value> from scene")
+        if parent != None and self.definition != None :
+            parent.add_child("scene",self.definition)
+
+    def read_lines(self):
+        self.size = 0
+        #self.focus, self.oldfocus = self.oldfocus, self.focus
+        self.lines = []
+        if self.window.network == None or self.key == None:
+            return
+        self.show_directories()
+        self.lines.append(self.value_header.get_header())
+        self.size += 1
+
+        values = self.window.network.get_scenes()[self.key].get_values_by_node()
+        for node in values:
+            self.lines.append(urwid.Text(    "      %s - %s" % \
+              (node, self.window.network.nodes[node].name), align='left'))
+            self.size += 1
+            for val in values[node]:
+                self.lines.append(SceneItem(values[node][val]['value'].value_id, \
+                    values[node][val]['value'].label, \
+                    values[node][val]['value'].help, \
+                    values[node][val]['data'], \
+                    values[node][val]['value'].type, \
+                    values[node][val]['value'].data_items, \
+                    values[node][val]['value'].is_read_only, \
+                    ))
+                self.size += 1
+        self._modified()
+
+    def exist(self, directory):
+        """
+        List directory content
+        """
+        if OldestTree.exist(self, directory):
+            return True
+        return False
+
+    def cd(self, directory):
+        """
+        Change to directory and return the widget to display
+        """
+        if self.exist(directory) :
+            if directory == '..':
+                return self.parent.widget_box
+            if directory in self.childrens:
+                self.window.log.info("cd %s" %directory)
+                return self.childrens[directory]['widget_box']
+        return None
+
+    def delete(self, value):
+        try:
+            value = long(value)
+        except:
+            ok = False
+            values = self.window.network.get_scenes()[self.key].get_values()
+            for val in values:
+                if values[val]['value'].label == value:
+                    value = val
+                    ok = True
+                    exit
+            if not ok :
+                self.window.status_bar.update(status="Invalid value ID %s" % (value))
+                return False
+        if self.window.network.get_scenes()[self.key].remove_value(value) :
+            self.window.status_bar.update(status='Value %s deleted' % value)
+            return True
+        else :
+            self.window.status_bar.update(status="Can't delete value Id %s" % (value))
+            return False
+
+    def set(self, param, value):
+        try:
+            param = long(param)
+        except:
+            ok = False
+            values = self.window.network.get_scenes()[self.key].get_values()
+            for val in values:
+                if values[val]['value'].label == param:
+                    param = val
+                    ok = True
+                    exit
+            if not ok :
+                self.window.status_bar.update(status="Invalid value ID %s" % (param))
+                return False
+        scene = self.window.network.get_scenes()[self.key]
+        dict_value = scene.get_values()[param]
+        new_val = dict_value['value'].check_data(value)
+        self.window.log.info("param %s" %param)
+        self.window.log.info("type param %s" %type(param))
+        self.window.log.info("old_val %s" %value)
+        self.window.log.info("type old_val %s" %type(value))
+        self.window.log.info("new_val %s" %new_val)
+        self.window.log.info("type new_val %s" %type(new_val))
+        if new_val != None :
+            if scene.set_value(param, new_val) :
+                self.window.status_bar.update(status='Value %s updated' % param)
+                return True
+            else :
+                self.window.status_bar.update(status="Can't update value %s" % param)
+                return True
+        else :
+            self.window.status_bar.update(status="Bad data value %s" % (value))
+            return False
+
+    @property
+    def path(self):
+        """
+        The path
+
+        :rtype: str
+
+        """
+        return "%s" % self.key
+
+class SceneItem (urwid.WidgetWrap):
+
+    def __init__ (self, id=0, name=None, help=None, value=0, type='All', selection='All', read_only=False):
+        self.id = id
+        #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
+        if read_only :
+            value_widget = urwid.AttrWrap(urwid.Text('%s' % value, wrap='clip'), 'body')
+        else :
+            value_widget = urwid.AttrWrap(urwid.Edit(edit_text='%s' % value, wrap='space'), 'body')
+        self.item = [
+            ('fixed', 19, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % str(id), wrap='space'), 'body', 'focus'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % name, wrap='space'), 'body'),
+                urwid.AttrWrap(urwid.Text('%s' % help, wrap='space'), 'body'),
+                value_widget,
+                urwid.AttrWrap(urwid.Text('%s' % type, wrap='clip'), 'body'),
+                urwid.AttrWrap(urwid.Text('%s' % selection, wrap='space'), 'body'),
+        ]
+        w = urwid.Columns(self.item, dividechars=1 )
+        self.__super.__init__(w)
+
+    def get_header (self):
+        self.item = [
+            ('fixed', 19, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % "Id", wrap='clip'), 'node_header'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % "Label", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Help", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Value", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Type", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Items", wrap='clip'), 'node_header'),
+        ]
+        return urwid.Columns(self.item, dividechars=1)
+
+    def selectable (self):
+        return True
+
+    def keypress(self, size, key):
+        return key
+
+
+class ScenesBox(urwid.ListBox):
+    """
+    ScenesBox show the walker
+    """
+    def __init__(self, window, parent, framefocus):
+        self.window = window
+        self.parent = parent
+        self._framefocus = framefocus
+        self.walker = ScenesTree(window, parent.walker, self)
+        self.__super.__init__(self.walker)
+
+class ScenesTree(OldestTree):
+
+    def __init__(self, window, parent, widget_box):
+        OldestTree.__init__(self, window, parent, widget_box)
+    #    self.window = window
+    #    self._framefocus = framefocus
+    #    self.read_scenes(None)
+        self.subdirs = ['..']
+        self.childrens = { '..' : {'id':'..',
+                                    'name':'..',
+                                    'help':'Go to previous directory',
+                                    'widget_box' : None}
+                }
+        self._path = "scenes"
+        self.scene_header = ScenesItem()
+        self.definition = {'id':'scenes',
+                                'name':'scenes',
+                                'help':'Scenes management',
+                                'widget_box': self.widget_box
+        }
+        if parent != None and self.definition != None :
+            parent.add_child(self.path, self.definition)
+        self.usage.append("create <scenelabel> : create a scene with label <scenelabel>")
+        self.usage.append("delete <scene_id> : delete the scene with id <scene_id>")
+        self.usage.append("activate <scene_id> : activate the scene with id <scene_id>")
+
+    def read_lines(self):
+        self.size = 0
+        #self.focus, self.oldfocus = self.oldfocus, self.focus
+        self.lines = []
+        if self.window.network == None:
+            return
+        self.show_directories()
+        self.lines.append(self.scene_header.get_header())
+        self.size += 1
+        scenes = self.window.network.get_scenes()
+        for scene in scenes:
+            self.lines.append(ScenesItem(scenes[scene].scene_id, \
+                scenes[scene].label, \
+                ))
+            self.size += 1
+        self._modified()
+
+    def exist(self, directory):
+        """
+        List directory content
+        """
+        self.window.log.info("exist in ScenesTree")
+        if OldestTree.exist(self, directory):
+            return True
+        self.window.log.info("exist in ScenesTree")
+        try :
+            if int(directory) in self.window.network.get_scenes():
+                return True
+        except :
+            pass
+        self.window.log.info("exist in NodeTrees return false")
+        return False
+
+    def cd(self, directory):
+        """
+        Change to directory and return the widget to display
+        """
+        if self.exist(directory) :
+            if directory == '..':
+                return self.parent.widget_box
+            if directory in self.childrens:
+                self.window.log.info("cd %s" %directory)
+                return self.childrens[directory]['widget_box']
+            try :
+                if int(directory) in self.window.network.get_scenes():
+                    self.window.log.info("cd a scene id %s" %directory)
+                    self.childrens['scene']['widget_box'].walker.key=int(directory)
+                    return self.childrens['scene']['widget_box']
+            except :
+                pass
+        return None
+
+    def create(self, value):
+        if self.window.network.create_scene(value)>0:
+            self.window.status_bar.update(status='Scene %s created' % value)
+            return True
+        else :
+            self.window.status_bar.update(status="Can't create scene %s" % value)
+            return False
+
+    def delete(self, value):
+        try :
+            value = int(value)
+        except:
+            self.window.status_bar.update(status='Invalid scene %s' % value)
+            return False
+        if self.window.network.scene_exists(value):
+            ret = self.window.network.get_scenes()[value].delete()
+            if ret :
+                self.window.status_bar.update(status='Scene %s deleted' % value)
+            return ret
+        else :
+            self.window.status_bar.update(status="Can't delete scene %s" % value)
+            return False
+
+    def activate(self, value):
+        try :
+            value = int(value)
+        except:
+            self.window.status_bar.update(status='Invalid scene %s' % value)
+            return False
+        if self.window.network.scene_exists(value):
+            ret = self.window.network.get_scenes()[value].activate()
+            if ret :
+                self.window.status_bar.update(status='Scene %s activated' % value)
+            return ret
+        else :
+            self.window.status_bar.update(status="Can't activate scene %s" % value)
+            return False
+
+class ScenesItem (urwid.WidgetWrap):
+
+    def __init__ (self, id=0, name=None):
+        self.id = id
+        #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
+        self.item = [
+            ('fixed', 15, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % str(id), wrap='clip'), 'body', 'focus'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % name, wrap='clip'), 'body'),
+        ]
+        w = urwid.Columns(self.item, dividechars=1 )
+        self.__super.__init__(w)
+
+    def get_header (self):
+        self.item = [
+            ('fixed', 15, urwid.Padding(
+                urwid.AttrWrap(urwid.Text('%s' % "Id", wrap='clip'), 'scene_header'), left=2)),
+                urwid.AttrWrap(urwid.Text('%s' % "Name", wrap='clip'), 'scene_header'),
+        ]
+        return urwid.Columns(self.item, dividechars=1)
+
+    def selectable (self):
+        return True
+
+    def keypress(self, size, key):
+        return key

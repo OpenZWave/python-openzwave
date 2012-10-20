@@ -129,68 +129,83 @@ class ZWaveScene(ZWaveObject):
 
     def add_value(self, value_id, value_data):
         '''
-        Add a value to the zwave scene.
+        Add a value with data value_data to the zwave scene.
 
         :param value_id: The id of the value to add
         :type value_id: int
-        :rtype: bool
+        :param value_data: The data of the value to add
+        :type value_data: variable
 
         '''
-        value = ZWaveValue(value_id, network=self.network, parent_id=self.node_id, command_class=command_class)
-        self.values[value_id] = value
-        #self.values[value_id].oudated = True
-
-    def change_value(self, value_id):
-        """
-        Change a value of the node. Todo
-
-        :param value_id: The id of the value to change
-        :type value_id: int
-        :rtype: bool
-
-        """
-#        self.values[value_id].oudated = True
-        pass
-
-    def refresh_value(self, value_id):
-        """
-        Change a value of the node. Todo
-
-        :param value_id: The id of the value to change
-        :type value_id: int
-        :rtype: bool
-
-        """
-#        self.values[value_id].oudated = True
-        pass
-
-    def remove_value(self, value_id):
-        """
-        Change a value of the node. Todo
-
-        :param value_id: The id of the value to change
-        :type value_id: int
-        :rtype: bool
-
-        """
-        del(self.values[value_id])
+        ret = self._network.manager.addSceneValue(self.scene_id, value_id, value_data)
+        if ret == 1:
+            return True
+        return False
 
     def set_value(self, value_id, value_data):
         '''
-        Set a value to the zwave scene.
+        Set a value data to value_data in the zwave scene.
 
-        :param value_id: ID of the value
+        :param value_id: The id of the value to add
         :type value_id: int
-        :param network: The network object to access the manager
-        :type network: ZWaveNetwork
+        :param value_data: The data of the value to add
+        :type value_data: variable
 
         '''
+        ret = self._network.manager.setSceneValue(self.scene_id, value_id, value_data)
+        if ret == 1:
+            return True
+        return False
+
+    def get_values(self):
+        """
+        Get all the values of the scene
+
+        :returns: A dict of values : {value_id={'value'=ZWaveValue, 'data'=data}, ...}.
+        :rtype: dict()
+
+        """
+        ret = dict()
+        values = self._network.manager.sceneGetValues(self.scene_id)
+        for val in values:
+            value = self._network.get_value(val)
+            ret[val] = {'value':value,'data':values[val]}
+        return ret
+
+    def get_values_by_node(self):
+        """
+        Get all the values of the scene grouped by nodes
+
+        :returns: A dict of values : {node_id={value_id={'value'=ZWaveValue, 'data'=data}, ...},...}.
+        :rtype: dict()
+
+        """
+        ret = dict()
+        values = self._network.manager.sceneGetValues(self.scene_id)
+        for val in values:
+            value = self._network.get_value(val)
+            if value.node.node_id not in ret:
+                ret[value.node.node_id] = {}
+            ret[value.node.node_id][val] = {'value':value,'data':values[val]}
+        return ret
+
+    def remove_value(self, value_id):
+        """
+        Remove a value from the scene.
+
+        :param value_id: The id of the value to change
+        :type value_id: int
+        :returns: True if the scene is removed. False otherwise.
+        :rtype: bool
+
+        """
+        return self._network.manager.removeSceneValue(self.scene_id, value_id)
 
     def activate(self):
         '''
         Activate the zwave scene.
 
-        :returns: True if the scene is acticated. False otherwise.
+        :returns: True if the scene is activated. False otherwise.
         :rtype: bool
 
         '''

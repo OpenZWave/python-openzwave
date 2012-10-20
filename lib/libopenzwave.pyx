@@ -39,6 +39,7 @@ from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
 from manager cimport Manager, Create, Get
+from cython.operator cimport dereference
 from log cimport LogLevel
 import os
 import sys
@@ -1884,7 +1885,8 @@ Test whether the value has been set.
 :type id: int
 :returns: bool -- True if the value has actually been set by a status message from the device, rather than simply being the default.
 :see: getValue_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1896,21 +1898,68 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueT
         '''
 .. _getValueGenre:
 
- Get the genre of the value.  The genre classifies a value to enable
+Get the genre of the value.  The genre classifies a value to enable
 low-level system or configuration parameters to be filtered out
 by the application
 
 :param id: The ID of a value.
 :type id: int
 :returns: str -- A string containing the type of the value
-:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_,
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsString_, getValue_, getValueType_, getValueInstance_, getValueIndex_
+
+       '''
+        if values_map.find(id) != values_map.end():
+            genre = PyGenres[values_map.at(id).GetGenre()]
+            return genre
+        else :
+            return None
+
+    def getValueInstance(self, id):
+        '''
+.. _getValueInstance:
+
+Get the command class instance of this value.  It is possible for there to be
+multiple instances of a command class, although currently it appears that
+only the SensorMultilevel command class ever does this.
+
+:param id: The ID of a value.
+:type id: int
+:returns: str -- A string containing the type of the value
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsString_, getValue_, getValueType_, getValueIndex_
+
+       '''
+        if values_map.find(id) != values_map.end():
+            genre = PyGenres[values_map.at(id).GetInstance()]
+            return genre
+        else :
+            return None
+
+    def getValueIndex(self, id):
+        '''
+.. _getValueIndex:
+
+Get the value index.  The index is used to identify one of multiple
+values created and managed by a command class.  In the case of configurable
+parameters (handled by the configuration command class), the index is the
+same as the parameter ID.
+
+:param id: The ID of a value.
+:type id: int
+:returns: str -- A string containing the type of the value
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
 getValueAsString_, getValue_, getValueType_
 
        '''
         if values_map.find(id) != values_map.end():
-            genre = PyGenres[values_map.at(id).GetGenre()]
+            genre = PyGenres[values_map.at(id).GetIndex()]
             return genre
         else :
             return None
@@ -1924,8 +1973,10 @@ Gets the type of the value
 :param id: The ID of a value.
 :type id: int
 :returns: str -- A string containing the type of the value
-:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValue_
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValue_, getValueInstance_, getValueIndex_
 
        '''
         if values_map.find(id) != values_map.end():
@@ -1945,8 +1996,10 @@ Gets a value.
 :param value: The value to set.
 :type value: int
 :returns: multiple -- Depending of the type of the valueId, None otherwise
-:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1959,8 +2012,10 @@ Gets a value as a bool.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1973,8 +2028,10 @@ Gets a value as an 8-bit unsigned integer.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -1987,8 +2044,10 @@ Gets a value as a float.
 
 :param id: The ID of a value.
 :type id: int
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -2002,8 +2061,10 @@ Gets a value as a 16-bit signed integer.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -2017,8 +2078,10 @@ Gets a value as a 32-bit signed integer.
 :param id: The ID of a value.
 :type id: int
 :returns: int -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
@@ -2032,37 +2095,43 @@ Gets a value as a string.
 :param id: The ID of a value.
 :type id: int
 :returns: str -- The value.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_ ,getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         return getValueFromType(self.manager,id)
 
     def getValueListSelectionStr(self,  id):
         '''
-.. GetValueListSelectionStr:
+.. _getValueListSelectionStr:
 
 Gets value of items from a list value
 
 :param id: The ID of a value.
 :type id: int
 :returns: string items selected.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionNum_, getValueListItems_\
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionNum_, getValueListItems_,\
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
     '''
         return getValueFromType(self.manager,id)
 
     def getValueListSelectionNum(self,  id):
         '''
-.. GetValueListSelectionNum:
+.. _getValueListSelectionNum:
 
 Gets value of items from a list value
 
 :param id: The ID of a value.
 :type id: int
 :returns: int  value of items selected.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, getValueListSelectionStr_, getValueListItems_\
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_, getValueListItems_,\
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
     '''
         cdef int32_t type_int
         ret=-1
@@ -2081,8 +2150,10 @@ Gets the list of items from a list value
 :param id: The ID of a value.
 :type id: int
 :returns: Set -- The list of items.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_,getValueListSelectionStr_ ,getValueListSelectionNum_ \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ ,getValueListSelectionNum_ \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
 
         '''
         #print "**** libopenzwave.GetValueListItems ******"
@@ -2625,7 +2696,6 @@ Cancels any in-progress command running on a controller.
 :type homeId: int
 :returns: True if a command was running and was cancelled.
 :rtype: bool
-:see: beginControllerCommand_
 
         '''
         return self.manager.CancelControllerCommand(homeid)
@@ -2646,9 +2716,7 @@ Gets the number of scenes that have been defined
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
        '''
         return self.manager.GetNumScenes()
@@ -2665,9 +2733,7 @@ Gets a set of all the SceneIds
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         data = set()
@@ -2708,9 +2774,7 @@ Create a new Scene passing in Scene ID
 removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
        '''
         return self.manager.CreateScene()
@@ -2729,37 +2793,74 @@ Remove an existing Scene.
 createScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         return self.manager.RemoveScene(sceneId)
 
-    def getSceneValues(self, id):
+    def sceneGetValues(self, uint8_t id):
         '''
-.. _getSceneValues:
+.. _sceneGetValues:
 
 Retrieve the list of values from a scene
 
-:param id: The ID of a value.
+:param id: The ID of a scene.
 :type id: int
-:returns: Set -- The list of items.
-:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_,getValueListSelectionStr_ ,getValueListSelectionNum_ \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, getValueType_
-
+:rtype: dict()
+:returns: A dict containing : {valueid : value, ...}
+:see: getNumScenes_, getAllScenes_, sceneExists_, \
+createScene_, removeScene_, \
+getSceneLabel_, setSceneLabel_ \
+removeSceneValue_, addSceneValue_, setSceneValue_, \
+sceneGetValues_
         '''
-        #print "**** libopenzwave.GetValueListItems ******"
+        cdef float type_float
+        cdef bool type_bool
+        cdef uint8_t type_byte
+        cdef int32_t type_int
+        cdef int16_t type_short
+        cdef string type_string
+        cdef vector[string] strvect
+        cdef ValueID* cvalueID
         cdef vector[ValueID] vect
-        ret = set()
+        ret = dict()
         if self.manager.SceneGetValues(id, &vect):
             while not vect.empty() :
-                value_id = vect.back().GetId()
-                #value_id = value.GetId()
-                ret.add(value_id)
+                cvalueID = &vect.back()
+                datatype = PyValueTypes[cvalueID.GetType()]
+                value_data = None
+                value_id = cvalueID.GetId()
+                if datatype == "Bool":
+                    cret = self.manager.SceneGetValueAsBool(id, deref(cvalueID), &type_bool)
+                    value_data = type_bool if cret else None
+                elif datatype == "Byte":
+                    cret = self.manager.SceneGetValueAsByte(id, deref(cvalueID), &type_byte)
+                    value_data = type_byte if cret else None
+                elif datatype == "Decimal":
+                    cret = self.manager.SceneGetValueAsFloat(id, deref(cvalueID), &type_float)
+                    value_data = type_float if cret else None
+                elif datatype == "Int":
+                    cret = self.manager.SceneGetValueAsInt(id, deref(cvalueID), &type_int)
+                    value_data = type_int if cret else None
+                elif datatype == "Short":
+                    cret = self.manager.SceneGetValueAsShort(id, deref(cvalueID), &type_short)
+                    value_data = type_short if cret else None
+                elif datatype == "String":
+                    cret = self.manager.SceneGetValueAsString(id, deref(cvalueID), &type_string)
+                    value_data = type_string.c_str() if cret else None
+                elif datatype == "Button":
+                    cret = self.manager.SceneGetValueAsBool(id, deref(cvalueID), &type_bool)
+                    value_data = type_bool if cret else None
+                elif datatype == "List":
+                    cret = self.manager.SceneGetValueListSelection(id, deref(cvalueID), &type_string)
+                    value_data = type_string.c_str() if cret else None
+                else :
+                    cret = self.manager.SceneGetValueAsString(id, deref(cvalueID), &type_string)
+                    value_data = type_string.c_str() if cret else None
+                ret[value_id] = value_data
                 vect.pop_back();
-            #print "++++ list des items : " ,  ret
         return ret
+
 
     def addSceneValue(self, uint8_t sceneid, id, value):
         '''
@@ -2784,9 +2885,7 @@ Actually I don't know how to use it :)
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         cdef float type_float
@@ -2832,6 +2931,29 @@ sceneGetValueAsString_, getSceneValues_
                 ret = 1 if cret else 0
         return ret
 
+    def removeSceneValue(self, uint8_t sceneid, id):
+        '''
+.. _removeSceneValue:
+
+Remove the Value ID from an existing scene.
+
+:param sceneid: The ID of a scene.
+:type sceneid: int
+:param id: The ID of a value.
+:type id: int
+:returns: True if succee. False otherwise
+:rtype: bool
+:see: getNumScenes_, getAllScenes_, sceneExists_, \
+createScene_, removeScene_, activateScene_, \
+getSceneLabel_, setSceneLabel_ \
+removeSceneValue_, setSceneValue_, \
+sceneGetValues_
+
+        '''
+        if values_map.find(id) != values_map.end():
+            return self.manager.RemoveSceneValue(sceneid, values_map.at(id))
+        return False
+
     def setSceneValue(self, uint8_t sceneid, id, value):
         '''
 .. _setSceneValue:
@@ -2853,9 +2975,7 @@ Set a value to an existing scene's ValueID.
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         cdef float type_float
@@ -2917,9 +3037,7 @@ Returns a label for the particular scene.
 createScene_, removeScene_, activateScene_, \
 setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
@@ -2939,9 +3057,7 @@ Sets a label for the particular scene.
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         self.manager.SetSceneLabel(sceneid, string(label))
@@ -2960,9 +3076,7 @@ Check if a Scene ID is defined.
 createScene_, removeScene_, activateScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         return self.manager.SceneExists(sceneid)
@@ -2981,9 +3095,7 @@ Activate given scene to perform all its actions.
 createScene_, removeScene_, \
 getSceneLabel_, setSceneLabel_ \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_, SceneGetValueAsBool_, sceneGetValueAsByte_, \
-sceneGetValueAsFloat_, sceneGetValueAsInt_, sceneGetValueAsShort_, \
-sceneGetValueAsString_, getSceneValues_
+sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)

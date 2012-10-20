@@ -468,6 +468,23 @@ class ZWaveNetwork(ZWaveObject):
         else :
             return self._load_scenes()
 
+    def get_value(self, value_id):
+        """
+        Retrieve a value on the network.
+
+        Check every nodes to see if it hols the value
+
+        :param value_id: The id of the value to add
+        :type value_id: int
+        :returns: The value or None
+        :rtype: ZWaveValue
+
+        """
+        for node in self.nodes:
+            if value_id in self.nodes[node].values :
+                return self.nodes[node].values[value_id]
+        return None
+
     def _load_scenes(self):
         """
         Load the scenes of the network.

@@ -168,7 +168,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool AddSceneValueListSelection( uint8_t sceneId, ValueID& valueId, int32_t value )
         bool RemoveSceneValue( uint8_t sceneId, ValueID& valueId )
         int SceneGetValues( uint8_t sceneId, vector[ValueID]* o_value )
-        bool SceneGetValueAsBool( uint8_t sceneId, ValueID& valueId, bool value )
+        bool SceneGetValueAsBool( uint8_t sceneId, ValueID& valueId, bool* value )
         bool SceneGetValueAsByte( uint8_t sceneId, ValueID& valueId, uint8_t* o_value )
         bool SceneGetValueAsFloat( uint8_t sceneId, ValueID& valueId, float* o_value )
         bool SceneGetValueAsInt( uint8_t sceneId, ValueID& valueId, int32_t* o_value )

@@ -42,15 +42,14 @@ Must be updated to use the cachedObject facilities.</p>
 <dt id="openzwave.value.ZWaveValue.check_data">
 <tt class="descname">check_data</tt><big>(</big><em>data</em><big>)</big></dt>
 <dd><p>Check that data is correct for this value.
-Must be called before updating data of the value.
-To do</p>
+Return the data in a correct type. None is data is incorrect.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the data is correct.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A variable type if the data is correct. None otherwise.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
 </tr>
 </tbody>
 </table>
@@ -78,7 +77,9 @@ To do</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">depending of the type of the value</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The data of the value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">depending of the type of the value</td>
 </tr>
 </tbody>
 </table>
@@ -145,7 +146,9 @@ To do</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.genre">
 <tt class="descname">genre</tt></dt>
-<dd><p>The genre of the value.</p>
+<dd><p>Get the genre of the value.  The genre classifies a value to enable
+low-level system or configuration parameters to be filtered out
+by the application</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -167,6 +170,43 @@ To do</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.index">
+<tt class="descname">index</tt></dt>
+<dd><p>Get the value index.  The index is used to identify one of multiple
+values created and managed by a command class.  In the case of configurable
+parameters (handled by the configuration command class), the index is the
+same as the parameter ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">index of the value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.instance">
+<tt class="descname">instance</tt></dt>
+<dd><p>Get the command class instance of this value.  It is possible for there to be
+multiple instances of a command class, although currently it appears that
+only the SensorMultilevel command class ever does this.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">instance of the value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -291,7 +331,9 @@ To do</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.type">
 <tt class="descname">type</tt></dt>
-<dd><p>The type of the value.</p>
+<dd><p>Get the type of the value.  The type describes the data held by the value
+and enables the user to select the correct value accessor method in the
+Manager class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -321,15 +363,7 @@ To do</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.value_id">
 <tt class="descname">value_id</tt></dt>
-<dd><p>The id of the value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
+<dd><p>The value_id of the value.</p>
 </dd></dl>
 
 </dd></dl>

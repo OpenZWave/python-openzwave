@@ -236,7 +236,9 @@ class ZWaveValue(ZWaveObject):
     @property
     def type(self):
         """
-        The type of the value.
+        Get the type of the value.  The type describes the data held by the value
+        and enables the user to select the correct value accessor method in the
+        Manager class.
 
         :return: type of the value
         :rtype: str
@@ -251,23 +253,49 @@ class ZWaveValue(ZWaveObject):
     @property
     def genre(self):
         """
-        The genre of the value.
+        Get the genre of the value.  The genre classifies a value to enable
+        low-level system or configuration parameters to be filtered out
+        by the application
 
         :return: genre of the value (Basic, User, Config, System)
         :rtype: str
 
         """
-#        if self.is_outdated("self.type"):
-#            self._type = self._network.manager.getValueType(self.value_id)
-#            self.update("self.type")
-#        return self._type
         return self._network.manager.getValueGenre(self.value_id)
+
+    @property
+    def index(self):
+        """
+        Get the value index.  The index is used to identify one of multiple
+        values created and managed by a command class.  In the case of configurable
+        parameters (handled by the configuration command class), the index is the
+        same as the parameter ID.
+
+        :return: index of the value
+        :rtype: int
+
+        """
+        return self._network.manager.getValueIndex(self.value_id)
+
+    @property
+    def instance(self):
+        """
+        Get the command class instance of this value.  It is possible for there to be
+        multiple instances of a command class, although currently it appears that
+        only the SensorMultilevel command class ever does this.
+
+        :return: instance of the value
+        :rtype: int
+
+        """
+        return self._network.manager.getValueInstance(self.value_id)
 
     @property
     def data(self):
         """
         The current data of the value.
 
+        :return: The data of the value
         :rtype: depending of the type of the value
 
         """
@@ -287,41 +315,8 @@ class ZWaveValue(ZWaveObject):
         :type value: str
 
         """
-        if self.type == "Bool":
-            if type(value) == type("") :
-                if value == "False" or value == "false" or value == "0":
-                    value = False
-                else :
-                    value = True
-        elif self.type == "Byte":
-            if type(value) == type("") :
-                try :
-                    value = int(value)
-                except :
-                    pass
-        elif self.type == "Decimal":
-            if type(value) == type("") or type(value) == type(0):
-                try :
-                    value = float(value)
-                except :
-                    pass
-        elif self.type == "Int":
-                try :
-                    value = int(value)
-                except :
-                    pass
-        elif self.type == "Short":
-                try :
-                    value = int(value)
-                except :
-                    pass
-        elif self.type == "Button":
-            if type(value) == type("") :
-                if value == "False" or value == "false" or value == "0":
-                    value = False
-                else :
-                    value = True
-        self._network.manager.setValue(self.value_id, value)
+        val = self.check_data(value)
+        self._network.manager.setValue(self.value_id, val)
 #        self.outdate("self.data")
 
     @property
@@ -375,16 +370,61 @@ class ZWaveValue(ZWaveObject):
     def check_data(self, data):
         """
         Check that data is correct for this value.
-        Must be called before updating data of the value.
-        To do
+        Return the data in a correct type. None is data is incorrect.
 
-        :returns: True if the data is correct.
-        :rtype: bool
+        :returns: A variable type if the data is correct. None otherwise.
+        :rtype: variable
 
         """
         if self.is_read_only :
-            return False
-        return True
+            return None
+        new_data = None
+        if self.type == "Bool":
+            new_data = data
+            if type(data) == type("") :
+                if data == "False" or data == "false" or data == "0":
+                    new_data = False
+                else :
+                    new_data = True
+        elif self.type == "Byte":
+            try :
+                new_data = int(data)
+            except :
+                new_data = None
+            if new_data != None:
+                if new_data < self.min or new_data > self.max :
+                    new_data = None
+        elif self.type == "Decimal":
+            try :
+                new_data = float(data)
+            except :
+                new_data = None
+        elif self.type == "Int":
+            try :
+                new_data = int(data)
+            except :
+                new_data = None
+        elif self.type == "Short":
+            try :
+                new_data = int(data)
+            except :
+                new_data = None
+        elif self.type == "String":
+                new_data = data
+        elif self.type == "Button":
+            new_data = data
+            if type(data) == type("") :
+                if data == "False" or data == "false" or data == "0":
+                    new_data = False
+                else :
+                    new_data = True
+        elif self.type == "List":
+            if type(data) == type("") :
+                if data in self.data_items:
+                    new_data = data
+                else :
+                    new_data = None
+        return new_data
 
 
 #    @property
@@ -460,16 +500,6 @@ class ZWaveValue(ZWaveObject):
         """
 #        self._poll_intensity = 0
         return self._network.manager.disablePoll(self.value_id)
-
-    @property
-    def value_id(self):
-        """
-        The id of the value.
-
-        :rtype: int
-
-        """
-        return self._object_id
 
     @property
     def command_class(self):

@@ -481,6 +481,8 @@ class ZWaveNode( ZWaveObject,
 
         :param value_id: The id of the value to add
         :type value_id: int
+        :param command_class: The command_class of the value
+        :type command_class: str
         :rtype: bool
 
         """
