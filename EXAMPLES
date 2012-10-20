@@ -20,10 +20,11 @@ Start ozwsh with :
 
 It allows :
 
-   * Reset controller (hard and soft) and
-
+   * Reset controller (hard and soft)
    * Change node informations (name, location, ... )
-
+   * view and change values informations
+   * view and change group informations
+   * Full management of scenes
 
 api_demo
 ========

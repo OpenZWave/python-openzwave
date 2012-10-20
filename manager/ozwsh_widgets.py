@@ -1009,20 +1009,21 @@ class ValuesTree(OldestTree):
             return False
 
     def set(self, param, value):
+        values = self.window.network.nodes[self.node_id].values
         try:
             param = long(param)
         except:
             ok = False
-            for val in self.window.network.nodes[self.node_id].values:
-                if self.window.network.nodes[self.node_id].values[val].label == param:
+            for val in values:
+                if values[val].label == param:
                     param = val
                     ok = True
                     exit
             if not ok :
                 self.window.status_bar.update(status="Invalid value ID %s" % (param))
                 return False
-        if param in self.window.network.nodes[self.node_id].values:
-            newval = self.window.network.nodes[self.node_id].values[param].check_data(value)
+        if param in values:
+            newval = values[param].check_data(value)
             self.window.log.info("param %s" %param)
             self.window.log.info("type param %s" %type(param))
             self.window.log.info("old_val %s" %value)
@@ -1030,7 +1031,7 @@ class ValuesTree(OldestTree):
             self.window.log.info("newval %s" %newval)
             self.window.log.info("type newval %s" %type(newval))
             if newval != None :
-                self.window.network.nodes[self.node_id].values[param].data=newval
+                values[param].data=newval
                 self.window.status_bar.update(status='Value %s updated' % param)
                 return True
             else :
@@ -1188,10 +1189,11 @@ class SwitchesTree(OldestTree):
         except:
             self.window.status_bar.update(status="Invalid node:label %s" % (param))
             return False
+        values = self.window.network.nodes[node].values
         ok = False
-        for val in self.window.network.nodes[int(node)].values:
+        for val in values:
             self.window.log.info("SwitchesTree set %s val %s" % (node,val))
-            if self.window.network.nodes[node].values[val].label == switch:
+            if values[val].label == switch:
                 switch = val
                 ok = True
                 exit
@@ -1199,8 +1201,9 @@ class SwitchesTree(OldestTree):
             self.window.status_bar.update(status="Invalid label %s on node %s" % (switch,node))
             return False
         if node in self.window.network.nodes:
-            if self.window.network.nodes[node].values[switch].check_data(value) :
-                self.window.network.nodes[node].values[switch].data=value
+            newval = values[switch].check_data(value)
+            if newval != None :
+                values[switch].data=value
                 self.window.status_bar.update(status='Value %s on node %s updated' % (switch,node))
                 return True
             else :
@@ -1401,7 +1404,7 @@ class SceneTree(OldestTree):
                         'name':'scene',
                         'help':'Scene management',
                         'widget_box': self.widget_box}
-        self.usage.append("set <value> to <data> : change the data of a value")
+        self.usage.append("set <nodeid:label> to <data> : change the data of a value <nodeid:label>")
         self.usage.append("delete <value> : Remove <value> from scene")
         if parent != None and self.definition != None :
             parent.add_child("scene",self.definition)
@@ -1476,36 +1479,45 @@ class SceneTree(OldestTree):
 
     def set(self, param, value):
         try:
-            param = long(param)
+            self.window.log.info("SceneTree set %s" % param)
+            node,switch = param.split(':',1)
+            node = int(node)
         except:
-            ok = False
-            values = self.window.network.get_scenes()[self.key].get_values()
-            for val in values:
-                if values[val]['value'].label == param:
-                    param = val
-                    ok = True
-                    exit
-            if not ok :
-                self.window.status_bar.update(status="Invalid value ID %s" % (param))
-                return False
+            self.window.status_bar.update(status="Invalid node:label %s" % (param))
+            return False
+        values = self.window.network.nodes[node].values
+        ok = False
+        for val in values:
+            self.window.log.info("SceneTree set %s val %s" % (node,val))
+            if values[val].label == switch:
+                switch = val
+                ok = True
+                exit
+        if not ok :
+            self.window.status_bar.update(status="Invalid label %s on node %s" % (switch,node))
+            return False
         scene = self.window.network.get_scenes()[self.key]
-        dict_value = scene.get_values()[param]
-        new_val = dict_value['value'].check_data(value)
-        self.window.log.info("param %s" %param)
-        self.window.log.info("type param %s" %type(param))
-        self.window.log.info("old_val %s" %value)
-        self.window.log.info("type old_val %s" %type(value))
-        self.window.log.info("new_val %s" %new_val)
-        self.window.log.info("type new_val %s" %type(new_val))
-        if new_val != None :
-            if scene.set_value(param, new_val) :
-                self.window.status_bar.update(status='Value %s updated' % param)
-                return True
+        if switch in scene.get_values() :
+            dict_value = scene.get_values()[switch]
+            new_val = dict_value['value'].check_data(value)
+            self.window.log.info("switch %s" %switch)
+            self.window.log.info("type switch %s" %type(switch))
+            self.window.log.info("old_val %s" %value)
+            self.window.log.info("type old_val %s" %type(value))
+            self.window.log.info("new_val %s" %new_val)
+            self.window.log.info("type new_val %s" %type(new_val))
+            if new_val != None :
+                if scene.set_value(switch, new_val) :
+                    self.window.status_bar.update(status='Value %s updated' % switch)
+                    return True
+                else :
+                    self.window.status_bar.update(status="Can't update value %s" % switch)
+                    return False
             else :
-                self.window.status_bar.update(status="Can't update value %s" % param)
-                return True
+                self.window.status_bar.update(status="Bad data value %s" % (switch))
+                return False
         else :
-            self.window.status_bar.update(status="Bad data value %s" % (value))
+            self.window.status_bar.update(status="Value invalid %s" % (switch))
             return False
 
     @property

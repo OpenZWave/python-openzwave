@@ -392,7 +392,7 @@ class ZWaveValue(ZWaveObject):
             except :
                 new_data = None
             if new_data != None:
-                if new_data < self.min or new_data > self.max :
+                if new_data < 0 or new_data > 255 :
                     new_data = None
         elif self.type == "Decimal":
             try :
