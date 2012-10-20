@@ -35,6 +35,7 @@ from mylibc cimport PyEval_InitThreads
 from driver cimport DriverData_t, DriverData
 from notification cimport Notification, NotificationType
 from notification cimport Type_Error, Type_Group, Type_NodeEvent
+from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
@@ -244,8 +245,8 @@ cdef void callback(const_notification _notification, void* _context) with gil:
         n['event'] = notification.GetEvent()
     elif notification.GetType() == Type_Error:
         n['errorCode'] = notification.GetErrorCode()
-#    elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
-#        n['buttonId'] = notification.GetButtonId()
+    elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
+        n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
     #print n
     (<object>_context)(n)
