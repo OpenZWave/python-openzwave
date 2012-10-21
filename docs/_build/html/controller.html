@@ -92,9 +92,54 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <dl class="class">
 <dt id="openzwave.controller.ZWaveController">
 <em class="property">class </em><tt class="descclassname">openzwave.controller.</tt><tt class="descname">ZWaveController</tt><big>(</big><em>controller_id</em>, <em>network</em>, <em>options=None</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController" title="Permalink to this definition">¶</a></dt>
-<dd><p>The driver objet.
-Hold options of the manager
-Also used to retrieve informations about the library, ...</p>
+<dd><p>The controller manager.</p>
+<p>Allows to retrieve informations about the library, statistics, ...
+Also used to send commands to the controller</p>
+<p>Commands :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.</li>
+<li>Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.</li>
+<li>Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)</li>
+<li>Driver::ControllerCommand_ReceiveConfiguration -</li>
+<li>Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.</li>
+<li>Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.</li>
+<li>Driver::ControllerCommand_RemoveFailedNode - move a node to the controller&#8217;s list of failed nodes.  The node must actually</li>
+</ul>
+<p>have failed or have been disabled since the command will fail if it responds.  A node must be in the controller&#8217;s failed nodes list
+for ControllerCommand_ReplaceFailedNode to work.
+- Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller&#8217;s failed nodes list.
+- Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
+the controller&#8217;s failed nodes list, or the node responds, this command will fail.
+- Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
+make it the primary.  The existing primary will become a secondary controller.
+- Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
+- Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+- Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
+- Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
+- Driver::ControllerCommand_CreateButton - Create a handheld button id.
+- Driver::ControllerCommand_DeleteButton - Delete a handheld button id.</p>
+</div></blockquote>
+<p>Callbacks :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed</li>
+</ul>
+<p>to the user at this point, telling them what to do next.
+For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
+inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
+they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
+controller to learn new data.
+- Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
+- Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
+- Driver::ControllerState_Failed - will be sent if the command fails for any reason.</p>
+</div></blockquote>
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_request_network_update">
+<tt class="descname">begin_command_request_network_update</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the controller with network information from the SUC/SIS.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.cancel_command">
 <tt class="descname">cancel_command</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.cancel_command" title="Permalink to this definition">¶</a></dt>
@@ -354,6 +399,22 @@ Resets a controller without erasing its network configuration settings.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Statistics of the controller</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.zwcallback">
+<tt class="descname">zwcallback</tt><big>(</big><em>args</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.zwcallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Callback Handler used when sendig commands to the controller.
+Dispatch a louie message.</p>
+<p>To do : add node in signal when necessary</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<em>dict()</em>) &#8211; A dict containing informations about the state of the controller</td>
 </tr>
 </tbody>
 </table>

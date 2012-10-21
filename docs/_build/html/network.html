@@ -95,35 +95,66 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 It contains a reference to the manager and the controller.</p>
 <p>It dispatch the following louie signals :</p>
 <blockquote>
-<div><ul class="simple">
-<li>SIGNAL_NETWORK_FAILED = &#8216;NetworkFailed&#8217;</li>
-<li>SIGNAL_NETWORK_READY = &#8216;NetworkReady&#8217;</li>
-<li>SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</li>
-<li>SIGNAL_DRIVER_READY = &#8216;DriverReady&#8217;</li>
-<li>SIGNAL_DRIVER_RESET = &#8216;DriverReset&#8217;</li>
-<li>SIGNAL_NODE_ADDED = &#8216;NodeAdded&#8217;</li>
-<li>SIGNAL_NODE_EVENT = &#8216;NodeEvent&#8217;</li>
-<li>SIGNAL_NODE_NAMING = &#8216;NodeNaming&#8217;</li>
-<li>SIGNAL_NODE_NEW = &#8216;NodeNew&#8217;</li>
-<li>SIGNAL_NODE_PROTOCOL_INFO = &#8216;NodeProtocolInfo&#8217;</li>
-<li>SIGNAL_NODE_READY = &#8216;NodeReady&#8217;</li>
-<li>SIGNAL_NODE_REMOVED = &#8216;NodeRemoved&#8217;</li>
-<li>SIGNAL_VALUE_ADDED = &#8216;ValueAdded&#8217;</li>
-<li>SIGNAL_VALUE_CHANGED = &#8216;ValueChanged&#8217;</li>
-<li>SIGNAL_VALUE_REFRESHED = &#8216;ValueRefreshed&#8217;</li>
-<li>SIGNAL_VALUE_REMOVED = &#8216;ValueRemoved&#8217;</li>
-<li>SIGNAL_POLLING_ENABLED = &#8216;PollingEnabled&#8217;</li>
-<li>SIGNAL_POLLING_DISABLED = &#8216;PollingDisabled&#8217;</li>
-<li>SIGNAL_CREATE_BUTTON = &#8216;CreateButton&#8217;</li>
-<li>SIGNAL_DELETE_BUTTON = &#8216;DeleteButton&#8217;</li>
-<li>SIGNAL_BUTTON_ON = &#8216;ButtonOn&#8217;</li>
-<li>SIGNAL_BUTTON_OFF = &#8216;ButtonOff&#8217;</li>
-<li>SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = &#8216;EssentialNodeQueriesComplete&#8217;</li>
-<li>SIGNAL_NODE_QUERIES_COMPLETE = &#8216;NodeQueriesComplete&#8217;</li>
-<li>SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = &#8216;AwakeNodeQueriesComplete&#8217;</li>
-<li>SIGNAL_ALL_NODES_QUERIES_COMPLETE = &#8216;AllNodeQueriesComplete&#8217;</li>
-<li>SIGNAL_MSG_COMPLETE = &#8216;MsgComplete&#8217;</li>
-<li>SIGNAL_ERROR = &#8216;Error&#8217;</li>
+<div><ul>
+<li><p class="first">SIGNAL_NETWORK_FAILED = &#8216;NetworkFailed&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NETWORK_READY = &#8216;NetworkReady&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_DRIVER_READY = &#8216;DriverReady&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_DRIVER_RESET = &#8216;DriverReset&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_ADDED = &#8216;NodeAdded&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_EVENT = &#8216;NodeEvent&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_NAMING = &#8216;NodeNaming&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_NEW = &#8216;NodeNew&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_PROTOCOL_INFO = &#8216;NodeProtocolInfo&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_READY = &#8216;NodeReady&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_NODE_REMOVED = &#8216;NodeRemoved&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_VALUE_ADDED = &#8216;ValueAdded&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_VALUE_CHANGED = &#8216;ValueChanged&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_VALUE_REFRESHED = &#8216;ValueRefreshed&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_VALUE_REMOVED = &#8216;ValueRemoved&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_POLLING_ENABLED = &#8216;PollingEnabled&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_POLLING_DISABLED = &#8216;PollingDisabled&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_CREATE_BUTTON = &#8216;CreateButton&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_DELETE_BUTTON = &#8216;DeleteButton&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_BUTTON_ON = &#8216;ButtonOn&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_BUTTON_OFF = &#8216;ButtonOff&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = &#8216;EssentialNodeQueriesComplete&#8217;</p>
+</li>
+<li><dl class="first docutils">
+<dt>SIGNAL_NODE_QUERIES_COMPLETE = &#8216;NodeQueriesComplete&#8217;</dt>
+<dd><ul class="first last simple">
+<li>SIGNAL_AWAKE_NODES_QUERIED = &#8216;AwakeNodesQueried&#8217;</li>
+<li>SIGNAL_ALL_NODES_QUERIED = &#8216;AllNodesQueried&#8217;</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">SIGNAL_MSG_COMPLETE = &#8216;MsgComplete&#8217;</p>
+</li>
+<li><p class="first">SIGNAL_ERROR = &#8216;Error&#8217;</p>
+</li>
 </ul>
 </div></blockquote>
 <p>The table presented below sets notifications in the order they might typically be received,
@@ -510,7 +541,7 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<em>dict()</em>) &#8211; Callback function</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>args</strong> (<em>dict()</em>) &#8211; A dict containing informations about the state of the controller</td>
 </tr>
 </tbody>
 </table>

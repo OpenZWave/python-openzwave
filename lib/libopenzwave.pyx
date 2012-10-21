@@ -33,6 +33,7 @@ from vers cimport ozw_vers
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from driver cimport DriverData_t, DriverData
+from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
 from notification cimport Type_Error, Type_Group, Type_NodeEvent
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
@@ -45,8 +46,6 @@ from log cimport LogLevel
 import os
 import sys
 
-
-
 #Don't update it.
 #It will be done when releasing only.
 #Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
@@ -56,7 +55,7 @@ OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
 class EnumWithDoc(str):
     def setDoc(self, doc):
-        self.__doc__ = doc
+        self.doc = doc
         return self
 
 PyNotifications = [
@@ -105,6 +104,36 @@ PyValueTypes = [
     EnumWithDoc('Short').setDoc("16-bit signed value"),
     EnumWithDoc('String').setDoc("Text string"),
     EnumWithDoc('Button').setDoc("A write-only value that is the equivalent of pressing a button to send a command to a device"),
+    ]
+
+PyControllerState = [
+    EnumWithDoc('Normal').setDoc("No command in progress."),
+    EnumWithDoc('Waiting').setDoc("Controller is waiting for a user action."),
+    EnumWithDoc('InProgress').setDoc("The controller is communicating with the other device to carry out the command."),
+    EnumWithDoc('Completed').setDoc("The command has completed successfully."),
+    EnumWithDoc('Failed').setDoc("The command has failed."),
+    EnumWithDoc('NodeOK').setDoc("Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node is OK."),
+    EnumWithDoc('NodeFailed').setDoc("Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed."),
+    ]
+
+PyControllerCommand = [
+    EnumWithDoc('None').setDoc("No command."),
+    EnumWithDoc('AddController').setDoc("Add a new controller to the Z-Wave network.  The new controller will be a secondary."),
+    EnumWithDoc('AddDevice').setDoc("Add a new device (but not a controller) to the Z-Wave network."),
+    EnumWithDoc('CreateNewPrimary').setDoc("Add a new controller to the Z-Wave network.  The new controller will be the primary, and the current primary will become a secondary controller."),
+    EnumWithDoc('ReceiveConfiguration').setDoc("Receive Z-Wave network configuration information from another controller."),
+    EnumWithDoc('RemoveController').setDoc("Remove a controller from the Z-Wave network."),
+    EnumWithDoc('RemoveDevice').setDoc("Remove a new device (but not a controller) from the Z-Wave network."),
+    EnumWithDoc('RemoveFailedNode').setDoc("Move a node to the controller's failed nodes list. This command will only work if the node cannot respond."),
+    EnumWithDoc('HasNodeFailed').setDoc("Check whether a node is in the controller's failed nodes list."),
+    EnumWithDoc('ReplaceFailedNode').setDoc("Replace a non-responding node with another. The node must be in the controller's list of failed nodes for this command to succeed."),
+    EnumWithDoc('TransferPrimaryRole').setDoc("Make a different controller the primary."),
+    EnumWithDoc('RequestNetworkUpdate').setDoc("Request network information from the SUC/SIS."),
+    EnumWithDoc('RequestNodeNeighborUpdate').setDoc("Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors."),
+    EnumWithDoc('AssignReturnRoute').setDoc("Assign a network return routes to a device."),
+    EnumWithDoc('DeleteAllReturnRoutes').setDoc("Delete all return routes from a device."),
+    EnumWithDoc('CreateButton').setDoc("Create an id that tracks handheld button presses."),
+    EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
     ]
 
 """
@@ -201,43 +230,16 @@ cdef addValueId(ValueID v, n):
                     'readOnly': manager.IsValueReadOnly(v),
                     }
 
-def configPath():
-    '''
-Retrieve the config path. This directory hold the xml files.
-
-:returns: A string containing the library config path or None.
-:rtype: str
-
-    '''
-    if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-    else:
-        for pythonpath in sys.path:
-            try:
-                for afile in os.listdir(pythonpath):
-                    fullpath = os.path.join(pythonpath, afile)
-                    if os.path.exists(os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)):
-                        return os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)
-            except :
-                pass
-    return None
-
-cdef void callback(const_notification _notification, void* _context) with gil:
+cdef void notif_callback(const_notification _notification, void* _context) with gil:
     """
-    Callback to the C++ library
+    Notification callback to the C++ library
 
     """
     cdef Notification* notification = <Notification*>_notification
-
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
+#         'context' : "%s" % (<object>_context),
          }
     if notification.GetType() == Type_Group:
         n['groupIdx'] = notification.GetGroupIdx()
@@ -251,8 +253,46 @@ cdef void callback(const_notification _notification, void* _context) with gil:
     #print n
     (<object>_context)(n)
 
+cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
+    """
+    Controller callback to the C++ library
+
+    """
+    c = {'state' : PyControllerState[_state],
+         'message' : PyControllerState[_state].doc,
+#         'context' : "%s" % (<object>_context),
+        }
+    (<object>_context)(c)
+
 cpdef object driverData():
     cdef DriverData data
+
+def configPath():
+    '''
+Retrieve the config path. This directory hold the xml files.
+
+:returns: A string containing the library config path or None.
+:rtype: str
+
+    '''
+    if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
+    else:
+        for pythonpath in sys.path:
+            try:
+                for afile in os.listdir(pythonpath):
+                    fullpath = os.path.join(pythonpath, afile)
+                    if os.path.exists(os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)):
+                        return os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)
+            except :
+                pass
+    return None
 
 cdef class PyOptions:
     """
@@ -508,6 +548,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
 
     cdef Manager *manager
     cdef object _watcherCallback
+    cdef object _controllerCallback
 
     def create(self):
         '''
@@ -2628,7 +2669,7 @@ add a single watcher - all notifications will be reported to it.
 
         '''
         self._watcherCallback = pythonfunc # need to keep a reference to this
-        if not self.manager.AddWatcher(callback, <void*>pythonfunc):
+        if not self.manager.AddWatcher(notif_callback, <void*>pythonfunc):
             raise ValueError("call to AddWatcher failed")
 
     def removeWatcher(self, pythonfunc):
@@ -2642,7 +2683,7 @@ Remove a notification watcher.
 :see: addWatcher_
 
         '''
-        if not self.manager.RemoveWatcher(callback, <void*>self._watcherCallback):
+        if not self.manager.RemoveWatcher(notif_callback, <void*>self._watcherCallback):
             raise ValueError("call to RemoveWatcher failed")
         else:
             self._watcherCallback = None
@@ -2685,8 +2726,6 @@ Resets a controller without erasing its network configuration settings.
         '''
         self.manager.SoftReset(homeid)
 
-#        #bool BeginControllerCommand(uint32_t homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8_t _nodeId = 0xff )
-
     def cancelControllerCommand(self, homeid):
         '''
 .. _cancelControllerCommand:
@@ -2697,9 +2736,80 @@ Cancels any in-progress command running on a controller.
 :type homeId: int
 :returns: True if a command was running and was cancelled.
 :rtype: bool
+:see: beginControllerCommand_
 
         '''
         return self.manager.CancelControllerCommand(homeid)
+
+    def beginControllerCommand(self, homeId, command, pythonfunc,\
+            highPower=False, nodeId=0xff, arg=0):
+
+        '''
+.. _beginControllerCommand:
+
+Start a controller command process.
+
+Commands :
+
+    - Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.
+    - Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.
+    - Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)
+    - Driver::ControllerCommand_ReceiveConfiguration -
+    - Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.
+    - Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.
+    - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes.  The node must actually
+    have failed or have been disabled since the command will fail if it responds.  A node must be in the controller's failed nodes list
+    for ControllerCommand_ReplaceFailedNode to work.
+    - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
+    - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
+    the controller's failed nodes list, or the node responds, this command will fail.
+    - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
+    make it the primary.  The existing primary will become a secondary controller.
+    - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
+    - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+    - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
+    - Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
+    - Driver::ControllerCommand_CreateButton - Create a handheld button id.
+    - Driver::ControllerCommand_DeleteButton - Delete a handheld button id.
+
+Callbacks :
+
+    - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed
+    to the user at this point, telling them what to do next.
+    For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
+    inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
+    they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
+    controller to learn new data.
+    - Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
+    - Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
+    - Driver::ControllerState_Failed - will be sent if the command fails for any reason.
+
+:param homeId: The Home ID of the Z-Wave controller.
+:type homeId: int
+:param command: The command to be sent to the controller.
+:type command: ControllerCommand
+:param callback: Pointer to a function that will be called at various stages during the command process
+to notify the user of progress or to request actions on the user's part.  Defaults to NULL.
+:type callback: pfnControllerCallback_t
+:param context: Pointer to user defined data that will be passed into to the callback function.  Defaults to NULL.
+:type context:
+:param highPower: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
+Usually when adding or removing devices, the controller operates at low power so that the controller must
+be physically close to the device for security reasons.  If _highPower is true, the controller will
+operate at normal power levels instead.  Defaults to false.
+:type highPower: bool
+:param nodeId: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
+:type nodeId: int
+:param arg:
+:type arg: int
+:returns: True if the command was accepted and has started.
+:rtype: bool
+:see: cancelControllerCommand-
+        '''
+
+        self._controllerCallback = pythonfunc # need to keep a reference to this
+        return self.manager.BeginControllerCommand(homeId, command, \
+                 ctrl_callback, <void*>pythonfunc, highPower, nodeId, arg)
 
 #-----------------------------------------------------------------------------
 # Scene commands

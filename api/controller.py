@@ -35,11 +35,74 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveController(ZWaveObject):
     '''
-    The driver objet.
-    Hold options of the manager
-    Also used to retrieve informations about the library, ...
+    The controller manager.
+
+    Allows to retrieve informations about the library, statistics, ...
+    Also used to send commands to the controller
+
+    Commands :
+
+        - Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.
+        - Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.
+        - Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)
+        - Driver::ControllerCommand_ReceiveConfiguration -
+        - Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.
+        - Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.
+        - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes.  The node must actually
+        have failed or have been disabled since the command will fail if it responds.  A node must be in the controller's failed nodes list
+        for ControllerCommand_ReplaceFailedNode to work.
+        - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
+        - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
+        the controller's failed nodes list, or the node responds, this command will fail.
+        - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
+        make it the primary.  The existing primary will become a secondary controller.
+        - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
+        - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+        - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
+        - Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
+        - Driver::ControllerCommand_CreateButton - Create a handheld button id.
+        - Driver::ControllerCommand_DeleteButton - Delete a handheld button id.
+
+    Callbacks :
+
+        - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed
+        to the user at this point, telling them what to do next.
+        For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
+        inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
+        they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
+        controller to learn new data.
+        - Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
+        - Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
+        - Driver::ControllerState_Failed - will be sent if the command fails for any reason.
 
     '''
+    SIGNAL_CTRL_NORMAL = 'Normal'
+    SIGNAL_CTRL_WAITING = 'Waiting'
+    SIGNAL_CTRL_INPROGRESS = 'InProgress'
+    SIGNAL_CTRL_COMPLETED = 'Completed'
+    SIGNAL_CTRL_FAILED = 'Failed'
+    SIGNAL_CTRL_NODEOK = 'NodeOK'
+    SIGNAL_CTRL_NODEFAILED = 'NodeFailed'
+
+    SIGNAL_CONTROLLER = 'Message'
+
+    CMD_NONE = 0
+    CMD_ADDCONTROLLER = 1
+    CMD_ADDDEVICE = 2
+    CMD_CREATENEWPRIMARY = 3
+    CMD_RECEIVECONFIGURATION = 4
+    CMD_REMOVECONTROLLER = 5
+    CMD_REMOVEDEVICE = 6
+    CMD_REMOVEFAILEDNODE = 7
+    CMD_HASNODEFAILED = 8
+    CMD_REPLACEFAILEDNODE = 9
+    CMD_TRANSFERPRIMARYROLE = 10
+    CMD_REQUESTNETWORKUPDATE = 11
+    CMD_REQUESTNODENEIGHBORUPDATE = 12
+    CMD_ASSIGNRETURNROUTE = 13
+    CMD_DELETEALLRETURNROUTES = 14
+    CMD_CREATEBUTTON = 15
+    CMD_DELETEBUTTON = 16
 
     def __init__(self, controller_id, network, options=None):
         '''
@@ -301,9 +364,164 @@ class ZWaveController(ZWaveObject):
         """
         self._network.manager.softResetController(self._network.home_id)
 
+    def begin_command_request_network_update(self, high_power = False):
+        """
+        Update the controller with network information from the SUC/SIS.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REQUESTNETWORKUPDATE, self.zwcallback, high_power, 0xff, 0)
+
+    def begin_command_add_controller(self, high_power = False):
+        """
+        Add a new secondary controller to the Z-Wave network.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_ADDCONTROLLER, self.zwcallback, high_power)
+
+    def begin_command_add_device(self, high_power = False):
+        """
+        Add a new device (but not a controller) to the Z-Wave network.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_ADDDEVICE, self.zwcallback, high_power)
+
+    def begin_command_remove_controller(self, high_power = False):
+        """
+        Remove a controller from the Z-Wave network.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REMOVECONTROLLER, self.zwcallback, high_power)
+
+    def begin_command_remove_device(self, high_power = False):
+        """
+        Remove a device (but not a controller) from the Z-Wave network.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REMOVEDEVICE, self.zwcallback, high_power)
+
+    def begin_command_remove_failed_node(self, high_power = False):
+        """
+        Move a node to the controller's list of failed nodes.  The node must
+        actually have failed or have been disabled since the command
+        will fail if it responds.  A node must be in the controller's
+        failed nodes list for ControllerCommand_ReplaceFailedNode to work.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REMOVEFAILEDNODE, self.zwcallback, high_power)
+
+    def begin_command_has_node_failed(self, high_power = False):
+        """
+        Check whether a node is in the controller's failed nodes list.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_HASNODEFAILED, self.zwcallback, high_power)
+
+    def begin_command_replace_failed_node(self, high_power = False):
+        """
+        Replace a failed device with another. If the node is not in
+        the controller's failed nodes list, or the node responds, this command will fail.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REPLACEFAILEDNODE, self.zwcallback, high_power)
+
+    def begin_command_replace_failed_node(self, high_power = False):
+        """
+        Get a node to rebuild its neighbour list.
+        This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REQUESTNODENEIGHBORUPDATE, self.zwcallback, high_power)
+
+    def begin_command_create_new_primary(self, high_power = False):
+        """
+        (Not yet implemented)
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_CREATENEWPRIMARY, self.zwcallback, high_power)
+
+    def begin_command_transfer_primary_role(self, high_power = False):
+        """
+        (Not yet implemented)
+        Add a new controller to the network and make it the primary.
+        The existing primary will become a secondary controller.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_TRANSFERPRIMARYROLE, self.zwcallback, high_power)
+
+    def begin_command_receive_configuration(self, high_power = False):
+        """
+        -
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_RECEIVECONFIGURATION, self.zwcallback, high_power)
+
+    def begin_command_assign_return_route(self, high_power = False):
+        """
+        Assign a network return route to a device.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_ASSIGNRETURNROUTE, self.zwcallback, high_power)
+
+    def begin_command_delete_all_return_routes(self, high_power = False):
+        """
+        Delete all network return routes from a device.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_DELETEALLRETURNROUTES, self.zwcallback, high_power)
+
+    def begin_command_create_button(self, high_power = False):
+        """
+        Create a handheld button id
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_CREATEBUTTON, self.zwcallback, high_power)
+
+    def begin_command_delete_button(self, high_power = False):
+        """
+        Delete a handheld button id.
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_DELETEBUTTON, self.zwcallback, high_power)
+
     def cancel_command(self):
         """
         Cancels any in-progress command running on a controller.
 
         """
         self._network.manager.cancelControllerCommand(self._network.home_id)
+
+    def zwcallback(self, args):
+        """
+        The Callback Handler used when sendig commands to the controller.
+        Dispatch a louie message.
+
+        To do : add node in signal when necessary
+
+        :param args: A dict containing informations about the state of the controller
+        :type args: dict()
+
+        """
+        logging.debug('Controller state change : %s' % (args))
+        state = args['state']
+        message = args['message']
+        if state == self.SIGNAL_CTRL_WAITING:
+            dispatcher.send(self.SIGNAL_CTRL_WAITING, \
+                **{'state': state, 'message': message, 'network': self._network, 'controller': self})
+        dispatcher.send(self.SIGNAL_CONTROLLER, \
+            **{'state': state, 'message': message, 'network': self._network, 'controller': self})

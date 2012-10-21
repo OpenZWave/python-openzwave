@@ -43,10 +43,9 @@ from louie import dispatcher, All
 import logging
 #from frameapp import FrameApp, DIVIDER
 
-#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 #logging.basicConfig(level=logging.INFO)
-
-#logger = logging.getLogger('openzwave')
+logger = logging.getLogger('openzwave')
 
 MAIN_TITLE = "openzwave Shell"
 """
@@ -247,6 +246,22 @@ class MainWindow(Screen):
                 return True
             else:
                 self.status_bar.update(status='Unknown directory "%s"' % path)
+                return False
+        elif command.startswith('send') :
+            if ' ' in command :
+                cmd,value = command.split(' ',1)
+            else:
+                self.status_bar.update(status='Usage : send <command>')
+                return False
+            value = value.strip()
+            if len(value) == 0 :
+                self.status_bar.update(status='Usage : send <command>')
+                return False
+            if self.active_box.walker.send(value):
+                self.active_box.walker.ls("")
+                self.status_bar.set_command("")
+                return True
+            else :
                 return False
         elif command.startswith('create') :
             if ' ' in command :

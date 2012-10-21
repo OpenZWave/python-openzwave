@@ -11,3 +11,5 @@ The common data structures and defitions.
 .. autodata:: PyGenres
 .. autodata:: PyValueTypes
 .. autodata:: PyLogLevels
+.. autodata:: PyControllerCommand
+.. autodata:: PyControllerState

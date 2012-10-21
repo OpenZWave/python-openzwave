@@ -17,4 +17,8 @@ Contents:
         :noindex:
     .. autodata:: PyLogLevels
         :noindex:
+	.. autodata:: PyControllerCommand
+        :noindex:
+	.. autodata:: PyControllerState
+        :noindex:
 

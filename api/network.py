@@ -70,8 +70,8 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_BUTTON_OFF = 'ButtonOff'
         * SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
         * SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
-        * SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodeQueriesComplete'
-        * SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
+        * SIGNAL_AWAKE_NODES_QUERIED = 'AwakeNodesQueried'
+        * SIGNAL_ALL_NODES_QUERIED = 'AllNodesQueried'
         * SIGNAL_MSG_COMPLETE = 'MsgComplete'
         * SIGNAL_ERROR = 'Error'
 
@@ -220,8 +220,8 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_BUTTON_OFF = 'ButtonOff'
     SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE = 'EssentialNodeQueriesComplete'
     SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
-    SIGNAL_AWAKE_NODES_QUERIES_COMPLETE = 'AwakeNodesQueriesComplete'
-    SIGNAL_ALL_NODES_QUERIES_COMPLETE = 'AllNodeQueriesComplete'
+    SIGNAL_AWAKE_NODES_QUERIED = 'AwakeNodesQueried'
+    SIGNAL_ALL_NODES_QUERIED = 'AllNodesQueried'
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
     SIGNAL_ERROR = 'Error'
 
@@ -579,73 +579,67 @@ class ZWaveNetwork(ZWaveObject):
 
         }
 
-        :param args: Callback function
+        :param args: A dict containing informations about the state of the controller
         :type args: dict()
 
         """
-        try:
-            notify_type = args['notificationType']
-            if notify_type == 'DriverFailed':
-                self._handle_driver_failed(args)
-            elif notify_type == 'DriverReady':
-                self._handle_driver_ready(args)
-            elif notify_type == 'DriverReset':
-                self._handle_driver_reset(args)
-            elif notify_type == 'NodeAdded':
-                self._handle_node_added(args)
-            elif notify_type == 'NodeChanged':
-                self._handleNodeChanged(args)
-            elif notify_type == 'NodeEvent':
-                self._handle_node_event(args)
-            elif notify_type == 'NodeNaming':
-                self._handle_node_naming(args)
-            elif notify_type == 'NodeNew':
-                self._handle_node_new(args)
-            elif notify_type == 'NodeProtocolInfo':
-                self._handle_node_protocol_info(args)
-            elif notify_type == 'NodeReady':
-                self._handleNodeReady(args)
-            elif notify_type == 'NodeRemoved':
-                self._handle_node_removed(args)
-            elif notify_type == 'Group':
-                self._handle_group(args)
-            elif notify_type == 'ValueAdded':
-                self._handle_value_added(args)
-            elif notify_type == 'ValueChanged':
-                self._handle_value_changed(args)
-            elif notify_type == 'ValueRefreshed':
-                self._handle_value_refreshed(args)
-            elif notify_type == 'ValueRemoved':
-                self._handle_value_removed(args)
-            elif notify_type == 'PollingDisabled':
-                self._handle_polling_disabled(args)
-            elif notify_type == 'PollingEnabled':
-                self._handle_polling_enabled(args)
-            elif notify_type == 'CreateButton':
-                self._handle_create_button(args)
-            elif notify_type == 'DeleteButton':
-                self._handle_delete_button(args)
-            elif notify_type == 'ButtonOn':
-                self._handle_button_on(args)
-            elif notify_type == 'ButtonOff':
-                self._handle_button_off(args)
-            elif notify_type == 'AllNodesQueried':
-                self._handle_all_nodes_queried(args)
-            elif notify_type == 'AwakeNodesQueried':
-                self._handle_awake_nodes_queried(args)
-            elif notify_type == 'EssentialNodeQueriesComplete':
-                self._handle_essential_node_queries_complete(args)
-            elif notify_type == 'NodeQueriesComplete':
-                self._handle_node_queries_complete(args)
-            elif notify_type == 'MsgComplete':
-                self._handle_msg_complete(args)
-            elif notify_type == 'Error':
-                self._handle_error(args)
-            else:
-                logging.warning('Skipping unhandled notification type [%s]', notify_type)
-        except:
-            import sys, traceback
-            raise ZWaveException("Callback exception %s" % traceback.format_exception(*sys.exc_info()))
+        notify_type = args['notificationType']
+        if notify_type == self.SIGNAL_DRIVER_FAILED:
+            self._handle_driver_failed(args)
+        elif notify_type == self.SIGNAL_DRIVER_READY:
+            self._handle_driver_ready(args)
+        elif notify_type == self.SIGNAL_DRIVER_RESET:
+            self._handle_driver_reset(args)
+        elif notify_type == self.SIGNAL_NODE_ADDED:
+            self._handle_node_added(args)
+        elif notify_type == self.SIGNAL_NODE_EVENT:
+            self._handle_node_event(args)
+        elif notify_type == self.SIGNAL_NODE_NAMING:
+            self._handle_node_naming(args)
+        elif notify_type == self.SIGNAL_NODE_NEW:
+            self._handle_node_new(args)
+        elif notify_type == self.SIGNAL_NODE_PROTOCOL_INFO:
+            self._handle_node_protocol_info(args)
+        elif notify_type == self.SIGNAL_NODE_READY:
+            self._handleNodeReady(args)
+        elif notify_type == self.SIGNAL_NODE_REMOVED:
+            self._handle_node_removed(args)
+        elif notify_type == self.SIGNAL_GROUP:
+            self._handle_group(args)
+        elif notify_type == self.SIGNAL_VALUE_ADDED:
+            self._handle_value_added(args)
+        elif notify_type == self.SIGNAL_VALUE_CHANGED:
+            self._handle_value_changed(args)
+        elif notify_type == self.SIGNAL_VALUE_REFRESHED:
+            self._handle_value_refreshed(args)
+        elif notify_type == self.SIGNAL_VALUE_REMOVED:
+            self._handle_value_removed(args)
+        elif notify_type == self.SIGNAL_POLLING_DISABLED:
+            self._handle_polling_disabled(args)
+        elif notify_type == self.SIGNAL_POLLING_ENABLED:
+            self._handle_polling_enabled(args)
+        elif notify_type == self.SIGNAL_CREATE_BUTTON:
+            self._handle_create_button(args)
+        elif notify_type == self.SIGNAL_DELETE_BUTTON:
+            self._handle_delete_button(args)
+        elif notify_type == self.SIGNAL_BUTTON_ON:
+            self._handle_button_on(args)
+        elif notify_type == self.SIGNAL_BUTTON_OFF:
+            self._handle_button_off(args)
+        elif notify_type == self.SIGNAL_ALL_NODES_QUERIED:
+            self._handle_all_nodes_queried(args)
+        elif notify_type == self.SIGNAL_AWAKE_NODES_QUERIED:
+            self._handle_awake_nodes_queried(args)
+        elif notify_type == self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE:
+            self._handle_essential_node_queries_complete(args)
+        elif notify_type == self.SIGNAL_NODE_QUERIES_COMPLETE:
+            self._handle_node_queries_complete(args)
+        elif notify_type == self.SIGNAL_MSG_COMPLETE:
+            self._handle_msg_complete(args)
+        elif notify_type == self.SIGNAL_ERROR:
+            self._handle_error(args)
+        else:
+            logging.warning('Skipping unhandled notification type [%s]', notify_type)
 
     def _handle_driver_failed(self, args):
         '''
@@ -798,7 +792,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeNaming : %s' % (args))
-        self.nodes[args['nodeId']].outdate("self.name")
+        #self.nodes[args['nodeId']].outdate("self.name")
         dispatcher.send(self.SIGNAL_NODE_NAMING, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
         self._handle_node(args)
@@ -863,7 +857,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification EssentialNodeQueriesComplete : %s' % (args))
-        self.nodes[args['nodeId']].outdated = True
+        #self.nodes[args['nodeId']].outdated = True
         dispatcher.send(self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
 
@@ -876,7 +870,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification NodeQueriesComplete : %s' % (args))
-        self.nodes[args['nodeId']].outdated = True
+        #self.nodes[args['nodeId']].outdated = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
 
@@ -892,7 +886,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
         self._state = self.STATE_READY
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
-        dispatcher.send(self.SIGNAL_ALL_NODES_QUERIES_COMPLETE, \
+        dispatcher.send(self.SIGNAL_ALL_NODES_QUERIED, \
             **{'network': self, 'controller': self._controller})
         #try:
         #    self._semaphore_on_ready.acquire()
@@ -915,7 +909,7 @@ class ZWaveNetwork(ZWaveObject):
         self._state = self.STATE_AWAKE
         self._state = self.STATE_READY
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
-        dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIES_COMPLETE, \
+        dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIED, \
             **{'network': self, 'controller': self._controller})
 
     def _handle_polling_disabled(self, args):
@@ -928,7 +922,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingDisabled : %s' % (args))
-        self.nodes[args['nodeId']].outdate("self.is_polled")
+        #self.nodes[args['nodeId']].outdate("self.is_polled")
         dispatcher.send(self.SIGNAL_POLLING_DISABLED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']]})
 
@@ -942,7 +936,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification PollingEnabled : %s' % (args))
-        self.nodes[args['nodeId']].outdate("self.is_polled")
+        #self.nodes[args['nodeId']].outdate("self.is_polled")
         dispatcher.send(self.SIGNAL_POLLING_ENABLED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']]})
 

@@ -213,6 +213,10 @@ class OldestTree(urwid.ListWalker):
         self.window.status_bar.update(status='Command "activate" not supported')
         return False
 
+    def send(self, value):
+        self.window.status_bar.update(status='Command "send" not supported')
+        return False
+
 class GroupsBox(urwid.ListBox):
     """
     GroupsBox show the walker
@@ -769,6 +773,7 @@ class ControllerTree(OldestTree):
             parent.add_child(self._path,self.definition)
         self.usage.append("reset soft : reset the controller in a soft way. Node association is not required")
         self.usage.append("reset hard : reset the controller. Warning : all nodes must be re-associated with your stick.")
+        self.usage.append("send network_update : update the controller with network information from the SUC/SIS.")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -776,9 +781,19 @@ class ControllerTree(OldestTree):
         self.refresh()
         self.window.log.info("ControllerTree _louie_network_ready")
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NORMAL)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_WAITING)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_INPROGRESS)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_COMPLETED)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_FAILED)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NODEOK)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NODEFAILED)
 
     def _louie_node_update(self, network, node_id):
         self.refresh()
+
+    def _louie_ctrl_message(self, state, network, controller):
+        self.window.status_bar.update(status='Message from controller: %s' % state)
 
     def set(self, param, value):
         if param in ['name', 'location', 'product_name', 'manufacturer_name' ]:
@@ -796,6 +811,13 @@ class ControllerTree(OldestTree):
         if state == 'hard':
             self.window.network.controller.hard_reset()
             self.window.status_bar.update(status='Reset controller hardly')
+            return True
+        return False
+
+    def send(self, command):
+        if command == 'network_update':
+            self.window.network.controller.begin_command_request_network_update()
+            #self.window.status_bar.update(status='Reset controller softly')
             return True
         return False
 

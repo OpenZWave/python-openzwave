@@ -23,6 +23,7 @@ from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 #from mylibc cimport malloc, free
 from driver cimport DriverData_t, DriverData
+from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
 from notification cimport Type_Error, Type_Group, Type_NodeEvent
 from notification cimport const_notification, pfnOnNotification_t
@@ -151,7 +152,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         # // Controller Commands
         void ResetController(uint32_t homeid)
         void SoftReset(uint32_t homeid)
-        #bool BeginControllerCommand(uint32_t homeid, Driver::ControllerCommand _command, Driver::pfnControllerCallback_t _callback = NULL, void* _context = NULL, bool _highPower = false, uint8_t _nodeId = 0xff )
+        bool BeginControllerCommand(uint32_t homeid, ControllerCommand _command, pfnControllerCallback_t _callback, void* _context, bool _highPower, uint8_t _nodeId, uint8_t _arg )
         bool CancelControllerCommand(uint32_t homeid)
         # // Scene commands
         uint8_t GetNumScenes()
@@ -192,4 +193,3 @@ cdef extern from "Manager.h" namespace "OpenZWave":
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()
     Manager* Get()
-
