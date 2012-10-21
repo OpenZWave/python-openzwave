@@ -713,6 +713,7 @@ class NodeTree(OldestTree):
             self.lines.append(urwid.Text(    "  Groups                           = %s" % \
                 self.window.network.nodes[self.key].groups, align='left'))
             self.size += 1
+        self.window.log.info("NodeTree num groups = %s" % self.window.network.nodes[self.key].num_groups )
         self._modified()
 
     @property
@@ -781,19 +782,14 @@ class ControllerTree(OldestTree):
         self.refresh()
         self.window.log.info("ControllerTree _louie_network_ready")
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NORMAL)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
         dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_WAITING)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_INPROGRESS)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_COMPLETED)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_FAILED)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NODEOK)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_NODEFAILED)
 
     def _louie_node_update(self, network, node_id):
         self.refresh()
 
-    def _louie_ctrl_message(self, state, network, controller):
-        self.window.status_bar.update(status='Message from controller: %s' % state)
+    def _louie_ctrl_message(self, state, message, network, controller):
+        self.window.status_bar.update(status='Message from controller: %s : %s' % (state,message))
 
     def set(self, param, value):
         if param in ['name', 'location', 'product_name', 'manufacturer_name' ]:

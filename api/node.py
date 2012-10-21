@@ -291,8 +291,11 @@ class ZWaveNode( ZWaveObject,
     @property
     def groups(self):
         """
-        The groups of the node.
-        to do
+        Get the association groups reported by this node
+
+        In Z-Wave, groups are numbered starting from one.  For example, if a call to
+        GetNumGroups returns 4, the _groupIdx value to use in calls to GetAssociations
+        AddAssociation and RemoveAssociation will be a number between 1 and 4.
 
         :rtype: dict()
 
@@ -304,20 +307,20 @@ class ZWaveNode( ZWaveObject,
 #        return self._groups
         groups = dict()
         nbgroups = self.num_groups
-        for i in range(1, nbgroups):
+        for i in range(1, nbgroups+1):
             groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
         return groups
 
-    def add_group(self, target_node_id):
-        """
-        Add a new group containing the target node target_node_id.
-        to do
-
-        :param target_node_id: Identifier for the node that will be added to the association group.
-        :type target_node_id: int
-
-        """
-        self._network.manager.addAssociation(self.home_id, self.node_id, self.num_groups+1, target_node_id)
+#    def add_group(self, target_node_id):
+#        """
+#        Add a new group containing the target node target_node_id.
+#        to do
+#
+#        :param target_node_id: Identifier for the node that will be added to the association group.
+#        :type target_node_id: int
+#
+#        """
+#        self._network.manager.addAssociation(self.home_id, self.node_id, self.num_groups+1, target_node_id)
 
     @property
     def command_classes(self):
