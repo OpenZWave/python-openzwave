@@ -135,9 +135,116 @@ controller to learn new data.
 - Driver::ControllerState_Failed - will be sent if the command fails for any reason.</p>
 </div></blockquote>
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_add_controller">
+<tt class="descname">begin_command_add_controller</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new secondary controller to the Z-Wave network.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_add_device">
+<tt class="descname">begin_command_add_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new device (but not a controller) to the Z-Wave network.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_assign_return_route">
+<tt class="descname">begin_command_assign_return_route</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign a network return route to a device.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_create_button">
+<tt class="descname">begin_command_create_button</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a handheld button id
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_create_new_primary">
+<tt class="descname">begin_command_create_new_primary</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Not yet implemented)
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_delete_all_return_routes">
+<tt class="descname">begin_command_delete_all_return_routes</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete all network return routes from a device.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_delete_button">
+<tt class="descname">begin_command_delete_button</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a handheld button id.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_has_node_failed">
+<tt class="descname">begin_command_has_node_failed</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_has_node_failed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check whether a node is in the controller&#8217;s failed nodes list.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_receive_configuration">
+<tt class="descname">begin_command_receive_configuration</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_receive_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><ul class="simple">
+<li></li>
+</ul>
+<p>To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_remove_controller">
+<tt class="descname">begin_command_remove_controller</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a controller from the Z-Wave network.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_remove_device">
+<tt class="descname">begin_command_remove_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a device (but not a controller) from the Z-Wave network.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_remove_failed_node">
+<tt class="descname">begin_command_remove_failed_node</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_failed_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move a node to the controller&#8217;s list of failed nodes.  The node must
+actually have failed or have been disabled since the command
+will fail if it responds.  A node must be in the controller&#8217;s
+failed nodes list for ControllerCommand_ReplaceFailedNode to work.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_replace_failed_node">
+<tt class="descname">begin_command_replace_failed_node</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replace_failed_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a node to rebuild its neighbour list.
+This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_network_update">
 <tt class="descname">begin_command_request_network_update</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Update the controller with network information from the SUC/SIS.</p>
+<dd><p>Update the controller with network information from the SUC/SIS.
+To do : check needed parameters</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_transfer_primary_role">
+<tt class="descname">begin_command_transfer_primary_role</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>(Not yet implemented)
+Add a new controller to the network and make it the primary.
+The existing primary will become a secondary controller.
+To do : check needed parameters</p>
 </dd></dl>
 
 <dl class="method">
