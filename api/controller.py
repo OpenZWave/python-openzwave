@@ -367,6 +367,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_request_network_update(self, high_power = False):
         """
         Update the controller with network information from the SUC/SIS.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -375,6 +376,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_add_controller(self, high_power = False):
         """
         Add a new secondary controller to the Z-Wave network.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -383,6 +385,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_add_device(self, high_power = False):
         """
         Add a new device (but not a controller) to the Z-Wave network.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -391,6 +394,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_remove_controller(self, high_power = False):
         """
         Remove a controller from the Z-Wave network.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -399,6 +403,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_remove_device(self, high_power = False):
         """
         Remove a device (but not a controller) from the Z-Wave network.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -410,6 +415,7 @@ class ZWaveController(ZWaveObject):
         actually have failed or have been disabled since the command
         will fail if it responds.  A node must be in the controller's
         failed nodes list for ControllerCommand_ReplaceFailedNode to work.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -418,6 +424,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_has_node_failed(self, high_power = False):
         """
         Check whether a node is in the controller's failed nodes list.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -427,6 +434,7 @@ class ZWaveController(ZWaveObject):
         """
         Replace a failed device with another. If the node is not in
         the controller's failed nodes list, or the node responds, this command will fail.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -436,6 +444,7 @@ class ZWaveController(ZWaveObject):
         """
         Get a node to rebuild its neighbour list.
         This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -444,6 +453,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_create_new_primary(self, high_power = False):
         """
         (Not yet implemented)
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -454,6 +464,7 @@ class ZWaveController(ZWaveObject):
         (Not yet implemented)
         Add a new controller to the network and make it the primary.
         The existing primary will become a secondary controller.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -462,6 +473,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_receive_configuration(self, high_power = False):
         """
         -
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -470,6 +482,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_assign_return_route(self, high_power = False):
         """
         Assign a network return route to a device.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -478,6 +491,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_delete_all_return_routes(self, high_power = False):
         """
         Delete all network return routes from a device.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -486,6 +500,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_create_button(self, high_power = False):
         """
         Create a handheld button id
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
@@ -494,6 +509,7 @@ class ZWaveController(ZWaveObject):
     def begin_command_delete_button(self, high_power = False):
         """
         Delete a handheld button id.
+        To do : check needed parameters
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
