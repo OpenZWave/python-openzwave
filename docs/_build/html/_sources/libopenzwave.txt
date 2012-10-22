@@ -15,10 +15,9 @@ Contents:
         :noindex:
     .. autodata:: PyValueTypes
         :noindex:
-    .. autodata:: PyLogLevels
-        :noindex:
+	.. autodata:: PyLogLevels
+		:noindex:
 	.. autodata:: PyControllerCommand
-        :noindex:
+		:noindex:
 	.. autodata:: PyControllerState
-        :noindex:
-
+		:noindex:

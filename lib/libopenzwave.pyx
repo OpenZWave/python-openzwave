@@ -615,7 +615,8 @@ Home ID is required by most of the OpenZWave Manager class methods.
 
 :param serialport: The string used to open the controller.  On Windows this might be something like "\\.\\COM3", or on Linux "/dev/ttyUSB0".
 :type serialport: str
-:return: bool -- True if a new driver was created
+:return: True if a new driver was created
+:rtype: bool
 :see: removeDriver_
 
         '''
@@ -632,7 +633,8 @@ handled automatically.
 
 :param serialport: The same string as was passed in the original call toAddDriver.
 :type serialport: str
-:return: bool -- True if the driver was removed, False if it could not be found.
+:return: True if the driver was removed, False if it could not be found.
+:rtype: bool
 :see: addDriver_
 
         '''
@@ -646,7 +648,8 @@ Get the node ID of the Z-Wave controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: int -- the node ID of the Z-Wave controller
+:return: The node ID of the Z-Wave controller
+:rtype: int
 
         '''
         return self.manager.GetControllerNodeId(homeid)
@@ -670,7 +673,8 @@ Calls to BeginControllerCommand will fail if the controller is not the primary.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: bool -- True if it is a primary controller, False if not.
+:return: True if it is a primary controller, False if not.
+:rtype: bool
 :see: isBridgeController_, isStaticUpdateController_
 
         '''
@@ -688,7 +692,8 @@ about network changes.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: bool -- True if it is a static update controller, False if not.
+:return: True if it is a static update controller, False if not.
+:rtype: bool
 :see: isBridgeController_, isPrimaryController_
 
         '''
@@ -705,7 +710,8 @@ with other controllers to enable events to be passed on.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: bool -- True if it is a bridge controller, False if not.
+:return: True if it is a bridge controller, False if not.
+:rtype: bool
 :see: isPrimaryController_, isStaticUpdateController_
 
         '''
@@ -719,7 +725,8 @@ Get the version of the Z-Wave API library used by a controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: str -- A string containing the library version. For example, "Z-Wave 2.48".
+:return: A string containing the library version. For example, "Z-Wave 2.48".
+:rtype: str
 :see: getPythonLibraryVersion_, getLibraryTypeName_, getOzwLibraryVersion_
 
         '''
@@ -732,7 +739,8 @@ Get the version of the Z-Wave API library used by a controller.
 
 Get the version of the python library.
 
-:return: str -- A string containing the python library version. For example, "0.1".
+:return: A string containing the python library version. For example, "0.1".
+:rtype: str
 :see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_
 
         '''
@@ -744,7 +752,8 @@ Get the version of the python library.
 
 Get a string containing the openzwave library version.
 
-:return: str -- A string containing the library type.
+:return: A string containing the library type.
+:rtype: str
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
@@ -757,6 +766,7 @@ Get a string containing the openzwave library version.
 Get a string containing the Z-Wave API library type used by a controller.
 
 The possible library types are:
+
     - Static Controller
     - Controller
     - Enhanced Slave
@@ -772,7 +782,8 @@ method.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: str -- A string containing the library type.
+:return: A string containing the library type.
+:rtype: str
 :see: getLibraryVersion_, getPythonLibraryVersion_, getOzwLibraryVersion_
 
         '''
@@ -787,7 +798,8 @@ Get count of messages in the outgoing send queue.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:return: int -- Message count
+:return: Message count
+:rtype: int
 
         '''
         return self.manager.GetSendQueueCount(homeid)
@@ -1980,7 +1992,7 @@ by the application
 :return: A string containing the type of the value
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
 getValueAsString_, getValue_, getValueType_, getValueInstance_, getValueIndex_
 
@@ -2004,7 +2016,7 @@ only the SensorMultilevel command class ever does this.
 :return: A string containing the type of the value
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
 getValueAsString_, getValue_, getValueType_, getValueIndex_
 
@@ -2029,7 +2041,7 @@ same as the parameter ID.
 :return: A string containing the type of the value
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
 getValueAsString_, getValue_, getValueType_
 
@@ -2051,7 +2063,7 @@ Gets the type of the value
 :return: A string containing the type of the value
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValue_, getValueInstance_, getValueIndex_
 
@@ -2075,7 +2087,7 @@ Gets a value.
 :return: Depending of the type of the valueId, None otherwise
 :rtype: variable
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2093,7 +2105,7 @@ Gets a value as a bool.
 :return: The value
 :rtype: bool
 :see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2111,7 +2123,7 @@ Gets a value as an 8-bit unsigned integer.
 :return: The value
 :rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2129,7 +2141,7 @@ Gets a value as a float.
 :return: The value
 :rtype: float
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2147,7 +2159,7 @@ Gets a value as a 16-bit signed integer.
 :return: The value
 :rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2165,7 +2177,7 @@ Gets a value as a 32-bit signed integer.
 :return: The value
 :rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2183,7 +2195,7 @@ Gets a value as a string.
 :return: The value
 :rtype: str
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2241,7 +2253,7 @@ Gets the list of items from a list value
 :return: The list of possible values
 :rtype: set()
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
-getValueListSelectionStr_ ,getValueListSelectionNum_ \
+getValueListSelectionStr_ , getValueListSelectionNum_ \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
@@ -2567,7 +2579,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 :type nodeId: int
 :return: The number of groups.
 :rtype: int
-:see: getAssociations, getMaxAssociations, addAssociation, removeAssociation
+:see: getAssociations_, getMaxAssociations_, addAssociation_, removeAssociation_
 
         '''
         return self.manager.GetNumGroups(homeid, nodeid)

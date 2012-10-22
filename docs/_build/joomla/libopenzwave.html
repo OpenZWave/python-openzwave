@@ -47,13 +47,6 @@ list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
 
-<dl class="data">
-<dt>
-<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyValueTypes</tt><em class="property"> = ['Bool', 'Byte', 'Decimal', 'Int', 'List', 'Schedule', 'Short', 'String', 'Button']</em></dt>
-<dd><p>list() -&gt; new empty list
-list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
-</dd></dl>
-
 <dl class="class">
 <dt id="libopenzwave.PyManager">
 <em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">PyManager</tt></dt>
@@ -158,9 +151,11 @@ Home ID is required by most of the OpenZWave Manager class methods.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>serialport</strong> (<em>str</em>) &#8211; The string used to open the controller.  On Windows this might be something like &#8221;.COM3&#8221;, or on Linux &#8220;/dev/ttyUSB0&#8221;.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if a new driver was created</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if a new driver was created</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#removedriver">removeDriver</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#removedriver">removeDriver</a></td>
 </tr>
 </tbody>
 </table>
@@ -454,7 +449,9 @@ Z-Wave controller in turn.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; the node ID of the Z-Wave controller</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The node ID of the Z-Wave controller</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -536,9 +533,9 @@ Z-Wave controller in turn.</p>
 <dt id="libopenzwave.PyManager.getLibraryTypeName">
 <tt class="descname">getLibraryTypeName</tt><big>(</big><big>)</big></dt>
 <dd><p id="getlibrarytypename">Get a string containing the Z-Wave API library type used by a controller.</p>
-<dl class="docutils">
-<dt>The possible library types are:</dt>
-<dd><ul class="first last simple">
+<p>The possible library types are:</p>
+<blockquote>
+<div><ul class="simple">
 <li>Static Controller</li>
 <li>Controller</li>
 <li>Enhanced Slave</li>
@@ -548,8 +545,7 @@ Z-Wave controller in turn.</p>
 <li>Bridge Controller</li>
 <li>Device Under Test</li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 <p>The controller should never return a slave library type.  For a more efficient
 test of whether a controller is a Bridge Controller, use the IsBridgeController
 method.</p>
@@ -559,9 +555,11 @@ method.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the library type.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the library type.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
 </tr>
 </tbody>
 </table>
@@ -577,9 +575,11 @@ method.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the library version. For example, &#8220;Z-Wave 2.48&#8221;.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the library version. For example, &#8220;Z-Wave 2.48&#8221;.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
 </tr>
 </tbody>
 </table>
@@ -1095,7 +1095,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getAssociations, getMaxAssociations, addAssociation, removeAssociation</p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -1148,9 +1148,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the library type.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string containing the library type.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a></td>
 </tr>
 </tbody>
 </table>
@@ -1182,9 +1184,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the python library version. For example, &#8220;0.1&#8221;.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string containing the python library version. For example, &#8220;0.1&#8221;.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
 </tr>
 </tbody>
 </table>
@@ -1227,7 +1231,9 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; Message count</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Message count</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -1283,7 +1289,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">variable</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></p>
 </td>
 </tr>
 </tbody>
@@ -1304,7 +1310,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1324,7 +1330,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1344,7 +1350,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1364,7 +1370,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1384,7 +1390,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1404,7 +1410,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1426,7 +1432,7 @@ by the application</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1469,7 +1475,7 @@ same as the parameter ID.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a></td>
 </tr>
 </tbody>
 </table>
@@ -1491,7 +1497,7 @@ only the SensorMultilevel command class ever does this.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1531,7 +1537,7 @@ only the SensorMultilevel command class ever does this.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_ <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a> <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1631,7 +1637,7 @@ only the SensorMultilevel command class ever does this.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1669,9 +1675,11 @@ with other controllers to enable events to be passed on.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if it is a bridge controller, False if not.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is a bridge controller, False if not.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isprimarycontroller">isPrimaryController</a>, <a class="reference internal" href="#isstaticupdatecontroller">isStaticUpdateController</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isprimarycontroller">isPrimaryController</a>, <a class="reference internal" href="#isstaticupdatecontroller">isStaticUpdateController</a></td>
 </tr>
 </tbody>
 </table>
@@ -1872,9 +1880,11 @@ since most devices must be added when installed in their final location.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if it is a primary controller, False if not.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is a primary controller, False if not.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isbridgecontroller">isBridgeController</a>, <a class="reference internal" href="#isstaticupdatecontroller">isStaticUpdateController</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isbridgecontroller">isBridgeController</a>, <a class="reference internal" href="#isstaticupdatecontroller">isStaticUpdateController</a></td>
 </tr>
 </tbody>
 </table>
@@ -1893,9 +1903,11 @@ about network changes.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if it is a static update controller, False if not.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if it is a static update controller, False if not.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isbridgecontroller">isBridgeController</a>, <a class="reference internal" href="#isprimarycontroller">isPrimaryController</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isbridgecontroller">isBridgeController</a>, <a class="reference internal" href="#isprimarycontroller">isPrimaryController</a></td>
 </tr>
 </tbody>
 </table>
@@ -2107,9 +2119,11 @@ handled automatically.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>serialport</strong> (<em>str</em>) &#8211; The same string as was passed in the original call toAddDriver.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the driver was removed, False if it could not be found.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the driver was removed, False if it could not be found.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#adddriver">addDriver</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#adddriver">addDriver</a></td>
 </tr>
 </tbody>
 </table>

@@ -470,6 +470,25 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.switch_all">
+<tt class="descname">switch_all</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.switch_all" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Method for switching all devices on or off together.  The devices must support</dt>
+<dd>the SwitchAll command class.  The command is first broadcast to all nodes, and
+then followed up with individual commands to each node (because broadcasts are
+not routed, the message might not otherwise reach all the nodes).</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<em>bool</em>) &#8211; True to turn on the switches, False to turn them off</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.network.ZWaveNetwork.write_config">
 <tt class="descname">write_config</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.write_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>The last message that was sent is now complete.</p>

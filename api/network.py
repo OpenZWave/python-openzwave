@@ -265,6 +265,15 @@ class ZWaveNetwork(ZWaveObject):
         #self._semaphore_on_fail = threading.Semaphore()
         #self._callback_on_fail = set()
 
+    def __del__(self):
+        '''
+		Delete the network object.
+
+        '''
+        logging.debug("Delete network object.")
+        self._manager.removeDriver(options.device)
+        self._manager.removeWatcher(self.zwcallback)
+
     @property
     def home_id(self):
         """
@@ -467,6 +476,22 @@ class ZWaveNetwork(ZWaveObject):
             return None
         else :
             return self._load_scenes()
+
+    def switch_all(self, state):
+        """
+	    Method for switching all devices on or off together.  The devices must support
+	 	the SwitchAll command class.  The command is first broadcast to all nodes, and
+	 	then followed up with individual commands to each node (because broadcasts are
+	 	not routed, the message might not otherwise reach all the nodes).
+
+        :param state: True to turn on the switches, False to turn them off
+        :type state: bool
+
+        """
+        if state :
+            self.manager.switchAllOn(self.home_id)
+        else :
+            self.manager.switchAllOff(self.home_id)
 
     def get_value(self, value_id):
         """
