@@ -400,7 +400,23 @@ class RootTree(OldestTree):
         self.lines = []
         self.show_directories()
         if self.window.network != None:
-            self.lines.append(urwid.Text("    HomeId = %s" % self.window.network.home_id_str, align='left'))
+            self.lines.append(urwid.Text(    "  Statistics   = %s" % \
+                self.window.network.controller.stats, align='left'))
+            self.size += 1
+            self.lines.append(urwid.Divider("-"))
+            self.size += 1
+            self.lines.append(urwid.Text(    "  %s" % \
+                self.window.network.controller.library_description, align='left'))
+            self.size += 1
+            self.lines.append(urwid.Text(    "  %s" % \
+                self.window.network.controller.ozw_library_version, align='left'))
+            self.size += 1
+            self.lines.append(urwid.Text(    "  %s" % \
+                self.window.network.controller.python_library_version, align='left'))
+            self.size += 1
+            self.lines.append(urwid.Divider("-"))
+            self.size += 1
+            self.lines.append(urwid.Text("  HomeId = %s" % self.window.network.home_id_str, align='left'))
             self.size += 1
         self._modified()
 
@@ -775,6 +791,11 @@ class ControllerTree(OldestTree):
         self.usage.append("reset soft : reset the controller in a soft way. Node association is not required")
         self.usage.append("reset hard : reset the controller. Warning : all nodes must be re-associated with your stick.")
         self.usage.append("send network_update : update the controller with network information from the SUC/SIS.")
+        self.usage.append("send update_neighbors <node_id> : update the <node_id> neighbors.")
+        self.usage.append("send add_device : add a device (not a controller) on the network.")
+        self.usage.append("send remove_device : remove a device (not a controller) on the network.")
+        self.usage.append("send add_controller : add a controller on the network.")
+        self.usage.append("send remove_controller : remove a controller on the network.")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -815,6 +836,32 @@ class ControllerTree(OldestTree):
             self.window.network.controller.begin_command_request_network_update()
             #self.window.status_bar.update(status='Reset controller softly')
             return True
+        elif command.startswith('update_neighbors'):
+            if ' ' in command :
+                cmd,node = command.split(' ',1)
+            else:
+                self.status_bar.update("usage : send update_neighbors <node_id>")
+                return False
+            node = node.strip()
+            try :
+                node = int(node)
+            except :
+                self.status_bar.update("Invalid node_id")
+                return False
+            self.window.network.controller.begin_command_request_node_neigbhor_update(node)
+            return True
+        elif command == 'add_device':
+            self.window.network.controller.begin_command_add_device()
+            return True
+        elif command == 'remove_device':
+            self.window.network.controller.begin_command_remove_device()
+            return True
+        elif command == 'add_controller':
+            self.window.network.controller.begin_command_add_controller()
+            return True
+        elif command == 'remove_controller':
+            self.window.network.controller.begin_command_remove_controller()
+            return True
         return False
 
     def read_lines(self):
@@ -849,30 +896,10 @@ class ControllerTree(OldestTree):
             self.lines.append(urwid.Text(    "  Capabilities = %s" % \
                 self.window.network.controller.node.capabilities, align='left'))
             self.size += 1
-            self.lines.append(urwid.Text(    "  Neighbors    = %s" % \
-                self.window.network.controller.node.neighbors, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Text(    "  Baud rate    = %s" % \
-                self.window.network.controller.node.max_baud_rate, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Divider("-"))
-            self.size += 1
-            self.lines.append(urwid.Text(    "  Statistics   = %s" % \
-                self.window.network.controller.stats, align='left'))
-            self.size += 1
             self.lines.append(urwid.Divider("-"))
             self.size += 1
             self.lines.append(urwid.Text(    "  Device=%s" % \
                 self.window.network.controller.device, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Text(    "  %s" % \
-                self.window.network.controller.library_description, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Text(    "  %s" % \
-                self.window.network.controller.ozw_library_version, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Text(    "  %s" % \
-                self.window.network.controller.python_library_version, align='left'))
             self.size += 1
         self._modified()
 
@@ -1151,7 +1178,7 @@ class SwitchesTree(OldestTree):
     def _louie_value_update(self, network, node, value_id):
         self.refresh()
 
-    def _louie_node_update(self, network, node, node_id):
+    def _louie_node_update(self, network, node_id):
         self.refresh()
 
     def read_lines(self):
@@ -1309,7 +1336,7 @@ class SensorsTree(OldestTree):
     def _louie_value_update(self, network, node, value_id):
         self.refresh()
 
-    def _louie_node_update(self, network, node, node_id):
+    def _louie_node_update(self, network, node_id):
         self.refresh()
 
     def read_lines(self):

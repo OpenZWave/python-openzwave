@@ -246,12 +246,13 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug("Create network object.")
         self.log = log
+        self._options = options
         ZWaveObject.__init__(self, None, self)
         self._controller = ZWaveController(1, self, options)
         self._manager = libopenzwave.PyManager()
         self._manager.create()
         self._manager.addWatcher(self.zwcallback)
-        self._manager.addDriver(options.device)
+        self._manager.addDriver(self._options.device)
         self._state = False
         #self._initialised = False
         #self._started = False
@@ -265,13 +266,13 @@ class ZWaveNetwork(ZWaveObject):
         #self._semaphore_on_fail = threading.Semaphore()
         #self._callback_on_fail = set()
 
-    def __del__(self):
+    def stop(self):
         '''
-		Delete the network object.
+        Stop the network object.
 
         '''
-        logging.debug("Delete network object.")
-        self._manager.removeDriver(options.device)
+        logging.debug("Stop network.")
+        self._manager.removeDriver(self._options.device)
         self._manager.removeWatcher(self.zwcallback)
 
     @property
@@ -479,10 +480,10 @@ class ZWaveNetwork(ZWaveObject):
 
     def switch_all(self, state):
         """
-	    Method for switching all devices on or off together.  The devices must support
-	 	the SwitchAll command class.  The command is first broadcast to all nodes, and
-	 	then followed up with individual commands to each node (because broadcasts are
-	 	not routed, the message might not otherwise reach all the nodes).
+        Method for switching all devices on or off together.  The devices must support
+        the SwitchAll command class.  The command is first broadcast to all nodes, and
+        then followed up with individual commands to each node (because broadcasts are
+        not routed, the message might not otherwise reach all the nodes).
 
         :param state: True to turn on the switches, False to turn them off
         :type state: bool
@@ -865,7 +866,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification NodeRemoved : %s' % (args))
         try :
             self._semaphore_nodes.acquire()
-            self.nodes[args['nodeId']] = ZWaveNode(args['nodeId'], network=self)
+            del(self.nodes[args['nodeId']])
             dispatcher.send(self.SIGNAL_NODE_REMOVED, \
                 **{'network': self, 'node_id': args['nodeId']})
             self._handle_node(args)

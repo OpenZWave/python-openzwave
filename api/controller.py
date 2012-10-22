@@ -493,9 +493,9 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REPLACEFAILEDNODE, self.zwcallback, nodeId=node_id)
 
-    def begin_command_request_node_neighor_update(self, node_id):
+    def begin_command_request_node_neigbhor_update(self, node_id):
         """
-        Get a node to rebuild its neighbour list.
+        Get a node to rebuild its neighbors list.
         This method also does ControllerCommand_RequestNodeNeighbors afterwards.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.

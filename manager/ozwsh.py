@@ -209,6 +209,16 @@ class MainWindow(Screen):
         self.frame.set_body(self._active_box)
         self.header_bar.update(self._active_box.walker.fullpath())
 
+    def exit(self):
+        """
+        Quit the programm
+        Clean network properly and exit
+
+        """
+        self.network.write_config()
+        self.network.stop()
+        raise urwid.ExitMainLoop()
+
     def execute(self, command):
         """
         Parse an execute a commande
@@ -224,8 +234,7 @@ class MainWindow(Screen):
             self.status_bar.set_command("")
             return True
         elif command.startswith('exit') :
-            self.network.write_config()
-            raise urwid.ExitMainLoop()
+            self.exit()
         elif command.startswith('cd') :
             if ' ' in command :
                 cmd,path = command.split(' ',1)
@@ -406,10 +415,10 @@ class MainWindow(Screen):
         else:
             self.status_bar.update(status='Unknown command "%s"' % command)
             return False
+
     def _unhandled_input(self, key):
         if key == 'esc':
-            self.network.write_config()
-            raise urwid.ExitMainLoop()
+            self.exit()
         elif key == 'tab' or key == 'shift tab':
             if self.framefocus == 'footer':
                 self.framefocus = 'body'
@@ -466,11 +475,15 @@ class MainWindow(Screen):
         #pass
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
 
     def _louie_node_update(self, network, node_id):
         self.loop.draw_screen()
 
     def _louie_value_update(self, network, node, value_id):
+        self.loop.draw_screen()
+
+    def _louie_ctrl_message(self, state, message, network, controller):
         self.loop.draw_screen()
 
 window = None
