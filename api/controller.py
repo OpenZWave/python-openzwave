@@ -334,7 +334,7 @@ class ZWaveController(ZWaveObject):
         The capabilities of the controller.
 
         :returns: The capabilities of the controller
-        :rtype: set()
+        :rtype: int
 
         """
         caps = set()
@@ -345,6 +345,17 @@ class ZWaveController(ZWaveObject):
         if self.node.is_bridge_controller:
             caps.add('bridgeController')
         return caps
+
+    @property
+    def send_queue_count(self):
+        """
+        Get count of messages in the outgoing send queue.
+
+        :returns: Thr count of messages in the outgoing send queue.
+        :rtype: int
+
+        """
+        return self._network.manager.getSendQueueCount(self.home_id)
 
     def hard_reset(self):
         """
@@ -389,7 +400,7 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_ADDCONTROLLER, self.zwcallback, high_power)
+            self.CMD_ADDCONTROLLER, self.zwcallback, highPower=high_power)
 
     def begin_command_add_device(self, high_power = False):
         """
@@ -405,7 +416,7 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_ADDDEVICE, self.zwcallback, high_power)
+            self.CMD_ADDDEVICE, self.zwcallback, highPower=high_power)
 
     def begin_command_remove_controller(self, high_power = False):
         """
@@ -421,7 +432,7 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REMOVECONTROLLER, self.zwcallback, high_power)
+            self.CMD_REMOVECONTROLLER, self.zwcallback, highPower=high_power)
 
     def begin_command_remove_device(self, high_power = False):
         """
@@ -437,9 +448,9 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REMOVEDEVICE, self.zwcallback, high_power)
+            self.CMD_REMOVEDEVICE, self.zwcallback, highPower=high_power)
 
-    def begin_command_remove_failed_node(self, node_id, high_power = False):
+    def begin_command_remove_failed_node(self, node_id):
         """
         Move a node to the controller's list of failed nodes.  The node must
         actually have failed or have been disabled since the command
@@ -448,171 +459,121 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REMOVEFAILEDNODE, self.zwcallback, high_power, node_id)
+            self.CMD_REMOVEFAILEDNODE, self.zwcallback, nodeId=node_id)
 
-    def begin_command_has_node_failed(self, node_id, high_power = False):
+    def begin_command_has_node_failed(self, node_id):
         """
         Check whether a node is in the controller's failed nodes list.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_HASNODEFAILED, self.zwcallback, high_power, node_id)
+            self.CMD_HASNODEFAILED, self.zwcallback, nodeId=node_id)
 
-    def begin_command_replace_failed_node(self, node_id, high_power = False):
+    def begin_command_replace_failed_node(self, node_id):
         """
         Replace a failed device with another. If the node is not in
         the controller's failed nodes list, or the node responds, this command will fail.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REPLACEFAILEDNODE, self.zwcallback, high_power, node_id)
+            self.CMD_REPLACEFAILEDNODE, self.zwcallback, nodeId=node_id)
 
-    def begin_command_request_node_neighor_update(self, node_id, high_power = False):
+    def begin_command_request_node_neighor_update(self, node_id):
         """
         Get a node to rebuild its neighbour list.
         This method also does ControllerCommand_RequestNodeNeighbors afterwards.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REQUESTNODENEIGHBORUPDATE, self.zwcallback, high_power, node_id)
+            self.CMD_REQUESTNODENEIGHBORUPDATE, self.zwcallback, nodeId=node_id)
 
-    def begin_command_create_new_primary(self, high_power = False):
+    def begin_command_create_new_primary(self):
         """
         (Not yet implemented)
 
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_CREATENEWPRIMARY, self.zwcallback, high_power)
+            self.CMD_CREATENEWPRIMARY, self.zwcallback)
 
-    def begin_command_transfer_primary_role(self, high_power = False):
+    def begin_command_transfer_primary_role(self):
         """
         (Not yet implemented)
         Add a new controller to the network and make it the primary.
         The existing primary will become a secondary controller.
 
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_TRANSFERPRIMARYROLE, self.zwcallback, high_power)
+            self.CMD_TRANSFERPRIMARYROLE, self.zwcallback)
 
-    def begin_command_receive_configuration(self, high_power = False):
+    def begin_command_receive_configuration(self):
         """
         -
 
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_RECEIVECONFIGURATION, self.zwcallback, high_power)
+            self.CMD_RECEIVECONFIGURATION, self.zwcallback)
 
-    def begin_command_assign_return_route(self, node_id, high_power = False):
+    def begin_command_assign_return_route(self, node_id):
         """
         Assign a network return route to a device.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_ASSIGNRETURNROUTE, self.zwcallback, high_power, node_id)
+            self.CMD_ASSIGNRETURNROUTE, self.zwcallback, nodeId=node_id)
 
-    def begin_command_delete_all_return_routes(self, node_id, high_power = False):
+    def begin_command_delete_all_return_routes(self, node_id):
         """
         Delete all network return routes from a device.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :returns: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_DELETEALLRETURNROUTES, self.zwcallback, high_power, node_id)
+            self.CMD_DELETEALLRETURNROUTES, self.zwcallback, nodeId=node_id)
 
-    def begin_command_create_button(self, node_id, high_power = False, arg=0):
+    def begin_command_create_button(self, node_id, arg=0):
         """
         Create a handheld button id
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :param arg:
         :type arg: int
         :returns: True if the command was accepted and has started.
@@ -620,19 +581,14 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_CREATEBUTTON, self.zwcallback, high_power, node_id, arg)
+            self.CMD_CREATEBUTTON, self.zwcallback, nodeId=node_id, arg=arg)
 
-    def begin_command_delete_button(self, node_id, high_power = False, arg=0):
+    def begin_command_delete_button(self, node_id, arg=0):
         """
         Delete a handheld button id.
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
         :param arg:
         :type arg: int
         :returns: True if the command was accepted and has started.
@@ -640,7 +596,7 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_DELETEBUTTON, self.zwcallback, high_power, node_id, arg)
+            self.CMD_DELETEBUTTON, self.zwcallback, nodeId=node_id, arg=arg)
 
     def cancel_command(self):
         """
