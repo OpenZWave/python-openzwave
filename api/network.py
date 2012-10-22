@@ -461,23 +461,6 @@ class ZWaveNetwork(ZWaveObject):
         else:
             self._nodes = value
 
-    def get_scenes(self):
-        """
-        The scenes of the network.
-
-        Scenes are generated directly from the lib. There is no notification
-        support to keep them up to date. So for a batch job, consider
-        storing them in a local variable.
-
-        :returns: return a dict() (that can be empty) of scene object. Return None if betwork is not ready
-        :rtype: dict() or None
-
-        """
-        if self.state < self.STATE_READY :
-            return None
-        else :
-            return self._load_scenes()
-
     def switch_all(self, state):
         """
         Method for switching all devices on or off together.  The devices must support
@@ -510,6 +493,23 @@ class ZWaveNetwork(ZWaveObject):
             if value_id in self.nodes[node].values :
                 return self.nodes[node].values[value_id]
         return None
+
+    def get_scenes(self):
+        """
+        The scenes of the network.
+
+        Scenes are generated directly from the lib. There is no notification
+        support to keep them up to date. So for a batch job, consider
+        storing them in a local variable.
+
+        :returns: return a dict() (that can be empty) of scene object. Return None if betwork is not ready
+        :rtype: dict() or None
+
+        """
+        if self.state < self.STATE_READY :
+            return None
+        else :
+            return self._load_scenes()
 
     def _load_scenes(self):
         """
@@ -555,8 +555,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: bool
 
         """
-        scene = ZWaveScene(None, network=self)
-        return scene.exists(sceneid)
+        return self._network.manager.sceneExists(sceneid)
 
     @property
     def nodes_count(self):

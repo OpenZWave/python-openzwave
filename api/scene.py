@@ -115,18 +115,6 @@ class ZWaveScene(ZWaveObject):
         '''
         return self._network.manager.removeScene(self.object_id)
 
-    def exists(self, sceneid):
-        '''
-        Check that the scene exists
-
-        :param sceneid: The id of the scene to check
-        :type sceneid: int
-        :returns: True if the scene exist. False in other cases
-        :rtype: bool
-
-        '''
-        return self._network.manager.sceneExists(sceneid)
-
     def add_value(self, value_id, value_data):
         '''
         Add a value with data value_data to the zwave scene.
@@ -188,9 +176,10 @@ class ZWaveScene(ZWaveObject):
             return ret
         for val in values:
             value = self._network.get_value(val)
-            if value.node.node_id not in ret:
-                ret[value.node.node_id] = {}
-            ret[value.node.node_id][val] = {'value':value,'data':values[val]}
+            if value!=None:
+                if value.node.node_id not in ret:
+                    ret[value.node.node_id] = {}
+                ret[value.node.node_id][val] = {'value':value,'data':values[val]}
         return ret
 
     def remove_value(self, value_id):

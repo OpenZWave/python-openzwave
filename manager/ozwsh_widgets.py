@@ -1455,6 +1455,7 @@ class SceneTree(OldestTree):
                         'widget_box': self.widget_box}
         self.usage.append("set <nodeid:label> to <data> : change the data of a value <nodeid:label>")
         self.usage.append("delete <value> : Remove <value> from scene")
+        self.usage.append("delete <valueid> : Remove <valueid> from scene")
         if parent != None and self.definition != None :
             parent.add_child("scene",self.definition)
 
@@ -1467,7 +1468,6 @@ class SceneTree(OldestTree):
         self.show_directories()
         self.lines.append(self.value_header.get_header())
         self.size += 1
-
         values = self.window.network.get_scenes()[self.key].get_values_by_node()
         for node in values:
             self.lines.append(urwid.Text(    "      %s - %s" % \
@@ -1506,24 +1506,32 @@ class SceneTree(OldestTree):
         return None
 
     def delete(self, value):
+        valueid = None
         try:
-            value = long(value)
+            valueid = long(value)
         except:
             ok = False
-            values = self.window.network.get_scenes()[self.key].get_values()
-            for val in values:
-                if values[val]['value'].label == value:
-                    value = val
-                    ok = True
-                    exit
-            if not ok :
-                self.window.status_bar.update(status="Invalid value ID %s" % (value))
-                return False
-        if self.window.network.get_scenes()[self.key].remove_value(value) :
+            try:
+                self.window.log.info("SceneTree delete %s" % value)
+                node,switch = value.split(':',1)
+                node = int(node)
+                values = self.window.network.get_scenes()[self.key].get_values_by_node()[node]
+                for val in values:
+                    if values[val]['value'].label == value:
+                        valueid = val
+                        ok = True
+                        exit
+                if not ok :
+                    self.window.status_bar.update(status="Can't find %s - Try to use remove <valueid> instead." % (value))
+                    return False
+            except:
+                    self.window.status_bar.update(status="Invalid value ID %s" % (value))
+                    return False
+        if self.window.network.get_scenes()[self.key].remove_value(valueid) :
             self.window.status_bar.update(status='Value %s deleted' % value)
             return True
         else :
-            self.window.status_bar.update(status="Can't delete value Id %s" % (value))
+            self.window.status_bar.update(status="Can't delete value %s" % (value))
             return False
 
     def set(self, param, value):
@@ -1741,9 +1749,11 @@ class ScenesTree(OldestTree):
             ret = self.window.network.get_scenes()[value].activate()
             if ret :
                 self.window.status_bar.update(status='Scene %s activated' % value)
+            else :
+                self.window.status_bar.update(status="Can't activate scene %s" % value)
             return ret
         else :
-            self.window.status_bar.update(status="Can't activate scene %s" % value)
+            self.window.status_bar.update(status="Can't find scene %s" % value)
             return False
 
 class ScenesItem (urwid.WidgetWrap):
