@@ -187,7 +187,7 @@ both cases.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getNumGroups, getAssociations, getMaxAssociations, removeAssociation</p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -284,65 +284,53 @@ add a single watcher - all notifications will be reported to it.</p>
 <li>Driver::ControllerCommand_ReceiveConfiguration -</li>
 <li>Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.</li>
 <li>Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.</li>
-<li>Driver::ControllerCommand_RemoveFailedNode - move a node to the controller&#8217;s list of failed nodes.  The node must actually</li>
+<li>Driver::ControllerCommand_RemoveFailedNode - move a node to the controller&#8217;s list of failed nodes. The node must actually have failed or have been disabled since the command will fail if it responds. A node must be in the controller&#8217;s failed nodes list for ControllerCommand_ReplaceFailedNode to work.</li>
+<li>Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller&#8217;s failed nodes list.</li>
+<li>Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in the controller&#8217;s failed nodes list, or the node responds, this command will fail.</li>
+<li>Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and make it the primary.  The existing primary will become a secondary controller.</li>
+<li>Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.</li>
+<li>Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.</li>
+<li>Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.</li>
+<li>Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.</li>
+<li>Driver::ControllerCommand_CreateButton - Create a handheld button id.</li>
+<li>Driver::ControllerCommand_DeleteButton - Delete a handheld button id.</li>
 </ul>
-<p>have failed or have been disabled since the command will fail if it responds.  A node must be in the controller&#8217;s failed nodes list
-for ControllerCommand_ReplaceFailedNode to work.
-- Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller&#8217;s failed nodes list.
-- Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
-the controller&#8217;s failed nodes list, or the node responds, this command will fail.
-- Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
-make it the primary.  The existing primary will become a secondary controller.
-- Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
-- Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
-- Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
-- Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
-- Driver::ControllerCommand_CreateButton - Create a handheld button id.
-- Driver::ControllerCommand_DeleteButton - Delete a handheld button id.</p>
 </div></blockquote>
 <p>Callbacks :</p>
 <blockquote>
 <div><ul class="simple">
-<li>Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed</li>
+<li>Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed to the user at this point, telling them what to do next. For the add, remove, replace and transfer primary role commands, the user needs to be told to press the inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration, they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other controller to learn new data.</li>
+<li>Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.</li>
+<li>Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.</li>
+<li>Driver::ControllerState_Failed - will be sent if the command fails for any reason.</li>
 </ul>
-<p>to the user at this point, telling them what to do next.
-For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
-inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
-they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
-controller to learn new data.
-- Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
-- Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
-- Driver::ControllerState_Failed - will be sent if the command fails for any reason.</p>
 </div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</li>
 <li><strong>command</strong> (<em>ControllerCommand</em>) &#8211; The command to be sent to the controller.</li>
-<li><strong>callback</strong> &#8211; Pointer to a function that will be called at various stages during the command process</li>
+<li><strong>callback</strong> (<em>pfnControllerCallback_t</em>) &#8211; Pointer to a function that will be called at various stages during the command process to notify the user of progress or to request actions on the user&#8217;s part.  Defaults to NULL.</li>
+<li><strong>context</strong> &#8211; Pointer to user defined data that will be passed into to the callback function.  Defaults to NULL.</li>
+<li><strong>highPower</strong> (<em>bool</em>) &#8211; Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands. Usually when adding or removing devices, the controller operates at low power so that the controller must be physically close to the device for security reasons.  If _highPower is true, the controller will operate at normal power levels instead.  Defaults to false.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.</li>
+<li><strong>arg</strong> (<em>int</em>) &#8211; </li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the command was accepted and has started.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#cancelcontrollercommand">cancelControllerCommand</a></p>
 </td>
 </tr>
 </tbody>
 </table>
-<p>to notify the user of progress or to request actions on the user&#8217;s part.  Defaults to NULL.
-:type callback: pfnControllerCallback_t
-:param context: Pointer to user defined data that will be passed into to the callback function.  Defaults to NULL.
-:type context:
-:param highPower: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-Usually when adding or removing devices, the controller operates at low power so that the controller must
-be physically close to the device for security reasons.  If _highPower is true, the controller will
-operate at normal power levels instead.  Defaults to false.
-:type highPower: bool
-:param nodeId: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
-:type nodeId: int
-:param arg:
-:type arg: int
-:returns: True if the command was accepted and has started.
-:rtype: bool
-:see: cancelControllerCommand-</p>
 </dd></dl>
 
 <dl class="method">
@@ -375,9 +363,11 @@ operate at normal power levels instead.  Defaults to false.
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The unique identifier of the schedule value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if all switch points are clear.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if all switch points are clear.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></td>
 </tr>
 </tbody>
 </table>
@@ -424,9 +414,11 @@ Z-Wave controller in turn.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of the value to disable polling.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if polling was disabled.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if polling was disabled.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a></td>
 </tr>
 </tbody>
 </table>
@@ -446,10 +438,13 @@ Z-Wave controller in turn.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if polling was enabled.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if polling was enabled.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
 </td>
 </tr>
 </tbody>
@@ -495,7 +490,7 @@ Z-Wave controller in turn.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">set()</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getNumGroups, addAssociation, removeAssociation, getMaxAssociations</p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a></p>
 </td>
 </tr>
 </tbody>
@@ -551,10 +546,10 @@ Z-Wave controller in turn.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return dict():</th><td class="field-body"><p class="first">A dict containing statistics of the driver.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict containing statistics of the driver.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last">setNodeName</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict()</p>
 </td>
 </tr>
 </tbody>
@@ -571,10 +566,16 @@ Z-Wave controller in turn.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
-<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node whose associations are to be changed.</li>
-<li><strong>groupIdx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeid</strong> (<em>int</em>) &#8211; The ID of the node whose associations are to be changed.</li>
+<li><strong>groupidx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
 </ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The label for the particular group of a node.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
@@ -646,16 +647,19 @@ method.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
-<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node whose associations we are interested in.</li>
-<li><strong>groupIdx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeid</strong> (<em>int</em>) &#8211; The ID of the node whose associations we are interested in.</li>
+<li><strong>groupidx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; The maximum number of nodes that can be associated into the group.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The maximum number of nodes that can be associated into the group.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getNumGroups, addAssociation, removeAssociation, getAssociations</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getassociations">getAssociations</a></p>
 </td>
 </tr>
 </tbody>
@@ -676,10 +680,13 @@ method.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; The node basic type.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node basic type.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodegeneric">getNodeGeneric</a>, <a class="reference internal" href="#getnodesecurity">getNodeSecurity</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodegeneric">getNodeGeneric</a>, <a class="reference internal" href="#getnodesecurity">getNodeSecurity</a></p>
 </td>
 </tr>
 </tbody>
@@ -703,7 +710,10 @@ method.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bool &#8211; True if the node does have the class instantiated, will return name &amp; version</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node does have the class instantiated, will return name &amp; version</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
@@ -724,10 +734,13 @@ method.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; The node generic type.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node generic type.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodebasic">getNodeBasic</a>, <a class="reference internal" href="#getnodesecurity">getNodeSecurity</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodebasic">getNodeBasic</a>, <a class="reference internal" href="#getnodesecurity">getNodeSecurity</a></p>
 </td>
 </tr>
 </tbody>
@@ -784,10 +797,13 @@ specific data.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str &#8211; A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodeproducttype">getNodeProductType</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>,     <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodeproducttype">getNodeProductType</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>,     <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
 </td>
 </tr>
 </tbody>
@@ -815,10 +831,13 @@ class Value object.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str &#8211; A string containing the nodes manufacturer name.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A string containing the nodes manufacturer name.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>, <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a>,     <a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodeproducttype">getNodeProductType</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>, <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a>,     <a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodeproducttype">getNodeProductType</a></p>
 </td>
 </tr>
 </tbody>
@@ -839,7 +858,10 @@ class Value object.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">int &#8211; The baud rate in bits per second.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The baud rate in bits per second.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>
@@ -921,10 +943,13 @@ data.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str &#8211; A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproducttype">getNodeProductType</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>, <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproducttype">getNodeProductType</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>, <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
 </td>
 </tr>
 </tbody>
@@ -983,10 +1008,13 @@ data.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">str &#8211; A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>,     <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodemanufacturerid">getNodeManufacturerId</a>, <a class="reference internal" href="#getnodeproductid">getNodeProductId</a>, <a class="reference internal" href="#getnodemanufacturername">getNodeManufacturerName</a>, <a class="reference internal" href="#setnodemanufacturername">setNodeManufacturerName</a>,     <a class="reference internal" href="#getnodeproductname">getNodeProductName</a>, <a class="reference internal" href="#setnodeproductname">setNodeProductName</a></p>
 </td>
 </tr>
 </tbody>
@@ -1007,10 +1035,13 @@ data.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; The node security byte</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node security byte</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodegeneric">getNodeGeneric</a>, <a class="reference internal" href="#getnodebasic">getNodeBasic</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodespecific">getNodeSpecific</a>, <a class="reference internal" href="#getnodegeneric">getNodeGeneric</a>, <a class="reference internal" href="#getnodebasic">getNodeBasic</a></p>
 </td>
 </tr>
 </tbody>
@@ -1084,7 +1115,10 @@ on which of those values are specified by the node.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">int &#8211; The node version number</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node version number</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>
@@ -1108,10 +1142,13 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">int &#8211; The number of groups.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The number of groups.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getAssociations, getMaxAssociations, addAssociation, removeAssociation</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getAssociations, getMaxAssociations, addAssociation, removeAssociation</p>
 </td>
 </tr>
 </tbody>
@@ -1148,7 +1185,9 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The number of switch points defined in this schedule.  Returns zero if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a></td>
 </tr>
 </tbody>
 </table>
@@ -1178,9 +1217,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The number of milliseconds between polls</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The number of milliseconds between polls</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
 </tr>
 </tbody>
 </table>
@@ -1262,10 +1303,13 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if successful.  Returns False if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if successful.  Returns False if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
 </td>
 </tr>
 </tbody>
@@ -1286,10 +1330,13 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">multiple &#8211; Depending of the type of the valueId, None otherwise</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Depending of the type of the valueId, None otherwise</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">variable</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></p>
 </td>
 </tr>
 </tbody>
@@ -1305,6 +1352,10 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
@@ -1322,6 +1373,10 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
@@ -1337,6 +1392,10 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
@@ -1354,9 +1413,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1372,9 +1433,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1390,9 +1453,11 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; The value.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1410,9 +1475,11 @@ by the application</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the type of the value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the type of the value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1428,9 +1495,11 @@ by the application</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the value help text.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the value help text.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvaluehelp">setValueHelp</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvaluehelp">setValueHelp</a></td>
 </tr>
 </tbody>
 </table>
@@ -1449,9 +1518,11 @@ same as the parameter ID.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the type of the value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the type of the value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a></td>
 </tr>
 </tbody>
 </table>
@@ -1469,9 +1540,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the type of the value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the type of the value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1487,8 +1560,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the user-friendly label of the value
-:see: <a class="reference internal" href="#setvaluelabel">setValueLabel</a></td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the user-friendly label of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvaluelabel">setValueLabel</a></td>
 </tr>
 </tbody>
 </table>
@@ -1504,9 +1580,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Set &#8211; The list of items.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of possible values</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_ <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_ <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1522,9 +1600,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int  value of items selected.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>,getValueAsFloat_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>,getValueAsFloat_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1540,9 +1620,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">string items selected.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>,getValueAsFloat_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>,getValueAsFloat_, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1558,9 +1640,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value maximum.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value maximum.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemin">getValueMin</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemin">getValueMin</a></td>
 </tr>
 </tbody>
 </table>
@@ -1576,9 +1660,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">int &#8211; The value minimum.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value minimum.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemax">getValueMax</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvaluemax">getValueMax</a></td>
 </tr>
 </tbody>
 </table>
@@ -1594,9 +1680,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the type of the value</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the type of the value</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> ,getValueListSelectionNum_, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1612,9 +1700,11 @@ only the SensorMultilevel command class ever does this.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">str &#8211; A string containing the value of the units.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A string containing the value of the units.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvalueunits">setValueUnits</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setvalueunits">setValueUnits</a></td>
 </tr>
 </tbody>
 </table>
@@ -1654,10 +1744,13 @@ with other controllers to enable events to be passed on.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if the node is a beaming device</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node is a beaming device</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
 </td>
 </tr>
 </tbody>
@@ -1679,10 +1772,13 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if it is a frequent setening node.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if it is a frequent setening node.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
 </td>
 </tr>
 </tbody>
@@ -1724,10 +1820,13 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if it is a setening node.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if it is a setening node.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
 </td>
 </tr>
 </tbody>
@@ -1748,10 +1847,13 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if the node is a routing device</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node is a routing device</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a></p>
 </td>
 </tr>
 </tbody>
@@ -1772,10 +1874,13 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if security features implemented.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if security features implemented.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
 </td>
 </tr>
 </tbody>
@@ -1792,9 +1897,11 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of the value to check polling.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if polling is active.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if polling is active.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
 </tr>
 </tbody>
 </table>
@@ -1857,9 +1964,11 @@ about network changes.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the value cannot be changed by the user.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the value cannot be changed by the user.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvaluewriteonly">isValueWriteOnly</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvaluewriteonly">isValueWriteOnly</a></td>
 </tr>
 </tbody>
 </table>
@@ -1875,9 +1984,11 @@ about network changes.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; the ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the value has actually been set by a status message from the device, rather than simply being the default.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the value has actually been set by a status message from the device, rather than simply being the default.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
 </tr>
 </tbody>
 </table>
@@ -1893,9 +2004,11 @@ about network changes.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the value can only be written to and not read.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the value can only be written to and not read.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvaluereadonly">isValueReadOnly</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvaluereadonly">isValueReadOnly</a></td>
 </tr>
 </tbody>
 </table>
@@ -1909,7 +2022,7 @@ about network changes.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
 </tr>
 </tbody>
 </table>
@@ -1927,9 +2040,11 @@ no notification callbacks are sent.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of an integer value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#releasebutton">releaseButton</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#releasebutton">releaseButton</a></td>
 </tr>
 </tbody>
 </table>
@@ -1955,7 +2070,10 @@ first run.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bool &#8211; True if the request was sent successfully.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
@@ -1992,9 +2110,11 @@ no notification callbacks are sent.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; the ID of an integer value.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">bool &#8211; True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#pressbutton">pressButton</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#pressbutton">pressButton</a></td>
 </tr>
 </tbody>
 </table>
@@ -2021,7 +2141,7 @@ in both cases.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last">getNumGroups, getAssociations, getMaxAssociations, addAssociation</p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -2110,10 +2230,13 @@ handled automatically.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if the switch point is removed.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the switch point is removed.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#setswitchpoint">setSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
 </td>
 </tr>
 </tbody>
@@ -2234,7 +2357,10 @@ same as the query state starting from the dynamic state.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">bool &#8211; True if the request was sent successfully.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
@@ -2537,10 +2663,13 @@ class Value object.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if polling is active.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if polling is active.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
 </td>
 </tr>
 </tbody>
@@ -2644,10 +2773,13 @@ does not have to cope with more than one poll per second).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">bool &#8211; True if the switch point is set.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the switch point is set.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#removeswitchpoint">removeSwitchPoint</a>, <a class="reference internal" href="#clearswitchpoints">clearSwitchPoints</a>, <a class="reference internal" href="#getswitchpoint">getSwitchPoint</a>, <a class="reference internal" href="#getnumswitchpoints">getNumSwitchPoints</a></p>
 </td>
 </tr>
 </tbody>
@@ -2671,7 +2803,10 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">int &#8211; An integer representing the result of the operation  0 : The C method fails, 1 : The C method succeed, 2 : Can&#8217;t find id in the map</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An integer representing the result of the operation  0 : The C method fails, 1 : The C method succeed, 2 : Can&#8217;t find id in the map</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
 </td>
 </tr>
 </tbody>
@@ -2809,7 +2944,7 @@ etc.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller to save.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller to save.</td>
 </tr>
 </tbody>
 </table>

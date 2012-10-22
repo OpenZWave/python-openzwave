@@ -271,7 +271,7 @@ def configPath():
     '''
 Retrieve the config path. This directory hold the xml files.
 
-:returns: A string containing the library config path or None.
+:return: A string containing the library config path or None.
 :rtype: str
 
     '''
@@ -319,7 +319,7 @@ cdef class PyOptions:
         """
         Lock the options. Needed to start the manager
 
-        :returns: The result of the operation.
+        :return: The result of the operation.
         :rtype: bool
 
         """
@@ -333,7 +333,7 @@ cdef class PyOptions:
         :type name: str
         :param value: The value of the option.
         :type value: boolean
-        :returns: The result of the operation.
+        :return: The result of the operation.
         :rtype: bool
 
         """
@@ -347,7 +347,7 @@ cdef class PyOptions:
         :type name: str
         :param value: The value of the option.
         :type value: boolean
-        :returns: The result of the operation.
+        :return: The result of the operation.
         :rtype: bool
 
         """
@@ -365,7 +365,7 @@ cdef class PyOptions:
          or XML file to be concatenated into a comma delimited set.  If _append is false,
          newer values will overwrite older ones.
         :type append: boolean
-        :returns: The result of the operation.
+        :return: The result of the operation.
         :rtype: bool
 
         """
@@ -377,7 +377,7 @@ cdef class PyOptions:
 
 Retrieve the config path. This directory hold the xml files.
 
-:returns: A string containing the library config path or None.
+:return: A string containing the library config path or None.
 :rtype: str
 
         '''
@@ -588,8 +588,8 @@ convention allows OpenZWave to find the correct configuration file for a
 controller, even if it is attached to a different serial port, USB device path,
 etc.
 
-:param homeId: The Home ID of the Z-Wave controller to save.
-:type homeId: int
+:param homeid: The Home ID of the Z-Wave controller to save.
+:type homeid: int
 
         '''
         self.manager.WriteConfig(homeid)
@@ -615,7 +615,7 @@ Home ID is required by most of the OpenZWave Manager class methods.
 
 :param serialport: The string used to open the controller.  On Windows this might be something like "\\.\\COM3", or on Linux "/dev/ttyUSB0".
 :type serialport: str
-:returns: bool -- True if a new driver was created
+:return: bool -- True if a new driver was created
 :see: removeDriver_
 
         '''
@@ -632,7 +632,7 @@ handled automatically.
 
 :param serialport: The same string as was passed in the original call toAddDriver.
 :type serialport: str
-:returns: bool -- True if the driver was removed, False if it could not be found.
+:return: bool -- True if the driver was removed, False if it could not be found.
 :see: addDriver_
 
         '''
@@ -646,7 +646,7 @@ Get the node ID of the Z-Wave controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: int -- the node ID of the Z-Wave controller
+:return: int -- the node ID of the Z-Wave controller
 
         '''
         return self.manager.GetControllerNodeId(homeid)
@@ -670,7 +670,7 @@ Calls to BeginControllerCommand will fail if the controller is not the primary.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: bool -- True if it is a primary controller, False if not.
+:return: bool -- True if it is a primary controller, False if not.
 :see: isBridgeController_, isStaticUpdateController_
 
         '''
@@ -688,7 +688,7 @@ about network changes.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: bool -- True if it is a static update controller, False if not.
+:return: bool -- True if it is a static update controller, False if not.
 :see: isBridgeController_, isPrimaryController_
 
         '''
@@ -705,7 +705,7 @@ with other controllers to enable events to be passed on.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: bool -- True if it is a bridge controller, False if not.
+:return: bool -- True if it is a bridge controller, False if not.
 :see: isPrimaryController_, isStaticUpdateController_
 
         '''
@@ -719,7 +719,7 @@ Get the version of the Z-Wave API library used by a controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: str -- A string containing the library version. For example, "Z-Wave 2.48".
+:return: str -- A string containing the library version. For example, "Z-Wave 2.48".
 :see: getPythonLibraryVersion_, getLibraryTypeName_, getOzwLibraryVersion_
 
         '''
@@ -732,7 +732,7 @@ Get the version of the Z-Wave API library used by a controller.
 
 Get the version of the python library.
 
-:returns: str -- A string containing the python library version. For example, "0.1".
+:return: str -- A string containing the python library version. For example, "0.1".
 :see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_
 
         '''
@@ -744,7 +744,7 @@ Get the version of the python library.
 
 Get a string containing the openzwave library version.
 
-:returns: str -- A string containing the library type.
+:return: str -- A string containing the library type.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
@@ -772,7 +772,7 @@ method.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: str -- A string containing the library type.
+:return: str -- A string containing the library type.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getOzwLibraryVersion_
 
         '''
@@ -787,7 +787,7 @@ Get count of messages in the outgoing send queue.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: int -- Message count
+:return: int -- Message count
 
         '''
         return self.manager.GetSendQueueCount(homeid)
@@ -798,8 +798,8 @@ Get count of messages in the outgoing send queue.
 
 Send current driver statistics to the log file.
 
-:param homeId: The Home ID of the Z-Wave controller.
-:type homeId: int
+:param homeid: The Home ID of the Z-Wave controller.
+:type homeid: int
 
         '''
         self.manager.LogDriverStatistics(homeid)
@@ -832,8 +832,8 @@ Statistics:
 :type homeId: int
 :param data: Pointer to structure DriverData to return values
 :type data: int
-:return dict(): A dict containing statistics of the driver.
-:see: setNodeName
+:return: A dict containing statistics of the driver.
+:rtype: dict()
 
        '''
         cdef DriverData_t data
@@ -868,7 +868,8 @@ Statistics:
 
 Get the time period between polls of a nodes state
 
-:returns: int -- The number of milliseconds between polls
+:return: The number of milliseconds between polls
+:rtype: int
 :see: setPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_
 
         '''
@@ -908,7 +909,8 @@ Enable the polling of a device's state.
 :type id: int
 :param intensity: The intensity of the poll
 :type intensity: int
-:returns: bool -- True if polling was enabled.
+:return: True if polling was enabled.
+:rtype: bool
 :see: getPollInterval_, setPollInterval_, isPolled_, setPollIntensity_, disablePoll_
 
         '''
@@ -925,7 +927,8 @@ Disable polling of a value.
 
 :param id: The ID of the value to disable polling.
 :type id: int
-:returns: bool -- True if polling was disabled.
+:return: True if polling was disabled.
+:rtype: bool
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, setPollIntensity_
 
         '''
@@ -942,7 +945,8 @@ Check polling status of a value
 
 :param id: The ID of the value to check polling.
 :type id: int
-:return: bool -- True if polling is active.
+:return: True if polling is active.
+:rtype: bool
 :see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_
 
         '''
@@ -961,7 +965,8 @@ Set the frequency of polling (0=none, 1=every time through the set, 2-every othe
 :type id: int
 :param intensity: the intensity of the poll
 :type intensity: int
-:returns: bool -- True if polling is active.
+:return: True if polling is active.
+:rtype: bool
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, disablePoll_
 
         '''
@@ -992,7 +997,7 @@ first run.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: True if the request was sent successfully.
+:return: True if the request was sent successfully.
 :rtype: bool
 
         '''
@@ -1015,7 +1020,8 @@ first run.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if the request was sent successfully.
+:return: True if the request was sent successfully.
+:rtype: bool
 
         '''
         return self.manager.RefreshNodeInfo(homeid, nodeid)
@@ -1032,7 +1038,8 @@ same as the query state starting from the dynamic state.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if the request was sent successfully.
+:return: True if the request was sent successfully.
+:rtype: bool
 
         '''
         return self.manager.RequestNodeState(homeid, nodeid)
@@ -1047,7 +1054,8 @@ Get whether the node is a beam capable device.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if the node is a beaming device
+:return: True if the node is a beaming device
+:rtype: bool
 :see: isNodeListeningDevice_, isNodeFrequentListeningDevice_, isNodeSecurityDevice_, isNodeRoutingDevice_
 
         '''
@@ -1064,7 +1072,8 @@ Get whether the node is a setening device that does not go to sleep
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if it is a setening node.
+:return: True if it is a setening node.
+:rtype: bool
 :see: isNodeBeamingDevice_, isNodeFrequentListeningDevice_, isNodeSecurityDevice_, isNodeRoutingDevice_
 
         '''
@@ -1081,7 +1090,8 @@ can be woken up by a beam. Useful to determine node and controller consistency.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if it is a frequent setening node.
+:return: True if it is a frequent setening node.
+:rtype: bool
 :see: isNodeBeamingDevice_, isNodeListeningDevice_, isNodeSecurityDevice_, isNodeRoutingDevice_
 
         '''
@@ -1097,7 +1107,8 @@ Get the security attribute for a node. True if node supports security features.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if security features implemented.
+:return: True if security features implemented.
+:rtype: bool
 :see: isNodeBeamingDevice_, isNodeListeningDevice_, isNodeFrequentListeningDevice_, isNodeRoutingDevice_
 
         '''
@@ -1113,7 +1124,8 @@ Get whether the node is a routing device that passes messages to other nodes
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if the node is a routing device
+:return: True if the node is a routing device
+:rtype: bool
 :see: isNodeBeamingDevice_, isNodeListeningDevice_, isNodeFrequentListeningDevice_, isNodeSecurityDevice_
 
         '''
@@ -1129,7 +1141,8 @@ Get the maximum baud rate of a nodes communications
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: int -- The baud rate in bits per second.
+:return: The baud rate in bits per second.
+:rtype: int
 
         '''
         return self.manager.GetNodeMaxBaudRate(homeid, nodeid)
@@ -1144,7 +1157,8 @@ Get the version number of a node
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: int -- The node version number
+:return: The node version number
+:rtype: int
 
         '''
         return self.manager.GetNodeVersion(homeid, nodeid)
@@ -1159,7 +1173,8 @@ Get the security byte for a node.  Bit meanings are still to be determined.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: int -- The node security byte
+:return: The node security byte
+:rtype: int
 :see: getNodeType_, getNodeSpecific_, getNodeGeneric_, getNodeBasic_
 
         '''
@@ -1175,7 +1190,8 @@ Get the basic type of a node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: int -- The node basic type.
+:return: The node basic type.
+:rtype: int
 :see: getNodeType_, getNodeSpecific_, getNodeGeneric_, getNodeSecurity_
 
         '''
@@ -1191,7 +1207,8 @@ Get the generic type of a node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: int -- The node generic type.
+:return: The node generic type.
+:rtype: int
 :see: getNodeType_, getNodeSpecific_, getNodeBasic_, getNodeSecurity_
 
         '''
@@ -1207,7 +1224,7 @@ Get the specific type of a node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type homeId: int
-:returns: int -- The node specific type.
+:return: int -- The node specific type.
 :see: getNodeType_, getNodeGeneric_, getNodeBasic_, getNodeSecurity_
 
         '''
@@ -1226,7 +1243,7 @@ on which of those values are specified by the node.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: A string containing the label text.
+:return: A string containing the label text.
 :rtype: str
 :see: getNodeSpecific_, getNodeGeneric_, getNodeBasic_, getNodeSecurity_
 
@@ -1244,7 +1261,7 @@ Get the bitmap of this node's neighbors.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: A set containing neighboring node IDs
+:return: A set containing neighboring node IDs
 :rtype: set()
 
         '''
@@ -1294,7 +1311,8 @@ class Value object.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes manufacturer name.
+:return: A string containing the nodes manufacturer name.
+:rtype: str
 :see: setNodeManufacturerName_, getNodeProductName_, setNodeProductName_, \
     getNodeManufacturerId_, getNodeProductId_, getNodeProductType_
 
@@ -1320,7 +1338,7 @@ class Value object.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes product name.
+:return: str -- A string containing the nodes product name.
 :see: setNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_, \
     getNodeManufacturerId_, getNodeProductId_, getNodeProductType_
 
@@ -1345,7 +1363,7 @@ characters.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the node name.
+:return: str -- A string containing the node name.
 :see: setNodeName_, getNodeLocation_, setNodeLocation_
 
         '''
@@ -1368,7 +1386,7 @@ reporting it via a command class Value object.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes location.
+:return: str -- A string containing the nodes location.
 :see: setNodeLocation_, getNodeName_, setNodeName_
 
         '''
@@ -1393,7 +1411,8 @@ specific data.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.
+:return: A string containing the nodes manufacturer ID, or an empty string if the manufactuer-specific command class is not supported by the device.
+:rtype: str
 :see: getNodeProductType_, getNodeProductId_, getNodeManufacturerName_, setNodeManufacturerName_, \
     getNodeProductName_, setNodeProductName_
 
@@ -1419,7 +1438,8 @@ data.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.
+:return: A string containing the nodes product type, or an empty string if the manufactuer-specific command class is not supported by the device.
+:rtype: str
 :see: getNodeManufacturerId_, getNodeProductId_, getNodeManufacturerName_, setNodeManufacturerName_, \
     getNodeProductName_, setNodeProductName_
 
@@ -1445,7 +1465,8 @@ data.
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: str -- A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.
+:return: A string containing the nodes product ID, or an empty string if the manufactuer-specific command class is not supported by the device.
+:rtype: str
 :see: getNodeManufacturerId_, getNodeProductType_, getNodeManufacturerName_, setNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
@@ -1622,7 +1643,7 @@ Get whether the node information has been received
 :type homeId: int
 :param nodeId: The ID of the node to query.
 :type nodeId: int
-:returns: bool -- True if the node information has been received yet
+:return: bool -- True if the node information has been received yet
 
         '''
         return self.manager.IsNodeInfoReceived(homeid, nodeid)
@@ -1644,7 +1665,8 @@ Helper method to return whether a particular class is available in a node
 :type className: str
 :param classVersion: (optional, default=None) specific class version
 :type classVersion: int
-:returns: bool -- True if the node does have the class instantiated, will return name & version
+:return: True if the node does have the class instantiated, will return name & version
+:rtype: bool
 
         '''
         cdef string oclassName
@@ -1682,7 +1704,8 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
 :type id: int
 :param value: The value to set.
 :type value: int
-:returns: int -- An integer representing the result of the operation  0 : The C method fails, 1 : The C method succeed, 2 : Can't find id in the map
+:return: An integer representing the result of the operation  0 : The C method fails, 1 : The C method succeed, 2 : Can't find id in the map
+:rtype: int
 
         '''
         cdef float type_float
@@ -1739,7 +1762,7 @@ of the specified ValueID (just like a poll, except only one-time, not recurring)
 
 :param id: The unique identifier of the value to be refreshed.
 :type id: int
-:returns: bool -- True if the driver and node were found; false otherwise
+:return: bool -- True if the driver and node were found; false otherwise
 
         '''
         return self.manager.RefreshValue(values_map.at(id))
@@ -1752,8 +1775,9 @@ Gets the user-friendly label for the value
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the user-friendly label of the value
- :see: setValueLabel_
+:return: A string containing the user-friendly label of the value
+:rtype: str
+:see: setValueLabel_
 
        '''
         cdef string c_string
@@ -1787,7 +1811,8 @@ Gets the units that the value is measured in.
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the value of the units.
+:return: A string containing the value of the units.
+:rtype: str
 :see: setValueUnits_
 
         '''
@@ -1822,7 +1847,8 @@ Gets a help string describing the value's purpose and usage.
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the value help text.
+:return: A string containing the value help text.
+:rtype: str
 :see: setValueHelp_
 
         '''
@@ -1857,7 +1883,8 @@ Gets the minimum that this value may contain.
 
 :param id: The ID of a value.
 :type id: int
-:returns: int -- The value minimum.
+:return: The value minimum.
+:rtype: int
 :see: getValueMax_
 
         '''
@@ -1874,7 +1901,8 @@ Gets the maximum that this value may contain.
 
 :param id: The ID of a value.
 :type id: int
-:returns: int -- The value maximum.
+:return: The value maximum.
+:rtype: int
 :see: getValueMin_
 
         '''
@@ -1891,7 +1919,8 @@ Test whether the value is read-only.
 
 :param id: The ID of a value.
 :type id: int
-:returns: bool -- True if the value cannot be changed by the user.
+:return: True if the value cannot be changed by the user.
+:rtype: bool
 :see: isValueWriteOnly_
 
         '''
@@ -1908,7 +1937,8 @@ Test whether the value is write-only.
 
 :param id: The ID of a value.
 :type id: int
-:returns: bool -- True if the value can only be written to and not read.
+:return: True if the value can only be written to and not read.
+:rtype: bool
 :see: isValueReadOnly_
 
         '''
@@ -1925,7 +1955,8 @@ Test whether the value has been set.
 
 :param id: the ID of a value.
 :type id: int
-:returns: bool -- True if the value has actually been set by a status message from the device, rather than simply being the default.
+:return: True if the value has actually been set by a status message from the device, rather than simply being the default.
+:rtype: bool
 :see: getValue_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
@@ -1946,7 +1977,8 @@ by the application
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the type of the value
+:return: A string containing the type of the value
+:rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
@@ -1969,7 +2001,8 @@ only the SensorMultilevel command class ever does this.
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the type of the value
+:return: A string containing the type of the value
+:rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
@@ -1993,7 +2026,8 @@ same as the parameter ID.
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the type of the value
+:return: A string containing the type of the value
+:rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
@@ -2014,7 +2048,8 @@ Gets the type of the value
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- A string containing the type of the value
+:return: A string containing the type of the value
+:rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2037,7 +2072,8 @@ Gets a value.
 :type id: int
 :param value: The value to set.
 :type value: int
-:returns: multiple -- Depending of the type of the valueId, None otherwise
+:return: Depending of the type of the valueId, None otherwise
+:rtype: variable
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2054,6 +2090,8 @@ Gets a value as a bool.
 
 :param id: The ID of a value.
 :type id: int
+:return: The value
+:rtype: bool
 :see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2070,6 +2108,8 @@ Gets a value as an 8-bit unsigned integer.
 
 :param id: The ID of a value.
 :type id: int
+:return: The value
+:rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2086,6 +2126,8 @@ Gets a value as a float.
 
 :param id: The ID of a value.
 :type id: int
+:return: The value
+:rtype: float
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsShort_, getValueAsInt_, getValueAsString_, getValueListItems_, \
@@ -2102,7 +2144,8 @@ Gets a value as a 16-bit signed integer.
 
 :param id: The ID of a value.
 :type id: int
-:returns: int -- The value.
+:return: The value
+:rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsInt_, getValueAsString_, getValueListItems_, \
@@ -2119,7 +2162,8 @@ Gets a value as a 32-bit signed integer.
 
 :param id: The ID of a value.
 :type id: int
-:returns: int -- The value.
+:return: The value
+:rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsString_, getValueListItems_, \
@@ -2136,7 +2180,8 @@ Gets a value as a string.
 
 :param id: The ID of a value.
 :type id: int
-:returns: str -- The value.
+:return: The value
+:rtype: str
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, \
@@ -2153,7 +2198,8 @@ Gets value of items from a list value
 
 :param id: The ID of a value.
 :type id: int
-:returns: string items selected.
+:return: The value
+:rtype: str
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionNum_, getValueListItems_,\
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2169,7 +2215,8 @@ Gets value of items from a list value
 
 :param id: The ID of a value.
 :type id: int
-:returns: int  value of items selected.
+:return: The value
+:rtype: int
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_, getValueListItems_,\
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2191,7 +2238,8 @@ Gets the list of items from a list value
 
 :param id: The ID of a value.
 :type id: int
-:returns: Set -- The list of items.
+:return: The list of possible values
+:rtype: set()
 :see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
 getValueListSelectionStr_ ,getValueListSelectionNum_ \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
@@ -2220,7 +2268,8 @@ no notification callbacks are sent.
 
 :param id: The ID of an integer value.
 :type id: int
-:returns: bool -- True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:return: True if the activity was started. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:rtype: bool
 :see: releaseButton_
 
         '''
@@ -2239,7 +2288,8 @@ no notification callbacks are sent.
 
 :param id: the ID of an integer value.
 :type id: int
-:returns: bool -- True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:return: True if the activity was stopped. Returns false if the value is not a ValueID::ValueType_Button. The type can be tested with a call to ValueID::GetType.
+:rtype: bool
 :see: pressButton_
 
         '''
@@ -2277,7 +2327,8 @@ Set a switch point in the schedule.
 :type minutes: int
 :param setback: The setback in tenths of a degree Celsius.  The setback value can range from -128 (-12.8C) to 120 (12.0C).  There are two special setback values - 121 is used to set Frost Protection mode, and 122 is used to set Energy Saving mode.
 :type setback: int
-:returns: bool -- True if the switch point is set.
+:return: True if the switch point is set.
+:rtype: bool
 :see: removeSwitchPoint_, clearSwitchPoints_, getSwitchPoint_, getNumSwitchPoints_
 
         '''
@@ -2298,7 +2349,8 @@ Remove a switch point from the schedule
 :type hours: int
 :param minutes: The minutes part of the time when the switch point will trigger.  This value must be between 0 and 59.
 :type minutes: int
-:returns: bool -- True if the switch point is removed.
+:return: True if the switch point is removed.
+:rtype: bool
 :see: setSwitchPoint_, clearSwitchPoints_, getSwitchPoint_, getNumSwitchPoints_
 
         '''
@@ -2315,7 +2367,8 @@ Clears all switch points from the schedule
 
 :param id: The unique identifier of the schedule value.
 :type id: int
-:returns: bool -- True if all switch points are clear.
+:return: True if all switch points are clear.
+:rtype: bool
 :see: setSwitchPoint_, removeSwitchPoint_, getSwitchPoint_, getNumSwitchPoints_
 
         '''
@@ -2338,7 +2391,8 @@ Gets switch point data from the schedule
 :type minutes: int
 :param setback: An integer that will be filled with the setback value.  This can range from -128 (-12.8C)to 120 (12.0C).  There are two special setback values - 121 is used to set Frost Protection mode, and 122 is used to set Energy Saving mode.
 :type setback: int
-:returns: bool -- True if successful.  Returns False if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
+:return: True if successful.  Returns False if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
+:rtype: bool
 :see: setSwitchPoint_, removeSwitchPoint_, clearSwitchPoints_, getNumSwitchPoints_
 
         '''
@@ -2365,7 +2419,8 @@ Get the number of switch points defined in a schedule
 
 :param id: The unique identifier of the schedule value.
 :type id: int
-:returns: The number of switch points defined in this schedule.  Returns zero if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
+:return: The number of switch points defined in this schedule.  Returns zero if the value is not a ValueID::ValueType_Schedule. The type can be tested with a call to ValueID::GetType.
+:rtype: int
 :see: setSwitchPoint_, removeSwitchPoint_, clearSwitchPoints_, getSwitchPoint_
 
         '''
@@ -2442,7 +2497,7 @@ has been made.
 :type param: int
 :param value: The value to which the parameter should be set.
 :type value: int
-:returns: True if the message setting the value was sent to the device.
+:return: True if the message setting the value was sent to the device.
 :rtype: bool
 :see: requestConfigParam_, requestAllConfigParams_
 
@@ -2510,7 +2565,8 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 :type homeId: int
 :param nodeId: The ID of the node whose groups we are interested in.
 :type nodeId: int
-:returns: int -- The number of groups.
+:return: The number of groups.
+:rtype: int
 :see: getAssociations, getMaxAssociations, addAssociation, removeAssociation
 
         '''
@@ -2528,9 +2584,9 @@ Gets the associations for a group
 :type nodeId: int
 :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
 :type groupIdx: int
-:returns: A set containing IDs of members of the group
+:return: A set containing IDs of members of the group
 :rtype: set()
-:see: getNumGroups, addAssociation, removeAssociation, getMaxAssociations
+:see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
 
         '''
         data = set()
@@ -2565,14 +2621,15 @@ Gets the associations for a group
 
 Gets the maximum number of associations for a group.
 
-:param homeId: The Home ID of the Z-Wave controller that manages the node.
-:type homeId: int
-:param nodeId: The ID of the node whose associations we are interested in.
-:type nodeId: int
-:param groupIdx: One-based index of the group (because Z-Wave product manuals use one-based group numbering).
-:type groupIdx: int
-:returns: int -- The maximum number of nodes that can be associated into the group.
-:see: getNumGroups, addAssociation, removeAssociation, getAssociations
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node whose associations we are interested in.
+:type nodeid: int
+:param groupidx: One-based index of the group (because Z-Wave product manuals use one-based group numbering).
+:type groupidx: int
+:return: The maximum number of nodes that can be associated into the group.
+:rtype: int
+:see: getNumGroups_, addAssociation_, removeAssociation_, getAssociations_
 
         '''
         return self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
@@ -2585,12 +2642,14 @@ Returns a label for the particular group of a node.
 
 This label is populated by the device specific configuration files.
 
-:param homeId: The Home ID of the Z-Wave controller that manages the node.
-:type homeId: int
-:param nodeId: The ID of the node whose associations are to be changed.
-:type nodeId: int
-:param groupIdx: One-based index of the group (because Z-Wave product manuals use one-based group numbering).
-:type groupIdx: int
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node whose associations are to be changed.
+:type nodeid: int
+:param groupidx: One-based index of the group (because Z-Wave product manuals use one-based group numbering).
+:type groupidx: int
+:return: The label for the particular group of a node.
+:rtype: str
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, addAssociation_
 
         '''
@@ -2617,7 +2676,7 @@ both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be added to the association group.
 :type targetNodeId: int
-:see: getNumGroups, getAssociations, getMaxAssociations, removeAssociation
+:see: getNumGroups_, getAssociations_, getMaxAssociations_, removeAssociation_
 
         '''
         self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
@@ -2642,7 +2701,7 @@ in both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be removed from the association group.
 :type targetNodeId: int
-:see: getNumGroups, getAssociations, getMaxAssociations, addAssociation
+:see: getNumGroups_, getAssociations_, getMaxAssociations_, addAssociation_
 
         '''
         self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
@@ -2734,7 +2793,7 @@ Cancels any in-progress command running on a controller.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
-:returns: True if a command was running and was cancelled.
+:return: True if a command was running and was cancelled.
 :rtype: bool
 :see: beginControllerCommand_
 
@@ -2757,14 +2816,14 @@ Commands :
     - Driver::ControllerCommand_ReceiveConfiguration -
     - Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.
     - Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.
-    - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes.  The node must actually
-    have failed or have been disabled since the command will fail if it responds.  A node must be in the controller's failed nodes list
-    for ControllerCommand_ReplaceFailedNode to work.
+    - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes. \
+The node must actually have failed or have been disabled since the command will fail if it responds. \
+A node must be in the controller's failed nodes list for ControllerCommand_ReplaceFailedNode to work.
     - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
-    - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
-    the controller's failed nodes list, or the node responds, this command will fail.
-    - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
-    make it the primary.  The existing primary will become a secondary controller.
+    - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in \
+the controller's failed nodes list, or the node responds, this command will fail.
+    - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and \
+make it the primary.  The existing primary will become a secondary controller.
     - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
     - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
     - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
@@ -2774,12 +2833,12 @@ Commands :
 
 Callbacks :
 
-    - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed
-    to the user at this point, telling them what to do next.
-    For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
-    inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
-    they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
-    controller to learn new data.
+    - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed \
+to the user at this point, telling them what to do next. \
+For the add, remove, replace and transfer primary role commands, the user needs to be told to press the \
+inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration, \
+they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other \
+controller to learn new data.
     - Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
     - Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
     - Driver::ControllerState_Failed - will be sent if the command fails for any reason.
@@ -2788,23 +2847,23 @@ Callbacks :
 :type homeId: int
 :param command: The command to be sent to the controller.
 :type command: ControllerCommand
-:param callback: Pointer to a function that will be called at various stages during the command process
+:param callback: Pointer to a function that will be called at various stages during the command process \
 to notify the user of progress or to request actions on the user's part.  Defaults to NULL.
 :type callback: pfnControllerCallback_t
 :param context: Pointer to user defined data that will be passed into to the callback function.  Defaults to NULL.
 :type context:
-:param highPower: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-Usually when adding or removing devices, the controller operates at low power so that the controller must
-be physically close to the device for security reasons.  If _highPower is true, the controller will
+:param highPower: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands. \
+Usually when adding or removing devices, the controller operates at low power so that the controller must \
+be physically close to the device for security reasons.  If _highPower is true, the controller will \
 operate at normal power levels instead.  Defaults to false.
 :type highPower: bool
 :param nodeId: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
 :type nodeId: int
 :param arg:
 :type arg: int
-:returns: True if the command was accepted and has started.
+:return: True if the command was accepted and has started.
 :rtype: bool
-:see: cancelControllerCommand-
+:see: cancelControllerCommand_
         '''
 
         self._controllerCallback = pythonfunc # need to keep a reference to this
@@ -2821,7 +2880,7 @@ operate at normal power levels instead.  Defaults to false.
 
 Gets the number of scenes that have been defined
 
-:returns: The number of scenes.
+:return: The number of scenes.
 :rtype: int
 :see: getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
@@ -2838,7 +2897,7 @@ sceneGetValues_
 
 Gets a set of all the SceneIds
 
-:returns: A set() containing neighboring scene IDs
+:return: A set() containing neighboring scene IDs
 :rtype: set()
 :see: getNumScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
@@ -2879,7 +2938,7 @@ sceneGetValues_
 
 Create a new Scene passing in Scene ID
 
-:returns: Scene ID used to reference the scene. 0 is failure result.
+:return: Scene ID used to reference the scene. 0 is failure result.
 :rtype: int
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 removeScene_, activateScene_, \
@@ -2898,7 +2957,7 @@ Remove an existing Scene.
 
 :param sceneId: The unique Scene ID to be removed.
 :type sceneId: int
-:returns: True if scene was removed.
+:return: True if scene was removed.
 :rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, activateScene_, \
@@ -2918,7 +2977,7 @@ Retrieve the list of values from a scene
 :param id: The ID of a scene.
 :type id: int
 :rtype: dict()
-:returns: A dict containing : {valueid : value, ...}
+:return: A dict containing : {valueid : value, ...}
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, \
 getSceneLabel_, setSceneLabel_ \
@@ -2987,7 +3046,7 @@ Actually I don't know how to use it :)
 :type id: int
 :param value: The value to set
 :type value: bool, int, float, string
-:returns: An integer representing the result of the operation
+:return: An integer representing the result of the operation
     0 : The C method fails
     1 : The C method succeed
     2 : Can't find id in the map
@@ -3052,7 +3111,7 @@ Remove the Value ID from an existing scene.
 :type sceneid: int
 :param id: The ID of a value.
 :type id: int
-:returns: True if succee. False otherwise
+:return: True if succee. False otherwise
 :rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
@@ -3077,7 +3136,7 @@ Set a value to an existing scene's ValueID.
 :type id: int
 :param value: The value to set
 :type value: bool, int, float, string
-:returns: An integer representing the result of the operation
+:return: An integer representing the result of the operation
     0 : The C method fails
     1 : The C method succeed
     2 : Can't find id in the map
@@ -3142,7 +3201,7 @@ Returns a label for the particular scene.
 :type sceneId: int
 :param value: The value to set
 :type value: int
-:returns: The label string.
+:return: The label string.
 :rtype: str
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
@@ -3181,7 +3240,7 @@ Check if a Scene ID is defined.
 
 :param sceneId: The ID of the scene to check.
 :type sceneId: int
-:returns: True if Scene ID exists.
+:return: True if Scene ID exists.
 :rtype: bool
 :see: getNumScenes_, getAllScenes_, \
 createScene_, removeScene_, activateScene_, \
@@ -3200,7 +3259,7 @@ Activate given scene to perform all its actions.
 
 :param sceneId: The ID of the scene to activate.
 :type sceneId: int
-:returns: True if it is successful.
+:return: True if it is successful.
 :rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 createScene_, removeScene_, \
