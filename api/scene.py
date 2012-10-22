@@ -167,6 +167,8 @@ class ZWaveScene(ZWaveObject):
         """
         ret = dict()
         values = self._network.manager.sceneGetValues(self.scene_id)
+        if values == None :
+            return ret
         for val in values:
             value = self._network.get_value(val)
             ret[val] = {'value':value,'data':values[val]}
@@ -182,6 +184,8 @@ class ZWaveScene(ZWaveObject):
         """
         ret = dict()
         values = self._network.manager.sceneGetValues(self.scene_id)
+        if values == None :
+            return ret
         for val in values:
             value = self._network.get_value(val)
             if value.node.node_id not in ret:

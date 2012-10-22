@@ -790,6 +790,7 @@ class ControllerTree(OldestTree):
             parent.add_child(self._path,self.definition)
         self.usage.append("reset soft : reset the controller in a soft way. Node association is not required")
         self.usage.append("reset hard : reset the controller. Warning : all nodes must be re-associated with your stick.")
+        self.usage.append("send cancel : cancel the current command.")
         self.usage.append("send network_update : update the controller with network information from the SUC/SIS.")
         self.usage.append("send update_neighbors <node_id> : update the <node_id> neighbors.")
         self.usage.append("send add_device : add a device (not a controller) on the network.")
@@ -861,6 +862,9 @@ class ControllerTree(OldestTree):
             return True
         elif command == 'remove_controller':
             self.window.network.controller.begin_command_remove_controller()
+            return True
+        elif command == 'cancel':
+            self.window.network.controller.cancel_command()
             return True
         return False
 
