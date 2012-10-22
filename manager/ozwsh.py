@@ -38,6 +38,7 @@ from pyozwman.ozwsh_widgets import ValuesTree, ValuesBox, ValuesItem
 from pyozwman.ozwsh_widgets import GroupsTree, GroupsBox, AssociationItem
 from pyozwman.ozwsh_widgets import SceneTree, SceneBox, SceneItem
 from pyozwman.ozwsh_widgets import ScenesTree, ScenesBox, ScenesItem
+from pyozwman.ozwsh_widgets import StatTree, StatBox
 
 from louie import dispatcher, All
 import logging
@@ -71,7 +72,6 @@ MAIN_TITLE = "openzwave Shell"
 /controller
 
 """
-
 
 class StatusBar(urwid.WidgetWrap):
     def __init__(self, window):
@@ -161,6 +161,7 @@ class MainWindow(Screen):
         self.network = None
         self.controller = None
         self.root_box = RootBox(self, None, "body")
+        self.stat_box = StatBox(self, self.root_box, "body")
         self.controller_box = ControllerBox(self, self.root_box, "body")
         self.scenes_box = ScenesBox(self, self.root_box, "body")
         self.scene_box = SceneBox(self, self.scenes_box, "body")

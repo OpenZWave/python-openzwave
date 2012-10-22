@@ -217,6 +217,92 @@ class OldestTree(urwid.ListWalker):
         self.window.status_bar.update(status='Command "send" not supported')
         return False
 
+class StatBox(urwid.ListBox):
+    """
+    StatBox show the walker
+    """
+    def __init__(self, window, parent, framefocus):
+        self.window = window
+        self.parent = parent
+        self._framefocus = framefocus
+        self.walker =StatTree(window, parent.walker, self)
+        self.__super.__init__(self.walker)
+
+
+class StatTree(OldestTree):
+
+    def __init__(self, window, parent, widget_box):
+        OldestTree.__init__(self, window, parent, widget_box)
+        self.childrens = { '..' : {'id':'..',
+                                'name':'..',
+                                'help':'Go to previous directory',
+                                'widget_box' : None}
+                }
+        self._path = "stats"
+        self.subdirs = ['..']
+        self.definition = {'id':'stats',
+                        'name':'stats',
+                        'help':'statistics',
+                        'widget_box': self.widget_box}
+        if parent != None and self.definition != None :
+            parent.add_child(self._path,self.definition)
+
+    def read_lines(self):
+        self.size = 0
+        #self.key = self.window.network.controller.node_id
+        #self.focus, self.oldfocus = self.oldfocus, self.focus
+        self.lines = []
+        if self.window.network == None:
+            return
+        self.show_directories()
+        self.lines.append(urwid.Text(    "    Statistics", align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Frames processed: . . . . . . .  . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_SOFCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  [Device] Messages successfully received: . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_readCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  [Device] Messages successfully sent:  . . . . . . . . . .%s" % \
+            self.window.network.controller.stats['s_writeCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  ACKs received from controller: . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_ACKCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Controller messages received:  . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_controllerReadCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Controller messages sent:  . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_controllerWriteCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "    Errors:", align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Unsolicited messages received while waiting for ACK: . . %s" % \
+            self.window.network.controller.stats['s_ACKWaiting'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Reads aborted due to timeouts: . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_readAborts'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Bad checksum errors: . . . . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_badChecksum'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  CANs received from controller: . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_CANCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  NAKs received from controller: . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_NAKCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Out of frame data flow errors: . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_OOFCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Messages retransmitted:  . . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_retries'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Messages dropped and not delivered:  . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['s_dropped'], align='left'))
+        self.size += 1
+        self._modified()
+
 class GroupsBox(urwid.ListBox):
     """
     GroupsBox show the walker
