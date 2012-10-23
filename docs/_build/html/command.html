@@ -328,6 +328,23 @@ Todo</p>
 <em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSwitch</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an interface to switches and dimmers Commands</p>
 <dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_dimmer_level">
+<tt class="descname">get_dimmer_level</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.get_dimmer_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+Get the dimmer level (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The level : a value between 0-99</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.get_dimmers">
 <tt class="descname">get_dimmers</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.get_dimmers" title="Permalink to this definition">¶</a></dt>
 <dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
@@ -346,6 +363,23 @@ writeonly = False</div></blockquote>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of dimmers on this node</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_state">
+<tt class="descname">get_switch_state</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.get_switch_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Return the state (using value value_id) of a switch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -411,6 +445,24 @@ Set switch to value (using value value_id).</p>
 <dt id="openzwave.command.ZWaveNodeSensor">
 <em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSensor</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an interface to Sensor Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.get_sensor_value">
+<tt class="descname">get_sensor_value</tt><big>(</big><em>value_id</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor.get_sensor_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+The command 0x32 (COMMAND_CLASS_METER) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The state of the sensors</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="openzwave.command.ZWaveNodeSensor.get_sensors">
 <tt class="descname">get_sensors</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSensor.get_sensors" title="Permalink to this definition">¶</a></dt>

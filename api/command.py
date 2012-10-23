@@ -334,6 +334,20 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             return True
         return False
 
+    def get_switch_state(self, value_id):
+        """
+        The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+        Return the state (using value value_id) of a switch.
+
+        :return: The state of the value
+        :rtype: bool
+
+        """
+        #print value_id
+        if value_id in self.get_switches():
+            return self.values[value_id].data
+        return None
+
     def get_dimmers(self):
         """
         The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
@@ -373,6 +387,20 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             return True
         return False
 
+    def get_dimmer_level(self, value_id):
+        """
+        The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+        Get the dimmer level (using value value_id).
+
+        :return: The level : a value between 0-99
+        :rtype: int
+
+        """
+        #print value_id
+        if value_id in self.get_dimmers():
+            return self.values[value_id].data
+        return None
+
 class ZWaveNodeSensor(ZWaveNodeInterface):
     '''
     Represents an interface to Sensor Commands
@@ -404,4 +432,19 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         values.update(self.get_values(class_id=0x32, genre='User', \
             readonly=True, writeonly=False))
         return values
+
+    def get_sensor_value(self, value_id):
+        """
+        The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+        The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+        The command 0x32 (COMMAND_CLASS_METER) of this node.
+
+        :return: The state of the sensors
+        :rtype: variable
+
+        """
+        #print value_id
+        if value_id in self.get_sensors():
+            return self.values[value_id].data
+        return None
 

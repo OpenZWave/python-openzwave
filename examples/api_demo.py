@@ -28,8 +28,8 @@ import logging
 import sys, os
 
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
@@ -181,29 +181,45 @@ print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_switches() :
-        values[network.nodes[node].values[val].object_id] = {
-            'node_id':node,
-            'node_name':network.nodes[node].name,
-            'label':network.nodes[node].values[val].label,
-            'help':network.nodes[node].values[val].help,
-            }
-print "%s" % (values)
+        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  state: %s" % (network.nodes[node].get_switch_state(val)))
 
 print "------------------------------------------------------------"
-print "Activate the switches on the network"
-print "Nodes in network : %s" % network.nodes_count
+print "Retrieve dimmers on the network"
 print "------------------------------------------------------------"
+values = {}
 for node in network.nodes:
-    for val in network.nodes[node].get_switches() :
-        print("Activate switch %s on node %s" % \
-                (network.nodes[node].values[val].label,node))
-        network.nodes[node].set_switch(val,True)
-        print("Sleep 10 seconds")
-        time.sleep(10.0)
-        print("Dectivate switch %s on node %s" % \
-                (network.nodes[node].values[val].label,node))
-        network.nodes[node].set_switch(val,False)
-print "%s" % ('Done')
+    for val in network.nodes[node].get_dimmers() :
+        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
+
+print "------------------------------------------------------------"
+print "Retrieve sensors on the network"
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_sensors() :
+        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  value: %s %s" % (network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
+
+#print "------------------------------------------------------------"
+#print "Activate the switches on the network"
+#print "Nodes in network : %s" % network.nodes_count
+#print "------------------------------------------------------------"
+#for node in network.nodes:
+#    for val in network.nodes[node].get_switches() :
+#        print("Activate switch %s on node %s" % \
+#                (network.nodes[node].values[val].label,node))
+#        network.nodes[node].set_switch(val,True)
+#        print("Sleep 10 seconds")
+#        time.sleep(10.0)
+#        print("Dectivate switch %s on node %s" % \
+#                (network.nodes[node].values[val].label,node))
+#        network.nodes[node].set_switch(val,False)
+#print "%s" % ('Done')
 
 
 print
@@ -213,6 +229,6 @@ print "------------------------------------------------------------"
 
 print
 print "------------------------------------------------------------"
-print "Write config to disk"
+print "Stop network"
 print "------------------------------------------------------------"
-network.write_config()
+network.stop()
