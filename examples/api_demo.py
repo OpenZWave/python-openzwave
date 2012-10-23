@@ -181,7 +181,7 @@ print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_switches() :
-        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  state: %s" % (network.nodes[node].get_switch_state(val)))
 
@@ -191,7 +191,7 @@ print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_dimmers() :
-        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
 
@@ -201,7 +201,7 @@ print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_sensors() :
-        print("node/name : %s:%s" % (node,network.nodes[node].name))
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  value: %s %s" % (network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
 

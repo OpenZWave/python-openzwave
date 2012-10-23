@@ -2023,7 +2023,7 @@ getValueAsString_, getValue_, getValueType_, getValueIndex_
 
        '''
         if values_map.find(id) != values_map.end():
-            genre = PyGenres[values_map.at(id).GetInstance()]
+            genre = values_map.at(id).GetInstance()
             return genre
         else :
             return None
@@ -2048,7 +2048,7 @@ getValueAsString_, getValue_, getValueType_
 
        '''
         if values_map.find(id) != values_map.end():
-            genre = PyGenres[values_map.at(id).GetIndex()]
+            genre = values_map.at(id).GetIndex()
             return genre
         else :
             return None
