@@ -653,6 +653,7 @@ class ZWaveNode( ZWaveObject,
         """
         The specific type of the node.
 
+        :return: The specific type of the node
         :rtype: int
 
         """
@@ -667,6 +668,7 @@ class ZWaveNode( ZWaveObject,
         """
         The security type of the node.
 
+        :return: The security type of the node
         :rtype: int
 
         """
@@ -681,6 +683,7 @@ class ZWaveNode( ZWaveObject,
         """
         The version of the node.
 
+        :return: The version of the node
         :rtype: int
 
         """
@@ -811,7 +814,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        return self.is_locked
+        return self._is_locked
 
     @property
     def is_sleeping(self):
@@ -821,7 +824,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        return self.is_sleeping
+        return self._is_sleeping
 
 #    @property
 #    def level(self):
@@ -862,7 +865,8 @@ class ZWaveNode( ZWaveObject,
     @property
     def max_baud_rate(self):
         """
-        Get the maximum baud rate of a nodes communications
+        Get the maximum baud rate of a node
+
         """
 #        if self.is_outdated("self.max_baud_rate"):
 #            self._max_baud_rate = self._network.manager.getNodeMaxBaudRate(self.home_id, self.object_id)
@@ -873,18 +877,70 @@ class ZWaveNode( ZWaveObject,
 
     def refresh_info(self):
         """
-        Request a refresh for node.
+        Trigger the fetching of fixed data about a node.
+
+        Causes the nodes data to be obtained from the Z-Wave network in the same way
+        as if it had just been added.  This method would normally be called
+        automatically by OpenZWave, but if you know that a node has been changed,
+        calling this method will force a refresh of the data held by the library.  This
+        can be especially useful for devices that were asleep when the application was
+        first run.
+
         """
         self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
 #        self.outdated = True
 
-    def request_config(self):
+    def request_all_config_params(self):
         """
-        Request config parameters for node.
+        Request the values of all known configurable parameters from a device.
+
         """
         logging.debug('Requesting config params for node [%d]', self.object_id)
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 #        self.outdated = True
+
+    def request_config_param(self, param):
+        """
+        Request the value of a configurable parameter from a device.
+
+        Some devices have various parameters that can be configured to control the
+        device behaviour.  These are not reported by the device over the Z-Wave network
+        but can usually be found in the devices user manual.  This method requests
+        the value of a parameter from the device, and then returns immediately,
+        without waiting for a response.  If the parameter index is valid for this
+        device, and the device is awake, the value will eventually be reported via a
+        ValueChanged notification callback.  The ValueID reported in the callback will
+        have an index set the same as _param and a command class set to the same value
+        as returned by a call to Configuration::StaticGetCommandClassId.
+
+        :param param: The param of the node.
+        :type param:
+
+        """
+        logging.debug('Requesting config param %s for node [%d]', (param, self.object_id))
+        self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
+#        self.outdated = True
+
+    def set_config_param(self, param, value):
+        """
+        Set the value of a configurable parameter in a device.
+
+        Some devices have various parameters that can be configured to control the
+        device behaviour.  These are not reported by the device over the Z-Wave network
+        but can usually be found in the devices user manual.  This method returns
+        immediately, without waiting for confirmation from the device that the change
+        has been made.
+
+        :param param: The param of the node.
+        :type param:
+        :param value: The value of the param.
+        :type value:
+        :return:
+        :rtype: bool
+
+        """
+        logging.debug('Set config param %s for node [%d]', (param, self.object_id))
+        return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value)
 
 #    def setNodeOn(self, node):
 #        """

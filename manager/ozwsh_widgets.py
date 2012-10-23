@@ -486,11 +486,6 @@ class RootTree(OldestTree):
         self.lines = []
         self.show_directories()
         if self.window.network != None:
-            self.lines.append(urwid.Text(    "  Statistics   = %s" % \
-                self.window.network.controller.stats, align='left'))
-            self.size += 1
-            self.lines.append(urwid.Divider("-"))
-            self.size += 1
             self.lines.append(urwid.Text(    "  %s" % \
                 self.window.network.controller.library_description, align='left'))
             self.size += 1
@@ -874,6 +869,7 @@ class ControllerTree(OldestTree):
                         'widget_box': self.widget_box}
         if parent != None and self.definition != None :
             parent.add_child(self._path,self.definition)
+        self.usage.append("set <field> to <value> : change the value of a field")
         self.usage.append("reset soft : reset the controller in a soft way. Node association is not required")
         self.usage.append("reset hard : reset the controller. Warning : all nodes must be re-associated with your stick.")
         self.usage.append("send cancel : cancel the current command.")
@@ -984,7 +980,7 @@ class ControllerTree(OldestTree):
             self.lines.append(urwid.Divider("-"))
             self.size += 1
             self.lines.append(urwid.Text(    "  Capabilities = %s" % \
-                self.window.network.controller.node.capabilities, align='left'))
+                self.window.network.controller.capabilities, align='left'))
             self.size += 1
             self.lines.append(urwid.Divider("-"))
             self.size += 1
@@ -1328,6 +1324,128 @@ class SwitchesTree(OldestTree):
         ok = False
         for val in values:
             self.window.log.info("SwitchesTree set %s val %s" % (node,val))
+            if values[val].label == switch:
+                switch = val
+                ok = True
+                exit
+        if not ok :
+            self.window.status_bar.update(status="Invalid label %s on node %s" % (switch,node))
+            return False
+        if node in self.window.network.nodes:
+            newval = values[switch].check_data(value)
+            if newval != None :
+                values[switch].data=value
+                self.window.status_bar.update(status='Value %s on node %s updated' % (switch,node))
+                return True
+            else :
+                self.window.status_bar.update(status='Invalid data value : "%s"' % value)
+            return False
+        else :
+            self.window.status_bar.update(status="Can't find node %s" % (node))
+            return False
+
+class DimmersBox(urwid.ListBox):
+    """
+    DimmersBox show the walker
+    """
+    def __init__(self, window, parent, framefocus):
+        self.window = window
+        self.parent = parent
+        self._framefocus = framefocus
+        self.walker = DimmersTree(window, parent.walker, self)
+        self.__super.__init__(self.walker)
+
+class DimmersTree(OldestTree):
+
+    def __init__(self, window, parent, widget_box):
+        OldestTree.__init__(self, window, parent, widget_box)
+        self.subdirs = ['..']
+        self.childrens = { '..' : {'id':'..',
+                                    'name':'..',
+                                    'help':'Go to previous directory',
+                                    'widget_box' : None},
+                }
+        self._path = "dimmers"
+        self.switch_header = SwitchesItem()
+        self.definition = {'id':'dimmers',
+                                'name':'dimmers',
+                                'help':'All dimmers on the network',
+                                'widget_box': self.widget_box
+        }
+        if parent != None :
+            parent.add_child('dimmers', self.definition)
+        self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
+#        self.usage.append("set <label> to <data> : change value <label> to data")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+
+    def _louie_network_ready(self, network):
+        self.refresh()
+        dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+
+    def _louie_value_update(self, network, node, value_id):
+        self.refresh()
+
+    def _louie_node_update(self, network, node_id):
+        self.refresh()
+
+    def read_lines(self):
+        self.size = 0
+        #self.focus, self.oldfocus = self.oldfocus, self.focus
+        self.lines = []
+        if self.window.network == None:
+            return
+        self.show_directories()
+        self.lines.append(self.switch_header.get_header())
+        self.size += 1
+        for node in self.window.network.nodes :
+            switches = self.window.network.nodes[node].get_dimmers()
+            if len(switches) != 0 :
+                self.lines.append(urwid.Text(    "      %s - %s" % (self.window.network.nodes[node].node_id,self.window.network.nodes[node].name), align='left'))
+                self.size += 1
+                for switch in switches:
+                    self.lines.append(SwitchesItem(switches[switch].value_id, \
+                        switches[switch].label, \
+                        switches[switch].help, \
+                        switches[switch].data, \
+                        switches[switch].type, \
+                        switches[switch].data_items, \
+                        ))
+                    self.size += 1
+        self._modified()
+
+    def exist(self, directory):
+        """
+        List directory content
+        """
+        if OldestTree.exist(self, directory):
+            return True
+        return False
+
+    def cd(self, directory):
+        """
+        Change to directory and return the widget to display
+        """
+        if self.exist(directory) :
+            if directory == '..':
+                return self.parent.widget_box
+            if directory in self.childrens:
+                self.window.log.info("cd %s" %directory)
+                return self.childrens[directory]['widget_box']
+        return None
+
+    def set(self, param, value):
+        try:
+            self.window.log.info("DimmersTree set %s" % param)
+            node,switch = param.split(':',1)
+            node = int(node)
+        except:
+            self.window.status_bar.update(status="Invalid node:label %s" % (param))
+            return False
+        values = self.window.network.nodes[node].values
+        ok = False
+        for val in values:
+            self.window.log.info("DimmersTree set %s val %s" % (node,val))
             if values[val].label == switch:
                 switch = val
                 ok = True

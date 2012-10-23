@@ -47,6 +47,46 @@ list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
 
+<dl class="data">
+<dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyValueTypes</tt><em class="property"> = ['Bool', 'Byte', 'Decimal', 'Int', 'List', 'Schedule', 'Short', 'String', 'Button']</em></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyLogLevels</tt><em class="property"> = {'Info': 6, 'None': 0, 'Internal': 9, 'Always': 1, 'Detail': 7, 'Alert': 5, 'Warning': 4, 'Error': 3, 'Debug': 8, 'Fatal': 2}</em></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object&#8217;s</p>
+<blockquote>
+<div>(key, value) pairs</div></blockquote>
+<dl class="docutils">
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt>
+<dd><p class="first">d = {}
+for k, v in iterable:</p>
+<blockquote class="last">
+<div>d[k] = v</div></blockquote>
+</dd>
+<dt>dict(<a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt>
+<dd>in the keyword argument list.  For example:  dict(one=1, two=2)</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerCommand</tt><em class="property"> = ['None', 'AddController', 'AddDevice', 'CreateNewPrimary', 'ReceiveConfiguration', 'RemoveController', 'RemoveDevice', 'RemoveFailedNode', 'HasNodeFailed', 'ReplaceFailedNode', 'TransferPrimaryRole', 'RequestNetworkUpdate', 'RequestNodeNeighborUpdate', 'AssignReturnRoute', 'DeleteAllReturnRoutes', 'CreateButton', 'DeleteButton']</em></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerState</tt><em class="property"> = ['Normal', 'Waiting', 'InProgress', 'Completed', 'Failed', 'NodeOK', 'NodeFailed']</em></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
+</dd></dl>
+
 <dl class="class">
 <dt id="libopenzwave.PyManager">
 <em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">PyManager</tt></dt>
@@ -2234,7 +2274,7 @@ handled automatically.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id1"><span class="problematic" id="id2">valueID_</span></a>, <a href="#id3"><span class="problematic" id="id4">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id3"><span class="problematic" id="id4">valueID_</span></a>, <a href="#id5"><span class="problematic" id="id6">notification_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -2265,7 +2305,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id5"><span class="problematic" id="id6">valueID_</span></a>, <a href="#id7"><span class="problematic" id="id8">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id7"><span class="problematic" id="id8">valueID_</span></a>, <a href="#id9"><span class="problematic" id="id10">notification_</span></a></p>
 </td>
 </tr>
 </tbody>

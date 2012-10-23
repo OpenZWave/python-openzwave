@@ -296,22 +296,9 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
 
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     '''
-    Represents an interface to Switch Commands
+    Represents an interface to switches and dimmers Commands
 
     '''
-
-    def __init__(self):
-        '''
-        Initialize zwave interface
-
-        :param node_id: ID of the node
-        :type node_id: int
-        :param network: The network object to access the manager
-        :type network: ZWaveNetwork
-
-        '''
-        logging.debug("Create object interface for Switch (node_id:%s)" % (self.node_id))
-        ZWaveNodeInterface.__init__(self)
 
     def get_switches(self):
         """
@@ -341,48 +328,56 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: bool
 
         """
-        print value_id
+        #print value_id
         if value_id in self.get_switches():
-            print "Ok"
             self.values[value_id].data = value
             return True
         return False
 
+    def get_dimmers(self):
+        """
+        The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+        Retrieve the list of values to consider as dimmers.
+        Filter rules are :
 
-    @property
-    def level(self):
-        """
-        The level of the node.
-        Todo
-        """
-        return self.command_class_0x26()
+            command_class = 0x26
+            genre = "User"
+            type = "Bool"
+            readonly = False
+            writeonly = False
 
-    def command_class_0x26(self):
+        :returns: The list of dimmers on this node
+        :rtype: dict()
+
         """
-        The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) level of this node.
-        Todo
+        return self.get_values(class_id=0x26, genre='User', \
+        type='Byte', readonly=False, writeonly=False)
+
+    def set_dimmer(self, value_id, value):
         """
-        values = self.get_values_for_command_class(0x26)  # COMMAND_CLASS_SWITCH_MULTILEVEL
-        if values:
-            for value in values:
-                vdic = value.data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
-                    return int(vdic['value'])
-        return 0
+        The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+        Set switch to value (using value value_id).
+
+        :param value: The level : a value between 0-99 or 255. 255 set the level to the last value. \
+        0 turn the dimmer off
+        :type value: int
+
+        """
+        #print value_id
+        if value_id in self.get_dimmers():
+            if value >99 and value <255 :
+                value = 99
+            elif value < 0 :
+                value = 0
+            self.values[value_id].data = value
+            return True
+        return False
 
 class ZWaveNodeSensor(ZWaveNodeInterface):
     '''
     Represents an interface to Sensor Commands
 
     '''
-
-    def __init__(self):
-        '''
-        Initialize zwave interface
-
-        '''
-        logging.debug("Create object interface for Sensor (node_id:%s)" % (self.node_id))
-        ZWaveNodeInterface.__init__(self)
 
     def get_sensors(self):
         """

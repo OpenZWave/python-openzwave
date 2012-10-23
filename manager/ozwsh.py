@@ -34,6 +34,7 @@ from pyozwman.ozwsh_widgets import NodeTree, NodeBox
 from pyozwman.ozwsh_widgets import NodesTree, NodesBox, NodesItem
 from pyozwman.ozwsh_widgets import SensorsTree, SensorsBox, SensorsItem
 from pyozwman.ozwsh_widgets import SwitchesTree, SwitchesBox, SwitchesItem
+from pyozwman.ozwsh_widgets import DimmersTree, DimmersBox
 from pyozwman.ozwsh_widgets import ValuesTree, ValuesBox, ValuesItem
 from pyozwman.ozwsh_widgets import GroupsTree, GroupsBox, AssociationItem
 from pyozwman.ozwsh_widgets import SceneTree, SceneBox, SceneItem
@@ -167,6 +168,7 @@ class MainWindow(Screen):
         self.scene_box = SceneBox(self, self.scenes_box, "body")
         self.nodes_box = NodesBox(self, self.root_box, "body")
         self.switches_box = SwitchesBox(self, self.nodes_box, "body")
+        self.dimmers_box = DimmersBox(self, self.nodes_box, "body")
         self.sensors_box = SensorsBox(self, self.nodes_box, "body")
         self.node_box = NodeBox(self, self.nodes_box, "body")
         self.values_box = ValuesBox(self, self.node_box, "body")

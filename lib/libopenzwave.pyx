@@ -32,6 +32,7 @@ from mylibc cimport string
 from vers cimport ozw_vers
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
+from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType

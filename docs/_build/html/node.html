@@ -522,7 +522,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.max_baud_rate">
 <tt class="descname">max_baud_rate</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.max_baud_rate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the maximum baud rate of a nodes communications</p>
+<dd><p>Get the maximum baud rate of a node</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -626,7 +626,13 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.refresh_info">
 <tt class="descname">refresh_info</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.refresh_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Request a refresh for node.</p>
+<dd><p>Trigger the fetching of fixed data about a node.</p>
+<p>Causes the nodes data to be obtained from the Z-Wave network in the same way
+as if it had just been added.  This method would normally be called
+automatically by OpenZWave, but if you know that a node has been changed,
+calling this method will force a refresh of the data held by the library.  This
+can be especially useful for devices that were asleep when the application was
+first run.</p>
 </dd></dl>
 
 <dl class="method">
@@ -662,9 +668,32 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="openzwave.node.ZWaveNode.request_config">
-<tt class="descname">request_config</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.request_config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Request config parameters for node.</p>
+<dt id="openzwave.node.ZWaveNode.request_all_config_params">
+<tt class="descname">request_all_config_params</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.request_all_config_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request the values of all known configurable parameters from a device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.request_config_param">
+<tt class="descname">request_config_param</tt><big>(</big><em>param</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.request_config_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request the value of a configurable parameter from a device.</p>
+<p>Some devices have various parameters that can be configured to control the
+device behaviour.  These are not reported by the device over the Z-Wave network
+but can usually be found in the devices user manual.  This method requests
+the value of a parameter from the device, and then returns immediately,
+without waiting for a response.  If the parameter index is valid for this
+device, and the device is awake, the value will eventually be reported via a
+ValueChanged notification callback.  The ValueID reported in the callback will
+have an index set the same as _param and a command class set to the same value
+as returned by a call to Configuration::StaticGetCommandClassId.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param</strong> &#8211; The param of the node.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -675,7 +704,38 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The security type of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.set_config_param">
+<tt class="descname">set_config_param</tt><big>(</big><em>param</em>, <em>value</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.set_config_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value of a configurable parameter in a device.</p>
+<p>Some devices have various parameters that can be configured to control the
+device behaviour.  These are not reported by the device over the Z-Wave network
+but can usually be found in the devices user manual.  This method returns
+immediately, without waiting for confirmation from the device that the change
+has been made.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>param</strong> &#8211; The param of the node.</li>
+<li><strong>value</strong> &#8211; The value of the param.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -710,7 +770,9 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The specific type of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -724,7 +786,9 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The version of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>

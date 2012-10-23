@@ -344,6 +344,16 @@ class ZWaveController(ZWaveObject):
             caps.add('staticUpdateController')
         if self.node.is_bridge_controller:
             caps.add('bridgeController')
+        if self.node.is_routing_device:
+            caps.add('routing')
+        if self.node.is_listening_device:
+            caps.add('listening')
+        if self.node.is_frequent_listening_device:
+            caps.add('frequent')
+        if self.node.is_security_device:
+            caps.add('security')
+        if self.node.is_beaming_device:
+            caps.add('beaming')
         return caps
 
     @property
