@@ -557,6 +557,13 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._network.manager.sceneExists(sceneid)
 
+    def remove_all_scenes(self):
+        """
+        Remove all scenes defined for this network.
+
+        """
+        return self._network.manager.removeAllScenes(self.home_id)
+
     @property
     def nodes_count(self):
         """

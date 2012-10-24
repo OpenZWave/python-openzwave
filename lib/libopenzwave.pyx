@@ -2941,21 +2941,21 @@ sceneGetValues_, removeAllScenes_
                 pass
         return data
 
-    def removeAllScenes(self):
+    def removeAllScenes(self, homeid):
         '''
 .. _removeAllScenes:
 
 Delete all scenes.
 
-:return: The result of operation
-:rtype: bool
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
 removeScene_, activateScene_, getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
        '''
-        return self.manager.RemoveAllScenes()
+        self.manager.RemoveAllScenes(homeid)
 
     def removeScene(self, sceneId):
         '''

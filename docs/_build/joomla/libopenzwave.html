@@ -140,7 +140,7 @@ sleeping) have been polled, an &#8220;AllNodesQueried&#8221; notification is sen
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
 </tr>
 </tbody>
 </table>
@@ -226,7 +226,7 @@ Home ID is required by most of the OpenZWave Manager class methods.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
 </td>
 </tr>
 </tbody>
@@ -371,16 +371,16 @@ Z-Wave controller in turn.</p>
 <dl class="method">
 <dt id="libopenzwave.PyManager.createScene">
 <tt class="descname">createScene</tt><big>(</big><big>)</big></dt>
-<dd><p id="createscene">Create a new Scene passing in Scene ID</p>
+<dd><p id="createscene">Create a Scene.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Scene ID used to reference the scene. 0 is failure result.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">id</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
 </tr>
 </tbody>
 </table>
@@ -445,7 +445,7 @@ Z-Wave controller in turn.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
 </tr>
 </tbody>
 </table>
@@ -1154,7 +1154,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
 </tr>
 </tbody>
 </table>
@@ -1254,7 +1254,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
 </td>
 </tr>
 </tbody>
@@ -2120,6 +2120,22 @@ no notification callbacks are sent.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.removeAllScenes">
+<tt class="descname">removeAllScenes</tt><big>(</big><big>)</big></dt>
+<dd><p id="removeallscenes">Delete all scenes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.removeAssociation">
 <tt class="descname">removeAssociation</tt><big>(</big><big>)</big></dt>
 <dd><p id="removeassociation">Removes a node from an association group.</p>
@@ -2183,7 +2199,7 @@ handled automatically.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
 </tr>
 </tbody>
 </table>
@@ -2209,7 +2225,7 @@ handled automatically.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
 </td>
 </tr>
 </tbody>
@@ -2400,7 +2416,7 @@ controller becomes a primary controller ready to add devices to a new network.</
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
 </tr>
 </tbody>
 </table>
@@ -2409,7 +2425,7 @@ controller becomes a primary controller ready to add devices to a new network.</
 <dl class="method">
 <dt id="libopenzwave.PyManager.sceneGetValues">
 <tt class="descname">sceneGetValues</tt><big>(</big><big>)</big></dt>
-<dd><p id="scenegetvalues">Retrieve the list of values from a scene</p>
+<dd><p id="scenegetvalues">Retrieve the list of values from a scene.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2420,7 +2436,7 @@ controller becomes a primary controller ready to add devices to a new network.</
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict containing : {valueid : value, ...}</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
 </tr>
 </tbody>
 </table>
@@ -2720,7 +2736,7 @@ does not have to cope with more than one poll per second).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
 </td>
 </tr>
 </tbody>
@@ -2751,7 +2767,7 @@ does not have to cope with more than one poll per second).</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a> <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a></p>
 </td>
 </tr>
 </tbody>

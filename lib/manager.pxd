@@ -158,6 +158,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         uint8_t GetNumScenes()
         uint8_t GetAllScenes(uint8_t** sceneIds)
         uint8_t CreateScene()
+        void RemoveAllScenes( uint32_t _homeId )
         bool RemoveScene(uint8_t sceneId)
         bool AddSceneValue( uint8_t sceneId, ValueID& valueId, bool value)
         bool AddSceneValue( uint8_t sceneId, ValueID& valueId, uint8_t value)
