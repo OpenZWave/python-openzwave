@@ -2955,8 +2955,7 @@ removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
        '''
-        #return self.manager.RemoveAllScenes()
-        pass
+        return self.manager.RemoveAllScenes()
 
     def removeScene(self, sceneId):
         '''
