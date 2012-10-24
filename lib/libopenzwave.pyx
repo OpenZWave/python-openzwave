@@ -137,10 +137,6 @@ PyControllerCommand = [
     EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
     ]
 
-"""
-The log levels
-
-"""
 PyLogLevels = {
     'None' : 0,
     'Always' : 1,
@@ -2897,9 +2893,9 @@ Gets the number of scenes that have been defined
 :rtype: int
 :see: getAllScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
+getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_
+sceneGetValues_, removeAllScenes_
 
        '''
         return self.manager.GetNumScenes()
@@ -2914,9 +2910,9 @@ Gets a set of all the SceneIds
 :rtype: set()
 :see: getNumScenes_, sceneExists_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
+getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_
+sceneGetValues_, removeAllScenes_
 
         '''
         data = set()
@@ -2945,22 +2941,22 @@ sceneGetValues_
                 pass
         return data
 
-    def createScene(self):
+    def removeAllScenes(self):
         '''
-.. _createScene:
+.. _removeAllScenes:
 
-Create a new Scene passing in Scene ID
+Delete all scenes.
 
-:return: Scene ID used to reference the scene. 0 is failure result.
-:rtype: int
+:return: The result of operation
+:rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
-removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
+removeScene_, activateScene_, getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
        '''
-        return self.manager.CreateScene()
+        #return self.manager.RemoveAllScenes()
+        pass
 
     def removeScene(self, sceneId):
         '''
@@ -2973,29 +2969,43 @@ Remove an existing Scene.
 :return: True if scene was removed.
 :rtype: bool
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
-createScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
+createScene_, activateScene_, getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_
+sceneGetValues_, removeAllScenes_
 
         '''
         return self.manager.RemoveScene(sceneId)
+
+    def createScene(self):
+        '''
+.. _createScene:
+
+Create a Scene.
+
+:return: Scene ID used to reference the scene. 0 is failure result.
+:rtype: id
+:see: getNumScenes_, getAllScenes_, sceneExists_, \
+removeScene_, activateScene_, getSceneLabel_, setSceneLabel_, \
+removeSceneValue_, addSceneValue_, setSceneValue_, \
+sceneGetValues_, removeAllScenes_
+
+        '''
+        return self.manager.CreateScene()
 
     def sceneGetValues(self, uint8_t id):
         '''
 .. _sceneGetValues:
 
-Retrieve the list of values from a scene
+Retrieve the list of values from a scene.
 
 :param id: The ID of a scene.
 :type id: int
 :rtype: dict()
 :return: A dict containing : {valueid : value, ...}
 :see: getNumScenes_, getAllScenes_, sceneExists_, \
-createScene_, removeScene_, \
-getSceneLabel_, setSceneLabel_ \
+createScene_, removeScene_, getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_
+sceneGetValues_, removeAllScenes_
         '''
         cdef float type_float
         cdef bool type_bool
@@ -3064,11 +3074,9 @@ Actually I don't know how to use it :)
     1 : The C method succeed
     2 : Can't find id in the map
 :rtype: int
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
-createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
-removeSceneValue_, setSceneValue_, \
-sceneGetValues_
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
+createScene_, removeScene_, activateScene_, getSceneLabel_, setSceneLabel_, \
+removeSceneValue_, setSceneValue_, sceneGetValues_
 
         '''
         cdef float type_float
@@ -3126,10 +3134,9 @@ Remove the Value ID from an existing scene.
 :type id: int
 :return: True if succee. False otherwise
 :rtype: bool
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
-removeSceneValue_, setSceneValue_, \
+getSceneLabel_, setSceneLabel_, removeSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
@@ -3154,10 +3161,9 @@ Set a value to an existing scene's ValueID.
     1 : The C method succeed
     2 : Can't find id in the map
 :rtype: int
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
-removeSceneValue_, addSceneValue_, \
+getSceneLabel_, setSceneLabel_, removeSceneValue_, addSceneValue_, \
 sceneGetValues_
 
         '''
@@ -3216,10 +3222,9 @@ Returns a label for the particular scene.
 :type value: int
 :return: The label string.
 :rtype: str
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
 createScene_, removeScene_, activateScene_, \
-setSceneLabel_ \
-removeSceneValue_, addSceneValue_, setSceneValue_, \
+setSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
@@ -3236,10 +3241,9 @@ Sets a label for the particular scene.
 :type sceneId: int
 :param value: The new value of the label.
 :type value: int
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_ \
-removeSceneValue_, addSceneValue_, setSceneValue_, \
+getSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
@@ -3255,11 +3259,10 @@ Check if a Scene ID is defined.
 :type sceneId: int
 :return: True if Scene ID exists.
 :rtype: bool
-:see: getNumScenes_, getAllScenes_, \
+:see: getNumScenes_, getAllScenes_, removeAllScenes_, \
 createScene_, removeScene_, activateScene_, \
-getSceneLabel_, setSceneLabel_ \
-removeSceneValue_, addSceneValue_, setSceneValue_, \
-sceneGetValues_
+getSceneLabel_, setSceneLabel_, removeSceneValue_, addSceneValue_, \
+setSceneValue_, sceneGetValues_
 
         '''
         return self.manager.SceneExists(sceneid)
@@ -3274,9 +3277,8 @@ Activate given scene to perform all its actions.
 :type sceneId: int
 :return: True if it is successful.
 :rtype: bool
-:see: getNumScenes_, getAllScenes_, sceneExists_, \
-createScene_, removeScene_, \
-getSceneLabel_, setSceneLabel_ \
+:see: getNumScenes_, getAllScenes_, sceneExists_, removeAllScenes_, \
+createScene_, removeScene_, getSceneLabel_, setSceneLabel_, \
 removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 

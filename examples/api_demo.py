@@ -173,10 +173,13 @@ print
 print "------------------------------------------------------------"
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"
-
+print
+print "------------------------------------------------------------"
+print "Try to autodetect nodes on the network"
+print "------------------------------------------------------------"
+print "Nodes in network : %s" % network.nodes_count
 print "------------------------------------------------------------"
 print "Retrieve switches on the network"
-print "Nodes in network : %s" % network.nodes_count
 print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
@@ -184,7 +187,6 @@ for node in network.nodes:
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  state: %s" % (network.nodes[node].get_switch_state(val)))
-
 print "------------------------------------------------------------"
 print "Retrieve dimmers on the network"
 print "------------------------------------------------------------"
@@ -194,7 +196,6 @@ for node in network.nodes:
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
-
 print "------------------------------------------------------------"
 print "Retrieve sensors on the network"
 print "------------------------------------------------------------"
@@ -204,7 +205,9 @@ for node in network.nodes:
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  value: %s %s" % (network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
+print "------------------------------------------------------------"
 
+#print
 #print "------------------------------------------------------------"
 #print "Activate the switches on the network"
 #print "Nodes in network : %s" % network.nodes_count
@@ -220,7 +223,7 @@ for node in network.nodes:
 #                (network.nodes[node].values[val].label,node))
 #        network.nodes[node].set_switch(val,False)
 #print "%s" % ('Done')
-
+#print "------------------------------------------------------------"
 
 print
 print "------------------------------------------------------------"
