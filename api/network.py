@@ -266,8 +266,8 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug("Stop network.")
-        self._manager.removeDriver(self._options.device)
         self._manager.removeWatcher(self.zwcallback)
+        self._manager.removeDriver(self._options.device)
 
     @property
     def home_id(self):

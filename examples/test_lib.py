@@ -34,7 +34,7 @@ from libopenzwave import PyManager
 
 device="/dev/zwave-aeon-s2"
 log="Info"
-sniff=20.0
+sniff=30.0
 
 for arg in sys.argv:
     if arg.startswith("--device"):
@@ -82,6 +82,6 @@ manager.addDriver(device)
 print("Sniff network during %s seconds" % sniff)
 time.sleep(sniff)
 print("Remove watcher")
-manager.removeDriver(device)
-print("Remove device")
 manager.removeWatcher(callback)
+print("Remove device")
+manager.removeDriver(device)
