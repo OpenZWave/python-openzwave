@@ -9,5 +9,5 @@ python setup-api.py install --root=build/tmp
 echo "------------------------------------------------------------"
 echo "|   Run ozwsh                                           |"
 echo "------------------------------------------------------------"
-./manager/ozwsh.py $* 2>debug.log
+./manager/ozwsh.py "$*" 2>debug.log
 

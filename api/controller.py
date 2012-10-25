@@ -375,7 +375,6 @@ class ZWaveController(ZWaveObject):
 
         """
         self._network.manager.resetController(self._network.home_id)
-        #self._network.state = self._network.STATE_RESET
 
     def soft_reset(self):
         """

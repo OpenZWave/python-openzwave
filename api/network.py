@@ -259,12 +259,6 @@ class ZWaveNetwork(ZWaveObject):
         #self._ready = False
         self._semaphore_nodes = threading.Semaphore()
         self.nodes = None
-        #self._started = False
-
-        #self._semaphore_on_ready = threading.Semaphore()
-        #self._callback_on_ready = set()
-        #self._semaphore_on_fail = threading.Semaphore()
-        #self._callback_on_fail = set()
 
     def stop(self):
         '''
@@ -557,12 +551,28 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._network.manager.sceneExists(sceneid)
 
-    def remove_all_scenes(self):
+    @property
+    def scenes_count(self):
         """
-        Remove all scenes defined for this network.
+        Return the number of scenes
+
+        :returns: The number of scenes
+        :rtype: int
 
         """
-        return self._network.manager.removeAllScenes(self.home_id)
+        return self._network.manager.getNumScenes()
+
+    def remove_scene(self, sceneid):
+        """
+        Delete the scene on the network.
+
+        :param sceneid: The id of the scene to check
+        :type sceneid: int
+        :returns: True if the scene exist. False in other cases
+        :rtype: bool
+
+        """
+        return self._network.manager.removeScene(sceneid)
 
     @property
     def nodes_count(self):
@@ -1056,8 +1066,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification ValueAdded : %s' % (args))
-        self.nodes[args['nodeId']].add_value(args['valueId']['id'], \
-            args['valueId']['commandClass'])
+        self.nodes[args['nodeId']].add_value(args['valueId']['id'])
         dispatcher.send(self.SIGNAL_VALUE_ADDED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})

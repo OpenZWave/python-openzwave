@@ -35,7 +35,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="class">
 <dt id="openzwave.value.ZWaveValue">
-<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent=None</em>, <em>command_class=0</em><big>)</big></dt>
+<em class="property">class </em><tt class="descclassname">openzwave.value.</tt><tt class="descname">ZWaveValue</tt><big>(</big><em>value_id</em>, <em>network=None</em>, <em>parent=None</em><big>)</big></dt>
 <dd><p>Represents a single value.
 Must be updated to use the cachedObject facilities.</p>
 <dl class="method">
@@ -173,6 +173,20 @@ by the application</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.id_on_network">
+<tt class="descname">id_on_network</tt></dt>
+<dd><p>Return an unique id for this value.
+The scenes use this to retrieve values
+&lt;Scene id=&#8221;1&#8221; label=&#8221;scene1&#8221;&gt;</p>
+<blockquote>
+<div>&lt;Value homeId=&#8221;0x014d0ef5&#8221; nodeId=&#8221;2&#8221; genre=&#8221;user&#8221; commandClassId=&#8221;38&#8221; instance=&#8221;1&#8221; index=&#8221;0&#8221; type=&#8221;byte&#8221;&gt;54&lt;/Value&gt;</div></blockquote>
+<p>&lt;/Scene&gt;
+The format is :</p>
+<blockquote>
+<div>home_id.node_id.commnand_class.instance.index</div></blockquote>
 </dd></dl>
 
 <dl class="attribute">

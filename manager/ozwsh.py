@@ -49,6 +49,8 @@ logging.basicConfig(level=logging.DEBUG)
 #logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('openzwave')
 
+log="None"
+
 MAIN_TITLE = "openzwave Shell"
 """
 /nodes
@@ -448,7 +450,7 @@ class MainWindow(Screen):
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
         self.options.set_console_output(False)
-        self.options.set_save_log_level('Debug')
+        self.options.set_save_log_level(log)
         self.options.set_logging(True)
         self.options.lock()
         self.network = ZWaveNetwork(self.options, self.log)
@@ -456,6 +458,7 @@ class MainWindow(Screen):
 
     def _connect_louie(self):
         dispatcher.connect(self._louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
+        dispatcher.connect(self._louie_driver_reset, ZWaveNetwork.SIGNAL_DRIVER_RESET)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_driver_ready(self, network, controller):
@@ -464,6 +467,13 @@ class MainWindow(Screen):
         self.network = network
         self.controller = controller
         self.status_bar.update(status='OpenZWave driver is ready ... Waiting for network')
+        self.loop.draw_screen()
+
+    def _louie_driver_reset(self, network, controller):
+        self.log.info('OpenZWave driver is resetted.')
+        self.network = network
+        self.controller = controller
+        self.status_bar.update(status='OpenZWave driver was resetted ... Waiting ...')
         self.loop.draw_screen()
 
     def _louie_network_ready(self, network):
@@ -492,15 +502,18 @@ class MainWindow(Screen):
 window = None
 def main():
     device = "/dev/zwave-aeon-s2"
+    log = "None"
     footer = True
     for arg in sys.argv:
         if arg.startswith("--help") or arg.startswith("-h"):
-            print("Usage : ozwman [--device=/dev/zwave-aeon-s2]")
+            print("Usage : ozwman [--device=/dev/zwave-aeon-s2] [--log=None]")
             print("   --device=path_to_your_zwave_stick")
+            print("   --log=Info|Debug|None")
             sys.exit("")
-
-        if arg.startswith("--device"):
+        elif arg.startswith("--device"):
             temp,device = arg.split("=")
+        elif arg.startswith("--log"):
+            temp,log = arg.split("=")
     global window
     window = MainWindow(device=device,footer=footer)
     window.start()

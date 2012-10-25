@@ -343,6 +343,7 @@ class ZWaveNode( ZWaveObject,
         for cls in self._network.manager.COMMAND_CLASS_DESC:
             if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                 command_classes.add(cls)
+                logging.debug("node.command_classes : type = %s, values = %s)" % (type(cls), command_classes))
         #print "command_classes : ",self._command_classes
         return command_classes
 
@@ -456,29 +457,16 @@ class ZWaveNode( ZWaveObject,
         for value in self.values:
             #print "self.values[value].command_class= ",self.values[value].command_class
             #print "class_id= ",class_id
-            if (class_id == 'All' or self.values[value].command_class == \
-                self._network.manager.COMMAND_CLASS_DESC[class_id]) and \
+            if (class_id == 'All' or self.values[value].command_class == class_id) and \
               (genre == 'All' or self.values[value].genre == genre) and \
               (type == 'All' or self.values[value].type == type) and \
               (readonly == 'All' or self.values[value].is_read_only == readonly) and \
               (writeonly == 'All' or self.values[value].is_write_only == writeonly):
                 ret[value] = self.values[value]
-#        for value in self._values:
-#            print "type(class_id)= ",type(class_id)
-#            if type(class_id)==type(''):
-#                for cls in self._network.manager.COMMAND_CLASS_DESC :
-#                    if self._network.manager.COMMAND_CLASS_DESC[cls]==class_id:
-#                        if self.values[value].command_class==cls:
-#                            ret.add(self.values[value])
-#            elif type(class_id)==type(0):
-#                if self.values[value].command_class==class_id:
-#                    ret.add(self.values[value])
-        #if len(ret) == 0:
-        #   return None
-        #else :
+                #logging.debug("value.command_classes : type = %s" % (type(class_id)))
         return ret
 
-    def add_value(self, value_id, command_class):
+    def add_value(self, value_id):
         """
         Add a value to the node
 
@@ -489,7 +477,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        value = ZWaveValue(value_id, network=self.network, parent=self, command_class=command_class)
+        value = ZWaveValue(value_id, network=self.network, parent=self)
         self.values[value_id] = value
         #self.values[value_id].oudated = True
 

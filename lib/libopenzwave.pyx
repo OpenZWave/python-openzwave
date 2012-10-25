@@ -1726,7 +1726,6 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
         ret = 2
         if values_map.find(id) != values_map.end():
             datatype = PyValueTypes[values_map.at(id).GetType()]
-
             if datatype == "Bool":
                 type_bool = value
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
@@ -1990,13 +1989,40 @@ by the application
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueCommandClass_\
 getValueAsString_, getValue_, getValueType_, getValueInstance_, getValueIndex_
 
        '''
         if values_map.find(id) != values_map.end():
             genre = PyGenres[values_map.at(id).GetGenre()]
             return genre
+        else :
+            return None
+
+    def getValueCommandClass(self, id):
+        '''
+.. _getValueCommandClass:
+
+Get the command class instance of this value.  It is possible for there to be
+multiple instances of a command class, although currently it appears that
+only the SensorMultilevel command class ever does this.  Knowledge of
+instances and command classes is not required to use OpenZWave, but this
+information is exposed in case it is of interest.
+
+
+:param id: The ID of a value.
+:type id: int
+:return: The command class of the value
+:rtype: int
+:see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueGenre_, \
+getValueAsString_, getValue_, getValueType_, getValueInstance_, getValueIndex_
+
+       '''
+        if values_map.find(id) != values_map.end():
+            cmd_cls = values_map.at(id).GetCommandClassId()
+            return cmd_cls
         else :
             return None
 
@@ -2014,7 +2040,7 @@ only the SensorMultilevel command class ever does this.
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueCommandClass_, \
 getValueAsString_, getValue_, getValueType_, getValueIndex_
 
        '''
@@ -2039,7 +2065,7 @@ same as the parameter ID.
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueCommandClass_, \
 getValueAsString_, getValue_, getValueType_
 
        '''
@@ -2062,7 +2088,7 @@ Gets the type of the value
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
-getValue_, getValueInstance_, getValueIndex_
+getValue_, getValueInstance_, getValueIndex_, getValueCommandClass_
 
        '''
         if values_map.find(id) != values_map.end():
@@ -2086,7 +2112,7 @@ Gets a value.
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
-getValueType_, getValueInstance_, getValueIndex_
+getValueType_, getValueInstance_, getValueIndex_, getValueCommandClass_
 
         '''
         return getValueFromType(self.manager,id)
@@ -2104,7 +2130,7 @@ Gets a value as a bool.
 :see: isValueSet_, getValue_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
-getValueType_, getValueInstance_, getValueIndex_
+getValueType_, getValueInstance_, getValueIndex_, getValueCommandClass_
 
         '''
         return getValueFromType(self.manager,id)
@@ -2122,7 +2148,7 @@ Gets a value as an 8-bit unsigned integer.
 :see: isValueSet_, getValue_, getValueAsBool_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
 getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
-getValueType_, getValueInstance_, getValueIndex_
+getValueType_, getValueInstance_, getValueIndex_, getValueCommandClass_
 
         '''
         return getValueFromType(self.manager,id)

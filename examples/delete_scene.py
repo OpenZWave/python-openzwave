@@ -49,17 +49,10 @@ from openzwave.option import ZWaveOption
 import time
 
 device="/dev/zwave-aeon-s2"
-log="Info"
 
 for arg in sys.argv:
     if arg.startswith("--device"):
         temp,device = arg.split("=")
-    elif arg.startswith("--log"):
-        temp,log = arg.split("=")
-    elif arg.startswith("--help"):
-        print("help : ")
-        print("  --device=/dev/yourdevice ")
-        print("  --log=Info|Debug")
 
 #Define some manager options
 options = ZWaveOption(device, \
@@ -68,7 +61,7 @@ options = ZWaveOption(device, \
 options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
 options.set_console_output(False)
-options.set_save_log_level(log)
+options.set_save_log_level('Debug')
 #options.set_save_log_level('Info')
 options.set_logging(True)
 options.lock()
@@ -125,6 +118,20 @@ print "Controller node capabilities : %s" % network.controller.node.capabilities
 print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"
+
+print
+print "------------------------------------------------------------"
+print "Remove scene 3 (bad scene)                                  "
+print "------------------------------------------------------------"
+network.remove_scene(3)
+print
+print "------------------------------------------------------------"
+print "Scene 3 removed                                             "
+print "------------------------------------------------------------"
+print "Driver statistics : %s" % network.controller.stats
+print "------------------------------------------------------------"
+
+
 for node in network.nodes:
     print
     print "------------------------------------------------------------"
@@ -193,7 +200,6 @@ for node in network.nodes:
     for val in network.nodes[node].get_switches() :
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
-        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  state: %s" % (network.nodes[node].get_switch_state(val)))
 print "------------------------------------------------------------"
 print "Retrieve dimmers on the network"
@@ -203,7 +209,6 @@ for node in network.nodes:
     for val in network.nodes[node].get_dimmers() :
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
-        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
 print "------------------------------------------------------------"
 print "Retrieve sensors on the network"
@@ -213,7 +218,6 @@ for node in network.nodes:
     for val in network.nodes[node].get_sensors() :
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
-        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  value: %s %s" % (network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
 print "------------------------------------------------------------"
 

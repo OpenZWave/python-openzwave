@@ -39,8 +39,7 @@ class ZWaveValue(ZWaveObject):
     Represents a single value.
     Must be updated to use the cachedObject facilities.
     '''
-    def __init__(self, value_id, network=None, parent=None, \
-            command_class=0):
+    def __init__(self, value_id, network=None, parent=None):
         '''
         Initialize value
 
@@ -76,7 +75,7 @@ class ZWaveValue(ZWaveObject):
         ZWaveObject.__init__(self, value_id, network=network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
         self._parent = parent
-        self._command_class = command_class
+        #self._command_class = command_class
         #self._type = type
         #print command_class
         #print self._network.manager
@@ -119,6 +118,20 @@ class ZWaveValue(ZWaveObject):
         The value_id of the value.
         """
         return self._object_id
+
+    @property
+    def id_on_network(self):
+        """
+        Return an unique id for this value.
+        The scenes use this to retrieve values
+        <Scene id="1" label="scene1">
+                <Value homeId="0x014d0ef5" nodeId="2" genre="user" commandClassId="38" instance="1" index="0" type="byte">54</Value>
+        </Scene>
+        The format is :
+            home_id.node_id.commnand_class.instance.index
+
+        """
+        return "%0.8x.%s.%0.2x.%s.%s" % (self._network.home_id, self.parent_id, self.command_class, self.instance, self.index )
 
     @property
     def node(self):
@@ -488,7 +501,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-#        self._poll_intensity = intensity
         return self._network.manager.enablePoll(self.value_id, intensity)
 
     def disable_poll(self, intensity):
@@ -498,7 +510,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-#        self._poll_intensity = 0
         return self._network.manager.disablePoll(self.value_id)
 
     @property
@@ -509,28 +520,7 @@ class ZWaveValue(ZWaveObject):
         :rtype: int
 
         """
-        return self._command_class
-
-    @command_class.setter
-    def command_class(self, value):
-        """
-        Set the command_class of the value.
-
-        :param value: The new command_class value
-        :type value: int
-
-        """
-        self._command_class = value
-
-#    def get_value(self, key):
-#        """
-#        The value_data of the value.
-#
-#        :param key: The key to check
-#        :type value: int
-#
-#        """
-#        return self.value_data[key] if self._value_data.has_key(key) else None
+        return self._network.manager.getValueCommandClass(self.value_id)
 
     def __str__(self):
         return 'home_id: [{0}]  parent_id: [{1}]  value_data: {2}'.format(self.home_id, self._parent_id, self._value_data)

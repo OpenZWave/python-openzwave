@@ -201,6 +201,10 @@ class OldestTree(urwid.ListWalker):
         self.window.status_bar.update(status='Command "remove" not supported')
         return False
 
+    def reset(self, value):
+        self.window.status_bar.update(status='Command "reset" not supported')
+        return False
+
     def create(self, value):
         self.window.status_bar.update(status='Command "create" not supported')
         return False
@@ -905,12 +909,12 @@ class ControllerTree(OldestTree):
 
     def reset(self, state):
         if state == 'soft':
-            self.window.network.controller.soft_reset()
             self.window.status_bar.update(status='Reset controller softly')
+            self.window.network.controller.soft_reset()
             return True
         if state == 'hard':
-            self.window.network.controller.hard_reset()
             self.window.status_bar.update(status='Reset controller hardly')
+            self.window.network.controller.hard_reset()
             return True
         return False
 
@@ -1935,7 +1939,7 @@ class ScenesTree(OldestTree):
             self.window.status_bar.update(status='Invalid scene %s' % value)
             return False
         if self.window.network.scene_exists(value):
-            ret = self.window.network.get_scenes()[value].delete()
+            ret = self.window.network.remove_scene(value)
             if ret :
                 self.window.status_bar.update(status='Scene %s deleted' % value)
             return ret

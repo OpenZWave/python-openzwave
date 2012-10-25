@@ -16,11 +16,11 @@ If needed, type the following command to install them :</p>
 <p>It allows :</p>
 <blockquote>
 <div><ul class="simple">
-<li>Reset controller (hard and soft) and</li>
+<li>Reset controller (hard and soft) and add/remove device/controller</li>
 <li>Change node informations (name, location, ... )</li>
 <li>view and change values informations</li>
 <li>view and change group informations</li>
-<li>Full management of scenes</li>
+<li>Full management of scenes, switches, dimmers and sensors</li>
 </ul>
 </div></blockquote>
 <p>It&#8217;s a shell like manager. You can visit your zwave network using the
@@ -28,14 +28,42 @@ command cd. All available commands are displayed on every sceens.</p>
 <p>For the developpers : this a good example on how to use the api.
 Update are sent to uwird widget using louie notifications. ZWave data
 updates are done in the set, add, delete, remove, ... methods.</p>
+<p>There is some others examples, to test them :</p>
+<blockquote>
+<div><p>cd examples</p>
+<p>./build_examples.sh</p>
+</div></blockquote>
+<p>This will install all the needed files used by the examples in a temporary
+directory.</p>
 </div>
 <div class="section" id="api-demo">
 <h2>api_demo</h2>
-<p>A test demo : it list all nodes/values on your network and activate
-your switches.</p>
+<p>A test demo for the api : it list all nodes/values on your network, trying
+to identify your switches, dimmers and sensors.</p>
 <p>Start it with :</p>
 <blockquote>
-<div>./api_demo.sh &#8211;device=/dev/yourzwavestick</div></blockquote>
+<div>./api_demo.py &#8211;device=/dev/yourzwavestick</div></blockquote>
+</div>
+<div class="section" id="test-lib">
+<h2>test_lib</h2>
+<p>A test demo for the library : connect to the network and sniff for notifications.</p>
+<p>Start it with :</p>
+<blockquote>
+<div>./test_lib.py &#8211;device=/dev/yourzwavestick &#8211;sniff=30</div></blockquote>
+</div>
+<div class="section" id="api-snif">
+<h2>api_snif</h2>
+<p>A test demo for the api : connect to the api and sniff for louie signal from it.</p>
+<p>Start it with :</p>
+<blockquote>
+<div>./api_sniff.py &#8211;device=/dev/yourzwavestick &#8211;sniff=30</div></blockquote>
+</div>
+<div class="section" id="memory-use">
+<h2>memory_use</h2>
+<p>Try to evaluate the memory use of the api.</p>
+<p>Start it with :</p>
+<blockquote>
+<div>./memory_use.py &#8211;device=/dev/yourzwavestick</div></blockquote>
 </div>
 <div class="section" id="other-examples">
 <h2>Other examples</h2>

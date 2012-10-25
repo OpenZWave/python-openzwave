@@ -109,12 +109,6 @@ class ZWaveScene(ZWaveObject):
                 self.label = label
         return sceneid
 
-    def delete(self):
-        '''
-        Delete the scene on the network
-        '''
-        return self._network.manager.removeScene(self.object_id)
-
     def add_value(self, value_id, value_data):
         '''
         Add a value with data value_data to the zwave scene.
