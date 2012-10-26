@@ -908,7 +908,7 @@ does not have to cope with more than one poll per second).
         '''
         self.manager.SetPollInterval(milliseconds, bIntervalBetweenPolls)
 
-    def enablePoll(self, id, intensity):
+    def enablePoll(self, id, intensity = 1):
         '''
 .. _enablePoll:
 

@@ -502,7 +502,7 @@ class MainWindow(Screen):
 window = None
 def main():
     device = "/dev/zwave-aeon-s2"
-    log = "None"
+    log = "Debug"
     footer = True
     for arg in sys.argv:
         if arg.startswith("--help") or arg.startswith("-h"):

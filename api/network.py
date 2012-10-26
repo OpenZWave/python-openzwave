@@ -251,23 +251,43 @@ class ZWaveNetwork(ZWaveObject):
         self._controller = ZWaveController(1, self, options)
         self._manager = libopenzwave.PyManager()
         self._manager.create()
-        self._manager.addWatcher(self.zwcallback)
-        self._manager.addDriver(self._options.device)
-        self._state = False
-        #self._initialised = False
-        #self._started = False
-        #self._ready = False
+        self.start()
+        self._state = self.STATE_STOPPED
         self._semaphore_nodes = threading.Semaphore()
         self.nodes = None
+
+    def __str__(self):
+        """
+        The string representation of the node.
+
+        :rtype: str
+
+        """
+        return 'home_id: [%s] controller: [%s]' % \
+          (self.home_id_str,  self.controller)
+
+    def start(self):
+        '''
+        Start the network object :
+            - add a watcher
+            - add a driver
+
+        '''
+        logging.debug("Start network.")
+        self._manager.addWatcher(self.zwcallback)
+        self._manager.addDriver(self._options.device)
 
     def stop(self):
         '''
         Stop the network object.
+            - remove the watcher
+            - remove the driver
 
         '''
         logging.debug("Stop network.")
         self._manager.removeWatcher(self.zwcallback)
         self._manager.removeDriver(self._options.device)
+        self._state = self.STATE_STOPPED
 
     @property
     def home_id(self):
@@ -298,27 +318,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: str
 
         """
-        return "%0.8x" % self._object_id
-
-#    @property
-#    def initialised(self):
-#        """
-#        Says if the driver is ready.
-#
-#        :rtype: bool
-#
-#        """
-#        return self._initialised
-#
-#    @property
-#    def started(self):
-#        """
-#        Says if all the nodes are queried.
-#
-#        :rtype: bool
-#
-#        """
-#        return self._started
+        return "0x%0.8x" % self._object_id
 
     @property
     def is_ready(self):
@@ -411,7 +411,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         The controller of the network.
 
-        :returns: The controller of the network
+        :return: The controller of the network
         :rtype: ZWaveController
 
         """
@@ -419,17 +419,6 @@ class ZWaveNetwork(ZWaveObject):
             return self._controller
         else:
             raise ZWaveException("Controller not initialised")
-
-#    @controller.setter
-#    def controller(self, value):
-#        """
-#        The controller of the network.
-#        :rtype:
-#        """
-#        if type(value) == type(ZWaveController) or value == None:
-#            self._controller = value
-#        else:
-#            raise ZWaveException("Can't update controller. Bad object type %s" % type(value))
 
     @property
     def nodes(self):
@@ -450,10 +439,10 @@ class ZWaveNetwork(ZWaveObject):
         :type value: dict() or None
 
         """
-        if value == None:
-            self._nodes = dict()
-        else:
+        if type(value) == type(dict()):
             self._nodes = value
+        else:
+            self._nodes = dict()
 
     def switch_all(self, state):
         """
@@ -475,17 +464,35 @@ class ZWaveNetwork(ZWaveObject):
         """
         Retrieve a value on the network.
 
-        Check every nodes to see if it hols the value
+        Check every nodes to see if it holds the value
 
-        :param value_id: The id of the value to add
+        :param value_id: The id of the value to find
         :type value_id: int
-        :returns: The value or None
+        :return: The value or None
         :rtype: ZWaveValue
 
         """
         for node in self.nodes:
             if value_id in self.nodes[node].values :
                 return self.nodes[node].values[value_id]
+        return None
+
+    def get_value_from_id_on_network(self, id_on_network):
+        """
+        Retrieve a value on the network from it's id_on_network.
+
+        Check every nodes to see if it holds the value
+
+        :param id_on_network: The id_on_network of the value to find
+        :type id_on_network: int
+        :return: The value or None
+        :rtype: ZWaveValue
+
+        """
+        for node in self.nodes:
+            for val in self.nodes[node].values :
+                if self.nodes[node].values[val].id_on_network():
+                    return self.nodes[node].values[val]
         return None
 
     def get_scenes(self):
@@ -496,7 +503,7 @@ class ZWaveNetwork(ZWaveObject):
         support to keep them up to date. So for a batch job, consider
         storing them in a local variable.
 
-        :returns: return a dict() (that can be empty) of scene object. Return None if betwork is not ready
+        :return: return a dict() (that can be empty) of scene object. Return None if betwork is not ready
         :rtype: dict() or None
 
         """
@@ -509,7 +516,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         Load the scenes of the network.
 
-        :returns: return a dict() (that can be empty) of scene object.
+        :return: return a dict() (that can be empty) of scene object.
         :rtype: dict()
 
         """
@@ -531,7 +538,7 @@ class ZWaveNetwork(ZWaveObject):
 
         :param label: The new label
         :type label: str or None
-        :returns: return the id of scene on the network. Return 0 if fails
+        :return: return the id of scene on the network. Return 0 if fails
         :rtype: int
 
         """
@@ -545,7 +552,7 @@ class ZWaveNetwork(ZWaveObject):
 
         :param sceneid: The id of the scene to check
         :type sceneid: int
-        :returns: True if the scene exist. False in other cases
+        :return: True if the scene exist. False in other cases
         :rtype: bool
 
         """
@@ -556,7 +563,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         Return the number of scenes
 
-        :returns: The number of scenes
+        :return: The number of scenes
         :rtype: int
 
         """
@@ -568,7 +575,7 @@ class ZWaveNetwork(ZWaveObject):
 
         :param sceneid: The id of the scene to check
         :type sceneid: int
-        :returns: True if the scene exist. False in other cases
+        :return: True if the scene exist. False in other cases
         :rtype: bool
 
         """
@@ -598,6 +605,37 @@ class ZWaveNetwork(ZWaveObject):
                 retval += 1
         return retval
 #        return retval - 1 if retval > 0 else 0
+
+    def get_poll_interval(self):
+        '''
+        Get the time period between polls of a nodes state
+
+        :return: The number of milliseconds between polls
+        :rtype: int
+
+        '''
+        return self.manager.getPollInterval()
+
+    def set_poll_interval(self, milliseconds, bIntervalBetweenPolls ):
+        '''
+        Set the time period between polls of a nodes state.
+
+        Due to patent concerns, some devices do not report state changes automatically
+        to the controller.  These devices need to have their state polled at regular
+        intervals.  The length of the interval is the same for all devices.  To even
+        out the Z-Wave network traffic generated by polling, OpenZWave divides the
+        polling interval by the number of devices that have polling enabled, and polls
+        each in turn.  It is recommended that if possible, the interval should not be
+        set shorter than the number of polled devices in seconds (so that the network
+        does not have to cope with more than one poll per second).
+
+        :param milliseconds: The length of the polling interval in milliseconds.
+        :type milliseconds: int
+        :param bIntervalBetweenPolls: Don't know what it is.
+        :type bIntervalBetweenPolls: bool
+
+        '''
+        self.manager.setPollInterval(milliseconds, bIntervalBetweenPolls)
 
     def zwcallback(self, args):
         """
@@ -720,6 +758,7 @@ class ZWaveNetwork(ZWaveObject):
             self._state = self.STATE_INITIALISED
             logging.info('Driver ready using library %s' % self._controller.library_description )
             logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
+            logging.debug('Network %s' % self )
             dispatcher.send(self.SIGNAL_DRIVER_READY, \
                 **{'network': self, 'controller': self._controller})
         except:
@@ -787,7 +826,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('Z-Wave Notification Value : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE, \
-                **{'network': self, 'node_id': args['nodeId']})
+                **{'network': self, 'node':self.nodes[args['nodeId']]})
 
     def _handle_node_added(self, args):
         '''
@@ -885,7 +924,6 @@ class ZWaveNetwork(ZWaveObject):
             del(self.nodes[args['nodeId']])
             dispatcher.send(self.SIGNAL_NODE_REMOVED, \
                 **{'network': self, 'node_id': args['nodeId']})
-            self._handle_node(args)
         finally :
             self._semaphore_nodes.release()
 
@@ -1050,7 +1088,7 @@ class ZWaveNetwork(ZWaveObject):
         #logging.debug('Z-Wave Notification Value : %s' % (args['valueId']['id']))
         dispatcher.send(self.SIGNAL_VALUE, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
-                'value_id' : args['valueId']['id']})
+                'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
         #logging.debug('Z-Wave Notification Value : %s' % ('Done'))
 
     def _handle_value_added(self, args):
@@ -1123,7 +1161,6 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value_id' : args['valueId']['id']})
-        self._handle_value(args)
 
     def _handle_error(self, args):
         '''
@@ -1161,172 +1198,37 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.writeConfig(self.home_id)
         logging.info('ZWave configuration wrote to user directory.')
 
-#    def register_on_ready(self, callback):
-#        '''
-#        Register a callback function to the on_ready event.
-#
-#        :param callback: The callback function
-#        :type callback: lambda
-#
-#        '''
-#        logging.debug('Register on ready callback : %s' % (callback))
-#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['nodeId']})
-#        try:
-#            self._semaphore_on_ready.acquire()
-#            self._callback_on_ready.append(callback)
-#        finally:
-#            self._semaphore_on_ready.release()
-#
-#    def register_on_fail(self, callback):
-#        '''
-#        Register a callback function to the on_fail event.
-#
-#        :param callback: The callback function
-#        :type callback: lambda
-#
-#        '''
-#        logging.debug('Register on fail callback : %s' % (callback))
-#        #dispatcher.send(self.SIGNAL_ERROR, **{'home_id': self.home_id, 'node_id': args['nodeId']})
-#        try:
-#            self._semaphore_on_fail.acquire()
-#            self._callback_on_fail.append(callback)
-#        finally:
-#            self._semaphore_on_fail.release()
-
-#    def get_node(self, node_id):
-#        """
-#        Retrieve a node from its id.
-#        This function does NOT lock the nodes set.
-#
-#        :param node_id: The node identifier
-#        :type node_id: int
-#        :returns: The ZWaveNode object or None
-#        :rtype: ZWaveNode
-#
-#        """
-#        node = self._getNode(home_id, node_id)
-#        if node is None:
-#            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
-#        vid = valueId['id']
-#        if node._values.has_key(vid):
-#            retval = node._values[vid]
-#        else:
-#            retval = ZWaveValueNode(home_id, node_id, valueId)
-#            self._log.debug('Created new value node with home_id %0.8x, ' + \
-#                'node_id %d, valueId %s' % (home_id, node_id, valueId))
-#            node._values[vid] = retval
-#        return retval
-
-#    def _get_value_node(self, home_id, node_id, valueId):
-#        """
-#        """
-#        node = self._getNode(home_id, node_id)
-#        if node is None:
-#            raise ZWaveException('Value received before node creation node_id %d' % (node_id))
-#        vid = valueId['id']
-#        if node._values.has_key(vid):
-#            retval = node._values[vid]
-#        else:
-#            retval = ZWaveValueNode(home_id, node_id, valueId)
-#            self._log.debug('Created new value node with home_id %0.8x, ' + \
-#                'node_id %d, valueId %s' % (home_id, node_id, valueId))
-#            node._values[vid] = retval
-#        return retval
-
-#    def _updateNodeCommandClasses(self, node):
-#        '''
-#        Update node's command classes.
-#        '''
-#        classSet = set()()
-#        for cls in PyManager.COMMAND_CLASS_DESC:
-#            if self._manager.getNodeClassInformation(node._home_id, node._node_id, cls):
-#                classSet.add(cls)
-#        node._commandClasses = classSet
-#        self._log.debug('Node [%d] command classes are: %s' % \
-#            (node._node_id, node._commandClasses))
-#        # TODO: add command classes as string
-
-#    def _handleInitializationComplete(self, args):
-#        """
-#        """
-#        logging.debug('Controller capabilities are: %s' % self.manager.controller.capabilities)
-#        logging.info("Initialization completed.  Found %s Z-Wave Device Nodes (%s sleeping)" % \
-#            (self.nodesCount, self.sleeping_nodes_count))
-#        self._initialized = True
-#        #dispatcher.send(self.SIGNAL_SYSTEM_READY, **{'home_id': self.home_id})
-#        self.manager.writeConfig(self.home_id)
-#        # TODO: write config on shutdown as well
-
-#    def getCommandClassName(self, commandClassCode):
-#        """
-#        """
-#        return PyManager.COMMAND_CLASS_DESC[commandClassCode]
-
-#    def getCommandClassCode(self, commandClassName):
-#        """
-#        """
-#        for k, v in PyManager.COMMAND_CLASS_DESC.iteritems():
-#            if v == commandClassName:
-#                return k
-#        return None
-
-# commands:
-# - refresh node
-# - request node state
-# - request config param/request all config params
-# - set node level
-# - set node on/off
-# - switch all on/off
-# - add node, remove node (needs command support)
-
-# editing:
-# - add association, remove association
-# - set config param
-# - set node manufacturer name
-# - set node name
-# - set node location
-# - set node product name
-# - set poll interval
-# - set wake up interval (needs command support)
-
-# questions:
-# - can powerlevel be queried directly? See PowerLevel.cpp in command classes
-# - need more detail about notification events!
-# - what is COMMAND_CLASS_HAIL used for?
-# - what is COMMAND_CLASS_INDICATOR used for?
-# - wake up duration sent via COMMAND_CLASS_WAKE_UP
-
 """
-   initialization callback sequence:
+    initialization callback sequence:
 
-   [driverReady]
+    [driverReady]
 
-   [nodeAdded] <-------------------------+ This cycle is extremely quick, well under one second.
-       [nodeProtocolInfo]                |
-       [nodeNaming]                      |
-       [valueAdded] <---------------+    |
-                                    |    |
-       {REPEATS FOR EACH VALUE} ----+    |
-                                         |
-       [group] <--------------------+    |
-                                    |    |
-       {REPEATS FOR EACH GROUP} ----+    |
-                                         |
-   {REPEATS FOR EACH NODE} --------------+
+    [nodeAdded] <-------------------------+ This cycle is extremely quick, well under one second.
+        [nodeProtocolInfo]                |
+        [nodeNaming]                      |
+        [valueAdded] <---------------+    |
+                                     |    |
+        {REPEATS FOR EACH VALUE} ----+    |
+                                          |
+        [group] <--------------------+    |
+                                     |    |
+        {REPEATS FOR EACH GROUP} ----+    |
+                                          |
+    {REPEATS FOR EACH NODE} --------------+
 
-   [? (no notification)] <---------------+ (no notification announces the beginning of this cycle)
-                                         |
-       [valueChanged] <-------------+    | This cycle can take some time, especially if some nodes
-                                    |    | are sleeping or slow to respond.
-       {REPEATS FOR EACH VALUE} ----+    |
-                                         |
-       [group] <--------------------+    |
-                                    |    |
-       {REPEATS FOR EACH GROUP} ----+    |
-                                         |
-   [nodeQueriesComplete]                 |
-                                         |
-   {REPEATS FOR EACH NODE} --------------+
+    [? (no notification)] <---------------+ (no notification announces the beginning of this cycle)
+                                          |
+        [valueChanged] <-------------+    | This cycle can take some time, especially if some nodes
+                                     |    | are sleeping or slow to respond.
+        {REPEATS FOR EACH VALUE} ----+    |
+                                          |
+        [group] <--------------------+    |
+                                     |    |
+        {REPEATS FOR EACH GROUP} ----+    |
+                                          |
+    [nodeQueriesComplete]                 |
+                                          |
+    {REPEATS FOR EACH NODE} --------------+
 
-   [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
+    [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
 """

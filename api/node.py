@@ -121,6 +121,16 @@ class ZWaveNode( ZWaveObject,
         #self._battery_level = None
         #self.cache_property("self.battery_level")
 
+    def __str__(self):
+        """
+        The string representation of the node.
+
+        :rtype: str
+
+        """
+        return 'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
+          (self._network.home_id_str, self._object_id, self.name, self.model)
+
     @property
     def node_id(self):
         """
@@ -343,7 +353,7 @@ class ZWaveNode( ZWaveObject,
         for cls in self._network.manager.COMMAND_CLASS_DESC:
             if self._network.manager.getNodeClassInformation(self.home_id, self.object_id, cls):
                 command_classes.add(cls)
-                logging.debug("node.command_classes : type = %s, values = %s)" % (type(cls), command_classes))
+                #logging.debug("node.command_classes : type = %s, values = %s)" % (type(cls), command_classes))
         #print "command_classes : ",self._command_classes
         return command_classes
 
@@ -479,31 +489,28 @@ class ZWaveNode( ZWaveObject,
         """
         value = ZWaveValue(value_id, network=self.network, parent=self)
         self.values[value_id] = value
+        logging.debug("Add value : %s" % value)
         #self.values[value_id].oudated = True
 
     def change_value(self, value_id):
         """
-        Change a value of the node. Todo
+        Change a value of the node.
 
         :param value_id: The id of the value to change
         :type value_id: int
-        :rtype: bool
 
         """
-#        self.values[value_id].oudated = True
-        pass
+        logging.debug("Change value : %s" % self.values[value_id])
 
     def refresh_value(self, value_id):
         """
-        Change a value of the node. Todo
+        Refresh a value of the node.
 
         :param value_id: The id of the value to change
         :type value_id: int
-        :rtype: bool
 
         """
-#        self.values[value_id].oudated = True
-        pass
+        logging.debug("Refresh value : %s" % self.values[value_id])
 
     def remove_value(self, value_id):
         """
@@ -511,10 +518,15 @@ class ZWaveNode( ZWaveObject,
 
         :param value_id: The id of the value to change
         :type value_id: int
+        :return: The result of the operation
         :rtype: bool
 
         """
-        del(self.values[value_id])
+        if value_id in self.values :
+            logging.debug("Remove value : %s" % self.values[value_id])
+            del(self.values[value_id])
+            return True
+        return False
 
     def set_field(self, field, value):
         """

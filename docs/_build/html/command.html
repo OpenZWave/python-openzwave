@@ -308,17 +308,90 @@ get_switches : retrieve the list of switches on the node
 is_switch (label) : says if the value with label=label is a switch
 get_switch (label) : retrive the value where label=label</p>
 </div></blockquote>
-<dl class="attribute">
-<dt id="openzwave.command.ZWaveNodeBasic.battery_level">
-<tt class="descname">battery_level</tt><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.battery_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>The battery level of this node.</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_battery_level">
+<tt class="descname">get_battery_level</tt><big>(</big><em>value_id=None</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.get_battery_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The battery level of this node.
+The command 0x80 (COMMAND_CLASS_BATTERY) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state. If None, retrieve the first value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level of this battery</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
-<dt id="openzwave.command.ZWaveNodeBasic.command_class_0x80">
-<tt class="descname">command_class_0x80</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.command_class_0x80" title="Permalink to this definition">¶</a></dt>
-<dd><p>The command 0x80 (COMMAND_CLASS_BATTERY) level of this node.
-Todo</p>
+<dt id="openzwave.command.ZWaveNodeBasic.get_battery_levels">
+<tt class="descname">get_battery_levels</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.get_battery_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x80 (COMMAND_CLASS_BATTERY) of this node.
+Retrieve the list of values to consider as batteries.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x80
+genre = &#8220;User&#8221;
+type = &#8220;Byte&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_power_level">
+<tt class="descname">get_power_level</tt><big>(</big><em>value_id=None</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.get_power_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The power level of this node.
+The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state. If None, retrieve the first value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level of this battery</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_power_levels">
+<tt class="descname">get_power_levels</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeBasic.get_power_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.
+Retrieve the list of values to consider as power_levels.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x73
+genre = &#8220;User&#8221;
+type = &#8220;Byte&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -336,9 +409,11 @@ Get the dimmer level (using value value_id).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The level : a value between 0-99</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve level</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level : a value between 0-99</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -377,9 +452,11 @@ Return the state (using value value_id) of a switch.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -410,6 +487,30 @@ writeonly = False</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switches_all">
+<tt class="descname">get_switches_all</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.get_switches_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Retrieve the list of values to consider as switches_all.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x27
+genre = &#8220;System&#8221;
+type = &#8220;List&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.set_dimmer">
 <tt class="descname">set_dimmer</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big><a class="headerlink" href="#openzwave.command.ZWaveNodeSwitch.set_dimmer" title="Permalink to this definition">¶</a></dt>
 <dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
@@ -418,7 +519,11 @@ Set switch to value (using value value_id).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int</em>) &#8211; The level : a value between 0-99 or 255. 255 set the level to the last value.         0 turn the dimmer off</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>int</em>) &#8211; The level : a value between 0-99 or 255. 255 set the level to the last value.         0 turn the dimmer off</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -433,7 +538,8 @@ Set switch to value (using value value_id).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool</em>) &#8211; True or False</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int
+:param value: True or False</em>) &#8211; The value to retrieve state</td>
 </tr>
 </tbody>
 </table>
@@ -455,9 +561,11 @@ The command 0x32 (COMMAND_CLASS_METER) of this node.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The state of the sensors</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve value</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the sensors</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
 </tr>
 </tbody>
 </table>

@@ -423,7 +423,7 @@ class GroupsTree(OldestTree):
             self.window.status_bar.update(status="Invalid index or node ID %s/%s" % (param, value))
             return False
         if param in self.window.network.nodes[self.node_id].groups:
-            if value in self.window.network.nodes[self.node_id].groups[param] :
+            if value in self.window.network.nodes[self.node_id].groups :
                 self.window.network.nodes[self.node_id].groups[param].remove_association(value)
                 self.window.status_bar.update(status='Group %s updated' % param)
                 return True
@@ -633,7 +633,7 @@ class NodesTree(OldestTree):
                 self.window.network.nodes[node].name, \
                 self.window.network.nodes[node].location, \
                 self.window.network.nodes[node].max_baud_rate, \
-                self.window.network.nodes[node].battery_level, \
+                self.window.network.nodes[node].get_battery_level(), \
                 ))
             self.size += 1
         self._modified()
@@ -1572,6 +1572,7 @@ class SensorsTree(OldestTree):
                         sensors[sensor].data, \
                         sensors[sensor].type, \
                         sensors[sensor].units, \
+                        sensors[sensor].is_polled, \
                     ))
                     self.size += 1
         self._modified()
@@ -1598,7 +1599,7 @@ class SensorsTree(OldestTree):
 
 class SensorsItem (urwid.WidgetWrap):
 
-    def __init__ (self, id=0, name=None, help=None, value=0, type='All', units=""):
+    def __init__ (self, id=0, name=None, help=None, value=0, type='All', units="", polled=0):
         self.id = id
         #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
         value_widget = urwid.AttrWrap(urwid.Text('%s' % value, wrap='space'), 'body')
@@ -1610,6 +1611,7 @@ class SensorsItem (urwid.WidgetWrap):
                 urwid.AttrWrap(urwid.Text('%s' % type, wrap='clip'), 'body'),
                 value_widget,
                 urwid.AttrWrap(urwid.Text('%s' % units, wrap='space'), 'body'),
+                urwid.AttrWrap(urwid.Text('%s' % polled, wrap='space'), 'body'),
         ]
         w = urwid.Columns(self.item, dividechars=1 )
         self.__super.__init__(w)
@@ -1623,6 +1625,7 @@ class SensorsItem (urwid.WidgetWrap):
                 urwid.AttrWrap(urwid.Text('%s' % "Type", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Value", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Units", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Polled", wrap='clip'), 'node_header'),
         ]
         return urwid.Columns(self.item, dividechars=1)
 

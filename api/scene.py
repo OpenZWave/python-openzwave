@@ -53,6 +53,16 @@ class ZWaveScene(ZWaveObject):
         self.values = dict()
         #self._label = ''
 
+    def __str__(self):
+        """
+        The string representation of the scene.
+
+        :rtype: str
+
+        """
+        return 'scene_id: [%s] label: [%s]' % \
+          (self.scene_id,  self.label)
+
     @property
     def scene_id(self):
         """

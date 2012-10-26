@@ -75,6 +75,7 @@ class ZWaveValue(ZWaveObject):
         ZWaveObject.__init__(self, value_id, network=network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
         self._parent = parent
+        self._poll_intensity = 0
         #self._command_class = command_class
         #self._type = type
         #print command_class
@@ -104,6 +105,16 @@ class ZWaveValue(ZWaveObject):
         #self.cache_property("self.data")
         #self._type = None
         #self.cache_property("self.type")
+
+    def __str__(self):
+        """
+        The string representation of the value.
+
+        :rtype: str
+
+        """
+        return 'home_id: [%s] id: [%s] parent_id: [%s] label: [%s] data: [%s]' % \
+          (self._network.home_id_str, self._object_id, self.parent_id, self.label, self.data)
 
     @property
     def parent_id(self):
@@ -351,7 +362,7 @@ class ZWaveValue(ZWaveObject):
         """
         When type of value is list, data_items contains a list of valid values
 
-        :returns: The valid values
+        :return: The valid values
         :rtype: set()
 
         """
@@ -385,7 +396,7 @@ class ZWaveValue(ZWaveObject):
         Check that data is correct for this value.
         Return the data in a correct type. None is data is incorrect.
 
-        :returns: A variable type if the data is correct. None otherwise.
+        :return: A variable type if the data is correct. None otherwise.
         :rtype: variable
 
         """
@@ -451,21 +462,11 @@ class ZWaveValue(ZWaveObject):
 #        return self._poll_intensity
 
     @property
-    def is_polled(self):
-        """
-        Verify that the value is polled.
-
-        :rtype: bool
-
-        """
-        return self._network.manager.isPolled(self.value_id)
-
-    @property
     def is_set(self):
         """
         Test whether the value has been set.
 
-        :returns: True if the value has actually been set by a status message
+        :return: True if the value has actually been set by a status message
         from the device, rather than simply being the default.
         :rtype: bool
 
@@ -477,7 +478,7 @@ class ZWaveValue(ZWaveObject):
         """
         Test whether the value is read-only.
 
-        :returns: True if the value cannot be changed by the user.
+        :return: True if the value cannot be changed by the user.
         :rtype: bool
 
         """
@@ -488,7 +489,7 @@ class ZWaveValue(ZWaveObject):
         """
         Test whether the value is write-only.
 
-        :returns: True if the value can only be written to and not read.
+        :return: True if the value can only be written to and not read.
         :rtype: bool
 
         """
@@ -496,21 +497,50 @@ class ZWaveValue(ZWaveObject):
 
     def enable_poll(self, intensity):
         """
-        Enable poll off this value.
+        Enable the polling of a device's state.
 
+        :param intensity: The intensity of the poll
+        :type intensity: int
+        :return: True if polling was enabled.
         :rtype: bool
 
         """
+        self._poll_intensity = intensity
         return self._network.manager.enablePoll(self.value_id, intensity)
 
-    def disable_poll(self, intensity):
+    def disable_poll(self):
         """
         Disable poll off this value.
 
+        :return: True if polling was disabled.
         :rtype: bool
 
         """
+        self._poll_intensity = 0
         return self._network.manager.disablePoll(self.value_id)
+
+    @property
+    def poll_intensity(self):
+        """
+        The intensity of the poll
+
+        :rtype: int
+
+        """
+        return self._poll_intensity
+
+    @property
+    def is_polled(self):
+        """
+        Verify that the value is polled.
+
+        :rtype: bool
+
+        """
+        ret = self._network.manager.isPolled(self.value_id)
+        if ret == False:
+            self._poll_intensity = 0
+        return ret
 
     @property
     def command_class(self):
@@ -522,5 +552,3 @@ class ZWaveValue(ZWaveObject):
         """
         return self._network.manager.getValueCommandClass(self.value_id)
 
-    def __str__(self):
-        return 'home_id: [{0}]  parent_id: [{1}]  value_data: {2}'.format(self.home_id, self._parent_id, self._value_data)

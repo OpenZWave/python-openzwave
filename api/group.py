@@ -165,6 +165,6 @@ class ZWaveGroup(ZWaveObject):
         :type target_node_id: int
 
         """
-        self._network.manager.removeAssociation(self._home_id, self._node_id, self.index, target_node_id)
+        self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id)
 #        self.outdate("self.associations")
 #        self.outdate("self.max_associations")

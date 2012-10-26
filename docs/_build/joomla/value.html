@@ -117,13 +117,15 @@ Return the data in a correct type. None is data is incorrect.</p>
 
 <dl class="method">
 <dt id="openzwave.value.ZWaveValue.disable_poll">
-<tt class="descname">disable_poll</tt><big>(</big><em>intensity</em><big>)</big></dt>
+<tt class="descname">disable_poll</tt><big>(</big><big>)</big></dt>
 <dd><p>Disable poll off this value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if polling was disabled.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -132,11 +134,15 @@ Return the data in a correct type. None is data is incorrect.</p>
 <dl class="method">
 <dt id="openzwave.value.ZWaveValue.enable_poll">
 <tt class="descname">enable_poll</tt><big>(</big><em>intensity</em><big>)</big></dt>
-<dd><p>Enable poll off this value.</p>
+<dd><p>Enable the polling of a device&#8217;s state.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>intensity</strong> (<em>int</em>) &#8211; The intensity of the poll</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if polling was enabled.</td>
+</tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
@@ -340,6 +346,20 @@ only the SensorMultilevel command class ever does this.</p>
 <dt id="openzwave.value.ZWaveValue.parent_id">
 <tt class="descname">parent_id</tt></dt>
 <dd><p>The parent_id of the value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.value.ZWaveValue.poll_intensity">
+<tt class="descname">poll_intensity</tt></dt>
+<dd><p>The intensity of the poll</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

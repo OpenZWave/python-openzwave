@@ -128,12 +128,22 @@ class ZWaveController(ZWaveObject):
         self._python_library_version = None
         #self.cache_property("self.python_library_version")
 
+    def __str__(self):
+        """
+        The string representation of the node.
+
+        :rtype: str
+
+        """
+        return 'home_id: [%s] id: [%s] name: [%s] product: [%s] capabilities: %s library: [%s]' % \
+          (self._network.home_id_str, self._object_id, self._node.name, self._node.product_name, self.capabilities, self.library_description)
+
     @property
     def node(self):
         """
         The node controller on the network.
 
-        :returns: The node controller on the network
+        :return: The node controller on the network
         :rtype: ZWaveNode
 
         """
@@ -157,7 +167,7 @@ class ZWaveController(ZWaveObject):
         """
         The node Id of the controller on the network.
 
-        :returns: The node id of the controller on the network
+        :return: The node id of the controller on the network
         :rtype: int
 
         """
@@ -171,7 +181,7 @@ class ZWaveController(ZWaveObject):
         """
         The node name of the controller on the network.
 
-        :returns: The node's name of the controller on the network
+        :return: The node's name of the controller on the network
         :rtype: str
 
         """
@@ -185,7 +195,7 @@ class ZWaveController(ZWaveObject):
         """
         The name of the library.
 
-        :returns: The cpp library name
+        :return: The cpp library name
         :rtype: str
 
         """
@@ -199,7 +209,7 @@ class ZWaveController(ZWaveObject):
         """
         The description of the library.
 
-        :returns: The cpp library description (name and version)
+        :return: The library description (name and version)
         :rtype: str
 
         """
@@ -210,7 +220,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the library.
 
-        :returns: The cpp library version
+        :return: The cpp library version
         :rtype: str
 
         """
@@ -224,7 +234,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the python library.
 
-        :returns: The python library version
+        :return: The python library version
         :rtype: str
 
         """
@@ -238,7 +248,7 @@ class ZWaveController(ZWaveObject):
         """
         The version of the openzwave library.
 
-        :returns: The openzwave library version
+        :return: The openzwave library version
         :rtype: str
 
         """
@@ -252,7 +262,7 @@ class ZWaveController(ZWaveObject):
         """
         The library Config path.
 
-        :returns: The library config directory
+        :return: The library config directory
         :rtype: str
 
         """
@@ -266,7 +276,7 @@ class ZWaveController(ZWaveObject):
         """
         The library User path.
 
-        :returns: The user directory to store user configuration
+        :return: The user directory to store user configuration
         :rtype: str
 
         """
@@ -280,7 +290,7 @@ class ZWaveController(ZWaveObject):
         """
         The device path.
 
-        :returns: The device (ie /dev/zwave)
+        :return: The device (ie /dev/zwave)
         :rtype: str
 
         """
@@ -294,7 +304,7 @@ class ZWaveController(ZWaveObject):
         """
         The starting options of the manager.
 
-        :returns: The options used to start the manager
+        :return: The options used to start the manager
         :rtype: ZWaveOption
 
         """
@@ -322,7 +332,7 @@ class ZWaveController(ZWaveObject):
             * s_controllerReadCnt              : Number of controller messages read
             * s_controllerWriteCnt             : Number of controller messages sent
 
-        :returns: Statistics of the controller
+        :return: Statistics of the controller
         :rtype: dict()
 
         """
@@ -333,7 +343,7 @@ class ZWaveController(ZWaveObject):
         """
         The capabilities of the controller.
 
-        :returns: The capabilities of the controller
+        :return: The capabilities of the controller
         :rtype: int
 
         """
@@ -344,16 +354,16 @@ class ZWaveController(ZWaveObject):
             caps.add('staticUpdateController')
         if self.node.is_bridge_controller:
             caps.add('bridgeController')
-        if self.node.is_routing_device:
-            caps.add('routing')
-        if self.node.is_listening_device:
-            caps.add('listening')
-        if self.node.is_frequent_listening_device:
-            caps.add('frequent')
-        if self.node.is_security_device:
-            caps.add('security')
-        if self.node.is_beaming_device:
-            caps.add('beaming')
+#        if self.node.is_routing_device:
+#            caps.add('routing')
+#        if self.node.is_listening_device:
+#            caps.add('listening')
+#        if self.node.is_frequent_listening_device:
+#            caps.add('frequent')
+#        if self.node.is_security_device:
+#            caps.add('security')
+#        if self.node.is_beaming_device:
+#            caps.add('beaming')
         return caps
 
     @property
@@ -361,7 +371,7 @@ class ZWaveController(ZWaveObject):
         """
         Get count of messages in the outgoing send queue.
 
-        :returns: Thr count of messages in the outgoing send queue.
+        :return: Thr count of messages in the outgoing send queue.
         :rtype: int
 
         """
@@ -388,7 +398,7 @@ class ZWaveController(ZWaveObject):
         """
         Update the controller with network information from the SUC/SIS.
 
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -404,7 +414,7 @@ class ZWaveController(ZWaveObject):
         be physically close to the device for security reasons.  If _highPower is true, the controller will
         operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -420,7 +430,7 @@ class ZWaveController(ZWaveObject):
         be physically close to the device for security reasons.  If _highPower is true, the controller will
         operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -436,7 +446,7 @@ class ZWaveController(ZWaveObject):
         be physically close to the device for security reasons.  If _highPower is true, the controller will
         operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -452,7 +462,7 @@ class ZWaveController(ZWaveObject):
         be physically close to the device for security reasons.  If _highPower is true, the controller will
         operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -468,7 +478,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -481,7 +491,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -495,7 +505,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -509,7 +519,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -520,7 +530,7 @@ class ZWaveController(ZWaveObject):
         """
         (Not yet implemented)
 
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -533,7 +543,7 @@ class ZWaveController(ZWaveObject):
         Add a new controller to the network and make it the primary.
         The existing primary will become a secondary controller.
 
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -544,7 +554,7 @@ class ZWaveController(ZWaveObject):
         """
         -
 
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -557,7 +567,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -570,7 +580,7 @@ class ZWaveController(ZWaveObject):
 
         :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
         :type node_id: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -585,7 +595,7 @@ class ZWaveController(ZWaveObject):
         :type node_id: int
         :param arg:
         :type arg: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
@@ -600,7 +610,7 @@ class ZWaveController(ZWaveObject):
         :type node_id: int
         :param arg:
         :type arg: int
-        :returns: True if the command was accepted and has started.
+        :return: True if the command was accepted and has started.
         :rtype: bool
 
         """

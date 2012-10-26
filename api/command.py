@@ -259,46 +259,102 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         get_switch (label) : retrive the value where label=label
     '''
 
-    def __init__(self):
-        '''
-        Initialize zwave node
-
-        :param node_id: ID of the node
-        :type node_id: int
-        :param network: The network object to access the manager
-        :type network: ZWaveNetwork
-
-        '''
-        self._commands = dict()
-        self._sensors = dict()
-        logging.debug("Create object interface for Basic (node_id:%s)" % (self.node_id))
-        ZWaveNodeInterface.__init__(self)
-
-    @property
-    def battery_level(self):
+    def get_battery_level(self, value_id=None):
         """
         The battery level of this node.
-        """
-        return self.command_class_0x80()
+        The command 0x80 (COMMAND_CLASS_BATTERY) of this node.
 
-    def command_class_0x80(self):
+        :param value_id: The value to retrieve state. If None, retrieve the first value
+        :type value_id: int
+        :return: The level of this battery
+        :rtype: int
         """
-        The command 0x80 (COMMAND_CLASS_BATTERY) level of this node.
-        Todo
+        #print value_id
+        if value_id == None:
+            for val in self.get_battery_levels():
+                return self.values[val].data
+        elif value_id in self.get_battery_levels():
+                return self.values[value_id].data
+        return None
+
+    def get_battery_levels(self):
         """
-        values = self.get_values_for_command_class(0x80)  # COMMAND_CLASS_BATTERY
-        if values:
-            for value in values:
-                vdic = value.data
-                if vdic and vdic.has_key('type') and vdic['type'] == 'Byte' and vdic.has_key('value'):
-                    return int(vdic['value'])
-        return -1
+        The command 0x80 (COMMAND_CLASS_BATTERY) of this node.
+        Retrieve the list of values to consider as batteries.
+        Filter rules are :
+
+            command_class = 0x80
+            genre = "User"
+            type = "Byte"
+            readonly = True
+            writeonly = False
+
+        :return: The list of switches on this node
+        :rtype: dict()
+        """
+        return self.get_values(class_id=0x80, genre='User', \
+        type='Byte', readonly=True, writeonly=False)
+
+    def get_power_level(self, value_id=None):
+        """
+        The power level of this node.
+        The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.
+
+        :param value_id: The value to retrieve state. If None, retrieve the first value
+        :type value_id: int
+        :return: The level of this battery
+        :rtype: int
+        """
+        #print value_id
+        if value_id == None:
+            for val in self.get_power_levels():
+                return self.values[val].data
+        elif value_id in self.get_power_levels():
+                return self.values[value_id].data
+        return None
+
+    def get_power_levels(self):
+        """
+        The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.
+        Retrieve the list of values to consider as power_levels.
+        Filter rules are :
+
+            command_class = 0x73
+            genre = "User"
+            type = "Byte"
+            readonly = True
+            writeonly = False
+
+        :return: The list of switches on this node
+        :rtype: dict()
+        """
+        return self.get_values(class_id=0x73, genre='User', \
+        type='Byte', readonly=True, writeonly=False)
 
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     '''
     Represents an interface to switches and dimmers Commands
 
     '''
+
+    def get_switches_all(self):
+        """
+        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+        Retrieve the list of values to consider as switches_all.
+        Filter rules are :
+
+            command_class = 0x27
+            genre = "System"
+            type = "List"
+            readonly = False
+            writeonly = False
+
+        :return: The list of switches on this node
+        :rtype: dict()
+
+        """
+        return self.get_values(class_id=0x27, genre='System', \
+        type='List', readonly=False, writeonly=False)
 
     def get_switches(self):
         """
@@ -312,7 +368,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             readonly = False
             writeonly = False
 
-        :returns: The list of switches on this node
+        :return: The list of switches on this node
         :rtype: dict()
 
         """
@@ -324,7 +380,9 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
         Set switch to value (using value value_id).
 
-        :param value: True or False
+        :param value_id: The value to retrieve state
+        :type value_id: int
+         :param value: True or False
         :type value: bool
 
         """
@@ -339,6 +397,8 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
         Return the state (using value value_id) of a switch.
 
+        :param value_id: The value to retrieve state
+        :type value_id: int
         :return: The state of the value
         :rtype: bool
 
@@ -360,7 +420,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             readonly = False
             writeonly = False
 
-        :returns: The list of dimmers on this node
+        :return: The list of dimmers on this node
         :rtype: dict()
 
         """
@@ -372,6 +432,8 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
         Set switch to value (using value value_id).
 
+        :param value_id: The value to retrieve state
+        :type value_id: int
         :param value: The level : a value between 0-99 or 255. 255 set the level to the last value. \
         0 turn the dimmer off
         :type value: int
@@ -392,6 +454,8 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
         Get the dimmer level (using value value_id).
 
+        :param value_id: The value to retrieve level
+        :type value_id: int
         :return: The level : a value between 0-99
         :rtype: int
 
@@ -420,7 +484,7 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
             readonly = True
             writeonly = False
 
-        :returns: The list of switches on this node
+        :return: The list of switches on this node
         :rtype: dict()
 
         """
@@ -439,6 +503,8 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
         The command 0x32 (COMMAND_CLASS_METER) of this node.
 
+        :param value_id: The value to retrieve value
+        :type value_id: int
         :return: The state of the sensors
         :rtype: variable
 

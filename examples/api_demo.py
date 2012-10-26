@@ -28,8 +28,8 @@ import logging
 import sys, os
 
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
-#logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
@@ -211,6 +211,16 @@ print "------------------------------------------------------------"
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_sensors() :
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
+        print("  value: %s %s" % (network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
+print "------------------------------------------------------------"
+print "Retrieve switches all compatibles devices on the network    "
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_switches_all() :
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))

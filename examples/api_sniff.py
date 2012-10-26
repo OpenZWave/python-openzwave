@@ -78,31 +78,35 @@ options.set_save_log_level(log)
 options.set_logging(False)
 options.lock()
 
-def louie_driver_ready(self, network, controller):
+def louie_driver_ready(network, controller):
     print('Louie signal : OpenZWave driver is ready : homeid %0.8x - %d nodes were found.' % \
         (network.home_id, network.nodes_count))
 
-def louie_driver_reset(self, network, controller):
+def louie_driver_reset(network, controller):
     print('Louie signal : OpenZWave driver is resetted.')
 
-def louie_network_ready(self, network):
+def louie_network_ready(network):
     print('Louie signal : ZWave network is ready : %d nodes were found.' % network.nodes_count)
-    print('Louie signal : Controller name : %s' % network.controller.node.product_name)
+    print('Louie signal : Controller : %s' % network.controller)
     dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
     dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
     dispatcher.connect(louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
 
-def louie_node_update(self, network, node_id):
-    print('Louie signal : Node update : %d nodes were found.' % node_id)
+def louie_node_update(network, node):
+    print('Louie signal : Node update : %s.' % node)
 
-def louie_value_update(self, network, node, value_id):
-    print('Louie signal : Node update : %d nodes were found.' % node_id)
+def louie_value_update(network, node, value):
+    print('Louie signal : Value update : %s.' % value)
 
-def louie_ctrl_message(self, state, message, network, controller):
+def louie_ctrl_message(state, message, network, controller):
     print('Louie signal : Controller message : %s.' % message)
 
 #Create a network object
 network = ZWaveNetwork(options, log=None)
+
+dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
+dispatcher.connect(louie_driver_reset, ZWaveNetwork.SIGNAL_DRIVER_RESET)
+dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 print "------------------------------------------------------------"
 print "Waiting for driver : "
@@ -154,9 +158,6 @@ print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"
 
-dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
-dispatcher.connect(louie_driver_reset, ZWaveNetwork.SIGNAL_DRIVER_RESET)
-dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 time.sleep(sniff)
 

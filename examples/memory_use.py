@@ -46,6 +46,7 @@ from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
+import libopenzwave
 import time
 from pympler.asizeof import asizeof, flatsize, itemsize, basicsize
 
@@ -176,6 +177,12 @@ for node in nodes:
     print "    basicsize : %s bytes" %(basicsize(nodes[node]))
     print "    itemsize  : %s bytes" %(itemsize(nodes[node]))
     print "    flatsize  : %s bytes" %(flatsize(nodes[node]))
+    for value in nodes[node].values:
+        print "    Memory use for value %s : " %(value)
+        print "      asizeof   : %s bytes" %(asizeof(nodes[node].values[value]))
+        print "      basicsize : %s bytes" %(basicsize(nodes[node].values[value]))
+        print "      itemsize  : %s bytes" %(itemsize(nodes[node].values[value]))
+        print "      flatsize  : %s bytes" %(flatsize(nodes[node].values[value]))
 print "------------------------------------------------------------"
 print
 print "------------------------------------------------------------"
