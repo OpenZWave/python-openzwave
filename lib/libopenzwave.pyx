@@ -73,6 +73,7 @@ PyNotifications = [
     EnumWithDoc('NodeEvent').setDoc("A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification."),
     EnumWithDoc('PollingDisabled').setDoc("Polling of a node has been successfully turned off by a call to Manager::DisablePoll."),
     EnumWithDoc('PollingEnabled').setDoc("Polling of a node has been successfully turned on by a call to Manager::EnablePoll."),
+    EnumWithDoc('SceneEvent').setDoc("Scene Activation Set received."), 
     EnumWithDoc('CreateButton').setDoc("Handheld controller button event created."),
     EnumWithDoc('DeleteButton').setDoc("Handheld controller button event deleted."),
     EnumWithDoc('ButtonOn').setDoc("Handheld controller button on pressed event."),

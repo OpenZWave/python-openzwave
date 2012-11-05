@@ -42,19 +42,20 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_NodeEvent = 10                     # A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification.
         Type_PollingDisabled = 11               # Polling of a node has been successfully turned off by a call to Manager::DisablePoll
         Type_PollingEnabled = 12                # Polling of a node has been successfully turned on by a call to Manager::EnablePoll
-        Type_CreateButton = 13                  # Handheld controller button event created
-        Type_DeleteButton = 14                  # Handheld controller button event deleted
-        Type_ButtonOn = 15                      # Handheld controller button on pressed event
-        Type_ButtonOff = 16                     # Handheld controller button off pressed event
-        Type_DriverReady = 17                   # A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods.
-        Type_DriverFailed = 18                  # Driver failed to load
-        Type_DriverReset = 19                   # All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications.
-        Type_MsgComplete = 20                   # The last message that was sent is now complete.
-        Type_EssentialNodeQueriesComplete = 21  # The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages.
-        Type_NodeQueriesComplete = 22           # All the initialisation queries on a node have been completed.
-        Type_AwakeNodesQueried = 23             # All awake nodes have been queried, so client application can expected complete data for these nodes.
-        Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
-        Type_Error = 25                         # An error has occured that we need to report.
+        Type_SceneEvent = 13                   # Scene Activation Set received
+        Type_CreateButton = 14                  # Handheld controller button event created
+        Type_DeleteButton = 15                  # Handheld controller button event deleted
+        Type_ButtonOn = 16                      # Handheld controller button on pressed event
+        Type_ButtonOff = 17                     # Handheld controller button off pressed event
+        Type_DriverReady = 18                   # A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods.
+        Type_DriverFailed = 19                  # Driver failed to load
+        Type_DriverReset = 20                   # All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications.
+        Type_MsgComplete = 21                   # The last message that was sent is now complete.
+        Type_EssentialNodeQueriesComplete = 22  # The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages.
+        Type_NodeQueriesComplete = 23           # All the initialisation queries on a node have been completed.
+        Type_AwakeNodesQueried = 24             # All awake nodes have been queried, so client application can expected complete data for these nodes.
+        Type_AllNodesQueried = 25               # All nodes have been queried, so client application can expected complete data.
+        Type_Error = 26                         # An error has occured that we need to report.
 
 cdef extern from "Notification.h" namespace "OpenZWave":
 
