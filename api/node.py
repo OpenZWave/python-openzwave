@@ -129,7 +129,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         return 'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
-          (self._network.home_id_str, self._object_id, self.name, self.model)
+          (self._network.home_id_str, self._object_id, self.name, self.product_name)
 
     @property
     def node_id(self):

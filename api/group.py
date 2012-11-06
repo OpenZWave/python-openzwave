@@ -68,6 +68,16 @@ class ZWaveGroup(ZWaveObject):
         #self._associations = set()
         #self.cache_property("self.associations")
 
+    def __str__(self):
+        """
+        The string representation of the group.
+
+        :rtype: str
+
+        """
+        return 'index: [%s] label: [%s]' % \
+          (self.index,  self.label)
+
     @property
     def index(self):
         """

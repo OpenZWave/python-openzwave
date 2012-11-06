@@ -234,14 +234,16 @@ class ZWaveNetwork(ZWaveObject):
 
     ignoreSubsequent = True
 
-    def __init__(self, options, log=None):
+    def __init__(self, options, log=None, autostart=True):
         '''
         Initialize zwave network
 
-        :param networkId: ID of the network
-        :type networkId: int
-        :param network: The network object to access the manager
-        :type network: ZWaveNetwork
+        :param options: Options to use with manager
+        :type options: ZWaveOption
+        :param log: A log file (not used. Deprecated
+        :type log:
+        :param autostart: should we start the network.
+        :type autostart: bool
 
         '''
         logging.debug("Create network object.")
@@ -251,10 +253,11 @@ class ZWaveNetwork(ZWaveObject):
         self._controller = ZWaveController(1, self, options)
         self._manager = libopenzwave.PyManager()
         self._manager.create()
-        self.start()
         self._state = self.STATE_STOPPED
         self._semaphore_nodes = threading.Semaphore()
         self.nodes = None
+        if autostart:
+            self.start()
 
     def __str__(self):
         """
@@ -282,12 +285,14 @@ class ZWaveNetwork(ZWaveObject):
         Stop the network object.
             - remove the watcher
             - remove the driver
+            - clear the nodes
 
         '''
         logging.debug("Stop network.")
         self._manager.removeWatcher(self.zwcallback)
         self._manager.removeDriver(self._options.device)
         self._state = self.STATE_STOPPED
+        self.nodes = None
 
     @property
     def home_id(self):

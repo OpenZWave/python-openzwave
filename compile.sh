@@ -4,11 +4,6 @@ CLEAN=0
 [ 'u'$1 == 'uclean' ] && CLEAN=1
 
 echo "-----------------------------------------------------------------"
-echo "|   Retrieve sources of openzwave                               |"
-echo "-----------------------------------------------------------------"
-[ ! -d openzwave ] && svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
-
-echo "-----------------------------------------------------------------"
 echo "|   Build openzwave                                             |"
 echo "-----------------------------------------------------------------"
 cd openzwave/cpp/build/linux
