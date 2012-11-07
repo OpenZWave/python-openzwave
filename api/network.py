@@ -302,6 +302,8 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: int
 
         """
+        if self._object_id == None:
+           return 0
         return self._object_id
 
     @home_id.setter
@@ -323,7 +325,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: str
 
         """
-        return "0x%0.8x" % self._object_id
+        return "0x%0.8x" % self.home_id
 
     @property
     def is_ready(self):
@@ -406,7 +408,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: ZWaveManager
 
         """
-        if self._manager != None and self._controller.node != None:
+        if self._manager != None:
             return self._manager
         else:
             raise ZWaveException("Manager not initialised")
@@ -755,11 +757,12 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification DriverReady : %s' % (args))
         self._object_id = args['homeId']
         try :
-            self._controller.node = ZWaveNode(args['nodeId'], network=self)
+            ctrlnode = ZWaveNode(args['nodeId'], network=self)
             self._semaphore_nodes.acquire()
             self.nodes = None
             #print "nodes= ",self.nodes
-            self.nodes[args['nodeId']] = self._controller.node
+            self.nodes[args['nodeId']] = ctrlnode
+            self._controller.node = self.nodes[args['nodeId']]
             self._state = self.STATE_INITIALISED
             logging.info('Driver ready using library %s' % self._controller.library_description )
             logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
@@ -969,6 +972,7 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
+        self._object_id = args['homeId']
         self._state = self.STATE_READY
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_ALL_NODES_QUERIED, \
@@ -991,11 +995,22 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('Z-Wave Notification AwakeNodesQueried : %s' % (args))
-        self._state = self.STATE_AWAKE
-        self._state = self.STATE_READY
-        dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
-        dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIED, \
-            **{'network': self, 'controller': self._controller})
+        self._object_id = args['homeId']
+        try :
+            ctrlnode = ZWaveNode(args['nodeId'], network=self)
+            self._semaphore_nodes.acquire()
+            self.nodes[args['nodeId']] = ctrlnode
+            self._controller.node = self.nodes[args['nodeId']]
+            self._state = self.STATE_AWAKE
+            self._state = self.STATE_READY
+            dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
+            dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIED, \
+                **{'network': self, 'controller': self._controller})
+        except:
+            import sys, traceback
+            logging.error('Z-Wave Notification DriverReady : %s' % (traceback.format_exception(*sys.exc_info())))
+        finally :
+            self._semaphore_nodes.release()
 
     def _handle_polling_disabled(self, args):
         '''
@@ -1094,7 +1109,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
-        #logging.debug('Z-Wave Notification Value : %s' % ('Done'))
+        logging.debug('Z-Wave Notification Value : %s' % ('Done'))
 
     def _handle_value_added(self, args):
         '''

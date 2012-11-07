@@ -3,13 +3,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Scene documentation &mdash; python-openzwave v0.2.4 documentation</title>
+    <title>Scene documentation &mdash; python-openzwave 0.2.4 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
@@ -22,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave v0.2.4 documentation" href="index.html" />
+    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="openzwave.html" />
     <link rel="next" title="Object documentation" href="object.html" />
     <link rel="prev" title="Value documentation" href="value.html" /> 
@@ -43,7 +46,7 @@
         <li class="right" >
           <a href="value.html" title="Value documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">python-openzwave v0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -66,9 +69,9 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
 </tr>
-<tr class="field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
 </tr>
 </tbody>
 </table>
@@ -97,9 +100,9 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the scene is activated. False otherwise.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the scene is activated. False otherwise.</td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -113,7 +116,7 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to add</li>
 <li><strong>value_data</strong> (<em>variable</em>) &#8211; The data of the value to add</li>
 </ul>
@@ -132,11 +135,11 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str or None</em>) &#8211; The new label</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>label</strong> (<em>str or None</em>) &#8211; The new label</td>
 </tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">return the id of scene on the network. Return 0 if fails</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">return the id of scene on the network. Return 0 if fails</td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -150,9 +153,9 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A dict of values : {value_id={&#8216;value&#8217;=ZWaveValue, &#8216;data&#8217;=data}, ...}.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict of values : {value_id={&#8216;value&#8217;=ZWaveValue, &#8216;data&#8217;=data}, ...}.</td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
 </table>
@@ -166,9 +169,9 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A dict of values : {node_id={value_id={&#8216;value&#8217;=ZWaveValue, &#8216;data&#8217;=data}, ...},...}.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict of values : {node_id={value_id={&#8216;value&#8217;=ZWaveValue, &#8216;data&#8217;=data}, ...},...}.</td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
 </table>
@@ -182,7 +185,7 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -196,11 +199,11 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to change</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to change</td>
 </tr>
-<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the scene is removed. False otherwise.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the scene is removed. False otherwise.</td>
 </tr>
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -214,7 +217,7 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -228,7 +231,7 @@ If label is set, also change the label of the scene</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value_id</strong> (<em>int</em>) &#8211; The id of the value to add</li>
 <li><strong>value_data</strong> (<em>variable</em>) &#8211; The data of the value to add</li>
 </ul>
@@ -262,7 +265,7 @@ If label is set, also change the label of the scene</p>
 <div id="searchbox" style="display: none">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" size="18" />
+      <input type="text" name="q" />
       <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -291,13 +294,13 @@ If label is set, also change the label of the scene</p>
         <li class="right" >
           <a href="value.html" title="Value documentation"
              >previous</a> |</li>
-        <li><a href="index.html">python-openzwave v0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
         &copy; Copyright 2012, bibi21000.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
   </body>
 </html>

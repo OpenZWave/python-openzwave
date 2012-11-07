@@ -105,7 +105,7 @@ dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
 dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 network.start()
-#time.sleep(120.0)
+time.sleep(120.0)
 
 #We update the name of the controller
 network.controller.node.name = "Hello name"

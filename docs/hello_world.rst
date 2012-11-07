@@ -29,6 +29,7 @@ Here is the way a client connect to a channel :
 The first argument is a call back function :
 
     def louie_node_update(network, node):
+
         print('Louie signal : Node update : %s.' % node)
 
 It receives as parameters the ones populate by the sender : the network ans a node in ths case.
@@ -40,30 +41,43 @@ Hello from ZWave
 The import clauses :
 
     import openzwave
+
     from openzwave.node import ZWaveNode
+
     from openzwave.value import ZWaveValue
+
     from openzwave.scene import ZWaveScene
+
     from openzwave.controller import ZWaveController
+
     from openzwave.network import ZWaveNetwork
+
     from openzwave.option import ZWaveOption
+
     import time
+
     from louie import dispatcher, All
 
 First thing to do is to defined some options for the manager :
 
-    options = ZWaveOption(device, \
-      config_path="../openzwave/config", \
-      user_path=".", cmd_line="")
+    options = ZWaveOption(device, config_path="../openzwave/config", user_path=".", cmd_line="")
+
     options.set_log_file("OZW_Log.log")
+
     options.set_append_log_file(False)
+
     options.set_console_output(False)
+
     options.set_save_log_level('Debug')
+
     options.set_logging(True)
+
     network = None
 
 We also defined a network object, we will populate it later.
 
 To use this options, you must lock them. No further modification could be done on them.
+
     options.lock()
 
 We can now create the network :
@@ -77,7 +91,9 @@ We will now create some connection to the louie dispatcher. We will then to 3
 main signals, they will notify us about the state of the network :
 
     dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
+
     dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
+
     dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 To do that we use 3 callback functions :
@@ -85,12 +101,13 @@ To do that we use 3 callback functions :
 When the driver is ready, we simply print some options on the screen :
 
     def louie_driver_ready(network, controller):
-        print("Hello from driver : i'm ready : homeid %0.8x - %d nodes were found." % \
-            (network.home_id, network.nodes_count))
+
+        print("Hello from driver : i'm ready : homeid %0.8x - %d nodes were found." % (network.home_id, network.nodes_count))
 
 When the driver fails, we reports the error to screen :
 
     def louie_driver_failed(network):
+
         print("Hello from driver : can't load :(.")
 
 This an important event. It means that all nodes have been queried on the network.
@@ -99,20 +116,27 @@ to some louie signals. It also sleep during 5 minutes. After that, the scripts
 will continue and the network will be stopped.
 
     def louie_network_ready(network):
+
         print("Hello from network : I'm ready : %d nodes were found." % network.nodes_count)
+
         print("Hello from network : my controller is : %s" % network.controller)
+
         dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+
         dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+
         time.sleep(300.0)
 
 When a node is updated, added, removed, ...
 
     def louie_node_update(network, node):
+
         print('Hello from node : %s.' % node)
 
 When a value is updated, added, removed, ...
 
     def louie_value_update(network, node, value):
+
         print('Hello from value : %s.' % value)
 
 The start code
@@ -131,11 +155,13 @@ activate them manually, ...
 We now change the name of the controller. You will also have a notification.
 
     network.controller.node.name = "Hello name"
+
     time.sleep(30.0)
 
 Same when changing the location.
 
     network.controller.node.location = "Hello location"
+
     time.sleep(120.0)
 
 Now stop the network and release objects.

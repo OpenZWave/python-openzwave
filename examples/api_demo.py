@@ -28,8 +28,8 @@ import logging
 import sys, os
 
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
@@ -49,7 +49,7 @@ from openzwave.option import ZWaveOption
 import time
 
 device="/dev/zwave-aeon-s2"
-log="Info"
+log="Debug"
 
 for arg in sys.argv:
     if arg.startswith("--device"):

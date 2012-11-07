@@ -22,10 +22,9 @@ send a signal on a channel, and clients connect to him.</p>
 <div>dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)</div></blockquote>
 <p>The first argument is a call back function :</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_node_update(network, node):</dt>
-<dd>print(&#8216;Louie signal : Node update : %s.&#8217; % node)</dd>
-</dl>
+<div><p>def louie_node_update(network, node):</p>
+<blockquote>
+<div>print(&#8216;Louie signal : Node update : %s.&#8217; % node)</div></blockquote>
 </div></blockquote>
 <p>It receives as parameters the ones populate by the sender : the network ans a node in ths case.
 The callback must set its parameter names as the same as the sender.</p>
@@ -34,33 +33,30 @@ The callback must set its parameter names as the same as the sender.</p>
 <h2>Hello from ZWave</h2>
 <p>The import clauses :</p>
 <blockquote>
-<div>import openzwave
-from openzwave.node import ZWaveNode
-from openzwave.value import ZWaveValue
-from openzwave.scene import ZWaveScene
-from openzwave.controller import ZWaveController
-from openzwave.network import ZWaveNetwork
-from openzwave.option import ZWaveOption
-import time
-from louie import dispatcher, All</div></blockquote>
+<div><p>import openzwave</p>
+<p>from openzwave.node import ZWaveNode</p>
+<p>from openzwave.value import ZWaveValue</p>
+<p>from openzwave.scene import ZWaveScene</p>
+<p>from openzwave.controller import ZWaveController</p>
+<p>from openzwave.network import ZWaveNetwork</p>
+<p>from openzwave.option import ZWaveOption</p>
+<p>import time</p>
+<p>from louie import dispatcher, All</p>
+</div></blockquote>
 <p>First thing to do is to defined some options for the manager :</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>options = ZWaveOption(device, </dt>
-<dd>config_path=&#8221;../openzwave/config&#8221;, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;)</dd>
-</dl>
-<p>options.set_log_file(&#8220;OZW_Log.log&#8221;)
-options.set_append_log_file(False)
-options.set_console_output(False)
-options.set_save_log_level(&#8216;Debug&#8217;)
-options.set_logging(True)
-network = None</p>
+<div><p>options = ZWaveOption(device, config_path=&#8221;../openzwave/config&#8221;, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;)</p>
+<p>options.set_log_file(&#8220;OZW_Log.log&#8221;)</p>
+<p>options.set_append_log_file(False)</p>
+<p>options.set_console_output(False)</p>
+<p>options.set_save_log_level(&#8216;Debug&#8217;)</p>
+<p>options.set_logging(True)</p>
+<p>network = None</p>
 </div></blockquote>
 <p>We also defined a network object, we will populate it later.</p>
-<dl class="docutils">
-<dt>To use this options, you must lock them. No further modification could be done on them.</dt>
-<dd>options.lock()</dd>
-</dl>
+<p>To use this options, you must lock them. No further modification could be done on them.</p>
+<blockquote>
+<div>options.lock()</div></blockquote>
 <p>We can now create the network :</p>
 <blockquote>
 <div>network = ZWaveNetwork(options, autostart=False)</div></blockquote>
@@ -70,55 +66,48 @@ network = None</p>
 <p>We will now create some connection to the louie dispatcher. We will then to 3
 main signals, they will notify us about the state of the network :</p>
 <blockquote>
-<div>dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
-dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
-dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)</div></blockquote>
+<div><p>dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)</p>
+<p>dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)</p>
+<p>dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)</p>
+</div></blockquote>
 <p>To do that we use 3 callback functions :</p>
 <p>When the driver is ready, we simply print some options on the screen :</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_driver_ready(network, controller):</dt>
-<dd><dl class="first last docutils">
-<dt>print(&#8220;Hello from driver <span class="classifier-delimiter">:</span> <span class="classifier">i&#8217;m ready</span> <span class="classifier-delimiter">:</span> <span class="classifier">homeid %0.8x - %d nodes were found.&#8221; % \</span></dt>
-<dd>(network.home_id, network.nodes_count))</dd>
-</dl>
-</dd>
-</dl>
+<div><p>def louie_driver_ready(network, controller):</p>
+<blockquote>
+<div>print(&#8220;Hello from driver : i&#8217;m ready : homeid %0.8x - %d nodes were found.&#8221; % (network.home_id, network.nodes_count))</div></blockquote>
 </div></blockquote>
 <p>When the driver fails, we reports the error to screen :</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_driver_failed(network):</dt>
-<dd>print(&#8220;Hello from driver : can&#8217;t load :(.&#8221;)</dd>
-</dl>
+<div><p>def louie_driver_failed(network):</p>
+<blockquote>
+<div>print(&#8220;Hello from driver : can&#8217;t load :(.&#8221;)</div></blockquote>
 </div></blockquote>
 <p>This an important event. It means that all nodes have been queried on the network.
 You can now use the network object pass in parameter to query nodes. To do that we connect
 to some louie signals. It also sleep during 5 minutes. After that, the scripts
 will continue and the network will be stopped.</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_network_ready(network):</dt>
-<dd>print(&#8220;Hello from network : I&#8217;m ready : %d nodes were found.&#8221; % network.nodes_count)
-print(&#8220;Hello from network : my controller is : %s&#8221; % network.controller)
-dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
-dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-time.sleep(300.0)</dd>
-</dl>
+<div><p>def louie_network_ready(network):</p>
+<blockquote>
+<div><p>print(&#8220;Hello from network : I&#8217;m ready : %d nodes were found.&#8221; % network.nodes_count)</p>
+<p>print(&#8220;Hello from network : my controller is : %s&#8221; % network.controller)</p>
+<p>dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)</p>
+<p>dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)</p>
+<p>time.sleep(300.0)</p>
+</div></blockquote>
 </div></blockquote>
 <p>When a node is updated, added, removed, ...</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_node_update(network, node):</dt>
-<dd>print(&#8216;Hello from node : %s.&#8217; % node)</dd>
-</dl>
+<div><p>def louie_node_update(network, node):</p>
+<blockquote>
+<div>print(&#8216;Hello from node : %s.&#8217; % node)</div></blockquote>
 </div></blockquote>
 <p>When a value is updated, added, removed, ...</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>def louie_value_update(network, node, value):</dt>
-<dd>print(&#8216;Hello from value : %s.&#8217; % value)</dd>
-</dl>
+<div><p>def louie_value_update(network, node, value):</p>
+<blockquote>
+<div>print(&#8216;Hello from value : %s.&#8217; % value)</div></blockquote>
 </div></blockquote>
 </div>
 <div class="section" id="the-start-code">
@@ -133,12 +122,14 @@ activate them manually, ...</p>
 <div>time.sleep(120.0)</div></blockquote>
 <p>We now change the name of the controller. You will also have a notification.</p>
 <blockquote>
-<div>network.controller.node.name = &#8220;Hello name&#8221;
-time.sleep(30.0)</div></blockquote>
+<div><p>network.controller.node.name = &#8220;Hello name&#8221;</p>
+<p>time.sleep(30.0)</p>
+</div></blockquote>
 <p>Same when changing the location.</p>
 <blockquote>
-<div>network.controller.node.location = &#8220;Hello location&#8221;
-time.sleep(120.0)</div></blockquote>
+<div><p>network.controller.node.location = &#8220;Hello location&#8221;</p>
+<p>time.sleep(120.0)</p>
+</div></blockquote>
 <p>Now stop the network and release objects.</p>
 <blockquote>
 <div>network.stop()</div></blockquote>

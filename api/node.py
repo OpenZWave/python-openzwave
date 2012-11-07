@@ -489,7 +489,7 @@ class ZWaveNode( ZWaveObject,
         """
         value = ZWaveValue(value_id, network=self.network, parent=self)
         self.values[value_id] = value
-        logging.debug("Add value : %s" % value)
+        #logging.debug("Add value : %s" % value)
         #self.values[value_id].oudated = True
 
     def change_value(self, value_id):
@@ -500,7 +500,8 @@ class ZWaveNode( ZWaveObject,
         :type value_id: int
 
         """
-        logging.debug("Change value : %s" % self.values[value_id])
+        #logging.debug("Change value : %s" % self.values[value_id])
+        pass
 
     def refresh_value(self, value_id):
         """
@@ -510,7 +511,8 @@ class ZWaveNode( ZWaveObject,
         :type value_id: int
 
         """
-        logging.debug("Refresh value : %s" % self.values[value_id])
+        #logging.debug("Refresh value : %s" % self.values[value_id])
+        pass
 
     def remove_value(self, value_id):
         """

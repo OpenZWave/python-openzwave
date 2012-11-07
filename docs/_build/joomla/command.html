@@ -43,10 +43,12 @@ But it&#8217;s a good starting point.</p>
 the mapping classes.</p>
 <p>First example, the battery level, it&#8217;s not a basic command but don&#8217;t care.
 Its command class is 0x80.</p>
-<p>A user should write
-if self.handle_command_class(class_id):</p>
+<p>A user should write</p>
+<blockquote>
+<div><p>if self.handle_command_class(class_id):</p>
 <blockquote>
 <div>ret=commandclass(...)</div></blockquote>
+</div></blockquote>
 <p>The classic way to do it is a classique method of registering. But</p>
 <p>Another way : using heritage multiple</p>
 <p>ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)

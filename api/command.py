@@ -47,8 +47,10 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
     Its command class is 0x80.
 
     A user should write
-    if self.handle_command_class(class_id):
-        ret=commandclass(...)
+
+        if self.handle_command_class(class_id):
+
+            ret=commandclass(...)
 
     The classic way to do it is a classique method of registering. But
 
@@ -258,6 +260,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         is_switch (label) : says if the value with label=label is a switch
         get_switch (label) : retrive the value where label=label
     '''
+
 
     def get_battery_level(self, value_id=None):
         """
