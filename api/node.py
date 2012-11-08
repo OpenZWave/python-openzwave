@@ -32,13 +32,14 @@ from openzwave.object import ZWaveException, ZWaveCommandClassException
 from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
-from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch, ZWaveNodeSensor
+from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
+from openzwave.command import ZWaveNodeSensor, ZWaveNodeSecurity
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveNode( ZWaveObject,
                  ZWaveNodeBasic, ZWaveNodeSwitch,
-                 ZWaveNodeSensor
+                 ZWaveNodeSensor, ZWaveNodeSecurity
                  ):
     '''
     Represents a single Node within the Z-Wave Network

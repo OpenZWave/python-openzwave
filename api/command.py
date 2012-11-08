@@ -359,6 +359,55 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         return self.get_values(class_id=0x27, genre='System', \
         type='List', readonly=False, writeonly=False)
 
+    def set_switch_all(self, value_id, value):
+        """
+        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+        Set switches_all to value (using value value_id).
+
+        :param value_id: The value to retrieve state
+        :type value_id: int
+        :param value: A predifined string
+        :type value: str
+
+        """
+        #print value_id
+        if value_id in self.get_switches_all():
+            self.values[value_id].data = value
+            return True
+        return False
+
+    def get_switch_all_item(self, value_id):
+        """
+        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+        Return the current value (using value value_id) of a switch_all.
+
+        :param value_id: The value to retrieve switch_all value
+        :type value_id: int
+        :return: The value of the value
+        :rtype: str
+
+        """
+        #print value_id
+        if value_id in self.get_switches_all():
+            return self.values[value_id].data
+        return None
+
+    def get_switch_all_items(self, value_id):
+        """
+        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+        Return the all the possible values (using value value_id) of a switch_all.
+
+        :param value_id: The value to retrieve items list
+        :type value_id: int
+        :return: The value of the value
+        :rtype: set()
+
+        """
+        #print value_id
+        if value_id in self.get_switches_all():
+            return self.values[value_id].data_items
+        return None
+
     def get_switches(self):
         """
         The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
@@ -385,7 +434,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
 
         :param value_id: The value to retrieve state
         :type value_id: int
-         :param value: True or False
+        :param value: True or False
         :type value: bool
 
         """
@@ -517,3 +566,75 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
             return self.values[value_id].data
         return None
 
+class ZWaveNodeSecurity(ZWaveNodeInterface):
+    '''
+    Represents an interface to Security Commands
+
+    '''
+
+    def get_protections(self):
+        """
+        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
+        Retrieve the list of values to consider as protection.
+        Filter rules are :
+
+            command_class = 0x75
+            genre = "User"
+            readonly = True
+            writeonly = False
+
+        :return: The list of switches on this node
+        :rtype: dict()
+
+        """
+        return self.get_values(class_id=0x75, genre='System', \
+            type='List', readonly=False, writeonly=False)
+
+    def set_protection(self, value_id, value):
+        """
+        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
+        Set protection to value (using value value_id).
+
+        :param value_id: The value to set protection
+        :type value_id: int
+        :param value: A predifined string
+        :type value: str
+
+        """
+        #print value_id
+        if value_id in self.get_protections():
+            self.values[value_id].data = value
+            return True
+        return False
+
+    def get_protection_item(self, value_id):
+        """
+        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
+        Return the current value (using value value_id) of a protection.
+
+        :param value_id: The value to retrieve protection value
+        :type value_id: int
+        :return: The value of the value
+        :rtype: str
+
+        """
+        #print value_id
+        if value_id in self.get_protections():
+            return self.values[value_id].data
+        return None
+
+    def get_protection_items(self, value_id):
+        """
+        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
+        Return the all the possible values (using value value_id) of a protection.
+
+        :param value_id: The value to retrieve items list
+        :type value_id: int
+        :return: The value of the value
+        :rtype: set()
+
+        """
+        #print value_id
+        if value_id in self.get_protections():
+            return self.values[value_id].data_items
+        return None

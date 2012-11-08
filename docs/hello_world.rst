@@ -146,17 +146,31 @@ We start the network
 
     network.start()
 
-And sleep for 2 minutes. If you have sensors on your network, you will
-see the value notifications on the screen. If you have switch or dimmers,
-activate them manually, ...
+And we wait for the network. You MUST NOT use the network objects before
+network is ready.
 
-    time.sleep(120.0)
+    for i in range(0,90):
 
-We now change the name of the controller. You will also have a notification.
+        if network.state>=network.STATE_READY:
+
+            print "***** Network is ready"
+
+            break
+
+        else:
+
+            sys.stdout.write(".")
+
+            sys.stdout.flush()
+
+            time.sleep(1.0)
+
+
+We now change the name of the controller. You will have a notification.
 
     network.controller.node.name = "Hello name"
 
-    time.sleep(30.0)
+    time.sleep(10.0)
 
 Same when changing the location.
 
@@ -164,10 +178,16 @@ Same when changing the location.
 
     time.sleep(120.0)
 
+And we wait for 2 minutes. If you have sensors on your network, you will
+see the value notifications on the screen. If you have switch or dimmers,
+activate them manually, ...
+
 Now stop the network and release objects.
 
     network.stop()
 
 That's all :)
+
+Full source code is in examples/hello_world.py
 
 To see a more functionnal example, look at ozwsh code.

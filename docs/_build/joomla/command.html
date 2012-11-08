@@ -391,6 +391,44 @@ writeonly = False</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_item">
+<tt class="descname">get_switch_all_item</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the current value (using value value_id) of a switch_all.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve switch_all value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_items">
+<tt class="descname">get_switch_all_items</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the all the possible values (using value value_id) of a switch_all.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve items list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.get_switch_state">
 <tt class="descname">get_switch_state</tt><big>(</big><em>value_id</em><big>)</big></dt>
 <dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
@@ -485,8 +523,30 @@ Set switch to value (using value value_id).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int
-:param value: True or False</em>) &#8211; The value to retrieve state</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>bool</em>) &#8211; True or False</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_switch_all">
+<tt class="descname">set_switch_all</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Set switches_all to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; A predifined string</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>

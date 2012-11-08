@@ -50,7 +50,7 @@ import time
 from louie import dispatcher, All
 
 device="/dev/zwave-aeon-s2"
-log="Debug"
+log="None"
 sniff=300.0
 
 for arg in sys.argv:
@@ -105,14 +105,31 @@ dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
 dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 network.start()
-time.sleep(120.0)
+
+#We wait for the network.
+print "***** Waiting for network to become ready : "
+for i in range(0,90):
+    if network.state>=network.STATE_READY:
+        print "***** Network is ready"
+        break
+    else:
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        time.sleep(1.0)
+
+time.sleep(5.0)
 
 #We update the name of the controller
+print("Update controller name")
 network.controller.node.name = "Hello name"
+
 time.sleep(5.0)
 
 #We update the location of the controller
+print("Update controller location")
 network.controller.node.location = "Hello location"
+
+time.sleep(5.0)
 
 for node in network.nodes:
     for val in network.nodes[node].get_switches() :
@@ -121,7 +138,10 @@ for node in network.nodes:
         time.sleep(10.0)
         print("Deactivate switch")
         network.nodes[node].set_switch(val,False)
-        exit
+    #We only activate the first switch
+    exit
+
+time.sleep(5.0)
 
 for node in network.nodes:
     for val in network.nodes[node].get_dimmers() :
@@ -129,9 +149,13 @@ for node in network.nodes:
         network.nodes[node].set_dimmer(val,80)
         time.sleep(10.0)
         print("Deactivate dimmer")
-        network.nodes[node].set_switch(val,0)
-        exit
+        network.nodes[node].set_dimmer(val,0)
+        time.sleep(10.0)
+        print("Deactivate dimmer")
+        network.nodes[node].set_dimmer(val,0)
+    #We only activate the first dimmer
+    exit
 
-time.sleep(90.0)
+time.sleep(10.0)
 
 network.stop()

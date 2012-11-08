@@ -726,7 +726,7 @@ class ZWaveNetwork(ZWaveObject):
         elif notify_type == self.SIGNAL_ERROR:
             self._handle_error(args)
         else:
-            logging.warning('Skipping unhandled notification type [%s]', notify_type)
+            logging.warning('Skipping unhandled notification [%s]', args)
 
     def _handle_driver_failed(self, args):
         '''

@@ -49,7 +49,20 @@ logging.basicConfig(level=logging.DEBUG)
 #logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('openzwave')
 
-log="None"
+device = "/dev/zwave-aeon-s2"
+log = "Debug"
+footer = True
+for arg in sys.argv:
+    if arg.startswith("--help") or arg.startswith("-h"):
+        print("Usage : ozwman [--device=/dev/zwave-aeon-s2] [--log=Debug]")
+        print("   --device=path_to_your_zwave_stick")
+        print("   --log=Info|Debug|None")
+        print("     Look at debug.log and OZW_Log.log")
+        sys.exit("")
+    elif arg.startswith("--device"):
+        temp,device = arg.split("=")
+    elif arg.startswith("--log"):
+        temp,log = arg.split("=")
 
 MAIN_TITLE = "openzwave Shell"
 """
@@ -80,7 +93,7 @@ class StatusBar(urwid.WidgetWrap):
     def __init__(self, window):
         self.window = window
         self.statusbar = "%s"
-        self.statusbar_urwid = urwid.Text(self.statusbar % "")
+        self.statusbar_urwid = urwid.Text(self.statusbar % "", wrap='clip')
         self.cmd = "$ %s"
         self.cmd_urwid = urwid.Edit(self.cmd % "")
         display_widget = urwid.Pile([ \
@@ -486,34 +499,26 @@ class MainWindow(Screen):
 
     def _connect_louie_node_and_value(self):
         #pass
+        dispatcher.connect(self._louie_group, ZWaveNetwork.SIGNAL_GROUP)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.loop.draw_screen()
 
-    def _louie_value_update(self, network, node, value_id):
+    def _louie_value_update(self, network, node, value):
+        self.loop.draw_screen()
+
+    def _louie_group(self, network, node):
         self.loop.draw_screen()
 
     def _louie_ctrl_message(self, state, message, network, controller):
+        self.status_bar.update(status='Message from controller: %s : %s' % (state,message))
         self.loop.draw_screen()
 
 window = None
 def main():
-    device = "/dev/zwave-aeon-s2"
-    log = "Debug"
-    footer = True
-    for arg in sys.argv:
-        if arg.startswith("--help") or arg.startswith("-h"):
-            print("Usage : ozwman [--device=/dev/zwave-aeon-s2] [--log=None]")
-            print("   --device=path_to_your_zwave_stick")
-            print("   --log=Info|Debug|None")
-            sys.exit("")
-        elif arg.startswith("--device"):
-            temp,device = arg.split("=")
-        elif arg.startswith("--log"):
-            temp,log = arg.split("=")
     global window
     window = MainWindow(device=device,footer=footer)
     window.start()

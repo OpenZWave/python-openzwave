@@ -616,7 +616,7 @@ class NodesTree(OldestTree):
         #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_READY)
         #dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE_REMOVED)
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
     def read_lines(self):
@@ -765,7 +765,7 @@ class NodeTree(OldestTree):
         self.refresh()
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
     def set(self, param, value):
@@ -883,6 +883,9 @@ class ControllerTree(OldestTree):
         self.usage.append("send remove_device : remove a device (not a controller) on the network.")
         self.usage.append("send add_controller : add a controller on the network.")
         self.usage.append("send remove_controller : remove a controller on the network.")
+        self.usage.append("send has_node_failed <node_id> : Check whether the node <node_id> is in the controller's failed nodes list.")
+        self.usage.append("send remove_failed_node <node_id> : move the node <node_id> to the controller's list of failed nodes.")
+        self.usage.append("send replace_failed_node <node_id> : Replace the failed <node_id> device with another.")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -890,14 +893,17 @@ class ControllerTree(OldestTree):
         self.refresh()
         self.window.log.info("ControllerTree _louie_network_ready")
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CTRL_WAITING)
+        #dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        #dispatcher.connect(self._louie_ctrl_message_waiting, ZWaveController.SIGNAL_CTRL_WAITING)
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
-    def _louie_ctrl_message(self, state, message, network, controller):
-        self.window.status_bar.update(status='Message from controller: %s : %s' % (state,message))
+    #def _louie_ctrl_message_waiting(self, state, message, network, controller):
+    #    self.window.status_bar.update(status='Message from controller: %s : %s' % (state,message))
+
+    #def _louie_ctrl_message(self, state, message, network, controller):
+    #    self.window.status_bar.update(status='Message from controller: %s' % (state))
 
     def set(self, param, value):
         if param in ['name', 'location', 'product_name', 'manufacturer_name' ]:
@@ -936,6 +942,48 @@ class ControllerTree(OldestTree):
                 self.status_bar.update("Invalid node_id")
                 return False
             self.window.network.controller.begin_command_request_node_neigbhor_update(node)
+            return True
+        elif command.startswith('has_node_failed'):
+            if ' ' in command :
+                cmd,node = command.split(' ',1)
+            else:
+                self.status_bar.update("usage : send has_node_failed <node_id>")
+                return False
+            node = node.strip()
+            try :
+                node = int(node)
+            except :
+                self.status_bar.update("Invalid node_id")
+                return False
+            self.window.network.controller.begin_command_has_node_failed(node)
+            return True
+        elif command.startswith('remove_failed_node'):
+            if ' ' in command :
+                cmd,node = command.split(' ',1)
+            else:
+                self.status_bar.update("usage : send remove_failed_node <node_id>")
+                return False
+            node = node.strip()
+            try :
+                node = int(node)
+            except :
+                self.status_bar.update("Invalid node_id")
+                return False
+            self.window.network.controller.begin_command_remove_failed_node(node)
+            return True
+        elif command.startswith('replace_failed_node'):
+            if ' ' in command :
+                cmd,node = command.split(' ',1)
+            else:
+                self.status_bar.update("usage : send replace_failed_node <node_id>")
+                return False
+            node = node.strip()
+            try :
+                node = int(node)
+            except :
+                self.status_bar.update("Invalid node_id")
+                return False
+            self.window.network.controller.begin_command_replace_failed_node(node)
             return True
         elif command == 'add_device':
             self.window.network.controller.begin_command_add_device()
@@ -1064,7 +1112,7 @@ class ValuesTree(OldestTree):
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         self.window.log.info("ValuesTree _louie_network_ready")
 
-    def _louie_value_update(self, network, node, value_id):
+    def _louie_value_update(self, network, node, value):
         self.window.log.info("ValuesTree _louie_value_update")
         self.refresh()
         self.window.log.info("ValuesTree _louie_value_update")
@@ -1265,10 +1313,10 @@ class SwitchesTree(OldestTree):
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
-    def _louie_value_update(self, network, node, value_id):
+    def _louie_value_update(self, network, node, value):
         self.refresh()
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
     def read_lines(self):
@@ -1387,10 +1435,10 @@ class DimmersTree(OldestTree):
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
-    def _louie_value_update(self, network, node, value_id):
+    def _louie_value_update(self, network, node, value):
         self.refresh()
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
     def read_lines(self):
@@ -1545,10 +1593,10 @@ class SensorsTree(OldestTree):
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
-    def _louie_value_update(self, network, node, value_id):
+    def _louie_value_update(self, network, node, value):
         self.refresh()
 
-    def _louie_node_update(self, network, node_id):
+    def _louie_node_update(self, network, node):
         self.refresh()
 
     def read_lines(self):
