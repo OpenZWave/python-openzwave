@@ -756,6 +756,8 @@ class NodeTree(OldestTree):
                         'help':'Node management',
                         'widget_box': self.widget_box}
         self.usage.append("set <field> to <value> : change the value of a field")
+        self.usage.append("send refresh_info : request info for the node ont the ZWave network")
+        self.usage.append("send update_neighbors : update the neighbors.")
         if parent != None and self.definition != None :
             parent.add_child("node",self.definition)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
@@ -773,6 +775,17 @@ class NodeTree(OldestTree):
             self.window.network.nodes[self.key].set_field(param, \
                         value)
             self.window.status_bar.update(status='Field %s updated' % param)
+            return True
+        return False
+
+    def send(self, command):
+        if command == 'refresh_info':
+            self.window.network.nodes[self.key].refresh_info()
+            self.window.status_bar.update(status='Refresh info requested')
+            return True
+        elif command.startswith('update_neighbors'):
+            self.window.network.controller.begin_command_request_node_neigbhor_update(self.key)
+            self.window.status_bar.update(status='Neighbor nodes requested')
             return True
         return False
 
@@ -1128,7 +1141,7 @@ class ValuesTree(OldestTree):
         self.size += 1
         values = self.window.network.nodes[self.node_id].get_values_by_command_classes(genre=self.key)
         for cmd in values :
-            self.lines.append(urwid.Text(    "      %s" % (cmd), align='left'))
+            self.lines.append(urwid.Text(    "      %s" % (self.window.network.nodes[self.node_id].get_command_class_as_string(cmd)), align='left'))
             self.size += 1
             for val in values[cmd]:
                 self.lines.append(ValuesItem(values[cmd][val].value_id, \

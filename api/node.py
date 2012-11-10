@@ -562,23 +562,23 @@ class ZWaveNode( ZWaveObject,
         """
         return class_id in self.command_classes
 
-    def handle_command_class(self, class_id):
-        """
-        Check that this node use this commandClass and the method is implemented.
-
-        :param classId: the COMMAND_CLASS to check
-        :type classId: hexadecimal code
-        :rtype: bool or None (if class_id is supported but not implemented).
-
-        """
-        if self.has_command_class(class_id) :
-            try :
-                eval("self.command_class_%s()" % class_id)
-                return True
-            except AttributeError:
-                logging.error("CommandCLass %s not supported by API (Report a bug to developpers.)." % class_id)
-                return None
-        return False
+#    def handle_command_class(self, class_id):
+#        """
+#        Check that this node use this commandClass and the method is implemented.
+#
+#        :param classId: the COMMAND_CLASS to check
+#        :type classId: hexadecimal code
+#        :rtype: bool or None (if class_id is supported but not implemented).
+#
+#        """
+#        if self.has_command_class(class_id) :
+#            try :
+#                eval("self.command_class_%s()" % class_id)
+#                return True
+#            except AttributeError:
+#                logging.error("CommandCLass %s not supported by API (Report a bug to developpers.)." % class_id)
+#                return None
+#        return False
 
     @property
     def manufacturer_id(self):

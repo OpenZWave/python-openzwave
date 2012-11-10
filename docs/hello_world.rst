@@ -125,8 +125,6 @@ will continue and the network will be stopped.
 
         dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
 
-        time.sleep(300.0)
-
 When a node is updated, added, removed, ...
 
     def louie_node_update(network, node):
