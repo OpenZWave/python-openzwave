@@ -602,6 +602,7 @@ class NodesTree(OldestTree):
         }
         if parent != None and self.definition != None :
             parent.add_child(self.path, self.definition)
+        self.usage.append("send switch_all True|False : Send a switch_all command to nodes.")
         #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -673,6 +674,22 @@ class NodesTree(OldestTree):
                 pass
         return None
 
+    def send(self, command):
+        if command.startswith('switch_all'):
+            if ' ' in command :
+                cmd,val = command.split(' ',1)
+            else:
+                self.window.status_bar.update("usage : send switch_all True|False")
+                return False
+            val = val.strip()
+            if val == "True" or val == "true" or val == "1":
+                val=True
+            else:
+                val=False
+            self.window.network.switch_all(val)
+            self.window.status_bar.update("Command switch_all %s sent" % val)
+            return True
+        return False
 
 #class NodesDir (urwid.WidgetWrap):
 #
@@ -785,7 +802,7 @@ class NodeTree(OldestTree):
             return True
         elif command.startswith('update_neighbors'):
             self.window.network.controller.begin_command_request_node_neigbhor_update(self.key)
-            self.window.status_bar.update(status='Neighbor nodes requested')
+            self.window.status_bar.update(status='Neighbors nodes requested')
             return True
         return False
 
@@ -946,13 +963,13 @@ class ControllerTree(OldestTree):
             if ' ' in command :
                 cmd,node = command.split(' ',1)
             else:
-                self.status_bar.update("usage : send update_neighbors <node_id>")
+                self.window.status_bar.update("usage : send update_neighbors <node_id>")
                 return False
             node = node.strip()
             try :
                 node = int(node)
             except :
-                self.status_bar.update("Invalid node_id")
+                self.window.status_bar.update("Invalid node_id")
                 return False
             self.window.network.controller.begin_command_request_node_neigbhor_update(node)
             return True
@@ -960,13 +977,13 @@ class ControllerTree(OldestTree):
             if ' ' in command :
                 cmd,node = command.split(' ',1)
             else:
-                self.status_bar.update("usage : send has_node_failed <node_id>")
+                self.window.status_bar.update("usage : send has_node_failed <node_id>")
                 return False
             node = node.strip()
             try :
                 node = int(node)
             except :
-                self.status_bar.update("Invalid node_id")
+                self.window.status_bar.update("Invalid node_id")
                 return False
             self.window.network.controller.begin_command_has_node_failed(node)
             return True
@@ -974,13 +991,13 @@ class ControllerTree(OldestTree):
             if ' ' in command :
                 cmd,node = command.split(' ',1)
             else:
-                self.status_bar.update("usage : send remove_failed_node <node_id>")
+                self.window.status_bar.update("usage : send remove_failed_node <node_id>")
                 return False
             node = node.strip()
             try :
                 node = int(node)
             except :
-                self.status_bar.update("Invalid node_id")
+                self.window.status_bar.update("Invalid node_id")
                 return False
             self.window.network.controller.begin_command_remove_failed_node(node)
             return True
@@ -988,13 +1005,13 @@ class ControllerTree(OldestTree):
             if ' ' in command :
                 cmd,node = command.split(' ',1)
             else:
-                self.status_bar.update("usage : send replace_failed_node <node_id>")
+                self.window.status_bar.update("usage : send replace_failed_node <node_id>")
                 return False
             node = node.strip()
             try :
                 node = int(node)
             except :
-                self.status_bar.update("Invalid node_id")
+                self.window.status_bar.update("Invalid node_id")
                 return False
             self.window.network.controller.begin_command_replace_failed_node(node)
             return True
