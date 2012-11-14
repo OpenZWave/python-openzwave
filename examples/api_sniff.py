@@ -50,7 +50,7 @@ import time
 from louie import dispatcher, All
 
 device="/dev/zwave-aeon-s2"
-log="Info"
+log="Debug"
 sniff=60.0
 
 for arg in sys.argv:
