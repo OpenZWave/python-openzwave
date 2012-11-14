@@ -682,7 +682,7 @@ class NodesTree(OldestTree):
                 self.window.status_bar.update("usage : send switch_all True|False")
                 return False
             val = val.strip()
-            if val.uppercase == "ON" or val.uppercase == "TRUE":
+            if val.upper() == "ON" or val.upper() == "TRUE":
                 val=True
             else:
                 val=False

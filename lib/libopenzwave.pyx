@@ -234,7 +234,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
 
     """
     cdef Notification* notification = <Notification*>_notification
-    print PyNotifications[notification.GetType()]
+    #print(PyNotifications[notification.GetType()])
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
@@ -249,7 +249,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
-    print n
+    #print(n)
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
