@@ -28,6 +28,7 @@ from louie import dispatcher, All
 import logging
 import libopenzwave
 import openzwave
+import time
 from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
 from openzwave.node import ZWaveNode
 
@@ -371,8 +372,15 @@ class ZWaveController(ZWaveObject):
         Resets a controller and erases its network configuration settings.  The
         controller becomes a primary controller ready to add devices to a new network.
 
+        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
+
         """
         self._network.manager.resetController(self._network.home_id)
+        self._network.stop(fire=False)
+        self._network.start()
+        self._network.state=self._network.STATE_RESETTED
+        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
+            **{'network': self._network})
 
     def soft_reset(self):
         """

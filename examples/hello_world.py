@@ -77,12 +77,12 @@ options.set_save_log_level('Debug')
 options.set_logging(True)
 options.lock()
 
-def louie_driver_ready(network, controller):
-    print("Hello from driver : I'm ready : homeid %0.8x - %d nodes were found." % \
+def louie_network_started(network):
+    print("Hello from network : I'm started : homeid %0.8x - %d nodes were found." % \
         (network.home_id, network.nodes_count))
 
-def louie_driver_failed(network):
-    print("Hello from driver : can't load :(.")
+def louie_network_failed(network):
+    print("Hello from network : can't load :(.")
 
 def louie_network_ready(network):
     print("Hello from network : I'm ready : %d nodes were found." % network.nodes_count)
@@ -100,8 +100,8 @@ def louie_value_update(network, node, value):
 network = ZWaveNetwork(options, autostart=False)
 
 #We connect to the louie dispatcher
-dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
-dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
+dispatcher.connect(louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
+dispatcher.connect(louie_network_failed, ZWaveNetwork.SIGNAL_NETWORK_FAILED)
 dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 network.start()

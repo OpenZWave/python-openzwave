@@ -487,6 +487,7 @@ The existing primary will become a secondary controller.</p>
 <dd><p>Hard Reset a PC Z-Wave Controller.
 Resets a controller and erases its network configuration settings.  The
 controller becomes a primary controller ready to add devices to a new network.</p>
+<p>dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, <a href="#id1"><span class="problematic" id="id2">**</span></a>{&#8216;network&#8217;: self._network})</p>
 </dd></dl>
 
 <dl class="attribute">

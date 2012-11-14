@@ -78,12 +78,12 @@ options.set_save_log_level(log)
 options.set_logging(False)
 options.lock()
 
-def louie_driver_ready(network, controller):
-    print('Louie signal : OpenZWave driver is ready : homeid %0.8x - %d nodes were found.' % \
+def louie_network_started(network):
+    print('Louie signal : OpenZWave network is started : homeid %0.8x - %d nodes were found.' % \
         (network.home_id, network.nodes_count))
 
-def louie_driver_reset(network, controller):
-    print('Louie signal : OpenZWave driver is resetted.')
+def louie_network_resetted(network):
+    print('Louie signal : OpenZWave network is resetted.')
 
 def louie_network_ready(network):
     print('Louie signal : ZWave network is ready : %d nodes were found.' % network.nodes_count)
@@ -104,22 +104,22 @@ def louie_ctrl_message(state, message, network, controller):
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
-dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
-dispatcher.connect(louie_driver_reset, ZWaveNetwork.SIGNAL_DRIVER_RESET)
+dispatcher.connect(louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
+dispatcher.connect(louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
 print "------------------------------------------------------------"
 print "Waiting for driver : "
 print "------------------------------------------------------------"
 for i in range(0,20):
-    if network.state>=network.STATE_INITIALISED:
+    if network.state>=network.STATE_STARTED:
         print " done"
         break
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
-if network.state<network.STATE_INITIALISED:
+if network.state<network.STATE_STARTED:
     print "."
     print "Can't initialise driver! Look at the logs in OZW_Log.log"
     quit(1)
@@ -151,6 +151,7 @@ if not network.is_ready:
     print "."
     print "Can't start network! Look at the logs in OZW_Log.log"
     quit(2)
+
 print "------------------------------------------------------------"
 print "Controller capabilities : %s" % network.controller.capabilities
 print "Controller node capabilities : %s" % network.controller.node.capabilities
@@ -158,9 +159,7 @@ print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
 print "------------------------------------------------------------"
 
-
 time.sleep(sniff)
-
 
 print
 print "------------------------------------------------------------"

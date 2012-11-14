@@ -192,9 +192,25 @@ class ZWaveNetwork(ZWaveObject):
     * PollingDisabled   Sent when node/value polling has been disabled.
     * DriverReset   Sent to indicate when a controller has been reset.  This notification is intended to replace the potentially hundreds of notifications representing each value and node removed from the network.
 
+    About the use of louie signals :
+    For network :
+        python-openzwave send the following louie signal :
+            SIGNAL_NETWORK_FAILED : the driver has failed to start.
+            SIGNAL_NETWORK_STARTED : the driver is ready, but network is not available.
+            SIGNAL_NETWORK_AWAKED : all awake nodes are queried. Some sleeping nodes may be missing.
+            SIGNAL_NETWORK_READY : all nodes are queried. Network is fully functionnal.
+            SIGNAL_NETWORK_RESETTED : the network has been resetted. It will start again.
+            SIGNAL_NETWORK_STOPPED : the network has been stopped.
+
+    Deprecated : SIGNAL_DRIVER_* shouldn't be used anymore.
+
     '''
     SIGNAL_NETWORK_FAILED = 'NetworkFailed'
+    SIGNAL_NETWORK_STARTED = 'NetworkStarted'
     SIGNAL_NETWORK_READY = 'NetworkReady'
+    SIGNAL_NETWORK_STOPPED = 'NetworkStopped'
+    SIGNAL_NETWORK_RESETTED = 'DriverResetted'
+    SIGNAL_NETWORK_AWAKED = 'DriverAwaked'
     SIGNAL_DRIVER_FAILED = 'DriverFailed'
     SIGNAL_DRIVER_READY = 'DriverReady'
     SIGNAL_DRIVER_RESET = 'DriverReset'
@@ -227,9 +243,9 @@ class ZWaveNetwork(ZWaveObject):
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
-    STATE_RESET = 3
-    STATE_INITIALISED = 5
-    STATE_AWAKE = 7
+    STATE_RESETTED = 3
+    STATE_STARTED = 5
+    STATE_AWAKED = 7
     STATE_READY = 10
 
     ignoreSubsequent = True
@@ -280,19 +296,32 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.addWatcher(self.zwcallback)
         self._manager.addDriver(self._options.device)
 
-    def stop(self):
+    def stop(self, fire=True):
         '''
         Stop the network object.
             - remove the watcher
             - remove the driver
             - clear the nodes
 
+        dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
+
         '''
         logging.debug("Stop network.")
-        self._manager.removeWatcher(self.zwcallback)
-        self._manager.removeDriver(self._options.device)
-        self._state = self.STATE_STOPPED
-        self.nodes = None
+        try :
+            self._semaphore_nodes.acquire()
+            self.nodes = None
+            self._manager.removeWatcher(self.zwcallback)
+            self._manager.removeDriver(self._options.device)
+            self._state = self.STATE_STOPPED
+            if fire :
+                dispatcher.send(self.SIGNAL_NETWORK_STOPPED, \
+                    **{'network': self})
+        except:
+            import sys, traceback
+            logging.error('Stop network : %s' % (traceback.format_exception(*sys.exc_info())))
+        finally :
+            self._semaphore_nodes.release()
+
 
     @property
     def home_id(self):
@@ -735,6 +764,8 @@ class ZWaveNetwork(ZWaveObject):
         :param args: data sent by the notification
         :type args: dict()
 
+        dispatcher.send(self.SIGNAL_NETWORK_FAILED, **{'network': self})
+
         '''
         logging.error('Z-Wave Notification DriverFailed : %s' % (args))
         self._manager = None
@@ -750,6 +781,8 @@ class ZWaveNetwork(ZWaveObject):
         The notification will contain the controller's Home ID,
         which is needed to call most of the Manager methods.
 
+        dispatcher.send(self.SIGNAL_NETWORK_STARTED, **{'network': self, 'controller': self._controller})
+
         :param args: data sent by the notification
         :type args: dict()
 
@@ -763,12 +796,14 @@ class ZWaveNetwork(ZWaveObject):
             #print "nodes= ",self.nodes
             self.nodes[args['nodeId']] = ctrlnode
             self._controller.node = self.nodes[args['nodeId']]
-            self._state = self.STATE_INITIALISED
             logging.info('Driver ready using library %s' % self._controller.library_description )
             logging.info('home_id 0x%0.8x, controller node id is %d' % (self.home_id, self._controller.node_id))
             logging.debug('Network %s' % self )
             dispatcher.send(self.SIGNAL_DRIVER_READY, \
                 **{'network': self, 'controller': self._controller})
+            self._state = self.STATE_STARTED
+            dispatcher.send(self.SIGNAL_NETWORK_STARTED, \
+                **{'network': self})
         except:
             import sys, traceback
             logging.error('Z-Wave Notification DriverReady : %s' % (traceback.format_exception(*sys.exc_info())))
@@ -777,6 +812,11 @@ class ZWaveNetwork(ZWaveObject):
 
     def _handle_driver_reset(self, args):
         '''
+        This notification is never fired.
+
+        Look at
+            and
+
         All nodes and values for this driver have been removed.
         This is sent instead of potentially hundreds of individual node
         and value notifications.
@@ -785,16 +825,19 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification DriverReset : %s' % (args))
-        try :
-            self._semaphore_nodes.acquire()
-            self.nodes = None
-            self._state = self.STATE_RESET
-            self.nodes[args['nodeId']] = self._controller.node
-            dispatcher.send(self.SIGNAL_DRIVER_RESET, \
-                **{'network': self, 'controller': self._controller})
-        finally :
-            self._semaphore_nodes.release()
+        #logging.debug('Z-Wave Notification DriverReset : %s' % (args))
+        logging.error('Z-Wave Notification DriverReset not handled. Continue anyway. Report this bug to developpers : %s' % (args))
+        #try :
+        #    self._semaphore_nodes.acquire()
+        #    self.nodes = None
+        #    self._state = self.STATE_RESET
+        #    #self.nodes[args['nodeId']] = self._controller.node
+        #    #dispatcher.send(self.SIGNAL_DRIVER_RESET, \
+        #    #    **{'network': self, 'controller': self._controller})
+        #    dispatcher.send(self.SIGNAL_DRIVER_RESET, \
+        #        **{'network': self})
+        #finally :
+        #    self._semaphore_nodes.release()
 
     def _handle_group(self, args):
         '''
@@ -970,6 +1013,8 @@ class ZWaveNetwork(ZWaveObject):
         :param args: data sent by the notification
         :type args: dict()
 
+        dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
+
         '''
         logging.debug('Z-Wave Notification AllNodesQueried : %s' % (args))
         self._state = self.STATE_READY
@@ -992,6 +1037,8 @@ class ZWaveNetwork(ZWaveObject):
         :param args: data sent by the notification
         :type args: dict()
 
+        dispatcher.send(self.SIGNAL_NETWORK_AWAKED, **{'network': self})
+
         '''
         logging.debug('Z-Wave Notification AwakeNodesQueried : %s' % (args))
         self._object_id = args['homeId']
@@ -1000,14 +1047,13 @@ class ZWaveNetwork(ZWaveObject):
             self._semaphore_nodes.acquire()
             self.nodes[args['nodeId']] = ctrlnode
             self._controller.node = self.nodes[args['nodeId']]
-            self._state = self.STATE_AWAKE
-            self._state = self.STATE_READY
-            dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
+            self._state = self.STATE_AWAKED
+            dispatcher.send(self.SIGNAL_NETWORK_AWAKED, **{'network': self})
             dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIED, \
                 **{'network': self, 'controller': self._controller})
         except:
             import sys, traceback
-            logging.error('Z-Wave Notification DriverReady : %s' % (traceback.format_exception(*sys.exc_info())))
+            logging.error('Z-Wave Notification AwakeNodesQueried : %s' % (traceback.format_exception(*sys.exc_info())))
         finally :
             self._semaphore_nodes.release()
 
@@ -1100,7 +1146,7 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification Value : %s' % (args))
+        #logging.debug('Z-Wave Notification Value : %s' % (args))
         #logging.debug('Z-Wave Notification Value : %s' % (self.SIGNAL_VALUE))
         #logging.debug('Z-Wave Notification Value : %s' % (self))
         #logging.debug('Z-Wave Notification Value : %s' % (self.nodes[args['nodeId']]))
@@ -1108,7 +1154,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_VALUE, \
             **{'network': self, 'node' : self.nodes[args['nodeId']], \
                 'value' : self.nodes[args['nodeId']].values[args['valueId']['id']]})
-        logging.debug('Z-Wave Notification Value : %s' % ('Done'))
+        #logging.debug('Z-Wave Notification Value : %s' % ('Done'))
 
     def _handle_value_added(self, args):
         '''

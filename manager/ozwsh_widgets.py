@@ -602,7 +602,7 @@ class NodesTree(OldestTree):
         }
         if parent != None and self.definition != None :
             parent.add_child(self.path, self.definition)
-        self.usage.append("send switch_all True|False : Send a switch_all command to nodes.")
+        self.usage.append("send switch_all ON|OFF : Send a switch_all command to nodes.")
         #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
     def _louie_network_ready(self, network):
@@ -682,7 +682,7 @@ class NodesTree(OldestTree):
                 self.window.status_bar.update("usage : send switch_all True|False")
                 return False
             val = val.strip()
-            if val == "True" or val == "true" or val == "1":
+            if val.uppercase == "ON" or val.uppercase == "TRUE":
                 val=True
             else:
                 val=False

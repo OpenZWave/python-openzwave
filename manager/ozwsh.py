@@ -45,8 +45,8 @@ from louie import dispatcher, All
 import logging
 #from frameapp import FrameApp, DIVIDER
 
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('openzwave')
 
 device = "/dev/zwave-aeon-s2"
@@ -470,23 +470,35 @@ class MainWindow(Screen):
         self.status_bar.update(status='Start Network')
 
     def _connect_louie(self):
-        dispatcher.connect(self._louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
-        dispatcher.connect(self._louie_driver_reset, ZWaveNetwork.SIGNAL_DRIVER_RESET)
+        dispatcher.connect(self._louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+        dispatcher.connect(self._louie_network_awaked, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_stopped, ZWaveNetwork.SIGNAL_NETWORK_STOPPED)
 
-    def _louie_driver_ready(self, network, controller):
-        self.log.info('OpenZWave driver is ready : homeid %0.8x - %d nodes were found.' % \
+    def _louie_network_started(self, network):
+        self.log.info('OpenZWave network is started : homeid %0.8x - %d nodes were found.' % \
             (network.home_id, network.nodes_count))
         self.network = network
-        self.controller = controller
-        self.status_bar.update(status='OpenZWave driver is ready ... Waiting for network')
+        self.status_bar.update(status='OpenZWave network is started ... Waiting ...')
         self.loop.draw_screen()
 
-    def _louie_driver_reset(self, network, controller):
-        self.log.info('OpenZWave driver is resetted.')
+    def _louie_network_resetted(self, network):
+        self.log.info('OpenZWave network is resetted.')
+        self.network = None
+        self.status_bar.update(status='OpenZWave network was resetted ... Waiting ...')
+        self.loop.draw_screen()
+
+    def _louie_network_stopped(self, network):
+        self.log.info('OpenZWave network is stopped.')
+        self.network = None
+        self.status_bar.update(status='OpenZWave network was stopped ... please quit')
+        self.loop.draw_screen()
+
+    def _louie_network_awaked(self, network):
+        self.log.info('OpenZWave network is awaked.')
         self.network = network
-        self.controller = controller
-        self.status_bar.update(status='OpenZWave driver was resetted ... Waiting ...')
+        self.status_bar.update(status='OpenZWave network is awaked ... Waiting ...')
         self.loop.draw_screen()
 
     def _louie_network_ready(self, network):

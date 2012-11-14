@@ -90,9 +90,9 @@ The signals listeners
 We will now create some connection to the louie dispatcher. We will then to 3
 main signals, they will notify us about the state of the network :
 
-    dispatcher.connect(louie_driver_ready, ZWaveNetwork.SIGNAL_DRIVER_READY)
+    dispatcher.connect(louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
 
-    dispatcher.connect(louie_driver_failed, ZWaveNetwork.SIGNAL_DRIVER_FAILED)
+    dispatcher.connect(louie_network_failed, ZWaveNetwork.SIGNAL_NETWORK_FAILED)
 
     dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
@@ -100,15 +100,15 @@ To do that we use 3 callback functions :
 
 When the driver is ready, we simply print some options on the screen :
 
-    def louie_driver_ready(network, controller):
+    def louie_network_started(network):
 
-        print("Hello from driver : i'm ready : homeid %0.8x - %d nodes were found." % (network.home_id, network.nodes_count))
+        print("Hello from network : I'm started : homeid %0.8x - %d nodes were found." % (network.home_id, network.nodes_count))
 
 When the driver fails, we reports the error to screen :
 
-    def louie_driver_failed(network):
+    def louie_network_failed(network):
 
-        print("Hello from driver : can't load :(.")
+        print("Hello from network : can't load :(.")
 
 This an important event. It means that all nodes have been queried on the network.
 You can now use the network object pass in parameter to query nodes. To do that we connect

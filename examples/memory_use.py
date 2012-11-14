@@ -85,14 +85,14 @@ print "------------------------------------------------------------"
 print "Waiting for driver :                                        "
 print "------------------------------------------------------------"
 for i in range(0,20):
-    if network.state>=network.STATE_INITIALISED:
+    if network.state>=network.STATE_STARTED:
         print " done"
         break
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
-if network.state<network.STATE_INITIALISED:
+if network.state<network.STATE_STARTED:
     print "."
     print "Can't initialise driver! Look at the logs in OZW_Log.log"
     quit(1)

@@ -234,6 +234,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
 
     """
     cdef Notification* notification = <Notification*>_notification
+    print PyNotifications[notification.GetType()]
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
