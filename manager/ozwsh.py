@@ -486,6 +486,7 @@ class MainWindow(Screen):
     def _louie_network_resetted(self, network):
         self.log.info('OpenZWave network is resetted.')
         self.network = None
+        self._disconnect_louie_node_and_value()
         self.status_bar.update(status='OpenZWave network was resetted ... Waiting ...')
         self.loop.draw_screen()
 
@@ -509,6 +510,13 @@ class MainWindow(Screen):
         self.loop.draw_screen()
         self._connect_louie_node_and_value()
 
+    def _disconnect_louie_node_and_value(self):
+        #pass
+        dispatcher.disconnect(self._louie_group, ZWaveNetwork.SIGNAL_GROUP)
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.disconnect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+
     def _connect_louie_node_and_value(self):
         #pass
         dispatcher.connect(self._louie_group, ZWaveNetwork.SIGNAL_GROUP)
@@ -526,7 +534,8 @@ class MainWindow(Screen):
         self.loop.draw_screen()
 
     def _louie_ctrl_message(self, state, message, network, controller):
-        self.status_bar.update(status='Message from controller: %s : %s' % (state,message))
+        #self.status_bar.update(status='Message from controller: %s : %s' % (state,message))
+        self.status_bar.update(status='Message from controller: %s' % (message))
         self.loop.draw_screen()
 
 window = None

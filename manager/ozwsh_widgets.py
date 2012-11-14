@@ -285,6 +285,11 @@ class StatTree(OldestTree):
         self.lines.append(urwid.Text(    "  Controller messages sent:  . . . . . . . . . . . . . . . %s" % \
             self.window.network.controller.stats['s_controllerWriteCnt'], align='left'))
         self.size += 1
+        self.lines.append(urwid.Text(    "    Queue:", align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Messages in queue: . . . . . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.send_queue_count, align='left'))
+        self.size += 1
         self.lines.append(urwid.Text(    "    Errors:", align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Unsolicited messages received while waiting for ACK: . . %s" % \
@@ -352,6 +357,12 @@ class GroupsTree(OldestTree):
         self.usage.append("remove <nodeid> from <groupindex> : remove node <nodeid> from group of index <groupindex>")
         #self.usage.append("set <label> to <data> : change value <label> to data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('GroupsTree _louie_network_resetted.')
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_GROUP)
+        self.window.log.info('GroupsTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
         self.window.log.info("GroupsTree _louie_network_ready")
@@ -485,11 +496,16 @@ class RootTree(OldestTree):
         self._path = ""
         self.refresh()
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_ready(self, network):
         self.window.log.info("RootTree _louie_network_ready")
         self.refresh()
         self.window.log.info("RootTree _louie_network_ready")
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('RootTree _louie_network_resetted.')
+        self.window.log.info('RootTree _louie_network_resetted.')
 
     def read_lines(self):
         self.size = 0
@@ -610,7 +626,13 @@ class NodesTree(OldestTree):
         if parent != None and self.definition != None :
             parent.add_child(self.path, self.definition)
         self.usage.append("send switch_all ON|OFF : Send a switch_all command to nodes.")
-        #dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('NodesTree _louie_network_resetted.')
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        self.window.log.info('NodesTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
         self.window.log.info("NodesTree _louie_network_ready")
@@ -786,11 +808,18 @@ class NodeTree(OldestTree):
         if parent != None and self.definition != None :
             parent.add_child("node",self.definition)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('NodeTree _louie_network_resetted.')
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        self.window.log.info('NodeTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
         self.window.log.info("NodeTree _louie_network_ready")
         self.refresh()
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        self.window.log.info("NodeTree _louie_network_ready")
 
     def _louie_node_update(self, network, node):
         self.refresh()
@@ -926,6 +955,12 @@ class ControllerTree(OldestTree):
         self.usage.append("send remove_failed_node <node_id> : move the node <node_id> to the controller's list of failed nodes.")
         self.usage.append("send replace_failed_node <node_id> : Replace the failed <node_id> device with another.")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('ControllerTree _louie_network_resetted.')
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        self.window.log.info('ControllerTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
         self.window.log.info("ControllerTree _louie_network_ready")
@@ -1144,12 +1179,18 @@ class ValuesTree(OldestTree):
         self.usage.append("set <label> to <data> : change value <label> to data")
         self.usage.append("add <label> to <sceneid> : add value <label> to scene od id <sceneid> with current data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_ready(self, network):
         self.window.log.info("ValuesTree _louie_network_ready")
         self.refresh()
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         self.window.log.info("ValuesTree _louie_network_ready")
+
+    def _louie_network_resetted(self, network):
+        self.window.log.info('ValuesTree _louie_network_resetted.')
+        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        self.window.log.info('ValuesTree _louie_network_resetted.')
 
     def _louie_value_update(self, network, node, value):
         self.window.log.info("ValuesTree _louie_value_update")
@@ -1347,9 +1388,14 @@ class SwitchesTree(OldestTree):
         self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        self.refresh()
+        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
     def _louie_network_ready(self, network):
-        self.refresh()
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
@@ -1469,6 +1515,11 @@ class DimmersTree(OldestTree):
         self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
     def _louie_network_ready(self, network):
         self.refresh()
@@ -1627,6 +1678,11 @@ class SensorsTree(OldestTree):
 #        self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+
+    def _louie_network_resetted(self, network):
+        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
     def _louie_network_ready(self, network):
         self.refresh()

@@ -372,17 +372,20 @@ class ZWaveController(ZWaveObject):
         Resets a controller and erases its network configuration settings.  The
         controller becomes a primary controller ready to add devices to a new network.
 
+        This command fires a lot of louie signals.
+        Louie's clients must disconnect from nodes and values signals
+
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
 
         """
         logging.debug('Z-Wave Notification NetworkResetted')
+        self._network.state=self._network.STATE_RESETTED
+        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
+            **{'network': self._network})
         self._network.manager.resetController(self._network.home_id)
         self._network.stop(fire=False)
         #time.sleep(20)
         self._network.start()
-        self._network.state=self._network.STATE_RESETTED
-        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
-            **{'network': self._network})
 
     def soft_reset(self):
         """
