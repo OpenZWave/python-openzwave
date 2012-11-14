@@ -45,8 +45,8 @@ from louie import dispatcher, All
 import logging
 #from frameapp import FrameApp, DIVIDER
 
-#logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('openzwave')
 
 device = "/dev/zwave-aeon-s2"

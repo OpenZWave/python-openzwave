@@ -47,6 +47,9 @@ from log cimport LogLevel
 import os
 import sys
 
+import logging
+logging.getLogger('openzwave').addHandler(logging.NullHandler())
+
 #Don't update it.
 #It will be done when releasing only.
 #Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
@@ -209,6 +212,7 @@ cdef addValueId(ValueID v, n):
     cdef string label
     cdef string units
     cdef Manager *manager = Get()
+    #logging.debug("libopenzwave.addValueId (CMD,n)=(%s,%s)" % (PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],n))
     #manager.GetValueAsString(v, &value)
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     label = manager.GetValueLabel(v)
@@ -234,7 +238,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
 
     """
     cdef Notification* notification = <Notification*>_notification
-    #print(PyNotifications[notification.GetType()])
+    #logging.debug("libopenzwave.notif_callback : notification type %s" % notification.GetType())
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
@@ -249,7 +253,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
-    #print(n)
+    logging.debug("libopenzwave.notif_callback : notification %s" % n)
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
@@ -257,6 +261,7 @@ cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
     Controller callback to the C++ library
 
     """
+    logging.debug("libopenzwave.ctrl_callback : state %s" % _state)
     c = {'state' : PyControllerState[_state],
          'message' : PyControllerState[_state].doc,
 #         'context' : "%s" % (<object>_context),
@@ -2805,6 +2810,7 @@ controller becomes a primary controller ready to add devices to a new network.
 :see: softResetController_
 
         '''
+        values_map.clear()
         self.manager.ResetController(homeid)
 
     def softResetController(self, homeid):

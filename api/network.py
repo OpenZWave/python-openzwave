@@ -699,6 +699,7 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         """
+        logging.debug('zwcallback args=[%s]', args)
         notify_type = args['notificationType']
         if notify_type == self.SIGNAL_DRIVER_FAILED:
             self._handle_driver_failed(args)
@@ -875,7 +876,7 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('Z-Wave Notification Value : %s' % (args))
+        logging.debug('Z-Wave Notification Node : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE, \
                 **{'network': self, 'node':self.nodes[args['nodeId']]})
 

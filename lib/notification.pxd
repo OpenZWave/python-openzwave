@@ -42,7 +42,7 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_NodeEvent = 10                     # A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification.
         Type_PollingDisabled = 11               # Polling of a node has been successfully turned off by a call to Manager::DisablePoll
         Type_PollingEnabled = 12                # Polling of a node has been successfully turned on by a call to Manager::EnablePoll
-        Type_SceneEvent = 13                   # Scene Activation Set received
+        Type_SceneEvent = 13                    # Scene Activation Set received
         Type_CreateButton = 14                  # Handheld controller button event created
         Type_DeleteButton = 15                  # Handheld controller button event deleted
         Type_ButtonOn = 16                      # Handheld controller button on pressed event

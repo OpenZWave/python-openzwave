@@ -95,6 +95,12 @@ class OldestTree(urwid.ListWalker):
         #self.focus, self.oldfocus = self.oldfocus, self.focus
         self.lines = []
 
+    def clean(self):
+        """
+        Clean properties like key, ..., ...
+        """
+        pass
+
     def show_directories(self):
         for child in self.subdirs:
             self.lines.append( \
@@ -394,6 +400,7 @@ class GroupsTree(OldestTree):
         """
         if self.exist(directory) :
             if directory == '..':
+                self.node_id = None
                 return self.parent.widget_box
             if directory in self.childrens:
                 self.window.log.info("cd %s" %directory)
@@ -679,7 +686,7 @@ class NodesTree(OldestTree):
             if ' ' in command :
                 cmd,val = command.split(' ',1)
             else:
-                self.window.status_bar.update("usage : send switch_all True|False")
+                self.window.status_bar.update("usage : send switch_all ON|OFF")
                 return False
             val = val.strip()
             if val.upper() == "ON" or val.upper() == "TRUE":
@@ -689,6 +696,7 @@ class NodesTree(OldestTree):
             self.window.network.switch_all(val)
             self.window.status_bar.update("Command switch_all %s sent" % val)
             return True
+        self.window.status_bar.update("usage : send switch_all ON|OFF")
         return False
 
 #class NodesDir (urwid.WidgetWrap):
@@ -863,6 +871,7 @@ class NodeTree(OldestTree):
         """
         if self.exist(directory) :
             if directory == '..':
+                self.key = None
                 return self.parent.widget_box
             if directory in self.childrens:
                 self.window.log.info("cd a values list key=%s" %directory)
@@ -1186,6 +1195,7 @@ class ValuesTree(OldestTree):
         """
         if self.exist(directory) :
             if directory == '..':
+                self.node_id = None
                 return self.parent.widget_box
             if directory in self.childrens:
                 self.window.log.info("cd %s" %directory)
@@ -1788,6 +1798,7 @@ class SceneTree(OldestTree):
         """
         if self.exist(directory) :
             if directory == '..':
+                self.node_id = None
                 return self.parent.widget_box
             if directory in self.childrens:
                 self.window.log.info("cd %s" %directory)
