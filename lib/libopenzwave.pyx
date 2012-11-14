@@ -266,6 +266,7 @@ cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
          'message' : PyControllerState[_state].doc,
 #         'context' : "%s" % (<object>_context),
         }
+    logging.debug("libopenzwave.ctrl_callback : notification %s" % c)
     (<object>_context)(c)
 
 cpdef object driverData():
