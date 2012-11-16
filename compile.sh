@@ -22,30 +22,31 @@ echo "-----------------------------------------------------------------"
 python setup-lib.py build
 python setup-api.py build
 
-if [ u != $(which sphinx-build)u ] ; then
-    echo "-----------------------------------------------------------------"
-    echo "|   Make documentation                                          |"
-    echo "-----------------------------------------------------------------"
-    python setup-lib.py install --root=build/tmp
-    python setup-api.py install --root=build/tmp
-    cd docs
-    make html
-    cd ..
-else
-    echo "-----------------------------------------------------------------"
-    echo "|   sphinx not found                                            |"
-    echo "|   No documentation general                                    |"
-    echo "-----------------------------------------------------------------"
-
-fi
+#Remove the doc generattion as it fails on Ubuntu 10.04
+#if [ u != $(which sphinx-build)u ] ; then
+#    echo "-----------------------------------------------------------------"
+#    echo "|   Make documentation                                          |"
+#    echo "-----------------------------------------------------------------"
+#    python setup-lib.py install --root=build/tmp
+#    python setup-api.py install --root=build/tmp
+#    cd docs
+#    make html
+#    cd ..
+#else
+#    echo "-----------------------------------------------------------------"
+#    echo "|   sphinx not found                                            |"
+#    echo "|   No documentation general                                    |"
+#    echo "-----------------------------------------------------------------"#
+#
+#fi
 
 echo "-----------------------------------------------------------------"
 echo "|   You can now install python-openzwave                        |"
 echo "|   Run the following command                                   |"
 echo "|   sudo ./install.sh                                           |"
-echo "|   Installation directories :                                  |"
-echo "|   config directory : /usr/local/share/python-openzwave        |"
-if [ u != $(which sphinx-build)u ] ; then
-    echo "|   Documentation : /usr/local/share/doc/python-openzwave       |"
-fi
+#echo "|   Installation directories :                                  |"
+#echo "|   config directory : /usr/local/share/python-openzwave        |"
+#if [ u != $(which sphinx-build)u ] ; then
+#    echo "|   Documentation : /usr/local/share/doc/python-openzwave       |"
+#fi
 echo "-----------------------------------------------------------------"

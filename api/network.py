@@ -1012,6 +1012,7 @@ class ZWaveNetwork(ZWaveObject):
         All the initialisation queries on a node have been completed.
 
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, **{'network': self, 'node': self.nodes[args['nodeId']]})
+        dispatcher.send(self.SIGNAL_NODE, **{'network': self, 'node':self.nodes[args['nodeId']]})
 
         :param args: data sent by the notification
         :type args: dict()
@@ -1021,6 +1022,7 @@ class ZWaveNetwork(ZWaveObject):
         #self.nodes[args['nodeId']].outdated = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
+        self._handle_node(self.nodes[args['nodeId']])
 
     def _handle_all_nodes_queried(self, args):
         '''
@@ -1039,13 +1041,6 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_ALL_NODES_QUERIED, \
             **{'network': self, 'controller': self._controller})
-        #try:
-        #    self._semaphore_on_ready.acquire()
-        #    for callback in self._callback_on_ready:
-        #        callback(*args, **kwargs)
-        #finally:
-        #    self._semaphore_on_ready.release()
-        #dispatcher.send(self.SIGNAL_NODE_READY, **{'home_id': self.home_id, 'node_id': args['nodeId']})
 
     def _handle_awake_nodes_queried(self, args):
         '''
