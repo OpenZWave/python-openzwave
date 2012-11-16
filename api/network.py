@@ -47,7 +47,11 @@ class ZWaveNetwork(ZWaveObject):
     It dispatch the following louie signals :
 
         * SIGNAL_NETWORK_FAILED = 'NetworkFailed'
+        * SIGNAL_NETWORK_STARTED = 'NetworkStarted'
         * SIGNAL_NETWORK_READY = 'NetworkReady'
+        * SIGNAL_NETWORK_STOPPED = 'NetworkStopped'
+        * SIGNAL_NETWORK_RESETTED = 'DriverResetted'
+        * SIGNAL_NETWORK_AWAKED = 'DriverAwaked'
         * SIGNAL_DRIVER_FAILED = 'DriverFailed'
         * SIGNAL_DRIVER_READY = 'DriverReady'
         * SIGNAL_DRIVER_RESET = 'DriverReset'
