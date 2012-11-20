@@ -76,6 +76,7 @@ options.lock()
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
+time_started = 0
 print "------------------------------------------------------------"
 print "Waiting for driver : "
 print "------------------------------------------------------------"
@@ -86,6 +87,7 @@ for i in range(0,20):
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
+        time_started += 1
         time.sleep(1.0)
 if network.state<network.STATE_STARTED:
     print "."
@@ -104,10 +106,12 @@ print "Waiting for network to become ready : "
 print "------------------------------------------------------------"
 for i in range(0,90):
     if network.state>=network.STATE_READY:
-        print " done"
+        print " done in %s seconds" % time_started
+
         break
     else:
         sys.stdout.write(".")
+        time_started += 1
         #sys.stdout.write(network.state_str)
         #sys.stdout.write("(")
         #sys.stdout.write(str(network.nodes_count))

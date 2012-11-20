@@ -8,7 +8,9 @@ python setup-lib.py install --record install.files
 echo "-----------------------------------------------------------------"
 echo "|   Install python-openzwave  api                               |"
 echo "-----------------------------------------------------------------"
-python setup-api.py install --record install.files
+python setup-api.py install --record install.tmp
+cat install.tmp >>install.files
+rm install.tmp
 
 echo "-----------------------------------------------------------------"
 echo "|   Installation done                                           |"

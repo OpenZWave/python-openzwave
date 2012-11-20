@@ -33,20 +33,28 @@ logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
-#Insert your build directory here (it depends of your python distribution)
-#To get one, run the make_doc.sh command
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
-import openzwave
-from openzwave.node import ZWaveNode
-from openzwave.value import ZWaveValue
-from openzwave.scene import ZWaveScene
-from openzwave.controller import ZWaveController
-from openzwave.network import ZWaveNetwork
-from openzwave.option import ZWaveOption
-import libopenzwave
+try :
+    import openzwave
+    from openzwave.node import ZWaveNode
+    from openzwave.value import ZWaveValue
+    from openzwave.scene import ZWaveScene
+    from openzwave.controller import ZWaveController
+    from openzwave.network import ZWaveNetwork
+    from openzwave.option import ZWaveOption
+    print("Openzwave is installed.")
+except :
+    print("Openzwave is not installed. Get it from tmp directory.")
+    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
+    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
+    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
+    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
+    import openzwave
+    from openzwave.node import ZWaveNode
+    from openzwave.value import ZWaveValue
+    from openzwave.scene import ZWaveScene
+    from openzwave.controller import ZWaveController
+    from openzwave.network import ZWaveNetwork
+    from openzwave.option import ZWaveOption
 import time
 from pympler.asizeof import asizeof, flatsize, itemsize, basicsize
 
