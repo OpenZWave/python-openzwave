@@ -26,6 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 import libopenzwave
 from collections import namedtuple
 import thread
+from threading import Timer
 import time
 import logging
 from openzwave.object import ZWaveException, ZWaveCommandClassException
@@ -501,10 +502,11 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
                 value = 0
             #logging.debug("set_dimmer corrected Level:%s" % (value))
             self.values[value_id].data = value
-            #timer = Timer(1, self.values[value_id].refresh())
-            #if value == 0:
-            #    self.values[value_id].refresh()
-            #    logging.debug("set_dimmer refresh_value : %s" % (value_id))
+            #Dimmers doesn't return the good level.
+            #Add a Timer to refresh the value
+            if value == 0:
+                timer = Timer(2, self.values[value_id].refresh())
+                timer = Timer(4, self.values[value_id].refresh())
             return True
         return False
 
