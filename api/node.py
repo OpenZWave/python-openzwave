@@ -42,7 +42,8 @@ class ZWaveNode( ZWaveObject,
                  ZWaveNodeSensor, ZWaveNodeSecurity
                  ):
     '''
-    Represents a single Node within the Z-Wave Network
+    Represents a single Node within the Z-Wave Network.
+
     '''
 
     def __init__(self, node_id, network ):
@@ -61,6 +62,7 @@ class ZWaveNode( ZWaveObject,
         self.values = dict()
         self._is_sleeping = False
         self._is_locked = False
+        self.awaked = False
         #self._name = None
         #self.cache_property("self.name")
         #self._location = None

@@ -28,6 +28,7 @@ import thread
 import time
 import openzwave
 import logging
+from threading import Timer
 from openzwave.object import ZWaveObject
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
@@ -396,13 +397,14 @@ class ZWaveValue(ZWaveObject):
         Check that data is correct for this value.
         Return the data in a correct type. None is data is incorrect.
 
-        :return: A variable type if the data is correct. None otherwise.
+        :return: A variable of the good type if the data is correct. None otherwise.
         :rtype: variable
 
         """
         if self.is_read_only :
             return None
         new_data = None
+        logging.debug("check_data type :%s" % (self.type))
         if self.type == "Bool":
             new_data = data
             if type(data) == type("") :
@@ -416,8 +418,10 @@ class ZWaveValue(ZWaveObject):
             except :
                 new_data = None
             if new_data != None:
-                if new_data < 0 or new_data > 255 :
-                    new_data = None
+                if new_data < 0 :
+                    new_data = 0
+                elif new_data > 255 :
+                    new_data = 255
         elif self.type == "Decimal":
             try :
                 new_data = float(data)
@@ -428,11 +432,21 @@ class ZWaveValue(ZWaveObject):
                 new_data = int(data)
             except :
                 new_data = None
+            if new_data != None:
+                if new_data < -2147483648 :
+                    new_data = -2147483648
+                elif new_data > 2147483647 :
+                    new_data = 2147483647
         elif self.type == "Short":
             try :
                 new_data = int(data)
             except :
                 new_data = None
+            if new_data != None:
+                if new_data < -32768 :
+                    new_data = -32768
+                elif new_data > 32767 :
+                    new_data = 32767
         elif self.type == "String":
                 new_data = data
         elif self.type == "Button":
@@ -449,17 +463,6 @@ class ZWaveValue(ZWaveObject):
                 else :
                     new_data = None
         return new_data
-
-
-#    @property
-#    def poll_intensity(self):
-#        """
-#        The poll intensity of the value.
-#
-#        :rtype: int (0=none, 1=every time through the list, 2-every other time, etc)
-#
-#        """
-#        return self._poll_intensity
 
     @property
     def is_set(self):
@@ -495,7 +498,7 @@ class ZWaveValue(ZWaveObject):
         """
         return self._network.manager.isValueWriteOnly(self.value_id)
 
-    def enable_poll(self, intensity):
+    def enable_poll(self, intensity=1):
         """
         Enable the polling of a device's state.
 
@@ -522,8 +525,9 @@ class ZWaveValue(ZWaveObject):
     @property
     def poll_intensity(self):
         """
-        The intensity of the poll
+        The poll intensity of the value.
 
+        :returns: 0=none, 1=every time through the list, 2-every other time, etc
         :rtype: int
 
         """
@@ -547,8 +551,22 @@ class ZWaveValue(ZWaveObject):
         """
         The commandclass of the value.
 
+        :returns: The command class of this value
         :rtype: int
 
         """
         return self._network.manager.getValueCommandClass(self.value_id)
 
+    def refresh(self):
+        """
+        Refresh the value.
+
+        :returns: True if the command was transmitted to controller
+        :rtype: bool
+
+        """
+#        if self.is_outdated("self.data_as_string"):
+#            self._as_string = self._network.manager.getValueAsString(self.value_id)
+#            self.update("self.data_as_string")
+#        return self._as_string
+        return self._network.manager.refreshValue(self.value_id)

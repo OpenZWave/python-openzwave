@@ -47,7 +47,7 @@ Return the data in a correct type. None is data is incorrect.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A variable type if the data is correct. None otherwise.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A variable of the good type if the data is correct. None otherwise.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
 </tr>
@@ -63,7 +63,9 @@ Return the data in a correct type. None is data is incorrect.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The command class of this value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -133,7 +135,7 @@ Return the data in a correct type. None is data is incorrect.</p>
 
 <dl class="method">
 <dt id="openzwave.value.ZWaveValue.enable_poll">
-<tt class="descname">enable_poll</tt><big>(</big><em>intensity</em><big>)</big></dt>
+<tt class="descname">enable_poll</tt><big>(</big><em>intensity=1</em><big>)</big></dt>
 <dd><p>Enable the polling of a device&#8217;s state.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -351,12 +353,30 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.poll_intensity">
 <tt class="descname">poll_intensity</tt></dt>
-<dd><p>The intensity of the poll</p>
+<dd><p>The poll intensity of the value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">0=none, 1=every time through the list, 2-every other time, etc</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.value.ZWaveValue.refresh">
+<tt class="descname">refresh</tt><big>(</big><big>)</big></dt>
+<dd><p>Refresh the value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the command was transmitted to controller</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>

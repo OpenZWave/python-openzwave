@@ -364,6 +364,32 @@ class MainWindow(Screen):
             else :
                 self.status_bar.update(status='Usage : set <field> to <value>')
                 return False
+        elif command.startswith('poll') :
+            if ' ' in command :
+                cmd,end = command.split(' ',1)
+                if len(end) == 0 or ' ' not in end :
+                    self.status_bar.update(status='Usage : poll <value> to <intensity>')
+                    return False
+                end = end.strip()
+                field,end = end.split(' ',1)
+                if len(end) == 0 or ' ' not in end :
+                    self.status_bar.update(status='Usage : poll <value> to <intensity>')
+                    return False
+                end = end.strip()
+                to,value = end.split(' ',1)
+                if len(value) == 0 or to != "to"  :
+                    self.status_bar.update(status='Usage : poll <value> to <intensity>')
+                    return False
+                value = value.strip()
+                if self.active_box.walker.poll(field, value):
+                    self.active_box.walker.ls("")
+                    self.status_bar.set_command("")
+                    return True
+                else :
+                    return False
+            else :
+                self.status_bar.update(status='Usage : poll <value> to <intensity>')
+                return False
         elif command.startswith('add') :
             if ' ' in command :
                 cmd,end = command.split(' ',1)

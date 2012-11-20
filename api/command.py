@@ -492,12 +492,19 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
 
         """
         #print value_id
+        #logging.debug("set_dimmer type Level:%s" % (type(value)))
+        logging.debug("set_dimmer Level:%s" % (value))
         if value_id in self.get_dimmers():
             if value >99 and value <255 :
                 value = 99
             elif value < 0 :
                 value = 0
+            #logging.debug("set_dimmer corrected Level:%s" % (value))
             self.values[value_id].data = value
+            #timer = Timer(1, self.values[value_id].refresh())
+            #if value == 0:
+            #    self.values[value_id].refresh()
+            #    logging.debug("set_dimmer refresh_value : %s" % (value_id))
             return True
         return False
 

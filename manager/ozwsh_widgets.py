@@ -199,6 +199,10 @@ class OldestTree(urwid.ListWalker):
         self.window.status_bar.update(status='Command "set" not supported')
         return False
 
+    def poll(self, param, value):
+        self.window.status_bar.update(status='Command "poll" not supported')
+        return False
+
     def add(self, param, value):
         self.window.status_bar.update(status='Command "add" not supported')
         return False
@@ -357,6 +361,7 @@ class GroupsTree(OldestTree):
         self.usage.append("remove <nodeid> from <groupindex> : remove node <nodeid> from group of index <groupindex>")
         #self.usage.append("set <label> to <data> : change value <label> to data")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_resetted(self, network):
@@ -496,6 +501,7 @@ class RootTree(OldestTree):
         self._path = ""
         self.refresh()
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_ready(self, network):
@@ -626,6 +632,7 @@ class NodesTree(OldestTree):
         if parent != None and self.definition != None :
             parent.add_child(self.path, self.definition)
         self.usage.append("send switch_all ON|OFF : Send a switch_all command to nodes.")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
@@ -664,6 +671,7 @@ class NodesTree(OldestTree):
                 self.window.network.nodes[node].location, \
                 self.window.network.nodes[node].max_baud_rate, \
                 self.window.network.nodes[node].get_battery_level(), \
+                self.window.network.nodes[node].awaked, \
                 ))
             self.size += 1
         self._modified()
@@ -741,7 +749,7 @@ class NodesTree(OldestTree):
 
 class NodesItem (urwid.WidgetWrap):
 
-    def __init__ (self, id=0, name=None, location=None, signal=0, battery_level=-1):
+    def __init__ (self, id=0, name=None, location=None, signal=0, battery_level=-1, awaked=False):
         self.id = id
         #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
         self.item = [
@@ -751,6 +759,7 @@ class NodesItem (urwid.WidgetWrap):
                 urwid.AttrWrap(urwid.Text('%s' % location, wrap='clip'), 'body'),
                 urwid.AttrWrap(urwid.Text('%s' % signal, wrap='clip'), 'body'),
                 urwid.AttrWrap(urwid.Text('%s' % battery_level, wrap='clip'), 'body'),
+                urwid.AttrWrap(urwid.Text('%s' % awaked, wrap='clip'), 'body'),
         ]
         w = urwid.Columns(self.item, dividechars=1 )
         self.__super.__init__(w)
@@ -763,6 +772,7 @@ class NodesItem (urwid.WidgetWrap):
                 urwid.AttrWrap(urwid.Text('%s' % "Location", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Baud", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Battery", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Awaked", wrap='clip'), 'node_header'),
         ]
         return urwid.Columns(self.item, dividechars=1)
 
@@ -808,6 +818,7 @@ class NodeTree(OldestTree):
         if parent != None and self.definition != None :
             parent.add_child("node",self.definition)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_resetted(self, network):
@@ -956,6 +967,7 @@ class ControllerTree(OldestTree):
         self.usage.append("send replace_failed_node <node_id> : Replace the failed <node_id> device with another.")
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
 
     def _louie_network_resetted(self, network):
         self.window.log.info('ControllerTree _louie_network_resetted.')
@@ -1178,6 +1190,8 @@ class ValuesTree(OldestTree):
         self.usage.append("set <valueid> to <data> : change value <valueid> to data")
         self.usage.append("set <label> to <data> : change value <label> to data")
         self.usage.append("add <label> to <sceneid> : add value <label> to scene od id <sceneid> with current data")
+        self.usage.append("poll <label> to <intensity> : poll value <label> with intensity <intensity> : 0 - disable, 1, 2, ...")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
@@ -1218,6 +1232,7 @@ class ValuesTree(OldestTree):
                     values[cmd][val].type, \
                     values[cmd][val].data_items, \
                     values[cmd][val].is_read_only, \
+                    values[cmd][val].is_polled, \
                     ))
                 self.size += 1
         self._modified()
@@ -1288,18 +1303,52 @@ class ValuesTree(OldestTree):
                 return False
         if param in values:
             newval = values[param].check_data(value)
-            self.window.log.info("param %s" %param)
-            self.window.log.info("type param %s" %type(param))
-            self.window.log.info("old_val %s" %value)
-            self.window.log.info("type old_val %s" %type(value))
-            self.window.log.info("newval %s" %newval)
-            self.window.log.info("type newval %s" %type(newval))
+            #self.window.log.info("param %s" %param)
+            #self.window.log.info("type param %s" %type(param))
+            #self.window.log.info("old_val %s" %value)
+            #self.window.log.info("type old_val %s" %type(value))
+            #self.window.log.info("newval %s" %newval)
+            #self.window.log.info("type newval %s" %type(newval))
             if newval != None :
                 values[param].data=newval
                 self.window.status_bar.update(status='Value %s updated' % param)
                 return True
             else :
                 self.window.status_bar.update(status='Invalid data value : "%s"' % value)
+            return False
+        else :
+            self.window.status_bar.update(status="Can't find value Id %s" % (param))
+            return False
+
+    def poll(self, param, value):
+        values = self.window.network.nodes[self.node_id].values
+        try:
+            param = long(param)
+        except:
+            ok = False
+            for val in values:
+                if values[val].label == param:
+                    param = val
+                    ok = True
+                    exit
+            if not ok :
+                self.window.status_bar.update(status="Invalid value ID %s" % (param))
+                return False
+        if param in values:
+            try :
+                newval = int(value)
+            except :
+                newval = None
+            if newval != None :
+                self.window.log.info("poll %s to %s" %(param,newval))
+                if newval == 0:
+                    values[param].disable_poll()
+                else :
+                    values[param].enable_poll(newval)
+                self.window.status_bar.update(status='Value %s polled to %s' % (param,value))
+                return True
+            else :
+                self.window.status_bar.update(status='Invalid poll value : "%s"' % value)
             return False
         else :
             self.window.status_bar.update(status="Can't find value Id %s" % (param))
@@ -1318,7 +1367,7 @@ class ValuesTree(OldestTree):
 
 class ValuesItem (urwid.WidgetWrap):
 
-    def __init__ (self, id=0, name=None, help=None, value=0, type='All', selection='All', read_only=False):
+    def __init__ (self, id=0, name=None, help=None, value=0, type='All', selection='All', read_only=False, polled=False):
         self.id = id
         #self.content = 'item %s: %s - %s...' % (str(id), name[:20], product_name[:20] )
         if read_only :
@@ -1329,6 +1378,7 @@ class ValuesItem (urwid.WidgetWrap):
             ('fixed', 19, urwid.Padding(
                 urwid.AttrWrap(urwid.Text('%s' % str(id), wrap='space'), 'body', 'focus'), left=2)),
                 urwid.AttrWrap(urwid.Text('%s' % name, wrap='space'), 'body'),
+                urwid.AttrWrap(urwid.Text('%s' % polled, wrap='space'), 'body'),
                 urwid.AttrWrap(urwid.Text('%s' % help, wrap='space'), 'body'),
                 value_widget,
                 urwid.AttrWrap(urwid.Text('%s' % type, wrap='clip'), 'body'),
@@ -1342,6 +1392,7 @@ class ValuesItem (urwid.WidgetWrap):
             ('fixed', 19, urwid.Padding(
                 urwid.AttrWrap(urwid.Text('%s' % "Id", wrap='clip'), 'node_header'), left=2)),
                 urwid.AttrWrap(urwid.Text('%s' % "Label", wrap='clip'), 'node_header'),
+                urwid.AttrWrap(urwid.Text('%s' % "Polled", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Help", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Value", wrap='clip'), 'node_header'),
                 urwid.AttrWrap(urwid.Text('%s' % "Type", wrap='clip'), 'node_header'),
@@ -1387,6 +1438,7 @@ class SwitchesTree(OldestTree):
             parent.add_child('switches', self.definition)
         self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
@@ -1472,7 +1524,8 @@ class SwitchesTree(OldestTree):
         if node in self.window.network.nodes:
             newval = values[switch].check_data(value)
             if newval != None :
-                values[switch].data=value
+                self.window.network.nodes[node].set_switch(switch, newval)
+                #values[switch].data=value
                 self.window.status_bar.update(status='Value %s on node %s updated' % (switch,node))
                 return True
             else :
@@ -1514,6 +1567,7 @@ class DimmersTree(OldestTree):
             parent.add_child('dimmers', self.definition)
         self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
@@ -1588,7 +1642,6 @@ class DimmersTree(OldestTree):
         values = self.window.network.nodes[node].values
         ok = False
         for val in values:
-            self.window.log.info("DimmersTree set %s val %s" % (node,val))
             if values[val].label == switch:
                 switch = val
                 ok = True
@@ -1599,7 +1652,10 @@ class DimmersTree(OldestTree):
         if node in self.window.network.nodes:
             newval = values[switch].check_data(value)
             if newval != None :
-                values[switch].data=value
+                #values[switch].data=value
+                if not values[switch].is_polled :
+                    values[switch].enable_poll()
+                self.window.network.nodes[node].set_dimmer(switch,newval)
                 self.window.status_bar.update(status='Value %s on node %s updated' % (switch,node))
                 return True
             else :
@@ -1677,6 +1733,7 @@ class SensorsTree(OldestTree):
             parent.add_child('sensors', self.definition)
 #        self.usage.append("set <nodeid:Label> to <data> : change value <label> of node <nodeid> to data")
 #        self.usage.append("set <label> to <data> : change value <label> to data")
+        dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
         dispatcher.connect(self._louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 

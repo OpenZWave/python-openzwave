@@ -1018,12 +1018,15 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, **{'network': self, 'node': self.nodes[args['nodeId']]})
         dispatcher.send(self.SIGNAL_NODE, **{'network': self, 'node':self.nodes[args['nodeId']]})
 
+        SWhen receiving this value, we consider that the node is awaked.
+
         :param args: data sent by the notification
         :type args: dict()
 
         '''
         logging.debug('Z-Wave Notification NodeQueriesComplete : %s' % (args))
         #self.nodes[args['nodeId']].outdated = True
+        self.nodes[args['nodeId']].awaked = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
         self._handle_node(self.nodes[args['nodeId']])
