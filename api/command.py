@@ -505,8 +505,10 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             #Dimmers doesn't return the good level.
             #Add a Timer to refresh the value
             if value == 0:
-                timer = Timer(2, self.values[value_id].refresh())
-                timer = Timer(4, self.values[value_id].refresh())
+                timer1 = Timer(2, self.values[value_id].refresh)
+                timer1.start()
+                timer2 = Timer(4, self.values[value_id].refresh)
+                timer2.start()
             return True
         return False
 
