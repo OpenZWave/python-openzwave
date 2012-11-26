@@ -229,7 +229,7 @@ class ZWaveNode( ZWaveObject,
         """
         The product type of the node.
 
-        :rtype: int
+        :rtype: str
 
         """
 #        if self.is_outdated("self.product_type"):
@@ -243,7 +243,7 @@ class ZWaveNode( ZWaveObject,
         """
         The product Id of the node.
 
-        :rtype: int
+        :rtype: str
 
         """
 #        if self.is_outdated("self.product_id"):
@@ -498,6 +498,7 @@ class ZWaveNode( ZWaveObject,
     def change_value(self, value_id):
         """
         Change a value of the node.
+        Not implemented
 
         :param value_id: The id of the value to change
         :type value_id: int
@@ -509,6 +510,7 @@ class ZWaveNode( ZWaveObject,
     def refresh_value(self, value_id):
         """
         Refresh a value of the node.
+        Not implemented
 
         :param value_id: The id of the value to change
         :type value_id: int
@@ -587,7 +589,7 @@ class ZWaveNode( ZWaveObject,
         """
         The manufacturer id of the node.
 
-        :rtype: int
+        :rtype: str
 
         """
 #        if self.is_outdated("self.manufacturer_id"):
@@ -891,8 +893,10 @@ class ZWaveNode( ZWaveObject,
         can be especially useful for devices that were asleep when the application was
         first run.
 
+        :rtype: bool
+
         """
-        self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
+        return self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
 #        self.outdated = True
 
     def request_all_config_params(self):

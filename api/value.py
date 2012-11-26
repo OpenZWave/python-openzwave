@@ -38,7 +38,6 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 class ZWaveValue(ZWaveObject):
     '''
     Represents a single value.
-    Must be updated to use the cachedObject facilities.
     '''
     def __init__(self, value_id, network=None, parent=None):
         '''
@@ -334,14 +333,18 @@ class ZWaveValue(ZWaveObject):
     def data(self, value):
         """
         Set the data of the value.
-        Use check_data before setting it.
+        Use check_data before setting it :
+
+        newval = value.check_data(some_data)
+        if newval != None:
+            value.data = newval
 
         :param value: The new data value
         :type value: str
 
         """
-        val = self.check_data(value)
-        self._network.manager.setValue(self.value_id, val)
+#        val = self.check_data(value)
+        self._network.manager.setValue(self.value_id, value)
 #        self.outdate("self.data")
 
     @property
@@ -363,8 +366,8 @@ class ZWaveValue(ZWaveObject):
         """
         When type of value is list, data_items contains a list of valid values
 
-        :return: The valid values
-        :rtype: set()
+        :return: The valid values or a help string
+        :rtype: string or set
 
         """
 #        if self.is_outdated("self.data_items"):

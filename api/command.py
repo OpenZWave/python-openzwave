@@ -377,6 +377,31 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             return True
         return False
 
+    def get_switch_all_state(self, value_id):
+        """
+        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+        Return the state (using value value_id) of a switch or a dimmer.
+
+        :param value_id: The value to retrieve state
+        :type value_id: int
+        :return: The state of the value
+        :rtype: bool
+
+        """
+        #print value_id
+        if value_id in self.get_switches_all():
+            instance = self.values[value_id].instance
+            for switch in self.get_switches():
+                if self.values[switch].instance == instance :
+                    return self.values[switch].data
+            for dimmer in self.get_dimmers():
+                if self.values[dimmer].instance == instance :
+                    if self.values[dimmer].data == 0:
+                        return False
+                    else :
+                        return True
+        return None
+
     def get_switch_all_item(self, value_id):
         """
         The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
@@ -505,9 +530,9 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             #Dimmers doesn't return the good level.
             #Add a Timer to refresh the value
             if value == 0:
-                timer1 = Timer(2, self.values[value_id].refresh)
+                timer1 = Timer(1, self.values[value_id].refresh)
                 timer1.start()
-                timer2 = Timer(4, self.values[value_id].refresh)
+                timer2 = Timer(2, self.values[value_id].refresh)
                 timer2.start()
             return True
         return False
@@ -534,7 +559,7 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
 
     '''
 
-    def get_sensors(self):
+    def get_sensors(self, type='All'):
         """
         The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
         The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
@@ -547,16 +572,18 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
             readonly = True
             writeonly = False
 
+        :param type: the type of value
+        :type type: 'All' or PyValueTypes
         :return: The list of switches on this node
         :rtype: dict()
 
         """
         values = {}
-        values.update(self.get_values(class_id=0x30, genre='User', \
+        values.update(self.get_values(type=type, class_id=0x30, genre='User', \
             readonly=True, writeonly=False))
-        values.update(self.get_values(class_id=0x31, genre='User', \
+        values.update(self.get_values(type=type, class_id=0x31, genre='User', \
             readonly=True, writeonly=False))
-        values.update(self.get_values(class_id=0x32, genre='User', \
+        values.update(self.get_values(type=type, class_id=0x32, genre='User', \
             readonly=True, writeonly=False))
         return values
 

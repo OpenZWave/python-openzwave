@@ -1764,7 +1764,9 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
+                logging.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
+                logging.debug("SetValueListSelection %s" % cret)
                 ret = 1 if cret else 0
         return ret
 

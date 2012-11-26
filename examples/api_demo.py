@@ -229,6 +229,7 @@ for node in network.nodes:
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  value / items: %s / %s" % (network.nodes[node].get_switch_all_item(val), network.nodes[node].get_switch_all_items(val)))
+        print("  state: %s" % (network.nodes[node].get_switch_all_state(val)))
 print "------------------------------------------------------------"
 print "Retrieve protection compatibles devices on the network    "
 print "------------------------------------------------------------"

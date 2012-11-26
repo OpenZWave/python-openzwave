@@ -311,11 +311,19 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug("Stop network.")
+        i = 0
+        for i in range(0,30):
+            if self.controller.send_queue_count <= 0:
+                break
+            else:
+                time.sleep(1.0)
+        logging.debug("Wait for empty send_queue during %s second(s)." % i)
         try :
             self._semaphore_nodes.acquire()
-            self.nodes = None
             self._manager.removeWatcher(self.zwcallback)
+            time.sleep(1.0)
             self._manager.removeDriver(self._options.device)
+            self.nodes = None
             self._state = self.STATE_STOPPED
             if fire :
                 dispatcher.send(self.SIGNAL_NETWORK_STOPPED, \

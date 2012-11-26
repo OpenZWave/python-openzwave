@@ -333,7 +333,7 @@ class ZWaveController(ZWaveObject):
         The capabilities of the controller.
 
         :return: The capabilities of the controller
-        :rtype: int
+        :rtype: set
 
         """
         caps = set()

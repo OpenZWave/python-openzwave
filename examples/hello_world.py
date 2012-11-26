@@ -148,7 +148,7 @@ for node in network.nodes:
         print("Deactivate switch")
         network.nodes[node].set_switch(val,False)
     #We only activate the first switch
-    exit
+    #exit
 
 time.sleep(5.0)
 
@@ -163,7 +163,7 @@ for node in network.nodes:
         print("Deactivate dimmer")
         network.nodes[node].set_dimmer(val,0)
     #We only activate the first dimmer
-    exit
+    #exit
 
 time.sleep(10.0)
 

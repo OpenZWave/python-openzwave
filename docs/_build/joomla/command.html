@@ -429,6 +429,25 @@ Return the all the possible values (using value value_id) of a switch_all.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_state">
+<tt class="descname">get_switch_all_state</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the state (using value value_id) of a switch or a dimmer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.get_switch_state">
 <tt class="descname">get_switch_state</tt><big>(</big><em>value_id</em><big>)</big></dt>
 <dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
@@ -580,7 +599,7 @@ The command 0x32 (COMMAND_CLASS_METER) of this node.</p>
 
 <dl class="method">
 <dt id="openzwave.command.ZWaveNodeSensor.get_sensors">
-<tt class="descname">get_sensors</tt><big>(</big><big>)</big></dt>
+<tt class="descname">get_sensors</tt><big>(</big><em>type='All'</em><big>)</big></dt>
 <dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
 The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
 The command 0x32 (COMMAND_CLASS_METER) of this node.
@@ -595,9 +614,11 @@ writeonly = False</div></blockquote>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>type</strong> (<em>&#8216;All&#8217; or PyValueTypes</em>) &#8211; the type of value</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
 </table>
