@@ -5,6 +5,7 @@ echo "|   Install openzwave in tmp                               |"
 echo "------------------------------------------------------------"
 set +e
 rm zwcfg_*.xml
+rm zwscene.xml
 set -e
 cd ..
 python setup-lib.py install --root=build/tmp

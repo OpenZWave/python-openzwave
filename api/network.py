@@ -623,7 +623,7 @@ class ZWaveNetwork(ZWaveObject):
 
         :param sceneid: The id of the scene to check
         :type sceneid: int
-        :return: True if the scene exist. False in other cases
+        :return: True if the scene was removed. False in other cases
         :rtype: bool
 
         """

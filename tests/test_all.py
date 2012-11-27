@@ -411,9 +411,115 @@ class ProtectionTestCase(WaitTestCase):
         if not ran :
             self.skipTest("No Protection found")
 
+class SceneTestCase(WaitTestCase):
+
+    def test_005_scene_count(self):
+        self.wait_for_queue()
+        global count
+        count = network.scenes_count
+        self.assertTrue( count >= 0)
+
+    def test_010_add_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        sceneid = network.create_scene("TestUnit Scene")
+        self.assertTrue( sceneid > 0)
+
+    def test_110_add_switches_to_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        scene = network.get_scenes()[sceneid]
+        for node in network.nodes:
+            for val in network.nodes[node].get_switches() :
+                ret = scene.add_value(val, True)
+                self.assertTrue(ret == True)
+
+    def test_120_add_dimmers_to_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        global level
+        scene = network.get_scenes()[sceneid]
+        for node in network.nodes:
+            for val in network.nodes[node].get_dimmers() :
+                ret = scene.add_value(val, level)
+                self.assertTrue(ret == True)
+
+    def test_210_scene_exist(self):
+        self.wait_for_queue()
+        global sceneid
+        self.assertTrue( network.scene_exists(sceneid) == True)
+
+    def test_310_scene_activate(self):
+        self.wait_for_queue()
+        global sceneid
+        scene = network.get_scenes()[sceneid]
+        self.assertTrue( scene.activate() == True)
+
+    def test_410_scene_count(self):
+        self.wait_for_queue()
+        global count
+        self.assertTrue( network.scenes_count == count + 1)
+
+#    def test_510_drop_scene(self):
+#        self.wait_for_queue()
+#        global sceneid
+#        ret = network.remove_scene(sceneid)
+#        self.assertTrue( ret == True)
+
+    def test_610_add_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        sceneid = network.create_scene("TestUnit Scene")
+        self.assertTrue( sceneid > 0)
+
+    def test_710_add_switches_to_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        scene = network.get_scenes()[sceneid]
+        for node in network.nodes:
+            for val in network.nodes[node].get_switches() :
+                ret = scene.add_value(val, False)
+                self.assertTrue(ret == True)
+
+    def test_720_add_dimmers_to_scene(self):
+        self.wait_for_queue()
+        global sceneid
+        global level
+        scene = network.get_scenes()[sceneid]
+        for node in network.nodes:
+            for val in network.nodes[node].get_dimmers() :
+                ret = scene.add_value(val, 0)
+                self.assertTrue(ret == True)
+
+    def test_810_scene_activate(self):
+        self.wait_for_queue()
+        global sceneid
+        scene = network.get_scenes()[sceneid]
+        self.assertTrue( scene.activate() == True)
+
+#    def test_820_scene_count(self):
+#        self.wait_for_queue()
+#        global count
+#        self.assertTrue( network.scenes_count == count + 1)
+
+#    def test_830_drop_scene(self):
+#        self.wait_for_queue()
+#        global sceneid
+#        ret = network.remove_scene(sceneid)
+#        self.assertTrue( ret == True)
+
+#    def test_910_scene_count(self):
+#        self.wait_for_queue()
+#        global count
+#        self.assertTrue( network.scenes_count == count)
+
 if __name__ == '__main__':
     device="/dev/zwave-aeon-s2"
     log="Debug"
+
+    scenid = 0
+    level = 70
+    count = 0
 
     for arg in sys.argv:
         if arg.startswith("--device"):
@@ -467,6 +573,7 @@ if __name__ == '__main__':
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SensorsTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SwitchesAllTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(ProtectionTestCase))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SceneTestCase))
     unittest.TextTestRunner(verbosity=2).run(suite)
 
     print "----------------------------------------------------------------------"
