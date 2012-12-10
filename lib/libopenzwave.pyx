@@ -32,6 +32,7 @@ from mylibc cimport string
 from vers cimport ozw_vers
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
+#from node cimport NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
@@ -826,24 +827,32 @@ Send current driver statistics to the log file.
 #-----------------------------------------------------------------------------
     def getDriverStatistics(self, homeId):
         '''
+.. _getDriverStatistics:
+
 Retrieve statistics from driver.
 
 Statistics:
 
-        * s_SOFCnt : Number of SOF bytes received
-        * s_ACKWaiting : Number of unsolicited messages while waiting for an ACK
-        * s_readAborts : Number of times read were aborted due to timeouts
-        * s_badChecksum : Number of bad checksums
-        * s_readCnt : Number of messages successfully read
-        * s_writeCnt : Number of messages successfully sent
-        * s_CANCnt : Number of CAN bytes received
-        * s_NAKCnt : Number of NAK bytes received
-        * s_ACKCnt : Number of ACK bytes received
-        * s_OOFCnt : Number of bytes out of framing
-        * s_dropped : Number of messages dropped & not delivered
-        * s_retries : Number of messages retransmitted
-        * s_controllerReadCnt : Number of controller messages read
-        * s_controllerWriteCnt : Number of controller messages sent
+    * SOFCnt : Number of SOF bytes received
+    * ACKWaiting : Number of unsolicited messages while waiting for an ACK
+    * readAborts : Number of times read were aborted due to timeouts
+    * badChecksum : Number of bad checksums
+    * readCnt : Number of messages successfully read
+    * writeCnt : Number of messages successfully sent
+    * CANCnt : Number of CAN bytes received
+    * NAKCnt : Number of NAK bytes received
+    * ACKCnt : Number of ACK bytes received
+    * OOFCnt : Number of bytes out of framing
+    * dropped : Number of messages dropped & not delivered
+    * retries : Number of messages retransmitted
+    * callbacks : Number of unexpected callbacks
+    * badroutes : Number of failed messages due to bad route response
+    * noack : Number of no ACK returned errors
+    * netbusy : Number of network busy/failure messages
+    * nondelivery : Number of messages not delivered to network
+    * routedbusy : Number of messages received with routed busy status
+    * broadcastReadCnt : Number of broadcasts read
+    * broadcastWriteCnt : Number of broadcasts sent
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
@@ -851,6 +860,7 @@ Statistics:
 :type data: int
 :return: A dict containing statistics of the driver.
 :rtype: dict()
+:see: getNodeStatistics_
 
        '''
         cdef DriverData_t data
@@ -877,6 +887,25 @@ Statistics:
         ret['broadcastReadCnt'] = data.m_broadcastReadCnt
         ret['broadcastWriteCnt'] = data.m_broadcastWriteCnt
         return ret
+
+
+    def testNetwork(self, homeid, count):
+        '''
+.. _testNetwork:
+
+Test network.
+
+Sends a series of messages to every node on the network for testing network reliability.
+
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param count: This is the number of test messages to send.
+:type count: int
+:see: testNetworkNode_
+
+        '''
+        self.manager.TestNetwork(homeid, count)
+
 
 # -----------------------------------------------------------------------------
 # Polling Z-Wave devices
@@ -1002,6 +1031,82 @@ Set the frequency of polling (0=none, 1=every time through the set, 2-every othe
 # -----------------------------------------------------------------------------
 # Methods for accessing information on indivdual nodes.
 #
+
+    def testNetworkNode(self, homeid, nodeid, count):
+        '''
+.. _testNetworkNode:
+
+Test network node.
+
+Sends a series of messages to a network node for testing network reliability.
+
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node to query.
+:type nodeid: int
+:param count: This is the number of test messages to send.
+:type count: int
+:see: testNetwork_
+
+        '''
+        self.manager.TestNetworkNode(homeid, nodeid, count)
+
+    def getNodeStatistics(self, homeId, nodeId):
+        '''
+.. _getNodeStatistics:
+
+Retrieve statistics per node
+
+Statistics:
+
+    * sentCnt                      # Number of messages sent from this node.
+    * sentFailed                   # Number of sent messages failed
+    * retries                      # Number of message retries
+    * receivedCnt                  # Number of messages received from this node.
+    * receivedDups                 # Number of duplicated messages received;
+    * lastRTT                      # Last message rtt
+    * sentTS                       # Last message sent time
+    * receivedTS                   # Last message received time
+    * averageRTT                   # Average round trip time.
+    * quality                      # Node quality measure
+    * lastReceivedMessage[254]     # Place to hold last received message
+    * ccData                       #Unknown
+
+:param homeId: The Home ID of the Z-Wave controller.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:param data: Pointer to structure NodeData to return values
+:type data: int
+:return: A dict containing statistics of the node.
+:rtype: dict()
+:see: getDriverStatistics_
+
+       '''
+#        cdef DriverData_t data
+#        self.manager.GetDriverStatistics( homeId, &data );
+#        ret = {}
+#        ret['SOFCnt'] = data.m_SOFCnt
+#        ret['ACKWaiting'] = data.m_ACKWaiting
+#        ret['readAborts'] = data.m_readAborts
+#        ret['badChecksum'] = data.m_badChecksum
+#        ret['readCnt'] = data.m_readCnt
+#        ret['writeCnt'] = data.m_writeCnt
+#        ret['CANCnt'] = data.m_CANCnt
+#        ret['NAKCnt'] = data.m_NAKCnt
+#        ret['ACKCnt'] = data.m_ACKCnt
+#        ret['OOFCnt'] = data.m_OOFCnt
+#        ret['dropped'] = data.m_dropped
+#        ret['retries'] = data.m_retries
+#        ret['callbacks'] = data.m_callbacks
+#        ret['badroutes'] = data.m_badroutes
+#        ret['noack'] = data.m_noack
+#        ret['netbusy'] = data.m_netbusy
+#        ret['nondelivery'] = data.m_nondelivery
+#        ret['routedbusy'] = data.m_routedbusy
+#        ret['broadcastReadCnt'] = data.m_broadcastReadCnt
+#        ret['broadcastWriteCnt'] = data.m_broadcastWriteCnt
+        return None
 
     def requestNodeDynamic(self, homeid, nodeid):
         '''

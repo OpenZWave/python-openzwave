@@ -28,3 +28,18 @@ cdef extern from "Node.h" namespace "OpenZWave::Node":
         SecurityFlag_Sensor250ms = 0x20,
         SecurityFlag_Sensor1000ms = 0x40,
         SecurityFlag_OptionalFunctionality = 0x80
+
+#    cdef struct NodeData:
+#        uint32_t m_sentCnt                      # Number of messages sent from this node.
+#        uint32_t m_sentFailed                   # Number of sent messages failed
+#        uint32_t m_retries                      # Number of message retries
+#        uint32_t m_receivedCnt                  # Number of messages received from this node.
+#        uint32_t m_receivedDups                 # Number of duplicated messages received;
+#        uint32_t m_lastRTT                      # Last message rtt
+#        TimeStamp m_sentTS                      # Last message sent time
+#        TimeStamp m_receivedTS                  # Last message received time
+#        uint32_t m_averageRTT                   # Average round trip time.
+#        uint8_t m_quality                       # Node quality measure
+#        uint8_t m_lastReceivedMessage[254]      # Place to hold last received message
+#        list<CommandClassData> m_ccData         #Unknown
+

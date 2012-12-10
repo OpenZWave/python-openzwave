@@ -289,12 +289,6 @@ class StatTree(OldestTree):
         self.lines.append(urwid.Text(    "  Number of broadcasts sent: . . . . . . . . . . . . . . . %s" % \
             self.window.network.controller.stats['broadcastWriteCnt'], align='left'))
         self.size += 1
-        self.lines.append(urwid.Text(    "  Controller messages received:  . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_controllerReadCnt'], align='left'))
-        self.size += 1
-        self.lines.append(urwid.Text(    "  Controller messages sent:  . . . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_controllerWriteCnt'], align='left'))
-        self.size += 1
         self.lines.append(urwid.Text(    "    Queue:", align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Messages in queue: . . . . . . . . . . . . . . . . . . . %s" % \
