@@ -25,7 +25,7 @@ from mylibc cimport string
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
-from notification cimport Type_Error, Type_Group, Type_NodeEvent
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create

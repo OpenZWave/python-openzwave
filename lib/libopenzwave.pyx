@@ -36,7 +36,7 @@ from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
-from notification cimport Type_Error, Type_Group, Type_NodeEvent
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
@@ -89,7 +89,7 @@ PyNotifications = [
     EnumWithDoc('NodeQueriesComplete').setDoc("All the initialisation queries on a node have been completed."),
     EnumWithDoc('AwakeNodesQueried').setDoc("All awake nodes have been queried, so client application can expected complete data for these nodes."),
     EnumWithDoc('AllNodesQueried').setDoc("All nodes have been queried, so client application can expected complete data."),
-    EnumWithDoc('Error').setDoc("An error has occured that we need to report."),
+    EnumWithDoc('Notification').setDoc("An error has occured that we need to report."),
     ]
 
 PyGenres = [
@@ -248,8 +248,8 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         n['groupIdx'] = notification.GetGroupIdx()
     elif notification.GetType() == Type_NodeEvent:
         n['event'] = notification.GetEvent()
-    elif notification.GetType() == Type_Error:
-        n['errorCode'] = notification.GetErrorCode()
+    elif notification.GetType() == Type_Notification:
+        n['notificationCode'] = notification.GetNotification()
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
@@ -856,20 +856,26 @@ Statistics:
         cdef DriverData_t data
         self.manager.GetDriverStatistics( homeId, &data );
         ret = {}
-        ret['s_SOFCnt'] = data.s_SOFCnt
-        ret['s_ACKWaiting'] = data.s_ACKWaiting
-        ret['s_readAborts'] = data.s_readAborts
-        ret['s_badChecksum'] = data.s_badChecksum
-        ret['s_readCnt'] = data.s_readCnt
-        ret['s_writeCnt'] = data.s_writeCnt
-        ret['s_CANCnt'] = data.s_CANCnt
-        ret['s_NAKCnt'] = data.s_NAKCnt
-        ret['s_ACKCnt'] = data.s_ACKCnt
-        ret['s_OOFCnt'] = data.s_OOFCnt
-        ret['s_dropped'] = data.s_dropped
-        ret['s_retries'] = data.s_retries
-        ret['s_controllerReadCnt'] = data.s_controllerReadCnt
-        ret['s_controllerWriteCnt'] = data.s_controllerWriteCnt
+        ret['SOFCnt'] = data.m_SOFCnt
+        ret['ACKWaiting'] = data.m_ACKWaiting
+        ret['readAborts'] = data.m_readAborts
+        ret['badChecksum'] = data.m_badChecksum
+        ret['readCnt'] = data.m_readCnt
+        ret['writeCnt'] = data.m_writeCnt
+        ret['CANCnt'] = data.m_CANCnt
+        ret['NAKCnt'] = data.m_NAKCnt
+        ret['ACKCnt'] = data.m_ACKCnt
+        ret['OOFCnt'] = data.m_OOFCnt
+        ret['dropped'] = data.m_dropped
+        ret['retries'] = data.m_retries
+        ret['callbacks'] = data.m_callbacks
+        ret['badroutes'] = data.m_badroutes
+        ret['noack'] = data.m_noack
+        ret['netbusy'] = data.m_netbusy
+        ret['nondelivery'] = data.m_nondelivery
+        ret['routedbusy'] = data.m_routedbusy
+        ret['broadcastReadCnt'] = data.m_broadcastReadCnt
+        ret['broadcastWriteCnt'] = data.m_broadcastWriteCnt
         return ret
 
 # -----------------------------------------------------------------------------

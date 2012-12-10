@@ -272,16 +272,22 @@ class StatTree(OldestTree):
         self.lines.append(urwid.Text(    "    Statistics", align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Frames processed: . . . . . . .  . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_SOFCnt'], align='left'))
+            self.window.network.controller.stats['SOFCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  [Device] Messages successfully received: . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_readCnt'], align='left'))
+            self.window.network.controller.stats['readCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  [Device] Messages successfully sent:  . . . . . . . . . .%s" % \
-            self.window.network.controller.stats['s_writeCnt'], align='left'))
+            self.window.network.controller.stats['writeCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  ACKs received from controller: . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_ACKCnt'], align='left'))
+            self.window.network.controller.stats['ACKCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of broadcasts read: . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['broadcastReadCnt'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of broadcasts sent: . . . . . . . . . . . . . . . %s" % \
+            self.window.network.controller.stats['broadcastWriteCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Controller messages received:  . . . . . . . . . . . . . %s" % \
             self.window.network.controller.stats['s_controllerReadCnt'], align='left'))
@@ -297,28 +303,46 @@ class StatTree(OldestTree):
         self.lines.append(urwid.Text(    "    Errors:", align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Unsolicited messages received while waiting for ACK: . . %s" % \
-            self.window.network.controller.stats['s_ACKWaiting'], align='left'))
+            self.window.network.controller.stats['ACKWaiting'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Reads aborted due to timeouts: . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_readAborts'], align='left'))
+            self.window.network.controller.stats['readAborts'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Bad checksum errors: . . . . . . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_badChecksum'], align='left'))
+            self.window.network.controller.stats['badChecksum'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  CANs received from controller: . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_CANCnt'], align='left'))
+            self.window.network.controller.stats['CANCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  NAKs received from controller: . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_NAKCnt'], align='left'))
+            self.window.network.controller.stats['NAKCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Out of frame data flow errors: . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_OOFCnt'], align='left'))
+            self.window.network.controller.stats['OOFCnt'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Messages retransmitted:  . . . . . . . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_retries'], align='left'))
+            self.window.network.controller.stats['retries'], align='left'))
         self.size += 1
         self.lines.append(urwid.Text(    "  Messages dropped and not delivered:  . . . . . . . . . . %s" % \
-            self.window.network.controller.stats['s_dropped'], align='left'))
+            self.window.network.controller.stats['dropped'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of unexpected callbacks: . . . . . . . . .  . . . %s" % \
+            self.window.network.controller.stats['callbacks'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of failed messages due to bad route response: . . %s" % \
+            self.window.network.controller.stats['badroutes'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of no ACK returned errors: . . . . . . . . .  . . %s" % \
+            self.window.network.controller.stats['noack'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of network busy/failure messages: . . . . . . . . %s" % \
+            self.window.network.controller.stats['netbusy'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of messages not delivered to network: . . . . . . %s" % \
+            self.window.network.controller.stats['nondelivery'], align='left'))
+        self.size += 1
+        self.lines.append(urwid.Text(    "  Number of messages received with routed busy status: . . %s" % \
+            self.window.network.controller.stats['routedbusy'], align='left'))
         self.size += 1
         self._modified()
 
