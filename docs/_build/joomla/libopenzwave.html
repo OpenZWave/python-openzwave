@@ -35,7 +35,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="data">
 <dt>
-<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyNotifications</tt><em class="property"> = ['ValueAdded', 'ValueRemoved', 'ValueChanged', 'ValueRefreshed', 'Group', 'NodeNew', 'NodeAdded', 'NodeRemoved', 'NodeProtocolInfo', 'NodeNaming', 'NodeEvent', 'PollingDisabled', 'PollingEnabled', 'SceneEvent', 'CreateButton', 'DeleteButton', 'ButtonOn', 'ButtonOff', 'DriverReady', 'DriverFailed', 'DriverReset', 'MsgComplete', 'EssentialNodeQueriesComplete', 'NodeQueriesComplete', 'AwakeNodesQueried', 'AllNodesQueried', 'Error']</em></dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyNotifications</tt><em class="property"> = ['ValueAdded', 'ValueRemoved', 'ValueChanged', 'ValueRefreshed', 'Group', 'NodeNew', 'NodeAdded', 'NodeRemoved', 'NodeProtocolInfo', 'NodeNaming', 'NodeEvent', 'PollingDisabled', 'PollingEnabled', 'SceneEvent', 'CreateButton', 'DeleteButton', 'ButtonOn', 'ButtonOff', 'DriverReady', 'DriverFailed', 'DriverReset', 'MsgComplete', 'EssentialNodeQueriesComplete', 'NodeQueriesComplete', 'AwakeNodesQueried', 'AllNodesQueried', 'Notification']</em></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
@@ -500,24 +500,30 @@ Z-Wave controller in turn.</p>
 <dl class="method">
 <dt id="libopenzwave.PyManager.getDriverStatistics">
 <tt class="descname">getDriverStatistics</tt><big>(</big><big>)</big></dt>
-<dd><p>Retrieve statistics from driver.</p>
+<dd><p id="getdriverstatistics">Retrieve statistics from driver.</p>
 <p>Statistics:</p>
 <blockquote>
 <div><ul class="simple">
-<li>s_SOFCnt : Number of SOF bytes received</li>
-<li>s_ACKWaiting : Number of unsolicited messages while waiting for an ACK</li>
-<li>s_readAborts : Number of times read were aborted due to timeouts</li>
-<li>s_badChecksum : Number of bad checksums</li>
-<li>s_readCnt : Number of messages successfully read</li>
-<li>s_writeCnt : Number of messages successfully sent</li>
-<li>s_CANCnt : Number of CAN bytes received</li>
-<li>s_NAKCnt : Number of NAK bytes received</li>
-<li>s_ACKCnt : Number of ACK bytes received</li>
-<li>s_OOFCnt : Number of bytes out of framing</li>
-<li>s_dropped : Number of messages dropped &amp; not delivered</li>
-<li>s_retries : Number of messages retransmitted</li>
-<li>s_controllerReadCnt : Number of controller messages read</li>
-<li>s_controllerWriteCnt : Number of controller messages sent</li>
+<li>SOFCnt : Number of SOF bytes received</li>
+<li>ACKWaiting : Number of unsolicited messages while waiting for an ACK</li>
+<li>readAborts : Number of times read were aborted due to timeouts</li>
+<li>badChecksum : Number of bad checksums</li>
+<li>readCnt : Number of messages successfully read</li>
+<li>writeCnt : Number of messages successfully sent</li>
+<li>CANCnt : Number of CAN bytes received</li>
+<li>NAKCnt : Number of NAK bytes received</li>
+<li>ACKCnt : Number of ACK bytes received</li>
+<li>OOFCnt : Number of bytes out of framing</li>
+<li>dropped : Number of messages dropped &amp; not delivered</li>
+<li>retries : Number of messages retransmitted</li>
+<li>callbacks : Number of unexpected callbacks</li>
+<li>badroutes : Number of failed messages due to bad route response</li>
+<li>noack : Number of no ACK returned errors</li>
+<li>netbusy : Number of network busy/failure messages</li>
+<li>nondelivery : Number of messages not delivered to network</li>
+<li>routedbusy : Number of messages received with routed busy status</li>
+<li>broadcastReadCnt : Number of broadcasts read</li>
+<li>broadcastWriteCnt : Number of broadcasts sent</li>
 </ul>
 </div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -533,7 +539,10 @@ Z-Wave controller in turn.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict containing statistics of the driver.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict()</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dict()</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodestatistics">getNodeStatistics</a></p>
 </td>
 </tr>
 </tbody>
@@ -1053,6 +1062,51 @@ data.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnodetype">getNodeType</a>, <a class="reference internal" href="#getnodegeneric">getNodeGeneric</a>, <a class="reference internal" href="#getnodebasic">getNodeBasic</a>, <a class="reference internal" href="#getnodesecurity">getNodeSecurity</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeStatistics">
+<tt class="descname">getNodeStatistics</tt><big>(</big><big>)</big></dt>
+<dd><p id="getnodestatistics">Retrieve statistics per node</p>
+<p>Statistics:</p>
+<blockquote>
+<div><ul class="simple">
+<li>sentCnt                      # Number of messages sent from this node.</li>
+<li>sentFailed                   # Number of sent messages failed</li>
+<li>retries                      # Number of message retries</li>
+<li>receivedCnt                  # Number of messages received from this node.</li>
+<li>receivedDups                 # Number of duplicated messages received;</li>
+<li>lastRTT                      # Last message rtt</li>
+<li>sentTS                       # Last message sent time</li>
+<li>receivedTS                   # Last message received time</li>
+<li>averageRTT                   # Average round trip time.</li>
+<li>quality                      # Node quality measure</li>
+<li>lastReceivedMessage[254]     # Place to hold last received message</li>
+<li>ccData                       #Unknown</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>data</strong> (<em>int</em>) &#8211; Pointer to structure NodeData to return values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A dict containing statistics of the node.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">dict()</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getdriverstatistics">getDriverStatistics</a></p>
 </td>
 </tr>
 </tbody>
@@ -2963,6 +3017,51 @@ will be turned on.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#switchalloff">switchAllOff</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.testNetwork">
+<tt class="descname">testNetwork</tt><big>(</big><big>)</big></dt>
+<dd><p id="testnetwork">Test network.</p>
+<p>Sends a series of messages to every node on the network for testing network reliability.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>count</strong> (<em>int</em>) &#8211; This is the number of test messages to send.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#testnetworknode">testNetworkNode</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.testNetworkNode">
+<tt class="descname">testNetworkNode</tt><big>(</big><big>)</big></dt>
+<dd><p id="testnetworknode">Test network node.</p>
+<p>Sends a series of messages to a network node for testing network reliability.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeid</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>count</strong> (<em>int</em>) &#8211; This is the number of test messages to send.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#testnetwork">testNetwork</a></p>
+</td>
 </tr>
 </tbody>
 </table>
