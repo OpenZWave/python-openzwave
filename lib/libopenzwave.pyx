@@ -142,6 +142,29 @@ PyControllerCommand = [
     EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
     ]
 
+PyStatDriver = [
+    EnumWithDoc('SOFCnt').setDoc("Number of SOF bytes received"),
+    EnumWithDoc('ACKWaiting').setDoc("Number of unsolicited messages while waiting for an ACK"),
+    EnumWithDoc('readAborts').setDoc("Number of times read were aborted due to timeouts"),
+    EnumWithDoc('badChecksum').setDoc("Number of bad checksums"),
+    EnumWithDoc('readCnt').setDoc("Number of messages successfully read"),
+    EnumWithDoc('writeCnt').setDoc("Number of messages successfully sent"),
+    EnumWithDoc('CANCnt').setDoc("Number of CAN bytes received"),
+    EnumWithDoc('NAKCnt').setDoc("Number of NAK bytes received"),
+    EnumWithDoc('ACKCnt').setDoc("Number of ACK bytes received"),
+    EnumWithDoc('OOFCnt').setDoc("Number of bytes out of framing"),
+    EnumWithDoc('dropped').setDoc("Number of messages dropped & not delivered"),
+    EnumWithDoc('retries').setDoc("Number of messages retransmitted"),
+    EnumWithDoc('callbacks').setDoc("Number of unexpected callbacks"),
+    EnumWithDoc('badroutes').setDoc("Number of failed messages due to bad route response"),
+    EnumWithDoc('noack').setDoc("Number of no ACK returned errors"),
+    EnumWithDoc('netbusy').setDoc("Number of network busy/failure messages"),
+    EnumWithDoc('nondelivery').setDoc("Number of messages not delivered to network"),
+    EnumWithDoc('routedbusy').setDoc("Number of messages received with routed busy status"),
+    EnumWithDoc('broadcastReadCnt').setDoc("Number of broadcasts read"),
+    EnumWithDoc('broadcastWriteCnt').setDoc("Number of broadcasts sent"),
+    ]
+
 PyLogLevels = {
     'None' : 0,
     'Always' : 1,
