@@ -78,10 +78,10 @@ network = ZWaveNetwork(options, log=None)
 
 time_started = 0
 print "------------------------------------------------------------"
-print "Waiting for driver : "
+print "Waiting for network awaked : "
 print "------------------------------------------------------------"
-for i in range(0,20):
-    if network.state>=network.STATE_STARTED:
+for i in range(0,50):
+    if network.state>=network.STATE_AWAKED:
         print " done"
         break
     else:
@@ -89,25 +89,27 @@ for i in range(0,20):
         sys.stdout.flush()
         time_started += 1
         time.sleep(1.0)
-if network.state<network.STATE_STARTED:
+if network.state<network.STATE_AWAKED:
     print "."
     print "Can't initialise driver! Look at the logs in OZW_Log.log"
     quit(1)
+#print "------------------------------------------------------------"
+#print "Use openzwave library : %s" % network.controller.ozw_library_version
+#print "Use python library : %s" % network.controller.python_library_version
+#print "Use ZWave library : %s" % network.controller.library_description
+#print "Network home id : %s" % network.home_id_str
+#print "Controller node id : %s" % network.controller.node.node_id
+#print "Controller node version : %s" % (network.controller.node.version)
+#print "Nodes in network : %s" % network.nodes_count
+#print "------------------------------------------------------------"
+#print "Waiting for network to become ready : "
+#print "------------------------------------------------------------"
 print "------------------------------------------------------------"
-print "Use openzwave library : %s" % network.controller.ozw_library_version
-print "Use python library : %s" % network.controller.python_library_version
-print "Use ZWave library : %s" % network.controller.library_description
-print "Network home id : %s" % network.home_id_str
-print "Controller node id : %s" % network.controller.node.node_id
-print "Controller node version : %s" % (network.controller.node.version)
-print "Nodes in network : %s" % network.nodes_count
+print "Waiting for network ready : "
 print "------------------------------------------------------------"
-print "Waiting for network to become ready : "
-print "------------------------------------------------------------"
-for i in range(0,90):
+for i in range(0,180):
     if network.state>=network.STATE_READY:
         print " done in %s seconds" % time_started
-
         break
     else:
         sys.stdout.write(".")

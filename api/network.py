@@ -243,7 +243,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_AWAKE_NODES_QUERIED = 'AwakeNodesQueried'
     SIGNAL_ALL_NODES_QUERIED = 'AllNodesQueried'
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
-    SIGNAL_ERROR = 'Error'
+    SIGNAL_NOTIFICATION = 'Notification'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -765,8 +765,8 @@ class ZWaveNetwork(ZWaveObject):
             self._handle_node_queries_complete(args)
         elif notify_type == self.SIGNAL_MSG_COMPLETE:
             self._handle_msg_complete(args)
-        elif notify_type == self.SIGNAL_ERROR:
-            self._handle_error(args)
+        elif notify_type == self.SIGNAL_NOTIFICATION:
+            self._handle_notification(args)
         else:
             logging.warning('Skipping unhandled notification [%s]', args)
 
@@ -1074,10 +1074,10 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('Z-Wave Notification AwakeNodesQueried : %s' % (args))
         self._object_id = args['homeId']
         try :
-            ctrlnode = ZWaveNode(args['nodeId'], network=self)
-            self._semaphore_nodes.acquire()
-            self.nodes[args['nodeId']] = ctrlnode
-            self._controller.node = self.nodes[args['nodeId']]
+            #ctrlnode = ZWaveNode(args['nodeId'], network=self)
+            #self._semaphore_nodes.acquire()
+            #self.nodes[args['nodeId']] = ctrlnode
+            #self._controller.node = self.nodes[args['nodeId']]
             self._state = self.STATE_AWAKED
             dispatcher.send(self.SIGNAL_NETWORK_AWAKED, **{'network': self})
             dispatcher.send(self.SIGNAL_AWAKE_NODES_QUERIED, \
@@ -1086,7 +1086,8 @@ class ZWaveNetwork(ZWaveObject):
             import sys, traceback
             logging.error('Z-Wave Notification AwakeNodesQueried : %s' % (traceback.format_exception(*sys.exc_info())))
         finally :
-            self._semaphore_nodes.release()
+            #self._semaphore_nodes.release()
+            pass
 
     def _handle_polling_disabled(self, args):
         '''
@@ -1292,18 +1293,18 @@ class ZWaveNetwork(ZWaveObject):
                     'value' : vval})
             self._handle_value(self.nodes[args['nodeId']], vval)
 
-    def _handle_error(self, args):
+    def _handle_notification(self, args):
         '''
         Called when an error happened.
 
-        dispatcher.send(self.SIGNAL_ERROR, **{'network': self})
+        dispatcher.send(self.SIGNAL_NOTIFICATION, **{'network': self})
 
         :param args: data sent by the notification
         :type args: dict()
 
         '''
         logging.debug('Z-Wave Notification Error : %s' % (args))
-        dispatcher.send(self.SIGNAL_ERROR, \
+        dispatcher.send(self.SIGNAL_NOTIFICATION, \
             **{'network': self})
 
     def _handle_msg_complete(self, args):
