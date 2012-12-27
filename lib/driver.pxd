@@ -45,33 +45,52 @@ cdef extern from "Driver.h" namespace "OpenZWave::Driver":
         uint32_t m_broadcastWriteCnt    # Number of broadcasts sent
 
     cdef enum ControllerCommand:
-        ControllerCommand_None = 0                          # No command.
-        ControllerCommand_AddController = 1                 # Add a new controller to the Z-Wave network.  The new controller will be a secondary.
-        ControllerCommand_AddDevice = 2                     # Add a new device (but not a controller) to the Z-Wave network.
-        ControllerCommand_CreateNewPrimary = 3              # Add a new controller to the Z-Wave network.  The new controller will be the primary, and the current primary will become a secondary controller.
-        ControllerCommand_ReceiveConfiguration = 4          # Receive Z-Wave network configuration information from another controller.
-        ControllerCommand_RemoveController = 5              # Remove a controller from the Z-Wave network.
-        ControllerCommand_RemoveDevice = 6                  # Remove a new device (but not a controller) from the Z-Wave network.
-        ControllerCommand_RemoveFailedNode = 7              # Move a node to the controller's failed nodes list. This command will only work if the node cannot respond.
-        ControllerCommand_HasNodeFailed = 8                 # Check whether a node is in the controller's failed nodes list.
-        ControllerCommand_ReplaceFailedNode = 9             # Replace a non-responding node with another. The node must be in the controller's list of failed nodes for this command to succeed.
-        ControllerCommand_TransferPrimaryRole = 10          # Make a different controller the primary.
-        ControllerCommand_RequestNetworkUpdate = 11         # Request network information from the SUC/SIS.
-        ControllerCommand_RequestNodeNeighborUpdate = 12    # Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors.
-        ControllerCommand_AssignReturnRoute = 13            # Assign a network return routes to a device.
-        ControllerCommand_DeleteAllReturnRoutes = 14        # Delete all return routes from a device.
-        ControllerCommand_CreateButton = 15                 # Create an id that tracks handheld button presses.
-        ControllerCommand_DeleteButton = 16                 # Delete id that tracks handheld button presses.
+        ControllerCommand_None = 0,                        # No command. */
+        ControllerCommand_AddDevice = 1                    # Add a new device or controller to the Z-Wave network. */
+        ControllerCommand_CreateNewPrimary = 2             # Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC. */
+        ControllerCommand_ReceiveConfiguration = 3         # Receive Z-Wave network configuration information from another controller. */
+        ControllerCommand_RemoveDevice = 4                 # Remove a device or controller from the Z-Wave network. */
+        ControllerCommand_RemoveFailedNode = 5             # Move a node to the controller's failed nodes list. This command will only work if the node cannot respond. */
+        ControllerCommand_HasNodeFailed = 6                # Check whether a node is in the controller's failed nodes list. */
+        ControllerCommand_ReplaceFailedNode = 7            # Replace a non-responding node with another. The node must be in the controller's list of failed nodes for this command to succeed. */
+        ControllerCommand_TransferPrimaryRole = 8          # Make a different controller the primary. */
+        ControllerCommand_RequestNetworkUpdate = 9         # Request network information from the SUC/SIS. */
+        ControllerCommand_RequestNodeNeighborUpdate = 10   # Get a node to rebuild its neighbour list.  This method also does RequestNodeNeighbors */
+        ControllerCommand_AssignReturnRoute = 11           # Assign a network return routes to a device. */
+        ControllerCommand_DeleteAllReturnRoutes = 12       # Delete all return routes from a device. */
+        ControllerCommand_SendNodeInformation = 13         # Send a node information frame */
+        ControllerCommand_ReplicationSend = 14             # Send information from primary to secondary */
+        ControllerCommand_CreateButton = 15                # Create an id that tracks handheld button presses */
+        ControllerCommand_DeleteButton = 16                # Delete id that tracks handheld button presses */
 
     cdef enum ControllerState:
-        ControllerState_Normal = 0          # No command in progress.
-        ControllerState_Waiting = 1         # Controller is waiting for a user action.
-        ControllerState_InProgress = 2      # The controller is communicating with the other device to carry out the command.
-        ControllerState_Completed = 3       # The command has completed successfully.
-        ControllerState_Failed = 4          # The command has failed.
-        ControllerState_NodeOK = 5          # Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node is OK.
-        ControllerState_NodeFailed = 6      # Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed.
+        ControllerState_Normal = 0                         # No command in progress. */
+        ControllerState_Starting = 1                       # The command is starting. */
+        ControllerState_Cancel = 2                         # The command was cancelled. */
+        ControllerState_Error = 3                          # Command invocation had error(s) and was aborted */
+        ControllerState_Waiting = 4                        # Controller is waiting for a user action. */
+        ControllerState_Sleeping = 5                       # Controller command is on a sleep queue wait for device. */
+        ControllerState_InProgress = 6                     # The controller is communicating with the other device to carry out the command. */
+        ControllerState_Completed = 7                      # The command has completed successfully. */
+        ControllerState_Failed = 8                         # The command has failed. */
+        ControllerState_NodeOK = 9                         # Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node is OK. */
+        ControllerState_NodeFailed = 10                    # Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed. */
+
+    cdef enum ControllerError:
+          ControllerError_None = 0
+          ControllerError_ButtonNotFound = 1                # Button */
+          ControllerError_NodeNotFound = 2                  # Button */
+          ControllerError_NotBridge = 3                     # Button */
+          ControllerError_NotSUC = 4                        # CreateNewPrimary */
+          ControllerError_NotSecondary = 5                  # CreateNewPrimary */
+          ControllerError_NotPrimary = 6                    # RemoveFailedNode, AddNodeToNetwork */
+          ControllerError_IsPrimary = 7                     # ReceiveConfiguration */
+          ControllerError_NotFound = 8                      # RemoveFailedNode */
+          ControllerError_Busy = 9                          # RemoveFailedNode, RequestNetworkUpdate */
+          ControllerError_Failed = 10                       # RemoveFailedNode, RequestNetworkUpdate */
+          ControllerError_Disabled = 11                     # RequestNetworkUpdate error */
+          ControllerError_Overflow = 12                     # RequestNetworkUpdate error */
 
 ctypedef DriverData DriverData_t
 
-ctypedef void (*pfnControllerCallback_t)( ControllerState _state, void* _context )
+ctypedef void (*pfnControllerCallback_t)( ControllerState _state, ControllerError _error, void* _context )

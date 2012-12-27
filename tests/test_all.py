@@ -31,7 +31,7 @@ import sys, os
 #logging.basicConfig(level=logging.DEBUG)
 #logging.basicConfig(level=logging.INFO)
 
-#logger = logging.getLogger('openzwave')
+logger = logging.getLogger('openzwave')
 
 #Insert your build directory here (it depends of your python distribution)
 #To get one, run the make_doc.sh command
@@ -47,6 +47,7 @@ from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
+from louie import dispatcher, All
 import time
 import unittest
 
@@ -59,6 +60,19 @@ class WaitTestCase(unittest.TestCase):
             else:
                 time.sleep(0.5)
 
+    def ctrl_message(self, state, message, network, controller):
+        self.ctrl_command_result = state
+
+    def node_update(self, network, node):
+        self.node_result = node
+
+    def setUp(self):
+        self.max_delay = 30
+        self.ctrl_command_result = None
+        dispatcher.connect(self.ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        self.node_result = None
+        dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
+
 class NetworkTestCase(WaitTestCase):
 
     def test_000_network(self):
@@ -67,57 +81,75 @@ class NetworkTestCase(WaitTestCase):
 
 class ControllerTestCase(WaitTestCase):
 
-    def test_000_controller(self):
+    def test_010_controller(self):
         self.assertTrue(type(network.controller.name) == type(""))
         self.assertTrue(type(network.controller.ozw_library_version) == type(""))
         self.assertTrue(type(network.controller.python_library_version) == type(""))
         self.assertTrue(type(network.controller.library_description) == type(""))
-        self.assertTrue(type(network.controller.stats) == type(dict()))
+
+    def test_020_controller_capabilities(self):
         self.assertTrue(type(network.controller.capabilities) == type(set()))
+
+    def test_030_controller_send_sqeue(self):
         self.assertTrue(type(network.controller.send_queue_count) == type(0))
         self.assertTrue(network.controller.send_queue_count >= 0)
 
-    def test_010_controller_node(self):
+    def test_040_controller_stats(self):
+        self.assertTrue(type(network.controller.stats) == type(dict()))
+
+    def test_310_controller_node(self):
         self.assertTrue(type(network.controller.node.node_id) == type(0))
         self.assertTrue(network.controller.node.node_id > 0)
         self.assertTrue(type(network.controller.node.version) == type(0))
         self.assertTrue(network.controller.node.version > 0)
+
+    def test_320_controller_node_capabilities(self):
         self.assertTrue(type(network.controller.node.capabilities) == type(set()))
+
+    def test_330_controller_node_neighbors(self):
         self.assertTrue(type(network.controller.node.neighbors) == type(set()))
+
+    def test_340_controller_node_baud_rate(self):
         self.assertTrue(type(network.controller.node.max_baud_rate) == type(long()))
         self.assertTrue(network.controller.node.max_baud_rate > 0)
 
-    def test_020_controller_node_product(self):
+    def test_410_controller_node_product(self):
         self.assertTrue(type(network.controller.node.product_type) == type(""))
         self.assertTrue(type(network.controller.node.product_id) == type(""))
+
+    def test_420_controller_node_name(self):
         name = "TestUnit name"
         network.controller.node.name = name
         self.assertTrue(network.controller.node.name == name)
+
+    def test_430_controller_node_product_location(self):
         location = "TestUnit location"
         network.controller.node.location = location
         self.assertTrue(network.controller.node.location == location)
+
+    def test_440_controller_node_product_name(self):
         name = "TestUnit product name"
         network.controller.node.product_name = name
         self.assertTrue(network.controller.node.product_name == name)
 
-    def test_050_controller_node_group(self):
+    def test_510_controller_node_group(self):
         self.assertTrue(network.controller.node.num_groups >= 0)
         self.assertTrue(type(network.controller.node.groups) == type(dict()))
 
-    def test_040_controller_node_command_class(self):
+    def test_610_controller_node_command_class(self):
         self.assertTrue(type(network.controller.node.command_classes) == type(set()))
         self.assertTrue(len(network.controller.node.command_classes) >= 0)
 
-    def test_030_controller_node_manufacturer_name(self):
+    def test_710_controller_node_manufacturer_name(self):
         self.assertTrue(type(network.controller.node.manufacturer_id) == type(""))
         name = "TestUnit manufacturer name"
         network.controller.node.manufacturer_name = name
         self.assertTrue(network.controller.node.manufacturer_name == name)
 
-    def test_060_controller_node_values(self):
+    def test_810_controller_node_values(self):
         self.assertTrue(type(network.controller.node.get_values()) == type(dict()))
 
-    def test_021_controller_node_generic(self):
+    def test_820_controller_node_generic(self):
         self.assertTrue(type(network.controller.node.generic) == type(0))
         self.assertTrue(network.controller.node.generic > 0)
         self.assertTrue(type(network.controller.node.basic) == type(0))
@@ -127,7 +159,7 @@ class ControllerTestCase(WaitTestCase):
         self.assertTrue(type(network.controller.node.security) == type(0))
         self.assertTrue(network.controller.node.security >= 0)
 
-    def test_070_controller_node_refresh(self):
+    def test_910_controller_node_refresh(self):
         self.wait_for_queue()
         self.assertTrue(network.controller.node.refresh_info() == True)
 
@@ -180,11 +212,13 @@ class SwitchesTestCase(WaitTestCase):
             for val in network.nodes[node].get_switches() :
                 ran = True
                 network.nodes[node].set_switch(val,True)
+                self.wait_for_queue()
                 time.sleep(1)
                 if network.nodes[node].get_switch_state(val) == False :
                     time.sleep(5)
                 self.assertTrue(network.nodes[node].get_switch_state(val) == True)
                 network.nodes[node].set_switch(val,False)
+                self.wait_for_queue()
                 time.sleep(1)
                 if network.nodes[node].get_switch_state(val) == True :
                     time.sleep(5)
@@ -513,6 +547,98 @@ class SceneTestCase(WaitTestCase):
 #        global count
 #        self.assertTrue( network.scenes_count == count)
 
+class ControllerCommandTestCase(WaitTestCase):
+
+    def test_010_command_send_node_information_nodeid_2(self):
+        ret = network.controller.begin_command_send_node_information(2)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,self.max_delay):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                #print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current == "Completed")
+
+    def test_020_command_send_node_information_nodeid_1(self):
+        ret = network.controller.begin_command_send_node_information(1)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,self.max_delay):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                #print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current == "Completed")
+
+    def test_110_command_request_network_update(self):
+        ret = network.controller.begin_command_request_network_update()
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,self.max_delay):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                #print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current == "Completed")
+
+    def test_210_command_request_node_neigbhor_update_node(self):
+        ret = network.controller.begin_command_request_node_neigbhor_update(2)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,self.max_delay):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current == "Completed")
+
+    def test_220_command_request_node_neigbhor_update_controller(self):
+        ret = network.controller.begin_command_request_node_neigbhor_update(1)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,self.max_delay):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                #print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current == "Failed")
+
+#    def test_910_command_command_replication_send(self):
+#        ret = network.controller.begin_command_replication_send(1)
+#        self.assertTrue(ret)
+#        current = None
+#        for i in range(0,self.max_delay):
+#            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+#            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+#                current = self.ctrl_command_result
+#                print(current)
+#                self.ctrl_command_result = None
+#                break
+#            else:
+#                time.sleep(1.0)
+#        self.assertTrue(current == "Completed")
+
 if __name__ == '__main__':
     device="/dev/zwave-aeon-s2"
     log="Debug"
@@ -574,6 +700,7 @@ if __name__ == '__main__':
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SwitchesAllTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(ProtectionTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SceneTestCase))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(ControllerCommandTestCase))
     unittest.TextTestRunner(verbosity=2).run(suite)
 
     print "----------------------------------------------------------------------"

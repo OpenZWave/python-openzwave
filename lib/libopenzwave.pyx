@@ -35,7 +35,7 @@ from mylibc cimport PyEval_InitThreads
 #from node cimport NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
-from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
+from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
 from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
@@ -114,7 +114,11 @@ PyValueTypes = [
 
 PyControllerState = [
     EnumWithDoc('Normal').setDoc("No command in progress."),
+    EnumWithDoc('Starting').setDoc("The command is starting."),
+    EnumWithDoc('Cancel').setDoc("The command was cancelled."),
+    EnumWithDoc('Error').setDoc("Command invocation had error(s) and was aborted."),
     EnumWithDoc('Waiting').setDoc("Controller is waiting for a user action."),
+    EnumWithDoc('Sleeping').setDoc("Controller command is on a sleep queue wait for device."),
     EnumWithDoc('InProgress').setDoc("The controller is communicating with the other device to carry out the command."),
     EnumWithDoc('Completed').setDoc("The command has completed successfully."),
     EnumWithDoc('Failed').setDoc("The command has failed."),
@@ -122,13 +126,27 @@ PyControllerState = [
     EnumWithDoc('NodeFailed').setDoc("Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed."),
     ]
 
+PyControllerError = [
+    EnumWithDoc('None').setDoc("None."),
+    EnumWithDoc('ButtonNotFound').setDoc("Button."),
+    EnumWithDoc('NodeNotFound').setDoc("Button."),
+    EnumWithDoc('NotBridge').setDoc("Button."),
+    EnumWithDoc('NotSUC').setDoc("CreateNewPrimary."),
+    EnumWithDoc('NotSecondary').setDoc("CreateNewPrimary."),
+    EnumWithDoc('NotPrimary').setDoc("RemoveFailedNode, AddNodeToNetwork."),
+    EnumWithDoc('IsPrimary').setDoc("ReceiveConfiguration."),
+    EnumWithDoc('NotFound').setDoc("RemoveFailedNode."),
+    EnumWithDoc('Busy').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
+    EnumWithDoc('Failed').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
+    EnumWithDoc('Disabled').setDoc("RequestNetworkUpdate error."),
+    EnumWithDoc('Overflow').setDoc("RequestNetworkUpdate error."),
+    ]
+
 PyControllerCommand = [
     EnumWithDoc('None').setDoc("No command."),
-    EnumWithDoc('AddController').setDoc("Add a new controller to the Z-Wave network.  The new controller will be a secondary."),
     EnumWithDoc('AddDevice').setDoc("Add a new device (but not a controller) to the Z-Wave network."),
     EnumWithDoc('CreateNewPrimary').setDoc("Add a new controller to the Z-Wave network.  The new controller will be the primary, and the current primary will become a secondary controller."),
     EnumWithDoc('ReceiveConfiguration').setDoc("Receive Z-Wave network configuration information from another controller."),
-    EnumWithDoc('RemoveController').setDoc("Remove a controller from the Z-Wave network."),
     EnumWithDoc('RemoveDevice').setDoc("Remove a new device (but not a controller) from the Z-Wave network."),
     EnumWithDoc('RemoveFailedNode').setDoc("Move a node to the controller's failed nodes list. This command will only work if the node cannot respond."),
     EnumWithDoc('HasNodeFailed').setDoc("Check whether a node is in the controller's failed nodes list."),
@@ -138,6 +156,8 @@ PyControllerCommand = [
     EnumWithDoc('RequestNodeNeighborUpdate').setDoc("Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors."),
     EnumWithDoc('AssignReturnRoute').setDoc("Assign a network return routes to a device."),
     EnumWithDoc('DeleteAllReturnRoutes').setDoc("Delete all return routes from a device."),
+    EnumWithDoc('SendNodeInformation').setDoc("Send a node information frame."),
+    EnumWithDoc('ReplicationSend').setDoc("Send information from primary to secondary."),
     EnumWithDoc('CreateButton').setDoc("Create an id that tracks handheld button presses."),
     EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
     ]
@@ -280,7 +300,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     logging.debug("libopenzwave.notif_callback : notification %s" % n)
     (<object>_context)(n)
 
-cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
+cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
     """
     Controller callback to the C++ library
 
@@ -288,6 +308,8 @@ cdef void ctrl_callback(ControllerState _state, void* _context) with gil:
     logging.debug("libopenzwave.ctrl_callback : state %s" % _state)
     c = {'state' : PyControllerState[_state],
          'message' : PyControllerState[_state].doc,
+         'error' : PyControllerError[_error].doc,
+         'error_msg' : PyControllerError[_error].doc,
 #         'context' : "%s" % (<object>_context),
         }
     logging.debug("libopenzwave.ctrl_callback : notification %s" % c)
@@ -2984,32 +3006,32 @@ Cancels any in-progress command running on a controller.
             highPower=False, nodeId=0xff, arg=0):
 
         '''
+
 .. _beginControllerCommand:
 
 Start a controller command process.
 
 Commands :
 
-    - Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.
-    - Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.
-    - Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)
-    - Driver::ControllerCommand_ReceiveConfiguration -
-    - Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.
-    - Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.
-    - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes. \
-The node must actually have failed or have been disabled since the command will fail if it responds. \
-A node must be in the controller's failed nodes list for ControllerCommand_ReplaceFailedNode to work.
-    - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
-    - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in \
-the controller's failed nodes list, or the node responds, this command will fail.
-    - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and \
-make it the primary.  The existing primary will become a secondary controller.
-    - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
-    - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
-    - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
-    - Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
-    - Driver::ControllerCommand_CreateButton - Create a handheld button id.
-    - Driver::ControllerCommand_DeleteButton - Delete a handheld button id.
+     - Driver::ControllerCommand_AddDevice - Add a new device or controller to the Z-Wave network.
+     - Driver::ControllerCommand_CreateNewPrimary - Create a new primary controller when old primary fails. Requires SUC.
+     - Driver::ControllerCommand_ReceiveConfiguration - Receive network configuration information from primary controller. Requires secondary.
+     - Driver::ControllerCommand_RemoveDevice - Remove a device or controller from the Z-Wave network.
+     - Driver::ControllerCommand_RemoveFailedNode - Remove a node from the network. The node must not be responding
+     and be on the controller's failed node list.
+     - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
+     - Driver::ControllerCommand_ReplaceFailedNode - Replace a failed device with another. If the node is not in
+     the controller's failed nodes list, or the node responds, this command will fail.
+     - Driver:: ControllerCommand_TransferPrimaryRole - Add a new controller to the network and
+     make it the primary.  The existing primary will become a secondary controller.
+     - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
+     - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does RequestNodeNeighbors afterwards.
+     - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
+     - Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
+     - Driver::ControllerCommand_SendNodeInformation - Send a node information frame.
+     - Driver::ControllerCommand_ReplicationSend - Send information from primary to secondary
+     - Driver::ControllerCommand_CreateButton - Create a handheld button id.
+     - Driver::ControllerCommand_DeleteButton - Delete a handheld button id.
 
 Callbacks :
 

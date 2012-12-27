@@ -326,8 +326,7 @@ class ZWaveNetwork(ZWaveObject):
             self.nodes = None
             self._state = self.STATE_STOPPED
             if fire :
-                dispatcher.send(self.SIGNAL_NETWORK_STOPPED, \
-                    **{'network': self})
+                dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
         except:
             import sys, traceback
             logging.error('Stop network : %s' % (traceback.format_exception(*sys.exc_info())))
@@ -387,9 +386,9 @@ class ZWaveNetwork(ZWaveObject):
 
         * STATE_STOPPED = 0
         * STATE_FAILED = 1
-        * STATE_RESET = 3
-        * STATE_INITIALISED = 5
-        * STATE_AWAKE = 7
+        * STATE_RESETTED = 3
+        * STATE_STARTED = 5
+        * STATE_AWAKED = 7
         * STATE_READY = 10
 
         :rtype: int
@@ -405,9 +404,9 @@ class ZWaveNetwork(ZWaveObject):
 
         * STATE_STOPPED = 0
         * STATE_FAILED = 1
-        * STATE_RESET = 3
-        * STATE_INITIALISED = 5
-        * STATE_AWAKE = 7
+        * STATE_RESETTED = 3
+        * STATE_STARTED = 5
+        * STATE_AWAKED = 7
         * STATE_READY = 10
 
         :param value: new state
@@ -421,22 +420,22 @@ class ZWaveNetwork(ZWaveObject):
         """
         The state of the network. Values may be changed in the future,
         only order is important.
-        You can safely ask node informations when state >= STATE_READY
+        You can safely ask node informations when state >= STATE_AWAKED
 
         :rtype: int
 
         """
-        if self._state == 0:
+        if self._state == self.STATE_STOPPED:
             return "Network is stopped"
-        elif self._state == 1:
+        elif self._state == self.STATE_FAILED:
             return "Driver failed"
-        elif self._state == 2:
+        elif self._state == self.STATE_STARTED:
             return "Driver initialised"
-        elif self._state == 4:
+        elif self._state == self.STATE_RESETTED:
             return "Driver reseted"
-        elif self._state == 7:
+        elif self._state == self.STATE_AWAKED:
             return "Topology loaded"
-        elif self._state == 10:
+        elif self._state == self.STATE_READY:
             return "Network ready"
         else:
             return "Unkown state"
@@ -555,7 +554,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: dict() or None
 
         """
-        if self.state < self.STATE_READY :
+        if self.state < self.STATE_AWAKED :
             return None
         else :
             return self._load_scenes()
@@ -838,19 +837,19 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        #logging.debug('Z-Wave Notification DriverReset : %s' % (args))
-        logging.error('Z-Wave Notification DriverReset not handled. Continue anyway. Report this bug to developpers : %s' % (args))
-        #try :
-        #    self._semaphore_nodes.acquire()
-        #    self.nodes = None
-        #    self._state = self.STATE_RESET
-        #    #self.nodes[args['nodeId']] = self._controller.node
-        #    #dispatcher.send(self.SIGNAL_DRIVER_RESET, \
-        #    #    **{'network': self, 'controller': self._controller})
-        #    dispatcher.send(self.SIGNAL_DRIVER_RESET, \
-        #        **{'network': self})
-        #finally :
-        #    self._semaphore_nodes.release()
+        logging.debug('Z-Wave Notification DriverReset : %s' % (args))
+        #logging.error('Z-Wave Notification DriverReset not handled. Continue anyway. Report this bug to developpers : %s' % (args))
+        try :
+            self._semaphore_nodes.acquire()
+            self.nodes = None
+            self._state = self.STATE_RESET
+            #self.nodes[args['nodeId']] = self._controller.node
+            #dispatcher.send(self.SIGNAL_DRIVER_RESET, \
+            #    **{'network': self, 'controller': self._controller})
+            dispatcher.send(self.SIGNAL_DRIVER_RESET, \
+                **{'network': self})
+        finally :
+            self._semaphore_nodes.release()
 
     def _handle_group(self, args):
         '''

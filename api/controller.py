@@ -78,7 +78,11 @@ class ZWaveController(ZWaveObject):
 
     '''
     SIGNAL_CTRL_NORMAL = 'Normal'
+    SIGNAL_CTRL_STARTING = 'Starting'
+    SIGNAL_CTRL_CANCEL = 'Cancel'
+    SIGNAL_CTRL_ERROR = 'Error'
     SIGNAL_CTRL_WAITING = 'Waiting'
+    SIGNAL_CTRL_SLEEPING = 'Sleeping'
     SIGNAL_CTRL_INPROGRESS = 'InProgress'
     SIGNAL_CTRL_COMPLETED = 'Completed'
     SIGNAL_CTRL_FAILED = 'Failed'
@@ -88,20 +92,20 @@ class ZWaveController(ZWaveObject):
     SIGNAL_CONTROLLER = 'Message'
 
     CMD_NONE = 0
-    CMD_ADDCONTROLLER = 1
-    CMD_ADDDEVICE = 2
-    CMD_CREATENEWPRIMARY = 3
-    CMD_RECEIVECONFIGURATION = 4
-    CMD_REMOVECONTROLLER = 5
-    CMD_REMOVEDEVICE = 6
-    CMD_REMOVEFAILEDNODE = 7
-    CMD_HASNODEFAILED = 8
-    CMD_REPLACEFAILEDNODE = 9
-    CMD_TRANSFERPRIMARYROLE = 10
-    CMD_REQUESTNETWORKUPDATE = 11
-    CMD_REQUESTNODENEIGHBORUPDATE = 12
-    CMD_ASSIGNRETURNROUTE = 13
-    CMD_DELETEALLRETURNROUTES = 14
+    CMD_ADDDEVICE = 1
+    CMD_CREATENEWPRIMARY = 2
+    CMD_RECEIVECONFIGURATION = 3
+    CMD_REMOVEDEVICE = 4
+    CMD_REMOVEFAILEDNODE = 5
+    CMD_HASNODEFAILED = 6
+    CMD_REPLACEFAILEDNODE = 7
+    CMD_TRANSFERPRIMARYROLE = 8
+    CMD_REQUESTNETWORKUPDATE = 9
+    CMD_REQUESTNODENEIGHBORUPDATE = 10
+    CMD_ASSIGNRETURNROUTE = 11
+    CMD_DELETEALLRETURNROUTES = 12
+    CMD_SENDNODEINFORMATION = 13
+    CMD_REPLICATIONSEND = 14
     CMD_CREATEBUTTON = 15
     CMD_DELETEBUTTON = 16
 
@@ -379,13 +383,13 @@ class ZWaveController(ZWaveObject):
 
         """
         logging.debug('Z-Wave Notification NetworkResetted')
-        self._network.state=self._network.STATE_RESETTED
-        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
-            **{'network': self._network})
+        #self._network.state=self._network.STATE_RESETTED
+        #dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
+        #    **{'network': self._network})
         self._network.manager.resetController(self._network.home_id)
-        self._network.stop(fire=False)
+        #self._network.stop(fire=False)
         #time.sleep(20)
-        self._network.start()
+        #self._network.start()
 
     def soft_reset(self):
         """
@@ -394,6 +398,34 @@ class ZWaveController(ZWaveObject):
 
         """
         self._network.manager.softResetController(self._network.home_id)
+
+    def begin_command_send_node_information(self, node_id):
+        """
+        Send a node information frame.
+
+        :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
+        :type node_id: int
+        :return: True if the command was accepted and has started.
+        :rtype: bool
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_SENDNODEINFORMATION, self.zwcallback, nodeId=node_id)
+
+    def begin_command_replication_send(self, high_power = False):
+        """
+        Send information from primary to secondary.
+
+        :param high_power: Usually when adding or removing devices, the controller operates at low power so that the controller must
+        be physically close to the device for security reasons.  If _highPower is true, the controller will
+        operate at normal power levels instead.  Defaults to false.
+        :type high_power: bool
+        :return: True if the command was accepted and has started.
+        :rtype: bool
+
+        """
+        return self._network.manager.beginControllerCommand(self._network.home_id, \
+            self.CMD_REPLICATIONSEND, self.zwcallback, highPower=high_power)
 
     def begin_command_request_network_update(self):
         """
@@ -405,22 +437,6 @@ class ZWaveController(ZWaveObject):
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REQUESTNETWORKUPDATE, self.zwcallback)
-
-    def begin_command_add_controller(self, high_power = False):
-        """
-        Add a new secondary controller to the Z-Wave network.
-
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
-        :return: True if the command was accepted and has started.
-        :rtype: bool
-
-        """
-        return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_ADDCONTROLLER, self.zwcallback, highPower=high_power)
 
     def begin_command_add_device(self, high_power = False):
         """
@@ -437,22 +453,6 @@ class ZWaveController(ZWaveObject):
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_ADDDEVICE, self.zwcallback, highPower=high_power)
-
-    def begin_command_remove_controller(self, high_power = False):
-        """
-        Remove a controller from the Z-Wave network.
-
-        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
-        :type high_power: bool
-        :return: True if the command was accepted and has started.
-        :rtype: bool
-
-        """
-        return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_REMOVECONTROLLER, self.zwcallback, highPower=high_power)
 
     def begin_command_remove_device(self, high_power = False):
         """
@@ -529,7 +529,7 @@ class ZWaveController(ZWaveObject):
 
     def begin_command_create_new_primary(self):
         """
-        (Not yet implemented)
+        Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC.
 
         :return: True if the command was accepted and has started.
         :rtype: bool
@@ -538,18 +538,22 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_CREATENEWPRIMARY, self.zwcallback)
 
-    def begin_command_transfer_primary_role(self):
+    def begin_command_transfer_primary_role(self, high_power = False):
         """
-        (Not yet implemented)
-        Add a new controller to the network and make it the primary.
+        Make a different controller the primary.
         The existing primary will become a secondary controller.
 
+        :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
+        Usually when adding or removing devices, the controller operates at low power so that the controller must
+        be physically close to the device for security reasons.  If _highPower is true, the controller will
+        operate at normal power levels instead.  Defaults to false.
+        :type high_power: bool
         :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_TRANSFERPRIMARYROLE, self.zwcallback)
+            self.CMD_TRANSFERPRIMARYROLE, self.zwcallback, highPower=high_power)
 
     def begin_command_receive_configuration(self):
         """
@@ -562,18 +566,20 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_RECEIVECONFIGURATION, self.zwcallback)
 
-    def begin_command_assign_return_route(self, node_id):
+    def begin_command_assign_return_route(self, from_node_id, to_node_id):
         """
-        Assign a network return route to a device.
+        Assign a network return route from a node to another one.
 
-        :param node_id: Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.
-        :type node_id: int
+        :param from_node_id: The node that we will use the route.
+        :type from_node_id: int
+        :param to_node_id: The node that we will change the route
+        :type to_node_id: int
         :return: True if the command was accepted and has started.
         :rtype: bool
 
         """
         return self._network.manager.beginControllerCommand(self._network.home_id, \
-            self.CMD_ASSIGNRETURNROUTE, self.zwcallback, nodeId=node_id)
+            self.CMD_ASSIGNRETURNROUTE, self.zwcallback, nodeId=from_node_id, arg=to_node_id)
 
     def begin_command_delete_all_return_routes(self, node_id):
         """

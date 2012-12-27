@@ -45,6 +45,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bint AddDriver(string serialport)
         bint RemoveDriver(string controllerPath)
         uint8_t GetControllerNodeId(uint32_t homeid)
+        uint8_t GetSUCNodeId(uint32_t homeid)
         bint IsPrimaryController(uint32_t homeid)
         bint IsStaticUpdateController(uint32_t homeid)
         bint IsBridgeController(uint32_t homeid)
@@ -57,6 +58,8 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         # // Network
         void TestNetworkNode( uint32_t homeId, uint8_t nodeId, uint32_t count )
         void TestNetwork( uint32_t homeId, uint32_t count )
+        void HealNetworkNode( uint32_t homeId, uint32_t count, bool _doRR )
+        void HealNetwork( uint32_t homeId, bool doRR)
         # // Polling
         uint32_t GetPollInterval()
         void SetPollInterval(uint32_t milliseconds, bIntervalBetweenPolls)
