@@ -489,7 +489,7 @@ class MainWindow(Screen):
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
         self.options.set_console_output(False)
-        self.options.set_save_log_level(log)
+        self.options.set_save_log_level("Internal")
         self.options.set_logging(True)
         self.options.lock()
         self.network = ZWaveNetwork(self.options, self.log)

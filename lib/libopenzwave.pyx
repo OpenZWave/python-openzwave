@@ -297,7 +297,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
-    logging.debug("libopenzwave.notif_callback : notification %s" % n)
+    logging.debug("++++++++++++ libopenzwave.notif_callback : notification %s" % n)
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:

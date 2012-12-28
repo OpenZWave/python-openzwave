@@ -40,7 +40,7 @@ except :
 
 device="/dev/zwave-aeon-s2"
 log="Info"
-sniff=30.0
+sniff=60.0
 
 for arg in sys.argv:
     if arg.startswith("--device"):

@@ -28,8 +28,8 @@ import logging
 import sys, os
 
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
-#logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
 
@@ -82,12 +82,13 @@ options = ZWaveOption(device, \
 options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
 options.set_console_output(False)
-options.set_save_log_level(log)
+options.set_save_log_level("Debug")
 #options.set_save_log_level('Info')
-options.set_logging(False)
+options.set_logging(True)
 options.lock()
 
 def louie_network_started(network):
+    print('//////////// ZWave network is started ////////////')
     print('Louie signal : OpenZWave network is started : homeid %0.8x - %d nodes were found.' % \
         (network.home_id, network.nodes_count))
 
@@ -95,6 +96,7 @@ def louie_network_resetted(network):
     print('Louie signal : OpenZWave network is resetted.')
 
 def louie_network_ready(network):
+    print('//////////// ZWave network is ready ////////////')
     print('Louie signal : ZWave network is ready : %d nodes were found.' % network.nodes_count)
     print('Louie signal : Controller : %s' % network.controller)
     dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
