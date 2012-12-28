@@ -54,7 +54,7 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 #Don't update it.
 #It will be done when releasing only.
 #Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
-PYLIBRARY = "0.2.4"
+PYLIBRARY = "0.2.5"
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 

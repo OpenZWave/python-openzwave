@@ -76,7 +76,7 @@ setup(
   author_email='bibi21000@gmail.com',
   url='http://code.google.com/p/python-openzwave',
   #Need to update libopenzwave.pyx too
-  version = '0.2.4',
+  version = '0.2.5',
   package_dir = {'openzwave' : 'api', 'pyozwman' : 'manager' },
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,

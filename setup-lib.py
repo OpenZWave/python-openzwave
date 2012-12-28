@@ -101,7 +101,7 @@ setup(
   name = 'python-openzwave-lib',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
-  version = '0.2.4',
+  version = '0.2.5',
   url='http://code.google.com/p/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,

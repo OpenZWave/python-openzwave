@@ -4,16 +4,18 @@ echo $PYLIBRARY
 #Archive history
 RY023="cc56d65fbff4"
 RZ023="539"
+RY024="d3995087deb0"
+RZ024="580"
 
 #Last archive
 #The release number of python-openzwave
-RY024="50a9d95db236"
+RY025="d3995087deb0"
 #The release number of openzwave
-RZ024="540"
+RZ025="580"
 
 #Current archive
-RY=$(echo $RY024)
-RZ=$(echo $RZ024)
+RY=$(echo $RY025)
+RZ=$(echo $RZ025)
 
 #Define variables
 PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx | sed -e "s|PYLIBRARY = ||" | sed "s/\x0D$//" | sed -e "s|^M$||" | sed -e "s|\"||g")
@@ -38,6 +40,7 @@ hg archive \
     -r ${RY} \
     -I . \
     -X make_archive.sh \
+    -X update.sh \
     -X make_distdir.sh \
     -X make_docs.sh \
     -X .hg_archival.txt  \
