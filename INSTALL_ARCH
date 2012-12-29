@@ -15,18 +15,12 @@ On a debian like distribution :
    sudo apt-get install cython python-dev python-setuptools python-
    louie
 
-You need sphinx and make to generate the documentation.
-
-On a debian like distribution :
-
-   sudo apt-get install python-sphinx make
-
 To compile the openzwave library, you need the common builds tools and
 the libudev developments headers.
 
 On a debian like distribution :
 
-   sudo apt-get install build-essential libudev-dev g++
+   sudo apt-get install build-essential libudev-dev g++ make
 
 
 Get archive of python-openzwave

@@ -62,6 +62,7 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
         * SIGNAL_NODE_READY = 'NodeReady'
         * SIGNAL_NODE_REMOVED = 'NodeRemoved'
+        * SIGNAL_SCENE_EVENT = 'SceneEvent'
         * SIGNAL_VALUE_ADDED = 'ValueAdded'
         * SIGNAL_VALUE_CHANGED = 'ValueChanged'
         * SIGNAL_VALUE_REFRESHED = 'ValueRefreshed'
@@ -227,6 +228,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NODE_PROTOCOL_INFO = 'NodeProtocolInfo'
     SIGNAL_NODE_READY = 'NodeReady'
     SIGNAL_NODE_REMOVED = 'NodeRemoved'
+    SIGNAL_SCENE_EVENT = 'SceneEvent'
     SIGNAL_VALUE = 'Value'
     SIGNAL_VALUE_ADDED = 'ValueAdded'
     SIGNAL_VALUE_CHANGED = 'ValueChanged'
@@ -734,6 +736,8 @@ class ZWaveNetwork(ZWaveObject):
             self._handle_node_removed(args)
         elif notify_type == self.SIGNAL_GROUP:
             self._handle_group(args)
+        elif notify_type == self.SIGNAL_SCENE_EVENT:
+            self._handle_scene_event(args)
         elif notify_type == self.SIGNAL_VALUE_ADDED:
             self._handle_value_added(args)
         elif notify_type == self.SIGNAL_VALUE_CHANGED:
@@ -912,6 +916,21 @@ class ZWaveNetwork(ZWaveObject):
             self._handle_node(self.nodes[args['nodeId']])
         finally :
             self._semaphore_nodes.release()
+
+    def _handle_scene_event(self, args):
+        '''
+        Scene Activation Set received
+
+        Not implemented
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        '''
+        logging.debug('************ Z-Wave Notification SceneEvent (not implemented) : %s' % (args))
+        #dispatcher.send(self.SIGNAL_SCENE_EVENT, \
+        #    **{'network': self, 'node': self.nodes[args['nodeId']]})
+        #self._handle_node(self.nodes[args['nodeId']])
 
     def _handle_node_event(self, args):
         '''

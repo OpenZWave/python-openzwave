@@ -57,6 +57,7 @@ It contains a reference to the manager and the controller.</p>
 <li>SIGNAL_NODE_PROTOCOL_INFO = &#8216;NodeProtocolInfo&#8217;</li>
 <li>SIGNAL_NODE_READY = &#8216;NodeReady&#8217;</li>
 <li>SIGNAL_NODE_REMOVED = &#8216;NodeRemoved&#8217;</li>
+<li>SIGNAL_SCENE_EVENT = &#8216;SceneEvent&#8217;</li>
 <li>SIGNAL_VALUE_ADDED = &#8216;ValueAdded&#8217;</li>
 <li>SIGNAL_VALUE_CHANGED = &#8216;ValueChanged&#8217;</li>
 <li>SIGNAL_VALUE_REFRESHED = &#8216;ValueRefreshed&#8217;</li>
@@ -504,9 +505,9 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 <ul class="simple">
 <li>STATE_STOPPED = 0</li>
 <li>STATE_FAILED = 1</li>
-<li>STATE_RESET = 3</li>
-<li>STATE_INITIALISED = 5</li>
-<li>STATE_AWAKE = 7</li>
+<li>STATE_RESETTED = 3</li>
+<li>STATE_STARTED = 5</li>
+<li>STATE_AWAKED = 7</li>
 <li>STATE_READY = 10</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
@@ -524,7 +525,7 @@ You can safely ask node informations when state &gt;= STATE_READY</p>
 <tt class="descname">state_str</tt></dt>
 <dd><p>The state of the network. Values may be changed in the future,
 only order is important.
-You can safely ask node informations when state &gt;= STATE_READY</p>
+You can safely ask node informations when state &gt;= STATE_AWAKED</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

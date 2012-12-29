@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to py-openzwave’s documentation! &mdash; python-openzwave 0.2.4 documentation</title>
+    <title>Welcome to py-openzwave’s documentation! &mdash; python-openzwave 0.2.5 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.2.4',
+        VERSION:     '0.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="python-openzwave 0.2.5 documentation" href="index.html" />
     <link rel="next" title="API documentation" href="openzwave.html" />
     <link rel="prev" title="Welcome to python-openzwave’s documentation!" href="index.html" /> 
   </head>
@@ -45,7 +45,7 @@
         <li class="right" >
           <a href="index.html" title="Welcome to python-openzwave’s documentation!"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -128,14 +128,14 @@ for k, v in iterable:</p>
 
 <dl class="data">
 <dt>
-<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerCommand</tt><em class="property"> = ['None', 'AddController', 'AddDevice', 'CreateNewPrimary', 'ReceiveConfiguration', 'RemoveController', 'RemoveDevice', 'RemoveFailedNode', 'HasNodeFailed', 'ReplaceFailedNode', 'TransferPrimaryRole', 'RequestNetworkUpdate', 'RequestNodeNeighborUpdate', 'AssignReturnRoute', 'DeleteAllReturnRoutes', 'CreateButton', 'DeleteButton']</em></dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerCommand</tt><em class="property"> = ['None', 'AddDevice', 'CreateNewPrimary', 'ReceiveConfiguration', 'RemoveDevice', 'RemoveFailedNode', 'HasNodeFailed', 'ReplaceFailedNode', 'TransferPrimaryRole', 'RequestNetworkUpdate', 'RequestNodeNeighborUpdate', 'AssignReturnRoute', 'DeleteAllReturnRoutes', 'SendNodeInformation', 'ReplicationSend', 'CreateButton', 'DeleteButton']</em></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
 
 <dl class="data">
 <dt>
-<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerState</tt><em class="property"> = ['Normal', 'Waiting', 'InProgress', 'Completed', 'Failed', 'NodeOK', 'NodeFailed']</em></dt>
+<tt class="descclassname">libopenzwave.</tt><tt class="descname">PyControllerState</tt><em class="property"> = ['Normal', 'Starting', 'Cancel', 'Error', 'Waiting', 'Sleeping', 'InProgress', 'Completed', 'Failed', 'NodeOK', 'NodeFailed']</em></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable&#8217;s items</p>
 </dd></dl>
@@ -313,23 +313,26 @@ add a single watcher - all notifications will be reported to it.</p>
 <p>Commands :</p>
 <blockquote>
 <div><ul class="simple">
-<li>Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.</li>
-<li>Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.</li>
-<li>Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)</li>
-<li>Driver::ControllerCommand_ReceiveConfiguration -</li>
-<li>Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.</li>
-<li>Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.</li>
-<li>Driver::ControllerCommand_RemoveFailedNode - move a node to the controller&#8217;s list of failed nodes. The node must actually have failed or have been disabled since the command will fail if it responds. A node must be in the controller&#8217;s failed nodes list for ControllerCommand_ReplaceFailedNode to work.</li>
-<li>Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller&#8217;s failed nodes list.</li>
-<li>Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in the controller&#8217;s failed nodes list, or the node responds, this command will fail.</li>
-<li>Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and make it the primary.  The existing primary will become a secondary controller.</li>
-<li>Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.</li>
-<li>Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.</li>
-<li>Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.</li>
-<li>Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.</li>
-<li>Driver::ControllerCommand_CreateButton - Create a handheld button id.</li>
-<li>Driver::ControllerCommand_DeleteButton - Delete a handheld button id.</li>
+<li>Driver::ControllerCommand_AddDevice - Add a new device or controller to the Z-Wave network.</li>
+<li>Driver::ControllerCommand_CreateNewPrimary - Create a new primary controller when old primary fails. Requires SUC.</li>
+<li>Driver::ControllerCommand_ReceiveConfiguration - Receive network configuration information from primary controller. Requires secondary.</li>
+<li>Driver::ControllerCommand_RemoveDevice - Remove a device or controller from the Z-Wave network.</li>
+<li>Driver::ControllerCommand_RemoveFailedNode - Remove a node from the network. The node must not be responding</li>
 </ul>
+<p>and be on the controller&#8217;s failed node list.
+- Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller&#8217;s failed nodes list.
+- Driver::ControllerCommand_ReplaceFailedNode - Replace a failed device with another. If the node is not in
+the controller&#8217;s failed nodes list, or the node responds, this command will fail.
+- Driver:: ControllerCommand_TransferPrimaryRole - Add a new controller to the network and
+make it the primary.  The existing primary will become a secondary controller.
+- Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
+- Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does RequestNodeNeighbors afterwards.
+- Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
+- Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
+- Driver::ControllerCommand_SendNodeInformation - Send a node information frame.
+- Driver::ControllerCommand_ReplicationSend - Send information from primary to secondary
+- Driver::ControllerCommand_CreateButton - Create a handheld button id.
+- Driver::ControllerCommand_DeleteButton - Delete a handheld button id.</p>
 </div></blockquote>
 <p>Callbacks :</p>
 <blockquote>
@@ -3336,7 +3339,7 @@ Give it to lion as Nico0084 says : <a class="reference external" href="http://bl
         <li class="right" >
           <a href="index.html" title="Welcome to python-openzwave’s documentation!"
              >previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -382,7 +382,7 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
 
         """
-        logging.debug('Z-Wave Notification NetworkResetted')
+        #logging.debug('Z-Wave Notification NetworkResetted')
         #self._network.state=self._network.STATE_RESETTED
         #dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
         #    **{'network': self._network})

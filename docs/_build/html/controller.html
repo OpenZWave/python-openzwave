@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Controller documentation &mdash; python-openzwave 0.2.4 documentation</title>
+    <title>Controller documentation &mdash; python-openzwave 0.2.5 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -16,7 +16,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.2.4',
+        VERSION:     '0.2.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.2.4 documentation" href="index.html" />
+    <link rel="top" title="python-openzwave 0.2.5 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="openzwave.html" />
     <link rel="next" title="Option documentation" href="option.html" />
     <link rel="prev" title="Network documentation" href="network.html" /> 
@@ -46,7 +46,7 @@
         <li class="right" >
           <a href="network.html" title="Network documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -135,26 +135,6 @@ controller to learn new data.
 - Driver::ControllerState_Failed - will be sent if the command fails for any reason.</p>
 </div></blockquote>
 <dl class="method">
-<dt id="openzwave.controller.ZWaveController.begin_command_add_controller">
-<tt class="descname">begin_command_add_controller</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a new secondary controller to the Z-Wave network.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>high_power</strong> &#8211; Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.</td>
-</tr>
-</tbody>
-</table>
-<p>Usually when adding or removing devices, the controller operates at low power so that the controller must
-be physically close to the device for security reasons.  If _highPower is true, the controller will
-operate at normal power levels instead.  Defaults to false.
-:type high_power: bool
-:return: True if the command was accepted and has started.
-:rtype: bool</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_add_device">
 <tt class="descname">begin_command_add_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new device (but not a controller) to the Z-Wave network.</p>
@@ -176,17 +156,23 @@ operate at normal power levels instead.  Defaults to false.
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_assign_return_route">
-<tt class="descname">begin_command_assign_return_route</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
-<dd><p>Assign a network return route to a device.</p>
+<tt class="descname">begin_command_assign_return_route</tt><big>(</big><em>from_node_id</em>, <em>to_node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign a network return route from a node to another one.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node_id</strong> (<em>int</em>) &#8211; Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>from_node_id</strong> (<em>int</em>) &#8211; The node that we will use the route.</li>
+<li><strong>to_node_id</strong> (<em>int</em>) &#8211; The node that we will change the route</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the command was accepted and has started.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the command was accepted and has started.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -219,7 +205,7 @@ operate at normal power levels instead.  Defaults to false.
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_create_new_primary">
 <tt class="descname">begin_command_create_new_primary</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
-<dd><p>(Not yet implemented)</p>
+<dd><p>Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -311,26 +297,6 @@ operate at normal power levels instead.  Defaults to false.
 </dd></dl>
 
 <dl class="method">
-<dt id="openzwave.controller.ZWaveController.begin_command_remove_controller">
-<tt class="descname">begin_command_remove_controller</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a controller from the Z-Wave network.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>high_power</strong> &#8211; Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.</td>
-</tr>
-</tbody>
-</table>
-<p>Usually when adding or removing devices, the controller operates at low power so that the controller must
-be physically close to the device for security reasons.  If _highPower is true, the controller will
-operate at normal power levels instead.  Defaults to false.
-:type high_power: bool
-:return: True if the command was accepted and has started.
-:rtype: bool</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_device">
 <tt class="descname">begin_command_remove_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a device (but not a controller) from the Z-Wave network.</p>
@@ -391,6 +357,25 @@ the controller&#8217;s failed nodes list, or the node responds, this command wil
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_replication_send">
+<tt class="descname">begin_command_replication_send</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replication_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send information from primary to secondary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>high_power</strong> &#8211; Usually when adding or removing devices, the controller operates at low power so that the controller must</td>
+</tr>
+</tbody>
+</table>
+<p>be physically close to the device for security reasons.  If _highPower is true, the controller will
+operate at normal power levels instead.  Defaults to false.
+:type high_power: bool
+:return: True if the command was accepted and has started.
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_network_update">
 <tt class="descname">begin_command_request_network_update</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the controller with network information from the SUC/SIS.</p>
@@ -426,21 +411,42 @@ This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.begin_command_send_node_information">
+<tt class="descname">begin_command_send_node_information</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_send_node_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a node information frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node_id</strong> (<em>int</em>) &#8211; Used only with the ReplaceFailedNode command, to specify the node that is going to be replaced.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the command was accepted and has started.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_transfer_primary_role">
-<tt class="descname">begin_command_transfer_primary_role</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
-<dd><p>(Not yet implemented)
-Add a new controller to the network and make it the primary.
+<tt class="descname">begin_command_transfer_primary_role</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a different controller the primary.
 The existing primary will become a secondary controller.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the command was accepted and has started.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>high_power</strong> &#8211; Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.</td>
 </tr>
 </tbody>
 </table>
+<p>Usually when adding or removing devices, the controller operates at low power so that the controller must
+be physically close to the device for security reasons.  If _highPower is true, the controller will
+operate at normal power levels instead.  Defaults to false.
+:type high_power: bool
+:return: True if the command was accepted and has started.
+:rtype: bool</p>
 </dd></dl>
 
 <dl class="method">
@@ -795,7 +801,7 @@ Dispatch a louie message.</p>
         <li class="right" >
           <a href="network.html" title="Network documentation"
              >previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.4 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>
