@@ -50,12 +50,11 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_DriverReady = 18                   # A driver for a PC Z-Wave controller has been added and is ready to use.  The notification will contain the controller's Home ID, which is needed to call most of the Manager methods.
         Type_DriverFailed = 19                  # Driver failed to load
         Type_DriverReset = 20                   # All nodes and values for this driver have been removed.  This is sent instead of potentially hundreds of individual node and value notifications.
-        Type_MsgComplete = 21                   # The last message that was sent is now complete.
-        Type_EssentialNodeQueriesComplete = 22  # The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages.
-        Type_NodeQueriesComplete = 23           # All the initialisation queries on a node have been completed.
-        Type_AwakeNodesQueried = 24             # All awake nodes have been queried, so client application can expected complete data for these nodes.
-        Type_AllNodesQueried = 25               # All nodes have been queried, so client application can expected complete data.
-        Type_Notification = 26                  # An error has occured that we need to report.
+        Type_EssentialNodeQueriesComplete = 21  # The queries on a node that are essential to its operation have been completed. The node can now handle incoming messages.
+        Type_NodeQueriesComplete = 22           # All the initialisation queries on a node have been completed.
+        Type_AwakeNodesQueried = 23             # All awake nodes have been queried, so client application can expected complete data for these nodes.
+        Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
+        Type_Notification = 25                  # An error has occured that we need to report.
 
 cdef extern from "Notification.h" namespace "OpenZWave":
 

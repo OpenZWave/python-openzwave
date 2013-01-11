@@ -34,7 +34,10 @@ sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-pa
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinxcontrib.blockdiag'
+, 'sphinxcontrib.nwdiag', 'sphinxcontrib.actdiag', 'sphinxcontrib.seqdiag']
+
+blockdiag_fontpath = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

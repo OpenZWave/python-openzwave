@@ -9,3 +9,4 @@
 * :doc:`Options for manager </option>`
 * :doc:`Objects and Exceptions </object>`
 * :doc:`Enums and data types </data>`
+* :doc:`Notification's diagrams </diagrams>`

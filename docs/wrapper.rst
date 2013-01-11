@@ -11,5 +11,3 @@ Contents:
 .. automodule:: openzwave.wrapper
     :members: ZWaveWrapperException, ZWaveValueNode, ZWaveNode, ZWaveWrapper
 
-.. automodule:: openzwave.wrapper_singleton
-    :members: Singleton

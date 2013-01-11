@@ -97,6 +97,13 @@ class ControllerTestCase(WaitTestCase):
     def test_040_controller_stats(self):
         self.assertTrue(type(network.controller.stats) == type(dict()))
 
+    def test_110_controller_soft_reset(self):
+        self.wait_for_queue()
+        time.sleep(5)
+        network.controller.soft_reset()
+        self.wait_for_queue()
+        self.assertTrue(network.controller.node.refresh_info() == True)
+
     def test_310_controller_node(self):
         self.assertTrue(type(network.controller.node.node_id) == type(0))
         self.assertTrue(network.controller.node.node_id > 0)
@@ -190,7 +197,7 @@ class ValuesTestCase(WaitTestCase):
                     self.assertTrue(value.is_polled in [True, False])
                     self.assertTrue(value.is_read_only in [True, False])
                     self.assertTrue(value.is_write_only in [True, False])
-                    self.assertTrue(value.refresh() in [True, False])
+                    #self.assertTrue(value.refresh() in [True, False])
                     #time.sleep(1)
 
 class SwitchesTestCase(WaitTestCase):
