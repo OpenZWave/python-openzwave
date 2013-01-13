@@ -60,139 +60,132 @@ generates a notification you must catch with a callback function.</p>
 <p>Some words about python-louie : it&#8217;s a simple mechanism where a dispatcher
 send a signal on a channel, and clients connect to him.</p>
 <p>Here is the way a sender dispatch a signal :</p>
-<blockquote>
-<div>dispatcher.send(self.SIGNAL_NODE, <a href="#id1"><span class="problematic" id="id2">**</span></a>{&#8216;network&#8217;: self, &#8216;node&#8217;:self.nodes[args[&#8216;nodeId&#8217;]]})</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;node&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s">&#39;nodeId&#39;</span><span class="p">]]})</span>
+</pre></div>
+</div>
 <p>Here is the way a client connect to a channel :</p>
-<blockquote>
-<div>dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_node_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>The first argument is a call back function :</p>
-<blockquote>
-<div><p>def louie_node_update(network, node):</p>
-<blockquote>
-<div>print(&#8216;Louie signal : Node update : %s.&#8217; % node)</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Louie signal : Node update : </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">node</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>It receives as parameters the ones populate by the sender : the network ans a node in ths case.
 The callback must set its parameter names as the same as the sender.</p>
 </div>
 <div class="section" id="hello-from-zwave">
 <h2>Hello from ZWave<a class="headerlink" href="#hello-from-zwave" title="Permalink to this headline">¶</a></h2>
 <p>The import clauses :</p>
-<blockquote>
-<div><p>import openzwave</p>
-<p>from openzwave.node import ZWaveNode</p>
-<p>from openzwave.value import ZWaveValue</p>
-<p>from openzwave.scene import ZWaveScene</p>
-<p>from openzwave.controller import ZWaveController</p>
-<p>from openzwave.network import ZWaveNetwork</p>
-<p>from openzwave.option import ZWaveOption</p>
-<p>import time</p>
-<p>from louie import dispatcher, All</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">openzwave</span>
+<span class="kn">from</span> <span class="nn">openzwave.node</span> <span class="kn">import</span> <span class="n">ZWaveNode</span>
+<span class="kn">from</span> <span class="nn">openzwave.value</span> <span class="kn">import</span> <span class="n">ZWaveValue</span>
+<span class="kn">from</span> <span class="nn">openzwave.scene</span> <span class="kn">import</span> <span class="n">ZWaveScene</span>
+<span class="kn">from</span> <span class="nn">openzwave.controller</span> <span class="kn">import</span> <span class="n">ZWaveController</span>
+<span class="kn">from</span> <span class="nn">openzwave.network</span> <span class="kn">import</span> <span class="n">ZWaveNetwork</span>
+<span class="kn">from</span> <span class="nn">openzwave.option</span> <span class="kn">import</span> <span class="n">ZWaveOption</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">louie</span> <span class="kn">import</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="n">All</span>
+</pre></div>
+</div>
 <p>First thing to do is to defined some options for the manager :</p>
-<blockquote>
-<div><p>options = ZWaveOption(device, config_path=&#8221;../openzwave/config&#8221;, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;)</p>
-<p>options.set_log_file(&#8220;OZW_Log.log&#8221;)</p>
-<p>options.set_append_log_file(False)</p>
-<p>options.set_console_output(False)</p>
-<p>options.set_save_log_level(&#8216;Debug&#8217;)</p>
-<p>options.set_logging(True)</p>
-<p>network = None</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span> <span class="o">=</span> <span class="n">ZWaveOption</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">config_path</span><span class="o">=</span><span class="s">&quot;../openzwave/config&quot;</span><span class="p">,</span> <span class="n">user_path</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">cmd_line</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">set_log_file</span><span class="p">(</span><span class="s">&quot;OZW_Log.log&quot;</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">set_append_log_file</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">set_console_output</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">set_save_log_level</span><span class="p">(</span><span class="s">&#39;Debug&#39;</span><span class="p">)</span>
+<span class="n">options</span><span class="o">.</span><span class="n">set_logging</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">network</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+</div>
 <p>We also defined a network object, we will populate it later.</p>
 <p>To use this options, you must lock them. No further modification could be done on them.</p>
-<blockquote>
-<div>options.lock()</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>We can now create the network :</p>
-<blockquote>
-<div>network = ZWaveNetwork(options, autostart=False)</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">network</span> <span class="o">=</span> <span class="n">ZWaveNetwork</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">autostart</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="the-signals-listeners">
 <h2>The signals listeners<a class="headerlink" href="#the-signals-listeners" title="Permalink to this headline">¶</a></h2>
 <p>We will now create some connection to the louie dispatcher. We will then to 3
 main signals, they will notify us about the state of the network :</p>
-<blockquote>
-<div><p>dispatcher.connect(louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)</p>
-<p>dispatcher.connect(louie_network_failed, ZWaveNetwork.SIGNAL_NETWORK_FAILED)</p>
-<p>dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_started</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_STARTED</span><span class="p">)</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_failed</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_FAILED</span><span class="p">)</span>
+<span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_ready</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_READY</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>To do that we use 3 callback functions :</p>
 <p>When the driver is ready, we simply print some options on the screen :</p>
-<blockquote>
-<div><p>def louie_network_started(network):</p>
-<blockquote>
-<div>print(&#8220;Hello from network : I&#8217;m started : homeid %0.8x - %d nodes were found.&#8221; % (network.home_id, network.nodes_count))</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_network_started</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello from network : I&#39;m started : homeid </span><span class="si">%0.8x</span><span class="s"> - </span><span class="si">%d</span><span class="s"> nodes were found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">home_id</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes_count</span><span class="p">))</span>
+</pre></div>
+</div>
 <p>When the driver fails, we reports the error to screen :</p>
-<blockquote>
-<div><p>def louie_network_failed(network):</p>
-<blockquote>
-<div>print(&#8220;Hello from network : can&#8217;t load :(.&#8221;)</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_network_failed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello from network : can&#39;t load :(.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>This an important event. It means that all nodes have been queried on the network.
 You can now use the network object pass in parameter to query nodes. To do that we connect
 to some louie signals. It also sleep during 5 minutes. After that, the scripts
 will continue and the network will be stopped.</p>
-<blockquote>
-<div><p>def louie_network_ready(network):</p>
-<blockquote>
-<div><p>print(&#8220;Hello from network : I&#8217;m ready : %d nodes were found.&#8221; % network.nodes_count)</p>
-<p>print(&#8220;Hello from network : my controller is : %s&#8221; % network.controller)</p>
-<p>dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)</p>
-<p>dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)</p>
-</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_network_ready</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello from network : I&#39;m ready : </span><span class="si">%d</span><span class="s"> nodes were found.&quot;</span> <span class="o">%</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes_count</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello from network : my controller is : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="p">)</span>
+    <span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_node_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">)</span>
+    <span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_value_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_VALUE</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>When a node is updated, added, removed, ...</p>
-<blockquote>
-<div><p>def louie_node_update(network, node):</p>
-<blockquote>
-<div>print(&#8216;Hello from node : %s.&#8217; % node)</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Hello from node : </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">node</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>When a value is updated, added, removed, ...</p>
-<blockquote>
-<div><p>def louie_value_update(network, node, value):</p>
-<blockquote>
-<div>print(&#8216;Hello from value : %s.&#8217; % value)</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">louie_value_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Hello from value : </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="the-start-code">
 <h2>The start code<a class="headerlink" href="#the-start-code" title="Permalink to this headline">¶</a></h2>
 <p>We start the network</p>
-<blockquote>
-<div>network.start()</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">network</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>And we wait for the network. You MUST NOT use the network objects before
 network is ready.</p>
-<blockquote>
-<div><p>for i in range(0,90):</p>
-<blockquote>
-<div><p>if network.state&gt;=network.STATE_READY:</p>
-<blockquote>
-<div><p>print &#8220;<strong>*</strong> Network is ready&#8221;</p>
-<p>break</p>
-</div></blockquote>
-<p>else:</p>
-<blockquote>
-<div><p>sys.stdout.write(&#8221;.&#8221;)</p>
-<p>sys.stdout.flush()</p>
-<p>time.sleep(1.0)</p>
-</div></blockquote>
-</div></blockquote>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">state</span><span class="o">&gt;=</span><span class="n">network</span><span class="o">.</span><span class="n">STATE_READY</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;***** Network is ready&quot;</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>We now change the name of the controller. You will have a notification.</p>
-<blockquote>
-<div><p>network.controller.node.name = &#8220;Hello name&#8221;</p>
-<p>time.sleep(10.0)</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Hello name&quot;</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>Same when changing the location.</p>
-<blockquote>
-<div><p>network.controller.node.location = &#8220;Hello location&#8221;</p>
-<p>time.sleep(120.0)</p>
-</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s">&quot;Hello location&quot;</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">120.0</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>And we wait for 2 minutes. If you have sensors on your network, you will
 see the value notifications on the screen. If you have switch or dimmers,
 activate them manually, ...</p>
 <p>Now stop the network and release objects.</p>
-<blockquote>
-<div>network.stop()</div></blockquote>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">network</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>That&#8217;s all :)</p>
 <p>Full source code is in examples/hello_world.py</p>
 <p>To see a more functionnal example, look at ozwsh code.</p>
