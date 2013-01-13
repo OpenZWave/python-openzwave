@@ -42,7 +42,6 @@ updates are done in the set, add, delete, remove, ... methods.
 There is some others examples, to test them :
 
    cd examples
-
    ./build_examples.sh
 
 This will install all the needed files used by the examples in a

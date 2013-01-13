@@ -55,52 +55,62 @@ install it using this method.</p>
 <p>You must install mercurial and subversion to get sources of python-openzwave
 and openzwave. Look at the documentation of your Linux distribution to do that.</p>
 <p>On a debian like distribution :</p>
-<blockquote>
-<div>sudo apt-get install mercurial subversion</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install mercurial subversion
+</pre></div>
+</div>
 <p>You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
-Some users have reported errors when using 0.16. You also need some python depencies</p>
+Some users have reported errors when using 0.16 or 0.17. You also need some python depencies
+You can install a wotking version of cython using pip.</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo cython pip install <span class="nv">cython</span><span class="o">==</span>0.15
+</pre></div>
+</div>
 <p>On a debian like distribution :</p>
-<blockquote>
-<div>sudo apt-get install cython python-dev python-setuptools python-louie</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install cython python-dev python-setuptools python-louie
+</pre></div>
+</div>
 <p>You need sphinx and make to generate the documentation.</p>
 <p>On a debian like distribution :</p>
-<blockquote>
-<div>sudo apt-get install python-sphinx make</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install python-sphinx make
+</pre></div>
+</div>
 <p>To compile the openzwave library, you need the common builds tools
 and the libudev developments headers.</p>
 <p>On a debian like distribution :</p>
-<blockquote>
-<div>sudo apt-get install build-essential libudev-dev g++</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install build-essential libudev-dev g++
+</pre></div>
+</div>
 </div>
 <div class="section" id="get-sources-of-python-openzwave-and-open-zwave">
 <h2>Get sources of python-openzwave and open-zwave<a class="headerlink" href="#get-sources-of-python-openzwave-and-open-zwave" title="Permalink to this headline">¶</a></h2>
 <p>You are now ready to download sources of python-openzwave :</p>
-<blockquote>
-<div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>hg clone https://code.google.com/p/python-openzwave/
+</pre></div>
+</div>
 <p>Go to the python-openzwave directory and grab the sources of openzwave</p>
-<blockquote>
-<div>svn checkout <a class="reference external" href="http://open-zwave.googlecode.com/svn/trunk/">http://open-zwave.googlecode.com/svn/trunk/</a> openzwave</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+</pre></div>
+</div>
 </div>
 <div class="section" id="build-openzwave-and-python-openzwave">
 <h2>Build openzwave and python-openzwave<a class="headerlink" href="#build-openzwave-and-python-openzwave" title="Permalink to this headline">¶</a></h2>
 <p>Go to the openzwave directory and build it :</p>
-<blockquote>
-<div><p>cd openzwave/cpp/build/linux</p>
-<p>make</p>
-<p>cd ../../../..</p>
-</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>openzwave/cpp/build/linux
+make
+<span class="nb">cd</span> ../../../..
+</pre></div>
+</div>
 <p>Build python-openzwave</p>
-<blockquote>
-<div><p>python setup-lib.py build</p>
-<p>python setup-api.py build</p>
-</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>python setup-lib.py build
+python setup-api.py build
+</pre></div>
+</div>
 </div>
 <div class="section" id="and-install-them">
 <h2>And install them<a class="headerlink" href="#and-install-them" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>sudo python setup-lib.py install</p>
-<p>sudo python setup-api.py install</p>
-</div></blockquote>
+<div class="highlight-bash"><div class="highlight"><pre>sudo python setup-lib.py install
+sudo python setup-api.py install
+</pre></div>
+</div>
 </div>
 </div>
 

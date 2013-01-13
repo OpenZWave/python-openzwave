@@ -1,0 +1,386 @@
+=======================
+Notification's diagrams
+=======================
+
+Full startup process
+====================
+
+.. blockdiag::
+    :maxwidth: 600
+
+    blockdiag StartupProcess {
+      orientation = portrait;
+
+      DriverReady -> NodeAdded;
+
+      blockdiag {
+
+        NodeAdded -> NodeProtocolInfo -> MsgComplete -> ValueAdded_Basic;
+
+        blockdiag {
+          ValueAdded_Basic -> ValueAdded_Basic;
+        }
+
+        ValueAdded_Basic -> NodeNaming -> Group;
+
+        blockdiag {
+          Group -> Group;
+        }
+
+        Group -> Version -> NodeAdded;
+
+      }
+
+
+      Version -> ControllerEssential ->
+      NodesEssential ->
+      AwakeNodesQueried ->
+      SleepingNodesDiscovery -> SleepingNodesDiscovery ->
+      SleepingNodesEssential ->
+      AllNodesQueried;
+    }
+
+.. blockdiag::
+    :maxwidth: 600
+
+    blockdiag StartupProcess3 {
+      orientation = portrait;
+
+      DriverReady -> NodeAdded;
+
+      blockdiag {
+
+        NodeAdded -> NodeProtocolInfo -> MsgComplete -> ValueAdded_Basic;
+
+        ValueAdded_Basic -> ValueAdded_Basic;
+
+        ValueAdded_Basic -> NodeNaming -> Group;
+
+        Group -> Group;
+
+        Group -> Version -> NodeAdded;
+
+      }
+
+
+      Version -> ControllerEssential ->
+      NodesEssential ->
+      AwakeNodesQueried ->
+      SleepingNodesDiscovery -> SleepingNodesDiscovery ->
+      SleepingNodesEssential ->
+      AllNodesQueried;
+    }
+
+.. blockdiag::
+    :maxwidth: 600
+
+    blockdiag StartupProcess2 {
+      orientation = portrait;
+
+      DriverReady ->
+      NodeAdded -> NodeProtocolInfo -> MsgComplete ->
+      ValueAdded_Basic -> ValueAdded_Basic ->
+      NodeNaming ->
+      ValueAdded_Command -> ValueAdded_Command ->
+      Group -> Group ->
+      Version -> NodeAdded ->
+      Version -> ControllerEssential ->
+      NodesEssential ->
+      AwakeNodesQueried ->
+      SleepingNodesDiscovery -> SleepingNodesDiscovery ->
+      SleepingNodesEssential ->
+      AllNodesQueried
+      ;
+    }
+
+.. blockdiag::
+    :maxwidth: 600
+
+    blockdiag NodesDiscovery {
+      orientation = portrait;
+      NullStart [style = "none", label = "", color="none"];
+      NullEnd [style = "none", label = "", color="none"];
+      NullStart -> NodeAdded -> NodeProtocolInfo -> MsgComplete ->
+        ValueAdded_Basic -> NodeNaming -> ValueAdded_Command -> Group ->
+        Version -> NullEnd ;
+      ValueAdded_Command -> ValueAdded_Command ->
+      Group -> Group ->
+      Version -> Version;
+    }
+
+.. blockdiag::
+    :maxwidth: 600
+
+    blockdiag NodesEssential {
+      orientation = portrait;
+      NullStart [style = "none", label = "", color="none"];
+      NullEnd [style = "none", label = "", color="none"];
+      NullStart ->
+        ValueChanged -> ValueChanged ->
+        EssentialNodeQueriesComplete -> EssentialNodeQueriesComplete ->
+        NullEnd ;
+    }
+
+
+.. blockdiag::
+    :maxwidth: 240
+
+    blockdiag admin {
+      top_page -> config -> config_edit -> config_confirm -> top_page;
+    }
+
+.. blockdiag::
+    :desctable:
+
+    blockdiag {
+      A -> B -> C;
+      A [description = "browsers in each client"];
+      B [description = "web server"];
+      C [description = "database server"];
+    }
+
+.. blockdiag::
+
+    blockdiag {
+      A -> B -> C -> D -> E;
+      C -> D [folded];
+    }
+
+.. blockdiag::
+
+    blockdiag {
+      // standard node shapes
+      box [shape = box];
+      square [shape = square];
+      roundedbox [shape = roundedbox];
+      dots [shape = dots];
+
+      circle [shape = circle];
+      ellipse [shape = ellipse];
+      diamond [shape = diamond];
+      minidiamond [shape = minidiamond];
+
+      note [shape = note];
+      mail [shape = mail];
+      cloud [shape = cloud];
+      actor [shape = actor];
+
+      beginpoint [shape = beginpoint];
+      endpoint [shape = endpoint];
+
+      box -> square -> roundedbox -> dots;
+      circle -> ellipse -> diamond -> minidiamond;
+      note -> mail -> cloud -> actor;
+      beginpoint -> endpoint;
+
+      // node shapes for flowcharts
+      condition [shape = flowchart.condition];
+      database [shape = flowchart.database];
+      terminator [shape = flowchart.terminator];
+      input [shape = flowchart.input];
+
+      loopin [shape = flowchart.loopin];
+      loopout [shape = flowchart.loopout];
+
+      condition -> database -> terminator -> input;
+      loopin -> loopout;
+    }
+
+
+.. blockdiag::
+
+    blockdiag {
+      A -> B, C, D;
+
+      C [shape = "dots"];
+
+      // hide edge forward to dots node
+      A -> C [style = "none"];
+    }
+
+.. blockdiag::
+
+    blockdiag admin {
+       A -> B -> C -> D;
+       A -> E;
+       A -> H;
+
+       // A and B belong to first group.
+       group {
+          A; B;
+       }
+
+       // E, F and G belong to second group.
+       group second_group {
+          // Set group-label
+          label = "second group";
+
+          // Set background-color to this group.
+          color = "#77FF77";
+
+          // Set textcolor to this group
+          textcolor = "#FF0000";
+
+          E -> F -> G;
+
+          // H and I belong to third "nested" group.
+          group {
+              label = "third group";
+              color = "#FF0000";
+
+              // Set group shape to 'line group' (default is box)
+              shape = line;
+
+              // Set line style (effects to 'line group' only)
+              style = dashed;
+
+              H -> I;
+          }
+       }
+
+       // J belongs to second group
+       J [group = second_group];
+    }
+
+.. blockdiag::
+
+    blockdiag {
+      orientation = portrait
+
+      A -> B -> C;
+           B -> D;
+    }
+
+.. blockdiag::
+
+    blockdiag admin {
+      index [label = "List of FOOs"];
+      add [label = "Add FOO"];
+      add_confirm [label = "Add FOO (confirm)"];
+      edit [label = "Edit FOO"];
+      edit_confirm [label = "Edit FOO (confirm)"];
+      show [label = "Show FOO"];
+      delete_confirm [label = "Delete FOO (confirm)"];
+
+      index -> add  -> add_confirm  -> index;
+      index -> edit -> edit_confirm -> index;
+      index -> show -> index;
+      index -> delete_confirm -> index;
+    }
+
+.. blockdiag::
+
+    blockdiag {
+       A -> B -> C -> D;
+       A -> E -> F -> G;
+    }
+
+.. blockdiag::
+
+    blockdiag {
+       // Set labels to nodes.
+       A [label = "foo"];
+       B [label = "bar"];
+       // And set text-color
+       C [label = "baz"];
+
+       // Set labels to edges. (short text only)
+       A -> B [label = "click bar", textcolor="red"];
+       B -> C [label = "click baz"];
+       C -> A;
+    }
+
+.. blockdiag::
+
+    blockdiag {
+       // Set boder-style, backgroun-color and text-color to nodes.
+       A [style = dotted];
+       B [style = dashed];
+       C [color = pink, style = "3,3,3,3,15,3"]; //dashed_array format style
+       D [color = "#888888", textcolor="#FFFFFF"];
+
+       // Set border-style and color to edges.
+       A -> B [style = dotted];
+       B -> C [style = dashed];
+       C -> D [color = "red", style = "3,3,3,3,15,3"]; //dashed_array format style
+
+       // Set numbered-badge to nodes.
+       E [numbered = 99];
+
+       // Set background image to nodes (and erase label).
+       F [label = "", background = "_static/python-logo.gif"];
+       G [label = "", background = "http://blockdiag.com/en/_static/python-logo.gif"];
+       H [icon = "_static/help-browser.png"];
+       I [icon = "http://blockdiag.com/en/_static/internet-mail.png"];
+
+       // Set arrow direction to edges.
+       E -> F [dir = none];
+       F -> G [dir = forward];
+       G -> H [dir = back];
+       H -> I [dir = both];
+
+       // Set width and height to nodes.
+       K [width = 192]; // default value is 128
+       L [height = 64]; // default value is 40
+
+       // Use thick line
+       J -> K [thick]
+       K -> L;
+    }
+
+.. blockdiag::
+
+    diagram admin {
+      top_page [label = "Top page"];
+
+      foo_index [label = "List of FOOs"];
+      foo_detail [label = "Detail FOO"];
+      foo_add [label = "Add FOO"];
+      foo_add_confirm [label = "Add FOO (confirm)"];
+      foo_edit [label = "Edit FOO"];
+      foo_edit_confirm [label = "Edit FOO (confirm)"];
+      foo_delete_confirm [label = "Delete FOO (confirm)"];
+
+      bar_detail [label = "Detail of BAR"];
+      bar_edit [label = "Edit BAR"];
+      bar_edit_confirm [label = "Edit BAR (confirm)"];
+
+      logout;
+
+      top_page -> foo_index;
+      top_page -> bar_detail;
+
+      foo_index -> foo_detail;
+                   foo_detail -> foo_edit;
+                   foo_detail -> foo_delete_confirm;
+      foo_index -> foo_add -> foo_add_confirm -> foo_index;
+      foo_index -> foo_edit -> foo_edit_confirm -> foo_index;
+      foo_index -> foo_delete_confirm -> foo_index;
+
+      bar_detail -> bar_edit -> bar_edit_confirm -> bar_detail;
+    }
+
+.. nwdiag::
+
+    diagram {
+     network {
+       web01; web02;
+     }
+     network {
+       web01; web02; db01;
+     }
+    }
+
+.. nwdiag::
+    :desctable:
+
+    nwdiag {
+      network {
+        A [address = 192.168.0.1, description = "web server01"];
+        B [address = 192.168.0.2, description = "web server02"];
+      }
+      network {
+        A [address = 172.0.0.1];
+        C [address = 172.0.0.2, description = "database server"];
+      }
+    }

@@ -1,0 +1,20 @@
+.. blockdiag::
+
+    blockdiag {
+      orientation = landscape;
+
+      MainUI -> URL_Analysis;
+      TouchUI -> URL_Analysis;
+      UI... -> URL_Analysis;
+      URL_Analysis -> plugin;
+      URL_Analysis -> command;
+      URL_Analysis -> xpl-command;
+      URL_Analysis -> root;
+      URL_Analysis -> events;
+      stats_manager -> events;
+      URL_Analysis -> stats_manager;
+      URL_Analysis -> stats;
+      URL_Analysis -> base;
+      URL_Analysis -> account;
+      URL_Analysis -> repo;
+    }

@@ -11,22 +11,22 @@ ozwsh
 A shell manager for your ZWave network. It use urwid and louie python extensions.
 If needed, type the following command to install them :
 
+.. code-block:: bash
+
     sudo pip install urwid louie
 
 Start ozwsh with :
+
+.. code-block:: bash
 
     ./ozwsh.sh --device=/dev/yourzwavestick
 
 It allows :
 
     * Reset controller (hard and soft) and add/remove device/controller
-
     * Change node informations (name, location, ... )
-
     * view and change values informations
-
     * view and change group informations
-
     * Full management of scenes, switches, dimmers and sensors
 
 It's a shell like manager. You can visit your zwave network using the
@@ -40,8 +40,9 @@ updates are done in the set, add, delete, remove, ... methods.
 
 There is some others examples, to test them :
 
-    cd examples
+.. code-block:: bash
 
+    cd examples
     ./build_examples.sh
 
 This will install all the needed files used by the examples in a temporary
@@ -55,6 +56,8 @@ to identify your switches, dimmers and sensors.
 
 Start it with :
 
+.. code-block:: bash
+
     ./api_demo.py --device=/dev/yourzwavestick
 
 test_lib
@@ -63,6 +66,8 @@ test_lib
 A test demo for the library : connect to the network and sniff for notifications.
 
 Start it with :
+
+.. code-block:: bash
 
     ./test_lib.py --device=/dev/yourzwavestick --sniff=30
 
@@ -73,6 +78,8 @@ A test demo for the api : connect to the api and sniff for louie signal from it.
 
 Start it with :
 
+.. code-block:: bash
+
     ./api_sniff.py --device=/dev/yourzwavestick --sniff=30
 
 memory_use
@@ -81,6 +88,8 @@ memory_use
 Try to evaluate the memory use of the api.
 
 Start it with :
+
+.. code-block:: bash
 
     ./memory_use.py --device=/dev/yourzwavestick
 

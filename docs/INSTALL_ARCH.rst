@@ -7,9 +7,16 @@ Install the needed tools
 ========================
 
 You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
-Some users have reported errors when using 0.16. You also need some python depencies
+Some users have reported errors when using 0.16 or 0.17. You also need some python depencies
+You can install a wotking version of cython using pip.
+
+.. code-block:: bash
+
+    sudo cython pip install cython==0.15
 
 On a debian like distribution :
+
+.. code-block:: bash
 
     sudo apt-get install cython python-dev python-setuptools python-louie
 
@@ -17,6 +24,8 @@ To compile the openzwave library, you need the common builds tools
 and the libudev developments headers.
 
 On a debian like distribution :
+
+.. code-block:: bash
 
     sudo apt-get install build-essential libudev-dev g++ make
 
@@ -26,9 +35,13 @@ Get archive of python-openzwave
 
 You are now ready to download sources of python-openzwave here :
 
+.. code-block:: bash
+
     http://code.google.com/p/python-openzwave/downloads/list
 
 This archive contains sources of python-openzwave and openzwave.
+
+.. code-block:: bash
 
     tar xvzf python-openzwave-X.Y.Z.tar.gz
 
@@ -40,14 +53,20 @@ Build process
 
 Go to the previously created directory :
 
+.. code-block:: bash
+
     cd python-openzwave-X.Y.Z.tar.gz
 
 Now, you can compile sources :
+
+.. code-block:: bash
 
     ./compile.sh
 
 Or if you have already build python-openzwave in a previous installation,
 you can use the clean option to remove old builds.
+
+.. code-block:: bash
 
     ./compile.sh clean
 
@@ -57,9 +76,13 @@ Installation
 
 You can now install the packages using the following command will.
 
+.. code-block:: bash
+
     sudo ./install.sh
 
 The installation script create a list of installed files. So you can remove
 python-openzwave using the following command :
+
+.. code-block:: bash
 
     sudo ./uninstall.sh
