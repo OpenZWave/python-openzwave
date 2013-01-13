@@ -10,11 +10,13 @@ echo "-----------------------------------------------------------------"
 echo "|   Update sources of openzwave                                 |"
 echo "-----------------------------------------------------------------"
 if [ -d openzwave ] ; then
-	echo "Update openzwave directory"
-	svn update http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    echo "Update openzwave directory"
+    cd openzwave
+    svn update http://open-zwave.googlecode.com/svn/trunk/
+    cd ..
 else
-	echo "Checkout openzwave directory"
-	svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    echo "Checkout openzwave directory"
+    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
 fi
 
 echo "-----------------------------------------------------------------"

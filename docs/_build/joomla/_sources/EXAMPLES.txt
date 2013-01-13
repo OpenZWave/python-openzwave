@@ -21,7 +21,7 @@ Start ozwsh with :
 
     ./ozwsh.sh --device=/dev/yourzwavestick
 
-It allows :
+It allows you to :
 
     * Reset controller (hard and soft) and add/remove device/controller
     * Change node informations (name, location, ... )
