@@ -56,6 +56,8 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void GetDriverStatistics( uint32_t homeId, DriverData* data )
 #        void GetNodeStatistics( uint32_t homeId, uint8_t nodeid, NodeData* data )
         # // Network
+#        Driver::ControllerInterface GetControllerInterfaceType( uint32_t homeId );
+#        string GetControllerPath( uint32_t homeId );
         void TestNetworkNode( uint32_t homeId, uint8_t nodeId, uint32_t count )
         void TestNetwork( uint32_t homeId, uint32_t count )
         void HealNetworkNode( uint32_t homeId, uint32_t count, bool _doRR )
@@ -119,6 +121,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueAsFloat(ValueID& valueid, float* o_value)
         bool GetValueAsInt(ValueID& valueid, int32_t* o_value)
         bool GetValueAsShort(ValueID& valueid, int16_t* o_value)
+#        bool GetValueAsRaw( ValueID& valueid, uint8** o_value, uint8* o_length )
         bool GetValueAsString(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, int32_t* o_value)
@@ -128,6 +131,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool SetValue(ValueID& valueid, float value)
         bool SetValue(ValueID& valueid, int32_t value)
         bool SetValue(ValueID& valueid, int16_t value)
+#       bool SetValue( ValueI& valueid, uint8 const* _value, uint8 const _length );
         bool SetValue(ValueID& valueid, string value)
         bool SetValueListSelection(ValueID& valueid, string selecteditem)
         bool RefreshValue(ValueID& valueid)

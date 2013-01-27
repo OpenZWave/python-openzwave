@@ -54,7 +54,8 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_NodeQueriesComplete = 22           # All the initialisation queries on a node have been completed.
         Type_AwakeNodesQueried = 23             # All awake nodes have been queried, so client application can expected complete data for these nodes.
         Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
-        Type_Notification = 25                  # An error has occured that we need to report.
+        Type_AllNodesQueriedSomeDead = 25       # All nodes have been queried but some dead nodes found.
+        Type_Notification = 26                  # An error has occured that we need to report.
 
 cdef extern from "Notification.h" namespace "OpenZWave":
 

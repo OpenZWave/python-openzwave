@@ -89,6 +89,7 @@ PyNotifications = [
     EnumWithDoc('NodeQueriesComplete').setDoc("All the initialisation queries on a node have been completed."),
     EnumWithDoc('AwakeNodesQueried').setDoc("All awake nodes have been queried, so client application can expected complete data for these nodes."),
     EnumWithDoc('AllNodesQueried').setDoc("All nodes have been queried, so client application can expected complete data."),
+    EnumWithDoc('AllNodesQueriedSomeDead').setDoc("All nodes have been queried but some dead nodes found."),
     EnumWithDoc('Notification').setDoc("An error has occured that we need to report."),
     ]
 
@@ -194,7 +195,8 @@ PyLogLevels = {
     'Info' : 6,
     'Detail' : 7,
     'Debug' : 8,
-    'Internal' : 9,
+    'StreamDetail' : 9,
+    'Internal' : 10,
     }
 
 cdef map[uint64_t, ValueID] values_map
