@@ -676,7 +676,7 @@ if __name__ == '__main__':
     options.set_logging(True)
     options.lock()
     network = ZWaveNetwork(options, log=None)
-    for i in range(0,30):
+    for i in range(0,300):
         if network.state>=network.STATE_AWAKED:
             break
         else:
@@ -685,7 +685,7 @@ if __name__ == '__main__':
             time.sleep(1.0)
     print ""
     print "Awake"
-    for i in range(0,30):
+    for i in range(0,300):
         if network.state>=network.STATE_READY:
             break
         else:

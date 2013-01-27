@@ -122,7 +122,7 @@ dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 print "------------------------------------------------------------"
 print "Waiting for driver : "
 print "------------------------------------------------------------"
-for i in range(0,20):
+for i in range(0,300):
     if network.state>=network.STATE_STARTED:
         print " done"
         break
@@ -145,7 +145,7 @@ print "Nodes in network : %s" % network.nodes_count
 print "------------------------------------------------------------"
 print "Waiting for network to become ready : "
 print "------------------------------------------------------------"
-for i in range(0,90):
+for i in range(0,300):
     if network.state>=network.STATE_READY:
         print " done"
         break

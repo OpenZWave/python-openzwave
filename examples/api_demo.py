@@ -80,7 +80,7 @@ time_started = 0
 print "------------------------------------------------------------"
 print "Waiting for network awaked : "
 print "------------------------------------------------------------"
-for i in range(0,50):
+for i in range(0,300):
     if network.state>=network.STATE_AWAKED:
         print " done"
         break
@@ -107,7 +107,7 @@ if network.state<network.STATE_AWAKED:
 print "------------------------------------------------------------"
 print "Waiting for network ready : "
 print "------------------------------------------------------------"
-for i in range(0,180):
+for i in range(0,300):
     if network.state>=network.STATE_READY:
         print " done in %s seconds" % time_started
         break
