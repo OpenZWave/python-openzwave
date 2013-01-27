@@ -452,6 +452,18 @@ class ProtectionTestCase(WaitTestCase):
         if not ran :
             self.skipTest("No Protection found")
 
+class BatteryTestCase(WaitTestCase):
+
+    def test_010_battery_item(self):
+        self.wait_for_queue()
+        ran = False
+        for node in network.nodes:
+            for val in network.nodes[node].get_battery_levels() :
+                ran = True
+                self.assertTrue(type(network.nodes[node].get_battery_level(val)) == type(0))
+        if not ran :
+            self.skipTest("No battery found")
+
 class SceneTestCase(WaitTestCase):
 
     def test_005_scene_count(self):
@@ -685,14 +697,19 @@ if __name__ == '__main__':
             time.sleep(1.0)
     print ""
     print "Awake"
+    ready = False
     for i in range(0,300):
         if network.state>=network.STATE_READY:
+            ready = True
             break
         else:
             sys.stdout.write(".")
             sys.stdout.flush()
             time.sleep(1.0)
-    print "Ready"
+    if ready :
+        print "Ready"
+    else :
+        print "Network is not ready but continue anyway"
     print "----------------------------------------------------------------------"
     print "Run tests : "
 
@@ -706,6 +723,7 @@ if __name__ == '__main__':
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SensorsTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SwitchesAllTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(ProtectionTestCase))
+    suite.addTests(unittest.TestLoader().loadTestsFromTestCase(BatteryTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(SceneTestCase))
     suite.addTests(unittest.TestLoader().loadTestsFromTestCase(ControllerCommandTestCase))
     unittest.TextTestRunner(verbosity=2).run(suite)
