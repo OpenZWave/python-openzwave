@@ -1,3 +1,2 @@
-* :doc:`Notification's diagrams </diagrams>`
-* :doc:`Library </libopenzwave>`
-* :doc:`Enums and data types </data>`
+* :doc:`Play with it </play>`
+* :doc:`API </api>`

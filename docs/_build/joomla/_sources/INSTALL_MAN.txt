@@ -40,6 +40,13 @@ On a debian like distribution :
 
     sudo apt-get install python-sphinx make
 
+You also need to install some sphinx contributions :
+
+.. code-block:: bash
+
+    sudo pip install sphinxcontrib-blockdiag sphinxcontrib-actdiag
+    sudo pip install sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+
 To compile the openzwave library, you need the common builds tools
 and the libudev developments headers.
 
