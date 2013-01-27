@@ -140,6 +140,7 @@ for node in network.nodes:
     print "%s - Command classes : %s" % (network.nodes[node].node_id,network.nodes[node].command_classes_as_string)
     print "%s - Capabilities : %s" % (network.nodes[node].node_id,network.nodes[node].capabilities)
     print "%s - Neigbors : %s" % (network.nodes[node].node_id,network.nodes[node].neighbors)
+    print "%s - Can sleep : %s" % (network.nodes[node].node_id,network.nodes[node].can_wake_up())
     groups = {}
     for grp in network.nodes[node].groups :
         groups[network.nodes[node].groups[grp].index] = {'label':network.nodes[node].groups[grp].label, 'associations':network.nodes[node].groups[grp].associations}

@@ -335,6 +335,22 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         return self.get_values(class_id=0x73, genre='User', \
         type='Byte', readonly=True, writeonly=False)
 
+    def can_wake_up(self):
+        """
+        The command 0x84 (COMMAND_CLASS_WAKE_UP) of this node.
+        Filter rules are :
+
+            command_class = 0x84
+
+        :return: True if the node can wake up
+        :rtype: bool
+        """
+        res = self.get_values(class_id=0x84)
+        if res != None and len(res)>0 :
+            return True
+        else :
+            return False
+
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     '''
     Represents an interface to switches and dimmers Commands
