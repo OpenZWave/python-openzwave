@@ -244,6 +244,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NODE_QUERIES_COMPLETE = 'NodeQueriesComplete'
     SIGNAL_AWAKE_NODES_QUERIED = 'AwakeNodesQueried'
     SIGNAL_ALL_NODES_QUERIED = 'AllNodesQueried'
+    SIGNAL_ALL_NODES_QUERIED_SOME_DEAD = 'AllNodesQueriedSomeDead'
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
     SIGNAL_NOTIFICATION = 'Notification'
 
@@ -760,6 +761,10 @@ class ZWaveNetwork(ZWaveObject):
             self._handle_button_off(args)
         elif notify_type == self.SIGNAL_ALL_NODES_QUERIED:
             self._handle_all_nodes_queried(args)
+############ NOT TESTED
+        elif notify_type == self.SIGNAL_ALL_NODES_QUERIED_SOME_DEAD:
+            self._handle_all_nodes_queried(args)
+############ NOT TESTED
         elif notify_type == self.SIGNAL_AWAKE_NODES_QUERIED:
             self._handle_awake_nodes_queried(args)
         elif notify_type == self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE:
