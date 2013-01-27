@@ -1,2 +1,3 @@
-* :doc:`Play with it </play>`
-* :doc:`API </api>`
+* :doc:`Library </libopenzwave>`
+* :doc:`Enums and data types </data>`
+
