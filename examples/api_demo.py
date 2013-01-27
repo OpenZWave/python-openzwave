@@ -123,8 +123,7 @@ for i in range(0,300):
         time.sleep(1.0)
 if not network.is_ready:
     print "."
-    print "Can't start network! Look at the logs in OZW_Log.log"
-    quit(2)
+    print "Network is not ready but continue anyway"
 print "------------------------------------------------------------"
 print "Controller capabilities : %s" % network.controller.capabilities
 print "Controller node capabilities : %s" % network.controller.node.capabilities
