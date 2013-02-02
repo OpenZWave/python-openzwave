@@ -27,11 +27,11 @@ Full startup process
       SleepingValueChanged -> SleepingValueChanged [style = dashed];
       SleepingValueChanged -> EssentialSleepingNodeQueriesComplete;
       EssentialSleepingNodeQueriesComplete -> EssentialSleepingNodeQueriesComplete [style = dashed];
-      EssentialSleepingNodeQueriesComplete -> AllNodesQueried;
+      EssentialSleepingNodeQueriesComplete -> AllNodesQueriedSomeDead;
 
       AddNodeProcess [color = silver];
       AddNodeProcess -> NodeAdded [style = none, color = none];
-      NodeAdded -> NodeProtocolInfo -> MsgComplete -> ValueAdded_Basic;
+      NodeAdded -> NodeProtocolInfo -> EssentialNodeQueriesComplete -> ValueAdded_Basic;
       ValueAdded_Basic -> ValueAdded_Basic [style = dashed];
       ValueAdded_Basic -> NodeNaming -> Group;
       Group -> Group [style = dashed];

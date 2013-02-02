@@ -48,8 +48,8 @@ from log cimport LogLevel
 import os
 import sys
 
-import logging
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+#import logging
+#logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 #Don't update it.
 #It will be done when releasing only.
@@ -298,7 +298,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     addValueId(notification.GetValueID(), n)
-    logging.debug("++++++++++++ libopenzwave.notif_callback : notification %s" % n)
+    #logging.debug("++++++++++++ libopenzwave.notif_callback : notification %s" % n)
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -306,14 +306,14 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
     Controller callback to the C++ library
 
     """
-    logging.debug("libopenzwave.ctrl_callback : state %s" % _state)
+    #logging.debug("libopenzwave.ctrl_callback : state %s" % _state)
     c = {'state' : PyControllerState[_state],
          'message' : PyControllerState[_state].doc,
          'error' : _error,
          'error_msg' : PyControllerError[_error].doc,
 #         'context' : "%s" % (<object>_context),
         }
-    logging.debug("++++++++++++ libopenzwave.ctrl_callback : notification %s" % c)
+    #logging.debug("++++++++++++ libopenzwave.ctrl_callback : notification %s" % c)
     (<object>_context)(c)
 
 cpdef object driverData():
@@ -1921,9 +1921,9 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
-                logging.debug("SetValueListSelection %s" % value)
+                #logging.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
-                logging.debug("SetValueListSelection %s" % cret)
+                #logging.debug("SetValueListSelection %s" % cret)
                 ret = 1 if cret else 0
         return ret
 

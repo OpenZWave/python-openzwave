@@ -26,7 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 import logging
 import sys, os
-
+import resource
 #logging.getLogger('openzwave').addHandler(logging.NullHandler())
 #logging.basicConfig(level=logging.DEBUG)
 logging.basicConfig(level=logging.INFO)
@@ -73,6 +73,8 @@ options.set_save_log_level(log)
 options.set_logging(False)
 options.lock()
 
+print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
+
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
@@ -82,7 +84,9 @@ print "Waiting for network awaked : "
 print "------------------------------------------------------------"
 for i in range(0,300):
     if network.state>=network.STATE_AWAKED:
-        print " done"
+
+        print(" done")
+        print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
         break
     else:
         sys.stdout.write(".")
@@ -121,6 +125,8 @@ for i in range(0,300):
         #sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
+
+print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
 if not network.is_ready:
     print "."
     print "Network is not ready but continue anyway"
@@ -284,3 +290,4 @@ print "------------------------------------------------------------"
 print "Stop network"
 print "------------------------------------------------------------"
 network.stop()
+print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
