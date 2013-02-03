@@ -26,7 +26,7 @@ architectures). Seems that using cython==0.14 solve the problem.
 
     sudo pip install cython==0.15
 
-On a debian like distribution :
+You also need some python modules, on a debian like distribution :
 
 .. code-block:: bash
 

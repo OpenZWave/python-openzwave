@@ -259,9 +259,20 @@ for node in network.nodes:
         print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
-        print("  value / items: %s / %s" % (network.nodes[node].get_battery_level(val), network.nodes[node].get_protection_items(val)))
+        print("  value : %s" % (network.nodes[node].get_battery_level(val)))
 print "------------------------------------------------------------"
 
+print "------------------------------------------------------------"
+print "Retrieve power level compatibles devices on the network         "
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_power_levels() :
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
+        print("  value : %s" % (network.nodes[node].get_power_level(val)))
+print "------------------------------------------------------------"
 #print
 #print "------------------------------------------------------------"
 #print "Activate the switches on the network"

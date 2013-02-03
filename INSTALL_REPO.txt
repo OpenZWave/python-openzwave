@@ -25,7 +25,7 @@ solve the problem.
 
    sudo pip install cython==0.15
 
-On a debian like distribution :
+You also need some python modules, on a debian like distribution :
 
    sudo apt-get install python-dev python-setuptools python-louie
 
