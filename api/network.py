@@ -279,6 +279,7 @@ class ZWaveNetwork(ZWaveObject):
         self._state = self.STATE_STOPPED
         self._semaphore_nodes = threading.Semaphore()
         self.nodes = None
+        self._id_separator = '.'
         if autostart:
             self.start()
 
@@ -526,6 +527,27 @@ class ZWaveNetwork(ZWaveObject):
             if value_id in self.nodes[node].values :
                 return self.nodes[node].values[value_id]
         return None
+
+    @property
+    def id_separator(self):
+        """
+        The sperator in id representation.
+
+        :rtype: char
+
+        """
+        return self._id_separator
+
+    @id_separator.setter
+    def id_separator(self, value):
+        """
+        The nodes of the network.
+
+        :param value: The new separator
+        :type value: char
+
+        """
+        self._id_separator = value
 
     def get_value_from_id_on_network(self, id_on_network):
         """

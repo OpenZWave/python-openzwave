@@ -81,7 +81,5 @@ setup(
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
   packages = ['openzwave', 'pyozwman' ],
-  install_requires=[
-                    'Louie >= 1.1',
-                    ]
+  install_requires=[ 'nose >= 0.8.3', 'Louie >= 1.1' ]
 )

@@ -142,7 +142,12 @@ class ZWaveValue(ZWaveObject):
             home_id.node_id.commnand_class.instance.index
 
         """
-        return "%0.8x.%s.%0.2x.%s.%s" % (self._network.home_id, self.parent_id, self.command_class, self.instance, self.index )
+        separator = self._network.id_separator
+        return "%0.8x%s%s%s%0.2x%s%s%s%s" % (self._network.home_id, \
+          separator, self.parent_id, \
+          separator, self.command_class, \
+          separator, self.instance, \
+          separator, self.index )
 
     @property
     def node(self):

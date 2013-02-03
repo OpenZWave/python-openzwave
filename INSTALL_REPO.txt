@@ -19,11 +19,15 @@ You need cython (0.14 or 0.15) to compile the python library
 and 0.17. You also need some python depencies You can install a
 wotking version of cython using pip.
 
-   sudo cython pip install cython==0.15
+Important note : some users reports segfault when using examples
+(specially on 64bits architectures). Seems that using cython==0.14
+solve the problem.
+
+   sudo pip install cython==0.15
 
 On a debian like distribution :
 
-   sudo apt-get install cython python-dev python-setuptools python-louie
+   sudo apt-get install python-dev python-setuptools python-louie
 
 You need sphinx and make to generate the documentation.
 

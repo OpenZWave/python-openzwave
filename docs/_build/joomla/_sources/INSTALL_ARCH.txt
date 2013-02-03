@@ -10,15 +10,18 @@ You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
 Some users have reported errors when using 0.16 or 0.17. You also need some python depencies
 You can install a wotking version of cython using pip.
 
+Important note : some users reports segfault when using examples (specially on 64bits
+architectures). Seems that using cython==0.14 solve the problem.
+
 .. code-block:: bash
 
-    sudo cython pip install cython==0.15
+    sudo pip install cython==0.15
 
 On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo apt-get install cython python-dev python-setuptools python-louie
+    sudo apt-get install python-dev python-setuptools python-louie
 
 To compile the openzwave library, you need the common builds tools
 and the libudev developments headers.
