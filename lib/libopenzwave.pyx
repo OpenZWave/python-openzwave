@@ -1106,7 +1106,6 @@ Retrieve statistics per node
 
 Statistics:
 
-
     cdef struct NodeData:
         * sentCnt                              # Number of messages sent from this node.
         * sentFailed                           # Number of sent messages failed
@@ -1166,11 +1165,9 @@ Statistics:
             ccd['commandClassId'] = temp.m_commandClassId
             ccd['sentCnt'] = temp.m_sentCnt
             ccd['receivedCnt']  = temp.m_receivedCnt
-            print ccd            
             listccdata.append(ccd)
             data.m_ccData.pop_back();
         ret['ccData'] = listccdata
-        print ret
         return ret
 
     def requestNodeDynamic(self, homeid, nodeid):
