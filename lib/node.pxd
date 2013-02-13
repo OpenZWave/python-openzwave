@@ -16,6 +16,9 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
+from mylibc cimport string
+from libcpp.vector cimport vector
 
 cdef extern from "Node.h" namespace "OpenZWave::Node":
 
@@ -29,17 +32,27 @@ cdef extern from "Node.h" namespace "OpenZWave::Node":
         SecurityFlag_Sensor1000ms = 0x40,
         SecurityFlag_OptionalFunctionality = 0x80
 
-#    cdef struct NodeData:
-#        uint32_t m_sentCnt                      # Number of messages sent from this node.
-#        uint32_t m_sentFailed                   # Number of sent messages failed
-#        uint32_t m_retries                      # Number of message retries
-#        uint32_t m_receivedCnt                  # Number of messages received from this node.
-#        uint32_t m_receivedDups                 # Number of duplicated messages received;
-#        uint32_t m_lastRTT                      # Last message rtt
-#        TimeStamp m_sentTS                      # Last message sent time
-#        TimeStamp m_receivedTS                  # Last message received time
-#        uint32_t m_averageRTT                   # Average round trip time.
-#        uint8_t m_quality                       # Node quality measure
-#        uint8_t m_lastReceivedMessage[254]      # Place to hold last received message
-#        list<CommandClassData> m_ccData         #Unknown
+    cdef struct CommandClassData:
+        uint8_t m_commandClassId   # Num type of CommandClass id.
+        uint32_t m_sentCnt             # Number of messages sent from this CommandClass.
+        uint32_t m_receivedCnt        # Number of messages received from this CommandClass.
 
+    cdef struct NodeData:
+        uint32_t m_sentCnt                             # Number of messages sent from this node.
+        uint32_t m_sentFailed                          # Number of sent messages failed
+        uint32_t m_retries                               # Number of message retries
+        uint32_t m_receivedCnt                       # Number of messages received from this node.
+        uint32_t m_receivedDups                      # Number of duplicated messages received;
+        uint32_t m_receivedUnsolicited              # Number of messages received unsolicited
+        string m_sentTS                                 # Last message sent time
+        string m_receivedTS                            # Last message received time
+        uint32_t m_lastRequestRTT                  # Last message request RTT
+        uint32_t m_averageRequestRTT             # Average Request Round Trip Time (ms).
+        uint32_t m_lastResponseRTT                 # Last message response RTT
+        uint32_t m_averageResponseRTT           #Average Reponse round trip time.
+        uint8_t m_quality                                # Node quality measure
+        uint8_t m_lastReceivedMessage[254]      # Place to hold last received message
+        vector[CommandClassData] m_ccData     # List of statistic on each command_class
+
+ctypedef NodeData NodeData_t
+        

@@ -32,7 +32,7 @@ from mylibc cimport string
 from vers cimport ozw_vers
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
-#from node cimport NodeData
+from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
@@ -935,6 +935,7 @@ Statistics:
         return ret
 
 
+
     def testNetwork(self, homeid, count):
         '''
 .. _testNetwork:
@@ -1105,18 +1106,26 @@ Retrieve statistics per node
 
 Statistics:
 
-    * sentCnt                      # Number of messages sent from this node.
-    * sentFailed                   # Number of sent messages failed
-    * retries                      # Number of message retries
-    * receivedCnt                  # Number of messages received from this node.
-    * receivedDups                 # Number of duplicated messages received;
-    * lastRTT                      # Last message rtt
-    * sentTS                       # Last message sent time
-    * receivedTS                   # Last message received time
-    * averageRTT                   # Average round trip time.
-    * quality                      # Node quality measure
-    * lastReceivedMessage[254]     # Place to hold last received message
-    * ccData                       #Unknown
+
+    cdef struct NodeData:
+        * sentCnt                              # Number of messages sent from this node.
+        * sentFailed                           # Number of sent messages failed
+        * retries                                # Number of message retries
+        * receivedCnt                        # Number of messages received from this node.
+        * receivedDups                      # Number of duplicated messages received;
+        * receivedUnsolicited             # Number of messages received unsolicited
+        * sentTS                                # Last message sent time
+        * receivedTS                          # Last message received time
+        * lastRequestRTT                    # Last message request RTT
+        * averageRequestRTT             # Average Request Round Trip Time (ms).
+        * lastResponseRTT                  # Last message response RTT
+        * averageResponseRTT           #Average Reponse round trip time.
+        * quality                                # Node quality measure
+        * lastReceivedMessage[254]   # Place to hold last received message
+        * ccData                                # List of statistic
+              * commandClassId               # Num of commandClass id.
+              * sentCnt                             # Number of messages sent from this CommandClass.
+              * receivedCnt                       # Number of messages received from this CommandClass.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
@@ -1129,30 +1138,40 @@ Statistics:
 :see: getDriverStatistics_
 
        '''
-#        cdef DriverData_t data
-#        self.manager.GetDriverStatistics( homeId, &data );
-#        ret = {}
-#        ret['SOFCnt'] = data.m_SOFCnt
-#        ret['ACKWaiting'] = data.m_ACKWaiting
-#        ret['readAborts'] = data.m_readAborts
-#        ret['badChecksum'] = data.m_badChecksum
-#        ret['readCnt'] = data.m_readCnt
-#        ret['writeCnt'] = data.m_writeCnt
-#        ret['CANCnt'] = data.m_CANCnt
-#        ret['NAKCnt'] = data.m_NAKCnt
-#        ret['ACKCnt'] = data.m_ACKCnt
-#        ret['OOFCnt'] = data.m_OOFCnt
-#        ret['dropped'] = data.m_dropped
-#        ret['retries'] = data.m_retries
-#        ret['callbacks'] = data.m_callbacks
-#        ret['badroutes'] = data.m_badroutes
-#        ret['noack'] = data.m_noack
-#        ret['netbusy'] = data.m_netbusy
-#        ret['nondelivery'] = data.m_nondelivery
-#        ret['routedbusy'] = data.m_routedbusy
-#        ret['broadcastReadCnt'] = data.m_broadcastReadCnt
-#        ret['broadcastWriteCnt'] = data.m_broadcastWriteCnt
-        return None
+       
+        cdef NodeData_t data
+        
+        self.manager.GetNodeStatistics( homeId, nodeId, &data );
+        ret = {}
+        ret['sentCnt'] = data.m_sentCnt
+        ret['sentFailed'] = data.m_sentFailed
+        ret['retries'] = data.m_retries
+        ret['receivedCnt'] = data.m_receivedCnt
+        ret['receivedDups'] = data.m_receivedDups
+        ret['receivedUnsolicited'] = data.m_receivedUnsolicited
+        ret['sentTS'] = data.m_sentTS.c_str()
+        ret['receivedTS'] = data.m_receivedTS.c_str()
+        ret['lastRequestRTT'] = data.m_lastRequestRTT
+        ret['averageRequestRTT'] = data.m_averageRequestRTT
+        ret['lastResponseRTT'] = data.m_lastResponseRTT
+        ret['averageResponseRTT'] = data.m_averageResponseRTT
+        ret['quality'] = data.m_quality
+        ret['lastReceivedMessage'] = []
+        for i in range( 0, 254) : 
+            ret['lastReceivedMessage'] .append(data.m_lastReceivedMessage[i])
+        listccdata =[]
+        while not data.m_ccData.empty() :
+            ccd = {}
+            temp = data.m_ccData.back()
+            ccd['commandClassId'] = temp.m_commandClassId
+            ccd['sentCnt'] = temp.m_sentCnt
+            ccd['receivedCnt']  = temp.m_receivedCnt
+            print ccd            
+            listccdata.append(ccd)
+            data.m_ccData.pop_back();
+        ret['ccData'] = listccdata
+        print ret
+        return ret
 
     def requestNodeDynamic(self, homeid, nodeid):
         '''

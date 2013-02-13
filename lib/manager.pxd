@@ -21,7 +21,7 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
-#from node cimport NodeData
+from node cimport NodeData
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
@@ -54,7 +54,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         int32_t GetSendQueueCount( uint32_t homeId )
         void LogDriverStatistics( uint32_t homeId )
         void GetDriverStatistics( uint32_t homeId, DriverData* data )
-#        void GetNodeStatistics( uint32_t homeId, uint8_t nodeid, NodeData* data )
+        void GetNodeStatistics( uint32_t homeId, uint8_t nodeid, NodeData* data )
         # // Network
 #        Driver::ControllerInterface GetControllerInterfaceType( uint32_t homeId );
 #        string GetControllerPath( uint32_t homeId );
