@@ -1779,9 +1779,8 @@ device, otherwise it will turn it on at 100%.
 :see: setNodeOff_, setNodeLevel_
 
         '''
-        print "** lib python_openzwave : call setNodeOn : ",  homeid,  nodeid
+        
         self.manager.SetNodeOn(homeid, nodeid)
-        print "*** finish call setNodeOn."
 
     def setNodeOff(self, homeid, nodeid):
         '''
