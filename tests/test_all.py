@@ -153,6 +153,9 @@ class ControllerTestCase(WaitTestCase):
         network.controller.node.manufacturer_name = name
         self.assertTrue(network.controller.node.manufacturer_name == name)
 
+    def test_760_controller_stats_label(self):
+        self.assertTrue(type(network.controller.get_stats_label('retries')) == type(""))
+
     def test_810_controller_node_values(self):
         self.assertTrue(type(network.controller.node.get_values()) == type(dict()))
 

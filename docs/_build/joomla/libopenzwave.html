@@ -1077,20 +1077,50 @@ data.</p>
 <dd><p id="getnodestatistics">Retrieve statistics per node</p>
 <p>Statistics:</p>
 <blockquote>
-<div><ul class="simple">
-<li>sentCnt                      # Number of messages sent from this node.</li>
-<li>sentFailed                   # Number of sent messages failed</li>
-<li>retries                      # Number of message retries</li>
-<li>receivedCnt                  # Number of messages received from this node.</li>
-<li>receivedDups                 # Number of duplicated messages received;</li>
-<li>lastRTT                      # Last message rtt</li>
-<li>sentTS                       # Last message sent time</li>
-<li>receivedTS                   # Last message received time</li>
-<li>averageRTT                   # Average round trip time.</li>
-<li>quality                      # Node quality measure</li>
-<li>lastReceivedMessage[254]     # Place to hold last received message</li>
-<li>ccData                       #Unknown</li>
+<div><dl class="docutils">
+<dt>cdef struct NodeData:</dt>
+<dd><ul class="first last">
+<li><p class="first">sentCnt                              # Number of messages sent from this node.</p>
+</li>
+<li><p class="first">sentFailed                           # Number of sent messages failed</p>
+</li>
+<li><p class="first">retries                                # Number of message retries</p>
+</li>
+<li><p class="first">receivedCnt                        # Number of messages received from this node.</p>
+</li>
+<li><p class="first">receivedDups                      # Number of duplicated messages received;</p>
+</li>
+<li><p class="first">receivedUnsolicited             # Number of messages received unsolicited</p>
+</li>
+<li><p class="first">sentTS                                # Last message sent time</p>
+</li>
+<li><p class="first">receivedTS                          # Last message received time</p>
+</li>
+<li><p class="first">lastRequestRTT                    # Last message request RTT</p>
+</li>
+<li><p class="first">averageRequestRTT             # Average Request Round Trip Time (ms).</p>
+</li>
+<li><p class="first">lastResponseRTT                  # Last message response RTT</p>
+</li>
+<li><p class="first">averageResponseRTT           #Average Reponse round trip time.</p>
+</li>
+<li><p class="first">quality                                # Node quality measure</p>
+</li>
+<li><p class="first">lastReceivedMessage[254]   # Place to hold last received message</p>
+</li>
+<li><dl class="first docutils">
+<dt>ccData                                # List of statistic</dt>
+<dd><ul class="first last simple">
+<li>commandClassId               # Num of commandClass id.</li>
+<li>sentCnt                             # Number of messages sent from this CommandClass.</li>
+<li>receivedCnt                       # Number of messages received from this CommandClass.</li>
 </ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
 </div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />

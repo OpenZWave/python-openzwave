@@ -314,6 +314,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
 
         '''
+        self.write_config()
         logging.debug("Stop network.")
         i = 0
         for i in range(0,30):
@@ -847,6 +848,10 @@ class ZWaveNetwork(ZWaveObject):
             self._state = self.STATE_STARTED
             dispatcher.send(self.SIGNAL_NETWORK_STARTED, \
                 **{'network': self})
+            ctrl_state = libopenzwave.PyControllerState[0]
+            ctrl_message = libopenzwave.PyControllerState[0].doc
+            dispatcher.send(self.controller.SIGNAL_CONTROLLER, \
+                **{'state': ctrl_state, 'message': ctrl_message, 'network': self, 'controller': self.controller})
         except:
             import sys, traceback
             logging.error('Z-Wave Notification DriverReady : %s' % (traceback.format_exception(*sys.exc_info())))
@@ -878,6 +883,8 @@ class ZWaveNetwork(ZWaveObject):
             #dispatcher.send(self.SIGNAL_DRIVER_RESET, \
             #    **{'network': self, 'controller': self._controller})
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
+                **{'network': self})
+            dispatcher.send(self.SIGNAL_NETWORK_RESETTED, \
                 **{'network': self})
         finally :
             self._semaphore_nodes.release()
@@ -1021,7 +1028,7 @@ class ZWaveNetwork(ZWaveObject):
         logging.debug('************ Z-Wave Notification NodeProtocolInfo : %s' % (args))
         dispatcher.send(self.SIGNAL_NODE_PROTOCOL_INFO, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
-        #self._handle_node(self.nodes[args['nodeId']])
+        self._handle_node(self.nodes[args['nodeId']])
 
     def _handle_node_removed(self, args):
         '''

@@ -271,6 +271,15 @@ class ZWaveNode( ZWaveObject,
             caps.add('security')
         if self.is_beaming_device:
             caps.add('beaming')
+        if self.node_id == self._network.controller.node_id:
+            for cap in self._network.controller.capabilities:
+                caps.add(cap)
+#        if self.is_primary_controller:
+#            caps.add('primaryController')
+#        if self.is_static_update_controller:
+#            caps.add('staticUpdateController')
+#        if self.is_bridge_controller:
+#            caps.add('bridgeController')
         return caps
 
     @property
@@ -395,6 +404,15 @@ class ZWaveNode( ZWaveObject,
 #
 #        """
 #        return self._values
+
+    def get_command_class_genres(self):
+        """
+        Return the list of genres of command classes
+
+        :rtype: set()
+
+        """
+        return ['User', 'Basic', 'Config', 'System']
 
     def get_values_by_command_classes(self, genre='All', \
         type='All', readonly='All', writeonly='All'):
@@ -770,48 +788,6 @@ class ZWaveNode( ZWaveObject,
 #            self.update("self.is_routing_device")
 #        return self._is_routing_device
         return self._network.manager.isNodeRoutingDevice(self.home_id, self.object_id)
-
-    @property
-    def is_primary_controller(self):
-        """
-        Is this node a primary controller of the network.
-
-        :rtype: bool
-
-        """
-#        if self.is_outdated("self.is_primary_controller"):
-#            self._is_primary_controller = self._network.manager.isPrimaryController(self.home_id)
-#            self.update("self.is_primary_controller")
-#        return self._is_primary_controller
-        return self._network.manager.isPrimaryController(self.home_id)
-
-    @property
-    def is_static_update_controller(self):
-        """
-        Is this controller a static update controller (SUC).
-
-        :rtype: bool
-
-        """
-#        if self.is_outdated("self.is_static_update_controller"):
-#            self._is_static_update_controller = self._network.manager.isStaticUpdateController(self.home_id)
-#            self.update("self.is_static_update_controller")
-#        return self._is_static_update_controller
-        return self._network.manager.isStaticUpdateController(self.home_id)
-
-    @property
-    def is_bridge_controller(self):
-        """
-        Is this controller using the bridge controller library.
-
-        :rtype: bool
-
-        """
-#        if self.is_outdated("self.is_bridge_controller"):
-#            self._is_bridge_controller = self._network.manager.isBridgeController(self.home_id)
-#            self.update("self.is_bridge_controller")
-#        return self._is_bridge_controller
-        return self._network.manager.isBridgeController(self.home_id)
 
     @property
     def is_locked(self):

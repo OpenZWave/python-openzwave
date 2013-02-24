@@ -290,6 +290,8 @@ print "------------------------------------------------------------"
 print
 print "------------------------------------------------------------"
 print "Driver statistics : %s" % network.controller.stats
+print "Driver label : %s" % \
+    network.controller.get_stats_label('retries')
 print "------------------------------------------------------------"
 
 print

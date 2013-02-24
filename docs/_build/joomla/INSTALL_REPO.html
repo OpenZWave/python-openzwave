@@ -12,10 +12,10 @@ and openzwave. Look at the documentation of your Linux distribution to do that.<
 </pre></div>
 </div>
 <p>You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
-Some users have reported errors when using 0.16 and 0.17. You also need some python depencies
-You can install a wotking version of cython using pip.</p>
-<p>Important note : some users reports segfault when using examples (specially on 64bits
-architectures). Seems that using cython==0.14 solve the problem.</p>
+Some users have reported errors when using 0.16 or 0.17.
+You can install a working version of cython using pip.</p>
+<p>Note for 64 bits users : some users reports segfault when using examples. Seems that using cython==0.14 solve the problem.
+Note for Gentoo users : don&#8217;t use cython that is shipped with your distribution. Install it using pip.</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo pip install <span class="nv">cython</span><span class="o">==</span>0.15
 </pre></div>
 </div>

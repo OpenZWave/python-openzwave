@@ -215,6 +215,20 @@ Not implemented</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_command_class_genres">
+<tt class="descname">get_command_class_genres</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_command_class_genres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of genres of command classes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.node.ZWaveNode.get_values">
 <tt class="descname">get_values</tt><big>(</big><em>class_id='All'</em>, <em>genre='All'</em>, <em>type='All'</em>, <em>readonly='All'</em>, <em>writeonly='All'</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the set of values. You can optionnaly filter for a command class,
@@ -335,20 +349,6 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.is_bridge_controller">
-<tt class="descname">is_bridge_controller</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_bridge_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this controller using the bridge controller library.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.is_frequent_listening_device">
 <tt class="descname">is_frequent_listening_device</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_frequent_listening_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node a frequent listening device.</p>
@@ -391,20 +391,6 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.is_primary_controller">
-<tt class="descname">is_primary_controller</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_primary_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this node a primary controller of the network.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.is_routing_device">
 <tt class="descname">is_routing_device</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_routing_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node a routing device.</p>
@@ -436,20 +422,6 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <dt id="openzwave.node.ZWaveNode.is_sleeping">
 <tt class="descname">is_sleeping</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_sleeping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node sleeping.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.is_static_update_controller">
-<tt class="descname">is_static_update_controller</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_static_update_controller" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this controller a static update controller (SUC).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

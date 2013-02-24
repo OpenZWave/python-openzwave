@@ -137,7 +137,7 @@ controller to learn new data.
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_add_device">
 <tt class="descname">begin_command_add_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a new device (but not a controller) to the Z-Wave network.</p>
+<dd><p>Add a new device to the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -299,7 +299,7 @@ operate at normal power levels instead.  Defaults to false.
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_device">
 <tt class="descname">begin_command_remove_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a device (but not a controller) from the Z-Wave network.</p>
+<dd><p>Remove a device from the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -488,6 +488,24 @@ operate at normal power levels instead.  Defaults to false.
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.get_stats_label">
+<tt class="descname">get_stats_label</tt><big>(</big><em>stat</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.get_stats_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve abel of the statistic from driver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stat</strong> &#8211; The code of the stat label to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The label or the stat.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.hard_reset">
 <tt class="descname">hard_reset</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.hard_reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hard Reset a PC Z-Wave Controller.
@@ -496,6 +514,48 @@ controller becomes a primary controller ready to add devices to a new network.</
 <p>This command fires a lot of louie signals.
 Louie&#8217;s clients must disconnect from nodes and values signals</p>
 <p>dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, <a href="#id1"><span class="problematic" id="id2">**</span></a>{&#8216;network&#8217;: self._network})</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.is_bridge_controller">
+<tt class="descname">is_bridge_controller</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.is_bridge_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this controller using the bridge controller library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.is_primary_controller">
+<tt class="descname">is_primary_controller</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.is_primary_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a primary controller of the network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.is_static_update_controller">
+<tt class="descname">is_static_update_controller</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.is_static_update_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this controller a static update controller (SUC).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">

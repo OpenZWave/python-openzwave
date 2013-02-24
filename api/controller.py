@@ -31,6 +31,7 @@ import openzwave
 import time
 from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
 from openzwave.node import ZWaveNode
+from libopenzwave import PyStatDriver
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
@@ -331,6 +332,19 @@ class ZWaveController(ZWaveObject):
         """
         return self._network.manager.getDriverStatistics(self.home_id)
 
+    def get_stats_label(self, stat):
+        """
+        Retrieve abel of the statistic from driver.
+
+        :param stat: The code of the stat label to retrieve.
+        :type stat:
+        :return: The label or the stat.
+        :rtype: str
+
+        """
+        #print "stat = %s" % stat
+        return PyStatDriver[stat]
+
     @property
     def capabilities(self):
         """
@@ -341,11 +355,11 @@ class ZWaveController(ZWaveObject):
 
         """
         caps = set()
-        if self.node.is_primary_controller:
+        if self.is_primary_controller:
             caps.add('primaryController')
-        if self.node.is_static_update_controller:
+        if self.is_static_update_controller:
             caps.add('staticUpdateController')
-        if self.node.is_bridge_controller:
+        if self.is_bridge_controller:
             caps.add('bridgeController')
 #        if self.node.is_routing_device:
 #            caps.add('routing')
@@ -358,6 +372,48 @@ class ZWaveController(ZWaveObject):
 #        if self.node.is_beaming_device:
 #            caps.add('beaming')
         return caps
+
+    @property
+    def is_primary_controller(self):
+        """
+        Is this node a primary controller of the network.
+
+        :rtype: bool
+
+        """
+#        if self.is_outdated("self.is_primary_controller"):
+#            self._is_primary_controller = self._network.manager.isPrimaryController(self.home_id)
+#            self.update("self.is_primary_controller")
+#        return self._is_primary_controller
+        return self._network.manager.isPrimaryController(self.home_id)
+
+    @property
+    def is_static_update_controller(self):
+        """
+        Is this controller a static update controller (SUC).
+
+        :rtype: bool
+
+        """
+#        if self.is_outdated("self.is_static_update_controller"):
+#            self._is_static_update_controller = self._network.manager.isStaticUpdateController(self.home_id)
+#            self.update("self.is_static_update_controller")
+#        return self._is_static_update_controller
+        return self._network.manager.isStaticUpdateController(self.home_id)
+
+    @property
+    def is_bridge_controller(self):
+        """
+        Is this controller using the bridge controller library.
+
+        :rtype: bool
+
+        """
+#        if self.is_outdated("self.is_bridge_controller"):
+#            self._is_bridge_controller = self._network.manager.isBridgeController(self.home_id)
+#            self.update("self.is_bridge_controller")
+#        return self._is_bridge_controller
+        return self._network.manager.isBridgeController(self.home_id)
 
     @property
     def send_queue_count(self):
@@ -383,12 +439,12 @@ class ZWaveController(ZWaveObject):
 
         """
         #logging.debug('Z-Wave Notification NetworkResetted')
-        #self._network.state=self._network.STATE_RESETTED
-        #dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
-        #    **{'network': self._network})
+        self._network.state=self._network.STATE_RESETTED
+        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
+            **{'network': self._network})
         self._network.manager.resetController(self._network.home_id)
         #self._network.stop(fire=False)
-        #time.sleep(20)
+        time.sleep(5)
         #self._network.start()
 
     def soft_reset(self):
@@ -440,7 +496,7 @@ class ZWaveController(ZWaveObject):
 
     def begin_command_add_device(self, high_power = False):
         """
-        Add a new device (but not a controller) to the Z-Wave network.
+        Add a new device to the Z-Wave network.
 
         :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
         Usually when adding or removing devices, the controller operates at low power so that the controller must
@@ -456,7 +512,7 @@ class ZWaveController(ZWaveObject):
 
     def begin_command_remove_device(self, high_power = False):
         """
-        Remove a device (but not a controller) from the Z-Wave network.
+        Remove a device from the Z-Wave network.
 
         :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
         Usually when adding or removing devices, the controller operates at low power so that the controller must
@@ -629,7 +685,7 @@ class ZWaveController(ZWaveObject):
         Cancels any in-progress command running on a controller.
 
         """
-        self._network.manager.cancelControllerCommand(self._network.home_id)
+        return self._network.manager.cancelControllerCommand(self._network.home_id)
 
     def zwcallback(self, args):
         """
