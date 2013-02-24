@@ -384,7 +384,7 @@ class GroupsTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('GroupsTree _louie_network_resetted.')
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_GROUP)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_GROUP)
         self.window.log.info('GroupsTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
@@ -656,7 +656,7 @@ class NodesTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('NodesTree _louie_network_resetted.')
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         self.window.log.info('NodesTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
@@ -841,7 +841,7 @@ class NodeTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('NodeTree _louie_network_resetted.')
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         self.window.log.info('NodeTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
@@ -989,7 +989,7 @@ class ControllerTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('ControllerTree _louie_network_resetted.')
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         self.window.log.info('ControllerTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
@@ -1221,7 +1221,7 @@ class ValuesTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('ValuesTree _louie_network_resetted.')
-        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        #dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
         self.window.log.info('ValuesTree _louie_network_resetted.')
 
     def _louie_value_update(self, network, node, value):
@@ -1462,8 +1462,8 @@ class SwitchesTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.refresh()
-        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
 
     def _louie_network_ready(self, network):
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
@@ -1590,8 +1590,9 @@ class DimmersTree(OldestTree):
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_resetted(self, network):
-        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        pass
 
     def _louie_network_ready(self, network):
         self.refresh()
@@ -1756,8 +1757,9 @@ class SensorsTree(OldestTree):
         dispatcher.connect(self._louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 
     def _louie_network_resetted(self, network):
-        dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-        dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        #dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
+        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
+        pass
 
     def _louie_network_ready(self, network):
         self.refresh()
