@@ -512,7 +512,7 @@ class MainWindow(Screen):
     def _louie_network_resetted(self, network):
         self.log.info('OpenZWave network is resetted.')
         self.network = None
-        self._disconnect_louie_node_and_value()
+        #self._disconnect_louie_node_and_value()
         self.status_bar.update(status='OpenZWave network was resetted ... Waiting ...')
         self.loop.draw_screen()
 
