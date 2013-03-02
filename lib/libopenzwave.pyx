@@ -1137,8 +1137,9 @@ Statistics:
        '''
        
         cdef NodeData_t data
-        
+        print('GetNodeStatistics homeId :',  homeId , " , nodeId : ",  nodeId )
         self.manager.GetNodeStatistics( homeId, nodeId, &data );
+        print ('GetNodeStatistics passed')
         ret = {}
         ret['sentCnt'] = data.m_sentCnt
         ret['sentFailed'] = data.m_sentFailed
@@ -1166,6 +1167,7 @@ Statistics:
             listccdata.append(ccd)
             data.m_ccData.pop_back();
         ret['ccData'] = listccdata
+        print('Conversion value return : ',  ret)
         return ret
 
     def requestNodeDynamic(self, homeid, nodeid):
