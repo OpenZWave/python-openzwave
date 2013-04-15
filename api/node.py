@@ -344,6 +344,16 @@ class ZWaveNode( ZWaveObject,
 #        """
 #        self._network.manager.addAssociation(self.home_id, self.node_id, self.num_groups+1, target_node_id)
 
+    def test(self, count=1):
+        """
+        Send a number of test messages to every node and record results.
+
+        :param count: The number of test messages to send.
+        :type count: int
+
+        """
+        self._network.manager.testNetworkNode(self.home_id, self.object_id, count)
+
     @property
     def command_classes(self):
         """

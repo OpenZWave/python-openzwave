@@ -512,6 +512,16 @@ class ZWaveNetwork(ZWaveObject):
         else :
             self.manager.switchAllOff(self.home_id)
 
+    def test(self, count=1):
+        """
+        Send a number of test messages to every node and record results.
+
+        :param count: The number of test messages to send.
+        :type count: int
+
+        """
+        self.manager.testNetwork(self.home_id, count)
+
     def get_value(self, value_id):
         """
         Retrieve a value on the network.

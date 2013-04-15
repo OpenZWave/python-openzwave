@@ -75,9 +75,16 @@ class WaitTestCase(unittest.TestCase):
 
 class NetworkTestCase(WaitTestCase):
 
-    def test_000_network(self):
+    def test_000_network_awake(self):
         self.assertTrue(network.state>=network.STATE_AWAKED)
         self.assertTrue(type(network.home_id_str)==type(""))
+
+    def test_010_network_ready(self):
+        self.assertTrue(network.state>=network.STATE_READY)
+
+    def test_100_network_test(self):
+        self.wait_for_queue()
+        network.test(5)
 
 class ControllerTestCase(WaitTestCase):
 
@@ -169,7 +176,7 @@ class ControllerTestCase(WaitTestCase):
         self.assertTrue(type(network.controller.node.security) == type(0))
         self.assertTrue(network.controller.node.security >= 0)
 
-    def test_910_controller_node_refresh(self):
+    def notest_910_controller_node_refresh(self):
         self.wait_for_queue()
         self.assertTrue(network.controller.node.refresh_info() == True)
 
@@ -179,9 +186,14 @@ class NodesTestCase(WaitTestCase):
         self.assertTrue(type(network.nodes_count) == type(0))
         self.assertTrue(network.nodes_count>0)
 
+    def test_100_nodes_test(self):
+        self.wait_for_queue()
+        for node in network.nodes:
+            network.nodes[node].test(5)
+
 class ValuesTestCase(WaitTestCase):
 
-    def test_000_values(self):
+    def notest_000_values(self):
         self.wait_for_queue()
         for node in network.nodes:
             for cmd in network.nodes[node].command_classes:
@@ -221,9 +233,11 @@ class SwitchesTestCase(WaitTestCase):
         for node in network.nodes:
             for val in network.nodes[node].get_switches() :
                 ran = True
+                time.sleep(1)
                 network.nodes[node].set_switch(val,True)
                 self.wait_for_queue()
                 time.sleep(1)
+                print
                 if network.nodes[node].get_switch_state(val) == False :
                     time.sleep(5)
                 self.assertTrue(network.nodes[node].get_switch_state(val) == True)
@@ -426,7 +440,7 @@ class ProtectionTestCase(WaitTestCase):
         if not ran :
             self.skipTest("No Protection found")
 
-    def test_015_protection_set_item(self):
+    def test_020_protection_set_item_no_operation(self):
         self.wait_for_queue()
         ran = False
         for node in network.nodes:
@@ -444,7 +458,25 @@ class ProtectionTestCase(WaitTestCase):
         if not ran :
             self.skipTest("No Protection found")
 
-    def test_020_protection_items(self):
+    def test_030_protection_set_item_unprotected(self):
+        self.wait_for_queue()
+        ran = False
+        for node in network.nodes:
+            for val in network.nodes[node].get_protections() :
+                self.wait_for_queue()
+                ran = True
+                old_value = network.nodes[node].get_protection_item(val)
+                new_value = "Unprotected"
+                network.nodes[node].set_protection(val, new_value)
+                time.sleep(1)
+                self.wait_for_queue()
+                self.assertTrue(network.nodes[node].get_protection_item(val) == new_value)
+                network.nodes[node].set_protection(val, old_value)
+                time.sleep(1)
+        if not ran :
+            self.skipTest("No Protection found")
+
+    def test_050_protection_items(self):
         self.wait_for_queue()
         ran = False
         for node in network.nodes:
