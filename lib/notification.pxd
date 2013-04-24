@@ -55,7 +55,18 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_AwakeNodesQueried = 23             # All awake nodes have been queried, so client application can expected complete data for these nodes.
         Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
         Type_AllNodesQueriedSomeDead = 25       # All nodes have been queried but some dead nodes found.
-        Type_Notification = 26                  # An error has occured that we need to report.
+        Type_Notification = 26                  # A manager notification report.
+
+cdef extern from "Notification.h" namespace "OpenZWave::Notification":
+
+    cdef enum NotificationCode:
+        Code_MsgComplete = 0                    # Completed messages.
+        Code_Timeout = 1                        # Messages that timeout will send a Notification with this code.
+        Code_NoOperation = 2                    # Report on NoOperation message sent completion.
+        Code_Awake = 3                          # Report when a sleeping node wakes.
+        Code_Sleep = 4                          # Report when a node goes to sleep.
+        Code_Dead = 5                           # Report when a node is presumed dead.
+        Code_Alive = 6                          # Report when a node is revived.
 
 cdef extern from "Notification.h" namespace "OpenZWave":
 
@@ -69,4 +80,3 @@ cdef extern from "Notification.h" namespace "OpenZWave":
         uint8_t GetButtonId()
         uint8_t GetNotification()
         uint8_t GetByte()
-

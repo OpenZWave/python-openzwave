@@ -36,7 +36,7 @@ from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
-from notification cimport Notification, NotificationType
+from notification cimport Notification, NotificationType, NotificationCode
 from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
 from notification cimport const_notification, pfnOnNotification_t
@@ -90,8 +90,18 @@ PyNotifications = [
     EnumWithDoc('AwakeNodesQueried').setDoc("All awake nodes have been queried, so client application can expected complete data for these nodes."),
     EnumWithDoc('AllNodesQueried').setDoc("All nodes have been queried, so client application can expected complete data."),
     EnumWithDoc('AllNodesQueriedSomeDead').setDoc("All nodes have been queried but some dead nodes found."),
-    EnumWithDoc('Notification').setDoc("An error has occured that we need to report."),
+    EnumWithDoc('Notification').setDoc("A manager notification report.."),
     ]
+
+PyNotificationCodes = [
+	EnumWithDoc('MsgComplete').setDoc("Completed messages."),
+	EnumWithDoc('Timeout').setDoc("Messages that timeout will send a Notification with this code."),
+	EnumWithDoc('NoOperation').setDoc("Report on NoOperation message sent completion."),
+	EnumWithDoc('Awake').setDoc("Report when a sleeping node wakes."),
+	EnumWithDoc('Sleep').setDoc("Report when a node goes to sleep."),
+	EnumWithDoc('Dead').setDoc("Report when a node is presumed dead."),
+	EnumWithDoc('Alive').setDoc("Report when a node is revived."),
+	]
 
 PyGenres = [
     EnumWithDoc('Basic').setDoc("The 'level' as controlled by basic commands.  Usually duplicated by another command class."),
@@ -1137,9 +1147,7 @@ Statistics:
        '''
        
         cdef NodeData_t data
-        print('GetNodeStatistics homeId :',  homeId , " , nodeId : ",  nodeId )
         self.manager.GetNodeStatistics( homeId, nodeId, &data );
-        print ('GetNodeStatistics passed')
         ret = {}
         ret['sentCnt'] = data.m_sentCnt
         ret['sentFailed'] = data.m_sentFailed
@@ -1167,7 +1175,6 @@ Statistics:
             listccdata.append(ccd)
             data.m_ccData.pop_back();
         ret['ccData'] = listccdata
-        print('Conversion value return : ',  ret)
         return ret
 
     def requestNodeDynamic(self, homeid, nodeid):
