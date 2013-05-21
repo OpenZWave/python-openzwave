@@ -94,14 +94,14 @@ PyNotifications = [
     ]
 
 PyNotificationCodes = [
-	EnumWithDoc('MsgComplete').setDoc("Completed messages."),
-	EnumWithDoc('Timeout').setDoc("Messages that timeout will send a Notification with this code."),
-	EnumWithDoc('NoOperation').setDoc("Report on NoOperation message sent completion."),
-	EnumWithDoc('Awake').setDoc("Report when a sleeping node wakes."),
-	EnumWithDoc('Sleep').setDoc("Report when a node goes to sleep."),
-	EnumWithDoc('Dead').setDoc("Report when a node is presumed dead."),
-	EnumWithDoc('Alive').setDoc("Report when a node is revived."),
-	]
+    EnumWithDoc('MsgComplete').setDoc("Completed messages."),
+    EnumWithDoc('Timeout').setDoc("Messages that timeout will send a Notification with this code."),
+    EnumWithDoc('NoOperation').setDoc("Report on NoOperation message sent completion."),
+    EnumWithDoc('Awake').setDoc("Report when a sleeping node wakes."),
+    EnumWithDoc('Sleep').setDoc("Report when a node goes to sleep."),
+    EnumWithDoc('Dead').setDoc("Report when a node is presumed dead."),
+    EnumWithDoc('Alive').setDoc("Report when a node is revived."),
+    ]
 
 PyGenres = [
     EnumWithDoc('Basic').setDoc("The 'level' as controlled by basic commands.  Usually duplicated by another command class."),
@@ -977,7 +977,7 @@ Get the time period between polls of a nodes state
 
 :return: The number of milliseconds between polls
 :rtype: int
-:see: setPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_
+:see: setPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_, getPollIntensity_
 
         '''
         return self.manager.GetPollInterval()
@@ -1001,7 +1001,7 @@ does not have to cope with more than one poll per second).
 :type milliseconds: int
 :param bIntervalBetweenPolls: Don't know what it is.
 :type bIntervalBetweenPolls: bool
-:see: getPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_
+:see: getPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_, getPollIntensity_
 
         '''
         self.manager.SetPollInterval(milliseconds, bIntervalBetweenPolls)
@@ -1018,7 +1018,7 @@ Enable the polling of a device's state.
 :type intensity: int
 :return: True if polling was enabled.
 :rtype: bool
-:see: getPollInterval_, setPollInterval_, isPolled_, setPollIntensity_, disablePoll_
+:see: getPollInterval_, setPollInterval_, isPolled_, setPollIntensity_, disablePoll_, getPollIntensity_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1036,7 +1036,7 @@ Disable polling of a value.
 :type id: int
 :return: True if polling was disabled.
 :rtype: bool
-:see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, setPollIntensity_
+:see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, setPollIntensity_, getPollIntensity_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1054,13 +1054,32 @@ Check polling status of a value
 :type id: int
 :return: True if polling is active.
 :rtype: bool
-:see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_
+:see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_, getPollIntensity_
 
         '''
         if values_map.find(id) != values_map.end():
             return self.manager.isPolled(values_map.at(id))
         else :
             return False
+
+    def getPollIntensity(self, id):
+        '''
+.. _getPollIntensity:
+
+Get the intensity with which this value is polled (0=none, 1=every time through the list, 2-every other time, etc).
+:param id: The ID of a value.
+:type id: int
+:return: A integer containing the poll intensity
+:rtype: int
+:see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_, isPolled_
+
+       '''
+        #if values_map.find(id) != values_map.end():
+        #    intensity = values_map.at(id).GetPollIntensity()
+        #    return intensity
+        #else :
+        #    return 0
+        return 0
 
     def setPollIntensity(self, id, intensity):
         '''
@@ -1074,7 +1093,7 @@ Set the frequency of polling (0=none, 1=every time through the set, 2-every othe
 :type intensity: int
 :return: True if polling is active.
 :rtype: bool
-:see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, disablePoll_
+:see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, disablePoll_, getPollIntensity_
 
         '''
         if values_map.find(id) != values_map.end():
@@ -1145,7 +1164,7 @@ Statistics:
 :see: getDriverStatistics_
 
        '''
-       
+
         cdef NodeData_t data
         self.manager.GetNodeStatistics( homeId, nodeId, &data );
         ret = {}
@@ -1163,7 +1182,7 @@ Statistics:
         ret['averageResponseRTT'] = data.m_averageResponseRTT
         ret['quality'] = data.m_quality
         ret['lastReceivedMessage'] = []
-        for i in range( 0, 254) : 
+        for i in range( 0, 254) :
             ret['lastReceivedMessage'] .append(data.m_lastReceivedMessage[i])
         listccdata =[]
         while not data.m_ccData.empty() :
@@ -1788,7 +1807,7 @@ device, otherwise it will turn it on at 100%.
 :see: setNodeOff_, setNodeLevel_
 
         '''
-        
+
         self.manager.SetNodeOn(homeid, nodeid)
 
     def setNodeOff(self, homeid, nodeid):
