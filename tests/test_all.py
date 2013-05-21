@@ -86,6 +86,20 @@ class NetworkTestCase(WaitTestCase):
         self.wait_for_queue()
         network.test(5)
 
+    def test_200_network_get_value_from_id_on_network(self):
+        self.wait_for_queue()
+        myval = 0
+        for node in network.nodes:
+            for cmd in network.nodes[node].command_classes:
+                for val in network.nodes[node].get_values_for_command_class(cmd) :
+                    myval = network.nodes[node].values[val]
+                    self.assertTrue(network.get_value_from_id_on_network(myval.id_on_network)!=None)
+
+    def test_201_network_get_value_from_id_on_network_bad(self):
+        self.wait_for_queue()
+        myval = "a_bad-id"
+        self.assertTrue(network.get_value_from_id_on_network(myval)==None)
+
 class ControllerTestCase(WaitTestCase):
 
     def test_010_controller(self):
@@ -237,7 +251,6 @@ class SwitchesTestCase(WaitTestCase):
                 network.nodes[node].set_switch(val,True)
                 self.wait_for_queue()
                 time.sleep(1)
-                print
                 if network.nodes[node].get_switch_state(val) == False :
                     time.sleep(5)
                 self.assertTrue(network.nodes[node].get_switch_state(val) == True)
