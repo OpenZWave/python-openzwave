@@ -302,7 +302,7 @@ storing them in a local variable.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_on_network</strong> (<em>int</em>) &#8211; The id_on_network of the value to find</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id_on_network</strong> (<em>str</em>) &#8211; The id_on_network of the value to find</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value or None</td>
 </tr>
@@ -577,6 +577,20 @@ not routed, the message might not otherwise reach all the nodes).</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>state</strong> (<em>bool</em>) &#8211; True to turn on the switches, False to turn them off</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.network.ZWaveNetwork.test">
+<tt class="descname">test</tt><big>(</big><em>count=1</em><big>)</big></dt>
+<dd><p>Send a number of test messages to every node and record results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>count</strong> (<em>int</em>) &#8211; The number of test messages to send.</td>
 </tr>
 </tbody>
 </table>

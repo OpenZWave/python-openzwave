@@ -18,16 +18,16 @@ On a debian like distribution :
 
     sudo apt-get install mercurial subversion
 
-You need cython (0.14 or 0.15) to compile the python library (libopenzwave.pyx).
+You need cython (0.14) to compile the python library (libopenzwave.pyx).
 Some users have reported errors when using 0.16 or 0.17.
-You can install a working version of cython using pip.
+Some 64 bits users reports segfault when using examples. Seems that using cython 0.15 was the problem.
+Gentoo users : don't use cython that is shipped with your distribution.
 
-Note for 64 bits users : some users reports segfault when using examples. Seems that using cython==0.14 solve the problem.
-Note for Gentoo users : don't use cython that is shipped with your distribution. Install it using pip.
+Install it using pip.
 
 .. code-block:: bash
 
-    sudo pip install cython==0.15
+    sudo pip install cython==0.14
 
 You also need some python modules, on a debian like distribution :
 

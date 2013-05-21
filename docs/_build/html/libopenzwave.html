@@ -456,7 +456,7 @@ Z-Wave controller in turn.</p>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></td>
 </tr>
 </tbody>
 </table>
@@ -482,7 +482,7 @@ Z-Wave controller in turn.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></p>
 </td>
 </tr>
 </tbody>
@@ -1339,6 +1339,17 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getPollIntensity">
+<tt class="descname">getPollIntensity</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getPollIntensity" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getpollintensity">Get the intensity with which this value is polled (0=none, 1=every time through the list, 2-every other time, etc).
+:param id: The ID of a value.
+:type id: int
+:return: A integer containing the poll intensity
+:rtype: int
+:see: <a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a></p>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getPollInterval">
 <tt class="descname">getPollInterval</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getPollInterval" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getpollinterval">Get the time period between polls of a nodes state</p>
@@ -1350,7 +1361,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></td>
 </tr>
 </tbody>
 </table>
@@ -2060,7 +2071,7 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></td>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></td>
 </tr>
 </tbody>
 </table>
@@ -2850,7 +2861,7 @@ class Value object.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></p>
 </td>
 </tr>
 </tbody>
@@ -2879,7 +2890,7 @@ does not have to cope with more than one poll per second).</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a></p>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#setpollintensity">setPollIntensity</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></p>
 </td>
 </tr>
 </tbody>
@@ -3374,7 +3385,7 @@ Give it to lion as Nico0084 says : <a class="reference external" href="http://bl
     </div>
     <div class="footer">
         &copy; Copyright 2012, bibi21000.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
