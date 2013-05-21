@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
 echo "-----------------------------------------------------------------"
+echo "|   Uninstall python-openzwave                                  |"
+echo "-----------------------------------------------------------------"
+./uninstall.sh
+
+echo "-----------------------------------------------------------------"
 echo "|   Install python-openzwave  lib                               |"
 echo "-----------------------------------------------------------------"
 python setup-lib.py install --record install.files
