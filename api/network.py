@@ -567,15 +567,15 @@ class ZWaveNetwork(ZWaveObject):
         Check every nodes to see if it holds the value
 
         :param id_on_network: The id_on_network of the value to find
-        :type id_on_network: int
+        :type id_on_network: str
         :return: The value or None
         :rtype: ZWaveValue
 
         """
-        for node in self.nodes:
-            for val in self.nodes[node].values :
-                if self.nodes[node].values[val].id_on_network():
-                    return self.nodes[node].values[val]
+        for node in self.nodes.itervalues():
+            for val in node.values.itervalues() :
+                if val.id_on_network == id_on_network:
+                    return val
         return None
 
     def get_scenes(self):

@@ -415,7 +415,7 @@ class ZWaveValue(ZWaveObject):
         logging.debug("check_data type :%s" % (self.type))
         if self.type == "Bool":
             new_data = data
-            if type(data) == type("") :
+            if isinstance(data, basestring) :
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
                 else :
@@ -459,13 +459,13 @@ class ZWaveValue(ZWaveObject):
                 new_data = data
         elif self.type == "Button":
             new_data = data
-            if type(data) == type("") :
+            if isinstance(data, basestring) :
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
                 else :
                     new_data = True
         elif self.type == "List":
-            if type(data) == type("") :
+            if isinstance(data, basestring) :
                 if data in self.data_items:
                     new_data = data
                 else :
