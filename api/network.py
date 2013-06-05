@@ -1369,7 +1369,7 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('************ Z-Wave Notification Error : %s' % (args))
         dispatcher.send(self.SIGNAL_NOTIFICATION, \
-            **{'network': self})
+            **{'network': self, 'args': args})
 
     def _handle_msg_complete(self, args):
         '''
