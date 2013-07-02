@@ -999,7 +999,8 @@ does not have to cope with more than one poll per second).
 
 :param milliseconds: The length of the polling interval in milliseconds.
 :type milliseconds: int
-:param bIntervalBetweenPolls: Don't know what it is.
+:param bIntervalBetweenPolls: If true, the library intersperses m_pollInterval between polls.
+                                               If false, the library attempts to complete all polls within m_pollInterval
 :type bIntervalBetweenPolls: bool
 :see: getPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_, getPollIntensity_
 
@@ -1074,12 +1075,12 @@ Get the intensity with which this value is polled (0=none, 1=every time through 
 :see: getPollInterval_, setPollInterval_, enablePoll_, setPollIntensity_, disablePoll_, isPolled_
 
        '''
-        #if values_map.find(id) != values_map.end():
-        #    intensity = values_map.at(id).GetPollIntensity()
-        #    return intensity
-        #else :
-        #    return 0
-        return 0
+        if values_map.find(id) != values_map.end():
+         #   intensity = self.manager.GetPollIntensity(values_map.at(id)) #TODO: to enabled when the function is implemented in the library
+            intensity = 1
+            return intensity
+        else :
+            return 0
 
     def setPollIntensity(self, id, intensity):
         '''
