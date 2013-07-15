@@ -3,7 +3,9 @@
 echo "-----------------------------------------------------------------"
 echo "|   Uninstall python-openzwave                                  |"
 echo "-----------------------------------------------------------------"
+set +e
 ./uninstall.sh
+set -e
 
 echo "-----------------------------------------------------------------"
 echo "|   Install python-openzwave  lib                               |"
@@ -21,6 +23,6 @@ rm -Rf python_openzwave_api.egg-info >/dev/null 2>&1
 
 echo "-----------------------------------------------------------------"
 echo "|   Installation done                                           |"
-echo "|   Run the following command to unistall python-openzwave :    |"
+echo "|   You can unistall python-openzwave using :                   |"
 echo "|   sudo ./uninstall.sh                                         |"
 echo "-----------------------------------------------------------------"
