@@ -6,7 +6,14 @@
 override_dh_auto_build:
 	dh_auto_build build -- --debian-package
 
-#override_dh_auto_install:
-#	dh_auto_install install -- --debian-package
-#	cd docs && make html
-#	dh_auto_install install -- --debian-package
+
+override_dh_auto_install:
+	dh_auto_install install -- --debian-package 
+	cd docs && make html
+	dh_auto_install install -- --debian-package
+	PYTHONPATH=.:debian/python-openzwave/usr/lib/python2.7/dist-packages/ python setup-lib.py install --record install.files --prefix=debian/python-openzwave/usr/ --install-layout=deb
+	PYTHONPATH=.:debian/python-openzwave/usr/lib/python2.7/dist-packages/ python setup-api.py install --record install.tm --prefix=debian/python-openzwave/usr/ --install-layout=deb
+	rm -rf debian/python-openzwave/usr/share/pyshared/site.py
+	rm -rf debian/python-openzwave/usr/share/pyshared/easy-install.pth
+	rm -rf debian/python-openzwave/usr/lib/python2.7/dist-packages/site.py
+	rm -rf debian/python-openzwave/usr/lib/python2.7/dist-packages/easy-install.pth
