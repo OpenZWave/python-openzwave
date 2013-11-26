@@ -16,7 +16,7 @@ On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo apt-get install mercurial subversion
+    sudo apt-get install mercurial subversion python-pip python-dev
 
 You need cython (0.14) to compile the python library (libopenzwave.pyx).
 Some users have reported errors when using 0.16 or 0.17.
