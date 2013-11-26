@@ -78,5 +78,6 @@ cdef extern from "Notification.h" namespace "OpenZWave":
         uint8_t GetGroupIdx()
         uint8_t GetEvent()
         uint8_t GetButtonId()
+        uint8_t GetSceneId()
         uint8_t GetNotification()
         uint8_t GetByte()

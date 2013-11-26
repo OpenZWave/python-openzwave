@@ -971,9 +971,10 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         '''
-        logging.debug('************ Z-Wave Notification SceneEvent (not implemented) : %s' % (args))
-        #dispatcher.send(self.SIGNAL_SCENE_EVENT, \
-        #    **{'network': self, 'node': self.nodes[args['nodeId']]})
+        logging.debug('************ Z-Wave Notification SceneEvent : %s' % (args))
+        dispatcher.send(self.SIGNAL_SCENE_EVENT, \
+            **{'network': self, 'node': self.nodes[args['nodeId']],
+               'scene_id': args['sceneId']})
         #self._handle_node(self.nodes[args['nodeId']])
 
     def _handle_node_event(self, args):

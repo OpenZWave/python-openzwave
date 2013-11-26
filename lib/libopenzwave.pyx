@@ -39,6 +39,7 @@ from driver cimport ControllerCommand, ControllerState, ControllerError, pfnCont
 from notification cimport Notification, NotificationType, NotificationCode
 from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
+from notification cimport Type_SceneEvent
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
@@ -307,6 +308,8 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         n['notificationCode'] = notification.GetNotification()
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
+    elif notification.GetType() == Type_SceneEvent:
+        n['sceneId'] = notification.GetSceneId()
     addValueId(notification.GetValueID(), n)
     #logging.debug("++++++++++++ libopenzwave.notif_callback : notification %s" % n)
     (<object>_context)(n)
