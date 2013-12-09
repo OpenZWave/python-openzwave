@@ -6,12 +6,14 @@ RY023="cc56d65fbff4"
 RZ023="539"
 RY024="d3995087deb0"
 RZ024="580"
+RY025="a11be346b118"
+RZ025="699"
 
 #Last archive
 #The release number of python-openzwave
-RY025="d3995087deb0"
+RY026="a11be346b118"
 #The release number of openzwave
-RZ025="580"
+RZ026="699"
 
 #Current archive
 RY=$(echo $RY025)
