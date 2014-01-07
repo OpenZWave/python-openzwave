@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+from libc.stdint cimport uint16_t
 
-cdef extern from "vers.c" :
-    char* ozw_vers
+cdef extern from "vers.cpp" :
+    uint16_t ozw_vers_major
+    uint16_t ozw_vers_minor
+    uint16_t ozw_vers_revision
+	

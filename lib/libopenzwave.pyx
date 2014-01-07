@@ -27,9 +27,9 @@ from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 from libcpp.vector cimport vector
-from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
+from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
-from vers cimport ozw_vers
+from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
@@ -822,7 +822,10 @@ Get a string containing the openzwave library version.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
-        return ozw_vers
+#        cdef uint16_t vmajor = ozw_vers_major
+#        cdef uint16_t vminor = ozw_vers_minor
+#        cdef uint16_t vrev = ozw_vers_revision
+        return "OpenZWave version %d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
 
     def getLibraryTypeName(self, homeid):
         '''
@@ -1079,8 +1082,7 @@ Get the intensity with which this value is polled (0=none, 1=every time through 
 
        '''
         if values_map.find(id) != values_map.end():
-         #   intensity = self.manager.GetPollIntensity(values_map.at(id)) #TODO: to enabled when the function is implemented in the library
-            intensity = 1
+            intensity = self.manager.GetPollIntensity(values_map.at(id))
             return intensity
         else :
             return 0
@@ -1095,8 +1097,6 @@ Set the frequency of polling (0=none, 1=every time through the set, 2-every othe
 :type id: int
 :param intensity: the intensity of the poll
 :type intensity: int
-:return: True if polling is active.
-:rtype: bool
 :see: getPollInterval_, setPollInterval_, enablePoll_, isPolled_, disablePoll_, getPollIntensity_
 
         '''

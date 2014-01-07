@@ -69,7 +69,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool DisablePoll(ValueID& valueId)
         bool isPolled(ValueID& valueId)
         void SetPollIntensity( ValueID& valueId, uint8_t intensity)
-#        uint8_t GetPollIntensity(ValueID& valueId)   #TODO: to enabled when the function is implemented in the library
+        uint8_t GetPollIntensity(ValueID& valueId)   #TODO: to enabled when the function is implemented in the library
         # // Node Information
         bool RefreshNodeInfo(uint32_t homeid, uint8_t nodeid)
         bool RequestNodeState(uint32_t homeid, uint8_t nodeid)
