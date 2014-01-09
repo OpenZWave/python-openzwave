@@ -173,6 +173,12 @@ PyControllerCommand = [
     EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
     ]
 
+PyControllerInterface = [
+    EnumWithDoc('Unknown').setDoc("Controller interface use unknown protocol ."),
+    EnumWithDoc('Serial').setDoc("Controller interface use serial protocol."),
+    EnumWithDoc('Hid').setDoc("Controller interface use human interface device protocol."),
+]
+
 PyStatDriver = {
     'SOFCnt' : "Number of SOF bytes received",
     'ACKWaiting' : "Number of unsolicited messages while waiting for an ACK",
@@ -705,6 +711,32 @@ handled automatically.
         '''
         self.manager.RemoveDriver(string(serialport))
 
+    def getControllerInterfaceType(self, homeid):
+        '''
+.._getControllerInterfaceType:
+Retrieve controller interface type, Unknown, Serial, Hid
+
+:param homeId: The Home ID of the Z-Wave controller.
+:return: The controller interface type
+:rtype: str
+
+        '''
+        type = self.manager.GetControllerInterfaceType(homeid) 
+        return PyControllerInterface[type]
+        
+    def getControllerPath(self, homeid):
+        '''
+.._getControllerPath:
+Retrieve controller interface path, name or path used to open the controller hardware
+
+:param homeId: The Home ID of the Z-Wave controller.
+:return: The controller interface type
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetControllerPath(homeid)
+        return c_string.c_str()
+
     def getControllerNodeId(self, homeid):
         '''
 .. _getControllerNodeId:
@@ -822,9 +854,6 @@ Get a string containing the openzwave library version.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
-#        cdef uint16_t vmajor = ozw_vers_major
-#        cdef uint16_t vminor = ozw_vers_minor
-#        cdef uint16_t vrev = ozw_vers_revision
         return "OpenZWave version %d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
 
     def getLibraryTypeName(self, homeid):
@@ -967,6 +996,39 @@ Sends a series of messages to every node on the network for testing network reli
         '''
         self.manager.TestNetwork(homeid, count)
 
+    def healNetworkNode(self, homeid, nodeid,  upNodeRoute = False):
+        '''
+.. _healNetworkNode:
+
+Heal a single node in the network.
+
+Try to heal node by requesting neighbor update and optional route update.
+
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node to query.
+:type nodeid: int
+:param upNodeRoute: Optional force update node route (default = false).
+:type upNodeRoute: bool
+:see: healNetwork_
+        '''
+        self.manager.HealNetworkNode(homeid, nodeid,  upNodeRoute)
+    
+    def healNetwork(self, homeid, upNodeRoute = False):
+        '''
+.. _healNetwork:
+
+Heal the Z-Wave network one node at a time.
+
+Try to heal all nodes (one by one) by requesting neighbor update and optional route update.
+
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param upNodeRoute: Optional force update node route (default = false).
+:type upNodeRoute: bool
+:see: healNetworkNode_
+        '''
+        self.manager.HealNetwork(homeid, upNodeRoute)
 
 # -----------------------------------------------------------------------------
 # Polling Z-Wave devices

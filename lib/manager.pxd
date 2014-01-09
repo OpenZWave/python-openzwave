@@ -23,7 +23,7 @@ from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 from node cimport NodeData
 from driver cimport DriverData_t, DriverData
-from driver cimport ControllerCommand, ControllerState, pfnControllerCallback_t
+from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType
 from notification cimport Type_Notification, Type_Group, Type_NodeEvent
 from notification cimport const_notification, pfnOnNotification_t
@@ -55,12 +55,12 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void LogDriverStatistics( uint32_t homeId )
         void GetDriverStatistics( uint32_t homeId, DriverData* data )
         void GetNodeStatistics( uint32_t homeId, uint8_t nodeid, NodeData* data )
+        ControllerInterface GetControllerInterfaceType( uint32_t homeId )
+        string GetControllerPath( uint32_t homeId )
         # // Network
-#        Driver::ControllerInterface GetControllerInterfaceType( uint32_t homeId );
-#        string GetControllerPath( uint32_t homeId );
         void TestNetworkNode( uint32_t homeId, uint8_t nodeId, uint32_t count )
         void TestNetwork( uint32_t homeId, uint32_t count )
-        void HealNetworkNode( uint32_t homeId, uint32_t count, bool _doRR )
+        void HealNetworkNode( uint32_t homeId, uint32_t nodeId, bool _doRR )
         void HealNetwork( uint32_t homeId, bool doRR)
         # // Polling
         uint32_t GetPollInterval()
@@ -69,7 +69,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool DisablePoll(ValueID& valueId)
         bool isPolled(ValueID& valueId)
         void SetPollIntensity( ValueID& valueId, uint8_t intensity)
-        uint8_t GetPollIntensity(ValueID& valueId)   #TODO: to enabled when the function is implemented in the library
+        uint8_t GetPollIntensity(ValueID& valueId)
         # // Node Information
         bool RefreshNodeInfo(uint32_t homeid, uint8_t nodeid)
         bool RequestNodeState(uint32_t homeid, uint8_t nodeid)
@@ -161,6 +161,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void RemoveAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid)
         bool AddWatcher(pfnOnNotification_t notification, void* context)
         bool RemoveWatcher(pfnOnNotification_t notification, void* context)
+        # void NotifyWatchers(Notification*) 
         # // Controller Commands
         void ResetController(uint32_t homeid)
         void SoftReset(uint32_t homeid)

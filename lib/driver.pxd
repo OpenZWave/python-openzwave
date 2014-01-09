@@ -22,6 +22,11 @@ from libcpp cimport bool
 
 cdef extern from "Driver.h" namespace "OpenZWave::Driver":
 
+    cdef enum  ControllerInterface:       # Specifies the controller's hardware interface 
+        ControllerInterface_Unknown = 0
+        ControllerInterface_Serial = 1          # Serial protocol
+        ControllerInterface_Hid = 2             # Human interface device protocol
+    
     cdef struct DriverData:
         uint32_t m_SOFCnt               # Number of SOF bytes received
         uint32_t m_ACKWaiting           # Number of unsolicited messages while waiting for an ACK
