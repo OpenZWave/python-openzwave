@@ -7,7 +7,7 @@ echo "-----------------------------------------------------------------"
 echo "|   Build openzwave                                             |"
 echo "-----------------------------------------------------------------"
 cd openzwave/cpp/build/linux
-rm vers.cpp
+rm vers.cpp -f
 [ $CLEAN -eq 1 ] && make clean
 make
 cd ../../../..

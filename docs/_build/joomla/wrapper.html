@@ -10,6 +10,67 @@ but don&#8217;t think so. For documentation only.</p>
 <ul class="simple">
 </ul>
 </div>
+<span class="target" id="module-openzwave.wrapper"></span><span class="target" id="module-openzwave.wrapper"></span><dl class="docutils">
+<dt>This file is part of <strong>py-openzwave</strong> project <a class="reference external" href="https://github.com/maartendamen/py-openzwave">https://github.com/maartendamen/py-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>py-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>py-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with py-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="exception">
+<dt id="openzwave.wrapper.ZWaveWrapperException">
+<em class="property">exception </em><tt class="descclassname">openzwave.wrapper.</tt><tt class="descname">ZWaveWrapperException</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Exception class for ZWave Wrapper</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.wrapper.ZWaveValueNode">
+<em class="property">class </em><tt class="descclassname">openzwave.wrapper.</tt><tt class="descname">ZWaveValueNode</tt><big>(</big><em>home_id</em>, <em>node_id</em>, <em>value_data</em><big>)</big></dt>
+<dd><p>Represents a single value for an OZW node element</p>
+<dl class="method">
+<dt id="openzwave.wrapper.ZWaveValueNode.update">
+<tt class="descname">update</tt><big>(</big><em>args</em><big>)</big></dt>
+<dd><p>Update node value from callback arguments</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.wrapper.ZWaveNode">
+<em class="property">class </em><tt class="descclassname">openzwave.wrapper.</tt><tt class="descname">ZWaveNode</tt><big>(</big><em>home_id</em>, <em>node_id</em><big>)</big></dt>
+<dd><p>Represents a single device within the Z-Wave Network</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.wrapper.ZWaveWrapper">
+<em class="property">class </em><tt class="descclassname">openzwave.wrapper.</tt><tt class="descname">ZWaveWrapper</tt><big>(</big><em>device</em>, <em>config</em>, <em>log=None</em><big>)</big></dt>
+<dd><p>The purpose of this wrapper is to eliminate some of the tedium of working with
+the underlying API, which is extremely fine-grained.</p>
+<p>Wrapper provides a single, cohesive set of python objects representing the
+current state of the underlying ZWave network.  It is kept in sync with OZW and
+the network via callback hooks.</p>
+<p>Note: This version only handles a single Driver/Controller.  Modifications will
+be required in order to support more complex ZWave deployments.</p>
+</dd></dl>
+
 </div>
 
 

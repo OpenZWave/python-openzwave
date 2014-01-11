@@ -536,6 +536,25 @@ Z-Wave controller in turn.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getControllerInterfaceType">
+<tt class="descname">getControllerInterfaceType</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getControllerInterfaceType" title="Permalink to this definition">¶</a></dt>
+<dd><p>.._getControllerInterfaceType:
+Retrieve controller interface type, Unknown, Serial, Hid</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> &#8211; The Home ID of the Z-Wave controller.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The controller interface type</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getControllerNodeId">
 <tt class="descname">getControllerNodeId</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getControllerNodeId" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getcontrollernodeid">Get the node ID of the Z-Wave controller.</p>
@@ -548,6 +567,25 @@ Z-Wave controller in turn.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The node ID of the Z-Wave controller</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getControllerPath">
+<tt class="descname">getControllerPath</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getControllerPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>.._getControllerPath:
+Retrieve controller interface path, name or path used to open the controller hardware</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> &#8211; The Home ID of the Z-Wave controller.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The controller interface type</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>
@@ -1879,6 +1917,51 @@ only the SensorMultilevel command class ever does this.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.healNetwork">
+<tt class="descname">healNetwork</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.healNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><p id="healnetwork">Heal the Z-Wave network one node at a time.</p>
+<p>Try to heal all nodes (one by one) by requesting neighbor update and optional route update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional force update node route (default = false).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#healnetworknode">healNetworkNode</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.healNetworkNode">
+<tt class="descname">healNetworkNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.healNetworkNode" title="Permalink to this definition">¶</a></dt>
+<dd><p id="healnetworknode">Heal a single node in the network.</p>
+<p>Try to heal node by requesting neighbor update and optional route update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeid</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional force update node route (default = false).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#healnetwork">healNetwork</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.isBridgeController">
 <tt class="descname">isBridgeController</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isBridgeController" title="Permalink to this definition">¶</a></dt>
 <dd><p id="isbridgecontroller">Query if the controller is using the bridge controller library.</p>
@@ -2855,12 +2938,6 @@ class Value object.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if polling is active.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
-</td>
-</tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getpollinterval">getPollInterval</a>, <a class="reference internal" href="#setpollinterval">setPollInterval</a>, <a class="reference internal" href="#enablepoll">enablePoll</a>, <a class="reference internal" href="#ispolled">isPolled</a>, <a class="reference internal" href="#disablepoll">disablePoll</a>, <a class="reference internal" href="#getpollintensity">getPollIntensity</a></p>
 </td>
 </tr>
@@ -2886,7 +2963,8 @@ does not have to cope with more than one poll per second).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>milliseconds</strong> (<em>int</em>) &#8211; The length of the polling interval in milliseconds.</li>
-<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; Don&#8217;t know what it is.</li>
+<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; If true, the library intersperses m_pollInterval between polls.
+If false, the library attempts to complete all polls within m_pollInterval</li>
 </ul>
 </td>
 </tr>

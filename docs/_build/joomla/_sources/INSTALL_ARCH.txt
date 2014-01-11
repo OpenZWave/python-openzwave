@@ -11,7 +11,13 @@ Some users have reported errors when using 0.16 or 0.17.
 Some 64 bits users reports segfault when using examples. Seems that using cython 0.15 was the problem.
 Gentoo users : don't use cython that is shipped with your distribution.
 
-Install it using pip.
+Install pip 
+
+.. code-block:: bash
+
+    sudo apt-get install python-pip python-dev
+
+And use it to install cython.
 
 .. code-block:: bash
 

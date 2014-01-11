@@ -12,7 +12,11 @@ You need cython (0.14) to compile the python library
 that using cython 0.15 was the problem. Gentoo users : don't use
 cython that is shipped with your distribution.
 
-Install it using pip.
+Install pip
+
+   sudo apt-get install python-pip python-dev
+
+And use it to install cython.
 
    sudo pip install cython==0.14
 
