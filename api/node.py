@@ -46,6 +46,8 @@ class ZWaveNode( ZWaveObject,
 
     '''
 
+    _isReady = False
+
     def __init__(self, node_id, network ):
         '''
         Initialize zwave node
@@ -60,9 +62,10 @@ class ZWaveNode( ZWaveObject,
         ZWaveObject.__init__(self, node_id, network)
         #No cache management for values in nodes
         self.values = dict()
-        self._is_sleeping = False
+        #self._is_sleeping = False
         self._is_locked = False
-        self.awaked = False
+        self._isReady = False
+        #self._isAwake = False
         #self._name = None
         #self.cache_property("self.name")
         #self._location = None
@@ -811,13 +814,14 @@ class ZWaveNode( ZWaveObject,
 
     @property
     def is_sleeping(self):
-        """
+        '''
         Is this node sleeping.
 
         :rtype: bool
 
-        """
-        return self._is_sleeping
+        '''
+        return not self.isNodeAwake
+
 
 #    @property
 #    def level(self):
@@ -890,7 +894,7 @@ class ZWaveNode( ZWaveObject,
         Request the values of all known configurable parameters from a device.
 
         """
-        logging.debug('Requesting config params for node [%d]', self.object_id)
+        logging.debug('Requesting config params for node [%s]', self.object_id)
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 #        self.outdated = True
 
@@ -912,7 +916,7 @@ class ZWaveNode( ZWaveObject,
         :type param:
 
         """
-        logging.debug('Requesting config param %s for node [%d]', (param, self.object_id))
+        logging.debug('Requesting config param %s for node [%s]', (param, self.object_id))
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 #        self.outdated = True
 
@@ -934,7 +938,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        logging.debug('Set config param %s for node [%d]', (param, self.object_id))
+        logging.debug('Set config param %s for node [%s]', (param, self.object_id))
         return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value)
 
 #    def setNodeOn(self, node):
@@ -954,3 +958,49 @@ class ZWaveNode( ZWaveObject,
 #        """
 #        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
 #        self._manager.setNodeLevel(node.home_id, node.id, level)
+
+    def isNodeAwake(self):
+        """
+        Is this node a awake.
+
+        :rtype: bool
+
+        """
+
+        return self._network.manager.isNodeAwake(self.home_id, self.object_id)
+
+    @property
+    def isNodeFailed(self):
+        """
+        Is this node is presume failed.
+
+        :rtype: bool
+
+        """
+
+        return self._network.manager.isNodeFailed(self.home_id, self.object_id)
+
+    @property
+    def getNodeQueryStage(self):
+        """
+        Is this node a awake.
+
+        :rtype: string
+
+        """
+
+        queryStage = self._network.manager.getNodeQueryStage(self.home_id, self.object_id)
+        if queryStage == "Completed":
+            self._isReady = True
+
+        return queryStage
+
+    @property
+    def isReady(self):
+        '''
+        Get whether the node is ready to operate (QueryStage Completed).
+
+        :rtype: str
+
+        '''
+        return self._isReady

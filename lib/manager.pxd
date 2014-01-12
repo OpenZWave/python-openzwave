@@ -104,6 +104,9 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool IsNodeInfoReceived(uint32_t homeid, uint8_t nodeid)
         bool GetNodeClassInformation( uint32_t homeId, uint8_t nodeId, uint8_t commandClassId,
                           string *className, uint8_t *classVersion)
+        bool IsNodeAwake(uint32_t homeid, uint8_t nodeid)
+        bool IsNodeFailed(uint32_t homeid, uint8_t nodeid)
+        string GetNodeQueryStage(uint32_t homeid, uint8_t nodeid)
         # // Values
         string GetValueLabel(ValueID& valueid)
         void SetValueLabel(ValueID& valueid, string value)
@@ -139,6 +142,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SetChangeVerified(ValueID& valueid, bool verify)
         bool PressButton(ValueID& valueid)
         bool ReleaseButton(ValueID& valueid)
+        bool GetValueFloatPrecision(ValueID& valueid, uint8_t* o_value)
         # // Climate Control
         uint8_t GetNumSwitchPoints(ValueID& valueid)
         bool SetSwitchPoint(ValueID& valueid, uint8_t hours, uint8_t minutes, uint8_t setback)

@@ -856,6 +856,17 @@ Get a string containing the openzwave library version.
         '''
         return "OpenZWave version %d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
 
+    def getOzwLibraryVersionNumber(self):
+        '''
+_getOzwLibraryVersionNumber: Get a string containing the openzwave library version.
+
+:return: A string containing the library type.
+:rtype: str
+:see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
+
+        '''
+        return "%d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
+
     def getLibraryTypeName(self, homeid):
         '''
 .. _getLibraryTypeName:
@@ -1961,6 +1972,55 @@ Helper method to return whether a particular class is available in a node
             return ret
         else :
             return False
+
+
+    def isNodeAwake(self, homeId, nodeId):
+        '''
+.. _isNodeAwake: Get whether the node is awake or asleep
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the node is awake.
+:rtype: bool
+
+        '''
+        return self.manager.IsNodeAwake(homeId, nodeId)
+
+
+    def isNodeFailed(self, homeId, nodeId):
+        '''
+.. isNodeFailed: Get whether the node is working or has failed
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the node has failed and is no longer part of the network.
+:rtype: bool
+
+        '''
+        return self.manager.IsNodeFailed(homeId, nodeId)
+
+
+    def getNodeQueryStage(self, homeId, nodeId):
+        '''
+.. getNodeQueryStage: Get whether the node's query stage as a string
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodeQueryStage(homeId, nodeId)
+        return c_string.c_str()
+
+
+
 #
 # -----------------------------------------------------------------------------
 # Values
@@ -2608,6 +2668,24 @@ no notification callbacks are sent.
             return self.manager.ReleaseButton(values_map.at(id))
         else :
             return False
+
+
+    def getValueFloatPrecision(self, id):
+        '''
+.. _getValueFloatPrecision: Gets a float value's precision
+
+:param id: The unique identifier of the value.
+:type id: int
+:return:  a float value's precision.
+:rtype: int
+
+        '''
+        cdef uint8_t precision
+        if values_map.find(id) != values_map.end():
+            success = self.manager.GetValueFloatPrecision(values_map.at(id), &precision)
+            return precision if success else None
+        return None
+
 
 #
 # -----------------------------------------------------------------------------

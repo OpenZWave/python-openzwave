@@ -990,8 +990,8 @@ class ZWaveNetwork(ZWaveObject):
 
         '''
         logging.debug('************ Z-Wave Notification NodeEvent : %s' % (args))
-        dispatcher.send(self.SIGNAL_NODE_EVENT, \
-            **{'network': self, 'node': self.nodes[args['nodeId']]})
+        dispatcher.send(self.SIGNAL_NODE_EVENT,
+                        **{'network': self, 'node': self.nodes[args['nodeId']], 'value': args['event']})
         #self._handle_node(self.nodes[args['nodeId']])
 
     def _handle_node_naming(self, args):

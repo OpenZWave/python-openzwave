@@ -578,3 +578,13 @@ class ZWaveValue(ZWaveObject):
 #            self.update("self.data_as_string")
 #        return self._as_string
         return self._network.manager.refreshValue(self.value_id)
+
+    def precision(self):
+        """
+        Gets a float value's precision.
+
+        :returns: a float value's precision
+        :rtype: int
+
+        """
+        return self._network.manager.getValueFloatPrecision(self.value_id)
