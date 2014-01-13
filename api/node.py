@@ -988,19 +988,26 @@ class ZWaveNode( ZWaveObject,
         :rtype: string
 
         """
-
-        queryStage = self._network.manager.getNodeQueryStage(self.home_id, self.object_id)
-        if queryStage == "Completed":
-            self._isReady = True
-
-        return queryStage
+        return self._network.manager.getNodeQueryStage(self.home_id, self.object_id)
 
     @property
     def isReady(self):
         '''
         Get whether the node is ready to operate (QueryStage Completed).
 
-        :rtype: str
+        :rtype: bool
 
         '''
         return self._isReady
+
+    @isReady.setter
+    def isReady(self, value):
+        """
+        Set whether the node is ready to operate.
+        automatically set to True by notification SIGNAL_NODE_QUERIES_COMPLETE
+        
+        :param value: is node ready
+        :type value: bool
+
+        """
+        self._isReady = value

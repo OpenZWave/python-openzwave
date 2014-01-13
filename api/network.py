@@ -1097,7 +1097,10 @@ class ZWaveNetwork(ZWaveObject):
         '''
         logging.debug('************ Z-Wave Notification NodeQueriesComplete : %s' % (args))
         #self.nodes[args['nodeId']].outdated = True
-        self.nodes[args['nodeId']].awaked = True
+        #we can't assume the node is awake
+        #self.nodes[args['nodeId']].awaked = True
+        #the query stage are now completed, set the flag is ready to operate
+        self.nodes[args['nodeId']].isReady = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
         self._handle_node(self.nodes[args['nodeId']])

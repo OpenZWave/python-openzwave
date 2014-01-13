@@ -75,7 +75,6 @@ class ZWaveValue(ZWaveObject):
         ZWaveObject.__init__(self, value_id, network=network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
         self._parent = parent
-        self._poll_intensity = 0
         #self._command_class = command_class
         #self._type = type
         #print command_class
@@ -516,7 +515,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-        self._poll_intensity = intensity
         return self._network.manager.enablePoll(self.value_id, intensity)
 
     def disable_poll(self):
@@ -527,7 +525,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-        self._poll_intensity = 0
         return self._network.manager.disablePoll(self.value_id)
 
     @property
@@ -539,7 +536,8 @@ class ZWaveValue(ZWaveObject):
         :rtype: int
 
         """
-        return self._poll_intensity
+        #always ask to manager to get poll intensity
+        return self._network.manager.getPollIntensity(self.value_id)
 
     @property
     def is_polled(self):
@@ -549,10 +547,7 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-        ret = self._network.manager.isPolled(self.value_id)
-        if ret == False:
-            self._poll_intensity = 0
-        return ret
+        return self._network.manager.isPolled(self.value_id)
 
     @property
     def command_class(self):

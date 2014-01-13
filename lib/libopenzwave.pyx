@@ -2020,6 +2020,87 @@ Helper method to return whether a particular class is available in a node
         return c_string.c_str()
 
 
+    def getNodeQueryStageCode(self, queryStage):
+        '''
+.. getNodeQueryStageCode: Get code value from a query stage description
+
+:param queryStage: The query stage description.
+:type queryStage: str
+:return: code value.
+:rtype: int
+
+        '''
+        if queryStage == "ProtocolInfo":
+            # Retrieve protocol information
+            # QueryStage_ProtocolInfo
+            return 0
+        elif queryStage == "Probe":
+            # Ping device to see if alive
+            # QueryStage_Probe
+            return 1
+        elif queryStage == "WakeUp":
+            # Start wake up process if a sleeping node
+            # QueryStage_WakeUp
+            return 2
+        elif queryStage == "ManufacturerSpecific1":
+            # Retrieve manufacturer name and product ids if ProtocolInfo lets us
+            # QueryStage_ManufacturerSpecific1
+            return 3
+        elif queryStage == "NodeInfo":
+            # Retrieve info about supported, controlled command classes
+            # QueryStage_NodeInfo
+            return 4
+        elif queryStage == "ManufacturerSpecific2":
+            # Retrieve manufacturer name and product ids
+            # QueryStage_ManufacturerSpecific2
+            return 5
+        elif queryStage == "Versions":
+            # Retrieve version information
+            # QueryStage_Versions
+            return 6
+        elif queryStage == "Instances":
+            # Retrieve information about multiple command class instances
+            # QueryStage_Instances
+            return 7
+        elif queryStage == "Static":
+            # Retrieve static information (doesn't change)
+            # QueryStage_Static
+            return 8
+        elif queryStage == "Probe1":
+            # Ping a device upon starting with configuration
+            # QueryStage_Probe1
+            return 9
+        elif queryStage == "Associations":
+            # Retrieve information about associations
+            # QueryStage_Associations
+            return 10
+        elif queryStage == "Neighbors":
+            # Retrieve node neighbor list
+            # QueryStage_Neighbors
+            return 11
+        elif queryStage == "Session":
+            # Retrieve session information (changes infrequently)
+            # QueryStage_Session
+            return 12
+        elif queryStage == "Dynamic":
+            # Retrieve dynamic information (changes frequently)
+            # QueryStage_Dynamic
+            return 13
+        elif queryStage == "Configuration":
+            # Retrieve configurable parameter information (only done on request)
+            # QueryStage_Configuration
+            return 14
+        elif queryStage == "Complete":
+            # Query process is completed for this node
+            # QueryStage_Complete
+            return 15
+        elif queryStage == "None":
+            # Query process hasn't started for this node
+            # QueryStage_None
+            return 16
+        return None
+
+
 
 #
 # -----------------------------------------------------------------------------
