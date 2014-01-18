@@ -93,7 +93,7 @@ else:
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/cpp/lib/linux/libopenzwave.a'],
+                             extra_objects=['openzwave/cpp/lib/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
     )]
 
