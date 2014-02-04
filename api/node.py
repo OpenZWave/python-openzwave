@@ -548,7 +548,7 @@ class ZWaveNode( ZWaveObject,
 
         """
         #logging.debug("Refresh value : %s" % self.values[value_id])
-        pass
+        return self._network.manager.refreshValue(value_id)
 
     def remove_value(self, value_id):
         """
@@ -894,7 +894,7 @@ class ZWaveNode( ZWaveObject,
         Request the values of all known configurable parameters from a device.
 
         """
-        logging.debug('Requesting config params for node [%s]', self.object_id)
+        logging.debug('Requesting config params for node [%s]' % (self.object_id,))
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 #        self.outdated = True
 
@@ -916,7 +916,7 @@ class ZWaveNode( ZWaveObject,
         :type param:
 
         """
-        logging.debug('Requesting config param %s for node [%s]', (param, self.object_id))
+        logging.debug('Requesting config param %s for node [%s]' % (param, self.object_id))
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 #        self.outdated = True
 
@@ -938,7 +938,7 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        logging.debug('Set config param %s for node [%s]', (param, self.object_id))
+        logging.debug('Set config param %s for node [%s]' % (param, self.object_id,))
         return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value)
 
 #    def setNodeOn(self, node):

@@ -71,7 +71,7 @@ if os_name == 'nt':
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/cpp/lib/windows-mingw32/libopenzwave.a'],
+                             extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows']
     )]
 elif platform_system() == 'Darwin':
@@ -79,7 +79,7 @@ elif platform_system() == 'Darwin':
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
-                             extra_objects=['openzwave/cpp/lib/mac/libopenzwave.a'],
+                             extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/mac']
     )]
 elif DEBIAN_PACKAGE == True:
@@ -93,7 +93,7 @@ else:
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/cpp/lib/libopenzwave.a'],
+                             extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
     )]
 
