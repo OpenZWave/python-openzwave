@@ -1,0 +1,324 @@
+
+
+	
+  <div class="section" id="option-documentation">
+<h1>Option documentation</h1>
+<p>The options to start the manager. You can change the loglvel,...</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<span class="target" id="module-openzwave.option"></span><span class="target" id="module-openzwave.option"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.option.ZWaveOption">
+<em class="property">class </em><tt class="descclassname">openzwave.option.</tt><tt class="descname">ZWaveOption</tt><big>(</big><em>device=None</em>, <em>config_path=None</em>, <em>user_path='.'</em>, <em>cmd_line=''</em><big>)</big></dt>
+<dd><p>Represents a Zwave option used to start the manager.</p>
+<dl class="attribute">
+<dt id="openzwave.option.ZWaveOption.config_path">
+<tt class="descname">config_path</tt></dt>
+<dd><p>The config path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.option.ZWaveOption.device">
+<tt class="descname">device</tt></dt>
+<dd><p>The device used by the controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_append_log_file">
+<tt class="descname">set_append_log_file</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Append new session logs to existing log file (false = overwrite).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_associate">
+<tt class="descname">set_associate</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Enable automatic association of the controller with group one of every device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; True to enable logs, False to disable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_console_output">
+<tt class="descname">set_console_output</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Display log information on console (as well as save to disk).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_driver_max_attempts">
+<tt class="descname">set_driver_max_attempts</tt><big>(</big><em>attempts</em><big>)</big></dt>
+<dd><p>Set the driver max attemps before raising an error.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attempts</strong> (<em>int</em>) &#8211; Number of attemps</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_dump_trigger_level">
+<tt class="descname">set_dump_trigger_level</tt><big>(</big><em>level</em><big>)</big></dt>
+<dd><p>Default is to never dump RAM-stored log messages.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_exclude">
+<tt class="descname">set_exclude</tt><big>(</big><em>commandClass</em><big>)</big></dt>
+<dd><p>Remove support for the seted command classes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commandClass</strong> (<em>str</em>) &#8211; The command class to exclude</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_include">
+<tt class="descname">set_include</tt><big>(</big><em>commandClass</em><big>)</big></dt>
+<dd><p>Only handle the specified command classes.  The Exclude option is ignored if anything is seted here.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>commandClass</strong> (<em>str</em>) &#8211; The location of the log file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_interface">
+<tt class="descname">set_interface</tt><big>(</big><em>port</em><big>)</big></dt>
+<dd><p>Identify the serial port to be accessed (TODO: change the code so more than one serial port can be specified and HID).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>port</strong> (<em>str</em>) &#8211; The serial port</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_interval_between_polls">
+<tt class="descname">set_interval_between_polls</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Notifications when transaction complete is reported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; if false, try to execute the entire poll set within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_log_file">
+<tt class="descname">set_log_file</tt><big>(</big><em>logfile</em><big>)</big></dt>
+<dd><p>Set the log file location.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>logfile</strong> (<em>str</em>) &#8211; The location of the log file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_logging">
+<tt class="descname">set_logging</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Set the status of logging.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; True to activate logs, False to disable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_notify_transactions">
+<tt class="descname">set_notify_transactions</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Notifications when transaction complete is reported.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; True to enable, False to disable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_poll_interval">
+<tt class="descname">set_poll_interval</tt><big>(</big><em>intervall</em><big>)</big></dt>
+<dd><p>30 seconds (can easily poll 30 values in this time; ~120 values is the effective limit for 30 seconds).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>intervall</strong> (<em>int</em>) &#8211; Intervall in seconds</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_queue_log_level">
+<tt class="descname">set_queue_log_level</tt><big>(</big><em>level</em><big>)</big></dt>
+<dd><p>Save (in RAM) log messages equal to or above LogLevel_Debug.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_save_configuration">
+<tt class="descname">set_save_configuration</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>Save the XML configuration upon driver close.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; True to enable, False to disable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_save_log_level">
+<tt class="descname">set_save_log_level</tt><big>(</big><em>level</em><big>)</big></dt>
+<dd><p>Save (to file) log messages equal to or above LogLevel_Detail.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_suppress_value_refresh">
+<tt class="descname">set_suppress_value_refresh</tt><big>(</big><em>status</em><big>)</big></dt>
+<dd><p>if true, notifications for refreshed (but unchanged) values will not be sent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>status</strong> (<em>bool</em>) &#8211; True to enable, False to disable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.option.ZWaveOption.user_path">
+<tt class="descname">user_path</tt></dt>
+<dd><p>The config path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+

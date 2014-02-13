@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developpers information &mdash; python-openzwave 0.2.5 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.2.5',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="python-openzwave 0.2.5 documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="developpers-information">
+<h1>Developpers information<a class="headerlink" href="#developpers-information" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-develop-patches">
+<h2>How to develop patches<a class="headerlink" href="#how-to-develop-patches" title="Permalink to this headline">¶</a></h2>
+<p>Get the sources</p>
+<blockquote>
+<div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
+<p>Developp, test, debug, test, ... :)</p>
+<p>When your modification is functional, you are ready to submit a patch</p>
+<p>Sync you repository :</p>
+<blockquote>
+<div><p>hg pull <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></p>
+<p>hg update</p>
+</div></blockquote>
+<p>Generate the patch</p>
+<blockquote>
+<div>hgdiff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
+<p>As the code of python-openzwave is under developpment, submit atomic patches.
+Otherwise, you should have merge problems when syncing your repository.</p>
+<p>This will generate a file in the current directory.
+Send it to the developpers team.</p>
+</div>
+<div class="section" id="using-a-developper-account">
+<h2>Using a developper account<a class="headerlink" href="#using-a-developper-account" title="Permalink to this headline">¶</a></h2>
+<p>Contact the developpers for more informations.</p>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Documentation is managed with sphinx. Don&#8217;t utpdate txt files (README, INSTALL, ...)
+, update the sources (<a href="#id1"><span class="problematic" id="id2">*</span></a>.rst) in docs. Use the following commands to generate
+all docs files (txt, html and joomla)</p>
+<blockquote>
+<div>./make_docs.sh</div></blockquote>
+</div>
+<div class="section" id="packagers">
+<h2>Packagers<a class="headerlink" href="#packagers" title="Permalink to this headline">¶</a></h2>
+<p>If you want to package python-openzwave for your distribution,
+look at the make_dist.sh script. It build a distribution directory
+with documentation in build/distdir.</p>
+<p>You can also submit your script here, they will be added to the main code.</p>
+<p>You can build python-openzwave using</p>
+</div>
+<div class="section" id="static-vs-dynamic-or-shared">
+<h2>Static vs dynamic (or shared)<a class="headerlink" href="#static-vs-dynamic-or-shared" title="Permalink to this headline">¶</a></h2>
+<p>The openzwave (c++) lib needs to run as a singleton : it means that it
+MUST have only one instance of the manager running on your computer.</p>
+<p>There is 2 ways of linking libraries with a program :</p>
+<blockquote>
+<div><ul class="simple">
+<li>static : includes a copy of the library in your binary program. This means</li>
+</ul>
+<p>that your program has its own instance of the library. This the way the
+install.sh runs. So you CAN&#8217;T have another program (like the control-panel)
+running when using the python-openzwave library</p>
+<ul class="simple">
+<li>dynamic or shared : includes a link to the library in your binary program.</li>
+</ul>
+<p>This means that your program share the library with other programs. In this
+case, the instance is owned directly by the library. This the way the
+debian package works. So you CAN have another program running when
+using the python-openzwave library. Of course, this program MUST use
+the shared library.</p>
+</div></blockquote>
+</div>
+<div class="section" id="migrate-from-py-openzwave-to-python-openzwave">
+<h2>Migrate from py-openzwave to python-openzwave<a class="headerlink" href="#migrate-from-py-openzwave-to-python-openzwave" title="Permalink to this headline">¶</a></h2>
+<p>Remove the old py-openzwave</p>
+<blockquote>
+<div>find /usr -iname openzwave.so</div></blockquote>
+<p>This command show the list of files naming openzwave.so in /usr, ie /usr/local/lib/python2.7/dist-package/openzwave.so</p>
+<p>Remove it :</p>
+<blockquote>
+<div>sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so</div></blockquote>
+<p>Install the new version of python-openzwave : look at README</p>
+<p>Update your code :</p>
+<p>Everywhere in your code replace :</p>
+<blockquote>
+<div>&#8220;import openzwave&#8221; to &#8220;import libopenzwave&#8221; &#8220;from openzwave&#8221; to &#8220;from libopenzwave&#8221;</div></blockquote>
+<p>notifications :</p>
+<p>In Maarten py-openzwave librairy, value is a string but in python-openzwave, it&#8217;s a value of the right type :</p>
+<blockquote>
+<div><p># &#8216;value&#8217; : value.c_str(),</p>
+<p>&#8216;value&#8217; : getValueFromType(manager,v.GetId?()),</p>
+</div></blockquote>
+<p>wrapper : The wrapper is no longer supported.
+Now high level acces to ZWave network is provided by the API (work in progress)</p>
+</div>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>The original script was from maarten damen :
+<a class="reference external" href="https://github.com/maartendamen/python-openzwave">https://github.com/maartendamen/python-openzwave</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developpers information</a><ul>
+<li><a class="reference internal" href="#how-to-develop-patches">How to develop patches</a></li>
+<li><a class="reference internal" href="#using-a-developper-account">Using a developper account</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+<li><a class="reference internal" href="#packagers">Packagers</a></li>
+<li><a class="reference internal" href="#static-vs-dynamic-or-shared">Static vs dynamic (or shared)</a></li>
+<li><a class="reference internal" href="#migrate-from-py-openzwave-to-python-openzwave">Migrate from py-openzwave to python-openzwave</a></li>
+<li><a class="reference internal" href="#history">History</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/DEVEL.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="index.html">python-openzwave 0.2.5 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, bibi21000.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

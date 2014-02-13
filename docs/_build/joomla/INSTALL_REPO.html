@@ -1,0 +1,87 @@
+
+
+	
+  <div class="section" id="installing-python-openzwave-from-repositories">
+<h1>Installing python-openzwave from repositories</h1>
+<div class="section" id="install-the-needed-tools">
+<h2>Install the needed tools</h2>
+<p>You must install mercurial and subversion to get sources of python-openzwave
+and openzwave. Look at the documentation of your Linux distribution to do that.</p>
+<p>On a debian like distribution :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install mercurial subversion python-pip python-dev
+</pre></div>
+</div>
+<p>You need cython (0.14) to compile the python library (libopenzwave.pyx).
+Some users have reported errors when using 0.16 or 0.17.
+Some 64 bits users reports segfault when using examples. Seems that using cython 0.15 was the problem.
+Gentoo users : don&#8217;t use cython that is shipped with your distribution.</p>
+<p>Install it using pip.</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo pip install <span class="nv">cython</span><span class="o">==</span>0.14
+</pre></div>
+</div>
+<p>You also need some python modules, on a debian like distribution :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install python-dev python-setuptools python-louie
+</pre></div>
+</div>
+<p>You need sphinx and make to generate the documentation.</p>
+<p>On a debian like distribution :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install python-sphinx make
+</pre></div>
+</div>
+<p>You also need to install some sphinx contributions :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo pip install sphinxcontrib-blockdiag sphinxcontrib-actdiag
+sudo pip install sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+</pre></div>
+</div>
+<p>To compile the openzwave library, you need the common builds tools
+and the libudev developments headers.</p>
+<p>On a debian like distribution :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-get install build-essential libudev-dev g++
+</pre></div>
+</div>
+</div>
+<div class="section" id="get-sources-of-python-openzwave">
+<h2>Get sources of python-openzwave</h2>
+<p>You are now ready to download sources of python-openzwave :</p>
+<div class="highlight-bash"><div class="highlight"><pre>hg clone https://code.google.com/p/python-openzwave/
+</pre></div>
+</div>
+<p>The previous command will create a copy of the official repository on your
+computer in a directory called python-openzwave.</p>
+</div>
+<div class="section" id="update-and-build-process">
+<h2>Update and build process</h2>
+<p>Go to the previously created directory</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>python-openzwave
+</pre></div>
+</div>
+<p>The following command will update your local repository to the last release
+of python-openzwave and openzwave.</p>
+<div class="highlight-bash"><div class="highlight"><pre>./update.sh
+</pre></div>
+</div>
+<p>When update process is done, you can compile sources</p>
+<div class="highlight-bash"><div class="highlight"><pre>./compile.sh
+</pre></div>
+</div>
+<p>Or if you have already build python-openzwave in a previous installation,
+you can use the clean option to remove old builds.</p>
+<div class="highlight-bash"><div class="highlight"><pre>./compile.sh clean
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation">
+<h2>Installation</h2>
+<p>You can now install the packages using the following command will.</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo ./install.sh
+</pre></div>
+</div>
+<p>The installation script create a list of installed files. So you can remove
+python-openzwave using the following command :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo ./uninstall.sh
+</pre></div>
+</div>
+</div>
+</div>
+
+
