@@ -10,7 +10,7 @@ cd openzwave/cpp/build
 rm -Rf vers.cpp
 [ $CLEAN -eq 1 ] && make clean
 make
-cd ../../../..
+cd ../../..
 
 echo "-----------------------------------------------------------------"
 echo "|   Build python-openzwave                                      |"
