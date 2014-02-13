@@ -198,6 +198,20 @@ Not implemented</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.getNodeQueryStage">
+<tt class="descname">getNodeQueryStage</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.getNodeQueryStage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a awake.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.get_command_class_as_string">
 <tt class="descname">get_command_class_as_string</tt><big>(</big><em>class_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_command_class_as_string" title="Permalink to this definition">¶</a></dt>
@@ -329,6 +343,48 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>classId</strong> (<em>hexadecimal code</em>) &#8211; the COMMAND_CLASS to check</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.isNodeAwake">
+<tt class="descname">isNodeAwake</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.isNodeAwake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a awake.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isNodeFailed">
+<tt class="descname">isNodeFailed</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isNodeFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node is presume failed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isReady">
+<tt class="descname">isReady</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isReady" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node is ready to operate (QueryStage Completed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>

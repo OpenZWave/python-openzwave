@@ -1112,6 +1112,46 @@ data.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getNodeQueryStage">
+<tt class="descname">getNodeQueryStage</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeQueryStage" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">name of current query stage as a string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeQueryStageCode">
+<tt class="descname">getNodeQueryStageCode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeQueryStageCode" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>queryStage</strong> (<em>str</em>) &#8211; The query stage description.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">code value.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getNodeSecurity">
 <tt class="descname">getNodeSecurity</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeSecurity" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getnodesecurity">Get the security byte for a node.  Bit meanings are still to be determined.</p>
@@ -1362,6 +1402,24 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <dt id="libopenzwave.PyManager.getOzwLibraryVersion">
 <tt class="descname">getOzwLibraryVersion</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getOzwLibraryVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getozwlibraryversion">Get a string containing the openzwave library version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string containing the library type.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getOzwLibraryVersionNumber">
+<tt class="descname">getOzwLibraryVersionNumber</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getOzwLibraryVersionNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>_getOzwLibraryVersionNumber: Get a string containing the openzwave library version.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1664,6 +1722,23 @@ information is exposed in case it is of interest.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistitems">getValueListItems</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a>, <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvaluegenre">getValueGenre</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getValueFloatPrecision">
+<tt class="descname">getValueFloatPrecision</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getValueFloatPrecision" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The unique identifier of the value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a float value&#8217;s precision.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -1984,6 +2059,29 @@ with other controllers to enable events to be passed on.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.isNodeAwake">
+<tt class="descname">isNodeAwake</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isNodeAwake" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node is awake.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.isNodeBeamingDevice">
 <tt class="descname">isNodeBeamingDevice</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isNodeBeamingDevice" title="Permalink to this definition">¶</a></dt>
 <dd><p id="isnodebeamingdevice">Get whether the node is a beam capable device.</p>
@@ -2004,6 +2102,29 @@ with other controllers to enable events to be passed on.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">See :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnodesecuritydevice">isNodeSecurityDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.isNodeFailed">
+<tt class="descname">isNodeFailed</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isNodeFailed" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node has failed and is no longer part of the network.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
