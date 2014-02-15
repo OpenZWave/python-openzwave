@@ -36,14 +36,14 @@ from openzwave.object import ZWaveException, ZWaveObject, NullLoggingHandler
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveGroup(ZWaveObject):
-    '''
-    The driver objet.
+    """
+    The driver object.
     Hold options of the manager
-    Also used to retrieve informations about the library, ...
-    '''
+    Also used to retrieve information about the library, ...
+    """
 
     def __init__(self, group_index, network=None, node_id=None):
-        '''
+        """
         Initialize driver object
 
         :param group_index: index of the group
@@ -53,7 +53,7 @@ class ZWaveGroup(ZWaveObject):
         :param node_id: ID of node
         :type node_id: int
 
-        '''
+        """
 
         ZWaveObject.__init__(self, group_index, network)
 
@@ -96,10 +96,6 @@ class ZWaveGroup(ZWaveObject):
         :rtype: int
 
         """
-        #if self.is_outdated("self.label"):
-        #    self._label = self._network.manager.getGroupLabel(self.home_id, self._node_id, self.index)
-        #    self.update("self.label")
-        #return self._label
         return self._network.manager.getGroupLabel(self.home_id, self._node_id, self.index)
 
     @property
@@ -110,24 +106,8 @@ class ZWaveGroup(ZWaveObject):
         :rtype: int
 
         """
-        #if self.is_outdated("self.max_associations"):
-        #    self._max_associations = self._network.manager.getMaxAssociations(self.home_id, self._node_id, self.index)
-        #    self.update("self.max_associations")
-        #return self._max_associations
         return self._network.manager.getMaxAssociations(self.home_id, self._node_id, self.index)
 
-#    @property
-#    def members(self):
-#        """
-#        The members of associations.
-#
-#        :rtype: int
-#
-#        """
-#        if self.is_outdated("self.members"):
-#            self._members = self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
-#            self.update("self.members")
-#        return self._members
 
     @property
     def associations(self):
@@ -137,10 +117,6 @@ class ZWaveGroup(ZWaveObject):
         :rtype: set()
 
         """
-#        if self.is_outdated("self.associations"):
-#            self._associations = self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
-#            self.update("self.associations")
-#        return self._associations
         return self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
 
     def add_association(self, target_node_id):
@@ -148,7 +124,7 @@ class ZWaveGroup(ZWaveObject):
         Adds a node to an association group.
 
         Due to the possibility of a device being asleep, the command is assumed to
-        suceeed, and the association data held in this class is updated directly.  This
+        complete with success, and the association data held in this class is updated directly.  This
         will be reverted by a future Association message from the device if the Z-Wave
         message actually failed to get through.  Notification callbacks will be sent in
         both cases.
@@ -158,8 +134,6 @@ class ZWaveGroup(ZWaveObject):
 
         """
         self._network.manager.addAssociation(self.home_id, self._node_id, self.index, target_node_id)
-#        self.outdate("self.associations")
-#        self.outdate("self.max_associations")
 
     def remove_association(self, target_node_id):
         """
@@ -176,5 +150,3 @@ class ZWaveGroup(ZWaveObject):
 
         """
         self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id)
-#        self.outdate("self.associations")
-#        self.outdate("self.max_associations")

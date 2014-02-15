@@ -36,7 +36,7 @@ from openzwave.group import ZWaveGroup
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveNodeBasic(ZWaveNodeInterface):
-    '''
+    """
     Represents an interface to BasicCommands
     I known it's not necessary as they can be included in the node directly.
     But it's a good starting point.
@@ -51,28 +51,28 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
 
         if self.handle_command_class(class_id):
 
-            ret=commandclass(...)
+            ret=command_Class(...)
 
-    The classic way to do it is a classique method of registering. But
+    The classic way to do it is a classic method of registering. But
 
     Another way : using heritage multiple
 
     ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)
     The interface will implement methods
-    command_class_0x80(paramm1,param2,...)
+    command_class_0x80(param1,param2,...)
     That's the first thing to do
-    We also can define a property wtih a fiendly name
+    We also can define a property with a friendly name
 
     handle_command_class will do the rest
 
     Another way to do it :
     A node can manage actuators (switch, dimmer, ...)
-    and sensors (temperature, consommation, temperature)
+    and sensors (temperature, consummation, temperature)
 
-    So we need a kind of mechanism to retrive commands in a user friendly way
+    So we need a kind of mechanism to retrieve commands in a user friendly way
     Same for sensors.
 
-    A good use caser is the AN158 Plug-in Meter Appliance Module
+    A good use case is the AN158 Plug-in Meter Appliance Module
     We will study the following command classes :
     'COMMAND_CLASS_SWITCH_ALL', 'COMMAND_CLASS_SWITCH_BINARY',
     'COMMAND_CLASS_METER',
@@ -83,7 +83,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594101481476L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 'On and Off Enabled',
             'min': 0L,
@@ -98,7 +98,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594093060096L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': False,
             'min': 0L,
@@ -113,7 +113,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594093273600L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': False,
             'min': 0L,
@@ -125,7 +125,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594101662232L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 'False',
             'min': 0L,
@@ -137,7 +137,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594093273090L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': 'kWh',
             'data': 0.0,
             'min': 0L,
@@ -149,7 +149,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594093273218L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': 'W',
             'data': 0.0,
             'min': 0L,
@@ -160,12 +160,12 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
             'type': 'Decimal'}
     }
 
-    Another example from an homepro dimmer (not congifured in openzwave):
+    Another example from an homePro dimmer (not configured in openzwave):
     COMMAND_CLASS_SWITCH_MULTILEVEL : {
         72057594109853736L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 'False',
             'min': 0L,
@@ -177,7 +177,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594109853697L: {
             'help': '',
             'max': 255L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 69,
             'min': 0L,
@@ -189,7 +189,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594118242369L: {
             'help': '',
             'max': 255L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 0,
             'min': 0L,
@@ -201,7 +201,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594109853720L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': 'False',
             'min': 0L,
@@ -213,7 +213,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         72057594118242352L: {
             'help': '',
             'max': 0L,
-            'ispolled': False,
+            'is_polled': False,
             'units': '',
             'data': False,
             'min': 0L,
@@ -259,8 +259,8 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         Programming :
         get_switches : retrieve the list of switches on the node
         is_switch (label) : says if the value with label=label is a switch
-        get_switch (label) : retrive the value where label=label
-    '''
+        get_switch (label) : retrieve the value where label=label
+    """
 
 
     def get_battery_level(self, value_id=None):
@@ -273,8 +273,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         :return: The level of this battery
         :rtype: int
         """
-        #print value_id
-        if value_id == None:
+        if value_id is None:
             for val in self.get_battery_levels():
                 return self.values[val].data
         elif value_id in self.get_battery_levels():
@@ -309,8 +308,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         :return: The level of this battery
         :rtype: int
         """
-        #print value_id
-        if value_id == None:
+        if value_id is None:
             for val in self.get_power_levels():
                 return self.values[val].data
         elif value_id in self.get_power_levels():
@@ -337,7 +335,8 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
 
     def can_wake_up(self):
         """
-        The command 0x84 (COMMAND_CLASS_WAKE_UP) of this node.
+        Check if node contain the command class 0x84 (COMMAND_CLASS_WAKE_UP).
+
         Filter rules are :
 
             command_class = 0x84
@@ -346,16 +345,16 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         :rtype: bool
         """
         res = self.get_values(class_id=0x84)
-        if res != None and len(res)>0 :
+        if res is not None and len(res)>0 :
             return True
         else :
             return False
 
 class ZWaveNodeSwitch(ZWaveNodeInterface):
-    '''
+    """
     Represents an interface to switches and dimmers Commands
 
-    '''
+    """
 
     def get_switches_all(self):
         """
@@ -383,11 +382,10 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
 
         :param value_id: The value to retrieve state
         :type value_id: int
-        :param value: A predifined string
+        :param value: A predefined string
         :type value: str
 
         """
-        #print value_id
         if value_id in self.get_switches_all():
             self.values[value_id].data = value
             return True
@@ -404,7 +402,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: bool
 
         """
-        #print value_id
         if value_id in self.get_switches_all():
             instance = self.values[value_id].instance
             for switch in self.get_switches():
@@ -429,7 +426,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: str
 
         """
-        #print value_id
         if value_id in self.get_switches_all():
             return self.values[value_id].data
         return None
@@ -445,7 +441,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: set()
 
         """
-        #print value_id
         if value_id in self.get_switches_all():
             return self.values[value_id].data_items
         return None
@@ -480,7 +475,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: bool
 
         """
-        #print value_id
         if value_id in self.get_switches():
             self.values[value_id].data = value
             return True
@@ -497,7 +491,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: bool
 
         """
-        #print value_id
         if value_id in self.get_switches():
             return self.values[value_id].data
         return None
@@ -533,15 +526,12 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: int
 
         """
-        #print value_id
-        #logging.debug("set_dimmer type Level:%s" % (type(value)))
-        logging.debug("set_dimmer Level:%s" % (value))
+        logging.debug("set_dimmer Level:%s" % (value,))
         if value_id in self.get_dimmers():
-            if value >99 and value <255 :
+            if 99 < value < 255:
                 value = 99
             elif value < 0 :
                 value = 0
-            #logging.debug("set_dimmer corrected Level:%s" % (value))
             self.values[value_id].data = value
             #Dimmers doesn't return the good level.
             #Add a Timer to refresh the value
@@ -564,16 +554,15 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: int
 
         """
-        #print value_id
         if value_id in self.get_dimmers():
             return self.values[value_id].data
         return None
 
 class ZWaveNodeSensor(ZWaveNodeInterface):
-    '''
+    """
     Represents an interface to Sensor Commands
 
-    '''
+    """
 
     def get_sensors(self, type='All'):
         """
@@ -615,16 +604,15 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
         :rtype: variable
 
         """
-        #print value_id
         if value_id in self.get_sensors():
             return self.values[value_id].data
         return None
 
 class ZWaveNodeSecurity(ZWaveNodeInterface):
-    '''
+    """
     Represents an interface to Security Commands
 
-    '''
+    """
 
     def get_protections(self):
         """
@@ -651,11 +639,10 @@ class ZWaveNodeSecurity(ZWaveNodeInterface):
 
         :param value_id: The value to set protection
         :type value_id: int
-        :param value: A predifined string
+        :param value: A predefined string
         :type value: str
 
         """
-        #print value_id
         if value_id in self.get_protections():
             self.values[value_id].data = value
             return True
@@ -672,7 +659,6 @@ class ZWaveNodeSecurity(ZWaveNodeInterface):
         :rtype: str
 
         """
-        #print value_id
         if value_id in self.get_protections():
             return self.values[value_id].data
         return None
@@ -688,7 +674,6 @@ class ZWaveNodeSecurity(ZWaveNodeInterface):
         :rtype: set()
 
         """
-        #print value_id
         if value_id in self.get_protections():
             return self.values[value_id].data_items
         return None

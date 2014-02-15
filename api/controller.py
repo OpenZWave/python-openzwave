@@ -111,7 +111,7 @@ class ZWaveController(ZWaveObject):
     CMD_DELETEBUTTON = 16
 
     def __init__(self, controller_id, network, options=None):
-        '''
+        """
         Initialize controller object
 
         :param controller_id: The Id of the controller
@@ -121,18 +121,15 @@ class ZWaveController(ZWaveObject):
         :param options: options of the manager
         :type options: str
 
-        '''
-        if controller_id == None:
+        """
+        if controller_id is None:
             controller_id = 1
         ZWaveObject.__init__(self, controller_id, network)
         self._node = None
         self._options = options
         self._library_type_name = None
-        #self.cache_property("self.library_type_name")
         self._library_version = None
-        #self.cache_property("self.library_version")
         self._python_library_version = None
-        #self.cache_property("self.python_library_version")
 
     def __str__(self):
         """
@@ -165,8 +162,6 @@ class ZWaveController(ZWaveObject):
 
         """
         self._node = value
-        #if value != None:
-        #   self.home_id = self._node.home_id
 
     @property
     def node_id(self):
@@ -177,7 +172,7 @@ class ZWaveController(ZWaveObject):
         :rtype: int
 
         """
-        if self.node != None:
+        if self.node is not None:
             return self.node.object_id
         else:
             return None
@@ -191,7 +186,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self.node != None:
+        if self.node is not None:
             return self.node.name
         else:
             return None
@@ -260,7 +255,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self._options != None :
+        if self._options is not None:
             return self._options.config_path
         else :
             return None
@@ -274,7 +269,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self._options != None :
+        if self._options is not None:
             return self._options.user_path
         else :
             return None
@@ -288,7 +283,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        if self._options != None :
+        if self._options is not None:
             return self._options.device
         else :
             return None
@@ -361,16 +356,7 @@ class ZWaveController(ZWaveObject):
             caps.add('staticUpdateController')
         if self.is_bridge_controller:
             caps.add('bridgeController')
-#        if self.node.is_routing_device:
-#            caps.add('routing')
-#        if self.node.is_listening_device:
-#            caps.add('listening')
-#        if self.node.is_frequent_listening_device:
-#            caps.add('frequent')
-#        if self.node.is_security_device:
-#            caps.add('security')
-#        if self.node.is_beaming_device:
-#            caps.add('beaming')
+
         return caps
 
     @property
@@ -381,10 +367,6 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         """
-#        if self.is_outdated("self.is_primary_controller"):
-#            self._is_primary_controller = self._network.manager.isPrimaryController(self.home_id)
-#            self.update("self.is_primary_controller")
-#        return self._is_primary_controller
         return self._network.manager.isPrimaryController(self.home_id)
 
     @property
@@ -395,10 +377,6 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         """
-#        if self.is_outdated("self.is_static_update_controller"):
-#            self._is_static_update_controller = self._network.manager.isStaticUpdateController(self.home_id)
-#            self.update("self.is_static_update_controller")
-#        return self._is_static_update_controller
         return self._network.manager.isStaticUpdateController(self.home_id)
 
     @property
@@ -409,10 +387,6 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         """
-#        if self.is_outdated("self.is_bridge_controller"):
-#            self._is_bridge_controller = self._network.manager.isBridgeController(self.home_id)
-#            self.update("self.is_bridge_controller")
-#        return self._is_bridge_controller
         return self._network.manager.isBridgeController(self.home_id)
 
     @property
@@ -438,14 +412,11 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
 
         """
-        #logging.debug('Z-Wave Notification NetworkResetted')
         self._network.state=self._network.STATE_RESETTED
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
             **{'network': self._network})
         self._network.manager.resetController(self._network.home_id)
-        #self._network.stop(fire=False)
         time.sleep(5)
-        #self._network.start()
 
     def soft_reset(self):
         """

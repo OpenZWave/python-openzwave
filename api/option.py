@@ -28,30 +28,30 @@ import logging
 import os
 import libopenzwave
 from libopenzwave import PyLogLevels
-#from libopenzwave import LogLevel
+
 from openzwave.object import ZWaveException
 
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveOption(libopenzwave.PyOptions):
-    '''
+    """
     Represents a Zwave option used to start the manager.
 
-    '''
+    """
     def __init__(self, device=None, config_path=None, user_path=".", cmd_line=""):
-        '''
+        """
         Create an option object and check that parameters are valid.
 
         :param device: The device to use
         :type device: str
         :param config_path: The openzwave config directory. If None, try to configure automatically.
         :type config_path: str
-        :param userPath: The user directory
-        :type userPath: str
+        :param user_path: The user directory
+        :type user_path: str
         :param cmd_line: The "command line" options of the openzwave library
         :type cmd_line: str
 
-        '''
+        """
         try:
             if os.path.exists(device):
                 if os.access(device, os.R_OK):
@@ -63,7 +63,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         except:
             raise ZWaveException("Can't find device %s" % device)
         try:
-            if config_path == None:
+            if config_path is None:
                 config_path = self.getConfigPath()
             if os.path.exists(config_path):
                 self._config_path = config_path
@@ -87,47 +87,47 @@ class ZWaveOption(libopenzwave.PyOptions):
         self.create(self._config_path, self._user_path, self._cmd_line)
 
     def set_log_file(self, logfile):
-        '''
+        """
         Set the log file location.
 
         :param logfile: The location of the log file
         :type logfile: str
 
-        '''
+        """
         return self.addOptionString("LogFileName", logfile, False)
 
     def set_logging(self, status):
-        '''
+        """
         Set the status of logging.
 
         :param status: True to activate logs, False to disable
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("Logging", status)
 
     def set_append_log_file(self, status):
-        '''
+        """
         Append new session logs to existing log file (false = overwrite).
 
         :param status:
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("AppendLogFile", status)
 
     def set_console_output(self, status):
-        '''
+        """
         Display log information on console (as well as save to disk).
 
         :param status:
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("ConsoleOutput", status)
 
     def set_save_log_level(self, level):
-        '''
+        """
         Save (to file) log messages equal to or above LogLevel_Detail.
 
         :param level:
@@ -139,17 +139,17 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Error':"A serious issue with the library or the network"
             * 'Warning':"A minor issue from which the library should be able to recover"
             * 'Alert':"Something unexpected by the library about which the controlling application should be aware"
-            * 'Info':"Everything's working fine...these messages provide streamlined feedback on each message"
+            * 'Info':"Everything Is working fine...these messages provide streamlined feedback on each message"
             * 'Detail':"Detailed information on the progress of each message" /
             * 'Debug':"Very detailed information on progress that will create a huge log file quickly"
             * 'StreamDetail':"Will include low-level byte transfers from controller to buffer to application and back"
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
-        '''
+        """
         return self.addOptionInt("SaveLogLevel", PyLogLevels[level])
 
     def set_queue_log_level(self, level):
-        '''
+        """
         Save (in RAM) log messages equal to or above LogLevel_Debug.
 
         :param level:
@@ -161,17 +161,17 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Error':"A serious issue with the library or the network"
             * 'Warning':"A minor issue from which the library should be able to recover"
             * 'Alert':"Something unexpected by the library about which the controlling application should be aware"
-            * 'Info':"Everything's working fine...these messages provide streamlined feedback on each message"
+            * 'Info':"Everything Is working fine...these messages provide streamlined feedback on each message"
             * 'Detail':"Detailed information on the progress of each message" /
             * 'Debug':"Very detailed information on progress that will create a huge log file quickly"
             * 'StreamDetail':"Will include low-level byte transfers from controller to buffer to application and back"
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
-        '''
+        """
         return self.addOptionInt("QueueLogLevel", PyLogLevels[level])
 
     def set_dump_trigger_level(self, level):
-        '''
+        """
         Default is to never dump RAM-stored log messages.
 
         :param level:
@@ -183,113 +183,113 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Error':"A serious issue with the library or the network"
             * 'Warning':"A minor issue from which the library should be able to recover"
             * 'Alert':"Something unexpected by the library about which the controlling application should be aware"
-            * 'Info':"Everything's working fine...these messages provide streamlined feedback on each message"
+            * 'Info':"Everything Is working fine...these messages provide streamlined feedback on each message"
             * 'Detail':"Detailed information on the progress of each message" /
             * 'Debug':"Very detailed information on progress that will create a huge log file quickly"
             * 'StreamDetail':"Will include low-level byte transfers from controller to buffer to application and back"
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
-        '''
+        """
         return self.addOptionInt("DumpTriggerLevel", PyLogLevels[level])
 
     def set_associate(self, status):
-        '''
+        """
         Enable automatic association of the controller with group one of every device.
 
         :param status: True to enable logs, False to disable
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("Associate", status)
 
     def set_exclude(self, commandClass):
-        '''
+        """
         Remove support for the seted command classes.
 
         :param commandClass: The command class to exclude
         :type commandClass: str
 
-        '''
+        """
         return self.addOptionString("Exclude", commandClass, True)
 
     def set_include(self, commandClass):
-        '''
+        """
         Only handle the specified command classes.  The Exclude option is ignored if anything is seted here.
 
         :param commandClass: The location of the log file
         :type commandClass: str
 
-        '''
+        """
         return self.addOptionString("Include", commandClass, True)
 
     def set_notify_transactions(self, status):
-        '''
+        """
         Notifications when transaction complete is reported.
 
         :param status: True to enable, False to disable
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("NotifyTransactions", status)
 
     def set_interface(self, port):
-        '''
+        """
         Identify the serial port to be accessed (TODO: change the code so more than one serial port can be specified and HID).
 
         :param port: The serial port
         :type port: str
 
-        '''
+        """
         return self.addOptionString("Interface", port, True)
 
     def set_save_configuration(self, status):
-        '''
+        """
         Save the XML configuration upon driver close.
 
         :param status: True to enable, False to disable
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("SaveConfiguration", status)
 
     def set_driver_max_attempts(self, attempts):
-        '''
-        Set the driver max attemps before raising an error.
+        """
+        Set the driver max attempts before raising an error.
 
-        :param attempts: Number of attemps
+        :param attempts: Number of attempts
         :type attempts: int
 
-        '''
+        """
         return self.addOptionInt("DriverMaxAttempts", attempts)
 
-    def set_poll_interval(self, intervall):
-        '''
+    def set_poll_interval(self, interval):
+        """
         30 seconds (can easily poll 30 values in this time; ~120 values is the effective limit for 30 seconds).
 
-        :param intervall: Intervall in seconds
-        :type intervall: int
+        :param interval: interval in seconds
+        :type interval: int
 
-        '''
-        return self.addOptionInt("PollInterval", intervall)
+        """
+        return self.addOptionInt("PollInterval", interval)
 
     def set_interval_between_polls(self, status):
-        '''
+        """
         Notifications when transaction complete is reported.
 
         :param status: if false, try to execute the entire poll set within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("IntervalBetweenPolls", status)
 
     def set_suppress_value_refresh(self, status):
-        '''
+        """
         if true, notifications for refreshed (but unchanged) values will not be sent.
 
         :param status: True to enable, False to disable
         :type status: bool
 
-        '''
+        """
         return self.addOptionBool("SuppressValueRefresh", status)
 
     @property

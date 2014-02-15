@@ -101,7 +101,7 @@ other managers on the network.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to cache</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> (<em>lambda</em>) &#8211; The property to cache</td>
 </tr>
 </tbody>
 </table>
@@ -129,7 +129,7 @@ other managers on the network.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to check</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> (<em>lambda</em>) &#8211; The property to check</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
@@ -188,7 +188,7 @@ object_id could be None, when creating a scene for example.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to outdate</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> (<em>lambda</em>) &#8211; The property to outdate</td>
 </tr>
 </tbody>
 </table>
@@ -197,11 +197,11 @@ object_id could be None, when creating a scene for example.</p>
 <dl class="attribute">
 <dt id="openzwave.object.ZWaveObject.outdated">
 <tt class="descname">outdated</tt><a class="headerlink" href="#openzwave.object.ZWaveObject.outdated" title="Permalink to this definition">¶</a></dt>
-<dd><p>Are the informations of this object outdated.</p>
+<dd><p>Are the information of this object outdated.</p>
 <p>How to manage the cache ?</p>
 <p>2 ways of doing it :
-- refresh informations when setting the property
-- refresh informations when getting getting property.
+- refresh information when setting the property
+- refresh information when getting getting property.
 Maybe whe could implement the 2 methods.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -221,7 +221,7 @@ Maybe whe could implement the 2 methods.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> &#8211; The property to update</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prop</strong> (<em>lambda</em>) &#8211; The property to update</td>
 </tr>
 </tbody>
 </table>

@@ -47,22 +47,22 @@ Its command class is 0x80.</p>
 <blockquote>
 <div><p>if self.handle_command_class(class_id):</p>
 <blockquote>
-<div>ret=commandclass(...)</div></blockquote>
+<div>ret=command_Class(...)</div></blockquote>
 </div></blockquote>
-<p>The classic way to do it is a classique method of registering. But</p>
+<p>The classic way to do it is a classic method of registering. But</p>
 <p>Another way : using heritage multiple</p>
 <p>ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)
 The interface will implement methods
-command_class_0x80(paramm1,param2,...)
+command_class_0x80(param1,param2,...)
 That&#8217;s the first thing to do
-We also can define a property wtih a fiendly name</p>
+We also can define a property with a friendly name</p>
 <p>handle_command_class will do the rest</p>
 <p>Another way to do it :
 A node can manage actuators (switch, dimmer, ...)
-and sensors (temperature, consommation, temperature)</p>
-<p>So we need a kind of mechanism to retrive commands in a user friendly way
+and sensors (temperature, consummation, temperature)</p>
+<p>So we need a kind of mechanism to retrieve commands in a user friendly way
 Same for sensors.</p>
-<p>A good use caser is the AN158 Plug-in Meter Appliance Module
+<p>A good use case is the AN158 Plug-in Meter Appliance Module
 We will study the following command classes :
 &#8216;COMMAND_CLASS_SWITCH_ALL&#8217;, &#8216;COMMAND_CLASS_SWITCH_BINARY&#8217;,
 &#8216;COMMAND_CLASS_METER&#8217;,</p>
@@ -73,7 +73,7 @@ We will study the following command classes :
 <dt>72057594101481476L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: &#8216;On and Off Enabled&#8217;,
 &#8216;min&#8217;: 0L,
@@ -92,7 +92,7 @@ We will study the following command classes :
 <dt>72057594093060096L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: False,
 &#8216;min&#8217;: 0L,
@@ -111,7 +111,7 @@ We will study the following command classes :
 <dt>72057594093273600L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: False,
 &#8216;min&#8217;: 0L,
@@ -123,7 +123,7 @@ We will study the following command classes :
 <dt>72057594101662232L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: &#8216;False&#8217;,
 &#8216;min&#8217;: 0L,
@@ -135,7 +135,7 @@ We will study the following command classes :
 <dt>72057594093273090L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;kWh&#8217;,
 &#8216;data&#8217;: 0.0,
 &#8216;min&#8217;: 0L,
@@ -147,7 +147,7 @@ We will study the following command classes :
 <dt>72057594093273218L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;W&#8217;,
 &#8216;data&#8217;: 0.0,
 &#8216;min&#8217;: 0L,
@@ -160,14 +160,14 @@ We will study the following command classes :
 </dd>
 </dl>
 <p>}</p>
-<p>Another example from an homepro dimmer (not congifured in openzwave):
+<p>Another example from an homePro dimmer (not configured in openzwave):
 COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>72057594109853736L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: &#8216;False&#8217;,
 &#8216;min&#8217;: 0L,
@@ -179,7 +179,7 @@ COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
 <dt>72057594109853697L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 255L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: 69,
 &#8216;min&#8217;: 0L,
@@ -191,7 +191,7 @@ COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
 <dt>72057594118242369L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 255L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: 0,
 &#8216;min&#8217;: 0L,
@@ -203,7 +203,7 @@ COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
 <dt>72057594109853720L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: &#8216;False&#8217;,
 &#8216;min&#8217;: 0L,
@@ -215,7 +215,7 @@ COMMAND_CLASS_SWITCH_MULTILEVEL : {</p>
 <dt>72057594118242352L: {</dt>
 <dd>&#8216;help&#8217;: &#8216;&#8217;,
 &#8216;max&#8217;: 0L,
-&#8216;ispolled&#8217;: False,
+&#8216;is_polled&#8217;: False,
 &#8216;units&#8217;: &#8216;&#8217;,
 &#8216;data&#8217;: False,
 &#8216;min&#8217;: 0L,
@@ -253,13 +253,13 @@ every values entries as defined before</p>
 <p>Programming :
 get_switches : retrieve the list of switches on the node
 is_switch (label) : says if the value with label=label is a switch
-get_switch (label) : retrive the value where label=label</p>
+get_switch (label) : retrieve the value where label=label</p>
 </div></blockquote>
 <dl class="method">
 <dt id="openzwave.command.ZWaveNodeBasic.can_wake_up">
 <tt class="descname">can_wake_up</tt><big>(</big><big>)</big></dt>
-<dd><p>The command 0x84 (COMMAND_CLASS_WAKE_UP) of this node.
-Filter rules are :</p>
+<dd><p>Check if node contain the command class 0x84 (COMMAND_CLASS_WAKE_UP).</p>
+<p>Filter rules are :</p>
 <blockquote>
 <div>command_class = 0x84</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
@@ -582,7 +582,7 @@ Set switches_all to value (using value value_id).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
-<li><strong>value</strong> (<em>str</em>) &#8211; A predifined string</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; A predefined string</li>
 </ul>
 </td>
 </tr>

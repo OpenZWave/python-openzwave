@@ -36,13 +36,14 @@ logging.getLogger('openzwave').addHandler(logging.NullHandler())
 # TODO: don't report controller node as sleeping
 # TODO: allow value identification by device/index/instance
 class ZWaveValue(ZWaveObject):
-    '''
+    """
     Represents a single value.
-    '''
+    """
     def __init__(self, value_id, network=None, parent=None):
-        '''
+        """
         Initialize value
 
+        :param parent:
         n['valueId'] = {'home_id' : v.GetHomeId(),
             * 'parent_id' : v.GetNodeId(),
             * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
@@ -59,7 +60,7 @@ class ZWaveValue(ZWaveObject):
             }
 
         Cache management :
-        We must developp a special mechanism for caching values.
+        We must develop a special mechanism for caching values.
         Values are updated or created by notifications and attached to nodes.
 
         Cache management in nodes : no cache for values.
@@ -68,42 +69,10 @@ class ZWaveValue(ZWaveObject):
         :type value_id: int
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
-        :param parent_id: ID of parent (node or scene)
-        :type parent_id: int
-
-        '''
+        """
         ZWaveObject.__init__(self, value_id, network=network)
         logging.debug("Create object value (valueId:%s)" % (value_id))
         self._parent = parent
-        #self._command_class = command_class
-        #self._type = type
-        #print command_class
-        #print self._network.manager
-        #print self._network.manager.COMMAND_CLASS_DESC[command_class]
-        #self._command_class = self._network.manager.COMMAND_CLASS_DESC[command_class]
-        #self._value_data = value_data
-        #self.n = valueId
-        #self._values = dict()
-        #self._label = None
-        #self.cache_property("self.label")
-        #self._help = None
-        #self.cache_property("self.help")
-        #self._min = None
-        #self.cache_property("self.min")
-        #self._max = None
-        #self.cache_property("self.max")
-        #self._units = None
-        #self.cache_property("self.units")
-        #self._poll_intensity = None
-        #self.cache_property("self.poll_intensity")
-        #self._data_as_string = None
-        #self.cache_property("self.data_as_string")
-        #self._data_items = None
-        #self.cache_property("self.data_items")
-        #self._data = None
-        #self.cache_property("self.data")
-        #self._type = None
-        #self.cache_property("self.type")
 
     def __str__(self):
         """
@@ -118,28 +87,28 @@ class ZWaveValue(ZWaveObject):
     @property
     def parent_id(self):
         """
-        The parent_id of the value.
+        Get the parent_id of the value.
         """
         return self._parent.object_id
 
     @property
     def value_id(self):
         """
-        The value_id of the value.
+        Get the value_id of the value.
         """
         return self._object_id
 
     @property
     def id_on_network(self):
         """
-        Return an unique id for this value.
+        Get an unique id for this value.
+
         The scenes use this to retrieve values
         <Scene id="1" label="scene1">
                 <Value homeId="0x014d0ef5" nodeId="2" genre="user" commandClassId="38" instance="1" index="0" type="byte">54</Value>
         </Scene>
         The format is :
-            home_id.node_id.commnand_class.instance.index
-
+            home_id.node_id.command_class.instance.index
         """
         separator = self._network.id_separator
         return "%0.8x%s%s%s%0.2x%s%s%s%s" % (self._network.home_id, \
@@ -158,15 +127,10 @@ class ZWaveValue(ZWaveObject):
     @property
     def label(self):
         """
-        The label of the value.
+        Get the label of the value.
 
         :rtype: str
-
         """
-#        if self.is_outdated("self.label"):
-#            self._label = self._network.manager.getValueLabel(self.value_id)
-#            self.update("self.label")
-#        return self._label
         return self._network.manager.getValueLabel(self.value_id)
 
     @label.setter
@@ -176,89 +140,68 @@ class ZWaveValue(ZWaveObject):
 
         :param value: The new label value
         :type value: str
-
         """
         self._network.manager.setValueLabel(self.value_id, value)
-#        self.outdate("self.label")
 
     @property
     def help(self):
         """
-        The help of the value.
+        Gets a help string describing the value's purpose and usage.
 
         :rtype: str
-
         """
-#        if self.is_outdated("self.help"):
-#            self._help = self._network.manager.getValueHelp(self.value_id)
-#            self.update("self.help")
-#        return self._help
         return self._network.manager.getValueHelp(self.value_id)
 
     @help.setter
     def help(self, value):
         """
-        Set the help of the value.
+        Sets a help string describing the value's purpose and usage..
 
         :param value: The new help value
         :type value: str
 
         """
         self._network.manager.setValueHelp(self.value_id, value)
-#        self.outdate("self.help")
 
     @property
     def units(self):
         """
-        The units of the value.
+        Gets the units that the value is measured in.
 
         :rtype: str
 
         """
-#        if self.is_outdated("self.units"):
-#            self._units = self._network.manager.getValueUnits(self.value_id)
-#            self.update("self.units")
-#        return self._units
         return self._network.manager.getValueUnits(self.value_id)
 
     @units.setter
     def units(self, value):
         """
-        Set the units of the value.
+        Sets the units that the value is measured in.
 
         :param value: The new units value
         :type value: str
 
         """
         self._network.manager.setValueUnits(self.value_id, value)
-#        self.outdate("self.units")
 
     @property
     def max(self):
         """
-        The max of the value.
+        Gets the maximum that this value may contain.
 
         :rtype: int
 
         """
-#        if self.is_outdated("self.max"):
-#            self._max = self._network.manager.getValueMax(self.value_id)
-#            self.update("self.max")
-#        return self._min
         return self._network.manager.getValueMax(self.value_id)
 
     @property
     def min(self):
         """
-        The min of the value.
+        Gets the minimum that this value may contain.
 
         :rtype: int
 
         """
-#        if self.is_outdated("self.min"):
-#            self._min = self._network.manager.getValueMin(self.value_id)
-#            self.update("self.min")
-#        return self._min
         return self._network.manager.getValueMin(self.value_id)
 
     @property
@@ -272,10 +215,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: str
 
         """
-#        if self.is_outdated("self.type"):
-#            self._type = self._network.manager.getValueType(self.value_id)
-#            self.update("self.type")
-#        return self._type
         return self._network.manager.getValueType(self.value_id)
 
     @property
@@ -321,48 +260,39 @@ class ZWaveValue(ZWaveObject):
     @property
     def data(self):
         """
-        The current data of the value.
+        Get the current data of the value.
 
         :return: The data of the value
         :rtype: depending of the type of the value
 
         """
-#        if self.is_outdated("self.data"):
-#            self._data = self._network.manager.getValue(self.value_id)
-#            self.update("self.data")
-#        return self._data
         return self._network.manager.getValue(self.value_id)
 
     @data.setter
     def data(self, value):
         """
         Set the data of the value.
-        Use check_data before setting it :
 
-        newval = value.check_data(some_data)
-        if newval != None:
-            value.data = newval
+        Best practice: Use check_data before setting it:
+
+        new_val = value.check_data(some_data)
+        if new_val != None:
+            value.data = new_val
 
         :param value: The new data value
         :type value: str
 
         """
-#        val = self.check_data(value)
         self._network.manager.setValue(self.value_id, value)
-#        self.outdate("self.data")
 
     @property
     def data_as_string(self):
         """
-        The value data as String.
+        Get the value data as String.
 
         :rtype: str
 
         """
-#        if self.is_outdated("self.data_as_string"):
-#            self._as_string = self._network.manager.getValueAsString(self.value_id)
-#            self.update("self.data_as_string")
-#        return self._as_string
         return self._network.manager.getValueAsString(self.value_id)
 
     @property
@@ -374,10 +304,6 @@ class ZWaveValue(ZWaveObject):
         :rtype: string or set
 
         """
-#        if self.is_outdated("self.data_items"):
-#            self._data_items = self._network.manager.getValueListItems(self.value_id)
-#            self.update("self.data_items")
-#        return self._data_items
         if self.is_read_only :
             return "Read only"
         if self.type == "Bool":
@@ -404,6 +330,8 @@ class ZWaveValue(ZWaveObject):
         Check that data is correct for this value.
         Return the data in a correct type. None is data is incorrect.
 
+        :param data:  The data value to check
+        :type data: lambda
         :return: A variable of the good type if the data is correct. None otherwise.
         :rtype: variable
 
@@ -424,7 +352,7 @@ class ZWaveValue(ZWaveObject):
                 new_data = int(data)
             except :
                 new_data = None
-            if new_data != None:
+            if new_data is not None:
                 if new_data < 0 :
                     new_data = 0
                 elif new_data > 255 :
@@ -439,7 +367,7 @@ class ZWaveValue(ZWaveObject):
                 new_data = int(data)
             except :
                 new_data = None
-            if new_data != None:
+            if new_data is not None:
                 if new_data < -2147483648 :
                     new_data = -2147483648
                 elif new_data > 2147483647 :
@@ -449,7 +377,7 @@ class ZWaveValue(ZWaveObject):
                 new_data = int(data)
             except :
                 new_data = None
-            if new_data != None:
+            if new_data is not None:
                 if new_data < -32768 :
                     new_data = -32768
                 elif new_data > 32767 :
@@ -552,7 +480,7 @@ class ZWaveValue(ZWaveObject):
     @property
     def command_class(self):
         """
-        The commandclass of the value.
+        The command class of the value.
 
         :returns: The command class of this value
         :rtype: int
@@ -568,12 +496,9 @@ class ZWaveValue(ZWaveObject):
         :rtype: bool
 
         """
-#        if self.is_outdated("self.data_as_string"):
-#            self._as_string = self._network.manager.getValueAsString(self.value_id)
-#            self.update("self.data_as_string")
-#        return self._as_string
         return self._network.manager.refreshValue(self.value_id)
 
+    @property
     def precision(self):
         """
         Gets a float value's precision.

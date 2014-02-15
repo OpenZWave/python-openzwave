@@ -46,9 +46,11 @@ Return the data in a correct type. None is data is incorrect.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A variable of the good type if the data is correct. None otherwise.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>lambda</em>) &#8211; The data value to check</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A variable of the good type if the data is correct. None otherwise.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
 </tr>
 </tbody>
 </table>
@@ -57,7 +59,7 @@ Return the data in a correct type. None is data is incorrect.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.command_class">
 <tt class="descname">command_class</tt></dt>
-<dd><p>The commandclass of the value.</p>
+<dd><p>The command class of the value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -73,7 +75,7 @@ Return the data in a correct type. None is data is incorrect.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.data">
 <tt class="descname">data</tt></dt>
-<dd><p>The current data of the value.</p>
+<dd><p>Get the current data of the value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -89,7 +91,7 @@ Return the data in a correct type. None is data is incorrect.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.data_as_string">
 <tt class="descname">data_as_string</tt></dt>
-<dd><p>The value data as String.</p>
+<dd><p>Get the value data as String.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -171,7 +173,7 @@ by the application</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.help">
 <tt class="descname">help</tt></dt>
-<dd><p>The help of the value.</p>
+<dd><p>Gets a help string describing the value&#8217;s purpose and usage.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -185,15 +187,15 @@ by the application</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.id_on_network">
 <tt class="descname">id_on_network</tt></dt>
-<dd><p>Return an unique id for this value.
-The scenes use this to retrieve values
+<dd><p>Get an unique id for this value.</p>
+<p>The scenes use this to retrieve values
 &lt;Scene id=&#8221;1&#8221; label=&#8221;scene1&#8221;&gt;</p>
 <blockquote>
 <div>&lt;Value homeId=&#8221;0x014d0ef5&#8221; nodeId=&#8221;2&#8221; genre=&#8221;user&#8221; commandClassId=&#8221;38&#8221; instance=&#8221;1&#8221; index=&#8221;0&#8221; type=&#8221;byte&#8221;&gt;54&lt;/Value&gt;</div></blockquote>
 <p>&lt;/Scene&gt;
 The format is :</p>
 <blockquote>
-<div>home_id.node_id.commnand_class.instance.index</div></blockquote>
+<div>home_id.node_id.command_class.instance.index</div></blockquote>
 </dd></dl>
 
 <dl class="attribute">
@@ -298,7 +300,7 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.label">
 <tt class="descname">label</tt></dt>
-<dd><p>The label of the value.</p>
+<dd><p>Get the label of the value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -312,7 +314,7 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.max">
 <tt class="descname">max</tt></dt>
-<dd><p>The max of the value.</p>
+<dd><p>Gets the maximum that this value may contain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -326,7 +328,7 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.min">
 <tt class="descname">min</tt></dt>
-<dd><p>The min of the value.</p>
+<dd><p>Gets the minimum that this value may contain.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -346,7 +348,7 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.parent_id">
 <tt class="descname">parent_id</tt></dt>
-<dd><p>The parent_id of the value.</p>
+<dd><p>Get the parent_id of the value.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -365,9 +367,9 @@ only the SensorMultilevel command class ever does this.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
+<dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.precision">
-<tt class="descname">precision</tt><big>(</big><big>)</big></dt>
+<tt class="descname">precision</tt></dt>
 <dd><p>Gets a float value&#8217;s precision.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -418,7 +420,7 @@ Manager class.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.units">
 <tt class="descname">units</tt></dt>
-<dd><p>The units of the value.</p>
+<dd><p>Gets the units that the value is measured in.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -432,7 +434,7 @@ Manager class.</p>
 <dl class="attribute">
 <dt id="openzwave.value.ZWaveValue.value_id">
 <tt class="descname">value_id</tt></dt>
-<dd><p>The value_id of the value.</p>
+<dd><p>Get the value_id of the value.</p>
 </dd></dl>
 
 </dd></dl>

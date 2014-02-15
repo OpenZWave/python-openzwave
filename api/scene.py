@@ -34,12 +34,12 @@ from openzwave.object import ZWaveObject
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class ZWaveScene(ZWaveObject):
-    '''
+    """
     Represents a single scene within the Z-Wave Network
-    '''
+    """
 
     def __init__(self, scene_id, network=None):
-        '''
+        """
         Initialize zwave scene
 
         :param scene_id: ID of the scene
@@ -47,11 +47,10 @@ class ZWaveScene(ZWaveObject):
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
 
-        '''
+        """
         ZWaveObject.__init__(self, scene_id, network)
         logging.debug("Create object scene (scene_id:%s)" % (scene_id))
         self.values = dict()
-        #self._label = ''
 
     def __str__(self):
         """
@@ -81,12 +80,6 @@ class ZWaveScene(ZWaveObject):
         :rtype: str
 
         """
-#        if self.is_outdated("self.name"):
-#            #print "No cache"
-#            self._name = self._network.manager.getNodeName(self.home_id, self.object_id)
-#            self.update("self.name")
-#        #print "self._name"
-#        return self._name
         return self._network.manager.getSceneLabel(self.object_id)
 
     @label.setter
@@ -99,10 +92,9 @@ class ZWaveScene(ZWaveObject):
 
         """
         self._network.manager.setSceneLabel(self.object_id, value)
-#        self.outdate("self.name")
 
     def create(self, label=None):
-        '''
+        """
         Create a new zwave scene on the network and update the object_id field
         If label is set, also change the label of the scene
 
@@ -111,16 +103,16 @@ class ZWaveScene(ZWaveObject):
         :returns: return the id of scene on the network. Return 0 if fails
         :rtype: int
 
-        '''
-        sceneid = self._network.manager.createScene()
-        if sceneid != 0 :
-            self._object_id = sceneid
-            if label != None:
+        """
+        scene_id = self._network.manager.createScene()
+        if scene_id != 0 :
+            self._object_id = scene_id
+            if label is not None:
                 self.label = label
-        return sceneid
+        return scene_id
 
     def add_value(self, value_id, value_data):
-        '''
+        """
         Add a value with data value_data to the zwave scene.
 
         :param value_id: The id of the value to add
@@ -128,14 +120,14 @@ class ZWaveScene(ZWaveObject):
         :param value_data: The data of the value to add
         :type value_data: variable
 
-        '''
+        """
         ret = self._network.manager.addSceneValue(self.scene_id, value_id, value_data)
         if ret == 1:
             return True
         return False
 
     def set_value(self, value_id, value_data):
-        '''
+        """
         Set a value data to value_data in the zwave scene.
 
         :param value_id: The id of the value to add
@@ -143,7 +135,7 @@ class ZWaveScene(ZWaveObject):
         :param value_data: The data of the value to add
         :type value_data: variable
 
-        '''
+        """
         ret = self._network.manager.setSceneValue(self.scene_id, value_id, value_data)
         if ret == 1:
             return True
@@ -159,7 +151,7 @@ class ZWaveScene(ZWaveObject):
         """
         ret = dict()
         values = self._network.manager.sceneGetValues(self.scene_id)
-        if values == None :
+        if values is None:
             return ret
         for val in values:
             value = self._network.get_value(val)
@@ -176,11 +168,11 @@ class ZWaveScene(ZWaveObject):
         """
         ret = dict()
         values = self._network.manager.sceneGetValues(self.scene_id)
-        if values == None :
+        if values is None:
             return ret
         for val in values:
             value = self._network.get_value(val)
-            if value!=None:
+            if value is not None:
                 if value.node.node_id not in ret:
                     ret[value.node.node_id] = {}
                 ret[value.node.node_id][val] = {'value':value,'data':values[val]}
@@ -199,11 +191,11 @@ class ZWaveScene(ZWaveObject):
         return self._network.manager.removeSceneValue(self.scene_id, value_id)
 
     def activate(self):
-        '''
+        """
         Activate the zwave scene.
 
         :returns: True if the scene is activated. False otherwise.
         :rtype: bool
 
-        '''
+        """
         return self._network.manager.activateScene(self.object_id)

@@ -28,16 +28,16 @@ import logging
 logging.getLogger('openzwave').addHandler(logging.NullHandler())
 
 class NullLoggingHandler(logging.Handler):
-    '''
+    """
     A Null Logging Handler
-    '''
+    """
     def emit(self, record):
         pass
 
 class ZWaveException(Exception):
-    '''
+    """
     Exception class for OpenZWave
-    '''
+    """
     def __init__(self, value):
         Exception.__init__(self)
         self.msg = "Zwave Generic Exception"
@@ -47,9 +47,9 @@ class ZWaveException(Exception):
         return repr(self.msg+' : '+self.value)
 
 class ZWaveCacheException(ZWaveException):
-    '''
+    """
     Exception class for OpenZWave
-    '''
+    """
     def __init__(self, value):
         ZWaveException.__init__(self)
         self.msg = "Zwave Cache Exception"
@@ -59,9 +59,9 @@ class ZWaveCacheException(ZWaveException):
         return repr(self.msg+' : '+self.value)
 
 class ZWaveTypeException(ZWaveException):
-    '''
+    """
     Exception class for OpenZWave
-    '''
+    """
     def __init__(self, value):
         ZWaveException.__init__(self)
         self.msg = "Zwave Type Exception"
@@ -71,9 +71,9 @@ class ZWaveTypeException(ZWaveException):
         return repr(self.msg+' : '+self.value)
 
 class ZWaveCommandClassException(ZWaveException):
-    '''
+    """
     Exception class for OpenZWave
-    '''
+    """
     def __init__(self, value):
         ZWaveException.__init__(self)
         self.msg = "Zwave Command Class Exception"
@@ -83,13 +83,13 @@ class ZWaveCommandClassException(ZWaveException):
         return repr(self.msg+' : '+self.value)
 
 class ZWaveObject(object):
-    '''
+    """
     Represents a Zwave object. Values, nodes, ... can be changer by
     other managers on the network.
-    '''
+    """
 
     def __init__(self, object_id, network = None, use_cache = True):
-        '''
+        """
         Initialize a Zwave object
 
         :param object_id: ID of the object
@@ -97,7 +97,7 @@ class ZWaveObject(object):
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
 
-        '''
+        """
         self._network = network
         self._last_update = None
         self._outdated = True
@@ -162,13 +162,13 @@ class ZWaveObject(object):
     @property
     def outdated(self):
         """
-        Are the informations of this object outdated.
+        Are the information of this object outdated.
 
         How to manage the cache ?
 
         2 ways of doing it :
-        - refresh informations when setting the property
-        - refresh informations when getting getting property.
+        - refresh information when setting the property
+        - refresh information when getting getting property.
         Maybe whe could implement the 2 methods.
 
         :rtype: int
@@ -191,7 +191,7 @@ class ZWaveObject(object):
                     self._cached_properties[prop] = True
                 self._outdated = value
             else:
-                raise ZWaveCacheException("Can't set outdated to False manualy. It is done automatically.")
+                raise ZWaveCacheException("Can't set outdated to False manually. It is done automatically.")
         else:
             raise ZWaveCacheException("Cache not enabled")
 
@@ -200,7 +200,7 @@ class ZWaveObject(object):
         Check if property information is outdated.
 
         :param prop: The property to check
-        :type value: lambda
+        :type prop: lambda
         :rtype: bool
 
         """
@@ -219,7 +219,7 @@ class ZWaveObject(object):
         Says that the property information is outdated.
 
         :param prop: The property to outdate
-        :type value: lambda
+        :type prop: lambda
 
         """
         if self._use_cache :
@@ -234,19 +234,18 @@ class ZWaveObject(object):
         Says that the property are updated.
 
         :param prop: The property to update
-        :type value: lambda
+        :type prop: lambda
 
         """
         if self._use_cache:
             if str(prop) in self._cached_properties :
                 self._cached_properties[str(prop)] = False
-                #logging.debug("Data %s is updated." % str(prop))
-                outd = False
+                out_dated = False
                 for prop in self._cached_properties:
                     if self._cached_properties[prop]:
-                        outd = True
+                        out_dated = True
                         break
-                self._outdated = outd
+                self._outdated = out_dated
         else:
             raise ZWaveCacheException("Cache not enabled")
 
@@ -255,11 +254,10 @@ class ZWaveObject(object):
         Add this property to the cache manager.
 
         :param prop: The property to cache
-        :type value: lambda
+        :type prop: lambda
 
         """
         if self._use_cache :
-            #print "cache_property %s" % prop
             self._cached_properties[str(prop)] = True
         else:
             raise ZWaveCacheException("Cache not enabled")
@@ -276,14 +274,14 @@ class ZWaveObject(object):
         return self._object_id
 
 class ZWaveNodeInterface(object):
-    '''
+    """
     Represents an interface of a node. An interface can manage
     specific commandClasses (ie a switch, a dimmer, a thermostat, ...).
     Don't know what to do with it now but sure it must exist
-    '''
+    """
 
     def __init__(self):
-        '''
+        """
         Initialize a Zwave Node Interface
 
         :param object_id: ID of the object
@@ -291,5 +289,5 @@ class ZWaveNodeInterface(object):
         :param network: The network object to access the manager
         :type network: ZWaveNetwork
 
-        '''
+        """
         self._class = "unknown"
