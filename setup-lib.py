@@ -71,7 +71,7 @@ if os_name == 'nt':
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/libopenzwave.a'],
+                             extra_objects=['openzwave/cpp/lib/windows-mingw32/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows']
     )]
 elif platform_system() == 'Darwin':
@@ -79,7 +79,7 @@ elif platform_system() == 'Darwin':
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
-                             extra_objects=['openzwave/libopenzwave.a'],
+                             extra_objects=['openzwave/cpp/lib/mac/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/mac']
     )]
 elif DEBIAN_PACKAGE == True:
@@ -93,7 +93,7 @@ else:
     ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
-                             extra_objects=['openzwave/cpp/build/libopenzwave.a'],
+                             extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
     )]
 
@@ -101,7 +101,7 @@ setup(
   name = 'python-openzwave-lib',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
-  version = '0.2.5',
+  version = '0.2.6',
   url='http://code.google.com/p/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,

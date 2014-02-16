@@ -55,7 +55,7 @@ import sys
 #Don't update it.
 #It will be done when releasing only.
 #Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
-PYLIBRARY = "0.2.5"
+PYLIBRARY = "0.2.6"
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
@@ -836,15 +836,28 @@ Get the version of the Z-Wave API library used by a controller.
 
 Get the version of the python library.
 
-:return: A string containing the python library version. For example, "0.1".
+:return: A string containing the python library version. For example, "python-openzwave version 0.1".
 :rtype: str
 :see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_
 
         '''
         return "python-openzwave version %s" % PYLIBRARY
 
+    def getPythonLibraryVersionNumber(self):
+        """
+.. _getPythonLibraryVersionNumber:
+
+Get the python library version number
+
+:return: A string containing the python library version. For example, "0.1".
+:rtype: str
+:see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_
+
+        """
+        return PYLIBRARY
+
     def getOzwLibraryVersion(self):
-        '''
+        """
 .. _getOzwLibraryVersion:
 
 Get a string containing the openzwave library version.
@@ -853,12 +866,12 @@ Get a string containing the openzwave library version.
 :rtype: str
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
-        '''
+        """
         return "OpenZWave version %d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
 
     def getOzwLibraryVersionNumber(self):
         '''
-_getOzwLibraryVersionNumber: Get a string containing the openzwave library version.
+_getOzwLibraryVersionNumber: Get the openzwave library version number.
 
 :return: A string containing the library type.
 :rtype: str
@@ -2099,8 +2112,6 @@ Helper method to return whether a particular class is available in a node
             # QueryStage_None
             return 16
         return None
-
-
 
 #
 # -----------------------------------------------------------------------------
