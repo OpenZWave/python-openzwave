@@ -11,13 +11,13 @@ RZ025="699"
 
 #Last archive
 #The release number of python-openzwave
-RY026="a11be346b118"
+RY026="ea9c3611f4c1"
 #The release number of openzwave
-RZ026="699"
+RZ026="749"
 
 #Current archive
-RY=$(echo $RY025)
-RZ=$(echo $RZ025)
+RY=$(echo $RY026)
+RZ=$(echo $RZ026)
 
 #Define variables
 PYLIBRARY=$(grep "PYLIBRARY = " lib/libopenzwave.pyx | sed -e "s|PYLIBRARY = ||" | sed "s/\x0D$//" | sed -e "s|^M$||" | sed -e "s|\"||g")
@@ -71,7 +71,7 @@ echo "|   Checkout openwave repository                                |"
 echo "-----------------------------------------------------------------"
 if [ -d openzwave ] ; then
     echo "Update openzwave directory"
-    svn update http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    svn update openzwave
 else
     echo "Checkout openzwave directory"
     svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
