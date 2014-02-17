@@ -6,11 +6,11 @@ CLEAN=0
 echo "-----------------------------------------------------------------"
 echo "|   Build openzwave                                             |"
 echo "-----------------------------------------------------------------"
-cd openzwave/cpp/build
-rm -Rf vers.cpp
+rm -Rf openzwave/cpp/build/vers.cpp
+cd openzwave/
 [ $CLEAN -eq 1 ] && make clean
 make
-cd ../../..
+cd ..
 
 echo "-----------------------------------------------------------------"
 echo "|   Build python-openzwave                                      |"
