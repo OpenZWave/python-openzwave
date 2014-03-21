@@ -13,7 +13,7 @@ Developp, test, debug, test, ... :)
 
 When your modification is functional, you are ready to submit a patch
 
-Sync you repository :
+Sync your repository :
 
     hg pull https://code.google.com/p/python-openzwave/
 
@@ -21,13 +21,13 @@ Sync you repository :
 
 Generate the patch
 
-    hgdiff > somewordstoexplainwhatthepatchdoes.patch
+    hg diff > somewordstoexplainwhatthepatchdoes.patch
 
 As the code of python-openzwave is under developpment, submit atomic patches.
 Otherwise, you should have merge problems when syncing your repository.
 
 This will generate a file in the current directory.
-Send it to the developpers team.
+Finally post it on issues projets : https://code.google.com/p/python-openzwave/issues/list .
 
 Using a developper account
 ==========================
