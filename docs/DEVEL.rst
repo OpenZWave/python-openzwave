@@ -47,12 +47,14 @@ Packagers
 =========
 
 If you want to package python-openzwave for your distribution,
-look at the make_dist.sh script. It build a distribution directory
+look at the make_dist.sh script. It builds a distribution directory
 with documentation in build/distdir.
 
-You can also submit your script here, they will be added to the main code.
+You can also submit your script in issues, it will be added to the main code.
 
-You can build python-openzwave using
+On Debian/ubuntu you can build python-openzwave using : 
+    
+    dpkg-builpackage 
 
 Static vs dynamic (or shared)
 =============================
