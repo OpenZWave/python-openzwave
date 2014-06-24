@@ -689,7 +689,7 @@ class NodesTree(OldestTree):
                 self.window.network.nodes[node].location, \
                 self.window.network.nodes[node].max_baud_rate, \
                 self.window.network.nodes[node].get_battery_level(), \
-                self.window.network.nodes[node].awaked, \
+                self.window.network.nodes[node].isNodeAwake(), \
                 ))
             self.size += 1
         self._modified()

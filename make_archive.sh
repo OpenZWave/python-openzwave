@@ -11,9 +11,9 @@ RZ025="699"
 
 #Last archive
 #The release number of python-openzwave
-RY026="ea9c3611f4c1"
+RY026="3a47766a45c9"
 #The release number of openzwave
-RZ026="749"
+RZ026="750"
 
 #Current archive
 RY=$(echo $RY026)
