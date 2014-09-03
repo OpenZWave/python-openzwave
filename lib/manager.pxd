@@ -125,7 +125,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueAsFloat(ValueID& valueid, float* o_value)
         bool GetValueAsInt(ValueID& valueid, int32_t* o_value)
         bool GetValueAsShort(ValueID& valueid, int16_t* o_value)
-#        bool GetValueAsRaw( ValueID& valueid, uint8** o_value, uint8* o_length )
+        bool GetValueAsRaw(ValueID& valueid, uint8_t** o_value, uint8_t* o_length )
         bool GetValueAsString(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, int32_t* o_value)
@@ -135,7 +135,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool SetValue(ValueID& valueid, float value)
         bool SetValue(ValueID& valueid, int32_t value)
         bool SetValue(ValueID& valueid, int16_t value)
-#       bool SetValue( ValueI& valueid, uint8 const* _value, uint8 const _length );
+        bool SetValue(ValueID& valueid, uint8_t* value, uint8_t length)
         bool SetValue(ValueID& valueid, string value)
         bool SetValueListSelection(ValueID& valueid, string selecteditem)
         bool RefreshValue(ValueID& valueid)

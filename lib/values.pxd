@@ -37,7 +37,8 @@ cdef extern from "ValueID.h" namespace "OpenZWave":
         ValueType_Short = 6                 # 16-bit signed value
         ValueType_String = 7                # Text string
         ValueType_Button = 8                # A write-only value that is the equivalent of pressing a button to send a command to a device
-        ValueType_Max = ValueType_Button    # The highest-number type defined.  Not to be used as a type itself.
+        ValueType_Raw = 9                   # Used as a list of Bytes
+        ValueType_Max = ValueType_Raw       # The highest-number type defined.  Not to be used as a type itself.
 
     cdef cppclass ValueID:
         uint32_t GetHomeId()

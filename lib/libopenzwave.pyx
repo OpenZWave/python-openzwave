@@ -122,6 +122,7 @@ PyValueTypes = [
     EnumWithDoc('Short').setDoc("16-bit signed value"),
     EnumWithDoc('String').setDoc("Text string"),
     EnumWithDoc('Button').setDoc("A write-only value that is the equivalent of pressing a button to send a command to a device"),
+    EnumWithDoc('Raw').setDoc("Raw byte values"),
     ]
 
 PyControllerState = [
@@ -219,7 +220,7 @@ PyLogLevels = {
 
 cdef map[uint64_t, ValueID] values_map
 
-cdef getValueFromType(Manager *manager, valueId):
+cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
     """
     Translate a value in the right type
     """
@@ -230,6 +231,10 @@ cdef getValueFromType(Manager *manager, valueId):
     cdef int16_t type_short
     cdef string type_string
     cdef vector[string] vect
+    cdef uint8_t* vectraw = NULL
+    cdef uint8_t size
+    cdef string s
+    c = ""
     ret = None
     if values_map.find(valueId) != values_map.end():
         datatype = PyValueTypes[values_map.at(valueId).GetType()]
@@ -240,6 +245,14 @@ cdef getValueFromType(Manager *manager, valueId):
         elif datatype == "Byte":
             cret = manager.GetValueAsByte(values_map.at(valueId), &type_byte)
             ret = type_byte if cret else None
+            return ret
+        elif datatype == "Raw":
+            cret = manager.GetValueAsRaw(values_map.at(valueId), &vectraw, &size)
+            if cret:
+                for x in range (0, size):
+                    c += str(vectraw[x])
+            ret = c if cret else None
+            free(vectraw)
             return ret
         elif datatype == "Decimal":
             cret = manager.GetValueAsFloat(values_map.at(valueId), &type_float)
