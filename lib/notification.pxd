@@ -56,6 +56,7 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_AllNodesQueried = 24               # All nodes have been queried, so client application can expected complete data.
         Type_AllNodesQueriedSomeDead = 25       # All nodes have been queried but some dead nodes found.
         Type_Notification = 26                  # A manager notification report.
+        Type_DriverRemoved = 27                 # The Driver is being removed. (either due to Error or by request) Do Not Call Any Driver Related Methods after receiving this call.
 
 cdef extern from "Notification.h" namespace "OpenZWave::Notification":
 

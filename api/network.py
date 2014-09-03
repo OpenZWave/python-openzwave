@@ -55,6 +55,7 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_DRIVER_FAILED = 'DriverFailed'
         * SIGNAL_DRIVER_READY = 'DriverReady'
         * SIGNAL_DRIVER_RESET = 'DriverReset'
+        * SIGNAL_DRIVER_REMOVED = 'DriverRemoved'
         * SIGNAL_NODE_ADDED = 'NodeAdded'
         * SIGNAL_NODE_EVENT = 'NodeEvent'
         * SIGNAL_NODE_NAMING = 'NodeNaming'
@@ -103,6 +104,11 @@ class ZWaveNetwork(ZWaveObject):
         * Controller capabilities
         * Controller Application Version & Manufacturer/Product ID
         * Nodes included in the network
+
+    * DriverRemoved
+
+    [always sent (either due to Error or by request)] The Driver is being removed.
+    Do Not Call Any Driver Related Methods after receiving this
 
     Node Initialization Notifications
 
@@ -219,6 +225,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_DRIVER_FAILED = 'DriverFailed'
     SIGNAL_DRIVER_READY = 'DriverReady'
     SIGNAL_DRIVER_RESET = 'DriverReset'
+    SIGNAL_DRIVER_REMOVED = 'DriverRemoved'
     SIGNAL_GROUP = 'Group'
     SIGNAL_NODE = 'Node'
     SIGNAL_NODE_ADDED = 'NodeAdded'
@@ -804,6 +811,8 @@ class ZWaveNetwork(ZWaveObject):
             self._handle_msg_complete(args)
         elif notify_type == self.SIGNAL_NOTIFICATION:
             self._handle_notification(args)
+        elif notify_type == self.SIGNAL_DRIVER_REMOVED:
+            self._handle_driver_removed(args)
         else:
             logging.warning('Skipping unhandled notification [%s]', args)
 
@@ -886,6 +895,26 @@ class ZWaveNetwork(ZWaveObject):
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
                 **{'network': self})
             dispatcher.send(self.SIGNAL_NETWORK_RESETTED, \
+                **{'network': self})
+        finally :
+            self._semaphore_nodes.release()
+
+    def _handle_driver_removed(self, args):
+        """
+        The Driver is being removed. (either due to Error or by request)
+        Do Not Call Any Driver Related Methods after receiving this
+
+        dispatcher.send(self.SIGNAL_DRIVER_REMOVED, **{'network': self})
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logging.debug('************ Z-Wave Notification DriverRemoved : %s' % (args,))
+        try :
+            self._semaphore_nodes.acquire()
+            self._state = self.STATE_STOPPED
+            dispatcher.send(self.SIGNAL_DRIVER_REMOVED, \
                 **{'network': self})
         finally :
             self._semaphore_nodes.release()
@@ -1407,4 +1436,6 @@ class ZWaveNetwork(ZWaveObject):
     {REPEATS FOR EACH NODE} --------------+
 
     [awakeNodesQueried] or [allNodesQueried] (with node_id 255)
+
+    [driverRemoved]
 """

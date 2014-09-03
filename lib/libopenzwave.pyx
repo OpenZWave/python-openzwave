@@ -91,7 +91,8 @@ PyNotifications = [
     EnumWithDoc('AwakeNodesQueried').setDoc("All awake nodes have been queried, so client application can expected complete data for these nodes."),
     EnumWithDoc('AllNodesQueried').setDoc("All nodes have been queried, so client application can expected complete data."),
     EnumWithDoc('AllNodesQueriedSomeDead').setDoc("All nodes have been queried but some dead nodes found."),
-    EnumWithDoc('Notification').setDoc("A manager notification report.."),
+    EnumWithDoc('Notification').setDoc("A manager notification report."),
+    EnumWithDoc('DriverRemoved').setDoc("The Driver is being removed."),
     ]
 
 PyNotificationCodes = [
