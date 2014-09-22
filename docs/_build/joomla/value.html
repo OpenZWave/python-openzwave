@@ -1,5 +1,4 @@
 
-
 	
   <div class="section" id="value-documentation">
 <h1>Value documentation</h1>
@@ -394,6 +393,22 @@ only the SensorMultilevel command class ever does this.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the command was transmitted to controller</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.value.ZWaveValue.set_change_verified">
+<tt class="descname">set_change_verified</tt><big>(</big><em>verify</em><big>)</big></dt>
+<dd><p>Sets a flag indicating whether value changes noted upon a refresh should be verified.</p>
+<p>If so, the library will immediately refresh the value a second time whenever a change is observed.
+This helps to filter out spurious data reported occasionally by some devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>verify</strong> (<em>bool</em>) &#8211; if true, verify changes; if false, don&#8217;t verify changes.</td>
 </tr>
 </tbody>
 </table>

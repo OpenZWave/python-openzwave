@@ -250,7 +250,7 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
             cret = manager.GetValueAsRaw(values_map.at(valueId), &vectraw, &size)
             if cret:
                 for x in range (0, size):
-                    c += str(vectraw[x])
+                    c += chr(vectraw[x])
             ret = c if cret else None
             free(vectraw)
             return ret
@@ -2163,6 +2163,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
         cdef int32_t type_int
         cdef int16_t type_short
         cdef string type_string
+        cdef uint8_t* type_raw
         ret = 2
         if values_map.find(id) != values_map.end():
             datatype = PyValueTypes[values_map.at(id).GetType()]
@@ -2174,6 +2175,14 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 type_byte = value
                 cret = self.manager.SetValue(values_map.at(id), type_byte)
                 ret = 1 if cret else 0
+            elif datatype == "Raw":
+                type_raw = <uint8_t*> malloc(len(value)*sizeof(uint8_t))
+                for x in range(0, len(value)):
+                    print value[x]
+                    type_raw[x] = value[x]
+                cret = self.manager.SetValue(values_map.at(id), type_raw, len(value))
+                ret = 1 if cret else 0
+                free(type_raw)
             elif datatype == "Decimal":
                 type_float = value
                 cret = self.manager.SetValue(values_map.at(id), type_float)

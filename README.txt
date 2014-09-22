@@ -18,9 +18,9 @@ You can install python-openzwave in 3 ways :
      subversion. Only the common builds tools are needed. Look at
      INSTALL_ARCH to do such installation
 
-   * From scratch : if you can't build python-openzwave automatically
-     or you are using windows or MacOS X. Look at INSTALL_MAN to do
-     such installation
+   * From scratch : if you can't build python-openzwave
+     automatically or you are using windows or MacOS X. Look at
+     INSTALL_MAN to do such installation
 
 Testing python-openzwave :
 

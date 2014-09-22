@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -105,6 +103,7 @@ It contains a reference to the manager and the controller.</p>
 <li>SIGNAL_DRIVER_FAILED = &#8216;DriverFailed&#8217;</li>
 <li>SIGNAL_DRIVER_READY = &#8216;DriverReady&#8217;</li>
 <li>SIGNAL_DRIVER_RESET = &#8216;DriverReset&#8217;</li>
+<li>SIGNAL_DRIVER_REMOVED = &#8216;DriverRemoved&#8217;</li>
 <li>SIGNAL_NODE_ADDED = &#8216;NodeAdded&#8217;</li>
 <li>SIGNAL_NODE_EVENT = &#8216;NodeEvent&#8217;</li>
 <li>SIGNAL_NODE_NAMING = &#8216;NodeNaming&#8217;</li>
@@ -155,6 +154,11 @@ At the time this notification is sent, only certain information about the contro
 <li>Nodes included in the network</li>
 </ul>
 </div></blockquote>
+<ul class="simple">
+<li>DriverRemoved</li>
+</ul>
+<p>[always sent (either due to Error or by request)] The Driver is being removed.
+Do Not Call Any Driver Related Methods after receiving this</p>
 <p>Node Initialization Notifications</p>
 <p>As OpenZWave starts, it identifies and reads information about each node in the network.
 The following notifications may be sent during the initialization process.</p>
@@ -560,9 +564,14 @@ does not have to cope with more than one poll per second).</p>
 <dl class="method">
 <dt id="openzwave.network.ZWaveNetwork.start">
 <tt class="descname">start</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the network object :
-- add a watcher
-- add a driver</p>
+<dd><dl class="docutils">
+<dt>Start the network object :</dt>
+<dd><ul class="first last simple">
+<li>add a watcher</li>
+<li>add a driver</li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
@@ -749,7 +758,7 @@ not routed, the message might not otherwise reach all the nodes).</p>
     </div>
     <div class="footer">
         &copy; Copyright 2012, bibi21000.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>

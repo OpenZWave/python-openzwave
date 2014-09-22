@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,7 +13,7 @@
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.2.6',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -55,18 +53,18 @@
 <div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
 <p>Developp, test, debug, test, ... :)</p>
 <p>When your modification is functional, you are ready to submit a patch</p>
-<p>Sync you repository :</p>
+<p>Sync your repository :</p>
 <blockquote>
 <div><p>hg pull <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></p>
 <p>hg update</p>
 </div></blockquote>
 <p>Generate the patch</p>
 <blockquote>
-<div>hgdiff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
+<div>hg diff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
 <p>As the code of python-openzwave is under developpment, submit atomic patches.
 Otherwise, you should have merge problems when syncing your repository.</p>
 <p>This will generate a file in the current directory.
-Send it to the developpers team.</p>
+Finally post it on issues projets : <a class="reference external" href="https://code.google.com/p/python-openzwave/issues/list">https://code.google.com/p/python-openzwave/issues/list</a> .</p>
 </div>
 <div class="section" id="using-a-developper-account">
 <h2>Using a developper account<a class="headerlink" href="#using-a-developper-account" title="Permalink to this headline">¶</a></h2>
@@ -83,10 +81,12 @@ all docs files (txt, html and joomla)</p>
 <div class="section" id="packagers">
 <h2>Packagers<a class="headerlink" href="#packagers" title="Permalink to this headline">¶</a></h2>
 <p>If you want to package python-openzwave for your distribution,
-look at the make_dist.sh script. It build a distribution directory
+look at the make_dist.sh script. It builds a distribution directory
 with documentation in build/distdir.</p>
-<p>You can also submit your script here, they will be added to the main code.</p>
-<p>You can build python-openzwave using</p>
+<p>You can also submit your script in issues, it will be added to the main code.</p>
+<p>On Debian/ubuntu you can build python-openzwave using :</p>
+<blockquote>
+<div>dpkg-builpackage</div></blockquote>
 </div>
 <div class="section" id="static-vs-dynamic-or-shared">
 <h2>Static vs dynamic (or shared)<a class="headerlink" href="#static-vs-dynamic-or-shared" title="Permalink to this headline">¶</a></h2>
@@ -196,7 +196,7 @@ Now high level acces to ZWave network is provided by the API (work in progress)<
     </div>
     <div class="footer">
         &copy; Copyright 2012, bibi21000.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>
 </html>
