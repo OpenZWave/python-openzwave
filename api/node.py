@@ -695,7 +695,7 @@ class ZWaveNode( ZWaveObject,
         logging.debug('Requesting config param %s for node [%s]' % (param, self.object_id))
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 
-    def set_config_param(self, param, value):
+    def set_config_param(self, param, value, size=2):
         """
         Set the value of a configurable parameter in a device.
 
@@ -709,12 +709,14 @@ class ZWaveNode( ZWaveObject,
         :type param:
         :param value: The value of the param.
         :type value:
+        :param size: Is an optional number of bytes to be sent for the parameter value. Defaults to 2.
+        :type size: int
         :return:
         :rtype: bool
 
         """
         logging.debug('Set config param %s for node [%s]' % (param, self.object_id,))
-        return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value)
+        return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value, size)
 
 #    def setNodeOn(self, node):
 #        """

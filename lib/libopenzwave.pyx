@@ -2981,7 +2981,7 @@ will be turned off.
 # An ongoing task for the OpenZWave project is to create XML files describing the available
 # parameters for every Z-Wave.  See the config folder in the project source code for examples.
 #
-    def setConfigParam(self, homeid, nodeid, param, value):
+    def setConfigParam(self, homeid, nodeid, param, value, size=2):
         '''
 .. _setConfigParam:
 
@@ -3001,12 +3001,14 @@ has been made.
 :type param: int
 :param value: The value to which the parameter should be set.
 :type value: int
+:param size: Is an optional number of bytes to be sent for the parameter value. Defaults to 2.
+:type size: int
 :return: True if the message setting the value was sent to the device.
 :rtype: bool
 :see: requestConfigParam_, requestAllConfigParams_
 
         '''
-        return self.manager.SetConfigParam(homeid, nodeid, param, value, 2)
+        return self.manager.SetConfigParam(homeid, nodeid, param, value, size)
 
     def requestConfigParam(self, homeid, nodeid, param):
         '''

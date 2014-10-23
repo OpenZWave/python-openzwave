@@ -891,7 +891,7 @@ class ZWaveNetwork(ZWaveObject):
         try :
             self._semaphore_nodes.acquire()
             self.nodes = None
-            self._state = self.STATE_RESET
+            self._state = self.STATE_RESETTED
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
                 **{'network': self})
             dispatcher.send(self.SIGNAL_NETWORK_RESETTED, \
