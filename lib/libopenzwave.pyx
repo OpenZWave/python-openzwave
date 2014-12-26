@@ -2179,7 +2179,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 type_raw = <uint8_t*> malloc(len(value)*sizeof(uint8_t))
                 for x in range(0, len(value)):
                     print value[x]
-                    type_raw[x] = value[x]
+                    type_raw[x] = ord(value[x])
                 cret = self.manager.SetValue(values_map.at(id), type_raw, len(value))
                 ret = 1 if cret else 0
                 free(type_raw)
