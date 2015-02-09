@@ -284,29 +284,38 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
     return ret
 
 cdef addValueId(ValueID v, n):
-    #cdef string value
-    cdef string label
-    cdef string units
     cdef Manager *manager = Get()
     #logging.debug("libopenzwave.addValueId (CMD,n)=(%s,%s)" % (PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],n))
-    #manager.GetValueAsString(v, &value)
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
-    label = manager.GetValueLabel(v)
-    units = manager.GetValueUnits(v)
-    n['valueId'] = {'homeId' : v.GetHomeId(),
+    genre = PyGenres[v.GetGenre()]
+    if genre =="Basic":
+        n['valueId'] = {'homeId' : v.GetHomeId(),
                     'nodeId' : v.GetNodeId(),
                     'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
                     'instance' : v.GetInstance(),
                     'index' : v.GetIndex(),
                     'id' : v.GetId(),
-                    'genre' : PyGenres[v.GetGenre()],
+                    'genre' : '',
                     'type' : PyValueTypes[v.GetType()],
-#                    'value' : value.c_str(),
-                    'value' : getValueFromType(manager,v.GetId()),
-                    'label' : label.c_str(),
-                    'units' : units.c_str(),
-                    'readOnly': manager.IsValueReadOnly(v),
+                    'value' : None,
+                    'label' : None,
+                    'units' : None,
+                    'readOnly': False,
                     }
+    else:
+        n['valueId'] = {'homeId' : v.GetHomeId(),
+                        'nodeId' : v.GetNodeId(),
+                        'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+                        'instance' : v.GetInstance(),
+                        'index' : v.GetIndex(),
+                        'id' : v.GetId(),
+                        'genre' : genre,
+                        'type' : PyValueTypes[v.GetType()],
+                        'value' : getValueFromType(manager,v.GetId()),
+                        'label' : manager.GetValueLabel(v).c_str(),
+                        'units' : manager.GetValueUnits(v).c_str(),
+                        'readOnly': manager.IsValueReadOnly(v),
+                        }
 
 cdef void notif_callback(const_notification _notification, void* _context) with gil:
     """
@@ -2179,7 +2188,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 type_raw = <uint8_t*> malloc(len(value)*sizeof(uint8_t))
                 for x in range(0, len(value)):
                     print value[x]
-                    type_raw[x] = ord(value[x])
+                    type_raw[x] = value[x]
                 cret = self.manager.SetValue(values_map.at(id), type_raw, len(value))
                 ret = 1 if cret else 0
                 free(type_raw)
@@ -2797,8 +2806,15 @@ no notification callbacks are sent.
         '''
         cdef uint8_t precision
         if values_map.find(id) != values_map.end():
-            success = self.manager.GetValueFloatPrecision(values_map.at(id), &precision)
-            return precision if success else None
+            try:
+                success = self.manager.GetValueFloatPrecision(values_map.at(id), &precision)
+                return precision if success else None
+            except :
+                # if the value don't have precision attribute, the manager return a exception
+                return None
+            finally:
+                pass
+
         return None
 
 
