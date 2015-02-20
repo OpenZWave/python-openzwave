@@ -529,5 +529,5 @@ class ZWaveValue(ZWaveObject):
         :type verify: bool     
         """
         logging.debug('Set change verified %s for valueId [%s]' % (verify, self.value_id,)) 
-        return self._network.manager.setChangeVerified(self.value_id, verify)
+        self._network.manager.setChangeVerified(self.value_id, verify)
 
