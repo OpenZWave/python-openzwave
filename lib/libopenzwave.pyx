@@ -285,9 +285,13 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
 
 cdef addValueId(ValueID v, n):
     cdef Manager *manager = Get()
-    #logging.debug("libopenzwave.addValueId (CMD,n)=(%s,%s)" % (PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],n))
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
+    #check is a valid value
+    if v.GetInstance() == 0:
+        return None
+
     genre = PyGenres[v.GetGenre()]
+    #handle basic value in different way
     if genre =="Basic":
         n['valueId'] = {'homeId' : v.GetHomeId(),
                     'nodeId' : v.GetNodeId(),
@@ -323,24 +327,32 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
 
     """
     cdef Notification* notification = <Notification*>_notification
-    #logging.debug("libopenzwave.notif_callback : notification type %s" % notification.GetType())
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
-#         'context' : "%s" % (<object>_context),
-         }
+        }
+
+    isAddValueDetails = True;
+
     if notification.GetType() == Type_Group:
         n['groupIdx'] = notification.GetGroupIdx()
+        isAddValueDetails = False;
     elif notification.GetType() == Type_NodeEvent:
         n['event'] = notification.GetEvent()
+        isAddValueDetails = False;
     elif notification.GetType() == Type_Notification:
         n['notificationCode'] = notification.GetNotification()
+        isAddValueDetails = False;
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
+        isAddValueDetails = False;
     elif notification.GetType() == Type_SceneEvent:
         n['sceneId'] = notification.GetSceneId()
-    addValueId(notification.GetValueID(), n)
-    #logging.debug("++++++++++++ libopenzwave.notif_callback : notification %s" % n)
+        isAddValueDetails = False;
+
+    if isAddValueDetails:
+        addValueId(notification.GetValueID(), n)
+
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -348,14 +360,11 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
     Controller callback to the C++ library
 
     """
-    #logging.debug("libopenzwave.ctrl_callback : state %s" % _state)
     c = {'state' : PyControllerState[_state],
          'message' : PyControllerState[_state].doc,
          'error' : _error,
          'error_msg' : PyControllerError[_error].doc,
-#         'context' : "%s" % (<object>_context),
         }
-    #logging.debug("++++++++++++ libopenzwave.ctrl_callback : notification %s" % c)
     (<object>_context)(c)
 
 cpdef object driverData():
@@ -774,6 +783,20 @@ Get the node ID of the Z-Wave controller.
         '''
         return self.manager.GetControllerNodeId(homeid)
 
+    def getSUCNodeId(self, homeid):
+        '''
+.. _getSUCNodeId:
+
+Get the node ID of the Static Update Controller.
+
+:param homeId: The Home ID of the Z-Wave controller.
+:type homeId: int
+:return: the node ID of the Z-Wave controller.
+:rtype: int
+
+        '''
+        return self.manager.GetSUCNodeId(homeid)
+
     def isPrimaryController(self, homeid):
         '''
 .. _isPrimaryController:
@@ -1026,6 +1049,34 @@ Statistics:
         ret['broadcastWriteCnt'] = data.m_broadcastWriteCnt
         return ret
 
+
+# -----------------------------------------------------------------------------
+# Network Commands
+# -----------------------------------------------------------------------------
+# Commands for Z-Wave network for testing, routing and other internal operations.
+#
+
+
+
+    def testNetworkNode(self, homeid, nodeid, count):
+        '''
+.. _testNetworkNode:
+
+Test network node.
+
+Sends a series of messages to a network node for testing network reliability.
+
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node to query.
+:type nodeid: int
+:param count: This is the number of test messages to send.
+:type count: int
+:see: testNetwork_
+
+        '''
+        self.manager.TestNetworkNode(homeid, nodeid, count)
+
     def testNetwork(self, homeid, count):
         '''
 .. _testNetwork:
@@ -1047,15 +1098,14 @@ Sends a series of messages to every node on the network for testing network reli
         '''
 .. _healNetworkNode:
 
-Heal a single node in the network.
-
-Try to heal node by requesting neighbor update and optional route update.
+Heal network node by requesting the node rediscover their neighbors.
+Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
 
 :param homeid: The Home ID of the Z-Wave controller that manages the node.
 :type homeid: int
 :param nodeid: The ID of the node to query.
 :type nodeid: int
-:param upNodeRoute: Optional force update node route (default = false).
+:param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
 :type upNodeRoute: bool
 :see: healNetwork_
         '''
@@ -1065,13 +1115,13 @@ Try to heal node by requesting neighbor update and optional route update.
         '''
 .. _healNetwork:
 
-Heal the Z-Wave network one node at a time.
-
-Try to heal all nodes (one by one) by requesting neighbor update and optional route update.
+Heal network by requesting node's rediscover their neighbors.
+Sends a ControllerCommand_RequestNodeNeighborUpdate to every node.
+Can take a while on larger networks.
 
 :param homeid: The Home ID of the Z-Wave controller that manages the node.
 :type homeid: int
-:param upNodeRoute: Optional force update node route (default = false).
+:param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
 :type upNodeRoute: bool
 :see: healNetworkNode_
         '''
@@ -1216,27 +1266,8 @@ Set the frequency of polling (0=none, 1=every time through the set, 2-every othe
 # -----------------------------------------------------------------------------
 # Node information
 # -----------------------------------------------------------------------------
-# Methods for accessing information on indivdual nodes.
+# Methods for accessing information on individual nodes..
 #
-
-    def testNetworkNode(self, homeid, nodeid, count):
-        '''
-.. _testNetworkNode:
-
-Test network node.
-
-Sends a series of messages to a network node for testing network reliability.
-
-:param homeid: The Home ID of the Z-Wave controller that manages the node.
-:type homeid: int
-:param nodeid: The ID of the node to query.
-:type nodeid: int
-:param count: This is the number of test messages to send.
-:type count: int
-:see: testNetwork_
-
-        '''
-        self.manager.TestNetworkNode(homeid, nodeid, count)
 
     def getNodeStatistics(self, homeId, nodeId):
         '''
@@ -2435,6 +2466,23 @@ getValueType_, getValueInstance_, getValueIndex_
         else :
             return None
 
+    def isValuePolled(self, id):
+        '''
+.. _isValuePolled:
+
+Test whether the value is currently being polled.
+
+:param id: the ID of a value.
+:type id: int
+:return: True if the value is being polled, otherwise false.
+:rtype: bool
+
+        '''
+        if values_map.find(id) != values_map.end():
+            return self.manager.IsValuePolled(values_map.at(id))
+        else :
+            return None
+
     def getValueGenre(self, id):
         '''
 .. _getValueGenre:
@@ -2806,17 +2854,42 @@ no notification callbacks are sent.
         '''
         cdef uint8_t precision
         if values_map.find(id) != values_map.end():
-            try:
-                success = self.manager.GetValueFloatPrecision(values_map.at(id), &precision)
-                return precision if success else None
-            except :
-                # if the value don't have precision attribute, the manager return a exception
-                return None
-            finally:
-                pass
-
+            success = self.manager.GetValueFloatPrecision(values_map.at(id), &precision)
+            return precision if success else None
         return None
 
+    def getChangeVerified(self, id):
+        '''
+.. _getChangeVerified: determine if value changes upon a refresh should be verified.
+If so, the library will immediately refresh the value a second time whenever a change is observed.
+This helps to filter out spurious data reported occasionally by some devices.
+
+:param id:  The unique identifier of the value whose changes should or should not be verified.
+:type id: int
+:return:  True if is verified.
+:rtype: bool
+
+        '''
+
+        if values_map.find(id) != values_map.end():
+            return self.manager.GetChangeVerified(values_map.at(id))
+        return False
+
+    def setChangeVerified(self, id, verify ):
+        '''
+.. _setChangeVerified: Sets a flag indicating whether value changes noted upon a refresh should be verified.
+If so, the library will immediately refresh the value a second time whenever a change is observed. This helps to filter out spurious data reported occasionally by some devices.
+
+:param id:  The unique identifier of the value whose changes should or should not be verified.
+:type id: int
+:param verify if true, verify changes; if false, don't verify changes
+:type verify: bool
+
+
+        '''
+
+        if values_map.find(id) != values_map.end():
+            self.manager.SetChangeVerified(values_map.at(id), verify)
 
 #
 # -----------------------------------------------------------------------------

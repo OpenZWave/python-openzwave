@@ -140,6 +140,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool SetValueListSelection(ValueID& valueid, string selecteditem)
         bool RefreshValue(ValueID& valueid)
         void SetChangeVerified(ValueID& valueid, bool verify)
+        bool GetChangeVerified(ValueID& valueid)
         bool PressButton(ValueID& valueid)
         bool ReleaseButton(ValueID& valueid)
         bool GetValueFloatPrecision(ValueID& valueid, uint8_t* o_value)

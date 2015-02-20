@@ -790,6 +790,16 @@ class ZWaveNode( ZWaveObject,
         self._isReady = value
 
     @property
+    def isNodeInfoReceived(self):
+        """
+        Get whether the node information has been received. Returns True if the node information has been received yet
+
+        :rtype: bool
+
+        """
+        return self._network.manager.isNodeInfoReceived(self.home_id, self.object_id)
+
+    @property
     def type(self):
         """
         Get a human-readable label describing the node

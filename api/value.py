@@ -509,6 +509,15 @@ class ZWaveValue(ZWaveObject):
         """
         return self._network.manager.getValueFloatPrecision(self.value_id)
 
+    def is_change_verified(self):
+        """
+        determine if value changes upon a refresh should be verified.
+        If so, the library will immediately refresh the value a second time whenever a change is observed.
+        This helps to filter out spurious data reported occasionally by some devices.
+        """
+        return self._network.manager.getChangeVerified(self.value_id)
+
+
     def set_change_verified(self, verify): 
         """ 
         Sets a flag indicating whether value changes noted upon a refresh should be verified.
@@ -520,5 +529,5 @@ class ZWaveValue(ZWaveObject):
         :type verify: bool     
         """
         logging.debug('Set change verified %s for valueId [%s]' % (verify, self.value_id,)) 
-        self._network.manager.SetChangeVerified(self.value_id, verify)
+        return self._network.manager.setChangeVerified(self.value_id, verify)
 
