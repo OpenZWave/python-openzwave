@@ -1,0 +1,3 @@
+[submodule "openzwave"]
+	path = openzwave
+	url = git://github.com/OpenZWave/open-zwave.git
