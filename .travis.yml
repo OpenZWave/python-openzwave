@@ -5,15 +5,11 @@ cache:
     - $HOME/.pip-cache/
 python:
   - "2.7"
-#  - "3.2"
-#  - "3.3"
-#  - "3.4"
-# command to install python dependencies and program
-install:
+  - "3.2"
+  - "3.3"
+  - "3.4"
+#install:
 #  - env
-  - apt-get install -y build-essential python-dev cython
-  - apt-get install -y python-dev python-setuptools python-louie
-  - apt-get install -y build-essential libudev-dev g++ make
 # command to run tests
 script:
   - ./update.sh
@@ -22,3 +18,6 @@ script:
 before_install:
 #  - env
   - sudo apt-get update -y -qq
+  - apt-get install -y build-essential python-dev cython
+  - apt-get install -y python-dev python-setuptools python-louie
+  - apt-get install -y build-essential libudev-dev g++ make
