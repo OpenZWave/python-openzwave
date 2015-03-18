@@ -67,13 +67,13 @@ You are now ready to download sources of python-openzwave :
 
 .. code-block:: bash
 
-    hg clone https://code.google.com/p/python-openzwave/
+    git clone git@github.com:bibi21000/python-openzwave.git
 
 Go to the python-openzwave directory and grab the sources of openzwave
 
 .. code-block:: bash
 
-    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    git submodule add git://github.com/OpenZWave/open-zwave.git openzwave
 
 
 Build openzwave and python-openzwave
