@@ -3,18 +3,17 @@
 echo "-----------------------------------------------------------------"
 echo "|   Update sources of python-openzwave                          |"
 echo "-----------------------------------------------------------------"
-hg pull https://code.google.com/p/python-openzwave/
-hg update
+git pull
 
 echo "-----------------------------------------------------------------"
 echo "|   Update sources of openzwave                                 |"
 echo "-----------------------------------------------------------------"
-if [ -d openzwave ] ; then
-    echo "Update openzwave directory"
-    svn update openzwave
+if [ -d openzwave ]; then
+    cd openzwave
+    git pull
+    cd ..
 else
-    echo "Checkout openzwave directory"
-    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    git clone git://github.com/OpenZWave/open-zwave.git openzwave
 fi
 
 echo "-----------------------------------------------------------------"
