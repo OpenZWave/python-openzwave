@@ -2,7 +2,7 @@
 """
 .. module:: openzwave.node
 
-This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
     :platform: Unix, Windows, MacOS X
     :sinopsis: openzwave API
 

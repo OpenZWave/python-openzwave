@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-This file is part of **python-openzwave** project http://code.google.com/p/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
     :platform: Unix, Windows, MacOS X
 
 .. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
@@ -102,7 +102,7 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   version = '0.2.6',
-  url='http://code.google.com/p/python-openzwave',
+  url='https://github.com/bibi21000/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,
   package_dir = {'libopenzwave' : 'lib'},

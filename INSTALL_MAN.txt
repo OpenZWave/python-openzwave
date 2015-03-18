@@ -23,9 +23,11 @@ You need cython (0.14) to compile the python library
 that using cython 0.15 was the problem. Gentoo users : don't use
 cython that is shipped with your distribution.
 
-Install it using pip.
+#Install it using pip.
+#
+#   sudo pip install cython==0.14
 
-   sudo pip install cython==0.14
+   sudo apt-get install libffi-dev
 
 You also need some python modules, on a debian like distribution :
 
