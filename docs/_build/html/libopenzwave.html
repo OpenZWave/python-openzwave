@@ -534,6 +534,25 @@ Z-Wave controller in turn.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getChangeVerified">
+<tt class="descname">getChangeVerified</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getChangeVerified" title="Permalink to this definition">¶</a></dt>
+<dd><p>If so, the library will immediately refresh the value a second time whenever a change is observed.
+This helps to filter out spurious data reported occasionally by some devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The unique identifier of the value whose changes should or should not be verified.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if is verified.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getControllerInterfaceType">
 <tt class="descname">getControllerInterfaceType</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getControllerInterfaceType" title="Permalink to this definition">¶</a></dt>
 <dd><p>.._getControllerInterfaceType:
@@ -1500,6 +1519,24 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getSUCNodeId">
+<tt class="descname">getSUCNodeId</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getSUCNodeId" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getsucnodeid">Get the node ID of the Static Update Controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the node ID of the Z-Wave controller.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getSceneLabel">
 <tt class="descname">getSceneLabel</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getSceneLabel" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getscenelabel">Returns a label for the particular scene.</p>
@@ -2012,15 +2049,16 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="method">
 <dt id="libopenzwave.PyManager.healNetwork">
 <tt class="descname">healNetwork</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.healNetwork" title="Permalink to this definition">¶</a></dt>
-<dd><p id="healnetwork">Heal the Z-Wave network one node at a time.</p>
-<p>Try to heal all nodes (one by one) by requesting neighbor update and optional route update.</p>
+<dd><p id="healnetwork">Heal network by requesting node&#8217;s rediscover their neighbors.
+Sends a ControllerCommand_RequestNodeNeighborUpdate to every node.
+Can take a while on larger networks.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
-<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional force update node route (default = false).</li>
+<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional Whether to perform return routes initialization. (default = false).</li>
 </ul>
 </td>
 </tr>
@@ -2034,8 +2072,8 @@ only the SensorMultilevel command class ever does this.</p>
 <dl class="method">
 <dt id="libopenzwave.PyManager.healNetworkNode">
 <tt class="descname">healNetworkNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.healNetworkNode" title="Permalink to this definition">¶</a></dt>
-<dd><p id="healnetworknode">Heal a single node in the network.</p>
-<p>Try to heal node by requesting neighbor update and optional route update.</p>
+<dd><p id="healnetworknode">Heal network node by requesting the node rediscover their neighbors.
+Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2043,7 +2081,7 @@ only the SensorMultilevel command class ever does this.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>homeid</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
 <li><strong>nodeid</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
-<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional force update node route (default = false).</li>
+<li><strong>upNodeRoute</strong> (<em>bool</em>) &#8211; Optional Whether to perform return routes initialization. (default = false).</li>
 </ul>
 </td>
 </tr>
@@ -2345,6 +2383,24 @@ about network changes.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#isbridgecontroller">isBridgeController</a>, <a class="reference internal" href="#isprimarycontroller">isPrimaryController</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.isValuePolled">
+<tt class="descname">isValuePolled</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isValuePolled" title="Permalink to this definition">¶</a></dt>
+<dd><p id="isvaluepolled">Test whether the value is currently being polled.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; the ID of a value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the value is being polled, otherwise false.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -2840,6 +2896,22 @@ controller becomes a primary controller ready to add devices to a new network.</
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.setChangeVerified">
+<tt class="descname">setChangeVerified</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.setChangeVerified" title="Permalink to this definition">¶</a></dt>
+<dd><p>If so, the library will immediately refresh the value a second time whenever a change is observed. This helps to filter out spurious data reported occasionally by some devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The unique identifier of the value whose changes should or should not be verified.</td>
+</tr>
+</tbody>
+</table>
+<p>:param verify if true, verify changes; if false, don&#8217;t verify changes
+:type verify: bool</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.setConfigParam">
 <tt class="descname">setConfigParam</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.setConfigParam" title="Permalink to this definition">¶</a></dt>
 <dd><p id="setconfigparam">Set the value of a configurable parameter in a device.</p>
@@ -2857,6 +2929,7 @@ has been made.</p>
 <li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to configure.</li>
 <li><strong>param</strong> (<em>int</em>) &#8211; The index of the parameter.</li>
 <li><strong>value</strong> (<em>int</em>) &#8211; The value to which the parameter should be set.</li>
+<li><strong>size</strong> (<em>int</em>) &#8211; Is an optional number of bytes to be sent for the parameter value. Defaults to 2.</li>
 </ul>
 </td>
 </tr>

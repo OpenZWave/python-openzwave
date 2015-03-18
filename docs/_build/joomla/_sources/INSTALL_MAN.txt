@@ -9,25 +9,14 @@ install it using this method.
 Install the needed tools
 ========================
 
-You must install mercurial and subversion to get sources of python-openzwave
-and openzwave. Look at the documentation of your Linux distribution to do that.
+You must install git and other tools to get sources of python-openzwave and
+openzwave. Look at the documentation of your Linux distribution to do that.
 
 On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo apt-get install mercurial subversion python-pip python-dev
-
-You need cython (0.14) to compile the python library (libopenzwave.pyx).
-Some users have reported errors when using 0.16 or 0.17.
-Some 64 bits users reports segfault when using examples. Seems that using cython 0.15 was the problem.
-Gentoo users : don't use cython that is shipped with your distribution.
-
-Install it using pip.
-
-.. code-block:: bash
-
-    sudo pip install cython==0.14
+    sudo apt-get install git python-pip python-dev cython
 
 You also need some python modules, on a debian like distribution :
 
@@ -36,6 +25,8 @@ You also need some python modules, on a debian like distribution :
     sudo apt-get install python-dev python-setuptools python-louie
 
 You need sphinx and make to generate the documentation.
+
+TODO : installation for python 3
 
 On a debian like distribution :
 
@@ -67,13 +58,13 @@ You are now ready to download sources of python-openzwave :
 
 .. code-block:: bash
 
-    hg clone https://code.google.com/p/python-openzwave/
+    git clone git@github.com:bibi21000/python-openzwave.git
 
 Go to the python-openzwave directory and grab the sources of openzwave
 
 .. code-block:: bash
 
-    svn checkout http://open-zwave.googlecode.com/svn/trunk/ openzwave
+    git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
 
 Build openzwave and python-openzwave

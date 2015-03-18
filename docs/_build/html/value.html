@@ -62,7 +62,7 @@
 </ul>
 </div>
 <span class="target" id="module-openzwave.value"></span><span class="target" id="module-openzwave.value"></span><dl class="docutils">
-<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="https://github.com/bibi21000/python-openzwave">https://github.com/bibi21000/python-openzwave</a>.</dt>
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -286,6 +286,14 @@ only the SensorMultilevel command class ever does this.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.value.ZWaveValue.is_change_verified">
+<tt class="descname">is_change_verified</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.value.ZWaveValue.is_change_verified" title="Permalink to this definition">¶</a></dt>
+<dd><p>determine if value changes upon a refresh should be verified.
+If so, the library will immediately refresh the value a second time whenever a change is observed.
+This helps to filter out spurious data reported occasionally by some devices.</p>
 </dd></dl>
 
 <dl class="attribute">

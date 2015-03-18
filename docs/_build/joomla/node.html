@@ -8,7 +8,7 @@
 </ul>
 </div>
 <span class="target" id="module-openzwave.node"></span><span class="target" id="module-openzwave.node"></span><dl class="docutils">
-<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="https://github.com/bibi21000/python-openzwave">https://github.com/bibi21000/python-openzwave</a>.</dt>
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="http://code.google.com/p/python-openzwave">http://code.google.com/p/python-openzwave</a>.</dt>
 <dd><table class="first last docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -310,6 +310,20 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <dt id="openzwave.node.ZWaveNode.isNodeFailed">
 <tt class="descname">isNodeFailed</tt></dt>
 <dd><p>Is this node is presume failed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.isNodeInfoReceived">
+<tt class="descname">isNodeInfoReceived</tt></dt>
+<dd><p>Get whether the node information has been received. Returns True if the node information has been received yet</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -678,7 +692,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.set_config_param">
-<tt class="descname">set_config_param</tt><big>(</big><em>param</em>, <em>value</em><big>)</big></dt>
+<tt class="descname">set_config_param</tt><big>(</big><em>param</em>, <em>value</em>, <em>size=2</em><big>)</big></dt>
 <dd><p>Set the value of a configurable parameter in a device.</p>
 <p>Some devices have various parameters that can be configured to control the
 device behaviour.  These are not reported by the device over the Z-Wave network
@@ -692,6 +706,7 @@ has been made.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>param</strong> &#8211; The param of the node.</li>
 <li><strong>value</strong> &#8211; The value of the param.</li>
+<li><strong>size</strong> (<em>int</em>) &#8211; Is an optional number of bytes to be sent for the parameter value. Defaults to 2.</li>
 </ul>
 </td>
 </tr>
