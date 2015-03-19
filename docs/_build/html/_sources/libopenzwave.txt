@@ -1,23 +1,7 @@
-Welcome to py-openzwave's documentation!
-========================================
-
-Contents:
-
-.. toctree::
-    :maxdepth: 3
+libopenzwave module
+===================
 
 .. automodule:: libopenzwave
-    :members: PyManager, PyOptions, RetAlloc
-
-    .. autodata:: PyNotifications
-        :noindex:
-    .. autodata:: PyGenres
-        :noindex:
-    .. autodata:: PyValueTypes
-        :noindex:
-    .. autodata:: PyLogLevels
-        :noindex:
-    .. autodata:: PyControllerCommand
-        :noindex:
-    .. autodata:: PyControllerState
-        :noindex:
+    :members:
+    :undoc-members:
+    :show-inheritance:

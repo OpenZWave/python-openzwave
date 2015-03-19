@@ -7,32 +7,14 @@ How to develop patches
 
 Get the sources
 
-    hg clone https://code.google.com/p/python-openzwave/
+    git clone https://github.com/bibi21000/python-openzwave
 
-Developp, test, debug, test, ... :)
+Develop, test, debug, test, ... :)
 
-When your modification is functional, you are ready to submit a patch
+You can create an account on travis to run the (futurs) tests.
 
-Sync your repository :
+At last but not least, submit your request
 
-    hg pull https://code.google.com/p/python-openzwave/
-
-    hg update
-
-Generate the patch
-
-    hg diff > somewordstoexplainwhatthepatchdoes.patch
-
-As the code of python-openzwave is under developpment, submit atomic patches.
-Otherwise, you should have merge problems when syncing your repository.
-
-This will generate a file in the current directory.
-Finally post it on issues projets : https://code.google.com/p/python-openzwave/issues/list .
-
-Using a developper account
-==========================
-
-Contact the developpers for more informations.
 
 Documentation
 =============
@@ -52,9 +34,9 @@ with documentation in build/distdir.
 
 You can also submit your script in issues, it will be added to the main code.
 
-On Debian/ubuntu you can build python-openzwave using : 
-    
-    dpkg-builpackage 
+On Debian/ubuntu you can build python-openzwave using :
+
+    dpkg-builpackage
 
 Static vs dynamic (or shared)
 =============================

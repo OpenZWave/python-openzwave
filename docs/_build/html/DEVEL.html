@@ -50,25 +50,10 @@
 <h2>How to develop patches<a class="headerlink" href="#how-to-develop-patches" title="Permalink to this headline">¶</a></h2>
 <p>Get the sources</p>
 <blockquote>
-<div>hg clone <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></div></blockquote>
-<p>Developp, test, debug, test, ... :)</p>
-<p>When your modification is functional, you are ready to submit a patch</p>
-<p>Sync your repository :</p>
-<blockquote>
-<div><p>hg pull <a class="reference external" href="https://code.google.com/p/python-openzwave/">https://code.google.com/p/python-openzwave/</a></p>
-<p>hg update</p>
-</div></blockquote>
-<p>Generate the patch</p>
-<blockquote>
-<div>hg diff &gt; somewordstoexplainwhatthepatchdoes.patch</div></blockquote>
-<p>As the code of python-openzwave is under developpment, submit atomic patches.
-Otherwise, you should have merge problems when syncing your repository.</p>
-<p>This will generate a file in the current directory.
-Finally post it on issues projets : <a class="reference external" href="https://code.google.com/p/python-openzwave/issues/list">https://code.google.com/p/python-openzwave/issues/list</a> .</p>
-</div>
-<div class="section" id="using-a-developper-account">
-<h2>Using a developper account<a class="headerlink" href="#using-a-developper-account" title="Permalink to this headline">¶</a></h2>
-<p>Contact the developpers for more informations.</p>
+<div>git clone <a class="reference external" href="https://github.com/bibi21000/python-openzwave">https://github.com/bibi21000/python-openzwave</a></div></blockquote>
+<p>Develop, test, debug, test, ... :)</p>
+<p>You can create an account on travis to run the (futurs) tests.</p>
+<p>At last but not least, submit your request</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
@@ -150,7 +135,6 @@ Now high level acces to ZWave network is provided by the API (work in progress)<
   <ul>
 <li><a class="reference internal" href="#">Developpers information</a><ul>
 <li><a class="reference internal" href="#how-to-develop-patches">How to develop patches</a></li>
-<li><a class="reference internal" href="#using-a-developper-account">Using a developper account</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#packagers">Packagers</a></li>
 <li><a class="reference internal" href="#static-vs-dynamic-or-shared">Static vs dynamic (or shared)</a></li>
