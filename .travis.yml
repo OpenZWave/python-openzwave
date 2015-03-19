@@ -20,4 +20,4 @@ script:
 before_install:
 #  - env
   - sudo apt-get update -y -qq
-  - sudo make travis-deps
+  - sudo make deps
