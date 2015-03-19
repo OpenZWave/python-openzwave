@@ -8,8 +8,9 @@ python:
   - "3.2"
   - "3.3"
   - "3.4"
-#install:
+install:
 #  - env
+  - pip install cython
 # command to run tests
 script:
   - ./update.sh
