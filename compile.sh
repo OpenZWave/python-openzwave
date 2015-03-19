@@ -1,4 +1,5 @@
 #!/bin/bash -e
+#Deprecated : will be removed in the next releases. Look at Makefile
 
 CLEAN=0
 [ "$1" = 'clean' ] && CLEAN=1

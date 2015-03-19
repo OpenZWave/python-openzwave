@@ -10,16 +10,14 @@ python:
   - "3.4"
 install:
 #  - env
-  - pip install cython
+  - make pip
 # command to run tests
 script:
-  - ./update.sh
-  - ./compile.sh
-  - ./install.sh
+  - make update
+  - make build
+  - make install
 # package dependencies
 before_install:
 #  - env
   - sudo apt-get update -y -qq
-  - sudo apt-get install -y build-essential python-dev cython
-  - sudo apt-get install -y python-dev python-setuptools python-louie
-  - sudo apt-get install -y build-essential libudev-dev g++ make
+  - sudo make travis-deps
