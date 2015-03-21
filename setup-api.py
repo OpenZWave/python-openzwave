@@ -81,5 +81,5 @@ setup(
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
   packages = ['openzwave', 'pyozwman' ],
-  install_requires=[ 'nose >= 0.8.3', dispatch_package ]
+  install_requires=[ dispatch_package ]
 )

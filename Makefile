@@ -89,7 +89,7 @@ tests-deps:
 pip:
 	pip install setuptools
 	pip install docutils
-	pip install cython
+	pip install Cython
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
