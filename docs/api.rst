@@ -7,7 +7,7 @@ Submodules
 api.command module
 ------------------
 
-.. automodule:: openzwave.api.command
+.. automodule:: api.command
     :members:
     :undoc-members:
     :show-inheritance:
@@ -15,7 +15,7 @@ api.command module
 api.controller module
 ---------------------
 
-.. automodule:: openzwave.api.controller
+.. automodule:: api.controller
     :members:
     :undoc-members:
     :show-inheritance:

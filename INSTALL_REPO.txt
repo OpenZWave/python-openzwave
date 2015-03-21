@@ -7,18 +7,12 @@ Install the needed tools
 ========================
 
 You must install git and other tools to get sources of python-
-openzwave and openzwave. Look at the documentation of your Linux
-distribution to do that.
+openzwave and openzwave and build them. Look at the documentation of
+your Linux distribution to do that.
 
 On a debian like distribution :
 
-   sudo apt-get install git python-dev cython python-pip
-
-You also need some python modules, on a debian like distribution :
-
-   sudo apt-get install python-dev python-setuptools python-louie
-
-TODO : installation for python 3
+   sudo make deps
 
 You need sphinx and make to generate the documentation.
 

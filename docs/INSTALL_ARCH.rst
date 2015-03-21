@@ -1,3 +1,5 @@
+:orphan:
+
 =============================================
 Installing python-openzwave from repositories
 =============================================
@@ -7,28 +9,13 @@ Install the needed tools
 ========================
 
 You must install git and other tools to get sources of python-openzwave and
-openzwave. Look at the documentation of your Linux distribution to do that.
-
-.. code-block:: bash
-
-    sudo apt-get install python-pip python-dev cython
-
-You also need some python modules, on a debian like distribution :
-
-.. code-block:: bash
-
-    sudo apt-get install python-dev python-setuptools python-louie
-
-To compile the openzwave library, you need the common builds tools
-and the libudev developments headers.
+openzwave and build them. Look at the documentation of your Linux distribution to do that.
 
 On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo apt-get install build-essential libudev-dev g++ make
-
-TO DO python 3
+    sudo make deps
 
 Get archive of python-openzwave
 ===============================
@@ -61,15 +48,15 @@ Now, you can compile sources :
 
 .. code-block:: bash
 
-    ./compile.sh
+    make build
 
 Or if you have already build python-openzwave in a previous installation,
 you can use the clean option to remove old builds.
 
 .. code-block:: bash
 
-    ./compile.sh clean
-
+    make clean
+    make build
 
 Installation
 ============
@@ -78,11 +65,11 @@ You can now install the packages using the following command will.
 
 .. code-block:: bash
 
-    sudo ./install.sh
+    sudo make install
 
 The installation script create a list of installed files. So you can remove
 python-openzwave using the following command :
 
 .. code-block:: bash
 
-    sudo ./uninstall.sh
+    sudo make uninstall

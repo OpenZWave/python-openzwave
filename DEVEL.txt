@@ -3,65 +3,41 @@ Developpers information
 ***********************
 
 
-How to develop patches
-======================
+How to develop for python-openzwave
+===================================
 
 Get the sources
 
-   hg clone https://code.google.com/p/python-openzwave/
+   git clone https://github.com/bibi21000/python-openzwave
 
-Developp, test, debug, test, ... :)
+You must now install python-openzwave in develop mode
 
-When your modification is functional, you are ready to submit a patch
+   make develop
 
-Sync your repository :
+Your password will be asked (by sudo) for installing eggs in your
+local directory.
 
-   hg pull https://code.google.com/p/python-openzwave/
+Develop, test, debug, test, ... :)
 
-   hg update
+Update the documentation if needed. You surely found the documentation
+useful, so please keep it up to date
 
-Generate the patch
+You can create an account on travis to run the (futurs) tests.
 
-   hg diff > somewordstoexplainwhatthepatchdoes.patch
-
-As the code of python-openzwave is under developpment, submit atomic
-patches. Otherwise, you should have merge problems when syncing your
-repository.
-
-This will generate a file in the current directory. Finally post it on
-issues projets : https://code.google.com/p/python-
-openzwave/issues/list .
-
-
-Using a developper account
-==========================
-
-Contact the developpers for more informations.
+At last but not least, submit your request
 
 
 Documentation
 =============
 
 Documentation is managed with sphinx. Don't utpdate txt files (README,
-INSTALL, ...) , update the sources (>>*<<.rst) in docs. Use the
-following commands to generate all docs files (txt, html and joomla)
+INSTALL, ...), update the RST sources in docs. Use the following
+commands to generate all docs files (txt, html and joomla)
 
-   ./make_docs.sh
+You need to have installed python-openzave (in either develop or
+install mode) before generating the documentation.
 
-
-Packagers
-=========
-
-If you want to package python-openzwave for your distribution, look at
-the make_dist.sh script. It builds a distribution directory with
-documentation in build/distdir.
-
-You can also submit your script in issues, it will be added to the
-main code.
-
-On Debian/ubuntu you can build python-openzwave using :
-
-   dpkg-builpackage
+   make docs
 
 
 Static vs dynamic (or shared)
@@ -73,20 +49,17 @@ MUST have only one instance of the manager running on your computer.
 There is 2 ways of linking libraries with a program :
 
    * static : includes a copy of the library in your binary program.
-     This means
-
-   that your program has its own instance of the library. This the way
-   the install.sh runs. So you CAN'T have another program (like the
-   control-panel) running when using the python-openzwave library
+     This means that your program has its own instance of the library.
+     This the way the install.sh runs. So you CAN'T have another
+     program (like the control-panel) running when using the python-
+     openzwave library
 
    * dynamic or shared : includes a link to the library in your
-     binary program.
-
-   This means that your program share the library with other programs.
-   In this case, the instance is owned directly by the library. This
-   the way the debian package works. So you CAN have another program
-   running when using the python-openzwave library. Of course, this
-   program MUST use the shared library.
+     binary program. This means that your program share the library
+     with other programs. In this case, the instance is owned directly
+     by the library. This the way the debian package works. So you CAN
+     have another program running when using the python-openzwave
+     library. Of course, this program MUST use the shared library too.
 
 
 Migrate from py-openzwave to python-openzwave
@@ -109,8 +82,7 @@ Update your code :
 
 Everywhere in your code replace :
 
-   "import openzwave" to "import libopenzwave" "from openzwave" to
-   "from libopenzwave"
+      "import openzwave" to "import libopenzwave" "from openzwave" to "from libopenzwave"
 
 notifications :
 
@@ -121,12 +93,6 @@ openzwave, it's a value of the right type :
 
    'value' : getValueFromType(manager,v.GetId?()),
 
-wrapper : The wrapper is no longer supported. Now high level acces to
-ZWave network is provided by the API (work in progress)
+wrapper : The wrapper is no longer supported.
 
-
-History
-=======
-
-The original script was from maarten damen :
-https://github.com/maartendamen/python-openzwave
+Now high level acces to ZWave network is provided by the API
