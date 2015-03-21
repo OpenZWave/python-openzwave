@@ -18,7 +18,9 @@ script:
   - make install
 # package dependencies
 before_install:
-  #- env
-  #- sudo env
+  - env
+  - sudo -E env
+  - export VIRTUAL_ENV
+  - sudo -E env
   - sudo apt-get update -y -qq
   - sudo -E VIRTUAL_ENV=$VIRTUAL_ENV make deps
