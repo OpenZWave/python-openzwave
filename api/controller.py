@@ -679,3 +679,6 @@ class ZWaveController(ZWaveObject):
                 **{'state': state, 'message': message, 'network': self._network, 'controller': self})
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
+
+
+

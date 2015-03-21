@@ -531,6 +531,24 @@ class ZWaveNetwork(ZWaveObject):
         """
         self.manager.testNetwork(self.home_id, count)
 
+    def heal(self, upNodeRoute = False):
+        """
+        Heal network by requesting nodes rediscover their neighbors.
+        Sends a ControllerCommand_RequestNodeNeighborUpdate to every node.
+        Can take a while on larger networks.
+
+        :param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
+        :type upNodeRoute: bool
+        :return: True is the ControllerCommand ins sent. False otherwise
+        :rtype: bool
+
+        """
+        if self.network.state < self.network.STATE_AWAKED:
+            self.logger.warning('Network state must a minimum set to awake')
+            return False
+        self.manager.healNetwork(self.home_id, upNodeRoute)
+        return True
+
     def get_value(self, value_id):
         """
         Retrieve a value on the network.
