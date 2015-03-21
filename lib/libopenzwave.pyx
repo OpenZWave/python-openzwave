@@ -29,7 +29,7 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
-from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision
+from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from libc.stdlib cimport malloc, free
 from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
@@ -913,7 +913,7 @@ Get a string containing the openzwave library version.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         """
-        return "OpenZWave version %d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
+        return "OpenZWave version %s" %(ozw_version_string)
 
     def getOzwLibraryVersionNumber(self):
         '''
