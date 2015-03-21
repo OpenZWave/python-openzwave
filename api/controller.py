@@ -44,38 +44,38 @@ class ZWaveController(ZWaveObject):
 
     Commands :
 
-        - Driver::ControllerCommand_AddController - Add a new secondary controller to the Z-Wave network.
-        - Driver::ControllerCommand_AddDevice - Add a new device (but not a controller) to the Z-Wave network.
-        - Driver::ControllerCommand_CreateNewPrimary (Not yet implemented)
-        - Driver::ControllerCommand_ReceiveConfiguration -
-        - Driver::ControllerCommand_RemoveController - remove a controller from the Z-Wave network.
-        - Driver::ControllerCommand_RemoveDevice - remove a device (but not a controller) from the Z-Wave network.
-        - Driver::ControllerCommand_RemoveFailedNode - move a node to the controller's list of failed nodes.  The node must actually
-        have failed or have been disabled since the command will fail if it responds.  A node must be in the controller's failed nodes list
-        for ControllerCommand_ReplaceFailedNode to work.
-        - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
-        - Driver::ControllerCommand_ReplaceFailedNode - replace a failed device with another. If the node is not in
-        the controller's failed nodes list, or the node responds, this command will fail.
-        - Driver:: ControllerCommand_TransferPrimaryRole    (Not yet implemented) - Add a new controller to the network and
-        make it the primary.  The existing primary will become a secondary controller.
-        - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
-        - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
-        - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
-        - Driver::ControllerCommand_DeleteAllReturnRoutes - Delete all network return routes from a device.
-        - Driver::ControllerCommand_CreateButton - Create a handheld button id.
-        - Driver::ControllerCommand_DeleteButton - Delete a handheld button id.
+        - Driver::ControllerCommand_AddController : Add a new secondary controller to the Z-Wave network.
+        - Driver::ControllerCommand_AddDevice : Add a new device (but not a controller) to the Z-Wave network.
+        - Driver::ControllerCommand_CreateNewPrimary : (Not yet implemented)
+        - Driver::ControllerCommand_ReceiveConfiguration :
+        - Driver::ControllerCommand_RemoveController : remove a controller from the Z-Wave network.
+        - Driver::ControllerCommand_RemoveDevice : remove a device (but not a controller) from the Z-Wave network.
+        - Driver::ControllerCommand_RemoveFailedNode : move a node to the controller's list of failed nodes.  The node must actually
+                                                       have failed or have been disabled since the command will fail if it responds.  A node must be in the controller's failed nodes list
+                                                       or ControllerCommand_ReplaceFailedNode to work.
+        - Driver::ControllerCommand_HasNodeFailed : Check whether a node is in the controller's failed nodes list.
+        - Driver::ControllerCommand_ReplaceFailedNode : replace a failed device with another. If the node is not in
+                                                        the controller's failed nodes list, or the node responds, this command will fail.
+        - Driver:: ControllerCommand_TransferPrimaryRole : (Not yet implemented) - Add a new controller to the network and
+                                                           make it the primary.  The existing primary will become a secondary controller.
+        - Driver::ControllerCommand_RequestNetworkUpdate : Update the controller with network information from the SUC/SIS.
+        - Driver::ControllerCommand_RequestNodeNeighborUpdate : Get a node to rebuild its neighbour list.  This method also does ControllerCommand_RequestNodeNeighbors afterwards.
+        - Driver::ControllerCommand_AssignReturnRoute : Assign a network return route to a device.
+        - Driver::ControllerCommand_DeleteAllReturnRoutes : Delete all network return routes from a device.
+        - Driver::ControllerCommand_CreateButton : Create a handheld button id.
+        - Driver::ControllerCommand_DeleteButton : Delete a handheld button id.
 
     Callbacks :
 
-        - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed
-        to the user at this point, telling them what to do next.
-        For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
-        inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
-        they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
-        controller to learn new data.
-        - Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
-        - Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
-        - Driver::ControllerState_Failed - will be sent if the command fails for any reason.
+        - Driver::ControllerState_Waiting : The controller is waiting for a user action.  A notice should be displayed
+                                            to the user at this point, telling them what to do next.
+                                            For the add, remove, replace and transfer primary role commands, the user needs to be told to press the
+                                            inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration,
+                                            they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other
+                                            controller to learn new data.
+        - Driver::ControllerState_InProgress : the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
+        - Driver::ControllerState_Complete : the controller has finished adding or removing the node, and the command is complete.
+        - Driver::ControllerState_Failed : will be sent if the command fails for any reason.
 
     '''
     SIGNAL_CTRL_NORMAL = 'Normal'
@@ -403,13 +403,15 @@ class ZWaveController(ZWaveObject):
     def hard_reset(self):
         """
         Hard Reset a PC Z-Wave Controller.
-        Resets a controller and erases its network configuration settings.  The
-        controller becomes a primary controller ready to add devices to a new network.
+        Resets a controller and erases its network configuration settings.
+        The controller becomes a primary controller ready to add devices to a new network.
 
         This command fires a lot of louie signals.
         Louie's clients must disconnect from nodes and values signals
 
-        dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
+        .. code-block:: python
+
+                dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
 
         """
         self._network.state=self._network.STATE_RESETTED
@@ -444,8 +446,8 @@ class ZWaveController(ZWaveObject):
         Send information from primary to secondary.
 
         :param high_power: Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
+                           be physically close to the device for security reasons.  If _highPower is true, the controller will
+                           operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
         :return: True if the command was accepted and has started.
         :rtype: bool
@@ -470,9 +472,9 @@ class ZWaveController(ZWaveObject):
         Add a new device to the Z-Wave network.
 
         :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
+                           Usually when adding or removing devices, the controller operates at low power so that the controller must
+                           be physically close to the device for security reasons.  If _highPower is true, the controller will
+                           operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
         :return: True if the command was accepted and has started.
         :rtype: bool
@@ -486,9 +488,9 @@ class ZWaveController(ZWaveObject):
         Remove a device from the Z-Wave network.
 
         :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
+                           Usually when adding or removing devices, the controller operates at low power so that the controller must
+                           be physically close to the device for security reasons.  If _highPower is true, the controller will
+                           operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
         :return: True if the command was accepted and has started.
         :rtype: bool
@@ -571,9 +573,9 @@ class ZWaveController(ZWaveObject):
         The existing primary will become a secondary controller.
 
         :param high_power: Used only with the AddDevice, AddController, RemoveDevice and RemoveController commands.
-        Usually when adding or removing devices, the controller operates at low power so that the controller must
-        be physically close to the device for security reasons.  If _highPower is true, the controller will
-        operate at normal power levels instead.  Defaults to false.
+                           Usually when adding or removing devices, the controller operates at low power so that the controller must
+                           be physically close to the device for security reasons.  If _highPower is true, the controller will
+                           operate at normal power levels instead.  Defaults to false.
         :type high_power: bool
         :return: True if the command was accepted and has started.
         :rtype: bool

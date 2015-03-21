@@ -49,8 +49,9 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
 
     A user should write
 
-        if self.handle_command_class(class_id):
+    .. code-block:: python
 
+        if self.handle_command_class(class_id):
             ret=command_Class(...)
 
     The classic way to do it is a classic method of registering. But
@@ -77,152 +78,155 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
     'COMMAND_CLASS_SWITCH_ALL', 'COMMAND_CLASS_SWITCH_BINARY',
     'COMMAND_CLASS_METER',
 
-    the associated values are :
+    The associated values are :
 
-    COMMAND_CLASS_SWITCH_ALL : {
-        72057594101481476L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': 'On and Off Enabled',
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Switch All',
-            'readonly': False,
-            'data_str': 'On and Off Enabled',
-            'type': 'List'}
-    }
+    .. code-block:: python
 
-    COMMAND_CLASS_SWITCH_BINARY : {
-        72057594093060096L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': False,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Switch',
-            'readonly': False,
-            'data_str': False,
-            'type': 'Bool'}
-    }
-
-    COMMAND_CLASS_METER : {
-        72057594093273600L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': False,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Exporting',
-            'readonly': True,
-            'data_str': False,
-            'type': 'Bool'},
-        72057594101662232L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': 'False',
-            'min': 0L,
-            'writeonly': True,
-            'label': 'Reset',
-            'readonly': False,
-            'data_str': 'False',
-            'type': 'Button'},
-        72057594093273090L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': 'kWh',
-            'data': 0.0,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Energy',
-            'readonly': True,
-            'data_str': 0.0,
-            'type': 'Decimal'},
-        72057594093273218L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': 'W',
-            'data': 0.0,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Power',
-            'readonly': True,
-            'data_str': 0.0,
-            'type': 'Decimal'}
-    }
+        COMMAND_CLASS_SWITCH_ALL : {
+            72057594101481476L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': 'On and Off Enabled',
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Switch All',
+                'readonly': False,
+                'data_str': 'On and Off Enabled',
+                'type': 'List'}
+        }
+        COMMAND_CLASS_SWITCH_BINARY : {
+            72057594093060096L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': False,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Switch',
+                'readonly': False,
+                'data_str': False,
+                'type': 'Bool'}
+        }
+        COMMAND_CLASS_METER : {
+            72057594093273600L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': False,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Exporting',
+                'readonly': True,
+                'data_str': False,
+                'type': 'Bool'},
+            72057594101662232L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': 'False',
+                'min': 0L,
+                'writeonly': True,
+                'label': 'Reset',
+                'readonly': False,
+                'data_str': 'False',
+                'type': 'Button'},
+            72057594093273090L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': 'kWh',
+                'data': 0.0,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Energy',
+                'readonly': True,
+                'data_str': 0.0,
+                'type': 'Decimal'},
+            72057594093273218L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': 'W',
+                'data': 0.0,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Power',
+                'readonly': True,
+                'data_str': 0.0,
+                'type': 'Decimal'}
+        }
 
     Another example from an homePro dimmer (not configured in openzwave):
-    COMMAND_CLASS_SWITCH_MULTILEVEL : {
-        72057594109853736L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': 'False',
-            'min': 0L,
-            'writeonly': True,
-            'label': 'Dim',
-            'readonly': False,
-            'data_str': 'False',
-            'type': 'Button'},
-        72057594109853697L: {
-            'help': '',
-            'max': 255L,
-            'is_polled': False,
-            'units': '',
-            'data': 69,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Level',
-            'readonly': False,
-            'data_str': 69,
-            'type': 'Byte'},
-        72057594118242369L: {
-            'help': '',
-            'max': 255L,
-            'is_polled': False,
-            'units': '',
-            'data': 0,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Start Level',
-            'readonly': False,
-            'data_str': 0,
-            'type': 'Byte'},
-        72057594109853720L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': 'False',
-            'min': 0L,
-            'writeonly': True,
-            'label': 'Bright',
-            'readonly': False,
-            'data_str': 'False',
-            'type': 'Button'},
-        72057594118242352L: {
-            'help': '',
-            'max': 0L,
-            'is_polled': False,
-            'units': '',
-            'data': False,
-            'min': 0L,
-            'writeonly': False,
-            'label': 'Ignore Start Level',
-            'readonly': False,
-            'data_str': False,
-            'type': 'Bool'}
-    }
+
+    .. code-block:: python
+
+        COMMAND_CLASS_SWITCH_MULTILEVEL : {
+            72057594109853736L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': 'False',
+                'min': 0L,
+                'writeonly': True,
+                'label': 'Dim',
+                'readonly': False,
+                'data_str': 'False',
+                'type': 'Button'},
+            72057594109853697L: {
+                'help': '',
+                'max': 255L,
+                'is_polled': False,
+                'units': '',
+                'data': 69,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Level',
+                'readonly': False,
+                'data_str': 69,
+                'type': 'Byte'},
+            72057594118242369L: {
+                'help': '',
+                'max': 255L,
+                'is_polled': False,
+                'units': '',
+                'data': 0,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Start Level',
+                'readonly': False,
+                'data_str': 0,
+                'type': 'Byte'},
+            72057594109853720L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': 'False',
+                'min': 0L,
+                'writeonly': True,
+                'label': 'Bright',
+                'readonly': False,
+                'data_str': 'False',
+                'type': 'Button'},
+            72057594118242352L: {
+                'help': '',
+                'max': 0L,
+                'is_polled': False,
+                'units': '',
+                'data': False,
+                'min': 0L,
+                'writeonly': False,
+                'label': 'Ignore Start Level',
+                'readonly': False,
+                'data_str': False,
+                'type': 'Bool'}
+        }
 
     What about the conclusion :
 

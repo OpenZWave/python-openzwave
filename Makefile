@@ -36,11 +36,11 @@ clean:
 	-rm -rf $(BUILDDIR)
 	-find . -name *.pyc -delete
 	cd docs && make clean
-	cd openzwave && make clean
+	-cd openzwave && make clean
 	python setup-lib.py clean
 	python setup-api.py clean
-	rm -Rf build/
-	rm lib/libopenzwave.cpp
+	-rm -Rf build/
+	-rm lib/libopenzwave.cpp
 
 uninstall: clean
 	-rm -rf build
@@ -73,7 +73,7 @@ docs: cleandocs
 	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
 	-$(PYLINT) --output-format=html $(PYLINTOPTS) lib/ api/ >docs/html/pylint/report.html
 	cd docs && make docs
-	cp docs/_build/text/README.txt .
+	cp docs/_build/text/README.txt README.md
 	cp docs/_build/text/INSTALL_REPO.txt .
 	cp docs/_build/text/INSTALL_MAN.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
@@ -83,13 +83,13 @@ docs: cleandocs
 	@echo
 	@echo "Documentation finished."
 
-install:
-	python setup-lib.py install
-	python setup-api.py install
+install: build
+	sudo python setup-lib.py install
+	sudo python setup-api.py install
 	@echo
 	@echo "Installation for users finished."
 
-develop:
+develop: build
 	python setup-lib.py develop
 	python setup-api.py develop
 	@echo

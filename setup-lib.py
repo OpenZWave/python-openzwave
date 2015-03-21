@@ -22,8 +22,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from os import name as os_name
-from distutils.core import setup
-from Cython.Distutils import extension
+#from distutils.core import setup
+from setuptools import setup
+from distutils import extension
+from Cython.Distutils import extension as cextension
 from Cython.Distutils import build_ext
 from platform import system as platform_system
 import glob
@@ -83,7 +85,7 @@ elif platform_system() == 'Darwin':
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/mac']
     )]
 elif DEBIAN_PACKAGE == True:
-    ext_modules = [Extension("libopenzwave", ["lib/libopenzwave.pyx"],
+    ext_modules = [extension.Extension("libopenzwave", ["lib/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++', 'openzwave'],
                              language="c++",
                              extra_objects=['/usr/libopenzwave.a'],

@@ -43,27 +43,22 @@ class ZWaveValue(ZWaveObject):
         """
         Initialize value
 
-        :param parent:
-        n['valueId'] = {'home_id' : v.GetHomeId(),
-            * 'parent_id' : v.GetNodeId(),
-            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-            * 'instance' : v.GetInstance(),
-            * 'index' : v.GetIndex(),
-            * 'id' : v.GetId(),
-            * 'genre' : PyGenres[v.GetGenre()],
-            * 'type' : PyValueTypes[v.GetType()],
-            * #'value' : value.c_str(),
-            * 'value' : getValueFromType(manager,v.GetId()),
-            * 'label' : label.c_str(),
-            * 'units' : units.c_str(),
-            * 'readOnly': manager.IsValueReadOnly(v),
-            }
+        .. code-block:: python
 
-        Cache management :
-        We must develop a special mechanism for caching values.
-        Values are updated or created by notifications and attached to nodes.
-
-        Cache management in nodes : no cache for values.
+                n['valueId'] = {'home_id' : v.GetHomeId(),
+                    * 'parent_id' : v.GetNodeId(),
+                    * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
+                    * 'instance' : v.GetInstance(),
+                    * 'index' : v.GetIndex(),
+                    * 'id' : v.GetId(),
+                    * 'genre' : PyGenres[v.GetGenre()],
+                    * 'type' : PyValueTypes[v.GetType()],
+                    * #'value' : value.c_str(),
+                    * 'value' : getValueFromType(manager,v.GetId()),
+                    * 'label' : label.c_str(),
+                    * 'units' : units.c_str(),
+                    * 'readOnly': manager.IsValueReadOnly(v),
+                    }
 
         :param value_id: ID of the value
         :type value_id: int
@@ -104,11 +99,17 @@ class ZWaveValue(ZWaveObject):
         Get an unique id for this value.
 
         The scenes use this to retrieve values
-        <Scene id="1" label="scene1">
-                <Value homeId="0x014d0ef5" nodeId="2" genre="user" commandClassId="38" instance="1" index="0" type="byte">54</Value>
-        </Scene>
+
+        .. code-block:: xml
+
+                <Scene id="1" label="scene1">
+                        <Value homeId="0x014d0ef5" nodeId="2" genre="user" commandClassId="38" instance="1" index="0" type="byte">54</Value>
+                </Scene>
+
         The format is :
+
             home_id.node_id.command_class.instance.index
+
         """
         separator = self._network.id_separator
         return "%0.8x%s%s%s%0.2x%s%s%s%s" % (self._network.home_id, \
@@ -405,7 +406,7 @@ class ZWaveValue(ZWaveObject):
         Test whether the value has been set.
 
         :return: True if the value has actually been set by a status message
-        from the device, rather than simply being the default.
+                 from the device, rather than simply being the default.
         :rtype: bool
 
         """
@@ -518,16 +519,16 @@ class ZWaveValue(ZWaveObject):
         return self._network.manager.getChangeVerified(self.value_id)
 
 
-    def set_change_verified(self, verify): 
-        """ 
+    def set_change_verified(self, verify):
+        """
         Sets a flag indicating whether value changes noted upon a refresh should be verified.
-        
+
         If so, the library will immediately refresh the value a second time whenever a change is observed.
         This helps to filter out spurious data reported occasionally by some devices.
-        
+
         :param verify: if true, verify changes; if false, don't verify changes.
-        :type verify: bool     
+        :type verify: bool
         """
-        logging.debug('Set change verified %s for valueId [%s]' % (verify, self.value_id,)) 
+        logging.debug('Set change verified %s for valueId [%s]' % (verify, self.value_id,))
         self._network.manager.setChangeVerified(self.value_id, verify)
 
