@@ -31,8 +31,6 @@ EXAMPLES.
 To do
 =====
 
-* Makefile : full process projet management
-
 * Improve tests : add virtual nodes and controllers to pass test on
   travis
 

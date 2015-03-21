@@ -23,7 +23,7 @@ Testing python-openzwave :
 You don't need to install python-openzwave to test it. Look at EXAMPLES.
 
 To do
-=====
-- Makefile : full process projet management
+-----
+
 - Improve tests : add virtual nodes and controllers to pass test on travis
 - ...
