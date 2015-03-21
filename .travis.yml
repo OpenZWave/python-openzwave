@@ -19,5 +19,5 @@ script:
 # package dependencies
 before_install:
 #  - env
-  - sudo apt-get update -y -qq
-  - sudo make deps
+  - apt-get update -y -qq
+  - make deps
