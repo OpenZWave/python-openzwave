@@ -18,6 +18,7 @@ script:
   - make install
 # package dependencies
 before_install:
-#  - env
+  - env
+  - sudo env
   - sudo -E apt-get update -y -qq
   - sudo -E make deps
