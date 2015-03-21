@@ -6,7 +6,7 @@ This is the new generation of python-openzwave.
 
 python-openzwave is a python wrapper for the openzwave library. It's
 also contains an api (object representation of Zwave network) and
-ozwsh (using the api).
+ozwsh (a shell like manager using the api).
 
 You can install python-openzwave in 3 ways :
 
