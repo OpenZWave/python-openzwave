@@ -51,6 +51,7 @@ logger = logging.getLogger('openzwave')
 
 device = "/dev/zwave-aeon-s2"
 log = "Debug"
+wait_for_network = True
 footer = True
 for arg in sys.argv:
     if arg.startswith("--help") or arg.startswith("-h"):
@@ -63,6 +64,8 @@ for arg in sys.argv:
         temp,device = arg.split("=")
     elif arg.startswith("--log"):
         temp,log = arg.split("=")
+    elif arg.startswith("--nowait"):
+        wait_for_network = False
 
 MAIN_TITLE = "openzwave Shell"
 """
@@ -241,6 +244,9 @@ class MainWindow(Screen):
         """
         Parse an execute a commande
         """
+        if wait_for_network == True:
+            self.status_bar.set_command("Network is not ready. Please wait.")
+            return True
         command = command.strip()
         if command.startswith('ls') :
             if ' ' in command :
@@ -532,6 +538,7 @@ class MainWindow(Screen):
         self.log.info('ZWave network is ready : %d nodes were found.' % network.nodes_count)
         self.log.info('Controller name : %s' % network.controller.node.product_name)
         self.network = network
+        wait_for_network = False
         self.status_bar.update(status='ZWave network is ready')
         self.loop.draw_screen()
         self._connect_louie_node_and_value()
