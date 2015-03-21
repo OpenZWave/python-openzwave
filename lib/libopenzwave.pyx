@@ -753,9 +753,9 @@ Retrieve controller interface type, Unknown, Serial, Hid
 :rtype: str
 
         '''
-        type = self.manager.GetControllerInterfaceType(homeid) 
+        type = self.manager.GetControllerInterfaceType(homeid)
         return PyControllerInterface[type]
-        
+
     def getControllerPath(self, homeid):
         '''
 .._getControllerPath:
@@ -1110,12 +1110,12 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
 :see: healNetwork_
         '''
         self.manager.HealNetworkNode(homeid, nodeid,  upNodeRoute)
-    
+
     def healNetwork(self, homeid, upNodeRoute = False):
         '''
 .. _healNetwork:
 
-Heal network by requesting node's rediscover their neighbors.
+Heal network by requesting nodes rediscover their neighbors.
 Sends a ControllerCommand_RequestNodeNeighborUpdate to every node.
 Can take a while on larger networks.
 

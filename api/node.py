@@ -230,9 +230,26 @@ class ZWaveNode( ZWaveObject,
             groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
         return groups
 
+    def heal(self, upNodeRoute = False):
+        """
+        Heal network node by requesting the node rediscover their neighbors.
+        Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
+
+        :param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
+        :type upNodeRoute: bool
+        :return: True is the ControllerCommand ins sent. False otherwise
+        :rtype: bool
+
+        """
+        if not self.isNodeAwake :
+            self.logger.warning('Node state must a minimum set to awake')
+            return False
+        self.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
+        return True
+
     def test(self, count=1):
         """
-        Send a number of test messages to every node and record results.
+        Send a number of test messages to node and record results.
 
         :param count: The number of test messages to send.
         :type count: int
@@ -782,7 +799,7 @@ class ZWaveNode( ZWaveObject,
         """
         Set whether the node is ready to operate.
         automatically set to True by notification SIGNAL_NODE_QUERIES_COMPLETE
-        
+
         :param value: is node ready
         :type value: bool
 
