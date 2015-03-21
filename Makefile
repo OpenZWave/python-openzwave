@@ -45,10 +45,8 @@ clean:
 uninstall: clean
 	-rm -rf build
 	-rm -rf dist
-	-rm -rf python-openzwave-lib.egg-info
-	-rm -rf lib/python-openzwave-lib.egg-info
-	-rm -rf python-openzwave-api.egg-info
-	-rm -rf api/python-openzwave-api.egg-info
+	-rm -Rf python_openzwave_api.egg-info/
+	-rm -Rf python_openzwave_lib.egg-info/
 	-rm -Rf /usr/local/lib/python*.*/dist-packages/python-openzwave*
 	-rm -Rf /usr/local/lib/python*.*/dist-packages/pyozwman*
 	-rm -Rf /usr/local/lib/python*.*/dist-packages/openzwave*
@@ -108,7 +106,7 @@ devtests:
 	@echo "Tests for developpers finished."
 
 commit: clean docs
-	git commit -m "Auto-commit for docs" README.txt INSTALL_REPO.txt INSTALL_MAN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
+	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
 	git push
 	@echo
 	@echo "Commits pushed on github."
