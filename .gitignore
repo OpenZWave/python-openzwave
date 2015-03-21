@@ -17,3 +17,5 @@ lib/libopenzwave.cpp
 debian/python-openzwave
 zwcfg_*
 install.files
+python_openzwave_api.egg-info/
+python_openzwave_lib.egg-info/
