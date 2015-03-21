@@ -69,21 +69,21 @@ of python-openzwave and openzwave.
 
 .. code-block:: bash
 
-    ./update.sh
+    make update
 
 When update process is done, you can compile sources
 
 .. code-block:: bash
 
-    ./compile.sh
+    make build
 
 Or if you have already build python-openzwave in a previous installation,
 you can use the clean option to remove old builds.
 
 .. code-block:: bash
 
-    ./compile.sh clean
-
+    make clean
+    make build
 
 Installation
 ============
@@ -92,11 +92,31 @@ You can now install the packages using the following command will.
 
 .. code-block:: bash
 
-    sudo ./install.sh
+    sudo make install
 
 The installation script create a list of installed files. So you can remove
 python-openzwave using the following command :
 
 .. code-block:: bash
 
-    sudo ./uninstall.sh
+    sudo make uninstall
+
+Python3 and virtualenv
+======================
+
+The Makefile sill try to automatically configure your version of python (running python --version).
+
+If you want to install python-openzwave in a python virtual environnement, you should use something like :
+
+.. code-block:: bash
+
+    make VIRTUAL_ENV=/path/to/my/venv build
+
+If you use python 3 and your python executable is called python3 :
+
+.. code-block:: bash
+
+    make PYTHON_EXEC=python3 build
+
+You can also put these variables in a CONFIG.make file instead of passing them to the command line
+

@@ -88,30 +88,44 @@ computer in a directory called python-openzwave.</p>
 </div>
 <p>The following command will update your local repository to the last release
 of python-openzwave and openzwave.</p>
-<div class="highlight-bash"><div class="highlight"><pre>./update.sh
+<div class="highlight-bash"><div class="highlight"><pre>make update
 </pre></div>
 </div>
 <p>When update process is done, you can compile sources</p>
-<div class="highlight-bash"><div class="highlight"><pre>./compile.sh
+<div class="highlight-bash"><div class="highlight"><pre>make build
 </pre></div>
 </div>
 <p>Or if you have already build python-openzwave in a previous installation,
 you can use the clean option to remove old builds.</p>
-<div class="highlight-bash"><div class="highlight"><pre>./compile.sh clean
+<div class="highlight-bash"><div class="highlight"><pre>make clean
+make build
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>You can now install the packages using the following command will.</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo ./install.sh
+<div class="highlight-bash"><div class="highlight"><pre>sudo make install
 </pre></div>
 </div>
 <p>The installation script create a list of installed files. So you can remove
 python-openzwave using the following command :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo ./uninstall.sh
+<div class="highlight-bash"><div class="highlight"><pre>sudo make uninstall
 </pre></div>
 </div>
+</div>
+<div class="section" id="python3-and-virtualenv">
+<h2>Python3 and virtualenv<a class="headerlink" href="#python3-and-virtualenv" title="Permalink to this headline">¶</a></h2>
+<p>The Makefile sill try to automatically configure your version of python (running python &#8211;version).</p>
+<p>If you want to install python-openzwave in a python virtual environnement, you should use something like :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make <span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/path/to/my/venv build
+</pre></div>
+</div>
+<p>If you use python 3 and your python executable is called python3 :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make <span class="nv">PYTHON_EXEC</span><span class="o">=</span>python3 build
+</pre></div>
+</div>
+<p>You can also put these variables in a CONFIG.make file instead of passing them to the command line</p>
 </div>
 </div>
 
@@ -128,6 +142,7 @@ python-openzwave using the following command :</p>
 <li><a class="reference internal" href="#get-sources-of-python-openzwave">Get sources of python-openzwave</a></li>
 <li><a class="reference internal" href="#update-and-build-process">Update and build process</a></li>
 <li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#python3-and-virtualenv">Python3 and virtualenv</a></li>
 </ul>
 </li>
 </ul>

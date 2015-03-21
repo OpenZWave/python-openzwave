@@ -54,16 +54,17 @@ Go to the previously created directory
 The following command will update your local repository to the last
 release of python-openzwave and openzwave.
 
-   ./update.sh
+   make update
 
 When update process is done, you can compile sources
 
-   ./compile.sh
+   make build
 
 Or if you have already build python-openzwave in a previous
 installation, you can use the clean option to remove old builds.
 
-   ./compile.sh clean
+   make clean
+   make build
 
 
 Installation
@@ -71,9 +72,28 @@ Installation
 
 You can now install the packages using the following command will.
 
-   sudo ./install.sh
+   sudo make install
 
 The installation script create a list of installed files. So you can
 remove python-openzwave using the following command :
 
-   sudo ./uninstall.sh
+   sudo make uninstall
+
+
+Python3 and virtualenv
+======================
+
+The Makefile sill try to automatically configure your version of
+python (running python --version).
+
+If you want to install python-openzwave in a python virtual
+environnement, you should use something like :
+
+   make VIRTUAL_ENV=/path/to/my/venv build
+
+If you use python 3 and your python executable is called python3 :
+
+   make PYTHON_EXEC=python3 build
+
+You can also put these variables in a CONFIG.make file instead of
+passing them to the command line
