@@ -9,7 +9,11 @@ NOSECOVER     = --cover-package=python-openzwave-lib,python-openzwave-api --cove
 PYLINT        = /usr/local/bin/pylint
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
-python_version_full  = $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
+ifdef VIRTUAL_ENV
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/python --version 2>&1)))
+else
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
+endif
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
@@ -58,7 +62,7 @@ uninstall: clean
 	-rm -Rf /usr/local/share/python-openzwave
 
 deps :
-	@echo Installing dependencies for python ${python_version_full}
+	@echo Installing dependencies for python : ${VIRTUAL_ENV} ${python_version_full}
 ifeq (${python_version_major},2)
 	apt-get install -y python-pip python-dev cython
 	apt-get install -y python-dev python-setuptools python-louie
