@@ -25,7 +25,6 @@ from os import name as os_name
 #from distutils.core import setup
 from setuptools import setup
 from distutils import extension
-from Cython.Distutils import extension as cextension
 from Cython.Distutils import build_ext
 from platform import system as platform_system
 import glob

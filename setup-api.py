@@ -21,12 +21,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from os import name as os_name
-#from distutils.core import setup
 from setuptools import setup
-from distutils.extension import Extension
-from Cython.Distutils import build_ext
-from platform import system as platform_system
 import glob
 import os
 import sys

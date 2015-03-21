@@ -9,6 +9,8 @@ NOSECOVER     = --cover-package=python-openzwave-lib,python-openzwave-api --cove
 PYLINT        = /usr/local/bin/pylint
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
+-include CONFIG.make
+
 ifdef PYTHON_EXEC
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 else
@@ -58,8 +60,6 @@ clean:
 	-rm lib/libopenzwave.cpp
 
 uninstall: clean
-	-rm -rf build
-	-rm -rf dist
 	-rm -Rf python_openzwave_api.egg-info/
 	-rm -Rf python_openzwave_lib.egg-info/
 	-rm -Rf /usr/local/lib/python*.*/dist-packages/python-openzwave*
@@ -85,6 +85,7 @@ pip:
 	pip install setuptools
 	pip install docutils
 	pip install cython
+	pip install nosetests
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
