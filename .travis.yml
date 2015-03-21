@@ -18,12 +18,7 @@ script:
   - make install
 # package dependencies
 before_install:
-  - env
-  - sudo -E env
-  - export VIRTUAL_ENV
-  - sudo -E env
+  #- env
+  #- sudo -E env
   - sudo apt-get update -y -qq
   - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV deps
-  - sudo -E make VIRTUAL_ENV=${VIRTUAL_ENV} deps
-  - sudo -E make VIRTUAL_ENV=/home/travis/virtualenv/python3.2.5 deps
-  - sudo -E make VIRTUAL_ENV=VIRTUAL_ENV=/home/travis/virtualenv/python3.3.5 deps
