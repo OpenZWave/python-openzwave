@@ -9,11 +9,17 @@ NOSECOVER     = --cover-package=python-openzwave-lib,python-openzwave-api --cove
 PYLINT        = /usr/local/bin/pylint
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
-ifdef VIRTUAL_ENV
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/python --version 2>&1)))
+ifdef PYTHON_EXEC
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 else
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
+PYTHON_EXEC=python
+ifdef VIRTUAL_ENV
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/${PYTHON_EXEC} --version 2>&1)))
+else
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 endif
+endif
+
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
@@ -46,8 +52,8 @@ clean:
 	-find . -name *.pyc -delete
 	cd docs && make clean
 	-cd openzwave && make clean
-	python setup-lib.py clean
-	python setup-api.py clean
+	${PYTHON_EXEC} setup-lib.py clean
+	${PYTHON_EXEC} setup-api.py clean
 	-rm -Rf build/
 	-rm lib/libopenzwave.cpp
 
@@ -68,8 +74,8 @@ ifeq (${python_version_major},2)
 	apt-get install -y python-dev python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	apt-get install -y python3-pip python3-dev cython3
-	apt-get install -y python3-dev python3-setuptools
+	-apt-get install -y python3-pip cython3
+	-apt-get install -y python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
 
@@ -98,14 +104,14 @@ docs: cleandocs
 	@echo "Documentation finished."
 
 install: build
-	sudo python setup-lib.py install
-	sudo python setup-api.py install
+	sudo ${PYTHON_EXEC} setup-lib.py install
+	sudo ${PYTHON_EXEC} setup-api.py install
 	@echo
 	@echo "Installation for users finished."
 
 develop: build
-	python setup-lib.py develop
-	python setup-api.py develop
+	${PYTHON_EXEC} setup-lib.py develop
+	${PYTHON_EXEC} setup-api.py develop
 	@echo
 	@echo "Installation for developpers finished."
 
@@ -142,8 +148,8 @@ update: openzwave
 build: openzwave
 	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && VERSION_REV=0 make
-	python setup-lib.py build
-	python setup-api.py build
+	${PYTHON_EXEC} setup-lib.py build
+	${PYTHON_EXEC} setup-api.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave

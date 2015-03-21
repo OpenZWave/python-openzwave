@@ -31,6 +31,11 @@ import glob
 import os
 import sys
 
+if sys.hexversion >= 0x3000000:
+    dispatch_package = 'pydispatcher >= 2.0.5'
+else:
+    dispatch_package = 'Louie >= 1.1'
+
 DEBIAN_PACKAGE = False
 filtered_args = []
 
@@ -81,5 +86,5 @@ setup(
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
   packages = ['openzwave', 'pyozwman' ],
-  install_requires=[ 'nose >= 0.8.3', 'Louie >= 1.1' ]
+  install_requires=[ 'nose >= 0.8.3', dispatch_package ]
 )
