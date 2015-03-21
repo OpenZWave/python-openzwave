@@ -11,6 +11,7 @@ python:
 install:
 #  - env
   - make pip
+  - make tests-deps
 # command to run tests
 script:
   - make update

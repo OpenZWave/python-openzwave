@@ -45,14 +45,14 @@ help:
 	@echo "  update     to update sources of python-openzwave and openzwave"
 	@echo "  build      to build python-openzwave and openzwave"
 
-cleandocs: clean
+cleandocs:
+	cd docs && make clean
 	-rm -rf docs/html
 	-rm -rf docs/pdf
 
 clean:
 	-rm -rf $(BUILDDIR)
 	-find . -name *.pyc -delete
-	cd docs && make clean
 	-cd openzwave && make clean
 	${PYTHON_EXEC} setup-lib.py clean
 	${PYTHON_EXEC} setup-api.py clean
@@ -81,11 +81,15 @@ endif
 
 travis-deps: deps
 
+tests-deps:
+	pip install nose-html
+	pip install nose-progressive
+	pip install nose
+
 pip:
 	pip install setuptools
 	pip install docutils
 	pip install cython
-	pip install nosetests
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
@@ -128,7 +132,7 @@ devtests:
 	@echo
 	@echo "Tests for developpers finished."
 
-commit: clean docs
+commit: docs
 	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
 	git push
 	@echo
@@ -146,11 +150,13 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: openzwave
-	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	cd openzwave && VERSION_REV=0 make
-	${PYTHON_EXEC} setup-lib.py build
+build: openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-api.py build
+	${PYTHON_EXEC} setup-lib.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
+
+openzwave/libopenzwave.a: openzwave
+	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	cd openzwave && VERSION_REV=0 make
