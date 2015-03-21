@@ -9,6 +9,11 @@ NOSECOVER     = --cover-package=python-openzwave-lib,python-openzwave-api --cove
 PYLINT        = /usr/local/bin/pylint
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
+python_version_full := $(wordlist 2,4,$(subst ., ,$(shell python --version 2>&1)))
+python_version_major := $(word 1,${python_version_full})
+python_version_minor := $(word 2,${python_version_full})
+python_version_patch := $(word 3,${python_version_full})
+
 .PHONY: help clean all develop install uninstall cleandoc docs tests devtests pylint commit apt pip travis-deps update build deps
 
 help:
@@ -53,8 +58,15 @@ uninstall: clean
 	-rm -Rf /usr/local/share/python-openzwave
 
 deps :
-	apt-get install -y build-essential python-pip python-dev cython
-	apt-get install -y python-dev python-setuptools python-louie
+	@echo Installing dependencies for python ${python_version_full}
+	ifeq (${python_version_full},2)
+		apt-get install -y python-pip python-dev cython
+		apt-get install -y python-dev python-setuptools python-louie
+	endif
+	ifeq (${python_version_full},3)
+		apt-get install -y python3-pip python3-dev cython3
+		apt-get install -y python3-dev python3-setuptools
+	endif
 	apt-get install -y build-essential libudev-dev g++ make
 
 travis-deps: deps
