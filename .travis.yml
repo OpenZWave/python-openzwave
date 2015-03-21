@@ -23,4 +23,4 @@ before_install:
   - export VIRTUAL_ENV
   - sudo -E env
   - sudo apt-get update -y -qq
-  - sudo -E VIRTUAL_ENV=$VIRTUAL_ENV make deps
+  - sudo -E make deps
