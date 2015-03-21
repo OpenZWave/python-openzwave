@@ -23,4 +23,7 @@ before_install:
   - export VIRTUAL_ENV
   - sudo -E env
   - sudo apt-get update -y -qq
-  - sudo -E make deps
+  - sudo -E VIRTUAL_ENV=$VIRTUAL_ENV make deps
+  - sudo -E VIRTUAL_ENV=${VIRTUAL_ENV} make deps
+  - sudo -E VIRTUAL_ENV=/home/travis/virtualenv/python3.2.5 make deps
+  - sudo -E VIRTUAL_ENV=VIRTUAL_ENV=/home/travis/virtualenv/python3.3.5 make deps
