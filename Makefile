@@ -59,15 +59,15 @@ uninstall: clean
 
 deps :
 	@echo Installing dependencies for python ${python_version_full}
-	ifeq (${python_version_full},2)
+	ifeq (${python_version_major},2)
 		apt-get install -y python-pip python-dev cython
 		apt-get install -y python-dev python-setuptools python-louie
 	endif
-	ifeq (${python_version_full},3)
+	ifeq (${python_version_major},3)
 		apt-get install -y python3-pip python3-dev cython3
 		apt-get install -y python3-dev python3-setuptools
 	endif
-	apt-get install -y build-essential libudev-dev g++ make
+	apt-get install -y build-essential libudev-dev g++
 
 travis-deps: deps
 
