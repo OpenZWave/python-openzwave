@@ -22,6 +22,11 @@ python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --versi
 endif
 endif
 
+PIP_EXEC=pip
+ifeq (${python_version_major},3)
+	PIP_EXEC=pip3
+endif
+
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
@@ -56,7 +61,6 @@ clean:
 	-cd openzwave && make clean
 	${PYTHON_EXEC} setup-lib.py clean
 	${PYTHON_EXEC} setup-api.py clean
-	-rm -Rf build/
 	-rm lib/libopenzwave.cpp
 
 uninstall: clean
@@ -82,14 +86,14 @@ endif
 travis-deps: deps
 
 tests-deps:
-	pip install nose-html
-	pip install nose-progressive
-	pip install nose
+	${PIP_EXEC} install nose-html
+	${PIP_EXEC} install nose-progressive
+	${PIP_EXEC} install nose
 
 pip:
-	pip install setuptools
-	pip install docutils
-	pip install Cython
+	${PIP_EXEC} install setuptools
+	${PIP_EXEC} install docutils
+	${PIP_EXEC} install Cython
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
@@ -108,13 +112,13 @@ docs: cleandocs
 	@echo
 	@echo "Documentation finished."
 
-install: build
+install:
 	sudo ${PYTHON_EXEC} setup-lib.py install
 	sudo ${PYTHON_EXEC} setup-api.py install
 	@echo
 	@echo "Installation for users finished."
 
-develop: build
+develop:
 	${PYTHON_EXEC} setup-lib.py develop
 	${PYTHON_EXEC} setup-api.py develop
 	@echo
