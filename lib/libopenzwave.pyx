@@ -2,8 +2,9 @@
 .. module:: libopenzwave
 
 This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
-    :platform: Unix, Windows, MacOS X
-    :sinopsis: openzwave C++
+
+:platform: Unix, Windows, MacOS X
+:sinopsis: openzwave C++
 
 .. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 .. moduleauthor: Maarten Damen <m.damen@gmail.com>
@@ -60,6 +61,7 @@ PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
 class EnumWithDoc(str):
+    """Enum helper"""
     def setDoc(self, doc):
         self.doc = doc
         return self
@@ -2848,7 +2850,7 @@ no notification callbacks are sent.
 
 :param id: The unique identifier of the value.
 :type id: int
-:return:  a float value's precision.
+:return: a float value's precision.
 :rtype: int
 
         '''
@@ -2861,12 +2863,13 @@ no notification callbacks are sent.
     def getChangeVerified(self, id):
         '''
 .. _getChangeVerified: determine if value changes upon a refresh should be verified.
+
 If so, the library will immediately refresh the value a second time whenever a change is observed.
 This helps to filter out spurious data reported occasionally by some devices.
 
 :param id:  The unique identifier of the value whose changes should or should not be verified.
 :type id: int
-:return:  True if is verified.
+:return: True if is verified.
 :rtype: bool
 
         '''
@@ -2878,13 +2881,13 @@ This helps to filter out spurious data reported occasionally by some devices.
     def setChangeVerified(self, id, verify ):
         '''
 .. _setChangeVerified: Sets a flag indicating whether value changes noted upon a refresh should be verified.
+
 If so, the library will immediately refresh the value a second time whenever a change is observed. This helps to filter out spurious data reported occasionally by some devices.
 
-:param id:  The unique identifier of the value whose changes should or should not be verified.
+:param id: The unique identifier of the value whose changes should or should not be verified.
 :type id: int
 :param verify if true, verify changes; if false, don't verify changes
 :type verify: bool
-
 
         '''
 
