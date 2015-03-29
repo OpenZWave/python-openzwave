@@ -30,8 +30,8 @@ At last but not least, submit your request.
 How to develop for libopenzwave (was python-openzwave-lib)
 ==========================================================
 
-After updating the pyx, you need to reinstall it, specially if your in
-develop mode. Otherwise, your changes will not be applied :
+After updating the pyx, you need to reinstall it, specially if you're
+in develop mode. Otherwise, your changes will not be applied :
 
    sudo make develop
 
