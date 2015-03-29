@@ -23,24 +23,26 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import libopenzwave
-from collections import namedtuple
-import thread
-import time
-import logging
-from openzwave.object import ZWaveException, ZWaveCommandClassException
-from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
+from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
 from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
 from openzwave.command import ZWaveNodeSensor, ZWaveNodeSecurity
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
-class ZWaveNode( ZWaveObject,
-                 ZWaveNodeBasic, ZWaveNodeSwitch,
-                 ZWaveNodeSensor, ZWaveNodeSecurity
-                 ):
+class ZWaveNode(ZWaveObject,
+                ZWaveNodeBasic, ZWaveNodeSwitch,
+                ZWaveNodeSensor, ZWaveNodeSecurity):
     """
     Represents a single Node within the Z-Wave Network.
 
@@ -48,7 +50,7 @@ class ZWaveNode( ZWaveObject,
 
     _isReady = False
 
-    def __init__(self, node_id, network ):
+    def __init__(self, node_id, network):
         """
         Initialize zwave node
 
@@ -230,7 +232,7 @@ class ZWaveNode( ZWaveObject,
             groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
         return groups
 
-    def heal(self, upNodeRoute = False):
+    def heal(self, upNodeRoute=False):
         """
         Heal network node by requesting the node rediscover their neighbors.
         Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
@@ -241,8 +243,8 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if not self.isNodeAwake :
-            self.logger.warning('Node state must a minimum set to awake')
+        if not self.isNodeAwake:
+            logging.warning('Node state must a minimum set to awake')
             return False
         self.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
         return True
@@ -281,7 +283,7 @@ class ZWaveNode( ZWaveObject,
         """
         commands = self.command_classes
         command_str = set()
-        for cls in commands :
+        for cls in commands:
             command_str.add(self._network.manager.COMMAND_CLASS_DESC[cls])
         return command_str
 
@@ -327,12 +329,12 @@ class ZWaveNode( ZWaveObject,
 
         """
         values = dict()
-        for value in self.values :
+        for value in self.values:
             if (genre == 'All' or self.values[value].genre == genre) and \
               (type == 'All' or self.values[value].type == type) and \
               (readonly == 'All' or self.values[value].is_read_only == readonly) and \
               (writeonly == 'All' or self.values[value].is_write_only == writeonly):
-                if self.values[value].command_class not in values :
+                if self.values[value].command_class not in values:
                     values[self.values[value].command_class] = dict()
                 values[self.values[value].command_class][value] = self.values[value]
         return values
@@ -431,9 +433,9 @@ class ZWaveNode( ZWaveObject,
         :rtype: bool
 
         """
-        if value_id in self.values :
+        if value_id in self.values:
             logging.debug("Remove value : %s" % self.values[value_id])
-            del(self.values[value_id])
+            del self.values[value_id]
             return True
         return False
 
@@ -449,13 +451,13 @@ class ZWaveNode( ZWaveObject,
 
         """
         if field == "name":
-            self.name=value
+            self.name = value
         elif field == "location":
-            self.location=value
+            self.location = value
         elif field == "product_name":
-            self.product_name=value
+            self.product_name = value
         elif field == "manufacturer_name":
-            self.manufacturer_name=value
+            self.manufacturer_name = value
 
     def has_command_class(self, class_id):
         """

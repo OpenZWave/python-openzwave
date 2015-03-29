@@ -23,9 +23,16 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+# Set default logging handler to avoid "No handler found" warnings.
 import logging
-
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class NullLoggingHandler(logging.Handler):
     """
@@ -88,7 +95,7 @@ class ZWaveObject(object):
     other managers on the network.
     """
 
-    def __init__(self, object_id, network = None, use_cache = True):
+    def __init__(self, object_id, network=None, use_cache=True):
         """
         Initialize a Zwave object
 
@@ -105,7 +112,7 @@ class ZWaveObject(object):
         self._object_id = object_id
         if self._use_cache:
             self._cached_properties = dict()
-        else :
+        else:
             self._cached_properties = None
 
     @property
@@ -185,8 +192,8 @@ class ZWaveObject(object):
         :type value: bool - True
 
         """
-        if self._use_cache :
-            if value :
+        if self._use_cache:
+            if value:
                 for prop in self._cached_properties:
                     self._cached_properties[prop] = True
                 self._outdated = value
@@ -204,7 +211,7 @@ class ZWaveObject(object):
         :rtype: bool
 
         """
-        if self._use_cache :
+        if self._use_cache:
             if str(prop) in self._cached_properties:
                 #print "property in cache %s" % self._cached_properties[str(prop)]
                 return self._cached_properties[str(prop)]
@@ -222,7 +229,7 @@ class ZWaveObject(object):
         :type prop: lambda
 
         """
-        if self._use_cache :
+        if self._use_cache:
             if str(prop) in self._cached_properties:
                 self._cached_properties[str(prop)] = True
                 self._outdated = True
@@ -238,7 +245,7 @@ class ZWaveObject(object):
 
         """
         if self._use_cache:
-            if str(prop) in self._cached_properties :
+            if str(prop) in self._cached_properties:
                 self._cached_properties[str(prop)] = False
                 out_dated = False
                 for prop in self._cached_properties:
@@ -257,7 +264,7 @@ class ZWaveObject(object):
         :type prop: lambda
 
         """
-        if self._use_cache :
+        if self._use_cache:
             self._cached_properties[str(prop)] = True
         else:
             raise ZWaveCacheException("Cache not enabled")

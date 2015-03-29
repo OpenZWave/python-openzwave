@@ -51,12 +51,30 @@ import os
 import sys
 
 #import logging
-#logging.getLogger('openzwave').addHandler(logging.NullHandler())
+#logging.getLogger('libopenzwave').addHandler(logging.NullHandler())
 
-#Don't update it.
-#It will be done when releasing only.
-#Need to modifiy make_archive.sh,setup.py and docs/conf.py too.
-PYLIBRARY = "0.2.6"
+import logging
+
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('libopenzwave').addHandler(NullHandler())
+
+from pkg_resources import get_distribution, DistributionNotFound
+try:
+    _dist = get_distribution('libopenzwave')
+except DistributionNotFound:
+    __version__ = 'Not installed'
+else:
+    __version__ = _dist.version
+
+PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
@@ -2499,7 +2517,7 @@ by the application
 :rtype: str
 :see: isValueSet_, getValueAsBool_, getValueAsByte_, getValueListItems_, \
 getValueListSelectionStr_ , getValueListSelectionNum_, \
-getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueCommandClass_\
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueCommandClass_,\
 getValueAsString_, getValue_, getValueType_, getValueInstance_, getValueIndex_
 
        '''
@@ -2886,7 +2904,7 @@ If so, the library will immediately refresh the value a second time whenever a c
 
 :param id: The unique identifier of the value whose changes should or should not be verified.
 :type id: int
-:param verify if true, verify changes; if false, don't verify changes
+:param verify: if true, verify changes; if false, don't verify changes
 :type verify: bool
 
         '''
@@ -3415,12 +3433,12 @@ Commands :
      - Driver::ControllerCommand_ReceiveConfiguration - Receive network configuration information from primary controller. Requires secondary.
      - Driver::ControllerCommand_RemoveDevice - Remove a device or controller from the Z-Wave network.
      - Driver::ControllerCommand_RemoveFailedNode - Remove a node from the network. The node must not be responding
-     and be on the controller's failed node list.
+       and be on the controller's failed node list.
      - Driver::ControllerCommand_HasNodeFailed - Check whether a node is in the controller's failed nodes list.
      - Driver::ControllerCommand_ReplaceFailedNode - Replace a failed device with another. If the node is not in
-     the controller's failed nodes list, or the node responds, this command will fail.
+       the controller's failed nodes list, or the node responds, this command will fail.
      - Driver:: ControllerCommand_TransferPrimaryRole - Add a new controller to the network and
-     make it the primary.  The existing primary will become a secondary controller.
+       make it the primary.  The existing primary will become a secondary controller.
      - Driver::ControllerCommand_RequestNetworkUpdate - Update the controller with network information from the SUC/SIS.
      - Driver::ControllerCommand_RequestNodeNeighborUpdate - Get a node to rebuild its neighbour list.  This method also does RequestNodeNeighbors afterwards.
      - Driver::ControllerCommand_AssignReturnRoute - Assign a network return route to a device.
@@ -3433,11 +3451,11 @@ Commands :
 Callbacks :
 
     - Driver::ControllerState_Waiting, the controller is waiting for a user action.  A notice should be displayed \
-to the user at this point, telling them what to do next. \
-For the add, remove, replace and transfer primary role commands, the user needs to be told to press the \
-inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration, \
-they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other \
-controller to learn new data.
+      to the user at this point, telling them what to do next. \
+      For the add, remove, replace and transfer primary role commands, the user needs to be told to press the \
+      inclusion button on the device that  is going to be added or removed.  For ControllerCommand_ReceiveConfiguration, \
+      they must set their other controller to send its data, and for ControllerCommand_CreateNewPrimary, set the other \
+      controller to learn new data.
     - Driver::ControllerState_InProgress - the controller is in the process of adding or removing the chosen node.  It is now too late to cancel the command.
     - Driver::ControllerState_Complete - the controller has finished adding or removing the node, and the command is complete.
     - Driver::ControllerState_Failed - will be sent if the command fails for any reason.

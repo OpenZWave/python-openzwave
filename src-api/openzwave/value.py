@@ -23,15 +23,18 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from collections import namedtuple
-import thread
-import time
-import openzwave
-import logging
-from threading import Timer
 from openzwave.object import ZWaveObject
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 # TODO: don't report controller node as sleeping
 # TODO: allow value identification by device/index/instance
@@ -116,7 +119,7 @@ class ZWaveValue(ZWaveObject):
           separator, self.parent_id, \
           separator, self.command_class, \
           separator, self.instance, \
-          separator, self.index )
+          separator, self.index)
 
     @property
     def node(self):
@@ -305,25 +308,25 @@ class ZWaveValue(ZWaveObject):
         :rtype: string or set
 
         """
-        if self.is_read_only :
+        if self.is_read_only:
             return "Read only"
         if self.type == "Bool":
             return "True or False"
         elif self.type == "Byte":
-            return "A byte between %s and %s" % (self.min,self.max)
+            return "A byte between %s and %s" % (self.min, self.max)
         elif self.type == "Decimal":
             return "A decimal"
         elif self.type == "Int":
-            return "An integer between %s and %s" % (self.min,self.max)
+            return "An integer between %s and %s" % (self.min, self.max)
         elif self.type == "Short":
-            return "A short between %s and %s" % (self.min,self.max)
+            return "A short between %s and %s" % (self.min, self.max)
         elif self.type == "String":
             return "A string"
         elif self.type == "Button":
             return "True or False"
         elif self.type == "List":
             return self._network.manager.getValueListItems(self.value_id)
-        else :
+        else:
             return "Unknown"
 
     def check_data(self, data):
@@ -337,7 +340,7 @@ class ZWaveValue(ZWaveObject):
         :rtype: variable
 
         """
-        if self.is_read_only :
+        if self.is_read_only:
             return None
         new_data = None
         logging.debug("check_data type :%s" % (self.type))
@@ -346,57 +349,57 @@ class ZWaveValue(ZWaveObject):
             if isinstance(data, basestring) :
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
-                else :
+                else:
                     new_data = True
         elif self.type == "Byte":
-            try :
+            try:
                 new_data = int(data)
-            except :
+            except:
                 new_data = None
             if new_data is not None:
-                if new_data < 0 :
+                if new_data < 0:
                     new_data = 0
-                elif new_data > 255 :
+                elif new_data > 255:
                     new_data = 255
         elif self.type == "Decimal":
-            try :
+            try:
                 new_data = float(data)
-            except :
+            except:
                 new_data = None
         elif self.type == "Int":
-            try :
+            try:
                 new_data = int(data)
-            except :
+            except:
                 new_data = None
             if new_data is not None:
-                if new_data < -2147483648 :
+                if new_data < -2147483648:
                     new_data = -2147483648
-                elif new_data > 2147483647 :
+                elif new_data > 2147483647:
                     new_data = 2147483647
         elif self.type == "Short":
-            try :
+            try:
                 new_data = int(data)
-            except :
+            except:
                 new_data = None
             if new_data is not None:
-                if new_data < -32768 :
+                if new_data < -32768:
                     new_data = -32768
-                elif new_data > 32767 :
+                elif new_data > 32767:
                     new_data = 32767
         elif self.type == "String":
-                new_data = data
+            new_data = data
         elif self.type == "Button":
             new_data = data
-            if isinstance(data, basestring) :
+            if isinstance(data, basestring):
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
-                else :
+                else:
                     new_data = True
         elif self.type == "List":
-            if isinstance(data, basestring) :
+            if isinstance(data, basestring):
                 if data in self.data_items:
                     new_data = data
-                else :
+                else:
                     new_data = None
         return new_data
 

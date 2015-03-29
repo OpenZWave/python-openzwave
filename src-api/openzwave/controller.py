@@ -24,16 +24,21 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from louie import dispatcher, All
-import logging
-import libopenzwave
-import openzwave
+from louie import dispatcher
 import time
-from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
-from openzwave.node import ZWaveNode
+from openzwave.object import ZWaveObject
 from libopenzwave import PyStatDriver
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class ZWaveController(ZWaveObject):
     '''
@@ -257,7 +262,7 @@ class ZWaveController(ZWaveObject):
         """
         if self._options is not None:
             return self._options.config_path
-        else :
+        else:
             return None
 
     @property
@@ -271,7 +276,7 @@ class ZWaveController(ZWaveObject):
         """
         if self._options is not None:
             return self._options.user_path
-        else :
+        else:
             return None
 
     @property
@@ -285,7 +290,7 @@ class ZWaveController(ZWaveObject):
         """
         if self._options is not None:
             return self._options.device
-        else :
+        else:
             return None
 
     @property
@@ -329,7 +334,7 @@ class ZWaveController(ZWaveObject):
 
     def get_stats_label(self, stat):
         """
-        Retrieve abel of the statistic from driver.
+        Retrieve label of the statistic from driver.
 
         :param stat: The code of the stat label to retrieve.
         :type stat:
@@ -414,7 +419,7 @@ class ZWaveController(ZWaveObject):
                 dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, **{'network': self._network})
 
         """
-        self._network.state=self._network.STATE_RESETTED
+        self._network.state = self._network.STATE_RESETTED
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
             **{'network': self._network})
         self._network.manager.resetController(self._network.home_id)
@@ -441,7 +446,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_SENDNODEINFORMATION, self.zwcallback, nodeId=node_id)
 
-    def begin_command_replication_send(self, high_power = False):
+    def begin_command_replication_send(self, high_power=False):
         """
         Send information from primary to secondary.
 
@@ -467,7 +472,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REQUESTNETWORKUPDATE, self.zwcallback)
 
-    def begin_command_add_device(self, high_power = False):
+    def begin_command_add_device(self, high_power=False):
         """
         Add a new device to the Z-Wave network.
 
@@ -483,7 +488,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_ADDDEVICE, self.zwcallback, highPower=high_power)
 
-    def begin_command_remove_device(self, high_power = False):
+    def begin_command_remove_device(self, high_power=False):
         """
         Remove a device from the Z-Wave network.
 
@@ -567,7 +572,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_CREATENEWPRIMARY, self.zwcallback)
 
-    def begin_command_transfer_primary_role(self, high_power = False):
+    def begin_command_transfer_primary_role(self, high_power=False):
         """
         Make a different controller the primary.
         The existing primary will become a secondary controller.

@@ -23,17 +23,18 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from collections import namedtuple
-import thread
-import os
-import time
-from louie import dispatcher, All
-import logging
-import libopenzwave
-import openzwave
-from openzwave.object import ZWaveException, ZWaveObject, NullLoggingHandler
+from openzwave.object import ZWaveObject
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class ZWaveGroup(ZWaveObject):
     """
@@ -75,8 +76,7 @@ class ZWaveGroup(ZWaveObject):
         :rtype: str
 
         """
-        return 'index: [%s] label: [%s]' % \
-          (self.index,  self.label)
+        return 'index: [%s] label: [%s]' % (self.index, self.label)
 
     @property
     def index(self):

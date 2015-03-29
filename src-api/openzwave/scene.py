@@ -23,15 +23,18 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import libopenzwave
-from collections import namedtuple
-import thread
-import time
-import openzwave
-import logging
 from openzwave.object import ZWaveObject
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class ZWaveScene(ZWaveObject):
     """
@@ -49,7 +52,7 @@ class ZWaveScene(ZWaveObject):
 
         """
         ZWaveObject.__init__(self, scene_id, network)
-        logging.debug("Create object scene (scene_id:%s)" % (scene_id))
+        logging.debug("Create object scene (scene_id:%s)", scene_id)
         self.values = dict()
 
     def __str__(self):
@@ -59,8 +62,7 @@ class ZWaveScene(ZWaveObject):
         :rtype: str
 
         """
-        return 'scene_id: [%s] label: [%s]' % \
-          (self.scene_id,  self.label)
+        return 'scene_id: [%s] label: [%s]' % (self.scene_id, self.label)
 
     @property
     def scene_id(self):
@@ -105,7 +107,7 @@ class ZWaveScene(ZWaveObject):
 
         """
         scene_id = self._network.manager.createScene()
-        if scene_id != 0 :
+        if scene_id != 0:
             self._object_id = scene_id
             if label is not None:
                 self.label = label
@@ -155,7 +157,7 @@ class ZWaveScene(ZWaveObject):
             return ret
         for val in values:
             value = self._network.get_value(val)
-            ret[val] = {'value':value,'data':values[val]}
+            ret[val] = {'value':value, 'data':values[val]}
         return ret
 
     def get_values_by_node(self):
@@ -175,7 +177,7 @@ class ZWaveScene(ZWaveObject):
             if value is not None:
                 if value.node.node_id not in ret:
                     ret[value.node.node_id] = {}
-                ret[value.node.node_id][val] = {'value':value,'data':values[val]}
+                ret[value.node.node_id][val] = {'value':value, 'data':values[val]}
         return ret
 
     def remove_value(self, value_id):

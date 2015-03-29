@@ -23,17 +23,18 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import libopenzwave
-from collections import namedtuple
-import thread
-from threading import Timer
-import time
-import logging
-from openzwave.object import ZWaveException, ZWaveCommandClassException
-from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
-from openzwave.group import ZWaveGroup
+from openzwave.object import ZWaveNodeInterface
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class ZWaveNodeBasic(ZWaveNodeInterface):
     """
@@ -281,7 +282,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
             for val in self.get_battery_levels():
                 return self.values[val].data
         elif value_id in self.get_battery_levels():
-                return self.values[value_id].data
+            return self.values[value_id].data
         return None
 
     def get_battery_levels(self):
@@ -316,7 +317,7 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
             for val in self.get_power_levels():
                 return self.values[val].data
         elif value_id in self.get_power_levels():
-                return self.values[value_id].data
+            return self.values[value_id].data
         return None
 
     def get_power_levels(self):
@@ -349,9 +350,9 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         :rtype: bool
         """
         res = self.get_values(class_id=0x84)
-        if res is not None and len(res)>0 :
+        if res is not None and len(res) > 0:
             return True
-        else :
+        else:
             return False
 
 class ZWaveNodeSwitch(ZWaveNodeInterface):
@@ -409,13 +410,13 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         if value_id in self.get_switches_all():
             instance = self.values[value_id].instance
             for switch in self.get_switches():
-                if self.values[switch].instance == instance :
+                if self.values[switch].instance == instance:
                     return self.values[switch].data
             for dimmer in self.get_dimmers():
-                if self.values[dimmer].instance == instance :
+                if self.values[dimmer].instance == instance:
                     if self.values[dimmer].data == 0:
                         return False
-                    else :
+                    else:
                         return True
         return None
 
@@ -534,7 +535,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         if value_id in self.get_dimmers():
             if 99 < value < 255:
                 value = 99
-            elif value < 0 :
+            elif value < 0:
                 value = 0
             self.values[value_id].data = value
             #Dimmers doesn't return the good level.

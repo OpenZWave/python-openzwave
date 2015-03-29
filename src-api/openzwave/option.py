@@ -23,15 +23,22 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import datetime
-import logging
 import os
 import libopenzwave
 from libopenzwave import PyLogLevels
 
 from openzwave.object import ZWaveException
 
-logging.getLogger('openzwave').addHandler(logging.NullHandler())
+# Set default logging handler to avoid "No handler found" warnings.
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
 
 class ZWaveOption(libopenzwave.PyOptions):
     """
@@ -67,7 +74,7 @@ class ZWaveOption(libopenzwave.PyOptions):
                 config_path = self.getConfigPath()
             if os.path.exists(config_path):
                 self._config_path = config_path
-                if not os.path.exists(os.path.join(config_path,"zwcfg.xsd")):
+                if not os.path.exists(os.path.join(config_path, "zwcfg.xsd")):
                     raise ZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
             else:
                 raise ZWaveException("Can't retrieve config from %s" % config_path)
