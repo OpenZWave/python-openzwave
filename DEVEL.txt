@@ -39,8 +39,10 @@ develop mode. Otherwise, your changes will not be applied :
 Tests
 =====
 
-Nosetests and pylint are used to test quality of code. There reports
-are here :
+Travis-ci, nosetests and pylint are used to test quality of code.
+There reports are here :
+
+   * Travis : https://travis-ci.org/bibi21000/python-openzwave
 
    * Nosetests report
 

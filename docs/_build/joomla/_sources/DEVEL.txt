@@ -40,8 +40,9 @@ After updating the pyx, you need to reinstall it, specially if your in develop m
 Tests
 =====
 
-Nosetests and pylint are used to test quality of code. There reports are here :
+Travis-ci, nosetests and pylint are used to test quality of code. There reports are here :
 
+ - Travis : https://travis-ci.org/bibi21000/python-openzwave
  - `Nosetests report <file:../nosetests/nosetests.html>`_
  - `Coverage report <file:../coverage/index.html>`_
  - `Pylint report <file:../pylint/report.html>`_
