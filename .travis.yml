@@ -17,6 +17,8 @@ script:
   - make update
   - make build
   - make install
+  - nosetests --cover-package=libopenzwave,openzwave --with-coverage
+
 # package dependencies
 before_install:
   #- env
