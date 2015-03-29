@@ -21,10 +21,11 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from setuptools import setup
+from setuptools import setup, find_packages
 import glob
 import os
 import sys
+from pyozw_version import pyozw_version
 
 if sys.hexversion >= 0x3000000:
     dispatch_package = 'pydispatcher >= 2.0.5'
@@ -71,15 +72,17 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
 setup(
-  name = 'python-openzwave-api',
+  name = 'openzwave',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='https://github.com/bibi21000/python-openzwave',
   #Need to update libopenzwave.pyx too
-  version = '0.2.6',
-  package_dir = {'openzwave' : 'api', 'pyozwman' : 'manager' },
-  #The following line install config drectory in share/python-openzwave
+  version = pyozw_version,
+  package_dir = {'' : 'src-api'},
+  #packages = find_packages(),
+  #packages = ['openzwave'],
+  packages = find_packages('src-api', exclude=["scripts"]),
+#The following line install config drectory in share/python-openzwave
   data_files = data_files,
-  packages = ['openzwave', 'pyozwman' ],
   install_requires=[ dispatch_package ]
 )

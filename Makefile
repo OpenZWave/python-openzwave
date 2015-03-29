@@ -2,10 +2,10 @@
 #
 
 # You can set these variables from the command line.
-BUILDDIR      = _build
+BUILDDIR      = build
 NOSE          = /usr/local/bin/nosetests
 NOSEOPTS      = --verbosity=2
-NOSECOVER     = --cover-package=python-openzwave-lib,python-openzwave-api --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
+NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
 PYLINT        = /usr/local/bin/pylint
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
@@ -30,11 +30,13 @@ endif
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
+EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
 
 .PHONY: help clean all develop install uninstall cleandoc docs tests devtests pylint commit apt pip travis-deps update build deps
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
+	@echo "  build      to build python-openzwave and openzwave"
 	@echo "  develop    to install python-openzwave for developpers"
 	@echo "  install    to install python-openzwave for users"
 	@echo "  uninstall  to uninstall python-openzwave"
@@ -48,7 +50,6 @@ help:
 	@echo "  clean      to clean the development directory"
 	@echo "  cleandocs  to clean the documentation generated"
 	@echo "  update     to update sources of python-openzwave and openzwave"
-	@echo "  build      to build python-openzwave and openzwave"
 
 cleandocs:
 	cd docs && make clean
@@ -61,18 +62,36 @@ clean:
 	-cd openzwave && make clean
 	${PYTHON_EXEC} setup-lib.py clean
 	${PYTHON_EXEC} setup-api.py clean
+	${PYTHON_EXEC} setup-manager.py clean
 	-rm lib/libopenzwave.cpp
+	-rm src-lib/libopenzwave/libopenzwave.cpp
 
-uninstall: clean
+uninstall:
+	-${PIP_EXEC} uninstall python-openzwave-lib
+	-${PIP_EXEC} uninstall python-openzwave-api
+	-${PIP_EXEC} uninstall libopenzwave
+	-${PIP_EXEC} uninstall openzwave
+	-${PIP_EXEC} uninstall pyozwman
+	-rm -f libopenzwave.so
+	-rm -f src-lib/liopenzwave.so
+	-rm -f libopenzwave/liopenzwave.so
 	-rm -Rf python_openzwave_api.egg-info/
-	-rm -Rf python_openzwave_lib.egg-info/
-	-rm -Rf /usr/local/lib/python*.*/dist-packages/python-openzwave*
-	-rm -Rf /usr/local/lib/python*.*/dist-packages/pyozwman*
-	-rm -Rf /usr/local/lib/python*.*/dist-packages/openzwave*
+	-rm -Rf src-api/python_openzwave_api.egg-info/
+	-rm -Rf src-api/openzwave.egg-info/
+	-rm -Rf src-manager/pyozwman.egg-info/
+	-rm -Rf src-lib/python_openzwave_lib.egg-info/
+	-rm -Rf src-lib/libopenzwave.egg-info/
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python-openzwave*
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python_openzwave*
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/libopenzwave*
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/openzwave*
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwman*
 	-rm -Rf /usr/local/share/python-openzwave
+	-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
+	-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
 deps :
-	@echo Installing dependencies for python : ${VIRTUAL_ENV} ${python_version_full}
+	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
 	apt-get install -y python-pip python-dev cython
 	apt-get install -y python-dev python-setuptools python-louie
@@ -100,7 +119,7 @@ docs: cleandocs
 	-mkdir -p docs/html/coverage
 	-mkdir -p docs/html/pylint
 	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
-	-$(PYLINT) --output-format=html $(PYLINTOPTS) lib/ api/ >docs/html/pylint/report.html
+	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
 	cd docs && make docs
 	cp docs/_build/text/README.txt README.md
 	cp docs/_build/text/INSTALL_REPO.txt .
@@ -115,12 +134,14 @@ docs: cleandocs
 install:
 	sudo ${PYTHON_EXEC} setup-lib.py install
 	sudo ${PYTHON_EXEC} setup-api.py install
+	sudo ${PYTHON_EXEC} setup-manager.py install
 	@echo
 	@echo "Installation for users finished."
 
 develop:
 	${PYTHON_EXEC} setup-lib.py develop
 	${PYTHON_EXEC} setup-api.py develop
+	${PYTHON_EXEC} setup-manager.py develop
 	@echo
 	@echo "Installation for developpers finished."
 
@@ -144,7 +165,7 @@ commit: docs
 
 pylint:
 	-mkdir -p docs/html/pylint
-	$(PYLINT) $(PYLINTOPTS) lib/ api/
+	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
 	@echo
 	@echo "Pylint finished."
 
@@ -155,8 +176,9 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/libopenzwave.a
-	${PYTHON_EXEC} setup-api.py build
 	${PYTHON_EXEC} setup-lib.py build
+	${PYTHON_EXEC} setup-api.py build
+	${PYTHON_EXEC} setup-manager.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
