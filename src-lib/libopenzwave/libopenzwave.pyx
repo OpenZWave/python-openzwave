@@ -50,11 +50,7 @@ from log cimport LogLevel
 import os
 import sys
 
-#import logging
-#logging.getLogger('libopenzwave').addHandler(logging.NullHandler())
-
-import logging
-
+# See http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/ for capturing console output of the c++ library
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
 try:  # Python 2.7+
