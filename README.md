@@ -34,12 +34,12 @@ because of a bug in setuptools :
 https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-
 respect-src. Sorry for that.
 
-So, beforre building python-openzwave, you must uninstall the old
+So, before building python-openzwave, you must uninstall the old
 version :
 
    sudo make uninstall
 
-After that, reinstall python-openzwave usinf your prefered method.
+After that, reinstall python-openzwave using your prefered method.
 
 If you have problems, please submit an issue with :
 
@@ -62,8 +62,8 @@ Documentation
 =============
 
 You can browse the documentation here :
-http://bibi21000.gallet.info/index.php/en/home-uk/88-home-automation-
-uk/126-python-openzwave-documentation.html
+*http://bibi21000.gallet.info/index.php/en/home-uk/88-home-automation-
+uk/126-python-openzwave-documentation.html*
 
 
 To do
