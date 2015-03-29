@@ -9,14 +9,32 @@
 </pre></div>
 </div>
 <p>You must now install python-openzwave in develop mode</p>
-<div class="highlight-bash"><div class="highlight"><pre>make develop
+<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
 </pre></div>
 </div>
 <p>Your password will be asked (by sudo) for installing eggs in your local directory.</p>
 <p>Develop, test, debug, test, ... :)</p>
-<p>Update the documentation if needed. You surely found the documentation useful, so please keep it up to date</p>
+<p>Update the documentation if needed. You surely found the documentation useful, so please keep it up to date.</p>
 <p>You can create an account on travis to run the (futurs) tests.</p>
-<p>At last but not least, submit your request</p>
+<p>At last but not least, submit your request.</p>
+</div>
+<div class="section" id="how-to-develop-for-libopenzwave-was-python-openzwave-lib">
+<h2>How to develop for libopenzwave (was python-openzwave-lib)</h2>
+<p>After updating the pyx, you need to reinstall it, specially if your in develop mode. Otherwise, your changes will not be applied :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
+</pre></div>
+</div>
+</div>
+<div class="section" id="tests">
+<h2>Tests</h2>
+<p>Nosetests and pylint are used to test quality of code. There reports are here :</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="file:../nosetests/nosetests.html">Nosetests report</a></li>
+<li><a class="reference external" href="file:../coverage/index.html">Coverage report</a></li>
+<li><a class="reference external" href="file:../pylint/report.html">Pylint report</a></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation</h2>
@@ -45,35 +63,6 @@ This the way the debian package works. So you CAN have another program running w
 Of course, this program MUST use the shared library too.</li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="migrate-from-py-openzwave-to-python-openzwave">
-<h2>Migrate from py-openzwave to python-openzwave</h2>
-<p>Remove the old py-openzwave</p>
-<div class="highlight-bash"><div class="highlight"><pre>find /usr -iname openzwave.so
-</pre></div>
-</div>
-<p>This command show the list of files naming openzwave.so in /usr, ie /usr/local/lib/python2.7/dist-package/openzwave.so</p>
-<p>Remove it :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so
-</pre></div>
-</div>
-<p>Install the new version of python-openzwave : look at README</p>
-<p>Update your code :</p>
-<p>Everywhere in your code replace :</p>
-<blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span class="s2">&quot;import openzwave&quot;</span> to <span class="s2">&quot;import libopenzwave&quot;</span> <span class="s2">&quot;from openzwave&quot;</span> to <span class="s2">&quot;from libopenzwave&quot;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>notifications :</p>
-<p>In Maarten py-openzwave librairy, value is a string but in python-openzwave, it&#8217;s a value of the right type :</p>
-<div class="highlight-python"><div class="highlight"><pre># &#39;value&#39; : value.c_str(),
-
-&#39;value&#39; : getValueFromType(manager,v.GetId?()),
-</pre></div>
-</div>
-<p>wrapper : The wrapper is no longer supported.</p>
-<p>Now high level acces to ZWave network is provided by the API</p>
 </div>
 </div>
 

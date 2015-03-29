@@ -68,6 +68,7 @@ Build python-openzwave
 
     python setup-lib.py build
     python setup-api.py build
+    python setup-manager.py build
 
 
 And install them
@@ -77,3 +78,4 @@ And install them
 
     sudo python setup-lib.py install
     sudo python setup-api.py install
+    sudo python setup-manager.py install

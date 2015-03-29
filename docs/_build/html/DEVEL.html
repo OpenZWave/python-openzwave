@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Developpers information &mdash; python-openzwave 0.2.6 documentation</title>
+    <title>Developpers information &mdash; python-openzwave 0.3.0 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2.6',
+        VERSION:     '0.3.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.2.6 documentation" href="index.html" /> 
+    <link rel="top" title="python-openzwave 0.3.0 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,14 +53,32 @@
 </pre></div>
 </div>
 <p>You must now install python-openzwave in develop mode</p>
-<div class="highlight-bash"><div class="highlight"><pre>make develop
+<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
 </pre></div>
 </div>
 <p>Your password will be asked (by sudo) for installing eggs in your local directory.</p>
 <p>Develop, test, debug, test, ... :)</p>
-<p>Update the documentation if needed. You surely found the documentation useful, so please keep it up to date</p>
+<p>Update the documentation if needed. You surely found the documentation useful, so please keep it up to date.</p>
 <p>You can create an account on travis to run the (futurs) tests.</p>
-<p>At last but not least, submit your request</p>
+<p>At last but not least, submit your request.</p>
+</div>
+<div class="section" id="how-to-develop-for-libopenzwave-was-python-openzwave-lib">
+<h2>How to develop for libopenzwave (was python-openzwave-lib)<a class="headerlink" href="#how-to-develop-for-libopenzwave-was-python-openzwave-lib" title="Permalink to this headline">¶</a></h2>
+<p>After updating the pyx, you need to reinstall it, specially if your in develop mode. Otherwise, your changes will not be applied :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
+</pre></div>
+</div>
+</div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p>Nosetests and pylint are used to test quality of code. There reports are here :</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="file:../nosetests/nosetests.html">Nosetests report</a></li>
+<li><a class="reference external" href="file:../coverage/index.html">Coverage report</a></li>
+<li><a class="reference external" href="file:../pylint/report.html">Pylint report</a></li>
+</ul>
+</div></blockquote>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
@@ -90,35 +108,6 @@ Of course, this program MUST use the shared library too.</li>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="migrate-from-py-openzwave-to-python-openzwave">
-<h2>Migrate from py-openzwave to python-openzwave<a class="headerlink" href="#migrate-from-py-openzwave-to-python-openzwave" title="Permalink to this headline">¶</a></h2>
-<p>Remove the old py-openzwave</p>
-<div class="highlight-bash"><div class="highlight"><pre>find /usr -iname openzwave.so
-</pre></div>
-</div>
-<p>This command show the list of files naming openzwave.so in /usr, ie /usr/local/lib/python2.7/dist-package/openzwave.so</p>
-<p>Remove it :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo rm /usr/local/lib/python2.7/dist-package/openzwave.so
-</pre></div>
-</div>
-<p>Install the new version of python-openzwave : look at README</p>
-<p>Update your code :</p>
-<p>Everywhere in your code replace :</p>
-<blockquote>
-<div><div class="highlight-bash"><div class="highlight"><pre><span class="s2">&quot;import openzwave&quot;</span> to <span class="s2">&quot;import libopenzwave&quot;</span> <span class="s2">&quot;from openzwave&quot;</span> to <span class="s2">&quot;from libopenzwave&quot;</span>
-</pre></div>
-</div>
-</div></blockquote>
-<p>notifications :</p>
-<p>In Maarten py-openzwave librairy, value is a string but in python-openzwave, it&#8217;s a value of the right type :</p>
-<div class="highlight-python"><div class="highlight"><pre># &#39;value&#39; : value.c_str(),
-
-&#39;value&#39; : getValueFromType(manager,v.GetId?()),
-</pre></div>
-</div>
-<p>wrapper : The wrapper is no longer supported.</p>
-<p>Now high level acces to ZWave network is provided by the API</p>
-</div>
 </div>
 
 
@@ -131,9 +120,10 @@ Of course, this program MUST use the shared library too.</li>
   <ul>
 <li><a class="reference internal" href="#">Developpers information</a><ul>
 <li><a class="reference internal" href="#how-to-develop-for-python-openzwave">How to develop for python-openzwave</a></li>
+<li><a class="reference internal" href="#how-to-develop-for-libopenzwave-was-python-openzwave-lib">How to develop for libopenzwave (was python-openzwave-lib)</a></li>
+<li><a class="reference internal" href="#tests">Tests</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#static-vs-dynamic-or-shared">Static vs dynamic (or shared)</a></li>
-<li><a class="reference internal" href="#migrate-from-py-openzwave-to-python-openzwave">Migrate from py-openzwave to python-openzwave</a></li>
 </ul>
 </li>
 </ul>
@@ -169,11 +159,11 @@ Of course, this program MUST use the shared library too.</li>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.2.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-        &copy; Copyright 2012, bibi21000.
+        &copy; Copyright 2012,2013,2014,2015, bibi21000.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
     </div>
   </body>

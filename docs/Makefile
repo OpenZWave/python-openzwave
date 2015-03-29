@@ -165,4 +165,4 @@ lastdoc: latexpdf
 	if test ! -d pdf; then mkdir pdf; fi
 	install -m 644 _build/latex/*.pdf pdf/
 
-docs: apidoc text html joomla
+docs: text html joomla

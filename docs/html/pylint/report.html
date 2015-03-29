@@ -2,7 +2,7 @@
 <body>
 <div>
 <h1>Report</h1>
-<p>1336 statements analysed.</p><div>
+<p>1358 statements analysed.</p><div>
 <h2>Statistics by type</h2>
 <table>
 <tr class="header">
@@ -16,26 +16,26 @@
 <tr class="even">
 <td>module</td>
 <td>10</td>
-<td>9</td>
-<td>+1.00</td>
+<td>10</td>
+<td>=</td>
 <td>90.00</td>
 <td>0.00</td>
 </tr>
 <tr class="odd">
 <td>class</td>
-<td>20</td>
-<td>18</td>
-<td>+2.00</td>
+<td>27</td>
+<td>27</td>
+<td>=</td>
 <td>100.00</td>
 <td>0.00</td>
 </tr>
 <tr class="even">
 <td>method</td>
-<td>284</td>
-<td>242</td>
-<td>+42.00</td>
+<td>294</td>
+<td>294</td>
+<td>=</td>
 <td>100.00</td>
-<td>4.58</td>
+<td>4.42</td>
 </tr>
 <tr class="odd">
 <td>function</td>
@@ -49,9 +49,17 @@
 </div>
 <div>
 <h2>External dependencies</h2>
-<pre>libopenzwave (api.command,api.network,api.group,api.scene,api.controller,api.node,api.option)
-louie (api.controller,api.network,api.group)
-  \-dispatcher (api.controller,api.network,api.group)</pre></div>
+<pre>libopenzwave (openzwave.network,openzwave.controller,openzwave.option)
+louie (openzwave.network)
+  \-dispatcher (openzwave.network,openzwave.controller)
+openzwave (openzwave.network)
+  \-command (openzwave.node)
+  \-controller (openzwave.network)
+  \-group (openzwave.node)
+  \-node (openzwave.network)
+  \-object (openzwave.controller,openzwave.command,openzwave.network,openzwave.node,openzwave.group,openzwave.scene,openzwave.option,openzwave.value)
+  \-scene (openzwave.network)
+  \-value (openzwave.node)</pre></div>
 <div>
 <h2>Raw metrics</h2>
 <table>
@@ -64,31 +72,31 @@ louie (api.controller,api.network,api.group)
 </tr>
 <tr class="even">
 <td>code</td>
-<td>1613</td>
-<td>31.18</td>
-<td>1413</td>
-<td>+200.00</td>
+<td>1648</td>
+<td>31.50</td>
+<td>1648</td>
+<td>=</td>
 </tr>
 <tr class="odd">
 <td>docstring</td>
-<td>3149</td>
-<td>60.87</td>
-<td>2712</td>
-<td>+437.00</td>
+<td>3161</td>
+<td>60.43</td>
+<td>3161</td>
+<td>=</td>
 </tr>
 <tr class="even">
 <td>comment</td>
-<td>70</td>
-<td>1.35</td>
-<td>68</td>
-<td>+2.00</td>
+<td>80</td>
+<td>1.53</td>
+<td>80</td>
+<td>=</td>
 </tr>
 <tr class="odd">
 <td>empty</td>
-<td>341</td>
-<td>6.59</td>
-<td>295</td>
-<td>+46.00</td>
+<td>342</td>
+<td>6.54</td>
+<td>342</td>
+<td>=</td>
 </tr>
 </table>
 </div>
@@ -103,15 +111,15 @@ louie (api.controller,api.network,api.group)
 </tr>
 <tr class="even">
 <th>nb duplicated lines</th>
-<td>10</td>
-<td>10</td>
+<td>106</td>
+<td>106</td>
 <td>=</td>
 </tr>
 <tr class="odd">
 <th>percent duplicated lines</th>
-<td>0.194</td>
-<td>0.224</td>
-<td>-0.03</td>
+<td>2.030</td>
+<td>2.030</td>
+<td>=</td>
 </tr>
 </table>
 </div>
@@ -126,27 +134,27 @@ louie (api.controller,api.network,api.group)
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>141</td>
-<td>116</td>
-<td>+25.00</td>
+<td>45</td>
+<td>45</td>
+<td>=</td>
 </tr>
 <tr class="odd">
 <td>refactor</td>
-<td>18</td>
-<td>20</td>
-<td>-2.00</td>
+<td>16</td>
+<td>16</td>
+<td>=</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>170</td>
-<td>158</td>
-<td>+12.00</td>
+<td>93</td>
+<td>93</td>
+<td>=</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>300</td>
-<td>60</td>
-<td>+240.00</td>
+<td>61</td>
+<td>61</td>
+<td>=</td>
 </tr>
 </table>
 </div>
@@ -161,74 +169,53 @@ louie (api.controller,api.network,api.group)
 <th>convention</th>
 </tr>
 <tr class="even">
-<td>api.node</td>
-<td>39.67</td>
-<td>8.82</td>
-<td>11.11</td>
-<td>14.89</td>
+<td>openzwave.command</td>
+<td>55.74</td>
+<td>2.15</td>
+<td>0.00</td>
+<td>0.00</td>
 </tr>
 <tr class="odd">
-<td>api.controller</td>
-<td>21.00</td>
-<td>5.88</td>
-<td>11.11</td>
-<td>17.73</td>
+<td>openzwave.option</td>
+<td>34.43</td>
+<td>0.00</td>
+<td>25.00</td>
+<td>6.67</td>
 </tr>
 <tr class="even">
-<td>api.value</td>
-<td>11.00</td>
-<td>8.82</td>
-<td>22.22</td>
-<td>19.15</td>
-</tr>
-<tr class="odd">
-<td>api.command</td>
-<td>10.67</td>
-<td>10.00</td>
-<td>0.00</td>
-<td>4.96</td>
-</tr>
-<tr class="even">
-<td>api.option</td>
-<td>7.00</td>
-<td>0.59</td>
-<td>22.22</td>
-<td>2.84</td>
-</tr>
-<tr class="odd">
-<td>api.scene</td>
-<td>4.67</td>
-<td>4.12</td>
-<td>0.00</td>
-<td>2.84</td>
-</tr>
-<tr class="even">
-<td>api.group</td>
-<td>3.33</td>
-<td>5.88</td>
-<td>0.00</td>
-<td>0.71</td>
-</tr>
-<tr class="odd">
-<td>api.network</td>
-<td>2.67</td>
-<td>55.29</td>
+<td>openzwave.network</td>
+<td>6.56</td>
+<td>70.97</td>
+<td>31.25</td>
 <td>33.33</td>
-<td>29.79</td>
-</tr>
-<tr class="even">
-<td>api</td>
-<td>0.00</td>
-<td>0.59</td>
-<td>0.00</td>
-<td>0.71</td>
 </tr>
 <tr class="odd">
-<td>api.object</td>
+<td>openzwave.node</td>
+<td>1.64</td>
+<td>11.83</td>
+<td>6.25</td>
+<td>17.78</td>
+</tr>
+<tr class="even">
+<td>openzwave.controller</td>
+<td>1.64</td>
+<td>4.30</td>
+<td>12.50</td>
+<td>37.78</td>
+</tr>
+<tr class="odd">
+<td>openzwave.value</td>
 <td>0.00</td>
+<td>9.68</td>
+<td>25.00</td>
+<td>2.22</td>
+</tr>
+<tr class="even">
+<td>openzwave</td>
 <td>0.00</td>
+<td>1.08</td>
 <td>0.00</td>
-<td>6.38</td>
+<td>2.22</td>
 </tr>
 </table>
 </div>
@@ -241,63 +228,55 @@ louie (api.controller,api.network,api.group)
 </tr>
 <tr class="even">
 <td>no-member</td>
-<td>298</td>
+<td>57</td>
 </tr>
 <tr class="odd">
-<td>bad-whitespace</td>
-<td>98</td>
-</tr>
-<tr class="even">
-<td>unused-import</td>
-<td>51</td>
-</tr>
-<tr class="odd">
-<td>logging-not-lazy</td>
-<td>48</td>
-</tr>
-<tr class="even">
 <td>star-args</td>
 <td>42</td>
 </tr>
-<tr class="odd">
-<td>import-error</td>
-<td>25</td>
-</tr>
 <tr class="even">
 <td>invalid-name</td>
-<td>24</td>
+<td>26</td>
 </tr>
 <tr class="odd">
+<td>logging-not-lazy</td>
+<td>23</td>
+</tr>
+<tr class="even">
 <td>line-too-long</td>
 <td>12</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>bare-except</td>
 <td>8</td>
 </tr>
+<tr class="even">
+<td>unused-import</td>
+<td>7</td>
+</tr>
 <tr class="odd">
-<td>attribute-defined-outside-init</td>
-<td>6</td>
+<td>bad-whitespace</td>
+<td>5</td>
 </tr>
 <tr class="even">
 <td>too-many-public-methods</td>
 <td>4</td>
 </tr>
 <tr class="odd">
-<td>no-init</td>
+<td>super-init-not-called</td>
 <td>4</td>
 </tr>
 <tr class="even">
-<td>bad-indentation</td>
-<td>4</td>
-</tr>
-<tr class="odd">
 <td>too-many-branches</td>
 <td>3</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>redefined-builtin</td>
 <td>3</td>
+</tr>
+<tr class="even">
+<td>undefined-variable</td>
+<td>2</td>
 </tr>
 <tr class="odd">
 <td>too-many-statements</td>
@@ -308,70 +287,58 @@ louie (api.controller,api.network,api.group)
 <td>2</td>
 </tr>
 <tr class="odd">
-<td>too-many-instance-attributes</td>
-<td>2</td>
-</tr>
-<tr class="even">
-<td>superfluous-parens</td>
-<td>2</td>
-</tr>
-<tr class="odd">
-<td>no-self-use</td>
-<td>2</td>
-</tr>
-<tr class="even">
 <td>no-name-in-module</td>
 <td>2</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>fixme</td>
 <td>2</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>duplicate-code</td>
 <td>2</td>
 </tr>
-<tr class="odd">
-<td>trailing-whitespace</td>
-<td>1</td>
-</tr>
 <tr class="even">
+<td>attribute-defined-outside-init</td>
+<td>2</td>
+</tr>
+<tr class="odd">
 <td>too-many-lines</td>
 <td>1</td>
 </tr>
-<tr class="odd">
-<td>super-init-not-called</td>
+<tr class="even">
+<td>too-many-instance-attributes</td>
 <td>1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>pointless-string-statement</td>
 <td>1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>parse-error</td>
 <td>1</td>
 </tr>
-<tr class="even">
-<td>missing-final-newline</td>
+<tr class="odd">
+<td>no-self-use</td>
 <td>1</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>missing-docstring</td>
 <td>1</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>interface-not-implemented</td>
 <td>1</td>
 </tr>
-<tr class="odd">
-<td>bad-continuation</td>
+<tr class="even">
+<td>arguments-differ</td>
 <td>1</td>
 </tr>
 </table>
 </div>
 <div>
 <h2>Global evaluation</h2>
-Your code has been rated at -3.69/10 (previous run: 4.97/10, -8.66)</div>
+Your code has been rated at 6.62/10 (previous run: 6.62/10, +0.00)</div>
 <div>
 <h2>Messages</h2>
 <table>
@@ -389,11 +356,11 @@ Your code has been rated at -3.69/10 (previous run: 4.97/10, -8.66)</div>
 <td>&#160;</td>
 <td>1</td>
 <td>0</td>
-<td>error while code parsing: Unable to load file 'lib/__init__.py' ([Errno 2] No such file or directory: 'lib/__init__.py')</td>
+<td>error while code parsing: Unable to load file 'src-lib/libopenzwave/__init__.py' ([Errno 2] No such file or directory: 'src-lib/libopenzwave/__init__.py')</td>
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api</td>
+<td>openzwave</td>
 <td>&#160;</td>
 <td>1</td>
 <td>0</td>
@@ -401,3231 +368,697 @@ Your code has been rated at -3.69/10 (previous run: 4.97/10, -8.66)</div>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api</td>
+<td>openzwave</td>
 <td>&#160;</td>
-<td>3</td>
+<td>26</td>
 <td>0</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>91</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def __init__(self, object_id, network = None, use_cache = True):
-                                          ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>91</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def __init__(self, object_id, network = None, use_cache = True):
-                                                            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>108</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>188</td>
-<td>0</td>
-<td>No space allowed before :
-        if self._use_cache :
-                           ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>189</td>
-<td>0</td>
-<td>No space allowed before :
-            if value :
-                     ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>207</td>
-<td>0</td>
-<td>No space allowed before :
-        if self._use_cache :
-                           ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>225</td>
-<td>0</td>
-<td>No space allowed before :
-        if self._use_cache :
-                           ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>241</td>
-<td>0</td>
-<td>No space allowed before :
-            if str(prop) in self._cached_properties :
-                                                    ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.object</td>
-<td>&#160;</td>
-<td>260</td>
-<td>0</td>
-<td>No space allowed before :
-        if self._use_cache :
-                           ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>79</td>
-<td>0</td>
-<td>Exactly one space required after comma
-          (self.index,  self.label)
-                     ^</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unable to import 'openzwave'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.label</td>
-<td>99</td>
-<td>15</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.label</td>
-<td>99</td>
-<td>51</td>
-<td>Instance of 'ZWaveGroup' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.max_associations</td>
-<td>109</td>
-<td>15</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.max_associations</td>
-<td>109</td>
-<td>56</td>
-<td>Instance of 'ZWaveGroup' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.associations</td>
-<td>120</td>
-<td>15</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.associations</td>
-<td>120</td>
-<td>53</td>
-<td>Instance of 'ZWaveGroup' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.add_association</td>
-<td>136</td>
-<td>8</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.add_association</td>
-<td>136</td>
-<td>45</td>
-<td>Instance of 'ZWaveGroup' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.remove_association</td>
-<td>152</td>
-<td>8</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.group</td>
-<td>ZWaveGroup.remove_association</td>
-<td>152</td>
-<td>48</td>
-<td>Instance of 'ZWaveGroup' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused namedtuple imported from collections</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused import thread</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>28</td>
-<td>0</td>
-<td>Unused import os</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unused import time</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unused All imported from louie</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unused dispatcher imported from louie</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused import libopenzwave</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unused import openzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unused NullLoggingHandler imported from openzwave.object</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.group</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unused ZWaveException imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>40</td>
-<td>0</td>
-<td>No space allowed after bracket
-class ZWaveNode( ZWaveObject,
-               ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>43</td>
-<td>0</td>
-<td>Wrong continued indentation.
-                 ):
-               | ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>51</td>
-<td>0</td>
-<td>No space allowed before bracket
-    def __init__(self, node_id, network ):
-                                        ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>267</td>
-<td>0</td>
-<td>No space allowed before :
-        for cls in commands :
-                            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>313</td>
-<td>0</td>
-<td>No space allowed before :
-        for value in self.values :
-                                 ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>318</td>
-<td>0</td>
-<td>No space allowed before :
-                if self.values[value].command_class not in values :
-                                                                  ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>417</td>
-<td>0</td>
-<td>No space allowed before :
-        if value_id in self.values :
-                                   ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>419</td>
-<td>0</td>
-<td>Unnecessary parens after u'del' keyword</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>435</td>
-<td>0</td>
-<td>Exactly one space required around assignment
-            self.name=value
-                     ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>437</td>
-<td>0</td>
-<td>Exactly one space required around assignment
-            self.location=value
-                         ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>439</td>
-<td>0</td>
-<td>Exactly one space required around assignment
-            self.product_name=value
-                             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>441</td>
-<td>0</td>
-<td>Exactly one space required around assignment
-            self.manufacturer_name=value
-                                  ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>785</td>
-<td>0</td>
-<td>Trailing whitespace</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>808</td>
-<td>0</td>
-<td>Final newline missing</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>31</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unable to import 'openzwave.group'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unable to import 'openzwave.value'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>35</td>
-<td>0</td>
-<td>Unable to import 'openzwave.command'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>36</td>
-<td>0</td>
-<td>Unable to import 'openzwave.command'</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.__init__</td>
-<td>66</td>
+<td>68</td>
 <td>8</td>
 <td>Invalid attribute name "_isReady"</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.__init__</td>
-<td>61</td>
+<td>53</td>
+<td>4</td>
+<td>__init__ method from base class 'ZWaveNodeSensor' is not called</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.__init__</td>
+<td>53</td>
+<td>4</td>
+<td>__init__ method from base class 'ZWaveNodeBasic' is not called</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.__init__</td>
+<td>53</td>
+<td>4</td>
+<td>__init__ method from base class 'ZWaveNodeSwitch' is not called</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.__init__</td>
+<td>53</td>
+<td>4</td>
+<td>__init__ method from base class 'ZWaveNodeSecurity' is not called</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.__init__</td>
+<td>63</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.__str__</td>
-<td>76</td>
-<td>11</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.__str__</td>
-<td>76</td>
-<td>38</td>
-<td>Instance of 'ZWaveNode' has no '_object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.node_id</td>
-<td>86</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>96</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>96</td>
-<td>49</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>96</td>
-<td>63</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>107</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>107</td>
-<td>42</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.name</td>
-<td>107</td>
-<td>56</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>117</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>117</td>
-<td>53</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>117</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>128</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>128</td>
-<td>46</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.location</td>
-<td>128</td>
-<td>60</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>138</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>138</td>
-<td>56</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>138</td>
-<td>70</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>149</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>149</td>
-<td>49</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_name</td>
-<td>149</td>
-<td>63</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_type</td>
-<td>159</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_type</td>
-<td>159</td>
-<td>56</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_type</td>
-<td>159</td>
-<td>70</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_id</td>
-<td>169</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_id</td>
-<td>169</td>
-<td>54</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.product_id</td>
-<td>169</td>
-<td>68</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.capabilities</td>
-<td>190</td>
-<td>27</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.capabilities</td>
-<td>191</td>
-<td>23</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.neighbors</td>
-<td>203</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.neighbors</td>
-<td>203</td>
-<td>54</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.neighbors</td>
-<td>203</td>
-<td>68</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.num_groups</td>
-<td>213</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.num_groups</td>
-<td>213</td>
-<td>50</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.num_groups</td>
-<td>213</td>
-<td>64</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.groups</td>
-<td>230</td>
-<td>46</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.test</td>
-<td>241</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.test</td>
-<td>241</td>
-<td>46</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.test</td>
-<td>241</td>
-<td>60</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.command_classes</td>
-<td>252</td>
-<td>19</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.command_classes</td>
-<td>253</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.command_classes</td>
-<td>253</td>
-<td>61</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.command_classes</td>
-<td>253</td>
-<td>75</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.command_classes_as_string</td>
-<td>268</td>
-<td>28</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.get_command_class_as_string</td>
-<td>280</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>refactor</td>
-<td>api.node</td>
-<td>ZWaveNode.get_command_class_genres</td>
-<td>282</td>
+<td>convention</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.heal</td>
+<td>235</td>
 <td>4</td>
-<td>Method could be a function</td>
+<td>Invalid argument name "upNodeRoute"</td>
+</tr>
+<tr class="even">
+<td>error</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.heal</td>
+<td>249</td>
+<td>8</td>
+<td>Instance of 'ZWaveNode' has no 'manager' member</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.get_values_by_command_classes</td>
-<td>292</td>
+<td>311</td>
 <td>8</td>
 <td>Redefining built-in 'type'</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.get_values</td>
-<td>340</td>
+<td>359</td>
 <td>8</td>
 <td>Redefining built-in 'type'</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.add_value</td>
-<td>382</td>
-<td>45</td>
-<td>Instance of 'ZWaveNode' has no 'network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.refresh_value</td>
-<td>405</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>warning</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.remove_value</td>
-<td>418</td>
+<td>437</td>
 <td>12</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_id</td>
-<td>462</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_id</td>
-<td>462</td>
-<td>59</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_id</td>
-<td>462</td>
-<td>73</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>472</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>472</td>
-<td>61</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>472</td>
-<td>75</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>483</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>483</td>
-<td>54</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.manufacturer_name</td>
-<td>483</td>
-<td>68</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.generic</td>
-<td>493</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.generic</td>
-<td>493</td>
-<td>52</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.generic</td>
-<td>493</td>
-<td>66</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.basic</td>
-<td>503</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.basic</td>
-<td>503</td>
-<td>50</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.basic</td>
-<td>503</td>
-<td>64</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.specific</td>
-<td>514</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.specific</td>
-<td>514</td>
-<td>53</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.specific</td>
-<td>514</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.security</td>
-<td>525</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.security</td>
-<td>525</td>
-<td>53</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.security</td>
-<td>525</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.version</td>
-<td>536</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.version</td>
-<td>536</td>
-<td>52</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.version</td>
-<td>536</td>
-<td>66</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_listening_device</td>
-<td>546</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_listening_device</td>
-<td>546</td>
-<td>59</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_listening_device</td>
-<td>546</td>
-<td>73</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_beaming_device</td>
-<td>556</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_beaming_device</td>
-<td>556</td>
-<td>57</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_beaming_device</td>
-<td>556</td>
-<td>71</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_frequent_listening_device</td>
-<td>566</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_frequent_listening_device</td>
-<td>566</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_frequent_listening_device</td>
-<td>566</td>
-<td>81</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_security_device</td>
-<td>576</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_security_device</td>
-<td>576</td>
-<td>58</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_security_device</td>
-<td>576</td>
-<td>72</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_routing_device</td>
-<td>586</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_routing_device</td>
-<td>586</td>
-<td>57</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.is_routing_device</td>
-<td>586</td>
-<td>71</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.max_baud_rate</td>
-<td>651</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.max_baud_rate</td>
-<td>651</td>
-<td>56</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.max_baud_rate</td>
-<td>651</td>
-<td>70</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.refresh_info</td>
-<td>667</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.refresh_info</td>
-<td>667</td>
-<td>53</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.refresh_info</td>
-<td>667</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
 <td>warning</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.request_all_config_params</td>
-<td>674</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_all_config_params</td>
-<td>674</td>
-<td>66</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_all_config_params</td>
-<td>675</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_all_config_params</td>
-<td>675</td>
-<td>53</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_all_config_params</td>
-<td>675</td>
-<td>67</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.node</td>
-<td>ZWaveNode.request_config_param</td>
-<td>695</td>
+<td>693</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_config_param</td>
-<td>695</td>
-<td>75</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_config_param</td>
-<td>696</td>
-<td>8</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_config_param</td>
-<td>696</td>
-<td>49</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.request_config_param</td>
-<td>696</td>
-<td>63</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
 <td>warning</td>
-<td>api.node</td>
-<td>ZWaveNode.set_config_param</td>
-<td>718</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.request_config_param</td>
+<td>714</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.node</td>
+<td>warning</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.set_config_param</td>
-<td>718</td>
-<td>68</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
+<td>737</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.set_config_param</td>
-<td>719</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.set_config_param</td>
-<td>719</td>
-<td>52</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.set_config_param</td>
-<td>719</td>
-<td>66</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.isNodeAwake</td>
-<td>739</td>
+<td>758</td>
 <td>4</td>
 <td>Invalid method name "isNodeAwake"</td>
 </tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeAwake</td>
-<td>747</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeAwake</td>
-<td>747</td>
-<td>49</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeAwake</td>
-<td>747</td>
-<td>63</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.isNodeFailed</td>
-<td>750</td>
+<td>769</td>
 <td>4</td>
 <td>Invalid attribute name "isNodeFailed"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeFailed</td>
-<td>758</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeFailed</td>
-<td>758</td>
-<td>50</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeFailed</td>
-<td>758</td>
-<td>64</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.getNodeQueryStage</td>
-<td>761</td>
+<td>780</td>
 <td>4</td>
 <td>Invalid attribute name "getNodeQueryStage"</td>
 </tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.getNodeQueryStage</td>
-<td>768</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.getNodeQueryStage</td>
-<td>768</td>
-<td>55</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.getNodeQueryStage</td>
-<td>768</td>
-<td>69</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.isReady</td>
-<td>771</td>
+<td>790</td>
 <td>4</td>
 <td>Invalid attribute name "isReady"</td>
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.isReady</td>
-<td>781</td>
+<td>800</td>
 <td>4</td>
 <td>Invalid attribute name "isReady"</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode.isNodeInfoReceived</td>
-<td>793</td>
+<td>812</td>
 <td>4</td>
 <td>Invalid attribute name "isNodeInfoReceived"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeInfoReceived</td>
-<td>800</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeInfoReceived</td>
-<td>800</td>
-<td>56</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.isNodeInfoReceived</td>
-<td>800</td>
-<td>70</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.type</td>
-<td>808</td>
-<td>15</td>
-<td>Instance of 'ZWaveNode' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.type</td>
-<td>808</td>
-<td>49</td>
-<td>Instance of 'ZWaveNode' has no 'home_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.node</td>
-<td>ZWaveNode.type</td>
-<td>808</td>
-<td>63</td>
-<td>Instance of 'ZWaveNode' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
 <td>refactor</td>
-<td>api.node</td>
+<td>openzwave.node</td>
 <td>ZWaveNode</td>
-<td>40</td>
+<td>43</td>
 <td>0</td>
-<td>Too many public methods (49/20)</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused import libopenzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused namedtuple imported from collections</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>28</td>
-<td>0</td>
-<td>Unused import thread</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unused import time</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>31</td>
-<td>0</td>
-<td>Unused ZWaveCommandClassException imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>31</td>
-<td>0</td>
-<td>Unused ZWaveException imported from openzwave.object</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused NullLoggingHandler imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.node</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused ZWaveNodeInterface imported from openzwave.object</td>
+<td>Too many public methods (50/20)</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.scene</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>63</td>
-<td>0</td>
-<td>Exactly one space required after comma
-          (self.scene_id,  self.label)
-                        ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>108</td>
-<td>0</td>
-<td>No space allowed before :
-        if scene_id != 0 :
-                         ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>158</td>
-<td>0</td>
-<td>Exactly one space required after comma
-            ret[val] = {'value':value,'data':values[val]}
-                                     ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>178</td>
-<td>0</td>
-<td>Exactly one space required after comma
-                ret[value.node.node_id][val] = {'value':value,'data':values[val]}
-                                                             ^</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unable to import 'openzwave'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.scene</td>
-<td>ZWaveScene.__init__</td>
-<td>52</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.label</td>
-<td>83</td>
-<td>15</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.label</td>
-<td>83</td>
-<td>51</td>
-<td>Instance of 'ZWaveScene' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.label</td>
-<td>94</td>
-<td>8</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.label</td>
-<td>94</td>
-<td>44</td>
-<td>Instance of 'ZWaveScene' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.create</td>
-<td>107</td>
-<td>19</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.add_value</td>
-<td>124</td>
-<td>14</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.set_value</td>
-<td>139</td>
-<td>14</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.get_values</td>
-<td>153</td>
-<td>17</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.get_values</td>
-<td>157</td>
-<td>20</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.get_values_by_node</td>
-<td>170</td>
-<td>17</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.get_values_by_node</td>
-<td>174</td>
-<td>20</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.remove_value</td>
-<td>191</td>
-<td>15</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.activate</td>
-<td>201</td>
-<td>15</td>
-<td>Instance of 'ZWaveScene' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.scene</td>
-<td>ZWaveScene.activate</td>
-<td>201</td>
-<td>51</td>
-<td>Instance of 'ZWaveScene' has no 'object_id' member</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.scene</td>
-<td>ZWaveScene.create</td>
-<td>109</td>
-<td>12</td>
-<td>Attribute '_object_id' defined outside __init__</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused import libopenzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused namedtuple imported from collections</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>28</td>
-<td>0</td>
-<td>Unused import thread</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unused import time</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.scene</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unused import openzwave</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>54</td>
+<td>59</td>
 <td>0</td>
 <td>Line too long (186/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>62</td>
+<td>67</td>
 <td>0</td>
 <td>Line too long (179/140)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>72</td>
+<td>77</td>
 <td>0</td>
 <td>Line too long (147/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>73</td>
+<td>78</td>
 <td>0</td>
 <td>Line too long (158/140)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>74</td>
+<td>79</td>
 <td>0</td>
 <td>Line too long (156/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>76</td>
+<td>81</td>
 <td>0</td>
 <td>Line too long (161/140)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>142</td>
+<td>147</td>
 <td>0</td>
 <td>Line too long (141/140)</td>
 </tr>
-<tr class="even">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>260</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>274</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>288</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>417</td>
-<td>0</td>
-<td>Exactly one space required around assignment
-        self._network.state=self._network.STATE_RESETTED
-                           ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>444</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def begin_command_replication_send(self, high_power = False):
-                                                        ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>470</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def begin_command_add_device(self, high_power = False):
-                                                  ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>486</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def begin_command_remove_device(self, high_power = False):
-                                                     ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>570</td>
-<td>0</td>
-<td>No space allowed around keyword argument assignment
-    def begin_command_transfer_primary_role(self, high_power = False):
-                                                             ^</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unable to import 'openzwave'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unable to import 'openzwave.node'</td>
-</tr>
 <tr class="odd">
 <td>error</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>&#160;</td>
-<td>34</td>
+<td>30</td>
 <td>0</td>
 <td>No name 'PyStatDriver' in module 'libopenzwave'</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.__str__</td>
-<td>142</td>
-<td>11</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.__str__</td>
-<td>142</td>
-<td>38</td>
-<td>Instance of 'ZWaveController' has no '_object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.library_type_name</td>
-<td>203</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.library_type_name</td>
-<td>203</td>
-<td>56</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.library_version</td>
-<td>225</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.library_version</td>
-<td>225</td>
-<td>55</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.python_library_version</td>
-<td>236</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.ozw_library_version</td>
-<td>247</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.stats</td>
-<td>328</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.stats</td>
-<td>328</td>
-<td>57</td>
-<td>Instance of 'ZWaveController' has no 'home_id' member</td>
-</tr>
-<tr class="even">
 <td>refactor</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.get_stats_label</td>
-<td>330</td>
+<td>335</td>
 <td>4</td>
 <td>Method could be a function</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_primary_controller</td>
-<td>370</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_primary_controller</td>
-<td>370</td>
-<td>57</td>
-<td>Instance of 'ZWaveController' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_static_update_controller</td>
-<td>380</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_static_update_controller</td>
-<td>380</td>
-<td>62</td>
-<td>Instance of 'ZWaveController' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_bridge_controller</td>
-<td>390</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.is_bridge_controller</td>
-<td>390</td>
-<td>56</td>
-<td>Instance of 'ZWaveController' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.send_queue_count</td>
-<td>401</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.send_queue_count</td>
-<td>401</td>
-<td>55</td>
-<td>Instance of 'ZWaveController' has no 'home_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>417</td>
-<td>8</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>417</td>
-<td>28</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>warning</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.hard_reset</td>
-<td>418</td>
+<td>423</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>418</td>
-<td>24</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>419</td>
-<td>26</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>420</td>
-<td>8</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.hard_reset</td>
-<td>420</td>
-<td>46</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.soft_reset</td>
-<td>429</td>
-<td>8</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.soft_reset</td>
-<td>429</td>
-<td>50</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_send_node_information</td>
-<td>431</td>
+<td>436</td>
 <td>4</td>
 <td>Invalid method name "begin_command_send_node_information"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_send_node_information</td>
-<td>441</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_send_node_information</td>
-<td>441</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_replication_send</td>
-<td>456</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_replication_send</td>
-<td>456</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_request_network_update</td>
-<td>459</td>
+<td>464</td>
 <td>4</td>
 <td>Invalid method name "begin_command_request_network_update"</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_request_network_update</td>
-<td>467</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_request_network_update</td>
-<td>467</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_add_device</td>
-<td>483</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_add_device</td>
-<td>483</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_remove_device</td>
-<td>499</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_remove_device</td>
-<td>499</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_remove_failed_node</td>
-<td>502</td>
+<td>507</td>
 <td>4</td>
 <td>Invalid method name "begin_command_remove_failed_node"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_remove_failed_node</td>
-<td>515</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_remove_failed_node</td>
-<td>515</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_has_node_failed</td>
-<td>528</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_has_node_failed</td>
-<td>528</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_replace_failed_node</td>
-<td>531</td>
+<td>536</td>
 <td>4</td>
 <td>Invalid method name "begin_command_replace_failed_node"</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_replace_failed_node</td>
-<td>542</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_replace_failed_node</td>
-<td>542</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_request_node_neigbhor_update</td>
-<td>545</td>
+<td>550</td>
 <td>4</td>
 <td>Invalid method name "begin_command_request_node_neigbhor_update"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_request_node_neigbhor_update</td>
-<td>556</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_request_node_neigbhor_update</td>
-<td>556</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_create_new_primary</td>
-<td>559</td>
+<td>564</td>
 <td>4</td>
 <td>Invalid method name "begin_command_create_new_primary"</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_create_new_primary</td>
-<td>567</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_create_new_primary</td>
-<td>567</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_transfer_primary_role</td>
-<td>570</td>
+<td>575</td>
 <td>4</td>
 <td>Invalid method name "begin_command_transfer_primary_role"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_transfer_primary_role</td>
-<td>584</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_transfer_primary_role</td>
-<td>584</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_receive_configuration</td>
-<td>587</td>
+<td>592</td>
 <td>4</td>
 <td>Invalid method name "begin_command_receive_configuration"</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_receive_configuration</td>
-<td>595</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_receive_configuration</td>
-<td>595</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_assign_return_route</td>
-<td>598</td>
+<td>603</td>
 <td>4</td>
 <td>Invalid method name "begin_command_assign_return_route"</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_assign_return_route</td>
-<td>610</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_assign_return_route</td>
-<td>610</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.begin_command_delete_all_return_routes</td>
-<td>613</td>
+<td>618</td>
 <td>4</td>
 <td>Invalid method name "begin_command_delete_all_return_routes"</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_delete_all_return_routes</td>
-<td>623</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_delete_all_return_routes</td>
-<td>623</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_create_button</td>
-<td>638</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_create_button</td>
-<td>638</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_delete_button</td>
-<td>653</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.begin_command_delete_button</td>
-<td>653</td>
-<td>60</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.cancel_command</td>
-<td>661</td>
-<td>15</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.cancel_command</td>
-<td>661</td>
-<td>61</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>warning</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.zwcallback</td>
-<td>674</td>
+<td>679</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.zwcallback</td>
-<td>678</td>
+<td>683</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.zwcallback</td>
-<td>679</td>
-<td>66</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>warning</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController.zwcallback</td>
-<td>680</td>
+<td>685</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
-<td>error</td>
-<td>api.controller</td>
-<td>ZWaveController.zwcallback</td>
-<td>681</td>
-<td>62</td>
-<td>Instance of 'ZWaveController' has no '_network' member</td>
-</tr>
 <tr class="odd">
 <td>refactor</td>
-<td>api.controller</td>
+<td>openzwave.controller</td>
 <td>ZWaveController</td>
-<td>38</td>
+<td>43</td>
 <td>0</td>
 <td>Too many public methods (39/20)</td>
 </tr>
 <tr class="even">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused All imported from louie</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unused import libopenzwave</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unused import openzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused ZWaveTypeException imported from openzwave.object</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused ZWaveException imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.controller</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unused ZWaveNode imported from openzwave.node</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>284</td>
-<td>0</td>
-<td>Bad indentation. Found 16 spaces, expected 12</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>319</td>
-<td>0</td>
-<td>Bad indentation. Found 16 spaces, expected 12</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>352</td>
-<td>0</td>
-<td>Exactly one space required around comparison
-        if res is not None and len(res)&amp;gt;0 :
-                                       ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>352</td>
-<td>0</td>
-<td>No space allowed before :
-        if res is not None and len(res)&amp;gt;0 :
-                                          ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>354</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>412</td>
-<td>0</td>
-<td>No space allowed before :
-                if self.values[switch].instance == instance :
-                                                            ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>415</td>
-<td>0</td>
-<td>No space allowed before :
-                if self.values[dimmer].instance == instance :
-                                                            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>418</td>
-<td>0</td>
-<td>No space allowed before :
-                    else :
-                         ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>537</td>
-<td>0</td>
-<td>No space allowed before :
-            elif value &amp;lt; 0 :
-                           ^</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unable to import 'openzwave.group'</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>ZWaveNodeBasic</td>
-<td>38</td>
-<td>0</td>
-<td>Class has no __init__ method</td>
-</tr>
-<tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeBasic.get_battery_level</td>
-<td>282</td>
-<td>23</td>
-<td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.command</td>
-<td>ZWaveNodeBasic.get_battery_level</td>
-<td>284</td>
+<td>283</td>
 <td>23</td>
 <td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
+<td>ZWaveNodeBasic.get_battery_level</td>
+<td>285</td>
+<td>19</td>
+<td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
+</tr>
+<tr class="even">
+<td>error</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeBasic.get_battery_levels</td>
-<td>302</td>
+<td>303</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeBasic' has no 'get_values' member</td>
 </tr>
+<tr class="odd">
+<td>error</td>
+<td>openzwave.command</td>
+<td>ZWaveNodeBasic.get_power_level</td>
+<td>318</td>
+<td>23</td>
+<td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
+</tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeBasic.get_power_level</td>
-<td>317</td>
-<td>23</td>
+<td>320</td>
+<td>19</td>
 <td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
-<td>ZWaveNodeBasic.get_power_level</td>
-<td>319</td>
-<td>23</td>
-<td>Instance of 'ZWaveNodeBasic' has no 'values' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeBasic.get_power_levels</td>
-<td>337</td>
+<td>338</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeBasic' has no 'get_values' member</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeBasic.can_wake_up</td>
-<td>351</td>
+<td>352</td>
 <td>14</td>
 <td>Instance of 'ZWaveNodeBasic' has no 'get_values' member</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>ZWaveNodeSwitch</td>
-<td>357</td>
-<td>0</td>
-<td>Class has no __init__ method</td>
-</tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switches_all</td>
-<td>379</td>
+<td>380</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'get_values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_switch_all</td>
-<td>394</td>
+<td>395</td>
 <td>12</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_state</td>
-<td>410</td>
+<td>411</td>
 <td>23</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_state</td>
-<td>412</td>
+<td>413</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_state</td>
-<td>413</td>
+<td>414</td>
 <td>27</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_state</td>
-<td>415</td>
+<td>416</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_state</td>
-<td>416</td>
+<td>417</td>
 <td>23</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_item</td>
-<td>434</td>
+<td>435</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_all_items</td>
-<td>449</td>
+<td>450</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switches</td>
-<td>468</td>
+<td>469</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'get_values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_switch</td>
-<td>483</td>
+<td>484</td>
 <td>12</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_switch_state</td>
-<td>499</td>
+<td>500</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_dimmers</td>
-<td>518</td>
+<td>519</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'get_values' member</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_dimmer</td>
-<td>533</td>
+<td>534</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_dimmer</td>
-<td>539</td>
+<td>540</td>
 <td>12</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_dimmer</td>
-<td>543</td>
-<td>34</td>
-<td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
+<td>544</td>
+<td>25</td>
+<td>Undefined variable 'Timer'</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.set_dimmer</td>
-<td>545</td>
+<td>544</td>
 <td>34</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
+<td>ZWaveNodeSwitch.set_dimmer</td>
+<td>546</td>
+<td>25</td>
+<td>Undefined variable 'Timer'</td>
+</tr>
+<tr class="odd">
+<td>error</td>
+<td>openzwave.command</td>
+<td>ZWaveNodeSwitch.set_dimmer</td>
+<td>546</td>
+<td>34</td>
+<td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
+</tr>
+<tr class="even">
+<td>error</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSwitch.get_dimmer_level</td>
-<td>562</td>
+<td>563</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSwitch' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.command</td>
-<td>ZWaveNodeSensor</td>
-<td>565</td>
-<td>0</td>
-<td>Class has no __init__ method</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSensor.get_sensors</td>
-<td>571</td>
+<td>572</td>
 <td>26</td>
 <td>Redefining built-in 'type'</td>
 </tr>
-<tr class="odd">
-<td>error</td>
-<td>api.command</td>
-<td>ZWaveNodeSensor.get_sensors</td>
-<td>591</td>
-<td>22</td>
-<td>Instance of 'ZWaveNodeSensor' has no 'get_values' member</td>
-</tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSensor.get_sensors</td>
-<td>593</td>
+<td>592</td>
 <td>22</td>
 <td>Instance of 'ZWaveNodeSensor' has no 'get_values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSensor.get_sensors</td>
-<td>595</td>
+<td>594</td>
 <td>22</td>
 <td>Instance of 'ZWaveNodeSensor' has no 'get_values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
+<td>ZWaveNodeSensor.get_sensors</td>
+<td>596</td>
+<td>22</td>
+<td>Instance of 'ZWaveNodeSensor' has no 'get_values' member</td>
+</tr>
+<tr class="odd">
+<td>error</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSensor.get_sensor_value</td>
-<td>612</td>
+<td>613</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSensor' has no 'values' member</td>
 </tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>ZWaveNodeSecurity</td>
-<td>615</td>
-<td>0</td>
-<td>Class has no __init__ method</td>
-</tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSecurity.get_protections</td>
-<td>636</td>
+<td>637</td>
 <td>15</td>
 <td>Instance of 'ZWaveNodeSecurity' has no 'get_values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSecurity.set_protection</td>
-<td>651</td>
+<td>652</td>
 <td>12</td>
 <td>Instance of 'ZWaveNodeSecurity' has no 'values' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSecurity.get_protection_item</td>
-<td>667</td>
+<td>668</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSecurity' has no 'values' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.command</td>
+<td>openzwave.command</td>
 <td>ZWaveNodeSecurity.get_protection_items</td>
-<td>682</td>
+<td>683</td>
 <td>19</td>
 <td>Instance of 'ZWaveNodeSecurity' has no 'values' member</td>
 </tr>
 <tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused import libopenzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused namedtuple imported from collections</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>28</td>
-<td>0</td>
-<td>Unused import thread</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>30</td>
-<td>0</td>
-<td>Unused import time</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused ZWaveCommandClassException imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unused ZWaveException imported from openzwave.object</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unused NullLoggingHandler imported from openzwave.object</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unused ZWaveObject imported from openzwave.object</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.command</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unused ZWaveGroup imported from openzwave.group</td>
-</tr>
-<tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>164</td>
+<td>172</td>
 <td>0</td>
 <td>Line too long (630/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>197</td>
+<td>205</td>
 <td>0</td>
 <td>Line too long (211/140)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>201</td>
+<td>209</td>
 <td>0</td>
 <td>Line too long (209/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>204</td>
+<td>212</td>
 <td>0</td>
 <td>Line too long (213/140)</td>
 </tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>301</td>
-<td>0</td>
-<td>Exactly one space required after comma
-          (self.home_id_str,  self.controller)
-                           ^</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>329</td>
-<td>0</td>
-<td>Exactly one space required after comma
-        for i in range(0,30):
-                        ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>335</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>342</td>
+<td>351</td>
 <td>0</td>
 <td>No space allowed before :
             if fire :
@@ -3633,2207 +1066,1062 @@ class ZWaveNode( ZWaveObject,
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>347</td>
+<td>887</td>
 <td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>360</td>
-<td>0</td>
-<td>Bad indentation. Found 11 spaces, expected 12</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>392</td>
-<td>0</td>
-<td>Exactly one space required around comparison
-        return self._state&amp;gt;=self.STATE_READY
-                          ^^</td>
+<td>No space allowed before comma
+            logging.info('home_id 0x%0.8x, controller node id is %d' , self.home_id, self._controller.node_id)
+                                                                     ^</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>519</td>
-<td>0</td>
-<td>No space allowed before :
-        if state :
-                 ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>521</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>547</td>
-<td>0</td>
-<td>No space allowed before :
-            if value_id in self.nodes[node].values :
-                                                   ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>585</td>
-<td>0</td>
-<td>No space allowed before :
-            for val in node.values.itervalues() :
-                                                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>602</td>
-<td>0</td>
-<td>No space allowed before :
-        if self.state &amp;lt; self.STATE_AWAKED :
-                                          ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>604</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>618</td>
-<td>0</td>
-<td>No space allowed before :
-        for scene_id in set_scenes :
-                                   ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>709</td>
+<td>888</td>
 <td>0</td>
 <td>No space allowed before bracket
-    def set_poll_interval(self, milliseconds, bIntervalBetweenPolls ):
-                                                                    ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>853</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
+            logging.debug('Network %s', self )
+                                             ^</td>
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>859</td>
-<td>0</td>
-<td>No space allowed before bracket
-            logging.info('Driver ready using library %s' % self._controller.library_description )
-                                                                                                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>861</td>
-<td>0</td>
-<td>No space allowed before bracket
-            logging.debug('Network %s' % self )
-                                              ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>874</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>893</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>901</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>916</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>921</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>970</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>977</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1070</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1074</td>
-<td>0</td>
-<td>Unnecessary parens after u'del' keyword</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1078</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1167</td>
-<td>0</td>
-<td>No space allowed before :
-        try :
-            ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1168</td>
-<td>0</td>
-<td>No space allowed before :
-            if self._state &amp;lt; self.STATE_AWAKED :
-                                               ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1176</td>
-<td>0</td>
-<td>No space allowed before :
-        finally :
-                ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1364</td>
+<td>1391</td>
 <td>0</td>
 <td>Exactly one space required around assignment
         val=self.nodes[args['nodeId']].values[args['valueId']['id']]
            ^</td>
 </tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>1365</td>
-<td>0</td>
-<td>No space allowed before :
-        if self.nodes[args['nodeId']].remove_value(args['valueId']['id']) :
-                                                                          ^</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
 <td>1</td>
 <td>0</td>
-<td>Too many lines in module (1474/1000)</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>33</td>
-<td>0</td>
-<td>Unable to import 'openzwave'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>34</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>35</td>
-<td>0</td>
-<td>Unable to import 'openzwave.controller'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>36</td>
-<td>0</td>
-<td>Unable to import 'openzwave.node'</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>37</td>
-<td>0</td>
-<td>Unable to import 'openzwave.option'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>38</td>
-<td>0</td>
-<td>Unable to import 'openzwave.scene'</td>
+<td>Too many lines in module (1471/1000)</td>
 </tr>
 <tr class="odd">
 <td>refactor</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork</td>
-<td>42</td>
+<td>50</td>
 <td>0</td>
 <td>Too many instance attributes (10/7)</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork</td>
-<td>250</td>
+<td>258</td>
 <td>4</td>
 <td>Invalid class attribute name "SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE"</td>
 </tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork</td>
-<td>254</td>
+<td>262</td>
 <td>4</td>
 <td>Invalid class attribute name "SIGNAL_ALL_NODES_QUERIED_SOME_DEAD"</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.__init__</td>
-<td>284</td>
+<td>292</td>
 <td>24</td>
 <td>Module 'libopenzwave' has no 'PyManager' member</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>334</td>
+<td>343</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>344</td>
+<td>353</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>343</td>
+<td>352</td>
 <td>16</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>346</td>
+<td>355</td>
 <td>12</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork.home_id</td>
+<td>373</td>
+<td>4</td>
+<td>Arguments number differs from overridden method</td>
+</tr>
+<tr class="even">
 <td>refactor</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.state_str</td>
-<td>433</td>
+<td>442</td>
 <td>4</td>
 <td>Too many return statements (7/6)</td>
 </tr>
-<tr class="even">
-<td>error</td>
-<td>api.network</td>
-<td>ZWaveNetwork.scene_exists</td>
-<td>650</td>
-<td>15</td>
-<td>Instance of 'ZWaveNetwork' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.network</td>
-<td>ZWaveNetwork.scenes_count</td>
-<td>661</td>
-<td>15</td>
-<td>Instance of 'ZWaveNetwork' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.network</td>
-<td>ZWaveNetwork.remove_scene</td>
-<td>673</td>
-<td>15</td>
-<td>Instance of 'ZWaveNetwork' has no '_network' member</td>
-</tr>
 <tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork.heal</td>
+<td>543</td>
+<td>4</td>
+<td>Invalid argument name "upNodeRoute"</td>
+</tr>
+<tr class="even">
+<td>convention</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.set_poll_interval</td>
-<td>709</td>
+<td>736</td>
 <td>4</td>
 <td>Invalid argument name "bIntervalBetweenPolls"</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>error</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>775</td>
+<td>802</td>
 <td>12</td>
 <td>Instance of 'ZWaveNetwork' has no '_handleNodeReady' member</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>refactor</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>730</td>
+<td>757</td>
 <td>4</td>
 <td>Too many branches (31/12)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>refactor</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>730</td>
+<td>757</td>
 <td>4</td>
 <td>Too many statements (65/50)</td>
 </tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_failed</td>
-<td>831</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_failed</td>
-<td>836</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_failed</td>
-<td>837</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>851</td>
+<td>858</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_failed</td>
+<td>863</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_failed</td>
+<td>864</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>871</td>
+<td>878</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_ready</td>
+<td>898</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>859</td>
-<td>12</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>860</td>
-<td>12</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>861</td>
-<td>12</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>862</td>
+<td>889</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>865</td>
+<td>892</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>867</td>
+<td>894</td>
 <td>25</td>
 <td>Module 'libopenzwave' has no 'PyControllerState' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>868</td>
+<td>895</td>
 <td>27</td>
 <td>Module 'libopenzwave' has no 'PyControllerState' member</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>869</td>
+<td>896</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>873</td>
+<td>900</td>
 <td>12</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_reset</td>
-<td>892</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_reset</td>
-<td>897</td>
-<td>12</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_reset</td>
-<td>899</td>
-<td>12</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_removed</td>
-<td>915</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_removed</td>
 <td>919</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_reset</td>
+<td>924</td>
+<td>12</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_reset</td>
+<td>926</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_group</td>
-<td>936</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_removed</td>
+<td>942</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_group</td>
-<td>937</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node</td>
-<td>952</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node</td>
-<td>953</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_added</td>
-<td>969</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_added</td>
-<td>974</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_removed</td>
+<td>946</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_group</td>
+<td>964</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node</td>
+<td>979</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node</td>
+<td>980</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_added</td>
+<td>996</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_added</td>
+<td>1001</td>
+<td>12</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_scene_event</td>
-<td>990</td>
+<td>1017</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_scene_event</td>
-<td>991</td>
+<td>1018</td>
 <td>8</td>
 <td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_event</td>
-<td>1007</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_event</td>
-<td>1008</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_naming</td>
-<td>1022</td>
+<td>1034</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_naming</td>
-<td>1023</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_new</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_event</td>
 <td>1035</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_naming</td>
+<td>1049</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_naming</td>
+<td>1050</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_new</td>
-<td>1036</td>
+<td>1062</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_new</td>
+<td>1063</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_node_protocol_info</td>
+<td>1079</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_protocol_info</td>
-<td>1051</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_protocol_info</td>
-<td>1052</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_removed</td>
-<td>1069</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_removed</td>
-<td>1075</td>
+<td>1102</td>
 <td>16</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_essential_node_queries_complete</td>
-<td>1081</td>
+<td>1108</td>
 <td>4</td>
 <td>Invalid method name "_handle_essential_node_queries_complete"</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_essential_node_queries_complete</td>
-<td>1092</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_essential_node_queries_complete</td>
-<td>1093</td>
+<td>1120</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_queries_complete</td>
-<td>1109</td>
+<td>1139</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_node_queries_complete</td>
-<td>1112</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried</td>
+<td>1157</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_all_nodes_queried</td>
-<td>1128</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried</td>
-<td>1130</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried</td>
-<td>1131</td>
+<td>1158</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1133</td>
+<td>1160</td>
 <td>4</td>
 <td>Invalid method name "_handle_all_nodes_queried_some_dead"</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1145</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1147</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1148</td>
+<td>1174</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1165</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
+<td>1175</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1173</td>
+<td>1200</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1170</td>
+<td>1197</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1171</td>
+<td>1198</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1175</td>
-<td>12</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_polling_disabled</td>
-<td>1190</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_polling_disabled</td>
-<td>1191</td>
+<td>1218</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_polling_enabled</td>
-<td>1205</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_polling_enabled</td>
-<td>1206</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_create_button</td>
-<td>1219</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_create_button</td>
-<td>1220</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_delete_button</td>
 <td>1233</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_delete_button</td>
-<td>1234</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_button_on</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_create_button</td>
 <td>1247</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_button_on</td>
-<td>1248</td>
-<td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_button_off</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_delete_button</td>
 <td>1261</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_button_on</td>
+<td>1275</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_button_off</td>
-<td>1262</td>
+<td>1289</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value</td>
-<td>1280</td>
+<td>1307</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_added</td>
-<td>1301</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_value_added</td>
-<td>1303</td>
+<td>1330</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_changed</td>
-<td>1322</td>
+<td>1351</td>
 <td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
+<td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_value_changed</td>
-<td>1324</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_value_refreshed</td>
+<td>1371</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_value_refreshed</td>
-<td>1342</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_value_refreshed</td>
-<td>1344</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_removed</td>
-<td>1363</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_value_removed</td>
-<td>1366</td>
+<td>1393</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_notification</td>
-<td>1381</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_notification</td>
-<td>1382</td>
+<td>1409</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_msg_complete</td>
-<td>1395</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_msg_complete</td>
-<td>1396</td>
+<td>1423</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork.nodes</td>
-<td>504</td>
-<td>12</td>
-<td>Attribute '_nodes' defined outside __init__</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork.nodes</td>
-<td>506</td>
+<td>513</td>
 <td>12</td>
 <td>Attribute '_nodes' defined outside __init__</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork.home_id</td>
-<td>372</td>
-<td>8</td>
-<td>Attribute '_object_id' defined outside __init__</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>852</td>
-<td>8</td>
-<td>Attribute '_object_id' defined outside __init__</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1166</td>
-<td>8</td>
-<td>Attribute '_object_id' defined outside __init__</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork.nodes</td>
+<td>515</td>
+<td>12</td>
+<td>Attribute '_nodes' defined outside __init__</td>
 </tr>
 <tr class="odd">
 <td>refactor</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork</td>
-<td>42</td>
+<td>50</td>
 <td>0</td>
-<td>Too many public methods (26/20)</td>
+<td>Too many public methods (27/20)</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>1443</td>
+<td>1470</td>
 <td>-1</td>
 <td>String statement has no effect</td>
 </tr>
 <tr class="odd">
-<td>refactor</td>
-<td>api.network</td>
-<td>ZWaveTestNetwork</td>
-<td>1445</td>
-<td>0</td>
-<td>Too many instance attributes (8/7)</td>
-</tr>
-<tr class="even">
 <td>warning</td>
-<td>api.network</td>
-<td>ZWaveTestNetwork.__init__</td>
-<td>1451</td>
-<td>4</td>
-<td>__init__ method from base class 'ZWaveNetwork' is not called</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.network</td>
-<td>ZWaveTestNetwork.__init__</td>
-<td>1468</td>
-<td>24</td>
-<td>Module 'libopenzwave' has no 'PyManager' member</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
 <td>26</td>
 <td>0</td>
 <td>Unused namedtuple imported from collections</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
 <td>27</td>
 <td>0</td>
 <td>Unused import thread</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
 <td>29</td>
 <td>0</td>
 <td>Unused All imported from louie</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>33</td>
+<td>32</td>
 <td>0</td>
 <td>Unused import openzwave</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>34</td>
+<td>33</td>
 <td>0</td>
 <td>Unused NullLoggingHandler imported from openzwave.object</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
-<td>api.network</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
-<td>34</td>
+<td>33</td>
 <td>0</td>
 <td>Unused ZWaveTypeException imported from openzwave.object</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>api.network</td>
-<td>&#160;</td>
-<td>37</td>
-<td>0</td>
-<td>Unused ZWaveOption imported from openzwave.option</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.network</td>
 <td>&#160;</td>
 <td>36</td>
 <td>0</td>
-<td>TODO: don't report controller node as sleeping</td>
+<td>Unused ZWaveOption imported from openzwave.option</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>&#160;</td>
-<td>37</td>
+<td>39</td>
+<td>0</td>
+<td>TODO: don't report controller node as sleeping</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.value</td>
+<td>&#160;</td>
+<td>40</td>
 <td>0</td>
 <td>TODO: allow value identification by device/index/instance</td>
 </tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>119</td>
-<td>0</td>
-<td>No space allowed before bracket
-          separator, self.index )
-                                ^</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>308</td>
-<td>0</td>
-<td>No space allowed before :
-        if self.is_read_only :
-                             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>313</td>
-<td>0</td>
-<td>Exactly one space required after comma
-            return "A byte between %s and %s" % (self.min,self.max)
-                                                         ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>317</td>
-<td>0</td>
-<td>Exactly one space required after comma
-            return "An integer between %s and %s" % (self.min,self.max)
-                                                             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>319</td>
-<td>0</td>
-<td>Exactly one space required after comma
-            return "A short between %s and %s" % (self.min,self.max)
-                                                          ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>326</td>
-<td>0</td>
-<td>No space allowed before :
-        else :
-             ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>340</td>
-<td>0</td>
-<td>No space allowed before :
-        if self.is_read_only :
-                             ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>346</td>
-<td>0</td>
-<td>No space allowed before :
-            if isinstance(data, basestring) :
-                                            ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>&#160;</td>
 <td>349</td>
 <td>0</td>
 <td>No space allowed before :
-                else :
-                     ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>352</td>
-<td>0</td>
-<td>No space allowed before :
-            try :
-                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>354</td>
-<td>0</td>
-<td>No space allowed before :
-            except :
-                   ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>357</td>
-<td>0</td>
-<td>No space allowed before :
-                if new_data &amp;lt; 0 :
-                                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>359</td>
-<td>0</td>
-<td>No space allowed before :
-                elif new_data &amp;gt; 255 :
-                                    ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>362</td>
-<td>0</td>
-<td>No space allowed before :
-            try :
-                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>364</td>
-<td>0</td>
-<td>No space allowed before :
-            except :
-                   ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>367</td>
-<td>0</td>
-<td>No space allowed before :
-            try :
-                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>369</td>
-<td>0</td>
-<td>No space allowed before :
-            except :
-                   ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>372</td>
-<td>0</td>
-<td>No space allowed before :
-                if new_data &amp;lt; -2147483648 :
-                                          ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>374</td>
-<td>0</td>
-<td>No space allowed before :
-                elif new_data &amp;gt; 2147483647 :
-                                           ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>377</td>
-<td>0</td>
-<td>No space allowed before :
-            try :
-                ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>379</td>
-<td>0</td>
-<td>No space allowed before :
-            except :
-                   ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>382</td>
-<td>0</td>
-<td>No space allowed before :
-                if new_data &amp;lt; -32768 :
-                                     ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>384</td>
-<td>0</td>
-<td>No space allowed before :
-                elif new_data &amp;gt; 32767 :
-                                      ^</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>387</td>
-<td>0</td>
-<td>Bad indentation. Found 16 spaces, expected 12</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>390</td>
-<td>0</td>
-<td>No space allowed before :
             if isinstance(data, basestring) :
                                             ^</td>
 </tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>393</td>
-<td>0</td>
-<td>No space allowed before :
-                else :
-                     ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>396</td>
-<td>0</td>
-<td>No space allowed before :
-            if isinstance(data, basestring) :
-                                            ^</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>399</td>
-<td>0</td>
-<td>No space allowed before :
-                else :
-                     ^</td>
-</tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unable to import 'openzwave'</td>
-</tr>
-<tr class="even">
-<td>fatal</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.__init__</td>
-<td>69</td>
+<td>72</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.__str__</td>
-<td>80</td>
-<td>11</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.__str__</td>
-<td>80</td>
-<td>38</td>
-<td>Instance of 'ZWaveValue' has no '_object_id' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.value_id</td>
-<td>94</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_object_id' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.id_on_network</td>
-<td>114</td>
-<td>20</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.id_on_network</td>
-<td>115</td>
-<td>45</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.label</td>
-<td>135</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.label</td>
-<td>145</td>
-<td>8</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.help</td>
-<td>154</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.help</td>
-<td>165</td>
-<td>8</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.units</td>
-<td>175</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.units</td>
-<td>186</td>
-<td>8</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.max</td>
-<td>196</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.min</td>
-<td>206</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.type</td>
-<td>219</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.genre</td>
-<td>232</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.index</td>
-<td>246</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.instance</td>
-<td>259</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.data</td>
-<td>270</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.data</td>
-<td>287</td>
-<td>8</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.data_as_string</td>
-<td>297</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.data_items</td>
-<td>325</td>
-<td>19</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
 <td>refactor</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.data_items</td>
-<td>300</td>
+<td>303</td>
 <td>4</td>
 <td>Too many return statements (10/6)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>343</td>
+<td>346</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.value</td>
+<td>ZWaveValue.check_data</td>
+<td>357</td>
+<td>12</td>
+<td>No exception type(s) specified</td>
+</tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>354</td>
+<td>367</td>
 <td>12</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="even">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>364</td>
+<td>372</td>
 <td>12</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>369</td>
+<td>382</td>
 <td>12</td>
 <td>No exception type(s) specified</td>
 </tr>
 <tr class="even">
-<td>warning</td>
-<td>api.value</td>
-<td>ZWaveValue.check_data</td>
-<td>379</td>
-<td>12</td>
-<td>No exception type(s) specified</td>
-</tr>
-<tr class="odd">
 <td>refactor</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>329</td>
+<td>332</td>
 <td>4</td>
 <td>Too many branches (31/12)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>refactor</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.check_data</td>
-<td>329</td>
+<td>332</td>
 <td>4</td>
 <td>Too many statements (61/50)</td>
 </tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.is_set</td>
-<td>413</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.is_read_only</td>
-<td>424</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.is_write_only</td>
-<td>435</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.enable_poll</td>
-<td>447</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.disable_poll</td>
-<td>457</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.poll_intensity</td>
-<td>469</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.is_polled</td>
-<td>479</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.command_class</td>
-<td>490</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.refresh</td>
-<td>500</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.precision</td>
-<td>511</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.is_change_verified</td>
-<td>519</td>
-<td>15</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
 <tr class="even">
 <td>warning</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue.set_change_verified</td>
-<td>532</td>
+<td>535</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
 <tr class="odd">
-<td>error</td>
-<td>api.value</td>
-<td>ZWaveValue.set_change_verified</td>
-<td>533</td>
-<td>8</td>
-<td>Instance of 'ZWaveValue' has no '_network' member</td>
-</tr>
-<tr class="even">
 <td>refactor</td>
-<td>api.value</td>
+<td>openzwave.value</td>
 <td>ZWaveValue</td>
-<td>38</td>
+<td>41</td>
 <td>0</td>
 <td>Too many public methods (29/20)</td>
 </tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused namedtuple imported from collections</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>27</td>
-<td>0</td>
-<td>Unused import thread</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>28</td>
-<td>0</td>
-<td>Unused import time</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>29</td>
-<td>0</td>
-<td>Unused import openzwave</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>api.value</td>
-<td>&#160;</td>
-<td>31</td>
-<td>0</td>
-<td>Unused Timer imported from threading</td>
-</tr>
 <tr class="even">
 <td>convention</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>&#160;</td>
-<td>70</td>
-<td>0</td>
-<td>Exactly one space required after comma
-                if not os.path.exists(os.path.join(config_path,"zwcfg.xsd")):
-                                                              ^</td>
-</tr>
-<tr class="odd">
-<td>convention</td>
-<td>api.option</td>
-<td>&#160;</td>
-<td>279</td>
+<td>286</td>
 <td>0</td>
 <td>Line too long (161/140)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>&#160;</td>
-<td>30</td>
+<td>28</td>
 <td>0</td>
 <td>No name 'PyLogLevels' in module 'libopenzwave'</td>
 </tr>
-<tr class="odd">
-<td>fatal</td>
-<td>api.option</td>
-<td>&#160;</td>
-<td>32</td>
-<td>0</td>
-<td>Unable to import 'openzwave.object'</td>
-</tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption</td>
-<td>36</td>
+<td>43</td>
 <td>18</td>
 <td>Module 'libopenzwave' has no 'PyOptions' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.__init__</td>
-<td>67</td>
+<td>74</td>
 <td>30</td>
 <td>Instance of 'ZWaveOption' has no 'getConfigPath' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.__init__</td>
-<td>87</td>
+<td>94</td>
 <td>8</td>
 <td>Instance of 'ZWaveOption' has no 'create' member</td>
 </tr>
 <tr class="odd">
 <td>refactor</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.__init__</td>
-<td>41</td>
+<td>48</td>
 <td>4</td>
 <td>Too many branches (15/12)</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_log_file</td>
-<td>97</td>
+<td>104</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionString' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_logging</td>
-<td>107</td>
+<td>114</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_append_log_file</td>
-<td>117</td>
+<td>124</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_console_output</td>
-<td>127</td>
+<td>134</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_save_log_level</td>
-<td>149</td>
+<td>156</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionInt' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_queue_log_level</td>
-<td>171</td>
+<td>178</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionInt' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_dump_trigger_level</td>
-<td>193</td>
+<td>200</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionInt' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_associate</td>
-<td>203</td>
+<td>210</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_exclude</td>
-<td>205</td>
+<td>212</td>
 <td>4</td>
 <td>Invalid argument name "commandClass"</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_exclude</td>
-<td>213</td>
+<td>220</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionString' member</td>
 </tr>
 <tr class="even">
 <td>convention</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_include</td>
-<td>215</td>
+<td>222</td>
 <td>4</td>
 <td>Invalid argument name "commandClass"</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_include</td>
-<td>223</td>
+<td>230</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionString' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_notify_transactions</td>
-<td>233</td>
+<td>240</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_interface</td>
-<td>243</td>
+<td>250</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionString' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_save_configuration</td>
-<td>253</td>
+<td>260</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_driver_max_attempts</td>
-<td>263</td>
+<td>270</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionInt' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_poll_interval</td>
-<td>273</td>
+<td>280</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionInt' member</td>
 </tr>
 <tr class="odd">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_interval_between_polls</td>
-<td>283</td>
+<td>290</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="even">
 <td>error</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>ZWaveOption.set_suppress_value_refresh</td>
-<td>293</td>
+<td>300</td>
 <td>15</td>
 <td>Instance of 'ZWaveOption' has no 'addOptionBool' member</td>
 </tr>
 <tr class="odd">
-<td>warning</td>
-<td>api.option</td>
-<td>&#160;</td>
-<td>26</td>
-<td>0</td>
-<td>Unused import datetime</td>
-</tr>
-<tr class="even">
 <td>refactor</td>
-<td>api.object</td>
-<td>ZWaveNodeInterface</td>
-<td>276</td>
+<td>openzwave.node</td>
+<td>ZWaveNode</td>
+<td>43</td>
 <td>0</td>
 <td>Interface not implemented</td>
 </tr>
-<tr class="odd">
-<td>refactor</td>
-<td>api.option</td>
-<td>&#160;</td>
-<td>1</td>
-<td>0</td>
-<td>Similar lines in 2 files
-==api.scene:26
-==api.value:25
-from collections import namedtuple
-import thread
-import time
-import openzwave
-import logging</td>
-</tr>
 <tr class="even">
 <td>refactor</td>
-<td>api.option</td>
+<td>openzwave.option</td>
 <td>&#160;</td>
 <td>1</td>
 <td>0</td>
-<td>Similar lines in 2 files
-==api.command:29
-==api.node:28
-import time
+<td>Similar lines in 3 files
+==openzwave.group:25
+==openzwave.scene:25
+==openzwave.value:25
+from openzwave.object import ZWaveObject
+
+# Set default logging handler to avoid "No handler found" warnings.
 import logging
-from openzwave.object import ZWaveException, ZWaveCommandClassException
-from openzwave.object import ZWaveObject, NullLoggingHandler, ZWaveNodeInterface
-from openzwave.group import ZWaveGroup</td>
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
+</td>
+</tr>
+<tr class="odd">
+<td>refactor</td>
+<td>openzwave.option</td>
+<td>&#160;</td>
+<td>1</td>
+<td>0</td>
+<td>Similar lines in 9 files
+==openzwave.command:28
+==openzwave.controller:32
+==openzwave.group:28
+==openzwave.network:39
+==openzwave.node:32
+==openzwave.object:26
+==openzwave.option:32
+==openzwave.scene:28
+==openzwave.value:28
+import logging
+try:  # Python 2.7+
+    from logging import NullHandler
+except ImportError:
+    class NullHandler(logging.Handler):
+        """NullHandler logger for python 2.6"""
+        def emit(self, record):
+            pass
+logging.getLogger('openzwave').addHandler(NullHandler())
+</td>
 </tr>
 </table>
 </div>

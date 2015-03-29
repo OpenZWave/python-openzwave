@@ -7,6 +7,627 @@
 <ul class="simple">
 </ul>
 </div>
+<span class="target" id="module-openzwave.command"></span><span class="target" id="module-openzwave.command"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="https://github.com/bibi21000/python-openzwave">https://github.com/bibi21000/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave wrapper</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeBasic">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeBasic</tt></dt>
+<dd><p>Represents an interface to BasicCommands
+I known it&#8217;s not necessary as they can be included in the node directly.
+But it&#8217;s a good starting point.</p>
+<p>What I want to do is provide an automatic mapping system hidding
+the mapping classes.</p>
+<p>First example, the battery level, it&#8217;s not a basic command but don&#8217;t care.
+Its command class is 0x80.</p>
+<p>A user should write</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_command_class</span><span class="p">(</span><span class="n">class_id</span><span class="p">):</span>
+    <span class="n">ret</span><span class="o">=</span><span class="n">command_Class</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The classic way to do it is a classic method of registering. But</p>
+<p>Another way : using heritage multiple</p>
+<p>ZWaveNode(ZWaveObject, ZWaveNodeBasic, ....)
+The interface will implement methods
+command_class_0x80(param1,param2,...)
+That&#8217;s the first thing to do
+We also can define a property with a friendly name</p>
+<p>handle_command_class will do the rest</p>
+<p>Another way to do it :
+A node can manage actuators (switch, dimmer, ...)
+and sensors (temperature, consummation, temperature)</p>
+<p>So we need a kind of mechanism to retrieve commands in a user friendly way
+Same for sensors.</p>
+<p>A good use case is the AN158 Plug-in Meter Appliance Module
+We will study the following command classes :
+&#8216;COMMAND_CLASS_SWITCH_ALL&#8217;, &#8216;COMMAND_CLASS_SWITCH_BINARY&#8217;,
+&#8216;COMMAND_CLASS_METER&#8217;,</p>
+<p>The associated values are :</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">COMMAND_CLASS_SWITCH_ALL</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="il">72057594101481476L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="s">&#39;On and Off Enabled&#39;</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Switch All&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="s">&#39;On and Off Enabled&#39;</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;List&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">COMMAND_CLASS_SWITCH_BINARY</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="il">72057594093060096L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Switch&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Bool&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">COMMAND_CLASS_METER</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="il">72057594093273600L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Exporting&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Bool&#39;</span><span class="p">},</span>
+    <span class="il">72057594101662232L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Reset&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Button&#39;</span><span class="p">},</span>
+    <span class="il">72057594093273090L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;kWh&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Energy&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Decimal&#39;</span><span class="p">},</span>
+    <span class="il">72057594093273218L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;W&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Power&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Decimal&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Another example from an homePro dimmer (not configured in openzwave):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">COMMAND_CLASS_SWITCH_MULTILEVEL</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="il">72057594109853736L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Dim&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Button&#39;</span><span class="p">},</span>
+    <span class="il">72057594109853697L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">255L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Level&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="mi">69</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Byte&#39;</span><span class="p">},</span>
+    <span class="il">72057594118242369L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">255L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Start Level&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Byte&#39;</span><span class="p">},</span>
+    <span class="il">72057594109853720L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Bright&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="s">&#39;False&#39;</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Button&#39;</span><span class="p">},</span>
+    <span class="il">72057594118242352L</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;help&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;max&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;is_polled&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+        <span class="s">&#39;data&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;min&#39;</span><span class="p">:</span> <span class="il">0L</span><span class="p">,</span>
+        <span class="s">&#39;writeonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;label&#39;</span><span class="p">:</span> <span class="s">&#39;Ignore Start Level&#39;</span><span class="p">,</span>
+        <span class="s">&#39;readonly&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;data_str&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;Bool&#39;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>What about the conclusion :</p>
+<blockquote>
+<div><p>The COMMAND_CLASS_SWITCH_ALL is defined with the same label and
+use a list as parameter. This should be a configuration parameter.
+Don&#8217;t know what to do for this command class</p>
+<p>The COMMAND_CLASS_SWITCH_BINARY use a bool as parameter while
+COMMAND_CLASS_SWITCH_MULTILEVEL use 2 buttons : Dim and Bright.
+Dim and Bright must be done in 2 steps : set the level and activate
+the button.</p>
+<p>So we must add one or more lines in the actuators :</p>
+<p>Switch : {setter:self.set_command_class_0xYZ(valueId, new), getter:}
+We must find a way to access the value directly</p>
+<p>Bright
+Dim</p>
+<p>So for the COMMAND_CLASS_SWITCH_BINARY we must define a function called
+Switch (=the label of the value). What happen if we have 2 switches
+on the node : 2 values I suppose.</p>
+<p>COMMAND_CLASS_SWITCH_MULTILEVEL uses 2 commands : 4 when 2 dimmers on the
+done ? Don&#8217;t know but it can.</p>
+<p>COMMAND_CLASS_METER export many values : 2 of them sends a decimal
+and are readonly. They also have a Unit defined ans values are readonly</p>
+<p>COMMAND_CLASS_METER are used for sensors only. So we would map
+every values entries as defined before</p>
+<p>Programming :
+get_switches : retrieve the list of switches on the node
+is_switch (label) : says if the value with label=label is a switch
+get_switch (label) : retrieve the value where label=label</p>
+</div></blockquote>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.can_wake_up">
+<tt class="descname">can_wake_up</tt><big>(</big><big>)</big></dt>
+<dd><p>Check if node contain the command class 0x84 (COMMAND_CLASS_WAKE_UP).</p>
+<p>Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x84</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the node can wake up</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_battery_level">
+<tt class="descname">get_battery_level</tt><big>(</big><em>value_id=None</em><big>)</big></dt>
+<dd><p>The battery level of this node.
+The command 0x80 (COMMAND_CLASS_BATTERY) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state. If None, retrieve the first value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level of this battery</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_battery_levels">
+<tt class="descname">get_battery_levels</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x80 (COMMAND_CLASS_BATTERY) of this node.
+Retrieve the list of values to consider as batteries.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x80
+genre = &#8220;User&#8221;
+type = &#8220;Byte&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_power_level">
+<tt class="descname">get_power_level</tt><big>(</big><em>value_id=None</em><big>)</big></dt>
+<dd><p>The power level of this node.
+The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state. If None, retrieve the first value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level of this battery</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeBasic.get_power_levels">
+<tt class="descname">get_power_levels</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x73 (COMMAND_CLASS_POWERLEVEL) of this node.
+Retrieve the list of values to consider as power_levels.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x73
+genre = &#8220;User&#8221;
+type = &#8220;Byte&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSwitch">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSwitch</tt></dt>
+<dd><p>Represents an interface to switches and dimmers Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_dimmer_level">
+<tt class="descname">get_dimmer_level</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+Get the dimmer level (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level : a value between 0-99</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_dimmers">
+<tt class="descname">get_dimmers</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+Retrieve the list of values to consider as dimmers.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x26
+genre = &#8220;User&#8221;
+type = &#8220;Bool&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of dimmers on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_item">
+<tt class="descname">get_switch_all_item</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the current value (using value value_id) of a switch_all.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve switch_all value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_items">
+<tt class="descname">get_switch_all_items</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the all the possible values (using value value_id) of a switch_all.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve items list</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_state">
+<tt class="descname">get_switch_all_state</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Return the state (using value value_id) of a switch or a dimmer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switch_state">
+<tt class="descname">get_switch_state</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Return the state (using value value_id) of a switch.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switches">
+<tt class="descname">get_switches</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Retrieve the list of values to consider as switches.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x25
+genre = &#8220;User&#8221;
+type = &#8220;Bool&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_switches_all">
+<tt class="descname">get_switches_all</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Retrieve the list of values to consider as switches_all.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x27
+genre = &#8220;System&#8221;
+type = &#8220;List&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_dimmer">
+<tt class="descname">set_dimmer</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big></dt>
+<dd><p>The command 0x26 (COMMAND_CLASS_SWITCH_MULTILEVEL) of this node.
+Set switch to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>int</em>) &#8211; The level : a value between 0-99 or 255. 255 set the level to the last value.         0 turn the dimmer off</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_switch">
+<tt class="descname">set_switch</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big></dt>
+<dd><p>The command 0x25 (COMMAND_CLASS_SWITCH_BINARY) of this node.
+Set switch to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>bool</em>) &#8211; True or False</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_switch_all">
+<tt class="descname">set_switch_all</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big></dt>
+<dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
+Set switches_all to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>str</em>) &#8211; A predefined string</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openzwave.command.ZWaveNodeSensor">
+<em class="property">class </em><tt class="descclassname">openzwave.command.</tt><tt class="descname">ZWaveNodeSensor</tt></dt>
+<dd><p>Represents an interface to Sensor Commands</p>
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.get_sensor_value">
+<tt class="descname">get_sensor_value</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+The command 0x32 (COMMAND_CLASS_METER) of this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The state of the sensors</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSensor.get_sensors">
+<tt class="descname">get_sensors</tt><big>(</big><em>type='All'</em><big>)</big></dt>
+<dd><p>The command 0x30 (COMMAND_CLASS_SENSOR_BINARY) of this node.
+The command 0x31 (COMMAND_CLASS_SENSOR_MULTILEVEL) of this node.
+The command 0x32 (COMMAND_CLASS_METER) of this node.
+Retrieve the list of values to consider as sensors.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x30-32
+genre = &#8220;User&#8221;
+readonly = True
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>type</strong> (<em>&#8216;All&#8217; or PyValueTypes</em>) &#8211; the type of value</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of switches on this node</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
