@@ -32,7 +32,7 @@ production environnement.
 I need to update source tree of python-openzwave and modules's names
 because of a bug in setuptools :
 https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-
-respect-src. Sorry for that.
+respect-src . Sorry for that.
 
 So, before building python-openzwave, you must uninstall the old
 version :
@@ -61,8 +61,8 @@ After installing python-openzwave, you can run tests :
 Documentation
 =============
 
-You can browse the documentation here *<http://bibi21000.gallet.info
-/python-openzwave.html>*.
+You can browse the documentation here : http://bibi21000.gallet.info
+/python-openzwave.html.
 
 
 To do
