@@ -95,7 +95,6 @@ uninstall:
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwman*
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
-	-rm -Rf /usr/local/share/libopenzwave
 	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
 	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
@@ -141,9 +140,9 @@ docs: cleandocs
 	@echo "Documentation finished."
 
 install:
-	sudo ${PYTHON_EXEC} setup-lib.py install --build-base=$(BUILDDIR)/lib
-	sudo ${PYTHON_EXEC} setup-api.py install --build-base=$(BUILDDIR)/api
-	sudo ${PYTHON_EXEC} setup-manager.py install --build-base=$(BUILDDIR)/manager
+	sudo ${PYTHON_EXEC} setup-lib.py install
+	sudo ${PYTHON_EXEC} setup-api.py install
+	sudo ${PYTHON_EXEC} setup-manager.py install
 	@echo
 	@echo "Installation for users finished."
 
@@ -158,9 +157,9 @@ dist: build
 	${PYTHON_EXEC} setup-lib.py sdist
 	${PYTHON_EXEC} setup-api.py sdist
 	${PYTHON_EXEC} setup-manager.py sdist
-	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir=$(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir=$(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir=$(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir $(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir $(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir $(BUILDDIR)/manager
 	@echo
 	@echo "Eggs are finished."
 

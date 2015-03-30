@@ -19,3 +19,8 @@ zwcfg_*
 install.files
 python_openzwave_api.egg-info/
 python_openzwave_lib.egg-info/
+src-lib/libopenzwave.so
+src-api/openzwave.egg-info/
+src-lib/libopenzwave.egg-info/
+src-lib/libopenzwave/libopenzwave.cpp
+src-manager/pyozwman.egg-info/
