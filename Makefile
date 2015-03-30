@@ -148,9 +148,9 @@ install:
 	@echo "Installation for users finished."
 
 develop:
-	${PYTHON_EXEC} setup-lib.py develop --build-base=$(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py develop --build-base=$(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py develop --build-base=$(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-lib.py develop
+	${PYTHON_EXEC} setup-api.py develop
+	${PYTHON_EXEC} setup-manager.py develop
 	@echo
 	@echo "Installation for developpers finished."
 
