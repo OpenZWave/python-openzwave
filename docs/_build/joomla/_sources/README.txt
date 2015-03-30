@@ -50,7 +50,7 @@ After installing python-openzwave, you can run tests :
 Documentation
 =============
 
-You can browse the documentation here : `http://bibi21000.gallet.info/index.php/en/home-uk/88-home-automation-uk/126-python-openzwave-documentation.html`
+You can browse the documentation here : `http://bibi21000.gallet.info/python-openzwave.html`
 
 To do
 =====
