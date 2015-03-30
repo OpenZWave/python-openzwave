@@ -104,6 +104,7 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   version = pyozw_version,
+  zip_safe = False,
   url='https://github.com/bibi21000/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,

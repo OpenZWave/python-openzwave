@@ -3,6 +3,7 @@
 
 # You can set these variables from the command line.
 BUILDDIR      = build
+DISTDIR       = dist
 NOSE          = /usr/local/bin/nosetests
 NOSEOPTS      = --verbosity=2
 NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
@@ -58,20 +59,26 @@ cleandocs:
 
 clean:
 	-rm -rf $(BUILDDIR)
+	-rm -rf $(DISTDIR)
 	-find . -name *.pyc -delete
 	-cd openzwave && make clean
-	${PYTHON_EXEC} setup-lib.py clean
-	${PYTHON_EXEC} setup-api.py clean
-	${PYTHON_EXEC} setup-manager.py clean
+	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
 
 uninstall:
-	-${PIP_EXEC} uninstall python-openzwave-lib
-	-${PIP_EXEC} uninstall python-openzwave-api
-	-${PIP_EXEC} uninstall libopenzwave
-	-${PIP_EXEC} uninstall openzwave
-	-${PIP_EXEC} uninstall pyozwman
+	-rm -rf $(BUILDDIR)
+	-rm -rf $(DISTDIR)
+	-yes | ${PIP_EXEC} uninstall python-openzwave-lib
+	-yes | ${PIP_EXEC} uninstall python-openzwave-api
+	-yes | ${PIP_EXEC} uninstall libopenzwave
+	-yes | ${PIP_EXEC} uninstall openzwave
+	-yes | ${PIP_EXEC} uninstall pyozwman
+	${PYTHON_EXEC} setup-lib.py develop --uninstall
+	${PYTHON_EXEC} setup-api.py develop --uninstall
+	${PYTHON_EXEC} setup-manager.py develop --uninstall
 	-rm -f libopenzwave.so
 	-rm -f src-lib/liopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
@@ -87,8 +94,10 @@ uninstall:
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/openzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwman*
 	-rm -Rf /usr/local/share/python-openzwave
-	-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
-	-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
+	-rm -Rf /usr/local/share/openzwave
+	-rm -Rf /usr/local/share/libopenzwave
+	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
+	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
 deps :
 	@echo Installing dependencies for python : ${python_version_full}
@@ -132,18 +141,28 @@ docs: cleandocs
 	@echo "Documentation finished."
 
 install:
-	sudo ${PYTHON_EXEC} setup-lib.py install
-	sudo ${PYTHON_EXEC} setup-api.py install
-	sudo ${PYTHON_EXEC} setup-manager.py install
+	sudo ${PYTHON_EXEC} setup-lib.py install --build-base=$(BUILDDIR)/lib
+	sudo ${PYTHON_EXEC} setup-api.py install --build-base=$(BUILDDIR)/api
+	sudo ${PYTHON_EXEC} setup-manager.py install --build-base=$(BUILDDIR)/manager
 	@echo
 	@echo "Installation for users finished."
 
 develop:
-	${PYTHON_EXEC} setup-lib.py develop
-	${PYTHON_EXEC} setup-api.py develop
-	${PYTHON_EXEC} setup-manager.py develop
+	${PYTHON_EXEC} setup-lib.py develop --build-base=$(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-api.py develop --build-base=$(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py develop --build-base=$(BUILDDIR)/manager
 	@echo
 	@echo "Installation for developpers finished."
+
+dist: build
+	${PYTHON_EXEC} setup-lib.py sdist
+	${PYTHON_EXEC} setup-api.py sdist
+	${PYTHON_EXEC} setup-manager.py sdist
+	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir=$(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir=$(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir=$(BUILDDIR)/manager
+	@echo
+	@echo "Eggs are finished."
 
 tests:
 	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
@@ -176,9 +195,9 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/libopenzwave.a
-	${PYTHON_EXEC} setup-lib.py build
-	${PYTHON_EXEC} setup-api.py build
-	${PYTHON_EXEC} setup-manager.py build
+	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave

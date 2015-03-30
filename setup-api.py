@@ -78,11 +78,12 @@ setup(
   url='https://github.com/bibi21000/python-openzwave',
   #Need to update libopenzwave.pyx too
   version = pyozw_version,
+  zip_safe = False,
   package_dir = {'' : 'src-api'},
   #packages = find_packages(),
   #packages = ['openzwave'],
   packages = find_packages('src-api', exclude=["scripts"]),
 #The following line install config drectory in share/python-openzwave
-  data_files = data_files,
-  install_requires=[ dispatch_package ]
+#  data_files = data_files,
+  install_requires=[ dispatch_package, 'libopenzwave == %s' % pyozw_version]
 )
