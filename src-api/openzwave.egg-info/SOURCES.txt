@@ -12,6 +12,7 @@ src-api/openzwave/value.py
 src-api/openzwave.egg-info/PKG-INFO
 src-api/openzwave.egg-info/SOURCES.txt
 src-api/openzwave.egg-info/dependency_links.txt
+src-api/openzwave.egg-info/not-zip-safe
 src-api/openzwave.egg-info/requires.txt
 src-api/openzwave.egg-info/top_level.txt
 src-api/openzwave.egg-info/version_info.json

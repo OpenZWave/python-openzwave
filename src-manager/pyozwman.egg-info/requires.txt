@@ -1,1 +1,2 @@
 urwid >= 1.1.1
+openzwave == 0.3.0
