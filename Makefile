@@ -157,9 +157,9 @@ dist: build
 	${PYTHON_EXEC} setup-lib.py sdist
 	${PYTHON_EXEC} setup-api.py sdist
 	${PYTHON_EXEC} setup-manager.py sdist
-	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir $(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir $(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir $(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir $(DISTDIR)/lib
+	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir $(DISTDIR)/api
+	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir $(DISTDIR)/manager
 	@echo
 	@echo "Eggs are finished."
 
@@ -194,9 +194,9 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/libopenzwave.a
-	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
+	#${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
+	#${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
+	#${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave

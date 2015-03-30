@@ -42,11 +42,9 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='https://github.com/bibi21000/python-openzwave',
-  #Need to update libopenzwave.pyx too
   version = pyozw_version,
   zip_safe = False,
   package_dir = {'' : 'src-manager' },
   packages = find_packages('src-manager', exclude=["scripts"]),
-#The following line install config drectory in share/python-openzwave
   install_requires=[ "urwid >= 1.1.1", 'openzwave == %s' % pyozw_version ]
 )
