@@ -61,7 +61,8 @@ After installing python-openzwave, you can run tests :
 Documentation
 =============
 
-You can browse the documentation.
+You can browse the documentation here *<http://bibi21000.gallet.info
+/python-openzwave.html>*.
 
 
 To do
