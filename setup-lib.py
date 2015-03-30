@@ -63,8 +63,8 @@ def data_files_config(target, source, pattern):
                 os.path.join(source,rd), pattern))
     return ret
 
-data_files = data_files_config('share/python-openzwave/config','openzwave/config','*.xml')
-data_files.extend(data_files_config('share/python-openzwave/config','openzwave/config','*.xsd'))
+data_files = data_files_config('config','openzwave/config','*.xml')
+data_files.extend(data_files_config('config','openzwave/config','*.xsd'))
 
 cmdclass = { }
 ext_modules = [ ]

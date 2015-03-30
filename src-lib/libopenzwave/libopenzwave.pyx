@@ -71,7 +71,7 @@ else:
     __version__ = _dist.version
 
 PYLIBRARY = __version__
-PY_OZWAVE_CONFIG_DIRECTORY = "share/python-openzwave/config"
+PY_OZWAVE_CONFIG_DIRECTORY = "config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
 
 class EnumWithDoc(str):
