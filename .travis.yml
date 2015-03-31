@@ -10,7 +10,7 @@ python:
   - "3.4"
 install:
 #  - env
-  - make pip
+#  - make pip
   - make tests-deps
 # command to run tests
 script:

@@ -25,7 +25,8 @@ from os import name as os_name
 #from distutils.core import setup
 from setuptools import setup
 from distutils import extension
-from Cython.Distutils import build_ext
+#from Cython.Distutils import build_ext
+from Cython.Build import cythonize
 from platform import system as platform_system
 import glob
 import os
@@ -106,8 +107,9 @@ setup(
   version = pyozw_version,
   zip_safe = False,
   url='https://github.com/bibi21000/python-openzwave',
-  cmdclass = {'build_ext': build_ext},
-  ext_modules = ext_modules,
+  #cmdclass = {'build_ext': build_ext},
+  #ext_modules = ext_modules,
+  ext_modules = cythonize(ext_modules),
   package_dir = {'' : 'src-lib'},
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,

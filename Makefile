@@ -109,7 +109,8 @@ ifeq (${python_version_major},3)
 	-apt-get install -y python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
-	${PIP_EXEC} install Cython >= 0.20
+	${PIP_EXEC} install setuptools
+	${PIP_EXEC} install "Cython>=0.20"
 
 travis-deps: deps
 
@@ -119,7 +120,6 @@ tests-deps:
 	${PIP_EXEC} install nose
 
 pip:
-	${PIP_EXEC} install setuptools
 	${PIP_EXEC} install docutils
 
 docs: cleandocs
