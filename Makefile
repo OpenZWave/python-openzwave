@@ -131,7 +131,6 @@ docs: cleandocs
 	cd docs && make docs
 	cp docs/_build/text/README.txt README.md
 	cp docs/_build/text/INSTALL_REPO.txt .
-	cp docs/_build/text/INSTALL_MAN.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
 	cp docs/_build/text/COPYRIGHT.txt .
 	cp docs/_build/text/DEVEL.txt .
@@ -176,7 +175,7 @@ devtests:
 	@echo "Tests for developpers finished."
 
 commit: docs
-	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
+	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
 	git push
 	@echo
 	@echo "Commits pushed on github."
