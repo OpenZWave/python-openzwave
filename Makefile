@@ -101,14 +101,15 @@ uninstall:
 deps :
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install -y python-pip python-dev cython
+	apt-get install -y python-pip python-dev
 	apt-get install -y python-dev python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3-pip cython3
+	-apt-get install -y python3-pip
 	-apt-get install -y python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
+	${PIP_EXEC} install Cython
 
 travis-deps: deps
 
@@ -120,7 +121,6 @@ tests-deps:
 pip:
 	${PIP_EXEC} install setuptools
 	${PIP_EXEC} install docutils
-	${PIP_EXEC} install Cython
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
@@ -193,7 +193,7 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/libopenzwave.a
-	#${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
+	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
 	#${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
 	#${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
 
