@@ -1,45 +1,21 @@
 :orphan:
 
-=============================================
-Installing python-openzwave from repositories
-=============================================
+===========================================
+Installing python-openzwave from repository
+===========================================
 
 
 Install the needed tools
 ========================
 
-You must install git and other tools to get sources of python-openzwave and
-openzwave and build them. Look at the documentation of your Linux distribution to do that.
+You must install git and make to retrieve sources of python-openzwave and
+openzwave.
 
 On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo make deps
-
-You need sphinx and make to generate the documentation.
-
-On a debian like distribution :
-
-.. code-block:: bash
-
-    sudo apt-get install python-sphinx make
-
-You also need to install some sphinx contributions :
-
-.. code-block:: bash
-
-    sudo pip install sphinxcontrib-blockdiag sphinxcontrib-actdiag
-    sudo pip install sphinxcontrib-nwdiag sphinxcontrib-seqdiag
-
-To compile the openzwave library, you need the common builds tools
-and the libudev developments headers.
-
-On a debian like distribution :
-
-.. code-block:: bash
-
-    sudo apt-get install build-essential libudev-dev g++
+    sudo apt-get install -y git make
 
 
 Get sources of python-openzwave
@@ -54,6 +30,33 @@ You are now ready to download sources of python-openzwave :
 The previous command will create a copy of the official repository on your
 computer in a directory called python-openzwave.
 
+Install dependencies
+====================
+
+You need some tools (a c++ compiler, headers dir python, ...) to build python-openzwave and openzwave library.
+
+On a debian like distribution :
+
+.. code-block:: bash
+
+    sudo make deps
+
+For non-debian (fedora, ...), you can retrieve the packages needed in the Makefile.
+
+If you want to build the documentatation, you also need to install sphinx and some contributions :
+
+On a debian like distribution :
+
+.. code-block:: bash
+
+    sudo apt-get install python-sphinx
+
+You also need to install some sphinx contributions :
+
+.. code-block:: bash
+
+    sudo pip install sphinxcontrib-blockdiag sphinxcontrib-actdiag
+    sudo pip install sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 Update and build process
 ========================
