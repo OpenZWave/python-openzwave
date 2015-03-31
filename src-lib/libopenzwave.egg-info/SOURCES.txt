@@ -1,8 +1,0 @@
-setup-lib.py
-src-lib/libopenzwave/libopenzwave.pyx
-src-lib/libopenzwave.egg-info/PKG-INFO
-src-lib/libopenzwave.egg-info/SOURCES.txt
-src-lib/libopenzwave.egg-info/dependency_links.txt
-src-lib/libopenzwave.egg-info/not-zip-safe
-src-lib/libopenzwave.egg-info/top_level.txt
-src-lib/libopenzwave.egg-info/version_info.json
