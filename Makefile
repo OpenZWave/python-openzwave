@@ -2,8 +2,9 @@
 #
 
 # You can set these variables from the command line.
+ARCHBASE      = arch
 BUILDDIR      = build
-DISTDIR       = dist
+DISTDIR       = dists
 NOSE          = /usr/local/bin/nosetests
 NOSEOPTS      = --verbosity=2
 NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
@@ -12,16 +13,17 @@ PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq
 
 -include CONFIG.make
 
-ifdef PYTHON_EXEC
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
-else
+ifndef PYTHON_EXEC
 PYTHON_EXEC=python
+endif
+
 ifdef VIRTUAL_ENV
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/${PYTHON_EXEC} --version 2>&1)))
 else
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 endif
-endif
+
+python_openzwave_version := $(shell ${PYTHON_EXEC} pyozw_version.py)
 
 PIP_EXEC=pip
 ifeq (${python_version_major},3)
@@ -33,34 +35,34 @@ python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
 EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
 
-.PHONY: help clean all develop install uninstall cleandoc docs tests devtests pylint commit apt pip debian-deps update build deps
+ARCHNAME     = python-openzwave-${python_openzwave_version}
+ARCHDIR      = arch/${ARCHNAME}
+
+.PHONY: help clean all develop install uninstall clean-docs docs tests devtests pylint commit apt pip update build
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
-	@echo "  build      to build python-openzwave and openzwave"
-	@echo "  develop    to install python-openzwave for developpers"
-	@echo "  install    to install python-openzwave for users"
-	@echo "  uninstall  to uninstall python-openzwave"
-	@echo "  apt        to install packaged dependencies with apt"
-	@echo "  pip        to install python dependencies with pip"
-	@echo "  docs       to make all documentation"
-	@echo "  tests      to launch tests for users"
-	@echo "  devtests   to launch detailled tests for developpers"
-	@echo "  pylint     to check code quality"
-	@echo "  commit     to publish python-openzwave updates on GitHub"
-	@echo "  clean      to clean the development directory"
-	@echo "  cleandocs  to clean the documentation generated"
-	@echo "  update     to update sources of python-openzwave and openzwave"
+	@echo "  build           : build python-openzwave and openzwave"
+	@echo "  develop         : install python-openzwave for developpers"
+	@echo "  install         : install python-openzwave for users"
+	@echo "  uninstall       : uninstall python-openzwave"
+	@echo "  developper-deps : install dependencies for developpers"
+	@echo "  deps            : install dependencies for users"
+	@echo "  docs       	 : make documentation"
+	@echo "  tests           : launch tests"
+	@echo "  commit          : publish python-openzwave updates on GitHub"
+	@echo "  clean           : clean the development directory"
+	@echo "  update          : update sources of python-openzwave and openzwave"
 
-cleandocs:
+clean-docs:
 	cd docs && make clean
-	-rm -rf docs/html
-	-rm -rf docs/pdf
+	-rm -Rf docs/html
+	-rm -Rf docs/pdf
 
-clean:
+clean: clean-docs
+	-rm -rf $(ARCHBASE)
 	-rm -rf $(BUILDDIR)
-	-rm -rf $(DISTDIR)
-	-find . -name *.pyc -delete
+	-find . -name \*.pyc -delete
 	-cd openzwave && make clean
 	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
@@ -98,9 +100,21 @@ uninstall:
 	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
 	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
-deps : debian-deps pip
+developper-deps : common-deps tests-deps pip-deps doc-deps
+ifeq (${python_version_major},2)
+	apt-get install -y cython
+endif
+ifeq (${python_version_major},3)
+	-apt-get install -y cython3
+endif
+	@echo
+	@echo Dependencies for developpers installed (python ${python_version_full})
 
-debian-deps:
+deps : common-deps pip-deps
+	@echo
+	@echo Dependencies installed (python ${python_version_full})
+
+common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
 	apt-get install -y python-pip python-dev cython python-docutils
@@ -116,17 +130,23 @@ tests-deps:
 	${PIP_EXEC} install nose-html
 	${PIP_EXEC} install nose-progressive
 	${PIP_EXEC} install nose
+	${PIP_EXEC} install pylint
 
-pip:
+doc-deps:
+	-apt-get install -y python-sphinx
+	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+
+pip-deps:
 	#${PIP_EXEC} install docutils
 	#${PIP_EXEC} install setuptools
 	#The following line crashes with a core dump
 	#${PIP_EXEC} install "Cython==0.22"
 
-docs: cleandocs
+docs: clean-docs
 	-mkdir -p docs/html/nosetests
 	-mkdir -p docs/html/coverage
 	-mkdir -p docs/html/pylint
+	-mkdir -p docs/joomla
 	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
 	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
 	cd docs && make docs
@@ -136,6 +156,8 @@ docs: cleandocs
 	cp docs/_build/text/COPYRIGHT.txt .
 	cp docs/_build/text/DEVEL.txt .
 	cp docs/_build/text/EXAMPLES.txt .
+	cp -Rf docs/_build/html/* docs/html/
+	cp -Rf docs/_build/joomla/* docs/joomla/
 	@echo
 	@echo "Documentation finished."
 
@@ -153,36 +175,18 @@ develop:
 	@echo
 	@echo "Installation for developpers finished."
 
-dist: build
-	${PYTHON_EXEC} setup-lib.py sdist
-	${PYTHON_EXEC} setup-api.py sdist
-	${PYTHON_EXEC} setup-manager.py sdist
-	${PYTHON_EXEC} setup-lib.py bdist_egg --bdist-dir $(DISTDIR)/lib
-	${PYTHON_EXEC} setup-api.py bdist_egg --bdist-dir $(DISTDIR)/api
-	${PYTHON_EXEC} setup-manager.py bdist_egg --bdist-dir $(DISTDIR)/manager
-	@echo
-	@echo "Eggs are finished."
-
 tests:
 	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
 	@echo
 	@echo "Tests for ZWave network finished."
 
-devtests:
-	-mkdir -p docs/html/nosetests
-	-mkdir -p docs/html/coverage
-	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
-	@echo
-	@echo "Tests for developpers finished."
-
-commit: docs
+commit: clean docs
 	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt docs/
 	git push
 	@echo
 	@echo "Commits pushed on github."
 
 pylint:
-	-mkdir -p docs/html/pylint
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
 	@echo
 	@echo "Pylint finished."
@@ -206,4 +210,33 @@ openzwave/libopenzwave.a: openzwave
 	#cd openzwave && VERSION_REV=0 make
 	cd openzwave && make
 
-tgz: clean build docs
+$(ARCHDIR):
+	-mkdir -p $(ARCHDIR)/src-lib
+	-mkdir -p $(ARCHDIR)/src-api
+	-mkdir -p $(ARCHDIR)/src-manager
+	cp -Rf openzwave $(ARCHDIR)/
+	cp -Rf src-lib/libopenzwave $(ARCHDIR)/src-lib
+	cp -Rf src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
+	cp -Rf src-api/openzwave $(ARCHDIR)/src-api
+	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
+	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
+	-find $(ARCHDIR) -name \*.pyc -delete
+	-cd $(ARCHDIR)/openzwave && make clean
+	-rm -Rf $(ARCHDIR)/openzwave/.git
+
+tgz: $(ARCHDIR) docs
+	cp docs/_build/text/README.txt $(ARCHDIR)/
+	cp docs/_build/text/INSTALL_REPO.txt $(ARCHDIR)/
+	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
+	cp docs/_build/text/COPYRIGHT.txt $(ARCHDIR)/
+	cp docs/_build/text/EXAMPLES.txt $(ARCHDIR)/
+	mkdir -p $(ARCHDIR)/docs
+	cp -Rf docs/_build/html/* $(ARCHDIR)/docs/
+	cp Makefile $(ARCHDIR)/
+	cp setup-lib.py $(ARCHDIR)/
+	cp setup-api.py $(ARCHDIR)/
+	cp setup-manager.py $(ARCHDIR)/
+	-mkdir -p $(DISTDIR)
+	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
+	@echo
+	@echo Archive for version ${python_openzwave_version} created

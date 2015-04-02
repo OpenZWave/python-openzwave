@@ -9,8 +9,7 @@ openzwave/*
 build/*
 dists/*
 *.egg
-docs/_build/doctrees/*
-docs/_build/text/*
+docs/_build/*
 OZW_Log.txt
 OZW_Log.log
 python_openzwave.egg-info/*
@@ -25,3 +24,4 @@ src-lib/libopenzwave.egg-info/
 src-lib/libopenzwave/libopenzwave.cpp
 src-api/openzwave.egg-info/
 src-manager/pyozwman.egg-info/
+.coverage
