@@ -17,9 +17,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
-from mylibc cimport string
 from libcpp cimport bool
 from values cimport ValueID
+from mylibc cimport string
 
 cdef extern from *:
     ctypedef char* const_notification "OpenZWave::Notification const*"

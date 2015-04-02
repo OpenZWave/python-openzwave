@@ -29,23 +29,20 @@ from libcpp.map cimport map, pair
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
-from mylibc cimport string
-from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from libc.stdlib cimport malloc, free
+from mylibc cimport string
+#from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
 from notification cimport Notification, NotificationType, NotificationCode
-from notification cimport Type_Notification, Type_Group, Type_NodeEvent
-from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
-from notification cimport Type_SceneEvent
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff, Type_SceneEvent
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
 from manager cimport Manager, Create, Get
-from cython.operator cimport dereference
 from log cimport LogLevel
 import os
 import sys
@@ -929,7 +926,9 @@ Get a string containing the openzwave library version.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         """
-        return "OpenZWave version %s" %(ozw_version_string)
+        #return "OpenZWave version %s" %(ozw_version_string)
+        cdef string c_string = self.manager.getVersionAsString()
+        return c_string.c_str()
 
     def getOzwLibraryVersionNumber(self):
         '''
@@ -940,7 +939,9 @@ _getOzwLibraryVersionNumber: Get the openzwave library version number.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
-        return "%d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
+        #return "%d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
+        cdef string c_string = self.manager.getVersionAsString()
+        return c_string.c_str()
 
     def getLibraryTypeName(self, homeid):
         '''

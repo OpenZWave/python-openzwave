@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __license__ = """
 
-This file is part of **python-openzwave** project https://github.com/nechry/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
 
 License : GPL(v3)
 

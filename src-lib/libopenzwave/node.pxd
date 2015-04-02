@@ -17,8 +17,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
-from mylibc cimport string
 from libcpp.vector cimport vector
+from mylibc cimport string
 
 cdef extern from "Node.h" namespace "OpenZWave::Node":
 
@@ -55,4 +55,4 @@ cdef extern from "Node.h" namespace "OpenZWave::Node":
         vector[CommandClassData] m_ccData     # List of statistic on each command_class
 
 ctypedef NodeData NodeData_t
-        
+

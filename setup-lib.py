@@ -23,9 +23,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from os import name as os_name
 #from distutils.core import setup
-from setuptools import setup
-from distutils import extension
+from setuptools import setup, find_packages
+from distutils.extension import Extension
 #from Cython.Distutils import build_ext
+from Cython.Distutils import build_ext
 from Cython.Build import cythonize
 from platform import system as platform_system
 import glob
@@ -71,33 +72,37 @@ cmdclass = { }
 ext_modules = [ ]
 
 if os_name == 'nt':
-    ext_modules = [extension.Extension("libopenzwave", ["src-lib/libopenzwave/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave",
+                             sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows']
+                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows', "src-lib/libopenzwave"]
     )]
 elif platform_system() == 'Darwin':
-    ext_modules = [extension.Extension("libopenzwave", ["src-lib/libopenzwave/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave",
+                             sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
                              extra_objects=['openzwave/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/mac']
+                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/mac', "src-lib/libopenzwave"]
     )]
 elif DEBIAN_PACKAGE == True:
-    ext_modules = [extension.Extension("libopenzwave", ["src-lib/libopenzwave/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave",
+                             sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++', 'openzwave'],
                              language="c++",
                              extra_objects=['/usr/libopenzwave.a'],
-                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform']
+                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"]
     )]
 else:
-    ext_modules = [extension.Extension("libopenzwave", ["src-lib/libopenzwave/libopenzwave.pyx"],
+    ext_modules = [Extension("libopenzwave",
+                             sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
                              extra_objects=['openzwave/libopenzwave.a'],
-                             include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/linux']
+                             include_dirs=['openzwave/cpp/src/', 'openzwave/cpp/src/value_classes/', 'openzwave/cpp/src/platform/', 'openzwave/cpp/build/linux/']
     )]
 
 setup(
@@ -107,11 +112,11 @@ setup(
   version = pyozw_version,
   zip_safe = False,
   url='https://github.com/bibi21000/python-openzwave',
-  #cmdclass = {'build_ext': build_ext},
-  #ext_modules = ext_modules,
-  ext_modules = cythonize(ext_modules),
+  cmdclass = {'build_ext': build_ext},
+  ext_modules = ext_modules,
+  #ext_modules = cythonize(ext_modules),
   package_dir = {'' : 'src-lib'},
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
-  packages = ['libopenzwave']
+  packages = find_packages('src-lib', exclude=["scripts"]),
 )

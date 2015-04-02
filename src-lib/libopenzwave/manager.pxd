@@ -24,9 +24,7 @@ from mylibc cimport string
 from node cimport NodeData
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
-from notification cimport Notification, NotificationType
-from notification cimport Type_Notification, Type_Group, Type_NodeEvent
-from notification cimport const_notification, pfnOnNotification_t
+from notification cimport Notification, NotificationType, Type_Notification, Type_Group, Type_NodeEvent, const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create
 from log cimport LogLevel
@@ -49,6 +47,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bint IsPrimaryController(uint32_t homeid)
         bint IsStaticUpdateController(uint32_t homeid)
         bint IsBridgeController(uint32_t homeid)
+        string getVersionAsString()
         string GetLibraryVersion(uint32_t homeid)
         string GetLibraryTypeName(uint32_t homeid)
         int32_t GetSendQueueCount( uint32_t homeId )
@@ -166,7 +165,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void RemoveAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid)
         bool AddWatcher(pfnOnNotification_t notification, void* context)
         bool RemoveWatcher(pfnOnNotification_t notification, void* context)
-        # void NotifyWatchers(Notification*) 
+        # void NotifyWatchers(Notification*)
         # // Controller Commands
         void ResetController(uint32_t homeid)
         void SoftReset(uint32_t homeid)

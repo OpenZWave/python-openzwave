@@ -33,7 +33,7 @@ python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
 EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
 
-.PHONY: help clean all develop install uninstall cleandoc docs tests devtests pylint commit apt pip travis-deps update build deps
+.PHONY: help clean all develop install uninstall cleandoc docs tests devtests pylint commit apt pip debian-deps update build deps
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -80,7 +80,7 @@ uninstall:
 	${PYTHON_EXEC} setup-api.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
 	-rm -f libopenzwave.so
-	-rm -f src-lib/liopenzwave.so
+	-rm -f src-lib/libopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
 	-rm -Rf python_openzwave_api.egg-info/
 	-rm -Rf src-api/python_openzwave_api.egg-info/
@@ -98,21 +98,19 @@ uninstall:
 	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
 	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
-deps :
+deps : debian-deps pip
+
+debian-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install -y python-pip python-dev
-	apt-get install -y python-dev python-setuptools python-louie
+	apt-get install -y python-pip python-dev cython python-docutils
+	apt-get install -y python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3-pip
+	-apt-get install -y python3-pip cython3 python3-docutils
 	-apt-get install -y python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
-	${PIP_EXEC} install setuptools
-	${PIP_EXEC} install "Cython>=0.20"
-
-travis-deps: deps
 
 tests-deps:
 	${PIP_EXEC} install nose-html
@@ -120,7 +118,10 @@ tests-deps:
 	${PIP_EXEC} install nose
 
 pip:
-	${PIP_EXEC} install docutils
+	#${PIP_EXEC} install docutils
+	#${PIP_EXEC} install setuptools
+	#The following line crashes with a core dump
+	#${PIP_EXEC} install "Cython==0.22"
 
 docs: cleandocs
 	-mkdir -p docs/html/nosetests
@@ -202,4 +203,7 @@ openzwave:
 
 openzwave/libopenzwave.a: openzwave
 	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	cd openzwave && VERSION_REV=0 make
+	#cd openzwave && VERSION_REV=0 make
+	cd openzwave && make
+
+tgz: clean build docs
