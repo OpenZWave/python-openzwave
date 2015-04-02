@@ -8,6 +8,7 @@ tests/*.err
 openzwave/*
 build/*
 dists/*
+archive/*
 *.egg
 docs/_build/*
 OZW_Log.txt

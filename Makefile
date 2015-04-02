@@ -2,7 +2,7 @@
 #
 
 # You can set these variables from the command line.
-ARCHBASE      = arch
+ARCHBASE      = archive
 BUILDDIR      = build
 DISTDIR       = dists
 NOSE          = /usr/local/bin/nosetests
@@ -36,7 +36,7 @@ python_version_patch = $(word 3,${python_version_full})
 EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
 
 ARCHNAME     = python-openzwave-${python_openzwave_version}
-ARCHDIR      = arch/${ARCHNAME}
+ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
 .PHONY: help clean all develop install uninstall clean-docs docs tests devtests pylint commit apt pip update build
 
@@ -207,7 +207,6 @@ openzwave:
 
 openzwave/libopenzwave.a: openzwave
 	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	#cd openzwave && VERSION_REV=0 make
 	cd openzwave && make
 
 $(ARCHDIR):
@@ -238,5 +237,6 @@ tgz: $(ARCHDIR) docs
 	cp setup-manager.py $(ARCHDIR)/
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
+	rm -Rf $(ARCHBASE)
 	@echo
 	@echo Archive for version ${python_openzwave_version} created
