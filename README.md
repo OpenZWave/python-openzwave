@@ -41,7 +41,19 @@ version :
 
 After that, reinstall python-openzwave using your prefered method.
 
+About cython : I've made many tests using the cython installed via pip
+: (0.20, 0.21 and 0.22). Compilation is ok but a segfault appears when
+launching the tests. Please remove it.
+
+   sudo pip uninstall Cython
+
+And reinstall the one provided with your distribution
+
+   sudo make deps
+
 If you have problems, please submit an issue with :
+
+   * cython -V
 
    * the content of the directory /usr/local/lib/python2.7/dist-
      packages/ (for python2.7)
