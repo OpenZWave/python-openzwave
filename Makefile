@@ -104,7 +104,7 @@ developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
 
 deps : common-deps pip-deps
 	@echo
-	@echo Dependencies for users installed (python ${python_version_full})
+	@echo "Dependencies for users installed (python ${python_version_full})"
 
 cython-deps:
 ifeq (${python_version_major},2)
@@ -114,16 +114,16 @@ ifeq (${python_version_major},3)
 	-apt-get install -y cython3
 endif
 	@echo
-	@echo Dependencies for developpers of python-openzwave installed (python ${python_version_full})
+	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install -y python-pip python-dev cython python-docutils
+	apt-get install -y python-pip python-dev python-docutils
 	apt-get install -y python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3-pip cython3 python3-docutils
+	-apt-get install -y python3-pip python3-docutils
 	-apt-get install -y python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
@@ -247,4 +247,4 @@ tgz: $(ARCHDIR) docs
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
 	@echo
-	@echo Archive for version ${python_openzwave_version} created
+	@echo "Archive for version ${python_openzwave_version} created"
