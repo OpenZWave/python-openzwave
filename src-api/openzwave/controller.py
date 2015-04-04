@@ -676,7 +676,7 @@ class ZWaveController(ZWaveObject):
         :type args: dict()
 
         """
-        logging.debug('Controller state change : %s' % (args))
+        logging.debug('Controller state change : %s', args)
         state = args['state']
         message = args['message']
         if state == self.SIGNAL_CTRL_WAITING:

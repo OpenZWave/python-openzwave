@@ -69,7 +69,7 @@ class ZWaveValue(ZWaveObject):
         :type network: ZWaveNetwork
         """
         ZWaveObject.__init__(self, value_id, network=network)
-        logging.debug("Create object value (valueId:%s)" % (value_id))
+        logging.debug("Create object value (valueId:%s)", value_id)
         self._parent = parent
 
     def __str__(self):
@@ -343,10 +343,10 @@ class ZWaveValue(ZWaveObject):
         if self.is_read_only:
             return None
         new_data = None
-        logging.debug("check_data type :%s" % (self.type))
+        logging.debug("check_data type :%s", self.type)
         if self.type == "Bool":
             new_data = data
-            if isinstance(data, basestring) :
+            if isinstance(data, basestring):
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
                 else:
@@ -532,6 +532,6 @@ class ZWaveValue(ZWaveObject):
         :param verify: if true, verify changes; if false, don't verify changes.
         :type verify: bool
         """
-        logging.debug('Set change verified %s for valueId [%s]' % (verify, self.value_id,))
+        logging.debug('Set change verified %s for valueId [%s]', verify, self.value_id)
         self._network.manager.setChangeVerified(self.value_id, verify)
 

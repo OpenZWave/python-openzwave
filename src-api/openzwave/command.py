@@ -24,6 +24,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from openzwave.object import ZWaveNodeInterface
+from threading import Timer
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -531,7 +532,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: int
 
         """
-        logging.debug("set_dimmer Level:%s" % (value,))
+        logging.debug("set_dimmer Level:%s", value)
         if value_id in self.get_dimmers():
             if 99 < value < 255:
                 value = 99
