@@ -3592,7 +3592,7 @@ newer values will overwrite older ones.</li>
 <dl class="method">
 <dt id="libopenzwave.PyOptions.create">
 <tt class="descname">create</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyOptions.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create an option object used to start the manager</p>
+<dd><p id="createoptions">Create an option object used to start the manager</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3604,7 +3604,7 @@ newer values will overwrite older ones.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference external" href="DeletestheOptionsandcleansupanyassociatedobjects.TheapplicationisresponsiblefordestroyingtheOptionsobject,butthismustnotbedoneuntilaftertheManagerobjecthasbeendestroyed.">destroyoptions</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#destroyoptions">destroyoptions</a></p>
 </td>
 </tr>
 </tbody>
@@ -3614,7 +3614,12 @@ newer values will overwrite older ones.</li>
 <dl class="method">
 <dt id="libopenzwave.PyOptions.destroy">
 <tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyOptions.destroy" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><blockquote id="destroyoptions">
+<div>Deletes the Options and cleans up any associated objects.
+The application is responsible for destroying the Options object,
+but this must not be done until after the Manager object has been
+destroyed.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -3727,7 +3732,7 @@ newer values will overwrite older ones.</li>
 <dl class="method">
 <dt id="libopenzwave.PyOptions.lock">
 <tt class="descname">lock</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyOptions.lock" title="Permalink to this definition">¶</a></dt>
-<dd><p>Lock the options. Needed to start the manager</p>
+<dd><p id="lock">Lock the options. Needed to start the manager</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
