@@ -37,6 +37,18 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </dd></dl>
 
 <dl class="class">
+<dt id="libopenzwave.EnumWithDocType">
+<em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">EnumWithDocType</tt></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">str</span></tt></p>
+<p>Enum helper</p>
+<dl class="method">
+<dt id="libopenzwave.EnumWithDocType.setDocType">
+<tt class="descname">setDocType</tt><big>(</big><big>)</big></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="libopenzwave.PyManager">
 <em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">PyManager</tt></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
@@ -2652,7 +2664,7 @@ handled automatically.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id1"><span class="problematic" id="id2">valueID_</span></a>, <a href="#id3"><span class="problematic" id="id4">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestconfigparam">requestConfigParam</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id2"><span class="problematic" id="id3">valueID_</span></a>, <a href="#id4"><span class="problematic" id="id5">notification_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -2683,7 +2695,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id5"><span class="problematic" id="id6">valueID_</span></a>, <a href="#id7"><span class="problematic" id="id8">notification_</span></a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#requestallconfigparams">requestAllConfigParams</a>, <a class="reference internal" href="#setconfigparam">setConfigParam</a>, <a href="#id6"><span class="problematic" id="id7">valueID_</span></a>, <a href="#id8"><span class="problematic" id="id9">notification_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -3396,9 +3408,36 @@ etc.</p>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Manage options manager</p>
 <dl class="method">
+<dt id="libopenzwave.PyOptions.addOption">
+<tt class="descname">addOption</tt><big>(</big><big>)</big></dt>
+<dd><p id="addoption">Add an option.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>string</em>) &#8211; The name of the option.</li>
+<li><strong>value</strong> (<em>boolean, integer, string</em>) &#8211; The value of the option.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the operation.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#addoptionbool">addOptionBool</a>, <a class="reference internal" href="#addoptionint">addOptionInt</a>, <a class="reference internal" href="#addoptionstring">addOptionString</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyOptions.addOptionBool">
 <tt class="descname">addOptionBool</tt><big>(</big><big>)</big></dt>
-<dd><p>Add a boolean option.</p>
+<dd><p id="addoptionbool">Add a boolean option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3412,7 +3451,10 @@ etc.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the operation.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#addoption">addOption</a>, <a class="reference internal" href="#addoptionint">addOptionInt</a>, <a class="reference internal" href="#addoptionstring">addOptionString</a></p>
 </td>
 </tr>
 </tbody>
@@ -3422,7 +3464,7 @@ etc.</p>
 <dl class="method">
 <dt id="libopenzwave.PyOptions.addOptionInt">
 <tt class="descname">addOptionInt</tt><big>(</big><big>)</big></dt>
-<dd><p>Add an integer option.</p>
+<dd><p id="addoptionint">Add an integer option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3436,7 +3478,10 @@ etc.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the operation.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#addoption">addOption</a>, <a class="reference internal" href="#addoptionbool">addOptionBool</a>, <a class="reference internal" href="#addoptionstring">addOptionString</a></p>
 </td>
 </tr>
 </tbody>
@@ -3446,7 +3491,7 @@ etc.</p>
 <dl class="method">
 <dt id="libopenzwave.PyOptions.addOptionString">
 <tt class="descname">addOptionString</tt><big>(</big><big>)</big></dt>
-<dd><p>Add a string option.</p>
+<dd><p id="addoptionstring">Add a string option.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3463,8 +3508,30 @@ newer values will overwrite older ones.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the operation.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">bool</p>
 </td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#addoption">addOption</a>, <a class="reference internal" href="#addoptionbool">addOptionBool</a>, <a class="reference internal" href="#addoptionint">addOptionInt</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyOptions.areLocked">
+<tt class="descname">areLocked</tt><big>(</big><big>)</big></dt>
+<dd><blockquote id="arelocked">
+<div>Test whether the options have been locked.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true if the options have been locked.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">boolean</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#lock">lock</a></td>
 </tr>
 </tbody>
 </table>
@@ -3478,12 +3545,32 @@ newer values will overwrite older ones.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>a</strong> (<em>str</em>) &#8211; The path of the config directory</li>
 <li><strong>b</strong> (<em>str</em>) &#8211; The path of the user directory</li>
 <li><strong>c</strong> (<em>str</em>) &#8211; The &#8220;command line&#8221; options of the openzwave library</li>
 </ul>
 </td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference external" href="DeletestheOptionsandcleansupanyassociatedobjects.TheapplicationisresponsiblefordestroyingtheOptionsobject,butthismustnotbedoneuntilaftertheManagerobjecthasbeendestroyed.">destroy</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyOptions.destroy">
+<tt class="descname">destroy</tt><big>(</big><big>)</big></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The result of the operation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a href="#id10"><span class="problematic" id="id11">create_</span></a></td>
 </tr>
 </tbody>
 </table>
@@ -3506,6 +3593,86 @@ newer values will overwrite older ones.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyOptions.getOption">
+<tt class="descname">getOption</tt><big>(</big><big>)</big></dt>
+<dd><p id="getoption">Retrieve option of a value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) &#8211; The name of the option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean, integer, string or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getoptionasbool">getOptionAsBool</a>, <a class="reference internal" href="#getoptionasint">getOptionAsInt</a>, <a class="reference internal" href="#getoptionasstring">getOptionAsString</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyOptions.getOptionAsBool">
+<tt class="descname">getOptionAsBool</tt><big>(</big><big>)</big></dt>
+<dd><p id="getoptionasbool">Retrieve boolean value of an option.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) &#8211; The name of the option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">boolean or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getoption">getOption</a>, <a class="reference internal" href="#getoptionasint">getOptionAsInt</a>, <a class="reference internal" href="#getoptionasstring">getOptionAsString</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyOptions.getOptionAsInt">
+<tt class="descname">getOptionAsInt</tt><big>(</big><big>)</big></dt>
+<dd><p id="getoptionasint">Retrieve integer value of an option.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) &#8211; The name of the option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Integer or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getoption">getOption</a>, <a class="reference internal" href="#getoptionasbool">getOptionAsBool</a>, <a class="reference internal" href="#getoptionasstring">getOptionAsString</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyOptions.getOptionAsString">
+<tt class="descname">getOptionAsString</tt><big>(</big><big>)</big></dt>
+<dd><p id="getoptionasstring">Retrieve string value of an option.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>string</em>) &#8211; The name of the option.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The value or None</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">String or None</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getoption">getOption</a>, <a class="reference internal" href="#getoptionasbool">getOptionAsBool</a>, <a class="reference internal" href="#getoptionasint">getOptionAsInt</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyOptions.lock">
 <tt class="descname">lock</tt><big>(</big><big>)</big></dt>
 <dd><p>Lock the options. Needed to start the manager</p>
@@ -3516,6 +3683,8 @@ newer values will overwrite older ones.</li>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The result of the operation.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#arelocked">areLocked</a></td>
 </tr>
 </tbody>
 </table>

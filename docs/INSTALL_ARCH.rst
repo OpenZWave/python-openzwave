@@ -4,8 +4,6 @@
 Installing python-openzwave from archive
 ========================================
 
-todo : rewrite for python-openzwave 0.3.0
-
 Install the needed tools
 ========================
 
