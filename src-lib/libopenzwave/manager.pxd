@@ -26,7 +26,7 @@ from driver cimport DriverData_t, DriverData
 from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType, Type_Notification, Type_Group, Type_NodeEvent, const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
-from options cimport Options, Create
+from options cimport Options
 from log cimport LogLevel
 import os
 

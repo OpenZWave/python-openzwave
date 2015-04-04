@@ -41,8 +41,8 @@ from notification cimport Notification, NotificationType, NotificationCode
 from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff, Type_SceneEvent
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
-from options cimport Options, Create
-from manager cimport Manager, Create, Get
+from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
+from manager cimport Manager, Create as CreateManager, Get as GetManager
 from log cimport LogLevel
 import os
 import sys
@@ -189,10 +189,53 @@ PyControllerCommand = [
     ]
 
 PyControllerInterface = [
-    EnumWithDoc('Unknown').setDoc("Controller interface use unknown protocol ."),
+    EnumWithDoc('Unknown').setDoc("Controller interface use unknown protocol."),
     EnumWithDoc('Serial').setDoc("Controller interface use serial protocol."),
     EnumWithDoc('Hid').setDoc("Controller interface use human interface device protocol."),
 ]
+
+PyOptionType = [
+    EnumWithDoc('Invalid').setDoc("Invalid type."),
+    EnumWithDoc('Bool').setDoc("Boolean."),
+    EnumWithDoc('Int').setDoc("Integer."),
+    EnumWithDoc('String').setDoc("String."),
+]
+
+class EnumWithDocType(str):
+    """Enum helper"""
+    def setDocType(self, doc, stype):
+        self.doc = doc
+        self.type = stype
+        return self
+
+PyOptionList = {
+    'ConfigPath' : {'doc' : "Path to the OpenZWave config folder.", 'type' : "String"},
+    'UserPath' : {'doc' : "Path to the user's data folder.", 'type' : "String"},
+    'Logging' : {'doc' : "Enable logging of library activity.", 'type' : "Bool"},
+    'LogFileName' : {'doc' : "Name of the log file (can be changed via Log::SetLogFileName).", 'type' : "String"},
+    'AppendLogFile' : {'doc' : "Append new session logs to existing log file (false = overwrite).", 'type' : "Bool"},
+    'ConsoleOutput' : {'doc' : "Display log information on console (as well as save to disk).", 'type' : "Bool"},
+    'SaveLogLevel' : {'doc' : "Save (to file) log messages equal to or above LogLevel_Detail.", 'type' : "Int"},
+    'QueueLogLevel' : {'doc' : "Save (in RAM) log messages equal to or above LogLevel_Debug.", 'type' : "Int"},
+    'DumpTriggerLevel' : {'doc' : "Default is to never dump RAM-stored log messages.", 'type' : "Int"},
+    'Associate' : {'doc' : "Enable automatic association of the controller with group one of every device.", 'type' : "Bool"},
+    'Exclude' : {'doc' : "Remove support for the listed command classes.", 'type' : "String"},
+    'Include' : {'doc' : "Only handle the specified command classes. The Exclude option is ignored if anything is listed here.", 'type' : "String"},
+    'NotifyTransactions' : {'doc' : "Notifications when transaction complete is reported.", 'type' : "Bool"},
+    'Interface' : {'doc' : "Identify the serial port to be accessed (TODO: change the code so more than one serial port can be specified and HID).", 'type' : "String"},
+    'SaveConfiguration' : {'doc' : "Save the XML configuration upon driver close.", 'type' : "Bool"},
+    'DriverMaxAttempts' : {'doc' : ".", 'type' : "Int"},
+    'PollInterval' : {'doc' : "30 seconds (can easily poll 30 values in this time; ~120 values is the effective limit for 30 seconds).", 'type' : "Int"},
+    'IntervalBetweenPolls' : {'doc' : "If false, try to execute the entire poll list within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls.", 'type' : "Bool"},
+    'SuppressValueRefresh' : {'doc' : "If true, notifications for refreshed (but unchanged) values will not be sent.", 'type' : "Bool"},
+    'PerformReturnRoutes' : {'doc' : "If true, return routes will be updated.", 'type' : "Bool"},
+    'NetworkKey' : {'doc' : ".", 'type' : "String"},
+    'RefreshAllUserCodes' : {'doc' : "If true, during startup, we refresh all the UserCodes the device reports it supports. If False, we stop after we get the first 'Available' slot (Some devices have 250+ usercode slots! - That makes our Session Stage Very Long ).", 'type' : "Bool"},
+    'RetryTimeout' : {'doc' : "How long do we wait to timeout messages sent.", 'type' : "Int"},
+    'EnableSIS' : {'doc' : "Automatically become a SUC if there is no SUC on the network.", 'type' : "Bool"},
+    'AssumeAwake' : {'doc' : "Assume Devices that Support the Wakeup CC are awake when we first query them ...", 'type' : "Bool"},
+    'NotifyOnDriverUnload' : {'doc' : "Should we send the Node/Value Notifications on Driver Unloading - Read comments in Driver::~Driver() method about possible race conditions.", 'type' : "Bool"},
+}
 
 PyStatDriver = {
     'SOFCnt' : "Number of SOF bytes received",
@@ -218,17 +261,18 @@ PyStatDriver = {
     }
 
 PyLogLevels = {
-    'None' : 0,
-    'Always' : 1,
-    'Fatal' : 2,
-    'Error' : 3,
-    'Warning' : 4,
-    'Alert' : 5,
-    'Info' : 6,
-    'Detail' : 7,
-    'Debug' : 8,
-    'StreamDetail' : 9,
-    'Internal' : 10,
+    'Invalid' : {'doc':'Invalid Log Status', 'value':0},
+    'None' : {'doc':'Disable all logging', 'value':1},
+    'Always' : {'doc':'These messages should always be shown', 'value':2},
+    'Fatal' : {'doc':'A likely fatal issue in the library', 'value':3},
+    'Error' : {'doc':'A serious issue with the library or the network', 'value':4},
+    'Warning' : {'doc':'A minor issue from which the library should be able to recover', 'value':5},
+    'Alert' : {'doc':'Something unexpected by the library about which the controlling application should be aware', 'value':6},
+    'Info' : {'doc':"Everything's working fine...these messages provide streamlined feedback on each message", 'value':7},
+    'Detail' : {'doc':'Detailed information on the progress of each message', 'value':8},
+    'Debug' : {'doc':'Very detailed information on progress that will create a huge log file quickly but this level (as others) can be queued and sent to the log only on an error or warning', 'value':9},
+    'StreamDetail' : {'doc':'Will include low-level byte transfers from controller to buffer to application and back', 'value':10},
+    'Internal' : {'doc':'Used only within the log class (uses existing timestamp, etc', 'value':11},
     }
 
 cdef map[uint64_t, ValueID] values_map
@@ -297,7 +341,7 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
     return ret
 
 cdef addValueId(ValueID v, n):
-    cdef Manager *manager = Get()
+    cdef Manager *manager = GetManager()
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     #check is a valid value
     if v.GetInstance() == 0:
@@ -419,6 +463,7 @@ cdef class PyOptions:
 
     def create(self, char *a, char *b, char *c):
         """
+        .. _create:
         Create an option object used to start the manager
 
         :param a: The path of the config directory
@@ -428,21 +473,56 @@ cdef class PyOptions:
         :param c: The "command line" options of the openzwave library
         :type c: str
 
+        :see: destroy_
         """
-        self.options = Create(string(a), string(b), string(c))
+        self.options = CreateOptions(string(a), string(b), string(c))
+        return True
+
+    def destroy(self):
+        """
+        .. _destroy:
+         Deletes the Options and cleans up any associated objects.
+         The application is responsible for destroying the Options object,
+         but this must not be done until after the Manager object has been
+         destroyed.
+
+        :return: The result of the operation.
+        :rtype: bool
+
+        :see: create_
+        """
+        return self.options.Destroy()
 
     def lock(self):
         """
+        .. _lock:
         Lock the options. Needed to start the manager
 
         :return: The result of the operation.
         :rtype: bool
 
+        :see: areLocked_
         """
         return self.options.Lock()
 
+    def areLocked(self):
+        '''
+        .. _areLocked:
+
+         Test whether the options have been locked.
+
+        :return: true if the options have been locked.
+        :rtype: boolean
+
+        :see: lock_
+
+        '''
+        return self.options.AreLocked()
+
     def addOptionBool(self, char *name, value):
         """
+        .. _addOptionBool
+
         Add a boolean option.
 
         :param name: The name of the option.
@@ -452,11 +532,14 @@ cdef class PyOptions:
         :return: The result of the operation.
         :rtype: bool
 
+        :see: addOption_, addOptionInt_, addOptionString_
         """
-        return self.options.AddOptionBool(string(name), value )
+        return self.options.AddOptionBool(string(name), value)
 
     def addOptionInt(self, char *name, value):
         """
+        .. _addOptionInt
+
         Add an integer option.
 
         :param name: The name of the option.
@@ -466,11 +549,14 @@ cdef class PyOptions:
         :return: The result of the operation.
         :rtype: bool
 
+        :see: addOption_, addOptionBool_, addOptionString_
         """
-        return self.options.AddOptionInt(string(name), value )
+        return self.options.AddOptionInt(string(name), value)
 
-    def addOptionString(self, char *name, char *value, append):
+    def addOptionString(self, char *name, char *value, append=False):
         """
+        .. _addOptionString
+
         Add a string option.
 
         :param name: The name of the option.  Option names are case insensitive and must be unique.
@@ -484,20 +570,124 @@ cdef class PyOptions:
         :return: The result of the operation.
         :rtype: bool
 
+        :see: addOption_, addOptionBool_, addOptionInt_
         """
-        return self.options.AddOptionString(string(name), string(value), append )
+        return self.options.AddOptionString(string(name), string(value), append)
+
+    def addOption(self, name, value):
+        """
+        .. _addOption
+
+        Add an option.
+
+        :param name: The name of the option.
+        :type name: string
+        :param value: The value of the option.
+        :type value: boolean, integer, string
+        :return: The result of the operation.
+        :rtype: bool
+
+        :see: addOptionBool_, addOptionInt_, addOptionString_
+        """
+        if name not in PyOptionList:
+            return False
+        if PyOptionList[name]['type'] == "String":
+            return self.addOptionString(name, value)
+        elif PyOptionList[name]['type'] == "Bool":
+            return self.addOptionBool(name, value)
+        elif PyOptionList[name]['type'] == "Int":
+            return self.addOptionInt(name, value)
+        return False
+
+    def getOption(self, name):
+        """
+        .. _getOption
+
+        Retrieve option of a value.
+
+        :param name: The name of the option.
+        :type name: string
+        :return: The value
+        :rtype: boolean, integer, string or None
+
+        :see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
+        """
+        if name not in PyOptionList:
+            return None
+        if PyOptionList[name]['type'] == "String":
+            return self.getOptionAsString(name)
+        elif PyOptionList[name]['type'] == "Bool":
+            return self.getOptionAsBool(name)
+        elif PyOptionList[name]['type'] == "Int":
+            return self.getOptionAsInt(name)
+        return False
+
+    def getOptionAsBool(self, name):
+        """
+        .. _getOptionAsBool
+
+        Retrieve boolean value of an option.
+
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: boolean or None
+
+        :see: getOption_, getOptionAsInt_, getOptionAsString_
+        """
+        cdef bool type_bool
+        cret = self.options.GetOptionAsBool(string(name), &type_bool)
+        ret = type_bool if cret==True else None
+        return ret
+
+    def getOptionAsInt(self, name):
+        """
+        .. _getOptionAsInt
+
+        Retrieve integer value of an option.
+
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: Integer or None
+
+        :see: getOption_, getOptionAsBool_, getOptionAsString_
+        """
+        cdef int32_t type_int
+        cret = self.options.GetOptionAsInt(string(name), &type_int)
+        ret = type_int if cret==True else None
+        return ret
+
+    def getOptionAsString(self, name):
+        """
+        .. _getOptionAsString:
+
+        Retrieve string value of an option.
+
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: String or None
+
+        :see: getOption_, getOptionAsBool_, getOptionAsInt_
+        """
+        cdef string type_string
+        cret = self.options.GetOptionAsString(string(name), &type_string)
+        ret = type_string.c_str() if cret==True else None
+        return ret
 
     def getConfigPath(self):
         '''
-.. _getConfigPath:
+        .. _getConfigPath:
 
-Retrieve the config path. This directory hold the xml files.
+        Retrieve the config path. This directory hold the xml files.
 
-:return: A string containing the library config path or None.
-:rtype: str
+        :return: A string containing the library config path or None.
+        :rtype: str
 
         '''
         return configPath()
+
 
 cdef class RetAlloc:
     """
@@ -681,7 +871,7 @@ callback handler, and then call the AddDriver method for each attached PC
 Z-Wave controller in turn.
 
         '''
-        self.manager = Create()
+        self.manager = CreateManager()
         PyEval_InitThreads()
 #
 # -----------------------------------------------------------------------------

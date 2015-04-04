@@ -26,7 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-import sys, os
+import sys, os, shutil
 import time
 import unittest
 from pprint import pprint
@@ -45,6 +45,55 @@ class TestInit(TestLib):
         self.assertEqual(self._manager.getPythonLibraryVersionNumber(), pyozw_version)
         vers=re.findall(r'\d+', self._manager.getOzwLibraryVersionNumber())
         self.assertEqual(len(vers),3)
+
+    def test_010_options_without_command_line(self):
+        self._options = libopenzwave.PyOptions()
+        self._configpath = self._options.getConfigPath()
+        self.assertNotEqual(self._configpath, None)
+        self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
+        self.assertTrue(self._options.create(self._configpath, self.userpath, ''))
+        self.assertTrue(self._options.destroy())
+
+    def test_020_options_with_command_line(self):
+        self._options = libopenzwave.PyOptions()
+        self._configpath = self._options.getConfigPath()
+        self.assertNotEqual(self._configpath, None)
+        self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
+        self.assertTrue(self._options.create(self._configpath, self.userpath, '--LogFileName ozwlog.log --Logging --SaveLogLevel 1'))
+        self.assertTrue(self._options.lock())
+        self.assertEqual(True, self._options.getOptionAsBool("Logging"))
+        self.assertEqual('ozwlog.log', self._options.getOptionAsString("LogFileName"))
+        self.assertEqual(1, self._options.getOptionAsInt("SaveLogLevel"))
+        self.assertTrue(self._options.destroy())
+
+class TestOptions(TestLib):
+    def setUp(self):
+        self._options = libopenzwave.PyOptions()
+        self._configpath = self._options.getConfigPath()
+        self._options.create(self._configpath, self.userpath, '')
+
+    def tearDown(self):
+        self._options.destroy()
+
+    def test_010_options_string(self):
+        self.assertTrue(self._options.addOptionString("LogFileName", 'ozwlog.log', False))
+        self.assertEqual('ozwlog.log', self._options.getOptionAsString("LogFileName"))
+
+    def test_020_options_bool(self):
+        self.assertTrue(self._options.addOptionBool("Logging", True))
+        self.assertEqual(True, self._options.getOptionAsBool("Logging"))
+
+    def test_030_options_int(self):
+        self.assertTrue(self._options.addOptionInt("SaveLogLevel", libopenzwave.PyLogLevels['Always']['value']))
+        self.assertEqual(libopenzwave.PyLogLevels['Always']['value'], self._options.getOptionAsInt("SaveLogLevel"))
+
+    def test_040_options_generic(self):
+        self.assertTrue(self._options.addOption("LogFileName", 'ozwlog.log'))
+        self.assertEqual('ozwlog.log', self._options.getOption("LogFileName"))
+        self.assertTrue(self._options.addOption("Logging", True))
+        self.assertEqual(True, self._options.getOption("Logging"))
+        self.assertTrue(self._options.addOption("SaveLogLevel", libopenzwave.PyLogLevels['Always']['value']))
+        self.assertEqual(libopenzwave.PyLogLevels['Always']['value'], self._options.getOption("SaveLogLevel"))
 
 if __name__ == '__main__':
     sys.argv.append('-v')

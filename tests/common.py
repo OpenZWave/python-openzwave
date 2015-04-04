@@ -43,12 +43,25 @@ import pyozw_version
 
 pyozw_version=pyozw_version.pyozw_version
 
-print pyozw_version
-
 class TestPyZWave(unittest.TestCase):
     """Grand mother
     """
     loglevel = logging.DEBUG
+    device = "/dev/zwave-aeon-s2"
+    log = "Debug"
+    userpath = ".tests_user_path"
+
+    def setUp(self):
+        try:
+            os.makedirs(self.userpath)
+        except:
+            pass
+
+    def tearDown(self):
+        try:
+            shutil.rmtree(self.userpath)
+        except:
+            pass
 
     @classmethod
     def setUpClass(self):

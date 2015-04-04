@@ -23,10 +23,21 @@ from mylibc cimport string
 cdef extern from "Options.h" namespace "OpenZWave":
     cdef cppclass Options:
         bool Lock()
-        bool AddOptionBool( string name, bool default )
-        bool AddOptionInt( string name, int32_t default )
-        bool AddOptionString( string name, string default, bool append )
+        bool AreLocked()
+        bool Destroy()
+        bool AddOptionBool(string name, bool default )
+        bool AddOptionInt(string name, int32_t default )
+        bool AddOptionString(string name, string default, bool append )
+        bool GetOptionAsBool(string name, bool* o_option )
+        bool GetOptionAsInt(string name, int32_t* o_option )
+        bool GetOptionAsString(string name, string* o_option)
+        OptionType GetType(string name)
+
+    ctypedef enum OptionType:
+        OptionType_Invalid = 0
+        OptionType_Bool = 1
+        OptionType_Int = 2
+        OptionType_String = 3
 
 cdef extern from "Options.h" namespace "OpenZWave::Options":
     Options* Create(string a, string b, string c)
-
