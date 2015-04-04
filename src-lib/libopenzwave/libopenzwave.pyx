@@ -463,7 +463,7 @@ Manage options manager
 
     def create(self, char *a, char *b, char *c):
         """
-.. _create:
+.. _createoptions:
 Create an option object used to start the manager
 
 :param a: The path of the config directory
@@ -473,7 +473,7 @@ Create an option object used to start the manager
 :param c: The "command line" options of the openzwave library
 :type c: str
 
-:see: destroy_
+:see: destroyoptions_
 
         """
         self.options = CreateOptions(string(a), string(b), string(c))
@@ -481,7 +481,7 @@ Create an option object used to start the manager
 
     def destroy(self):
         """
-.. _destroy:
+.. _destroyoptions:
  Deletes the Options and cleans up any associated objects.
  The application is responsible for destroying the Options object,
  but this must not be done until after the Manager object has been
@@ -490,7 +490,7 @@ Create an option object used to start the manager
 :return: The result of the operation.
 :rtype: bool
 
-:see: create_
+:see: createoptions_
 
         """
         return self.options.Destroy()
@@ -3340,7 +3340,7 @@ as returned by a call to Configuration::StaticGetCommandClassId.
 :type nodeId: int
 :param param: The index of the parameter.
 :type param: int
-:see: requestAllConfigParams_, setConfigParam_, valueID_, notification_
+:see: requestAllConfigParams_, setConfigParam_
 
         '''
         self.manager.RequestConfigParam(homeid, nodeid, param)
@@ -3355,7 +3355,7 @@ Request the values of all known configurable parameters from a device.
 :type homeId: int
 :param nodeId: The ID of the node to configure.
 :type nodeId: int
-:see: requestConfigParam_, setConfigParam_, valueID_, notification_
+:see: requestConfigParam_, setConfigParam_
 
         '''
         self.manager.RequestAllConfigParams(homeid, nodeid)
