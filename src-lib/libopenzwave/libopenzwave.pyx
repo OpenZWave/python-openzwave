@@ -464,6 +464,7 @@ Manage options manager
     def create(self, char *a, char *b, char *c):
         """
 .. _createoptions:
+
 Create an option object used to start the manager
 
 :param a: The path of the config directory
@@ -482,6 +483,7 @@ Create an option object used to start the manager
     def destroy(self):
         """
 .. _destroyoptions:
+
  Deletes the Options and cleans up any associated objects.
  The application is responsible for destroying the Options object,
  but this must not be done until after the Manager object has been
@@ -498,6 +500,7 @@ Create an option object used to start the manager
     def lock(self):
         """
 .. _lock:
+
 Lock the options. Needed to start the manager
 
 :return: The result of the operation.
