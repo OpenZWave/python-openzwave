@@ -456,138 +456,145 @@ Retrieve the config path. This directory hold the xml files.
 
 cdef class PyOptions:
     """
-    Manage options manager
+Manage options manager
     """
 
     cdef Options *options
 
     def create(self, char *a, char *b, char *c):
         """
-        .. _create:
-        Create an option object used to start the manager
+.. _create:
+Create an option object used to start the manager
 
-        :param a: The path of the config directory
-        :type a: str
-        :param b: The path of the user directory
-        :type b: str
-        :param c: The "command line" options of the openzwave library
-        :type c: str
+:param a: The path of the config directory
+:type a: str
+:param b: The path of the user directory
+:type b: str
+:param c: The "command line" options of the openzwave library
+:type c: str
 
-        :see: destroy_
+:see: destroy_
+
         """
         self.options = CreateOptions(string(a), string(b), string(c))
         return True
 
     def destroy(self):
         """
-        .. _destroy:
-         Deletes the Options and cleans up any associated objects.
-         The application is responsible for destroying the Options object,
-         but this must not be done until after the Manager object has been
-         destroyed.
+.. _destroy:
+ Deletes the Options and cleans up any associated objects.
+ The application is responsible for destroying the Options object,
+ but this must not be done until after the Manager object has been
+ destroyed.
 
-        :return: The result of the operation.
-        :rtype: bool
+:return: The result of the operation.
+:rtype: bool
 
-        :see: create_
+:see: create_
+
         """
         return self.options.Destroy()
 
     def lock(self):
         """
-        .. _lock:
-        Lock the options. Needed to start the manager
+.. _lock:
+Lock the options. Needed to start the manager
 
-        :return: The result of the operation.
-        :rtype: bool
+:return: The result of the operation.
+:rtype: bool
 
-        :see: areLocked_
+:see: areLocked_
+
         """
         return self.options.Lock()
 
     def areLocked(self):
         '''
-        .. _areLocked:
+.. _areLocked:
 
-         Test whether the options have been locked.
+ Test whether the options have been locked.
 
-        :return: true if the options have been locked.
-        :rtype: boolean
+:return: true if the options have been locked.
+:rtype: boolean
 
-        :see: lock_
+:see: lock_
 
         '''
         return self.options.AreLocked()
 
     def addOptionBool(self, char *name, value):
         """
-        .. _addOptionBool
+.. _addOptionBool:
 
-        Add a boolean option.
+Add a boolean option.
 
-        :param name: The name of the option.
-        :type name: str
-        :param value: The value of the option.
-        :type value: boolean
-        :return: The result of the operation.
-        :rtype: bool
+:param name: The name of the option.
+:type name: str
+:param value: The value of the option.
+:type value: boolean
+:return: The result of the operation.
+:rtype: bool
 
-        :see: addOption_, addOptionInt_, addOptionString_
+:see: addOption_, addOptionInt_, addOptionString_
+
         """
         return self.options.AddOptionBool(string(name), value)
 
     def addOptionInt(self, char *name, value):
         """
-        .. _addOptionInt
+.. _addOptionInt:
 
-        Add an integer option.
+Add an integer option.
 
-        :param name: The name of the option.
-        :type name: str
-        :param value: The value of the option.
-        :type value: boolean
-        :return: The result of the operation.
-        :rtype: bool
+:param name: The name of the option.
+:type name: str
+:param value: The value of the option.
+:type value: boolean
+:return: The result of the operation.
+:rtype: bool
 
-        :see: addOption_, addOptionBool_, addOptionString_
+:see: addOption_, addOptionBool_, addOptionString_
+
         """
         return self.options.AddOptionInt(string(name), value)
 
     def addOptionString(self, char *name, char *value, append=False):
         """
-        .. _addOptionString
+.. _addOptionString:
 
-        Add a string option.
+Add a string option.
 
-        :param name: The name of the option.  Option names are case insensitive and must be unique.
-        :type name: str
-        :param value: The value of the option.
-        :type value: str
-        :param append: Setting append to true will cause values read from the command line
-         or XML file to be concatenated into a comma delimited set.  If _append is false,
-         newer values will overwrite older ones.
-        :type append: boolean
-        :return: The result of the operation.
-        :rtype: bool
+:param name: The name of the option.  Option names are case insensitive and must be unique.
+:type name: str
+:param value: The value of the option.
+:type value: str
+:param append: Setting append to true will cause values read from the command line
+ or XML file to be concatenated into a comma delimited set.  If _append is false,
+ newer values will overwrite older ones.
+:type append: boolean
+:return: The result of the operation.
+:rtype: bool
 
-        :see: addOption_, addOptionBool_, addOptionInt_
+:see: addOption_, addOptionBool_, addOptionInt_
+
         """
         return self.options.AddOptionString(string(name), string(value), append)
 
     def addOption(self, name, value):
         """
-        .. _addOption
+.. _addOption:
 
-        Add an option.
+Add an option.
 
-        :param name: The name of the option.
-        :type name: string
-        :param value: The value of the option.
-        :type value: boolean, integer, string
-        :return: The result of the operation.
-        :rtype: bool
+:param name: The name of the option.
+:type name: string
+:param value: The value of the option.
+:type value: boolean, integer, string
+:return: The result of the operation.
+:rtype: bool
 
-        :see: addOptionBool_, addOptionInt_, addOptionString_
+:see: addOptionBool_, addOptionInt_, addOptionString_
+
         """
         if name not in PyOptionList:
             return False
@@ -601,16 +608,17 @@ cdef class PyOptions:
 
     def getOption(self, name):
         """
-        .. _getOption
+.. _getOption:
 
-        Retrieve option of a value.
+Retrieve option of a value.
 
-        :param name: The name of the option.
-        :type name: string
-        :return: The value
-        :rtype: boolean, integer, string or None
+:param name: The name of the option.
+:type name: string
+:return: The value
+:rtype: boolean, integer, string or None
 
-        :see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
+:see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
+
         """
         if name not in PyOptionList:
             return None
@@ -624,16 +632,17 @@ cdef class PyOptions:
 
     def getOptionAsBool(self, name):
         """
-        .. _getOptionAsBool
+.. _getOptionAsBool:
 
-        Retrieve boolean value of an option.
+Retrieve boolean value of an option.
 
-        :param name: The name of the option.
-        :type name: string
-        :return: The value or None
-        :rtype: boolean or None
+:param name: The name of the option.
+:type name: string
+:return: The value or None
+:rtype: boolean or None
 
-        :see: getOption_, getOptionAsInt_, getOptionAsString_
+:see: getOption_, getOptionAsInt_, getOptionAsString_
+
         """
         cdef bool type_bool
         cret = self.options.GetOptionAsBool(string(name), &type_bool)
@@ -642,16 +651,17 @@ cdef class PyOptions:
 
     def getOptionAsInt(self, name):
         """
-        .. _getOptionAsInt
+.. _getOptionAsInt:
 
-        Retrieve integer value of an option.
+Retrieve integer value of an option.
 
-        :param name: The name of the option.
-        :type name: string
-        :return: The value or None
-        :rtype: Integer or None
+:param name: The name of the option.
+:type name: string
+:return: The value or None
+:rtype: Integer or None
 
-        :see: getOption_, getOptionAsBool_, getOptionAsString_
+:see: getOption_, getOptionAsBool_, getOptionAsString_
+
         """
         cdef int32_t type_int
         cret = self.options.GetOptionAsInt(string(name), &type_int)
@@ -660,16 +670,17 @@ cdef class PyOptions:
 
     def getOptionAsString(self, name):
         """
-        .. _getOptionAsString:
+.. _getOptionAsString:
 
-        Retrieve string value of an option.
+Retrieve string value of an option.
 
-        :param name: The name of the option.
-        :type name: string
-        :return: The value or None
-        :rtype: String or None
+:param name: The name of the option.
+:type name: string
+:return: The value or None
+:rtype: String or None
 
-        :see: getOption_, getOptionAsBool_, getOptionAsInt_
+:see: getOption_, getOptionAsBool_, getOptionAsInt_
+
         """
         cdef string type_string
         cret = self.options.GetOptionAsString(string(name), &type_string)
@@ -678,12 +689,12 @@ cdef class PyOptions:
 
     def getConfigPath(self):
         '''
-        .. _getConfigPath:
+.. _getConfigPath:
 
-        Retrieve the config path. This directory hold the xml files.
+Retrieve the config path. This directory hold the xml files.
 
-        :return: A string containing the library config path or None.
-        :rtype: str
+:return: A string containing the library config path or None.
+:rtype: str
 
         '''
         return configPath()
@@ -691,9 +702,9 @@ cdef class PyOptions:
 
 cdef class RetAlloc:
     """
-    Map an array of uint8_t used when retrieving sets.
-    Allocate memory at init and free it when no more reference to it exist.
-    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
+Map an array of uint8_t used when retrieving sets.
+Allocate memory at init and free it when no more reference to it exist.
+Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
 
     """
     cdef uint32_t siz

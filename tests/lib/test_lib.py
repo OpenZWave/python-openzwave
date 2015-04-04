@@ -61,6 +61,7 @@ class TestInit(TestLib):
         self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
         self.assertTrue(self._options.create(self._configpath, self.userpath, '--LogFileName ozwlog.log --Logging --SaveLogLevel 1'))
         self.assertTrue(self._options.lock())
+        self.assertTrue(self._options.areLocked())
         self.assertEqual(True, self._options.getOptionAsBool("Logging"))
         self.assertEqual('ozwlog.log', self._options.getOptionAsString("LogFileName"))
         self.assertEqual(1, self._options.getOptionAsInt("SaveLogLevel"))

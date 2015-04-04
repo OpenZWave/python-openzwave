@@ -155,6 +155,8 @@ docs: clean-docs
 	cp docs/_build/text/README.txt README.md
 	cp docs/_build/text/INSTALL_REPO.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
+	cp docs/_build/text/INSTALL_MAC.txt .
+	cp docs/_build/text/INSTALL_WIN.txt .
 	cp docs/_build/text/COPYRIGHT.txt .
 	cp docs/_build/text/CHANGELOG.txt .
 	cp docs/_build/text/DEVEL.txt .
@@ -184,7 +186,7 @@ tests:
 	@echo "Tests for ZWave network finished."
 
 commit: clean docs
-	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
 	@echo "Commits pushed on github."
@@ -230,8 +232,11 @@ tgz: $(ARCHDIR) docs
 	cp docs/_build/text/README.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_REPO.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
+	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
+	cp docs/_build/text/INSTALL_MAC.txt $(ARCHDIR)/
 	cp docs/_build/text/COPYRIGHT.txt $(ARCHDIR)/
 	cp docs/_build/text/EXAMPLES.txt $(ARCHDIR)/
+	cp docs/_build/text/CHANGELOG.txt $(ARCHDIR)/
 	mkdir -p $(ARCHDIR)/docs
 	cp -Rf docs/_build/html/* $(ARCHDIR)/docs/
 	cp Makefile $(ARCHDIR)/
