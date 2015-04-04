@@ -11,11 +11,11 @@ python:
 install:
 #  - env
 #  - make pip
-  - make VIRTUAL_ENV=$VIRTUAL_ENV pip
+  - make VIRTUAL_ENV=$VIRTUAL_ENV tests-deps
+  - make VIRTUAL_ENV=$VIRTUAL_ENV pip-deps
   - make VIRTUAL_ENV=$VIRTUAL_ENV update
   - make VIRTUAL_ENV=$VIRTUAL_ENV build
   - make VIRTUAL_ENV=$VIRTUAL_ENV install
-  - make VIRTUAL_ENV=$VIRTUAL_ENV tests-deps
 # command to run tests
 script:
   - nosetests --cover-package=libopenzwave,openzwave --with-coverage
@@ -24,4 +24,5 @@ before_install:
   #- env
   #- sudo -E env
   - sudo apt-get update -y -qq
-  - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV debian-deps
+  - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV common-deps
+  - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV cython-deps
