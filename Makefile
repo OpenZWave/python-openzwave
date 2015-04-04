@@ -100,7 +100,13 @@ uninstall:
 	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
 	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
-developper-deps : common-deps tests-deps pip-deps doc-deps
+developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
+
+deps : common-deps pip-deps
+	@echo
+	@echo Dependencies for users installed (python ${python_version_full})
+
+cython-deps:
 ifeq (${python_version_major},2)
 	apt-get install -y cython
 endif
@@ -108,11 +114,7 @@ ifeq (${python_version_major},3)
 	-apt-get install -y cython3
 endif
 	@echo
-	@echo Dependencies for developpers installed (python ${python_version_full})
-
-deps : common-deps pip-deps
-	@echo
-	@echo Dependencies installed (python ${python_version_full})
+	@echo Dependencies for developpers of python-openzwave installed (python ${python_version_full})
 
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
@@ -173,7 +175,7 @@ develop:
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
 	@echo
-	@echo "Installation for developpers finished."
+	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
 	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
