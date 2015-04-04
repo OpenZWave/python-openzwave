@@ -11,8 +11,6 @@ python:
 install:
 #  - env
 #  - make pip
-  - make VIRTUAL_ENV=$VIRTUAL_ENV tests-deps
-  - make VIRTUAL_ENV=$VIRTUAL_ENV pip-deps
   - make VIRTUAL_ENV=$VIRTUAL_ENV update
   - make VIRTUAL_ENV=$VIRTUAL_ENV build
   - make VIRTUAL_ENV=$VIRTUAL_ENV install
@@ -26,3 +24,5 @@ before_install:
   - sudo apt-get update -y -qq
   - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV common-deps
   - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV cython-deps
+  - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV tests-deps
+  - sudo -E make VIRTUAL_ENV=$VIRTUAL_ENV pip-deps
