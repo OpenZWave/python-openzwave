@@ -82,6 +82,7 @@ class LibZWaveException(Exception):
 PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
+CWD_CONFIG_DIRECTORY = "openzwave/config"
 
 class EnumWithDoc(str):
     """Enum helper"""
@@ -456,14 +457,13 @@ Retrieve the config path. This directory hold the xml files.
     elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
     else:
-        for pythonpath in sys.path:
-            try:
-                for afile in os.listdir(pythonpath):
-                    fullpath = os.path.join(pythonpath, afile)
-                    if os.path.exists(os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)):
-                        return os.path.join(fullpath,PY_OZWAVE_CONFIG_DIRECTORY)
-            except :
-                pass
+        try:
+            if os.path.exists(os.path.join(os.path.dirname(__file__),PY_OZWAVE_CONFIG_DIRECTORY)):
+                return os.path.join(os.path.dirname(__file__), PY_OZWAVE_CONFIG_DIRECTORY)
+        except:
+            pass
+        if os.path.exists(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
+            return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
     return None
 
 cdef class PyOptions:
