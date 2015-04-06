@@ -393,6 +393,14 @@ created and Locked first, otherwise the call to Manager::Create will fail.
 Once the Manager has been created, call AddWatcher to install a notification
 callback handler, and then call the AddDriver method for each attached PC
 Z-Wave controller in turn.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#destroy">destroy</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -408,6 +416,20 @@ Z-Wave controller in turn.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">id</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.destroy">
+<tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.destroy" title="Permalink to this definition">¶</a></dt>
+<dd><p id="destroy">Deletes the Manager and cleans up any associated objects.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#create">create</a></td>
 </tr>
 </tbody>
 </table>
@@ -3150,8 +3172,7 @@ does not have to cope with more than one poll per second).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>milliseconds</strong> (<em>int</em>) &#8211; The length of the polling interval in milliseconds.</li>
-<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; If true, the library intersperses m_pollInterval between polls.
-If false, the library attempts to complete all polls within m_pollInterval</li>
+<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; If set to true (via SetPollInterval), the pollInterval will be interspersed between each poll (so a much smaller m_pollInterval like 100, 500, or 1,000 may be appropriate). If false, the library attempts to complete all polls within m_pollInterval</li>
 </ul>
 </td>
 </tr>

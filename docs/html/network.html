@@ -539,7 +539,7 @@ Can take a while on larger networks.</p>
 
 <dl class="method">
 <dt id="openzwave.network.ZWaveNetwork.set_poll_interval">
-<tt class="descname">set_poll_interval</tt><big>(</big><em>milliseconds</em>, <em>bIntervalBetweenPolls</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.set_poll_interval" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_poll_interval</tt><big>(</big><em>milliseconds=500</em>, <em>bIntervalBetweenPolls=True</em><big>)</big><a class="headerlink" href="#openzwave.network.ZWaveNetwork.set_poll_interval" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the time period between polls of a nodes state.</p>
 <p>Due to patent concerns, some devices do not report state changes automatically
 to the controller.  These devices need to have their state polled at regular
@@ -555,7 +555,7 @@ does not have to cope with more than one poll per second).</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>milliseconds</strong> (<em>int</em>) &#8211; The length of the polling interval in milliseconds.</li>
-<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; Don&#8217;t know what it is.</li>
+<li><strong>bIntervalBetweenPolls</strong> (<em>bool</em>) &#8211; If set to true (via SetPollInterval), the pollInterval will be interspersed between each poll (so a much smaller m_pollInterval like 100, 500, or 1,000 may be appropriate). If false, the library attempts to complete all polls within m_pollInterval.</li>
 </ul>
 </td>
 </tr>
