@@ -477,11 +477,8 @@ Retrieve the config path. This directory hold the xml files.
     elif os.path.isdir(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
     else:
-        try:
-            if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
-                return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
-        except:
-            pass
+        if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
         if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
             return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
     return None
