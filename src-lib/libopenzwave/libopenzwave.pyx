@@ -67,6 +67,18 @@ except DistributionNotFound:
 else:
     __version__ = _dist.version
 
+class LibZWaveException(Exception):
+    """
+    Exception class for LibOpenZWave
+    """
+    def __init__(self, value):
+        Exception.__init__(self)
+        self.msg = "LibOpenZwave Generic Exception"
+        self.value = value
+
+    def __str__(self):
+        return repr(self.msg+' : '+self.value)
+
 PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "config"
 OZWAVE_CONFIG_DIRECTORY = "share/openzwave/config"
@@ -459,7 +471,48 @@ cdef class PyOptions:
 Manage options manager
     """
 
+    cdef str _config_path
+    cdef str _user_path
+    cdef str _cmd_line
+
     cdef Options *options
+
+    def __init__(self, config_path=None, user_path=".", cmd_line=""):
+        """
+Create an option object and check that parameters are valid.
+
+:param device: The device to use
+:type device: str
+:param config_path: The openzwave config directory. If None, try to configure automatically.
+:type config_path: str
+:param user_path: The user directory
+:type user_path: str
+:param cmd_line: The "command line" options of the openzwave library
+:type cmd_line: str
+
+        """
+        if config_path is None:
+            config_path = self.getConfigPath()
+        if os.path.exists(config_path):
+            if not os.path.exists(os.path.join(config_path, "zwcfg.xsd")):
+                raise LibZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
+            self._config_path = config_path
+        else:
+            raise LibZWaveException("Can't find config directory %s" % config_path)
+        if user_path is None:
+            user_path = "."
+        if os.path.exists(user_path):
+            if os.access(user_path, os.W_OK)==True and os.access(user_path, os.R_OK)==True:
+                self._user_path = user_path
+            else:
+                raise LibZWaveException("Can't write in user directory %s" % user_path)
+        else:
+            raise LibZWaveException("Can't find user directory %s" % user_path)
+        if cmd_line is None:
+            cmd_line=""
+        self._cmd_line = cmd_line
+        self.create(self._config_path, self._user_path, self._cmd_line)
+
 
     def create(self, char *a, char *b, char *c):
         """

@@ -26,7 +26,7 @@ from os import name as os_name
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 #from Cython.Distutils import build_ext
-from Cython.Distutils import build_ext
+from Cython.Distutils import build_ext as cython_build_ext
 from Cython.Build import cythonize
 from platform import system as platform_system
 import glob
@@ -112,7 +112,7 @@ setup(
   version = pyozw_version,
   zip_safe = False,
   url='https://github.com/bibi21000/python-openzwave',
-  cmdclass = {'build_ext': build_ext},
+  cmdclass = {'build_ext': cython_build_ext},
   ext_modules = ext_modules,
   #ext_modules = cythonize(ext_modules),
   package_dir = {'' : 'src-lib'},

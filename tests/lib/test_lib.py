@@ -26,7 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-import sys, os, shutil
+import sys, os, shutil, stat
 import time
 import unittest
 from pprint import pprint
@@ -46,20 +46,42 @@ class TestInit(TestLib):
         vers=re.findall(r'\d+', self._manager.getOzwLibraryVersionNumber())
         self.assertEqual(len(vers),3)
 
-    def test_010_options_without_command_line(self):
+    def test_010_options_exceptions(self):
+        fake_config_dir = os.path.join(self.userpath,'fake_config_dir')
+        fake_user_dir = os.path.join(self.userpath,'fake_user_dir')
+        with self.assertRaises(libopenzwave.LibZWaveException):
+            options = libopenzwave.PyOptions(config_path="non_exisitng_dir", user_path=None, cmd_line=None)
+        try:
+            shutil.rmtree(self.userpath)
+        except:
+            pass
+        os.makedirs(self.userpath)
+        os.makedirs(fake_config_dir)
+        os.chmod(fake_config_dir, stat.S_IREAD|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH)
+        with self.assertRaises(libopenzwave.LibZWaveException):
+            options = libopenzwave.PyOptions(config_path=fake_config_dir, user_path=None, cmd_line=None)
+
+        try:
+            shutil.rmtree(self.userpath)
+        except:
+            pass
+        os.makedirs(self.userpath)
+        os.makedirs(fake_config_dir)
+        os.chmod(fake_config_dir, stat.S_IREAD|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH|stat.S_IWRITE|stat.S_IWUSR|stat.S_IWGRP|stat.S_IWOTH)
+        with self.assertRaises(libopenzwave.LibZWaveException):
+            options = libopenzwave.PyOptions(config_path=fake_config_dir, user_path=None, cmd_line=None)
+
+        options = libopenzwave.PyOptions(config_path=None, user_path=None, cmd_line="")
+
+    def test_020_options_without_command_line(self):
         self._options = libopenzwave.PyOptions()
         self._configpath = self._options.getConfigPath()
         self.assertNotEqual(self._configpath, None)
         self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
-        self.assertTrue(self._options.create(self._configpath, self.userpath, ''))
         self.assertTrue(self._options.destroy())
 
-    def test_020_options_with_command_line(self):
-        self._options = libopenzwave.PyOptions()
-        self._configpath = self._options.getConfigPath()
-        self.assertNotEqual(self._configpath, None)
-        self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
-        self.assertTrue(self._options.create(self._configpath, self.userpath, '--LogFileName ozwlog.log --Logging --SaveLogLevel 1'))
+    def test_030_options_with_command_line(self):
+        self._options = libopenzwave.PyOptions(cmd_line='--LogFileName ozwlog.log --Logging --SaveLogLevel 1')
         self.assertTrue(self._options.lock())
         self.assertTrue(self._options.areLocked())
         self.assertEqual(True, self._options.getOptionAsBool("Logging"))

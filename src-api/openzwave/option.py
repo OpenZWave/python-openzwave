@@ -61,7 +61,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         try:
             if os.path.exists(device):
-                if os.access(device, os.R_OK):
+                if os.access(device, os.R_OK) and os.access(device, os.W_OK):
                     self._device = device
                 else:
                     raise ZWaveException("Can't write to device %s" % device)
@@ -69,29 +69,7 @@ class ZWaveOption(libopenzwave.PyOptions):
                 raise ZWaveException("Can't find device %s" % device)
         except:
             raise ZWaveException("Can't find device %s" % device)
-        try:
-            if config_path is None:
-                config_path = self.getConfigPath()
-            if os.path.exists(config_path):
-                self._config_path = config_path
-                if not os.path.exists(os.path.join(config_path, "zwcfg.xsd")):
-                    raise ZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
-            else:
-                raise ZWaveException("Can't retrieve config from %s" % config_path)
-        except:
-            raise ZWaveException("Can't retrieve config from %s" % config_path)
-        try:
-            if os.path.exists(user_path):
-                if os.access(user_path, os.W_OK):
-                    self._user_path = user_path
-                else:
-                    raise ZWaveException("Can't write in user directory %s" % user_path)
-            else:
-                raise ZWaveException("Can't find user directory %s" % user_path)
-        except:
-            raise ZWaveException("Can't find user directory %s" % user_path)
-        self._cmd_line = cmd_line
-        self.create(self._config_path, self._user_path, self._cmd_line)
+        libopenzwave.PyOptions.__init__(self, config_path, user_path, cmd_line)
 
     def set_log_file(self, logfile):
         """
