@@ -5,10 +5,10 @@
 ARCHBASE      = archive
 BUILDDIR      = build
 DISTDIR       = dists
-NOSE          = /usr/local/bin/nosetests
+NOSE          = $(shell which nosetests)
 NOSEOPTS      = --verbosity=2
 NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
-PYLINT        = /usr/local/bin/pylint
+PYLINT        = $(shell which pylint)
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
 -include CONFIG.make
