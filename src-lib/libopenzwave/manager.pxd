@@ -36,6 +36,8 @@ import os
 cdef extern from "Manager.h" namespace "OpenZWave":
 
     cdef cppclass Manager:
+        # // Destruvtor
+        void Destroy()
         # // Configuration
         void WriteConfig(uint32_t homeid)
         Options* GetOptions()

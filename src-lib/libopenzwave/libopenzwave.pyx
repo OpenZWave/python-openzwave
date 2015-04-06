@@ -884,9 +884,21 @@ Once the Manager has been created, call AddWatcher to install a notification
 callback handler, and then call the AddDriver method for each attached PC
 Z-Wave controller in turn.
 
+:see: destroy_
         '''
         self.manager = CreateManager()
         PyEval_InitThreads()
+
+    def destroy(self):
+        '''
+.. _destroy:
+
+Deletes the Manager and cleans up any associated objects.
+
+:see: create_
+        '''
+        self.manager.Destroy()
+
 #
 # -----------------------------------------------------------------------------
 # Configuration
@@ -1385,8 +1397,7 @@ does not have to cope with more than one poll per second).
 
 :param milliseconds: The length of the polling interval in milliseconds.
 :type milliseconds: int
-:param bIntervalBetweenPolls: If true, the library intersperses m_pollInterval between polls.
-                                               If false, the library attempts to complete all polls within m_pollInterval
+:param bIntervalBetweenPolls: If set to true (via SetPollInterval), the pollInterval will be interspersed between each poll (so a much smaller m_pollInterval like 100, 500, or 1,000 may be appropriate). If false, the library attempts to complete all polls within m_pollInterval
 :type bIntervalBetweenPolls: bool
 :see: getPollInterval_, enablePoll_, isPolled_, setPollIntensity_, disablePoll_, getPollIntensity_
 
