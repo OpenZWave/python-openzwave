@@ -11,5 +11,5 @@
 * :doc:`Options for manager </option>`
 * :doc:`Objects and Exceptions </object>`
 * :doc:`Enums and data types </data>`
-* :doc:`Nose tests result <nosetests/nosetests.html>`_
-* :doc:`Pylint report <pylint/report.html>`_
+* `Nose tests result <nosetests/nosetests.html>`_
+* `Pylint report <pylint/report.html>`_
