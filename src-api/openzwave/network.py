@@ -346,6 +346,7 @@ class ZWaveNetwork(ZWaveObject):
             self._manager.removeWatcher(self.zwcallback)
             time.sleep(1.0)
             self._manager.removeDriver(self._options.device)
+            time.sleep(1.0)
             self.nodes = None
             self._state = self.STATE_STOPPED
             if fire:
@@ -355,7 +356,8 @@ class ZWaveNetwork(ZWaveObject):
             logging.error('Stop network : %s', traceback.format_exception(*sys.exc_info()))
         finally:
             self._semaphore_nodes.release()
-
+        self._manager.destroy()
+        self._options.destroy()
 
     @property
     def home_id(self):
@@ -733,7 +735,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self.manager.getPollInterval()
 
-    def set_poll_interval(self, milliseconds, bIntervalBetweenPolls):
+    def set_poll_interval(self, milliseconds=500, bIntervalBetweenPolls=True):
         """
         Set the time period between polls of a nodes state.
 
@@ -748,7 +750,7 @@ class ZWaveNetwork(ZWaveObject):
 
         :param milliseconds: The length of the polling interval in milliseconds.
         :type milliseconds: int
-        :param bIntervalBetweenPolls: Don't know what it is.
+        :param bIntervalBetweenPolls: If set to true (via SetPollInterval), the pollInterval will be interspersed between each poll (so a much smaller m_pollInterval like 100, 500, or 1,000 may be appropriate). If false, the library attempts to complete all polls within m_pollInterval.
         :type bIntervalBetweenPolls: bool
 
         """

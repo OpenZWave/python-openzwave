@@ -153,7 +153,7 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
         """
-        return self.addOptionInt("SaveLogLevel", PyLogLevels[level])
+        return self.addOptionInt("SaveLogLevel", PyLogLevels[level]['value'])
 
     def set_queue_log_level(self, level):
         """
