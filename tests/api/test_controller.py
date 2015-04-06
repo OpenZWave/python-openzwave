@@ -88,7 +88,7 @@ class TestController(TestApi):
         self.assertEqual(type(self.network.controller.node.neighbors), type(set()))
 
     def test_340_controller_node_baud_rate(self):
-        self.assertEqual(type(self.network.controller.node.max_baud_rate), type(long()))
+        self.assertTrue(type(self.network.controller.node.max_baud_rate) in [type(long()), type(int())])
         self.assertTrue(self.network.controller.node.max_baud_rate > 0)
 
     def test_410_controller_node_product(self):

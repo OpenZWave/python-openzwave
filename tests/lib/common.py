@@ -41,11 +41,11 @@ class TestLib(TestPyZWave):
     """
     Parent test class for lib
     """
-    device = None
+    @classmethod
+    def setUpClass(self):
+        super(TestPyZWave, self).setUpClass()
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
+    @classmethod
+    def tearDownClass(self):
+        super(TestPyZWave, self).tearDownClass()
 

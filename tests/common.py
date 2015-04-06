@@ -25,9 +25,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-# Update this value when running on raspberry
-# 1.5 is a good choice
-SLEEP = 0.50
+#The common sleep dealy to wait for network
+#We wait 1*SLEEP for network.STATE_AWAKED
+#After that we wait 1*SLEEP for network.STATE_READY
+SLEEP = 30
 
 import sys, os
 import time
@@ -46,18 +47,13 @@ pyozw_version=pyozw_version.pyozw_version
 class TestPyZWave(unittest.TestCase):
     """Grand mother
     """
-    loglevel = logging.DEBUG
-    device = "/dev/zwave-aeon-s2"
-    log = "Debug"
+    device = "/dev/ttyUSB0"
+    ozwlog = "Debug"
+    pylog = logging.DEBUG
     userpath = ".tests_user_path"
 
-    def setUp(self):
-        try:
-            os.makedirs(self.userpath)
-        except:
-            pass
-
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
         try:
             shutil.rmtree(self.userpath)
         except:
@@ -65,10 +61,14 @@ class TestPyZWave(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S", level=self.loglevel)
+        logging.basicConfig(format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S", level=self.pylog)
         self.skip = True
         if 'NOSESKIP' in os.environ:
             self.skip = eval(os.environ['NOSESKIP'])
+        try:
+            os.makedirs(self.userpath)
+        except:
+            pass
 
     def skipTest(self, message):
         """Skip a test
@@ -81,6 +81,11 @@ class TestPyZWave(unittest.TestCase):
         """
         if 'TRAVIS_OS_NAME' in os.environ:
             raise SkipTest("%s" % ("Skip on travis : %s" % message))
+
+    def skipNotReady(self, message):
+        """Skip a test because zwave network is not ready
+        """
+        raise SkipTest("%s" % ("Skip NotReady : %s" % message))
 
     def wipTest(self):
         """Work In Progress test
