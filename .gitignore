@@ -4,16 +4,15 @@
 *.o
 *.pyc
 *.log
-tests/*.err
-openzwave/*
-build/*
-dists/*
-archive/*
+openzwave/
+build/
+dists/
+archive/
 *.egg
-docs/_build/*
+docs/_build/
 OZW_Log.txt
 OZW_Log.log
-python_openzwave.egg-info/*
+python_openzwave.egg-info/
 python_openzwave_api.egg-info/
 python_openzwave_lib.egg-info/
 lib/libopenzwave.cpp
@@ -26,3 +25,4 @@ src-lib/libopenzwave/libopenzwave.cpp
 src-api/openzwave.egg-info/
 src-manager/pyozwman.egg-info/
 .coverage
+.tests_user_path/

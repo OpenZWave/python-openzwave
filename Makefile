@@ -57,6 +57,7 @@ help:
 clean-docs:
 	cd docs && make clean
 	-rm -Rf docs/html
+	-rm -Rf docs/joomla
 	-rm -Rf docs/pdf
 
 clean: clean-docs
@@ -148,9 +149,14 @@ docs: clean-docs
 	-mkdir -p docs/html/nosetests
 	-mkdir -p docs/html/coverage
 	-mkdir -p docs/html/pylint
-	-mkdir -p docs/joomla
+	-mkdir -p docs/joomla/nosetests
+	-mkdir -p docs/joomla/coverage
+	-mkdir -p docs/joomla/pylint
 	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
+	cp docs/html/nosetests/* docs/joomla/nosetests
+	cp docs/html/coverage/* docs/joomla/coverage
 	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
+	cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && make docs
 	cp docs/_build/text/README.txt README.md
 	cp docs/_build/text/INSTALL_REPO.txt .
@@ -181,7 +187,8 @@ develop:
 	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ ; unset NOSESKIP
 	@echo
 	@echo "Tests for ZWave network finished."
 
