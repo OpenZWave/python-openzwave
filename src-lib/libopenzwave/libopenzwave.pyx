@@ -47,7 +47,6 @@ from log cimport LogLevel
 import os
 import sys
 
-# See http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/ for capturing console output of the c++ library
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
 try:  # Python 2.7+
@@ -66,6 +65,11 @@ except DistributionNotFound:
     __version__ = 'Not installed'
 else:
     __version__ = _dist.version
+try:
+    _dist = get_distribution('libopenzwave')
+    libopenzwave_file = _dist.__file__
+except AttributeError:
+    libopenzwave_file = 'not_installed'
 
 class LibZWaveException(Exception):
     """
@@ -78,6 +82,25 @@ class LibZWaveException(Exception):
 
     def __str__(self):
         return repr(self.msg+' : '+self.value)
+
+# See http://www.electricmonk.nl/log/2011/08/14/redirect-stdout-and-stderr-to-a-logger-in-python/ for capturing console output of the c++ library
+#     http://stackoverflow.com/questions/616645/how-do-i-duplicate-sys-stdout-to-a-log-file-in-python
+#     https://github.com/nose-devs/nose/blob/master/nose/plugins/capture.py
+
+class StdOutToLogger(object):
+    """
+    Capture stdout and send it to logging.debug
+    """
+    def __init__(self):
+        self.stdout = sys.stdout
+        sys.stdout = self
+
+    def __del__(self):
+        sys.stdout = self.stdout
+        self.file.close()
+
+    def write(self, data):
+        logging.debug(data)
 
 PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "config"
@@ -401,9 +424,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
         }
-
     isAddValueDetails = True;
-
     if notification.GetType() == Type_Group:
         n['groupIdx'] = notification.GetGroupIdx()
         isAddValueDetails = False;
@@ -419,10 +440,8 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() == Type_SceneEvent:
         n['sceneId'] = notification.GetSceneId()
         isAddValueDetails = False;
-
     if isAddValueDetails:
         addValueId(notification.GetValueID(), n)
-
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -448,21 +467,22 @@ Retrieve the config path. This directory hold the xml files.
 :rtype: str
 
     '''
-    if os.path.exists(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+    if os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+        logging.debug()
         return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
+    elif os.path.isdir(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
+    elif os.path.isdir(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.exists(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+    elif os.path.isdir(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
     else:
         try:
-            if os.path.exists(os.path.join(os.path.dirname(__file__),PY_OZWAVE_CONFIG_DIRECTORY)):
-                return os.path.join(os.path.dirname(__file__), PY_OZWAVE_CONFIG_DIRECTORY)
+            if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
+                return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
         except:
             pass
-        if os.path.exists(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
+        if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
             return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
     return None
 
