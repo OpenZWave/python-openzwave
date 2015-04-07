@@ -18,6 +18,9 @@ python_openzwave_lib.egg-info/
 lib/libopenzwave.cpp
 debian/python-openzwave
 zwcfg_*
+zwscene.xml
+examples/zwcfg_*
+examples/zwscene.xml
 install.files
 src-lib/libopenzwave.so
 src-lib/libopenzwave.egg-info/

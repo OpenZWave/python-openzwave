@@ -442,7 +442,6 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         isAddValueDetails = False;
     if isAddValueDetails:
         addValueId(notification.GetValueID(), n)
-    print "notif_callback %s" % n
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -2520,7 +2519,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
             elif datatype == "Raw":
                 type_raw = <uint8_t*> malloc(len(value)*sizeof(uint8_t))
                 for x in range(0, len(value)):
-                    print value[x]
+                    #print value[x]
                     type_raw[x] = ord(value[x])
                 cret = self.manager.SetValue(values_map.at(id), type_raw, len(value))
                 ret = 1 if cret else 0

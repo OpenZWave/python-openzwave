@@ -38,7 +38,7 @@ EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_mi
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all develop install uninstall clean-docs docs tests devtests pylint commit apt pip update build
+.PHONY: help clean all update build develop install uninstall clean-docs docs tests pylint commit developper-deps repo-deps arch-deps common-deps cython-deps
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -102,8 +102,14 @@ uninstall:
 	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
 developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
+	@echo
+	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
-deps : common-deps pip-deps
+repo-deps : common-deps cython-deps tests-deps pip-deps
+	@echo
+	@echo "Dependencies for users installed (python ${python_version_full})"
+
+arch-deps : common-deps pip-deps
 	@echo
 	@echo "Dependencies for users installed (python ${python_version_full})"
 
@@ -114,8 +120,6 @@ endif
 ifeq (${python_version_major},3)
 	-apt-get install -y cython3
 endif
-	@echo
-	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}

@@ -47,10 +47,10 @@ for arg in sys.argv:
         print("  --sniff=0 : sniff for zwave messages a number of seconds")
         exit(0)
 
-options = libopenzwave.PyOptions()
+options = libopenzwave.PyOptions(config_path="../openzwave/config", \
+  user_path=".", cmd_line="--logging true")
 
 # Specify the open-zwave config path here
-options.create("../openzwave/config/","","--logging true")
 options.lock()
 manager = libopenzwave.PyManager()
 manager.create()
@@ -61,14 +61,15 @@ def callback(args):
     if args:
         print('homeId: 0x%.8x' % args['homeId'])
         print('nodeId: %d' % args['nodeId'])
-        v = args['valueId']
-        print('valueID: %s' % v['id'])
-        if v.has_key('groupIndex') and v['groupIndex'] != 0xff: print('GroupIndex: %d' % v['groupIndex'])
-        if v.has_key('event') and v['event'] != 0xff: print('Event: %d' % v['event'])
-        if v.has_key('value'): print('Value: %s' % str(v['value']))
-        if v.has_key('label'): print('Label: %s' % v['label'])
-        if v.has_key('units'): print('Units: %s' % v['units'])
-        if v.has_key('readOnly'): print('ReadOnly: %s' % v['readOnly'])
+        if 'valueId' in args:
+            v = args['valueId']
+            print('valueID: %s' % v['id'])
+            if v.has_key('groupIndex') and v['groupIndex'] != 0xff: print('GroupIndex: %d' % v['groupIndex'])
+            if v.has_key('event') and v['event'] != 0xff: print('Event: %d' % v['event'])
+            if v.has_key('value'): print('Value: %s' % str(v['value']))
+            if v.has_key('label'): print('Label: %s' % v['label'])
+            if v.has_key('units'): print('Units: %s' % v['units'])
+            if v.has_key('readOnly'): print('ReadOnly: %s' % v['readOnly'])
     print('%s\n' % ('-'*20,))
 
 print("Add watcher")
