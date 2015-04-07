@@ -2,54 +2,49 @@
 python-openzwave
 ****************
 
-This is the new generation of python-openzwave.
+python-openzwave is a python wrapper for the openzwave c++ library :
+https://github.com/OpenZWave/open-zwave
 
-python-openzwave is a python wrapper for the openzwave library. It's
-also contains an api (object representation of Zwave network) and
-ozwsh (a shell like manager using the api).
+   * full manager implementation with options
 
-You can install python-openzwave in 3 ways :
+   * an API to map the ZWave network in Python objects
 
-   * From repository : you need to install mercurial, subversion and
-     the common builds tools. Look at INSTALL_REPO to do such
-     installation
+   * many examples
 
-   * From an archive : you don't need to install mercurial,
-     subversion. Only the common builds tools are needed. Look at
-     INSTALL_ARCH to do such installation
 
-   * From scratch : if you can't build python-openzwave
-     automatically or you are using windows or MacOS X. Look at
-     INSTALL_MAN to do such installation
+python-openzwave 0.3.0-alpha1 is out !!!
+========================================
+
+Look at CHANGELOG to see new features, to do list and release notes.
+
+Look at INSTALL_REPO to test it now !!!
 
 
 Migrating from python-openzwave 0.2.X to 0.3.0
-==============================================
-
-This version (0.3.0) is under development, do not use it in a
-production environnement.
+**********************************************
 
 I need to update source tree of python-openzwave and modules's names
 because of a bug in setuptools :
 https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-
 respect-src . Sorry for that.
 
-So, before building python-openzwave, you must uninstall the old
+Update your sources:
+
+   git pull
+
+Before building python-openzwave 0.3.0, you must uninstall the old
 version :
 
    sudo make uninstall
 
-After that, reinstall python-openzwave using your prefered method.
-
-About cython : I've made many tests using the cython installed via pip
-: (0.20, 0.21 and 0.22). Compilation is ok but a segfault appears when
+About cython : I've made many tests using cython installed via pip :
+(0.20, 0.21 and 0.22). Compilation is ok but a segfault appears when
 launching the tests. Please remove it.
 
    sudo pip uninstall Cython
 
-And reinstall the one provided with your distribution
-
-   sudo make deps
+You also need to make some minor updates in you code, look at
+CHANGELOG
 
 If you have problems, please submit an issue with :
 
@@ -60,27 +55,3 @@ If you have problems, please submit an issue with :
 
    * the content of /usr/local/lib/python2.7/dist-packages/easy-
      install.pth (for python 2.7)
-
-
-Testing python-openzwave
-========================
-
-After installing python-openzwave, you can run tests :
-
-   sudo make tests
-
-
-Documentation
-=============
-
-You can browse the documentation here : http://bibi21000.gallet.info
-/python-openzwave.html.
-
-
-To do
-=====
-
-* Improve tests : add virtual nodes and controllers to pass test on
-  travis
-
-* ...

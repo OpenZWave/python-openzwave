@@ -46,36 +46,38 @@
             
   <div class="section" id="python-openzwave">
 <h1>python-openzwave<a class="headerlink" href="#python-openzwave" title="Permalink to this headline">¶</a></h1>
-<p>This is the new generation of python-openzwave.</p>
-<p>python-openzwave is a python wrapper for the openzwave library.
-It&#8217;s also contains an api (object representation of Zwave network) and ozwsh (a shell like manager using the api).</p>
-<p>You can install python-openzwave in 3 ways :</p>
+<p>python-openzwave is a python wrapper for the openzwave c++ library : <a class="reference external" href="https://github.com/OpenZWave/open-zwave">https://github.com/OpenZWave/open-zwave</a></p>
 <blockquote>
 <div><ul class="simple">
-<li>From repository : you need to install mercurial, subversion and the common builds tools. Look at INSTALL_REPO to do such installation</li>
-<li>From an archive : you don&#8217;t need to install mercurial, subversion. Only the common builds tools are needed. Look at INSTALL_ARCH to do such installation</li>
-<li>From scratch : if you can&#8217;t build python-openzwave automatically or you are using windows or MacOS X. Look at INSTALL_MAN to do such installation</li>
+<li>full manager implementation with options</li>
+<li>an API to map the ZWave network in Python objects</li>
+<li>many examples</li>
 </ul>
 </div></blockquote>
+<div class="section" id="python-openzwave-0-3-0-alpha1-is-out">
+<h2>python-openzwave 0.3.0-alpha1 is out !!!<a class="headerlink" href="#python-openzwave-0-3-0-alpha1-is-out" title="Permalink to this headline">¶</a></h2>
+<p>Look at CHANGELOG to see new features, to do list and release notes.</p>
+<p>Look at INSTALL_REPO to test it now !!!</p>
+</div>
+</div>
 <div class="section" id="migrating-from-python-openzwave-0-2-x-to-0-3-0">
-<h2>Migrating from python-openzwave 0.2.X to 0.3.0<a class="headerlink" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0" title="Permalink to this headline">¶</a></h2>
-<p>This version (0.3.0) is under development, do not use it in a production environnement.</p>
+<h1>Migrating from python-openzwave 0.2.X to 0.3.0<a class="headerlink" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0" title="Permalink to this headline">¶</a></h1>
 <p>I need to update source tree of python-openzwave and modules&#8217;s names because of a bug in setuptools : <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a> .
 Sorry for that.</p>
-<p>So, before building python-openzwave, you must uninstall the old version :</p>
+<p>Update your sources:</p>
+<div class="highlight-bash"><div class="highlight"><pre>git pull
+</pre></div>
+</div>
+<p>Before building python-openzwave 0.3.0, you must uninstall the old version :</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo make uninstall
 </pre></div>
 </div>
-<p>After that, reinstall python-openzwave using your prefered method.</p>
-<p>About cython : I&#8217;ve made many tests using the cython installed via pip : (0.20, 0.21 and 0.22).
+<p>About cython : I&#8217;ve made many tests using cython installed via pip : (0.20, 0.21 and 0.22).
 Compilation is ok but a segfault appears when launching the tests. Please remove it.</p>
 <div class="highlight-bash"><div class="highlight"><pre>sudo pip uninstall Cython
 </pre></div>
 </div>
-<p>And reinstall the one provided with your distribution</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo make deps
-</pre></div>
-</div>
+<p>You also need to make some minor updates in you code, look at CHANGELOG</p>
 <p>If you have problems, please submit an issue with :</p>
 <blockquote>
 <div><ul class="simple">
@@ -84,25 +86,6 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
 <li>the content of /usr/local/lib/python2.7/dist-packages/easy-install.pth (for python 2.7)</li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="testing-python-openzwave">
-<h2>Testing python-openzwave<a class="headerlink" href="#testing-python-openzwave" title="Permalink to this headline">¶</a></h2>
-<p>After installing python-openzwave, you can run tests :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo make tests
-</pre></div>
-</div>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>You can browse the documentation here : <a class="reference external" href="http://bibi21000.gallet.info/python-openzwave.html">http://bibi21000.gallet.info/python-openzwave.html</a>.</p>
-</div>
-<div class="section" id="to-do">
-<h2>To do<a class="headerlink" href="#to-do" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Improve tests : add virtual nodes and controllers to pass test on travis</li>
-<li>...</li>
-</ul>
-</div>
 </div>
 
 
@@ -114,12 +97,10 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">python-openzwave</a><ul>
-<li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>
-<li><a class="reference internal" href="#testing-python-openzwave">Testing python-openzwave</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a></li>
-<li><a class="reference internal" href="#to-do">To do</a></li>
+<li><a class="reference internal" href="#python-openzwave-0-3-0-alpha1-is-out">python-openzwave 0.3.0-alpha1 is out !!!</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>
 </ul>
 
   <h3>This Page</h3>

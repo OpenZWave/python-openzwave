@@ -4,7 +4,7 @@
 python-openzwave
 ================
 
-You don't need to install (but building it) python-openzwave to test examples.
+You need to install and python-openzwave to test examples.
 
 
 ozwsh

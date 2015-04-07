@@ -39,24 +39,9 @@ On a debian like distribution :
 
 .. code-block:: bash
 
-    sudo make deps
+    sudo make repo-deps
 
 For non-debian (fedora, ...), you can retrieve the packages needed in the Makefile.
-
-If you want to build the documentatation, you also need to install sphinx and some contributions :
-
-On a debian like distribution :
-
-.. code-block:: bash
-
-    sudo apt-get install python-sphinx
-
-You also need to install some sphinx contributions :
-
-.. code-block:: bash
-
-    sudo pip install sphinxcontrib-blockdiag sphinxcontrib-actdiag
-    sudo pip install sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 Update and build process
 ========================
@@ -80,29 +65,37 @@ When update process is done, you can compile sources
 
     make build
 
-Or if you have already build python-openzwave in a previous installation,
-you can use the clean option to remove old builds.
+Or if you have already build python-openzwave in a previous installation, you can use the clean target to remove old builds.
 
 .. code-block:: bash
 
-    make clean
-    make build
+    sudo make clean
 
 Installation
 ============
 
-You can now install the packages using the following command will.
+You can now ready to install the eggs using the following command :
 
 .. code-block:: bash
 
     sudo make install
 
-The installation script create a list of installed files. So you can remove
-python-openzwave using the following command :
+You can also remove python-openzwave using :
 
 .. code-block:: bash
 
     sudo make uninstall
+
+Running tests
+=============
+
+You can launch the regression tests using :
+
+.. code-block:: bash
+
+    make tests
+
+Keep in mind that the tests will "play" with your nodes : switching on and off, dimming, adding and removing scenes, ...
 
 Python3 and virtualenv
 ======================
@@ -113,13 +106,12 @@ If you want to install python-openzwave in a python virtual environnement, you s
 
 .. code-block:: bash
 
-    make VIRTUAL_ENV=/path/to/my/venv build
+    make VIRTUAL_ENV=/path/to/my/venv ...
 
 If you use python 3 and your python executable is called python3 :
 
 .. code-block:: bash
 
-    make PYTHON_EXEC=python3 build
+    make PYTHON_EXEC=python3 ...
 
 You can also put these variables in a CONFIG.make file instead of passing them to the command line
-
