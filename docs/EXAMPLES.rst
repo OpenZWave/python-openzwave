@@ -94,15 +94,3 @@ Start it with :
 .. code-block:: bash
 
     ./memory_use.py --device=/dev/yourzwavestick
-
-Other examples
-==============
-
-manager : my first try to use uwird. I don't think I will developp it anymore.
-Feel free to fork it.
-
-The old directory contains examples of py-openzwave (the ancestor of python-openzwave),
-feel free to upgrade them.
-
-If you develop some examples using python-openzwave library, send us the sources,
-they will be addes to examples.

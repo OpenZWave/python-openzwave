@@ -1,3 +1,0 @@
-zwaveServer dependencies:
-
-sudo pip install Flask WTForms Flask-WTF WTFridge
