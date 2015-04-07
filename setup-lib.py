@@ -22,16 +22,18 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from os import name as os_name
-#from distutils.core import setup
+import os, sys
 from setuptools import setup, find_packages
 from distutils.extension import Extension
-#from Cython.Distutils import build_ext
-from Cython.Distutils import build_ext as cython_build_ext
+if os.path.isdir(os.path.join(os.getcwd(), '.git')):
+    #Install from git
+    from Cython.Distutils import build_ext
+else:
+    #Install from archive
+    from distutils.command import build_ext
 from Cython.Build import cythonize
 from platform import system as platform_system
 import glob
-import os
-import sys
 from pyozw_version import pyozw_version
 
 DEBIAN_PACKAGE = False
@@ -112,7 +114,7 @@ setup(
   version = pyozw_version,
   zip_safe = False,
   url='https://github.com/bibi21000/python-openzwave',
-  cmdclass = {'build_ext': cython_build_ext},
+  cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,
   #ext_modules = cythonize(ext_modules),
   package_dir = {'' : 'src-lib'},
