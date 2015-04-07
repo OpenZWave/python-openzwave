@@ -25,20 +25,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 import sys, os
 import time
-try :
-    import libopenzwave
-    from libopenzwave import PyManager
-    print("Openzwave is installed.")
-except :
-    print("Openzwave is not installed. Get it from tmp directory.")
-    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
-    import libopenzwave
-    from libopenzwave import PyManager
+import libopenzwave
+from libopenzwave import PyManager
 
-device="/dev/zwave-aeon-s2"
+device="/dev/ttyUSB0"
 log="Info"
 sniff=60.0
 

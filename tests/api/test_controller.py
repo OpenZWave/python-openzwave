@@ -54,7 +54,6 @@ from tests.common import TestPyZWave
 class TestController(TestApi):
 
     def test_010_controller(self):
-        self.wait_for_network_state(self.network.STATE_AWAKED, 1)
         self.assertEqual(type(self.network.controller.name), type(""))
         self.assertEqual(type(self.network.controller.ozw_library_version), type(""))
         self.assertEqual(type(self.network.controller.python_library_version), type(""))
@@ -63,7 +62,7 @@ class TestController(TestApi):
     def test_020_controller_capabilities(self):
         self.assertEqual(type(self.network.controller.capabilities), type(set()))
 
-    def test_030_controller_send_sqeue(self):
+    def test_030_controller_send_queue(self):
         self.assertEqual(type(self.network.controller.send_queue_count), type(0))
         self.assertTrue(self.network.controller.send_queue_count >= 0)
 

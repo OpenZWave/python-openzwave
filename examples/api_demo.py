@@ -32,13 +32,6 @@ import resource
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('openzwave')
-
-#Insert your build directory here (it depends of your python distribution)
-#To get one, run the make_doc.sh command
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
 import openzwave
 from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
@@ -48,7 +41,7 @@ from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 import time
 
-device="/dev/zwave-aeon-s2"
+device="/dev/ttyUSB0"
 log="Debug"
 
 for arg in sys.argv:

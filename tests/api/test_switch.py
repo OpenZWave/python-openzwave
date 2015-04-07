@@ -50,15 +50,37 @@ from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
 
-class TestNodes(TestApi):
+class TestSwitch(TestApi):
 
-    def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
-        self.assertTrue(self.network.nodes_count>0)
-
-    def test_100_nodes_test(self):
+    def test_010_switch_state(self):
+        ran = False
         for node in self.network.nodes:
-            self.network.nodes[node].test(5)
+            for val in self.network.nodes[node].get_switches() :
+                ran = True
+                self.assertTrue(self.network.nodes[node].get_switch_state(val) in [True, False])
+        if not ran :
+            self.skipTest("No Switch found")
+
+    def test_110_switch_on_off(self):
+        ran = False
+        for node in self.network.nodes:
+            for val in self.network.nodes[node].get_switches() :
+                ran = True
+                time.sleep(1)
+                self.network.nodes[node].set_switch(val,True)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_switch_state(val) == False :
+                    time.sleep(5)
+                self.assertTrue(self.network.nodes[node].get_switch_state(val))
+                self.network.nodes[node].set_switch(val,False)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_switch_state(val) == True :
+                    time.sleep(5)
+                self.assertFalse(self.network.nodes[node].get_switch_state(val))
+        if not ran :
+            self.skipTest("No Switch found")
 
 if __name__ == '__main__':
     sys.argv.append('-v')

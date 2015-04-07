@@ -50,15 +50,16 @@ from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
 
-class TestNodes(TestApi):
+class TestBattery(TestApi):
 
-    def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
-        self.assertTrue(self.network.nodes_count>0)
-
-    def test_100_nodes_test(self):
+    def test_010_battery_item(self):
+        ran = False
         for node in self.network.nodes:
-            self.network.nodes[node].test(5)
+            for val in self.network.nodes[node].get_battery_levels() :
+                ran = True
+                self.assertEqual(type(self.network.nodes[node].get_battery_level(val)), type(0))
+        if not ran :
+            self.skipTest("No battery found")
 
 if __name__ == '__main__':
     sys.argv.append('-v')

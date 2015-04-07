@@ -50,15 +50,35 @@ from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
 
-class TestNodes(TestApi):
+class TestDimmer(TestApi):
 
-    def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
-        self.assertTrue(self.network.nodes_count>0)
-
-    def test_100_nodes_test(self):
+    def test_010_dimmer_level(self):
+        ran = False
         for node in self.network.nodes:
-            self.network.nodes[node].test(5)
+            for val in self.network.nodes[node].get_dimmers() :
+                ran = True
+                self.assertTrue(self.network.nodes[node].get_dimmer_level(val) in range(0,256))
+        if not ran :
+            self.skipTest("No Dimmer found")
+
+    def test_110_dimmer_on_off(self):
+        ran = False
+        for node in self.network.nodes:
+            for val in self.network.nodes[node].get_dimmers() :
+                ran = True
+                level = 80
+                self.network.nodes[node].set_dimmer(val,level)
+                time.sleep(1)
+                if self.network.nodes[node].get_dimmer_level(val) not in range(level-5,level+5):
+                    time.sleep(5)
+                self.assertTrue(self.network.nodes[node].get_dimmer_level(val) in range(level-5,level+5))
+                self.network.nodes[node].set_dimmer(val,0)
+                time.sleep(2)
+                if self.network.nodes[node].get_dimmer_level(val) != 0:
+                    time.sleep(5)
+                self.assertEqual(self.network.nodes[node].get_dimmer_level(val), 0)
+        if not ran :
+            self.skipTest("No Dimmer found")
 
 if __name__ == '__main__':
     sys.argv.append('-v')

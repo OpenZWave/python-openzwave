@@ -33,32 +33,17 @@ logging.basicConfig(level=logging.DEBUG)
 
 logger = logging.getLogger('openzwave')
 
-try :
-    import openzwave
-    from openzwave.node import ZWaveNode
-    from openzwave.value import ZWaveValue
-    from openzwave.scene import ZWaveScene
-    from openzwave.controller import ZWaveController
-    from openzwave.network import ZWaveNetwork
-    from openzwave.option import ZWaveOption
-    print("Openzwave is installed.")
-except :
-    print("Openzwave is not installed. Get it from tmp directory.")
-    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-    sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-    sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
-    import openzwave
-    from openzwave.node import ZWaveNode
-    from openzwave.value import ZWaveValue
-    from openzwave.scene import ZWaveScene
-    from openzwave.controller import ZWaveController
-    from openzwave.network import ZWaveNetwork
-    from openzwave.option import ZWaveOption
+import openzwave
+from openzwave.node import ZWaveNode
+from openzwave.value import ZWaveValue
+from openzwave.scene import ZWaveScene
+from openzwave.controller import ZWaveController
+from openzwave.network import ZWaveNetwork
+from openzwave.option import ZWaveOption
 import time
 from louie import dispatcher, All
 
-device="/dev/zwave-aeon-s2"
+device="/dev/ttyUSB0"
 log="Debug"
 sniff=60.0
 

@@ -50,15 +50,32 @@ from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
 
-class TestNodes(TestApi):
+class TestScene(TestApi):
+    count = 0
+    level = 70
 
-    def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
-        self.assertTrue(self.network.nodes_count>0)
-
-    def test_100_nodes_test(self):
+    def test_005_scene_add_remove(self):
+        self.count = self.network.scenes_count
+        self.assertTrue(self.count >= 0)
+        self.sceneid = self.network.create_scene("TestUnit Scene")
+        self.assertTrue(self.sceneid > 0)
+        scene = self.network.get_scenes()[self.sceneid]
         for node in self.network.nodes:
-            self.network.nodes[node].test(5)
+            for val in self.network.nodes[node].get_switches() :
+                ret = scene.add_value(val, True)
+                self.assertTrue(ret)
+        scene = self.network.get_scenes()[self.sceneid]
+        for node in self.network.nodes:
+            for val in self.network.nodes[node].get_dimmers() :
+                ret = scene.add_value(val, self.level)
+                self.assertTrue(ret)
+        self.assertTrue(self.network.scene_exists(self.sceneid))
+        scene = self.network.get_scenes()[self.sceneid]
+        self.assertTrue(scene.activate())
+        self.assertEqual(self.network.scenes_count, self.count + 1)
+        ret = self.network.remove_scene(self.sceneid)
+        self.assertTrue(ret)
+        self.assertEqual(self.network.scenes_count, self.count)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

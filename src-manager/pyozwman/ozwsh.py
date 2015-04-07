@@ -17,10 +17,6 @@ from urwid.raw_display import Screen
 from traceback import format_exc
 #from ucp import UrwidCmdProc, isUCP
 #from utils import utilInit, log
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
 from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
@@ -49,7 +45,7 @@ logging.basicConfig(level=logging.DEBUG)
 #logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('openzwave')
 
-device = "/dev/zwave-aeon-s2"
+device = "/dev/ttyUSB0"
 log = "Debug"
 wait_for_network = True
 footer = True

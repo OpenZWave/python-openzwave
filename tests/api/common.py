@@ -73,6 +73,9 @@ class TestApi(TestPyZWave):
         self.network.stop()
         super(TestApi, self).tearDownClass()
 
+    def setUp(self):
+        self.wait_for_network_state(self.network.STATE_AWAKED, 1)
+
     def wait_for_queue(self):
         for i in range(0,60):
             if self.network.controller.send_queue_count <= 0:

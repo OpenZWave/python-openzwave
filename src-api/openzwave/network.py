@@ -643,7 +643,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         ret = {}
         set_scenes = self._manager.getAllScenes()
-        logging.info('Load Scenes')
+        logging.info('Load Scenes: %s' % set_scenes)
         for scene_id in set_scenes:
             scene = ZWaveScene(scene_id, network=self)
             ret[scene_id] = scene

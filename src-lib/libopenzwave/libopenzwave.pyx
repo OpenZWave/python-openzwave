@@ -442,6 +442,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         isAddValueDetails = False;
     if isAddValueDetails:
         addValueId(notification.GetValueID(), n)
+    print "notif_callback %s" % n
     (<object>_context)(n)
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -468,7 +469,6 @@ Retrieve the config path. This directory hold the xml files.
 
     '''
     if os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
-        logging.debug()
         return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
     elif os.path.isdir(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
