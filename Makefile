@@ -132,6 +132,7 @@ endif
 tests-deps:
 	${PIP_EXEC} install nose-html
 	${PIP_EXEC} install nose-progressive
+	${PIP_EXEC} install coverage
 	${PIP_EXEC} install nose
 	${PIP_EXEC} install pylint
 
