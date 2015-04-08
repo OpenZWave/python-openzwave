@@ -73,7 +73,7 @@ data_files.extend(data_files_config('config','openzwave/config','*.xsd'))
 cmdclass = { }
 ext_modules = [ ]
 
-if os_name == 'nt':
+if os_name == 'win32':
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
@@ -81,10 +81,10 @@ if os_name == 'nt':
                              extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows', "src-lib/libopenzwave"]
     )]
-elif platform_system() == 'Darwin':
+elif platform_system() == 'darwin':
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
-                             libraries=['stdc++'],
+                             libraries=['udev', 'stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
                              extra_objects=['openzwave/libopenzwave.a'],
