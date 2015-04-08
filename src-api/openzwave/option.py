@@ -64,11 +64,14 @@ class ZWaveOption(libopenzwave.PyOptions):
                 if os.access(device, os.R_OK) and os.access(device, os.W_OK):
                     self._device = device
                 else:
-                    raise ZWaveException("Can't write to device %s" % device)
+                    import sys, traceback
+                    raise ZWaveException("Can't write to device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
             else:
-                raise ZWaveException("Can't find device %s" % device)
+                import sys, traceback
+                raise ZWaveException("Can't find device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
         except:
-            raise ZWaveException("Can't find device %s" % device)
+            import sys, traceback
+            raise ZWaveException("Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
         libopenzwave.PyOptions.__init__(self, config_path, user_path, cmd_line)
 
     def set_log_file(self, logfile):
