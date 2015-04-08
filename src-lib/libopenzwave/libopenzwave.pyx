@@ -457,6 +457,7 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
          'error' : _error,
          'error_msg' : PyControllerError[_error].doc,
         }
+    logging.debug("ctrl_callback : Message: %s", c)
     (<object>_context)(c)
 
 cpdef object driverData():
