@@ -374,15 +374,16 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
         else :
             cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
             ret = type_string.c_str() if cret else None
+    logging.debug("getValueFromType return %s", ret)
     return ret
 
 cdef addValueId(ValueID v, n):
+    logging.debug("addValueId : ValueID : %s", v.GetId())
     cdef Manager *manager = GetManager()
     values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
     #check is a valid value
     if v.GetInstance() == 0:
         return None
-
     genre = PyGenres[v.GetGenre()]
     #handle basic value in different way
     if genre =="Basic":
@@ -413,6 +414,7 @@ cdef addValueId(ValueID v, n):
                         'units' : manager.GetValueUnits(v).c_str(),
                         'readOnly': manager.IsValueReadOnly(v),
                         }
+    logging.debug("addValueId : Notification : %s", n)
 
 cdef void notif_callback(const_notification _notification, void* _context) with gil:
     """
@@ -420,6 +422,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
 
     """
     cdef Notification* notification = <Notification*>_notification
+    logging.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", PyNotifications[notification.GetType()], notification.GetNodeId())
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
