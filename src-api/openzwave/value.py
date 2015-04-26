@@ -34,7 +34,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 # TODO: don't report controller node as sleeping
 # TODO: allow value identification by device/index/instance
@@ -69,7 +70,7 @@ class ZWaveValue(ZWaveObject):
         :type network: ZWaveNetwork
         """
         ZWaveObject.__init__(self, value_id, network=network)
-        logging.debug("Create object value (valueId:%s)", value_id)
+        logger.debug("Create object value (valueId:%s)", value_id)
         self._parent = parent
 
     def __str__(self):
@@ -343,7 +344,7 @@ class ZWaveValue(ZWaveObject):
         if self.is_read_only:
             return None
         new_data = None
-        logging.debug("check_data type :%s", self.type)
+        logger.debug("check_data type :%s", self.type)
         if self.type == "Bool":
             new_data = data
             if isinstance(data, basestring):
@@ -532,6 +533,20 @@ class ZWaveValue(ZWaveObject):
         :param verify: if true, verify changes; if false, don't verify changes.
         :type verify: bool
         """
-        logging.debug('Set change verified %s for valueId [%s]', verify, self.value_id)
+        logger.debug('Set change verified %s for valueId [%s]', verify, self.value_id)
         self._network.manager.setChangeVerified(self.value_id, verify)
 
+    def to_dict(self):
+        """
+        Return a dict representation of the value.
+
+        :rtype: dict()
+
+        """
+        ret={}
+        ret['label'] = self.label
+        ret['value_id'] = self.value_id
+        ret['node_id'] = self.node.node_id
+        ret['units'] = self.units
+        ret['data'] = self.data
+        return ret

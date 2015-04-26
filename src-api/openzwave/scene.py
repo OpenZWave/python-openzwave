@@ -34,7 +34,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveScene(ZWaveObject):
     """
@@ -52,7 +53,7 @@ class ZWaveScene(ZWaveObject):
 
         """
         ZWaveObject.__init__(self, scene_id, network)
-        logging.debug("Create object scene (scene_id:%s)", scene_id)
+        logger.debug("Create object scene (scene_id:%s)", scene_id)
         self.values = dict()
 
     def __str__(self):

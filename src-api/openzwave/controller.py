@@ -38,7 +38,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveController(ZWaveObject):
     '''
@@ -135,6 +136,8 @@ class ZWaveController(ZWaveObject):
         self._library_type_name = None
         self._library_version = None
         self._python_library_version = None
+        self.ctrl_last_state = self.SIGNAL_CTRL_NORMAL
+        self.ctrl_last_message = ""
 
     def __str__(self):
         """
@@ -238,7 +241,7 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
-        return self._network.manager.getPythonLibraryVersion()
+        return self._network.manager.getPythonLibraryVersionNumber()
 
     @property
     def ozw_library_version(self):
@@ -676,14 +679,30 @@ class ZWaveController(ZWaveObject):
         :type args: dict()
 
         """
-        logging.debug('Controller state change : %s', args)
+        logger.debug('Controller state change : %s', args)
         state = args['state']
         message = args['message']
+        self.ctrl_last_state = state
+        self.ctrl_last_message = message
         if state == self.SIGNAL_CTRL_WAITING:
             dispatcher.send(self.SIGNAL_CTRL_WAITING, \
                 **{'state': state, 'message': message, 'network': self._network, 'controller': self})
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
+
+    def to_dict(self):
+        """
+        Return a dict representation of the controller.
+
+        :rtype: dict()
+
+        """
+        ret=self.node.to_dict()
+        ret["zw_version"] = self.library_version
+        ret["zw_description"] = self.library_description
+        ret["oz_version"] = self.ozw_library_version
+        ret["py_version"] = self.python_library_version
+        return ret
 
 
 

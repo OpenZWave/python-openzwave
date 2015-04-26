@@ -38,7 +38,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveNode(ZWaveObject,
                 ZWaveNodeBasic, ZWaveNodeSwitch,
@@ -60,7 +61,7 @@ class ZWaveNode(ZWaveObject,
         :type network: ZWaveNetwork
 
         """
-        logging.debug("Create object node (node_id:%s)" % (node_id))
+        logger.debug("Create object node (node_id:%s)" % (node_id))
         ZWaveObject.__init__(self, node_id, network)
         #No cache management for values in nodes
         self.values = dict()
@@ -170,6 +171,21 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeProductId(self.home_id, self.object_id)
 
+    def to_dict(self):
+        """
+        Return a dict representation of the node.
+
+        :rtype: dict()
+
+        """
+        ret={}
+        ret['name'] = self.name
+        ret['location'] = self.location
+        ret['product_type'] = self.product_type
+        ret['product_name'] = self.product_name
+        ret['node_id'] = self.node_id
+        return ret
+
     @property
     def capabilities(self):
         """
@@ -244,7 +260,7 @@ class ZWaveNode(ZWaveObject,
 
         """
         if not self.isNodeAwake:
-            logging.warning('Node state must a minimum set to awake')
+            logger.warning('Node state must a minimum set to awake')
             return False
         self.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
         return True
@@ -434,7 +450,7 @@ class ZWaveNode(ZWaveObject,
 
         """
         if value_id in self.values:
-            logging.debug("Remove value : %s" % self.values[value_id])
+            logger.debug("Remove value : %s" % self.values[value_id])
             del self.values[value_id]
             return True
         return False
@@ -690,7 +706,7 @@ class ZWaveNode(ZWaveObject,
         Request the values of all known configurable parameters from a device.
 
         """
-        logging.debug('Requesting config params for node [%s]' % (self.object_id,))
+        logger.debug('Requesting config params for node [%s]' % (self.object_id,))
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 
     def request_config_param(self, param):
@@ -711,7 +727,7 @@ class ZWaveNode(ZWaveObject,
         :type param:
 
         """
-        logging.debug('Requesting config param %s for node [%s]' % (param, self.object_id))
+        logger.debug('Requesting config param %s for node [%s]' % (param, self.object_id))
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 
     def set_config_param(self, param, value, size=2):
@@ -734,7 +750,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logging.debug('Set config param %s for node [%s]' % (param, self.object_id,))
+        logger.debug('Set config param %s for node [%s]' % (param, self.object_id,))
         return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value, size)
 
 #    def setNodeOn(self, node):

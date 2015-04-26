@@ -7,7 +7,7 @@ BUILDDIR      = build
 DISTDIR       = dists
 NOSE          = $(shell which nosetests)
 NOSEOPTS      = --verbosity=2
-NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
+NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman,pyozwweb --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
 PYLINT        = $(shell which pylint)
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
@@ -68,6 +68,7 @@ clean: clean-docs
 	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-web clean --all --build-base $(BUILDDIR)/web
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
 
@@ -91,11 +92,13 @@ uninstall:
 	-rm -Rf src-manager/pyozwman.egg-info/
 	-rm -Rf src-lib/python_openzwave_lib.egg-info/
 	-rm -Rf src-lib/libopenzwave.egg-info/
+	-rm -Rf src-web/pyozwweb.egg-info/
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python-openzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python_openzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/libopenzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/openzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwman*
+	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwweb*
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
 	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
@@ -181,6 +184,7 @@ install:
 	sudo ${PYTHON_EXEC} setup-lib.py install
 	sudo ${PYTHON_EXEC} setup-api.py install
 	sudo ${PYTHON_EXEC} setup-manager.py install
+	sudo ${PYTHON_EXEC} setup-web.py install
 	@echo
 	@echo "Installation for users finished."
 
@@ -188,6 +192,7 @@ develop:
 	${PYTHON_EXEC} setup-lib.py develop
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
+	${PYTHON_EXEC} setup-web.py develop
 	@echo
 	@echo "Installation for developpers of python-openzwave finished."
 

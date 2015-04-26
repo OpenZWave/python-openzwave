@@ -49,56 +49,7 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-
-class TestNetworkStartStop(TestPyZWave):
-
-    @classmethod
-    def setUpClass(self):
-        super(TestNetworkStartStop, self).setUpClass()
-        self.options = None
-        self.network = None
-
-    @classmethod
-    def tearDownClass(self):
-        if self.network is not None:
-            self.network.stop()
-        super(TestNetworkStartStop, self).tearDownClass()
-
-    def test_000_network_start_stop(self):
-        self.driver_ready = False
-        self.driver_removed = False
-        self.options = ZWaveOption(device=self.device, user_path=self.userpath)
-        self.options.set_log_file("OZW_Log.log")
-        self.options.set_append_log_file(False)
-        self.options.set_console_output(False)
-        self.options.set_save_log_level("Debug")
-        self.options.set_logging(True)
-        self.options.lock()
-        dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_DRIVER_READY)
-        dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
-        self.network = ZWaveNetwork(self.options)
-        for i in range(0, SLEEP):
-            if self.network.state>=self.network.STATE_AWAKED:
-                break
-            else:
-                time.sleep(1.0)
-        self.assertTrue(self.driver_ready)
-        self.network.stop()
-        for i in range(0, SLEEP):
-            if self.network.state==self.network.STATE_STOPPED:
-                break
-            else:
-                time.sleep(1.0)
-        self.assertEqual(self.network.state, self.network.STATE_STOPPED)
-        #self.assertTrue(self.driver_removed)
-        self.network = None
-
-    def driver_ready_message(self, network, controller):
-        self.driver_ready = True
-
-    def driver_removed_message(self, network):
-        self.driver_removed = True
-
+import json
 
 class TestNetwork(TestApi):
 
@@ -124,6 +75,13 @@ class TestNetwork(TestApi):
     def test_120_network_poll(self):
         self.network.set_poll_interval(milliseconds=500, bIntervalBetweenPolls=True)
         self.assertEqual(self.network.get_poll_interval(), 500)
+
+    def test_200_network_nodes_json(self):
+        dnetwork = self.network.to_dict()
+        self.assertEqual(type(dnetwork), type({}))
+        res = json.dumps(dnetwork)
+        self.assertNotEqual(res, None)
+        self.assertTrue(len(res)>0)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

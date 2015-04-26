@@ -32,14 +32,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
-
-class NullLoggingHandler(logging.Handler):
-    """
-    A Null Logging Handler
-    """
-    def emit(self, record):
-        pass
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveException(Exception):
     """

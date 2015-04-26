@@ -35,7 +35,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveNodeBasic(ZWaveNodeInterface):
     """
@@ -532,7 +533,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: int
 
         """
-        logging.debug("set_dimmer Level:%s", value)
+        logger.debug("set_dimmer Level:%s", value)
         if value_id in self.get_dimmers():
             if 99 < value < 255:
                 value = 99

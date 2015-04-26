@@ -38,7 +38,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('openzwave').addHandler(NullHandler())
+logger = logging.getLogger('openzwave')
+logger.addHandler(NullHandler())
 
 class ZWaveOption(libopenzwave.PyOptions):
     """
@@ -72,7 +73,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         except:
             import sys, traceback
             raise ZWaveException("Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
-        libopenzwave.PyOptions.__init__(self, config_path, user_path, cmd_line)
+        libopenzwave.PyOptions.__init__(self, config_path=config_path, user_path=user_path, cmd_line=cmd_line)
 
     def set_log_file(self, logfile):
         """

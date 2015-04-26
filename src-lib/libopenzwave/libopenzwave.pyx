@@ -38,7 +38,9 @@ from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
 from notification cimport Notification, NotificationType, NotificationCode
-from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff, Type_SceneEvent
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
+from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
+from notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
 from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
@@ -56,7 +58,8 @@ except ImportError:
         """NullHandler logger for python 2.6"""
         def emit(self, record):
             pass
-logging.getLogger('libopenzwave').addHandler(NullHandler())
+logger = logging.getLogger('libopenzwave')
+logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
 try:
@@ -100,7 +103,7 @@ class StdOutToLogger(object):
         self.file.close()
 
     def write(self, data):
-        logging.debug(data)
+        logger.debug(data)
 
 PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "config"
@@ -374,16 +377,21 @@ cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
         else :
             cret = manager.GetValueAsString(values_map.at(valueId), &type_string)
             ret = type_string.c_str() if cret else None
-    logging.debug("getValueFromType return %s", ret)
+    logger.debug("getValueFromType return %s", ret)
     return ret
 
+cdef delValueId(ValueID v, n):
+    logger.warning("delValueId : ValueID : %s", v.GetId())
+    if values_map.find(v.GetId()) != values_map.end():
+        values_map.erase(values_map.find(v.GetId()))
+
 cdef addValueId(ValueID v, n):
-    logging.debug("addValueId : ValueID : %s", v.GetId())
-    cdef Manager *manager = GetManager()
-    values_map.insert ( pair[uint64_t, ValueID] (v.GetId(), v))
+    logger.debug("addValueId : ValueID : %s", v.GetId())
     #check is a valid value
     if v.GetInstance() == 0:
         return None
+    cdef Manager *manager = GetManager()
+    values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     genre = PyGenres[v.GetGenre()]
     #handle basic value in different way
     if genre =="Basic":
@@ -414,38 +422,43 @@ cdef addValueId(ValueID v, n):
                         'units' : manager.GetValueUnits(v).c_str(),
                         'readOnly': manager.IsValueReadOnly(v),
                         }
-    logging.debug("addValueId : Notification : %s", n)
+    logger.debug("addValueId : Notification : %s", n)
 
 cdef void notif_callback(const_notification _notification, void* _context) with gil:
     """
     Notification callback to the C++ library
 
     """
+    logger.debug("notif_callback : new notification")
     cdef Notification* notification = <Notification*>_notification
-    logging.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", PyNotifications[notification.GetType()], notification.GetNodeId())
+    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", PyNotifications[notification.GetType()], notification.GetNodeId())
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
         }
-    isAddValueDetails = True;
     if notification.GetType() == Type_Group:
         n['groupIdx'] = notification.GetGroupIdx()
-        isAddValueDetails = False;
     elif notification.GetType() == Type_NodeEvent:
         n['event'] = notification.GetEvent()
-        isAddValueDetails = False;
     elif notification.GetType() == Type_Notification:
         n['notificationCode'] = notification.GetNotification()
-        isAddValueDetails = False;
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
-        isAddValueDetails = False;
+    elif notification.GetType() == Type_DriverReset:
+        logger.warning("Notification : Type_DriverReset received : clean all valueids")
+        #values_map.empty()
     elif notification.GetType() == Type_SceneEvent:
         n['sceneId'] = notification.GetSceneId()
-        isAddValueDetails = False;
-    if isAddValueDetails:
+    elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
         addValueId(notification.GetValueID(), n)
+    elif notification.GetType() == Type_ValueRemoved:
+        delValueId(notification.GetValueID(), n)
+    #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
+    #    #Maybe we should enable/disable this
+    #    addValueId(notification.GetValueID(), n)
+    logger.debug("notif_callback : call callback context")
     (<object>_context)(n)
+    logger.debug("notif_callback : end")
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
     """
@@ -457,7 +470,7 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
          'error' : _error,
          'error_msg' : PyControllerError[_error].doc,
         }
-    logging.debug("ctrl_callback : Message: %s", c)
+    logger.debug("ctrl_callback : Message: %s", c)
     (<object>_context)(c)
 
 cpdef object driverData():
@@ -513,6 +526,8 @@ Create an option object and check that parameters are valid.
         """
         if config_path is None:
             config_path = self.getConfigPath()
+        if config_path is None:
+            raise LibZWaveException("Can't autoconfigure path to config")
         if os.path.exists(config_path):
             if not os.path.exists(os.path.join(config_path, "zwcfg.xsd")):
                 raise LibZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
@@ -2550,9 +2565,9 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
-                #logging.debug("SetValueListSelection %s" % value)
+                #logger.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
-                #logging.debug("SetValueListSelection %s" % cret)
+                #logger.debug("SetValueListSelection %s" % cret)
                 ret = 1 if cret else 0
         return ret
 
