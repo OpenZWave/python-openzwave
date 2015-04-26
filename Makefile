@@ -209,6 +209,12 @@ commit: clean docs
 	@echo
 	@echo "Commits pushed on github."
 
+tag: commit
+	git tag v${python_openzwave_version}
+	git push origin v${python_openzwave_version}
+	@echo
+	@echo "Tag pushed on github."
+
 pylint:
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
 	@echo
