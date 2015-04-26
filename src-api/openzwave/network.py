@@ -528,9 +528,8 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         ret={}
-        ret['nodes']={}
-        for ndid in self._nodes.keys():
-            ret['nodes'][ndid] = self._nodes[ndid].to_dict()
+        ret['nodes_count']=len(self._nodes)
+        ret['nodes']=self.nodes_to_dict()
         return ret
 
     @nodes.setter
