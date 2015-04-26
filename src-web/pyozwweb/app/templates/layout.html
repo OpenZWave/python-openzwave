@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PyOzwWeb</title>
+    {{ g.fanstatic.top }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">;
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <div class="container">
+    <script type='text/javascript'>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+      <h1>Welcome to PyOzwWeb</h1>
+      <a href="/">Nodes</a> / <a href="/values">Values</a> / <a href="/controller">Controller</a>
+      {% block content %}
+      {% endblock %}
+    </div>
+  {{ g.fanstatic.bottom }}
+  </body>
+</html>

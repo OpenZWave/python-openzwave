@@ -1,0 +1,94 @@
+{{- g.fanstatic.needs('js.bootstrap:bootstrap') -}}
+{{- g.fanstatic.needs('js.bootstrap:bootstrap_theme') -}}
+{{- g.fanstatic.needs('js.jquery:jquery') -}}
+{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
+{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
+{{- g.fanstatic.needs('js.socketio:socketio') -}}
+{% extends "layout.html" %}
+{% import 'widgets.html' as widgets %}
+{% block content %}
+    <script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+    <h2>Network:</h2>
+    {{ widgets.network_state(size='small') }}
+    <h2>Nodes:</h2>
+    <table id="nodes" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr><th class="node_id">Id</th><th>Name</th><th>Product</th><th>Type</th></tr>
+      </thead>
+      <tfoot>
+        <tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
+      </tfoot>
+      <tbody>
+      </tbody>
+    </table>
+
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        console.log('Document ready started');
+        $("#nodes").dataTable({
+          "aaData":[
+          ],
+          "aoColumnDefs":[{
+                "sTitle":"Site name"
+              , "aTargets": [ "site_name" ]
+            },
+            {
+                  "aTargets": [ 1 ]
+                , "bSortable": false
+                , "mRender": function ( url, type, full )  {
+                    return  '<a href="'+url+'">' + url + '</a>';
+                }
+          }],
+          "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+            nRow.setAttribute('id',aData[0]);
+          }
+        });
+        // Add `no-wrap` class so the text doesn't wrap for this example
+        $('#nodes').addClass('no-wrap');
+        $('#nodes').responsive = true;
+        var namespace = '/ozwave'; // change to an empty string to use the global namespace
+        // the socket.io documentation recommends sending an explicit package upon connection
+        // this is specially important when using the global namespace
+        var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+        // event handler for server sent data
+        // the data is displayed in the "Received" section of the page
+        socket.on('connect', function() {
+            socket.emit('my echo event', {data: 'I\'m connected!'});
+        });
+        // event handler for server sent data
+        // the data is displayed in the "Received" section of the page
+        socket.on('my echo response', function(msg) {
+            console.log("Received " + msg.data);
+            $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
+        });
+        socket.on('my network response', function(msg) {
+            console.log("Received " + msg.data['state']);
+            ozw_network_state_update(msg.data);
+        });
+        socket.on('my nodes response', function(msg) {
+            $("#nodes").dataTable().fnClearTable();
+            $.each(msg.data, function (key, item) {
+                $("#nodes").dataTable().fnAddData([
+                    item["node_id"],
+                    item["name"],
+                    item["product_name"],
+                    item["product_type"]
+                ]);
+            });
+        });
+        socket.on('my node response', function(msg) {
+                var row = $("#nodes").dataTable().row('#{0}'.format(msg.data['node_id']));
+                $("#nodes").dataTable().fnUpdate(
+                    [ msg.data["node_id"],
+                      msg.data["name"],
+                      msg.data["product_name"],
+                      msg.data["product_type"]
+                    ], row );
+        });
+
+        socket.emit('my network event', {});
+        socket.emit('my nodes event', {});
+    } );
+
+    </script>
+{% endblock %}

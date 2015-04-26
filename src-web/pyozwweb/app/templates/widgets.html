@@ -1,0 +1,226 @@
+{% macro network_state(size='small') -%}
+<div id='ozw_network_state'>
+{% if size == 'small' %}
+    <input type='text' id="state" name="state" value="Unknown" size="2">
+    <input type='text' id="state_str" name="state_str" value="Unknown" size="20">
+    <input type='text' id="nodes_count" name="nodes_count" value="Unknown" size="3">
+    <input type='text' id="home_id" name="home_id" value="Unknown" size="8">
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_network_state_update(data) {
+    var textState = GetElementInsideContainer("ozw_network_state","state");
+    var textStateStr = GetElementInsideContainer("ozw_network_state","state_str");
+    var textCount = GetElementInsideContainer("ozw_network_state","nodes_count");
+    var textHomeId = GetElementInsideContainer("ozw_network_state","home_id");
+    textState.value = data['state'];
+    textStateStr.value = data['state_str'];
+    textCount.value = data['nodes_count'];
+    textHomeId.value = data['home_id'];
+}
+</script>
+{%- endmacro %}
+
+{% macro controller_state(size='small') -%}
+<div id='ozw_controller_state'>
+{% if size == 'small' %}
+    <input type='text' id="name" name="name" value="Unknown" size="20">
+    <input type='text' id="zw_version" name="zw_version" value="Unknown" size="15">
+    <input type='text' id="oz_version" name="oz_version" value="Unknown" size="10">
+    <input type='text' id="py_version" name="py_count" value="Unknown" size="10">
+    <input type='text' id="product_name" name="product_name" value="Unknown" size="50">
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_controller_state_update(data) {
+    var textName = GetElementInsideContainer("ozw_controller_state","name");
+    var textZwVersion = GetElementInsideContainer("ozw_controller_state","zw_version");
+    var textOzVersion = GetElementInsideContainer("ozw_controller_state","oz_version");
+    var textPyVersion = GetElementInsideContainer("ozw_controller_state","py_version");
+    var textProductName = GetElementInsideContainer("ozw_controller_state","product_name");
+    textName.value = data["name"];
+    textZwVersion.value = data["zw_version"];
+    textOzVersion.value = data["oz_version"];
+    textPyVersion.value = data["py_version"];
+    textProductName.value = data["product_name"];
+}
+</script>
+{%- endmacro %}
+
+{% macro controller_message(size='small') -%}
+<div id='ozw_controller_message'>
+{% if size == 'small' %}
+    <label for="ctrl_state">Controller message : </label>
+    <input type='text' id="ctrl_state" name="ctrl_state" value="Unknown" size="10">
+    <input type='text' id="ctrl_message" name="ctrl_message" value="Unknown" size="70">
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_controller_message_update(data) {
+    var textState = GetElementInsideContainer("ozw_controller_message","ctrl_state");
+    var textMessage = GetElementInsideContainer("ozw_controller_message","ctrl_message");
+    textState.value = data["state"];
+    textMessage.value = data["message"];
+}
+</script>
+{%- endmacro %}
+
+{% macro command_result(size='small') -%}
+<div id='ozw_command_result'>
+{% if size == 'small' %}
+    <label for="ctrl_result">Command result : </label>
+    <input type='text' id="ctrl_result" name="ctrl_result" value="Unknown" size="40">
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_command_result_update(data) {
+    var textResult = GetElementInsideContainer("ozw_command_result","ctrl_result");
+    textResult.value = data["message"];
+}
+</script>
+{%- endmacro %}
+
+{% macro controller_commands(size='small') -%}
+<div id='ozw_controller_commands'>
+{% if size == 'small' %}
+<input style='visibility:hidden' type='button' id="ctrl_cancel" name="ctrl_cancel" value="Cancel command">
+<form style='visibility:hidden' id="ctrl_send_node_information_form" name="ctrl_send_node_information_form">
+    <label for="ctrl_send_node_information_node_id">Node id : </label>
+    <input type='text' id="ctrl_send_node_information_node_id" name="ctrl_send_node_information_node_id" value="-1" size="3">
+    <input type='submit' id="ctrl_send_node_information" name="ctrl_send_node_information" value="Send node information">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_send_node_information_form').submit(function(event) {
+            socket.emit('my command event', {command : 'send_node_information', node_id: $('#ctrl_send_node_information_node_id').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_remove_failed_node_form" name="ctrl_remove_failed_node_form">
+    <label for="ctrl_remove_failed_node_node_id">Node id : </label>
+    <input type='text' id="ctrl_remove_failed_node_node_id" name="ctrl_remove_failed_node_node_id" value="-1" size="3">
+    <input type='submit' id="ctrl_remove_failed_node" name="ctrl_remove_failed_node" value="Remove failed node">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_remove_failed_node_form').submit(function(event) {
+            socket.emit('my command event', {command : 'remove_failed_node', node_id: $('#ctrl_remove_failed_node_node_id').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_has_node_failed_form" name="ctrl_has_node_failed_form">
+    <label for="ctrl_has_node_failed_node_id">Node id : </label>
+    <input type='text' id="ctrl_has_node_failed_node_id" name="ctrl_has_node_failed_node_id" value="-1" size="3">
+    <input type='submit' id="ctrl_has_node_failed" name="ctrl_has_node_failed" value="Has node failed">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_has_node_failed_form').submit(function(event) {
+            socket.emit('my command event', {command : 'has_node_failed', node_id: $('#ctrl_has_node_failed_node_id').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_replace_failed_node_form" name="ctrl_replace_failed_node_form">
+    <label for="ctrl_replace_failed_node_node_id">Node id : </label>
+    <input type='text' id="ctrl_replace_failed_node_node_id" name="ctrl_replace_failed_node_node_id" value="-1" size="3">
+    <input type='submit' id="ctrl_replace_failed_node" name="ctrl_replace_failed_node" value="Replace_failed_node">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_replace_failed_node_form').submit(function(event) {
+            socket.emit('my command event', {command : 'replace_failed_node', node_id: $('#ctrl_replace_failed_node_node_id').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_request_node_neigbhor_update_form" name="ctrl_request_node_neigbhor_update_form">
+    <label for="ctrl_request_node_neigbhor_update_node_id">Node id : </label>
+    <input type='text' id="ctrl_request_node_neigbhor_update_node_id" name="ctrl_request_node_neigbhor_update_node_id" value="-1" size="3">
+    <input type='submit' id="ctrl_request_node_neigbhor_update" name="ctrl_request_node_neigbhor_update" value="Request node neigbhor update">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_request_node_neigbhor_update_form').submit(function(event) {
+            socket.emit('my command event', {command : 'request_node_neigbhor_update', node_id: $('#ctrl_request_node_neigbhor_update_node_id').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_request_network_update_form" name="ctrl_request_network_update_form">
+    <input type='submit' id="ctrl_request_network_update" name="ctrl_request_network_update" value="Request network update">
+</form>
+<script type="text/javascript" charset="utf-8">
+    $('form#ctrl_request_network_update_form').click(function(event) {
+        console.log("its me");
+        socket.emit('my command event', {command : 'request_network_update'});
+        return false;
+    });
+</script>
+<form style='visibility:hidden' id="ctrl_replication_send_form" name="ctrl_replication_send_form">
+    <input type="checkbox" id="ctrl_replication_send_high_power" name="ctrl_replication_send_high_power" value="True"> High power
+    <input type='submit' id="ctrl_replication_send" name="ctrl_replication_send" value="Replication send">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_replication_send_form').submit(function(event) {
+            socket.emit('my command event', {command : 'replication_send', high_power: $('#ctrl_replication_send_high_power').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_add_device_form" name="ctrl_add_device_form">
+    <input type="checkbox" id="ctrl_add_device_high_power" name="ctrl_add_device_high_power" value="True"> High power
+    <input type='submit' id="ctrl_add_device" name="ctrl_add_device" value="Add device">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_add_device_form').submit(function(event) {
+            socket.emit('my command event', {command : 'add_device', high_power: $('#ctrl_add_device_high_power').val()});
+            return false;
+        });
+    </script>
+</form>
+<form style='visibility:hidden' id="ctrl_remove_device_form" name="ctrl_remove_device_form">
+    <input type="checkbox" id="ctrl_remove_device_high_power" name="ctrl_remove_device_high_power" value="True"> High power
+    <input type='submit' id="ctrl_remove_device" name="ctrl_remove_device" value="Remove device">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_remove_device_form').submit(function(event) {
+            socket.emit('my command event', {command : 'remove_device', high_power: $('#ctrl_remove_device_high_power').val()});
+            return false;
+        });
+    </script>
+</form>
+<p>&nbsp;</p>
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_controller_commands_update(data) {
+    var buttonCancel = GetElementInsideContainer("ozw_controller_commands","ctrl_cancel");
+    var formNames = ["ctrl_send_node_information_form", "ctrl_remove_failed_node_form", "ctrl_has_node_failed_form",
+                     "ctrl_replace_failed_node_form", 'ctrl_request_node_neigbhor_update_form',
+                     'ctrl_replication_send_form', 'ctrl_request_network_update_form',
+                     'ctrl_add_device_form', 'ctrl_remove_device_form'];
+    if ($.inArray(data["state"], ['Waiting','InProgress']) >= 0) {
+        buttonCancel.disabled=false;
+        buttonCancel.style.visibility='visible';
+        var frmn;
+        for (frmn of formNames) {
+            var frm = GetElementInsideContainer("ozw_controller_commands",frmn);
+            frm.style.visibility='hidden';
+        }
+    } else {
+        buttonCancel.disabled=true;
+        buttonCancel.style.visibility='hidden';
+        var frmn;
+        for (frmn of formNames) {
+            var frm = GetElementInsideContainer("ozw_controller_commands",frmn);
+            frm.style.visibility='visible';
+        }
+    }
+}
+</script>
+{%- endmacro %}
