@@ -77,10 +77,10 @@ class ListenerThread(Thread):
     def run(self):
         """The running method"""
         logging.info("Start listener")
-        self._stopevent.wait(10.0)
+        self._stopevent.wait(5.0)
         self.connect()
         while not self._stopevent.isSet():
-            self._stopevent.wait(1.0)
+            self._stopevent.wait(0.1)
 
     def join_room_network(self):
         """Join room network"""

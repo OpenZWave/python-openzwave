@@ -144,7 +144,7 @@ def echo_command_event(message):
             data['result'] = False
             data['message'] = "Bad node_id"
         else:
-            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_send_node_information(message['node_id'])
+            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_send_node_information(node_id)
             #data['result'] = True
     elif command == 'remove_failed_node':
         node_id=-1
@@ -158,7 +158,7 @@ def echo_command_event(message):
             data['result'] = False
             data['message'] = "Bad node_id"
         else:
-            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_remove_failed_node(message['node_id'])
+            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_remove_failed_node(node_id)
             #data['result'] = True
     elif command == 'has_node_failed':
         node_id=-1
@@ -172,7 +172,7 @@ def echo_command_event(message):
             data['result'] = False
             data['message'] = "Bad node_id"
         else:
-            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_has_node_failed(message['node_id'])
+            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_has_node_failed(node_id)
             #data['result'] = True
     elif command == 'replace_failed_node':
         node_id=-1
@@ -186,7 +186,7 @@ def echo_command_event(message):
             data['result'] = False
             data['message'] = "Bad node_id"
         else:
-            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_replace_failed_node(message['node_id'])
+            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_replace_failed_node(node_id)
             #data['result'] = True
     elif command == 'request_node_neigbhor_update':
         node_id=-1
@@ -200,7 +200,7 @@ def echo_command_event(message):
             data['result'] = False
             data['message'] = "Bad node_id"
         else:
-            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_request_node_neigbhor_update(message['node_id'])
+            data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_request_node_neigbhor_update(node_id)
             #data['result'] = True
     elif command == 'request_network_update':
         data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_request_network_update()
@@ -231,6 +231,8 @@ def echo_command_event(message):
             high_power = False
         data['result'] = current_app.extensions['zwnetwork'].controller.begin_command_remove_device(high_power)
         #data['result'] = True
+    elif command == 'cancel_command':
+        data['result'] = current_app.extensions['zwnetwork'].controller.cancel_command()
     if data['result'] == True :
         data['message'] = "Command started"
     logging.debug("Client %s controller command event, data returned : %s", request.remote_addr, data)

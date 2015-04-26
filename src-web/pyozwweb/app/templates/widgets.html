@@ -95,7 +95,15 @@ function ozw_command_result_update(data) {
 {% macro controller_commands(size='small') -%}
 <div id='ozw_controller_commands'>
 {% if size == 'small' %}
-<input style='visibility:hidden' type='button' id="ctrl_cancel" name="ctrl_cancel" value="Cancel command">
+<form style='visibility:hidden' id="ctrl_cancel_command_form" name="ctrl_cancel_command_form">
+    <input type='submit' id="ctrl_cancel_command" name="ctrl_cancel_command" value="Cancel command">
+    <script type="text/javascript" charset="utf-8">
+        $('form#ctrl_cancel_command_form').submit(function(event) {
+            socket.emit('my command event', {command : 'cancel_command'});
+            return false;
+        });
+    </script>
+</form>
 <form style='visibility:hidden' id="ctrl_send_node_information_form" name="ctrl_send_node_information_form">
     <label for="ctrl_send_node_information_node_id">Node id : </label>
     <input type='text' id="ctrl_send_node_information_node_id" name="ctrl_send_node_information_node_id" value="-1" size="3">
@@ -199,22 +207,22 @@ function ozw_command_result_update(data) {
 
 <script type="text/javascript" charset="utf-8">
 function ozw_controller_commands_update(data) {
-    var buttonCancel = GetElementInsideContainer("ozw_controller_commands","ctrl_cancel");
+    var buttonCancel = GetElementInsideContainer("ozw_controller_commands","ctrl_cancel_command");
     var formNames = ["ctrl_send_node_information_form", "ctrl_remove_failed_node_form", "ctrl_has_node_failed_form",
                      "ctrl_replace_failed_node_form", 'ctrl_request_node_neigbhor_update_form',
                      'ctrl_replication_send_form', 'ctrl_request_network_update_form',
                      'ctrl_add_device_form', 'ctrl_remove_device_form'];
     if ($.inArray(data["state"], ['Waiting','InProgress']) >= 0) {
-        buttonCancel.disabled=false;
-        buttonCancel.style.visibility='visible';
+        var frm = GetElementInsideContainer("ozw_controller_commands","ctrl_cancel_command_form");
+        frm.style.visibility='visible';
         var frmn;
         for (frmn of formNames) {
             var frm = GetElementInsideContainer("ozw_controller_commands",frmn);
             frm.style.visibility='hidden';
         }
     } else {
-        buttonCancel.disabled=true;
-        buttonCancel.style.visibility='hidden';
+        var frm = GetElementInsideContainer("ozw_controller_commands","ctrl_cancel_command_form");
+        frm.style.visibility='hidden';
         var frmn;
         for (frmn of formNames) {
             var frm = GetElementInsideContainer("ozw_controller_commands",frmn);

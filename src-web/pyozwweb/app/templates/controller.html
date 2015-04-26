@@ -49,6 +49,7 @@
         socket.on('my message response', function(msg) {
             console.log("Received controller message " + msg.data['message']);
             ozw_controller_message_update(msg.data);
+            ozw_controller_commands_update(msg.data);
         });
         socket.on('my command response', function(msg) {
             console.log("Received controller command response " + msg.data['message']);
