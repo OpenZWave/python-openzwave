@@ -40,6 +40,7 @@ from tests.common import TestPyZWave
 import threading
 
 from multiprocessing import Process
+#from threading import Thread
 
 class TestServer(Process):
     def __init__(self):
@@ -81,13 +82,14 @@ class FlaskTestCase(TestPyZWave):
         self.app = self.testserver.app
         self.socketio = self.testserver.socketio
         self.client = self.testserver.app.test_client()
-        time.sleep(2.0)
+        time.sleep(7.0)
 
     @classmethod
     def tearDownClass(self):
         self.testserver.stop()
         self.testserver.join()
         self.socketio = None
+        time.sleep(2.0)
         self.app = None
         self.client = None
         self.testserver = None

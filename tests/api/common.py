@@ -67,10 +67,12 @@ class TestApi(TestPyZWave):
         dispatcher.connect(self.ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
         self.node_result = None
         dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
+        time.sleep(1.0)
 
     @classmethod
     def tearDownClass(self):
         self.network.stop()
+        time.sleep(1.0)
         super(TestApi, self).tearDownClass()
 
     def setUp(self):
