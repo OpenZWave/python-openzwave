@@ -68,7 +68,7 @@ clean: clean-docs
 	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
-	${PYTHON_EXEC} setup-web clean --all --build-base $(BUILDDIR)/web
+	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
 
@@ -80,6 +80,7 @@ uninstall:
 	-yes | ${PIP_EXEC} uninstall libopenzwave
 	-yes | ${PIP_EXEC} uninstall openzwave
 	-yes | ${PIP_EXEC} uninstall pyozwman
+	-yes | ${PIP_EXEC} uninstall pyozwweb
 	${PYTHON_EXEC} setup-lib.py develop --uninstall
 	${PYTHON_EXEC} setup-api.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
