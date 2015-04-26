@@ -1,117 +1,62 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>Flask-SocketIO Test</title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+{{- g.fanstatic.needs('js.bootstrap:bootstrap') -}}
+{{- g.fanstatic.needs('js.bootstrap:bootstrap_theme') -}}
+{{- g.fanstatic.needs('js.jquery:jquery') -}}
+{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
+{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
+{{- g.fanstatic.needs('js.socketio:socketio') -}}
+{% extends "layout.html" %}
+{% import 'widgets.html' as widgets %}
+{% block content %}
     <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-            namespace = '/ozwave'; // change to an empty string to use the global namespace
-            console.log("Connect to namespace " + namespace)
-            // the socket.io documentation recommends sending an explicit package upon connection
-            // this is specially important when using the global namespace
-            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            socket.on('connect', function() {
-                socket.emit('my echo event', {data: 'I\'m connected!'});
-            });
-            // event handler for server sent data
-            // the data is displayed in the "Received" section of the page
-            socket.on('my echo response', function(msg) {
-                console.log("Received " + msg.data)
-                $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
-            });
-            socket.on('my network response', function(msg) {
-                console.log("Received network response" + msg.data['state'])
-                $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
-            });
-            socket.on('my nodes response', function(msg) {
-                console.log("Received nodes response" + msg.data)
-                $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
-            });
-            socket.on('my values response', function(msg) {
-                console.log("Received values response" + msg.data)
-                $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
-            });
-            socket.on('my response', function(msg) {
-                console.log("Received " + msg.data)
-                $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
-            });
-            socket.on('joined', function(msg) {
-                console.log("Received " + msg.data)
-                $('#log').append('<br>Joined #' + msg.count + ': ' + msg.data);
-            });
-            // handlers for the different forms in the page
-            // these send data to the server in a variety of ways
-            $('form#network_event').submit(function(event) {
-                socket.emit('my network event', {});
-                return false;
-            });
-            $('form#emit').submit(function(event) {
-                socket.emit('my echo event', {data: $('#emit_data').val()});
-                return false;
-            });
-            $('form#broadcast').submit(function(event) {
-                socket.emit('my broadcast event', {data: $('#broadcast_data').val()});
-                return false;
-            });
-            $('form#join').submit(function(event) {
-                socket.emit('join', {room: $('#join_room').val()});
-                return false;
-            });
-            $('form#leave').submit(function(event) {
-                socket.emit('leave', {room: $('#leave_room').val()});
-                return false;
-            });
-            $('form#send_room').submit(function(event) {
-                socket.emit('my room event', {room: $('#room_name').val(), data: $('#room_data').val()});
-                return false;
-            });
-            $('form#close').submit(function(event) {
-                socket.emit('close room', {room: $('#close_room').val()});
-                return false;
-            });
-            $('form#disconnect').submit(function(event) {
-                socket.emit('disconnect request');
-                return false;
-            });
-        });
+        var namespace = '/ozwave'; // change to an empty string to use the global namespace
+        // the socket.io documentation recommends sending an explicit package upon connection
+        // this is specially important when using the global namespace
+        var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+        // event handler for server sent data
+        // the data is displayed in the "Received" section of the page
     </script>
-</head>
-<body>
-    <h1>Flask-SocketIO Test</h1>
-    <h2>Send:</h2>
-    <form id="network_event" method="POST" action='#'>
-        <input type="submit" value="Network Event">
-    </form>
-    <form id="emit" method="POST" action='#'>
-        <input type="text" name="emit_data" id="emit_data" placeholder="Message">
-        <input type="submit" value="Echo">
-    </form>
-    <form id="broadcast" method="POST" action='#'>
-        <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">
-        <input type="submit" value="Broadcast">
-    </form>
-    <form id="join" method="POST" action='#'>
-        <input type="text" name="join_room" id="join_room" placeholder="Room Name">
-        <input type="submit" value="Join Room">
-    </form>
-    <form id="leave" method="POST" action='#'>
-        <input type="text" name="leave_room" id="leave_room" placeholder="Room Name">
-        <input type="submit" value="Leave Room">
-    </form>
-    <form id="send_room" method="POST" action='#'>
-        <input type="text" name="room_name" id="room_name" placeholder="Room Name">
-        <input type="text" name="room_data" id="room_data" placeholder="Message">
-        <input type="submit" value="Send to Room">
-    </form>
-    <form id="close" method="POST" action="#">
-        <input type="text" name="close_room" id="close_room" placeholder="Room Name">
-        <input type="submit" value="Close Room">
-    </form>
-    <form id="disconnect" method="POST" action="#">
-        <input type="submit" value="Disconnect">
-    </form>
-    <h2>Receive:</h2>
+
+    <script type="text/javascript" src="/static/js/zwnetwork.js"></script>
+
+    <h2>Received:</h2>
     <div id="log"></div>
-</body>
-</html>
+
+    <script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        console.log('Document ready started');
+        socket.on('connect', function() {
+            socket.emit('my echo event', {data: 'I\'m connected!'});
+        });
+        // event handler for server sent data
+        // the data is displayed in the "Received" section of the page
+        socket.on('my echo response', function(msg) {
+            $('#log').append('<br>Received echo response #' + msg.count + ' : ' + msg.data['message']);
+        });
+        socket.on('my network response', function(msg) {
+            $('#log').append('<br>Received network response #' + msg.count + ' : ' + msg.data['state']);
+        });
+        socket.on('my controller response', function(msg) {
+            $('#log').append('<br>Received controller response #' + msg.count + ' : ' + msg.data['message']);
+        });
+        socket.on('my message response', function(msg) {
+            $('#log').append('<br>Received message response #' + msg.count + ' : ' + msg.data['state'] + ':' + msg.data['message']);
+        });
+        socket.on('my command response', function(msg) {
+            $('#log').append('<br>Received command response #' + msg.count + ' : ' + msg.data['command']);
+        });
+        socket.on('my nodes response', function(msg) {
+            $('#log').append('<br>Received nodes response #' + msg.count + ' : ' + msg.data);
+        });
+        socket.on('my node response', function(msg) {
+            $('#log').append('<br>Received node response #' + msg.count + ' : ' + msg.data['node_id']);
+        });
+        socket.on('my values response', function(msg) {
+            $('#log').append('<br>Received values response #' + msg.count + ' : ' + msg.data['value_id']);
+        });
+        socket.on('my value response', function(msg) {
+            $('#log').append('<br>Received value response #' + msg.count + ' : ' + msg.data['value_id']);
+        });
+    } );
+
+    </script>
+{% endblock %}

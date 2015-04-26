@@ -113,13 +113,12 @@ def echo_command_event(message):
     data = {}
     data['result'] = False
     data['message'] = "Command fail to start"
-    init_data = {'result':False, 'message':'', 'state':''}
+    command = message['command']
+    init_data = {'result':False, 'message':'', 'state':'', 'command':command}
     #Emit a blank message to clean the old data in javascript
     emit('my command response',
         {'data': init_data,
         'count': session['receive_count']})
-
-    command = message['command']
     if command == 'no_command':
         #This is for first time launch. Return default values for javascript
         data = {}
