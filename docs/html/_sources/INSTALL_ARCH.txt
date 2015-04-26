@@ -4,18 +4,6 @@
 Installing python-openzwave from archive
 ========================================
 
-Install the needed tools
-========================
-
-You must install git and other tools to get sources of python-openzwave and
-openzwave and build them. Look at the documentation of your Linux distribution to do that.
-
-On a debian like distribution :
-
-.. code-block:: bash
-
-    sudo make deps
-
 Get archive of python-openzwave
 ===============================
 
@@ -31,17 +19,26 @@ This archive contains sources of python-openzwave and openzwave.
 
     tar xvzf python-openzwave-X.Y.Z.tar.gz
 
-This command will extract all the needed sources.
-
-
-Build process
-=============
-
-Go to the previously created directory :
+This command will extract all the needed sources. And change to the right directory.
 
 .. code-block:: bash
 
-    cd python-openzwave-X.Y.Z.tar.gz
+    cd python-openzwave-X.Y.Z
+
+Install the needed tools
+========================
+
+You must install git and other tools to get sources of python-openzwave and
+openzwave and build them. Look at the documentation of your Linux distribution to do that.
+
+On a debian like distribution :
+
+.. code-block:: bash
+
+    sudo make deps
+
+Build process
+=============
 
 Now, you can compile sources :
 
@@ -49,12 +46,12 @@ Now, you can compile sources :
 
     make build
 
-Or if you have already build python-openzwave in a previous installation,
-you can use the clean option to remove old builds.
+If you have already built python-openzwave or the build failed
+you can use the clean option :
 
 .. code-block:: bash
 
-    make clean
+    sudo make clean
     make build
 
 Installation

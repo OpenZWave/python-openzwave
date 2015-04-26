@@ -58,17 +58,26 @@
 <li>Add a constructor for PyOptions : def __init__(self, config_path=None, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;). Please update your code.</li>
 </ul>
 </div></blockquote>
-<dl class="docutils">
-<dt>To do for python-openzwave 0.3.0-final :</dt>
-<dd><ul class="first last simple">
+<p>python-openzwave 0.3.0-alpha2:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Fix bugs in lib</li>
+<li>Fix bugs in API</li>
+<li>A a web demo : Flask + socketIO + jquery</li>
+<li>Add logging facilities in the lib. Define different loggers for lib and api.</li>
+</ul>
+</div></blockquote>
+<p>To do for python-openzwave 0.3.0-final :</p>
+<blockquote>
+<div><ul class="simple">
 <li>Finish the archive install</li>
-<li>Re-add logging in the lib</li>
 <li>Fix pyozwman</li>
 <li>Add more tests for the library : switches, dimmers, polling, heal, test, ...</li>
 <li>Fix tests for controller commands</li>
+<li>Fix bug in start/stop in pyozwwzb app and tests. The listener doesn&#8217;t stop. So must do a kill -9.</li>
+<li>Fix reloader problem : the network ist stop/start every time the app is realoaded. But in this case, the process terminates normally. But there seems to be 2 running instances of the network.</li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 </div>
 
 

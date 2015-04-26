@@ -12,7 +12,7 @@ https://github.com/OpenZWave/open-zwave
    * many examples
 
 
-python-openzwave 0.3.0-alpha1 is out !!!
+python-openzwave 0.3.0-alpha2 is out !!!
 ========================================
 
 Look at CHANGELOG to see new features, to do list and release notes.

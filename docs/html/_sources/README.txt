@@ -10,7 +10,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * an API to map the ZWave network in Python objects
  * many examples
 
-python-openzwave 0.3.0-alpha1 is out !!!
+python-openzwave 0.3.0-alpha2 is out !!!
 ========================================
 
 Look at CHANGELOG to see new features, to do list and release notes.

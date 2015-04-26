@@ -53,7 +53,7 @@
 </pre></div>
 </div>
 <p>You must now install python-openzwave in develop mode</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
+<div class="highlight-bash"><div class="highlight"><pre>make develop
 </pre></div>
 </div>
 <p>Your password will be asked (by sudo) for installing eggs in your local directory.</p>
@@ -64,8 +64,8 @@
 </div>
 <div class="section" id="how-to-develop-for-libopenzwave-was-python-openzwave-lib">
 <h2>How to develop for libopenzwave (was python-openzwave-lib)<a class="headerlink" href="#how-to-develop-for-libopenzwave-was-python-openzwave-lib" title="Permalink to this headline">¶</a></h2>
-<p>After updating the pyx, you need to reinstall it, specially if you&#8217;re in develop mode. Otherwise, your changes will not be applied :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo make develop
+<p>After updating the pyx, you need to reinstall it. Otherwise, your changes will not be applied :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make develop
 </pre></div>
 </div>
 </div>
@@ -109,6 +109,32 @@ Of course, this program MUST use the shared library too.</li>
 </ul>
 </div></blockquote>
 </div>
+<div class="section" id="about-sudo">
+<h2>About sudo<a class="headerlink" href="#about-sudo" title="Permalink to this headline">¶</a></h2>
+<p>If you are like me and don&#8217;t like root (and sudo), you can use the following tip to install packages via pip :</p>
+<p>Look at your python local library, it should looks like :</p>
+<div class="highlight-bash"><div class="highlight"><pre>ls -lisa /usr/local/lib/python2.7/dist-packages/
+total 2428
+1445174  12 drwxrwsr-x 115 root staff  12288 avril  9 21:35 .
+1445172   4 drwxrwsr-x   4 root staff   4096 mai    2  2014 ..
+1457164   4 drwxr-sr-x   5 root staff   4096 nov.  26  2013 actdiag
+1715480   4 drwxr-sr-x   2 root staff   4096 nov.  26  2013 actdiag-0.5.1.egg-info
+1457163   4 -rw-r--r--   1 root staff   1004 nov.  26  2013 actdiag_sphinxhelper.py
+1457172   4 -rw-r--r--   1 root staff    620 nov.  26  2013 actdiag_sphinxhelper.pyc
+....
+</pre></div>
+</div>
+<p>So, add your common user to the staff group :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo usermod -a -G staff userName
+</pre></div>
+</div>
+<p>Add the write right to the group staff</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo chmod -Rf g+w /usr/local/lib/python2.7/dist-packages/
+</pre></div>
+</div>
+<p>And now, it&#8217;s time log off and log on. Groups are checked when you open the session.</p>
+<p>You can now install your packages without sudo.</p>
+</div>
 </div>
 
 
@@ -125,6 +151,7 @@ Of course, this program MUST use the shared library too.</li>
 <li><a class="reference internal" href="#tests">Tests</a></li>
 <li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#static-vs-dynamic-or-shared">Static vs dynamic (or shared)</a></li>
+<li><a class="reference internal" href="#about-sudo">About sudo</a></li>
 </ul>
 </li>
 </ul>
