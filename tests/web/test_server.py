@@ -52,6 +52,18 @@ class FlaskServerTest(FlaskTestCase):
         rv = self.client.get('/')
         self.assertEqual(rv.status,'200 OK')
 
+    def test_200_controller_is_up(self):
+        rv = self.client.get('/controller')
+        self.assertEqual(rv.status,'200 OK')
+
+    def test_300_values_is_up(self):
+        rv = self.client.get('/values')
+        self.assertEqual(rv.status,'200 OK')
+
+    def test_400_controller_is_up(self):
+        rv = self.client.get('/debug')
+        self.assertEqual(rv.status,'200 OK')
+
     #def test_500_socketio_home(self):
     #    rv = self.app.get('/socketio/')
     #    self.assertEqual(rv.status,'200 OK')
