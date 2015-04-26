@@ -27,5 +27,6 @@ src-lib/libopenzwave.egg-info/
 src-lib/libopenzwave/libopenzwave.cpp
 src-api/openzwave.egg-info/
 src-manager/pyozwman.egg-info/
+src-web/pyozwweb.egg-info/
 .coverage
 .tests_user_path/
