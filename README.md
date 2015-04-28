@@ -9,6 +9,11 @@ https://github.com/OpenZWave/open-zwave
 
    * an API to map the ZWave network in Python objects
 
+   * a full-event webapp example : flask + socket.io + jquery (Look
+     at API documentation to try it)
+
+   * a suite of tests
+
    * many examples
 
 

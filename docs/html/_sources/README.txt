@@ -8,6 +8,8 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
 
  * full manager implementation with options
  * an API to map the ZWave network in Python objects
+ * a full-event webapp example : flask + socket.io + jquery (Look at API documentation to try it)
+ * a suite of tests
  * many examples
 
 python-openzwave 0.3.0-alpha2 is out !!!
