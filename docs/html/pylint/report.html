@@ -2,7 +2,7 @@
 <body>
 <div>
 <h1>Report</h1>
-<p>1405 statements analysed.</p><div>
+<p>1418 statements analysed.</p><div>
 <h2>Statistics by type</h2>
 <table>
 <tr class="header">
@@ -72,31 +72,31 @@ openzwave (openzwave.network)
 </tr>
 <tr class="even">
 <td>code</td>
+<td>1706</td>
+<td>32.02</td>
 <td>1693</td>
-<td>31.88</td>
-<td>1693</td>
-<td>=</td>
+<td>+13.00</td>
 </tr>
 <tr class="odd">
 <td>docstring</td>
 <td>3189</td>
-<td>60.06</td>
+<td>59.85</td>
 <td>3189</td>
 <td>=</td>
 </tr>
 <tr class="even">
 <td>comment</td>
 <td>81</td>
-<td>1.53</td>
+<td>1.52</td>
 <td>81</td>
 <td>=</td>
 </tr>
 <tr class="odd">
 <td>empty</td>
+<td>352</td>
+<td>6.61</td>
 <td>347</td>
-<td>6.53</td>
-<td>347</td>
-<td>=</td>
+<td>+5.00</td>
 </tr>
 </table>
 </div>
@@ -117,9 +117,9 @@ openzwave (openzwave.network)
 </tr>
 <tr class="odd">
 <th>percent duplicated lines</th>
+<td>2.182</td>
 <td>2.189</td>
-<td>2.189</td>
-<td>=</td>
+<td>-0.01</td>
 </tr>
 </table>
 </div>
@@ -140,15 +140,15 @@ openzwave (openzwave.network)
 </tr>
 <tr class="odd">
 <td>refactor</td>
+<td>16</td>
 <td>15</td>
-<td>15</td>
-<td>=</td>
+<td>+1.00</td>
 </tr>
 <tr class="even">
 <td>warning</td>
+<td>80</td>
 <td>79</td>
-<td>79</td>
-<td>=</td>
+<td>+1.00</td>
 </tr>
 <tr class="odd">
 <td>error</td>
@@ -171,7 +171,7 @@ openzwave (openzwave.network)
 <tr class="even">
 <td>openzwave.command</td>
 <td>53.33</td>
-<td>1.27</td>
+<td>1.25</td>
 <td>0.00</td>
 <td>1.75</td>
 </tr>
@@ -179,41 +179,41 @@ openzwave (openzwave.network)
 <td>openzwave.option</td>
 <td>36.67</td>
 <td>0.00</td>
-<td>20.00</td>
+<td>18.75</td>
 <td>7.02</td>
 </tr>
 <tr class="even">
 <td>openzwave.network</td>
 <td>6.67</td>
-<td>72.15</td>
-<td>33.33</td>
+<td>72.50</td>
+<td>37.50</td>
 <td>29.82</td>
 </tr>
 <tr class="odd">
 <td>openzwave.node</td>
 <td>1.67</td>
-<td>13.92</td>
-<td>6.67</td>
+<td>13.75</td>
+<td>6.25</td>
 <td>17.54</td>
 </tr>
 <tr class="even">
 <td>openzwave.controller</td>
 <td>1.67</td>
-<td>3.80</td>
-<td>13.33</td>
+<td>3.75</td>
+<td>12.50</td>
 <td>33.33</td>
 </tr>
 <tr class="odd">
 <td>openzwave.value</td>
 <td>0.00</td>
-<td>7.59</td>
-<td>26.67</td>
+<td>7.50</td>
+<td>25.00</td>
 <td>3.51</td>
 </tr>
 <tr class="even">
 <td>openzwave</td>
 <td>0.00</td>
-<td>1.27</td>
+<td>1.25</td>
 <td>0.00</td>
 <td>1.75</td>
 </tr>
@@ -269,7 +269,7 @@ openzwave (openzwave.network)
 </tr>
 <tr class="odd">
 <td>unused-import</td>
-<td>7</td>
+<td>8</td>
 </tr>
 <tr class="even">
 <td>logging-not-lazy</td>
@@ -288,19 +288,19 @@ openzwave (openzwave.network)
 <td>4</td>
 </tr>
 <tr class="even">
-<td>redefined-builtin</td>
+<td>too-many-branches</td>
 <td>3</td>
 </tr>
 <tr class="odd">
+<td>redefined-builtin</td>
+<td>3</td>
+</tr>
+<tr class="even">
 <td>too-many-statements</td>
 <td>2</td>
 </tr>
-<tr class="even">
-<td>too-many-return-statements</td>
-<td>2</td>
-</tr>
 <tr class="odd">
-<td>too-many-branches</td>
+<td>too-many-return-statements</td>
 <td>2</td>
 </tr>
 <tr class="even">
@@ -359,7 +359,7 @@ openzwave (openzwave.network)
 </div>
 <div>
 <h2>Global evaluation</h2>
-Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
+Your code has been rated at 6.81/10 (previous run: 6.79/10, +0.02)</div>
 <div>
 <h2>Messages</h2>
 <table>
@@ -443,17 +443,9 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>ZWaveNode.__init__</td>
 <td>54</td>
 <td>4</td>
-<td>__init__ method from base class 'ZWaveNodeBasic' is not called</td>
+<td>__init__ method from base class 'ZWaveNodeSecurity' is not called</td>
 </tr>
 <tr class="odd">
-<td>warning</td>
-<td>openzwave.node</td>
-<td>ZWaveNode.__init__</td>
-<td>54</td>
-<td>4</td>
-<td>__init__ method from base class 'ZWaveNodeSwitch' is not called</td>
-</tr>
-<tr class="even">
 <td>warning</td>
 <td>openzwave.node</td>
 <td>ZWaveNode.__init__</td>
@@ -461,13 +453,21 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>4</td>
 <td>__init__ method from base class 'ZWaveNodeSensor' is not called</td>
 </tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.node</td>
+<td>ZWaveNode.__init__</td>
+<td>54</td>
+<td>4</td>
+<td>__init__ method from base class 'ZWaveNodeSwitch' is not called</td>
+</tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.node</td>
 <td>ZWaveNode.__init__</td>
 <td>54</td>
 <td>4</td>
-<td>__init__ method from base class 'ZWaveNodeSecurity' is not called</td>
+<td>__init__ method from base class 'ZWaveNodeBasic' is not called</td>
 </tr>
 <tr class="even">
 <td>warning</td>
@@ -1115,7 +1115,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>convention</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>518</td>
+<td>536</td>
 <td>0</td>
 <td>Exactly one space required around assignment
         ret=[]
@@ -1125,7 +1125,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>convention</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>530</td>
+<td>548</td>
 <td>0</td>
 <td>Exactly one space required around assignment
         ret={}
@@ -1135,7 +1135,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>convention</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>531</td>
+<td>549</td>
 <td>0</td>
 <td>Exactly one space required around assignment
         ret['nodes_count']=len(self._nodes)
@@ -1145,7 +1145,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>convention</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>532</td>
+<td>550</td>
 <td>0</td>
 <td>Exactly one space required around assignment
         ret['nodes']=self.nodes_to_dict()
@@ -1155,7 +1155,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>convention</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>783</td>
+<td>801</td>
 <td>0</td>
 <td>Line too long (286/140)</td>
 </tr>
@@ -1165,7 +1165,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>&#160;</td>
 <td>1</td>
 <td>0</td>
-<td>Too many lines in module (1519/1000)</td>
+<td>Too many lines in module (1537/1000)</td>
 </tr>
 <tr class="even">
 <td>convention</td>
@@ -1181,7 +1181,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>ZWaveNetwork</td>
 <td>52</td>
 <td>0</td>
-<td>Too many instance attributes (10/7)</td>
+<td>Too many instance attributes (11/7)</td>
 </tr>
 <tr class="even">
 <td>convention</td>
@@ -1203,7 +1203,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>error</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.__init__</td>
-<td>294</td>
+<td>295</td>
 <td>24</td>
 <td>Module 'libopenzwave' has no 'PyManager' member</td>
 </tr>
@@ -1211,7 +1211,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>344</td>
+<td>350</td>
 <td>71</td>
 <td>Using possibly undefined loop variable 'i'</td>
 </tr>
@@ -1219,7 +1219,7 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>360</td>
+<td>378</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
@@ -1227,151 +1227,151 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.stop</td>
-<td>359</td>
+<td>377</td>
 <td>16</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
+<td>refactor</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork.stop</td>
+<td>326</td>
+<td>4</td>
+<td>Too many branches (14/12)</td>
+</tr>
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.home_id</td>
-<td>381</td>
+<td>399</td>
 <td>4</td>
 <td>Arguments number differs from overridden method</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>refactor</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.state_str</td>
-<td>450</td>
+<td>468</td>
 <td>4</td>
 <td>Too many return statements (7/6)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.heal</td>
-<td>575</td>
+<td>593</td>
 <td>4</td>
 <td>Invalid argument name "upNodeRoute"</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._load_scenes</td>
-<td>676</td>
+<td>694</td>
 <td>8</td>
 <td>Specify string format arguments as logging function parameters</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>convention</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.set_poll_interval</td>
-<td>768</td>
+<td>786</td>
 <td>4</td>
 <td>Invalid argument name "bIntervalBetweenPolls"</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>880</td>
+<td>898</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>error</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>835</td>
+<td>853</td>
 <td>16</td>
 <td>Instance of 'ZWaveNetwork' has no '_handleNodeReady' member</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>refactor</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>789</td>
+<td>807</td>
 <td>4</td>
 <td>Too many branches (32/12)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>refactor</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.zwcallback</td>
-<td>789</td>
+<td>807</td>
 <td>4</td>
 <td>Too many statements (69/50)</td>
 </tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_failed</td>
+<td>917</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_failed</td>
-<td>899</td>
+<td>918</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
-<td>ZWaveNetwork._handle_driver_failed</td>
-<td>900</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>934</td>
+<td>952</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_driver_ready</td>
-<td>925</td>
-<td>12</td>
-<td>Used * or ** magic</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>928</td>
+<td>943</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_ready</td>
+<td>946</td>
+<td>12</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
 <td>error</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>930</td>
+<td>948</td>
 <td>25</td>
 <td>Module 'libopenzwave' has no 'PyControllerState' member</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>error</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>931</td>
+<td>949</td>
 <td>27</td>
 <td>Module 'libopenzwave' has no 'PyControllerState' member</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_ready</td>
-<td>932</td>
-<td>12</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_driver_reset</td>
-<td>961</td>
+<td>950</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
@@ -1379,118 +1379,118 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_reset</td>
-<td>963</td>
+<td>979</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_driver_reset</td>
+<td>981</td>
+<td>12</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_driver_removed</td>
-<td>983</td>
+<td>1001</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_group</td>
-<td>1001</td>
+<td>1019</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node</td>
-<td>1017</td>
+<td>1035</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_added</td>
-<td>1038</td>
+<td>1056</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_scene_event</td>
-<td>1055</td>
+<td>1073</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_event</td>
-<td>1072</td>
+<td>1090</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_naming</td>
-<td>1087</td>
+<td>1105</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_new</td>
-<td>1100</td>
+<td>1118</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_protocol_info</td>
-<td>1116</td>
+<td>1134</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_node_removed</td>
-<td>1139</td>
+<td>1157</td>
 <td>16</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>convention</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_essential_node_queries_complete</td>
-<td>1145</td>
+<td>1163</td>
 <td>4</td>
 <td>Invalid method name "_handle_essential_node_queries_complete"</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_essential_node_queries_complete</td>
-<td>1157</td>
-<td>8</td>
-<td>Used * or ** magic</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
-<td>ZWaveNetwork._handle_node_queries_complete</td>
-<td>1176</td>
+<td>ZWaveNetwork._handle_essential_node_queries_complete</td>
+<td>1175</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried</td>
+<td>ZWaveNetwork._handle_node_queries_complete</td>
 <td>1194</td>
 <td>8</td>
 <td>Used * or ** magic</td>
@@ -1499,187 +1499,195 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_all_nodes_queried</td>
-<td>1195</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>convention</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1197</td>
-<td>4</td>
-<td>Invalid method name "_handle_all_nodes_queried_some_dead"</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
-<td>1211</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
 <td>1212</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried</td>
+<td>1213</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
+<td>convention</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
+<td>1215</td>
+<td>4</td>
+<td>Invalid method name "_handle_all_nodes_queried_some_dead"</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
+<td>1229</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
+<td>ZWaveNetwork._handle_all_nodes_queried_some_dead</td>
+<td>1230</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
 <td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1237</td>
+<td>1255</td>
 <td>8</td>
 <td>No exception type(s) specified</td>
 </tr>
-<tr class="even">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1234</td>
-<td>12</td>
-<td>Used * or ** magic</td>
-</tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_awake_nodes_queried</td>
-<td>1235</td>
+<td>1252</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_awake_nodes_queried</td>
+<td>1253</td>
+<td>12</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_polling_disabled</td>
-<td>1255</td>
+<td>1273</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_polling_enabled</td>
-<td>1270</td>
+<td>1288</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_create_button</td>
-<td>1284</td>
+<td>1302</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_delete_button</td>
-<td>1298</td>
+<td>1316</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_button_on</td>
-<td>1312</td>
-<td>8</td>
-<td>Used * or ** magic</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_button_off</td>
-<td>1326</td>
+<td>1330</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
 <tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
-<td>ZWaveNetwork._handle_value</td>
-<td>1343</td>
-<td>8</td>
-<td>Specify string format arguments as logging function parameters</td>
-</tr>
-<tr class="odd">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork._handle_value</td>
+<td>ZWaveNetwork._handle_button_off</td>
 <td>1344</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_value</td>
+<td>1361</td>
+<td>8</td>
+<td>Specify string format arguments as logging function parameters</td>
+</tr>
 <tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork._handle_value</td>
+<td>1362</td>
+<td>8</td>
+<td>Used * or ** magic</td>
+</tr>
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_added</td>
-<td>1367</td>
+<td>1385</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_changed</td>
-<td>1392</td>
+<td>1410</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_refreshed</td>
-<td>1415</td>
+<td>1433</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_value_removed</td>
-<td>1440</td>
+<td>1458</td>
 <td>12</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_notification</td>
-<td>1457</td>
+<td>1475</td>
 <td>8</td>
 <td>Used * or ** magic</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork._handle_msg_complete</td>
-<td>1471</td>
+<td>1489</td>
 <td>8</td>
 <td>Used * or ** magic</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>openzwave.network</td>
-<td>ZWaveNetwork.nodes</td>
-<td>545</td>
-<td>12</td>
-<td>Attribute '_nodes' defined outside __init__</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork.nodes</td>
-<td>547</td>
+<td>563</td>
 <td>12</td>
 <td>Attribute '_nodes' defined outside __init__</td>
 </tr>
 <tr class="even">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>ZWaveNetwork.nodes</td>
+<td>565</td>
+<td>12</td>
+<td>Attribute '_nodes' defined outside __init__</td>
+</tr>
+<tr class="odd">
 <td>refactor</td>
 <td>openzwave.network</td>
 <td>ZWaveNetwork</td>
@@ -1687,15 +1695,15 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>0</td>
 <td>Too many public methods (29/20)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
-<td>1518</td>
+<td>1536</td>
 <td>-1</td>
 <td>String statement has no effect</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
@@ -1703,13 +1711,21 @@ Your code has been rated at 6.79/10 (previous run: 6.79/10, +0.00)</div>
 <td>0</td>
 <td>Unused namedtuple imported from collections</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>warning</td>
 <td>openzwave.network</td>
 <td>&#160;</td>
 <td>27</td>
 <td>0</td>
 <td>Unused import thread</td>
+</tr>
+<tr class="odd">
+<td>warning</td>
+<td>openzwave.network</td>
+<td>&#160;</td>
+<td>28</td>
+<td>0</td>
+<td>Unused import time</td>
 </tr>
 <tr class="even">
 <td>warning</td>
