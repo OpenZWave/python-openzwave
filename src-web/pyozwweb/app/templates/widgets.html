@@ -232,3 +232,48 @@ function ozw_controller_commands_update(data) {
 }
 </script>
 {%- endmacro %}
+
+{% macro node_edit(size='small', node_id='-1') -%}
+<div id='ozw_node_edit'>
+{% if size == 'small' %}
+<form  id="node_edit_name_form" name="node_edit_name_form">
+    <input type='hidden' id="node_edit_name_id" name="node_edit_name_id" value="{{ node_id }}">
+    <label for="node_edit_name">Name : </label>
+    <input type='text' id="node_edit_name" name="node_edit_name" value="Unknown" size="40">
+    <input type='submit' id="node_edit_name_submit" name="node_edit_name_submit" value="Update">
+    <script type="text/javascript" charset="utf-8">
+        $('form#node_edit_name_form').submit(function(event) {
+            socket.emit('my node event', {node_id:$('#node_edit_name_id').val(), name:$('#node_edit_name').val()});
+            return false;
+        });
+    </script>
+</form>
+<form  id="node_edit_location_form" name="node_edit_location_form">
+    <input type='hidden' id="node_edit_location_id" name="node_edit_location_id" value="{{ node_id }}">
+    <label for="node_edit_location">Location : </label>
+    <input type='text' id="node_edit_location" name="node_edit_location" value="Unknown" size="40">
+    <input type='submit' id="node_edit_location_submit" name="node_edit_location_submit" value="Update">
+    <script type="text/javascript" charset="utf-8">
+        $('form#node_edit_location_form').submit(function(event) {
+            socket.emit('my node event', {node_id:$('#node_edit_location_id').val(), location:$('#node_edit_location').val()});
+            return false;
+        });
+    </script>
+</form>
+{% else %}
+    <p>Not implemented</p>
+{% endif %}
+</div>
+
+<script type="text/javascript" charset="utf-8">
+function ozw_node_edit_update(data) {
+    var textId = GetElementInsideContainer("node_edit_name_form","node_edit_name_id");
+    if (textId.value == data["node_id"]) {
+        var textName = GetElementInsideContainer("node_edit_name_form","node_edit_name");
+        textName.value = data["name"];
+        var textLocation = GetElementInsideContainer("node_edit_location_form","node_edit_location");
+        textLocation.value = data["location"];
+    }
+}
+</script>
+{%- endmacro %}

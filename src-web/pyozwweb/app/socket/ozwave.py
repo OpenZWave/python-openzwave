@@ -92,6 +92,28 @@ def echo_network_event(message):
     emit('my network response',
          {'data': data_room_network(current_app.extensions['zwnetwork']), 'count': session['receive_count']})
 
+@socketio.on('my node event', namespace='/ozwave')
+def echo_node_event(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    logging.debug("Client %s node event : %s", request.remote_addr, message)
+    try :
+        node_id = int(message['node_id'])
+    except ValueError:
+        node_id = 0
+    except KeyError:
+        node_id = 0
+    if node_id == 0 or node_id not in current_app.extensions['zwnetwork'].nodes:
+        logging.warning('Received invalid node_id : %s', message)
+        return
+    if 'name' in message:
+        current_app.extensions['zwnetwork'].nodes[node_id].name = message['name']
+    if 'location' in message:
+        current_app.extensions['zwnetwork'].nodes[node_id].location = message['location']
+    else :
+        logging.debug("Client %s node event : emit my node response")
+        emit('my node response',
+             {'data': current_app.extensions['zwnetwork'].nodes[node_id].to_dict(), 'count': session['receive_count']})
+
 @socketio.on('my nodes event', namespace='/ozwave')
 def echo_nodes_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1

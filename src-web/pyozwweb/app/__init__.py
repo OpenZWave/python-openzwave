@@ -57,14 +57,15 @@ except ImportError:
             pass
 logging.getLogger('pyozwweb').addHandler(NullHandler())
 
-#import signal
-#
-#def signal_term_handler(signal, frame):
-#    print 'got SIGTERM'
-#    stop_all()
-#    sys.exit(0)
+import signal
 
-#signal.signal(signal.SIGTERM, signal_term_handler)
+def signal_term_handler(signal, frame):
+    print 'got SIGTERM'
+    stop_all()
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, signal_term_handler)
+signal.signal(signal.SIGINT, signal_term_handler)
 
 from listener import start_listener, stop_listener
 

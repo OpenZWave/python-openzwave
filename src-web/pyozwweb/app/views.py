@@ -74,6 +74,11 @@ def not_found(error):
 def home():
     return render_template('home.html')
 
+@app.route('/node')
+@app.route('/node/<int:node_id>')
+def node(node_id=1):
+    return render_template('node.html', node_id=node_id)
+
 @app.route('/values')
 def values():
     return render_template('values.html')
