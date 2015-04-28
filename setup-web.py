@@ -64,7 +64,6 @@ setup(
                      'gevent-socketio >= 0.3.6',
                      'Flask-SocketIO >= 0.6.0',
                      'js.socketio < 1.0.0',
-                     'socketIO-client == 0.6.3'
                     ],
   #include_package_data=True,
   package_data={
