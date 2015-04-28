@@ -274,6 +274,7 @@ class ZWaveNetwork(ZWaveObject):
 
     ignoreSubsequent = True
 
+
     def __init__(self, options, log=None, autostart=True):
         """
         Initialize zwave network
@@ -297,6 +298,7 @@ class ZWaveNetwork(ZWaveObject):
         self.nodes = None
         self._semaphore_nodes = threading.Semaphore()
         self._id_separator = '.'
+        self.network_event = threading.Event()
         if autostart:
             self.start()
 
@@ -340,19 +342,35 @@ class ZWaveNetwork(ZWaveObject):
             if self.controller.send_queue_count <= 0:
                 break
             else:
-                time.sleep(1.0)
+                try:
+                    self.network_event.wait(1.0)
+                except AssertionError:
+                    #For gevent env
+                    pass
         logger.debug("Wait for empty send_queue during %s second(s).", i)
         try:
             self._semaphore_nodes.acquire()
             self._manager.removeWatcher(self.zwcallback)
-            time.sleep(1.0)
+            try:
+                self.network_event.wait(1.0)
+            except AssertionError:
+                #For gevent env
+                pass
             self._manager.removeDriver(self._options.device)
-            time.sleep(1.0)
+            try:
+                self.network_event.wait(1.0)
+            except AssertionError:
+                #For gevent env
+                pass
             for i in range(0, 60):
                 if self.controller.send_queue_count <= 0:
                     break
                 else:
-                    time.sleep(1.0)
+                    try:
+                        self.network_event.wait(1.0)
+                    except AssertionError:
+                        #For gevent env
+                        pass
             self.nodes = None
             self._state = self.STATE_STOPPED
             if fire:
