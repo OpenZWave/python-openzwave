@@ -83,6 +83,58 @@ class TestNetwork(TestApi):
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
+    def test_300_network_kvals_nodes(self):
+        nodes_id = self.network.nodes.keys()
+        for nid in nodes_id:
+            kvals=self.network.nodes[nid].kvals
+            self.assertNotEqual(kvals, None)
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data1':1}
+            kvals=self.network.nodes[nid].kvals
+            self.assertEqual(int(kvals['data1']), 1)
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data2':'chaine'}
+            kvals=self.network.nodes[nid].kvals
+            self.assertEqual(int(kvals['data1']), 1)
+            self.assertEqual(kvals['data2'], 'chaine')
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data1':None}
+            kvals=self.network.nodes[nid].kvals
+            self.assertFalse('data1' in kvals)
+            self.assertEqual(kvals['data2'], 'chaine')
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data2':None}
+            kvals=self.network.nodes[nid].kvals
+            self.assertFalse('data1' in kvals)
+            self.assertFalse('data2' in kvals)
+
+    def test_310_network_kvals_controller(self):
+        nodes_id = [self.network.controller.node_id]
+        for nid in nodes_id:
+            kvals=self.network.nodes[nid].kvals
+            self.assertNotEqual(kvals, None)
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data1':1}
+            kvals=self.network.nodes[nid].kvals
+            self.assertEqual(int(kvals['data1']), 1)
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data2':'chaine'}
+            kvals=self.network.nodes[nid].kvals
+            self.assertEqual(int(kvals['data1']), 1)
+            self.assertEqual(kvals['data2'], 'chaine')
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data1':None}
+            kvals=self.network.nodes[nid].kvals
+            self.assertFalse('data1' in kvals)
+            self.assertEqual(kvals['data2'], 'chaine')
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data2':None}
+            kvals=self.network.nodes[nid].kvals
+        for nid in nodes_id:
+            self.network.nodes[nid].kvals = {'data1':None}
+            kvals=self.network.nodes[nid].kvals
+            self.assertFalse('data1' in kvals)
+
 if __name__ == '__main__':
     sys.argv.append('-v')
     unittest.main()

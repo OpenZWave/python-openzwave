@@ -274,6 +274,49 @@ class ZWaveObject(object):
         """
         return self._object_id
 
+    @property
+    def kvals(self):
+        """
+        The keyvals store in db for this object.
+
+        :rtype: {}
+
+        """
+        if self.network.dbcon is None:
+            return None
+        res = {}
+        cur = self.network.dbcon.cursor()
+        cur.execute("SELECT key,value FROM %s WHERE object_id=%s"%(self.__class__.__name__, self.object_id))
+        while True:
+            row = cur.fetchone()
+            if row == None:
+                break
+            res[row[0]] = row[1]
+        return res
+
+    @kvals.setter
+    def kvals(self, kvs):
+        """
+        The keyvals store in db for this object.
+
+        :param kvs: The key/valuse to store in db. Setting a value to None will remove it.
+        :type kvs: {}
+        :rtype: boolean
+
+        """
+        if self.network.dbcon is None:
+            return False
+        if len(kvs) == 0:
+            return True
+        cur = self.network.dbcon.cursor()
+        for key in kvs.keys():
+            logger.debug("DELETE FROM %s WHERE object_id=%s and key='%s'", self.__class__.__name__, self.object_id, key)
+            cur.execute("DELETE FROM %s WHERE object_id=%s and key='%s'"%(self.__class__.__name__, self.object_id, key))
+            if kvs[key] is not None:
+                logger.debug("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');", self.__class__.__name__, self.object_id, key, kvs[key])
+                cur.execute("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');"%(self.__class__.__name__, self.object_id, key, kvs[key]))
+        return True
+
 class ZWaveNodeInterface(object):
     """
     Represents an interface of a node. An interface can manage

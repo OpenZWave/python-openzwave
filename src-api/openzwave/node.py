@@ -171,7 +171,7 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeProductId(self.home_id, self.object_id)
 
-    def to_dict(self):
+    def to_dict(self, kvals=True):
         """
         Return a dict representation of the node.
 
@@ -184,6 +184,11 @@ class ZWaveNode(ZWaveObject,
         ret['product_type'] = self.product_type
         ret['product_name'] = self.product_name
         ret['node_id'] = self.node_id
+        ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
+        if kvals == True and self.network.dbcon is not None:
+            vals = self.kvals
+            for key in vals.keys():
+                ret[key]=vals[key]
         return ret
 
     @property

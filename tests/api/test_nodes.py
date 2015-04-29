@@ -49,6 +49,7 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
+import json
 
 class TestNodes(TestApi):
 
@@ -59,6 +60,14 @@ class TestNodes(TestApi):
     def test_100_nodes_test(self):
         for node in self.network.nodes:
             self.network.nodes[node].test(5)
+
+    def test_100_nodes_test(self):
+        for node in self.network.nodes:
+            try :
+                res = json.dumps(self.network.nodes[node].to_dict())
+            except TypeError:
+                res = None
+            self.assertNotEqual(res, None)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

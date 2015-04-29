@@ -23,7 +23,8 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from collections import namedtuple
+import os
+#from collections import namedtuple
 import thread
 import time
 from louie import dispatcher, All
@@ -48,6 +49,11 @@ except ImportError:
             pass
 logger = logging.getLogger('openzwave')
 logger.addHandler(NullHandler())
+
+try:
+    import sqlite3 as lite
+except ImportError:
+    logger.warning('pysqlite is not installed')
 
 class ZWaveNetwork(ZWaveObject):
     """
@@ -299,6 +305,15 @@ class ZWaveNetwork(ZWaveObject):
         self._semaphore_nodes = threading.Semaphore()
         self._id_separator = '.'
         self.network_event = threading.Event()
+        self.dbcon = None
+        try:
+            self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.db'))
+            cur = self.dbcon.cursor()
+            cur.execute('SELECT SQLITE_VERSION()')
+            data = cur.fetchone()
+            self._check_db_tables()
+        except lite.Error, e:
+            logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
         if autostart:
             self.start()
 
@@ -311,6 +326,24 @@ class ZWaveNetwork(ZWaveObject):
         """
         return 'home_id: [%s] controller: [%s]' % \
           (self.home_id_str, self.controller)
+
+    def _check_db_tables(self):
+        """
+        Check that the tables for "classes" are in database.
+
+        :returns: True if operation succeed. False oterwise
+        :rtype: boolean
+
+        """
+        if self.dbcon is None:
+            return False
+        cur = self.dbcon.cursor()
+        for mycls in ['ZWaveNetwork', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % mycls)
+            data = cur.fetchone()
+            if data is None:
+                cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
+        return True
 
     def start(self):
         """
@@ -337,6 +370,8 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         self.write_config()
+        if self.dbcon is not None:
+            self.dbcon.close()
         logger.info("Stop Openzave network.")
         for i in range(0, 60):
             if self.controller.send_queue_count <= 0:
@@ -345,7 +380,7 @@ class ZWaveNetwork(ZWaveObject):
                 try:
                     self.network_event.wait(1.0)
                 except AssertionError:
-                    #For gevent env
+                    #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                     pass
         logger.debug("Wait for empty send_queue during %s second(s).", i)
         try:
@@ -354,13 +389,13 @@ class ZWaveNetwork(ZWaveObject):
             try:
                 self.network_event.wait(1.0)
             except AssertionError:
-                #For gevent env
+                #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                 pass
             self._manager.removeDriver(self._options.device)
             try:
                 self.network_event.wait(1.0)
             except AssertionError:
-                #For gevent env
+                #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                 pass
             for i in range(0, 60):
                 if self.controller.send_queue_count <= 0:
@@ -369,7 +404,7 @@ class ZWaveNetwork(ZWaveObject):
                     try:
                         self.network_event.wait(1.0)
                     except AssertionError:
-                        #For gevent env
+                        #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                         pass
             self.nodes = None
             self._state = self.STATE_STOPPED
