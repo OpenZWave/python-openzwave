@@ -281,7 +281,7 @@ class ZWaveNetwork(ZWaveObject):
     ignoreSubsequent = True
 
 
-    def __init__(self, options, log=None, autostart=True):
+    def __init__(self, options, log=None, autostart=True, kvals=True):
         """
         Initialize zwave network
 
@@ -290,6 +290,8 @@ class ZWaveNetwork(ZWaveObject):
         :param log: A log file (not used. Deprecated
         :type log:
         :param autostart: should we start the network.
+        :type autostart: bool
+        :param autostart: Enable kvals (use pysqlite)
         :type autostart: bool
 
         """
@@ -306,14 +308,15 @@ class ZWaveNetwork(ZWaveObject):
         self._id_separator = '.'
         self.network_event = threading.Event()
         self.dbcon = None
-        try:
-            self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.db'))
-            cur = self.dbcon.cursor()
-            cur.execute('SELECT SQLITE_VERSION()')
-            data = cur.fetchone()
-            self._check_db_tables()
-        except lite.Error, e:
-            logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
+        if kvals == True:
+            try:
+                self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.db'), check_same_thread=False)
+                cur = self.dbcon.cursor()
+                cur.execute('SELECT SQLITE_VERSION()')
+                data = cur.fetchone()
+                self._check_db_tables()
+            except lite.Error, e:
+                logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
         if autostart:
             self.start()
 
@@ -561,19 +564,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._nodes
 
-    def nodes_to_dict(self):
-        """
-        Return a dict representation of the network.
-
-        :rtype: dict()
-
-        """
-        ret=[]
-        for ndid in self._nodes.keys():
-            ret.append(self._nodes[ndid].to_dict())
-        return ret
-
-    def to_dict(self):
+    def nodes_to_dict(self, kvals=True):
         """
         Return a dict representation of the network.
 
@@ -581,8 +572,26 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         ret={}
-        ret['nodes_count']=len(self._nodes)
-        ret['nodes']=self.nodes_to_dict()
+        for ndid in self._nodes.keys():
+            ret[ndid]=self._nodes[ndid].to_dict(kvals=kvals)
+        return ret
+
+    def to_dict(self, kvals=True):
+        """
+        Return a dict representation of the network.
+
+        :rtype: dict()
+
+        """
+        ret={}
+        ret['state'] = self.state,
+        ret['state_str'] = self.state_str,
+        ret['home_id'] = self.home_id_str,
+        ret['nodes_count'] = self.nodes_count,
+        if kvals == True and self.network.dbcon is not None:
+            vals = self.kvals
+            for key in vals.keys():
+                ret[key]=vals[key]
         return ret
 
     @nodes.setter

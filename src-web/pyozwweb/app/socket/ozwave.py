@@ -53,7 +53,6 @@ from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 from louie import dispatcher, All
 from pyozwweb.app import socketio, app
-from pyozwweb.app.rooms import data_room_network
 
 import logging
 try:  # Python 2.7+
@@ -89,8 +88,20 @@ def echo_connect():
 def echo_network_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     logging.debug("Client %s network event : %s", request.remote_addr, message)
-    emit('my network response',
-         {'data': data_room_network(current_app.extensions['zwnetwork']), 'count': session['receive_count']})
+    done=False
+    keys = ['zoomlevel','zoomx','zoomy','panx','pany']
+    kvals = {}
+    for key in keys:
+        if key in message:
+            kvals[key]=message[key]
+    logging.debug("kvals : %s", kvals)
+    if len(kvals) > 0:
+        current_app.extensions['zwnetwork'].kvals = kvals
+        done = True
+        #Should we emit an event ? Or the api should send a new python louie mesage ? Or nothing
+    if done == False :
+        emit('my network response',
+             {'data': current_app.extensions['zwnetwork'].to_dict(), 'count': session['receive_count']})
 
 @socketio.on('my node event', namespace='/ozwave')
 def echo_node_event(message):
@@ -105,19 +116,24 @@ def echo_node_event(message):
     if node_id == 0 or node_id not in current_app.extensions['zwnetwork'].nodes:
         logging.warning('Received invalid node_id : %s', message)
         return
+    done=False
     keys = ['posx','posy']
     kvals = {}
     for key in keys:
         if key in message:
             kvals[key]=message[key]
+    logging.debug("kvals : %s", kvals)
     if len(kvals) > 0:
         current_app.extensions['zwnetwork'].nodes[node_id].kvals = kvals
+        done = True
         #Should we emit an event ? Or the api should send a new python louie mesage ? Or nothing
     if 'name' in message:
         current_app.extensions['zwnetwork'].nodes[node_id].name = message['name']
+        done = True
     if 'location' in message:
         current_app.extensions['zwnetwork'].nodes[node_id].location = message['location']
-    else :
+        done = True
+    if done == False :
         logging.debug("Client %s node event : emit my node response")
         emit('my node response',
              {'data': current_app.extensions['zwnetwork'].nodes[node_id].to_dict(), 'count': session['receive_count']})
@@ -126,6 +142,7 @@ def echo_node_event(message):
 def echo_nodes_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     logging.debug("Client %s nodes event : %s", request.remote_addr, message)
+    print "%s"%current_app.extensions['zwnetwork'].nodes_to_dict()
     emit('my nodes response',
          {'data': current_app.extensions['zwnetwork'].nodes_to_dict(), 'count': session['receive_count']})
 

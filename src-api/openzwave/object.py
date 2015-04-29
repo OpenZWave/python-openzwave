@@ -315,6 +315,7 @@ class ZWaveObject(object):
             if kvs[key] is not None:
                 logger.debug("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');", self.__class__.__name__, self.object_id, key, kvs[key])
                 cur.execute("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');"%(self.__class__.__name__, self.object_id, key, kvs[key]))
+        self.network.dbcon.commit()
         return True
 
 class ZWaveNodeInterface(object):

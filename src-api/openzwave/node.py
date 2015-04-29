@@ -185,6 +185,7 @@ class ZWaveNode(ZWaveObject,
         ret['product_name'] = self.product_name
         ret['node_id'] = self.node_id
         ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
+        ret['capabilities'] = dict.fromkeys(self.capabilities, 0)
         if kvals == True and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():

@@ -72,8 +72,9 @@ class TestApi(TestPyZWave):
     @classmethod
     def tearDownClass(self):
         self.network.stop()
-        time.sleep(1.0)
+        time.sleep(2.0)
         super(TestApi, self).tearDownClass()
+        time.sleep(2.0)
 
     def setUp(self):
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)

@@ -27,6 +27,8 @@
                     console.log(key, item);
                     socket.emit('my node event', {node_id:item.data('id'), posx:item.position('x'), posy:item.position('y')});
                 });
+                pan = window.ozw_map.pan()
+                socket.emit('my network event', {zoomlevel:window.ozw_map.zoom(), zoomx:0, zoomy:0, panx:pan['x'], pany:pan['y']});
                 return false;
             });
         </script>
@@ -38,6 +40,38 @@
     $(document).ready(function() {
         $('#ozw_map').cytoscape({
           style: cytoscape.stylesheet()
+            .selector('.staticUpdateController')
+              .css({
+                'border-color': 'red'
+              })
+            .selector('.primaryController')
+              .css({
+                'border-color': 'red'
+              })
+            .selector('.bridgeController')
+              .css({
+                'border-color': 'red'
+              })
+            .selector('.routing')
+              .css({
+                'border-width': 2
+              })
+            .selector('.beamig')
+              .css({
+                'border-width': 2
+              })
+            .selector('.listening')
+              .css({
+                'border-width': 2
+              })
+            .selector('.frequent')
+              .css({
+                'border-width': 2
+              })
+            .selector('.security')
+              .css({
+                'border-width': 2
+              })
             .selector('node')
               .css({
                 'content': 'data(name)',
@@ -62,26 +96,6 @@
                 'opacity': 0.25,
                 'text-opacity': 0
               }),
-
-          //~ elements: {
-            //~ nodes: [
-              //~ { data: { id: 'j', name: 'Jerry' } },
-              //~ { data: { id: 'e', name: 'Elaine' } },
-              //~ { data: { id: 'k', name: 'Kramer' } },
-              //~ { data: { id: 'g', name: 'George' } }
-            //~ ],
-            //~ edges: [
-              //~ { data: { source: 'j', target: 'e' } },
-              //~ { data: { source: 'j', target: 'k' } },
-              //~ { data: { source: 'j', target: 'g' } },
-              //~ { data: { source: 'e', target: 'j' } },
-              //~ { data: { source: 'e', target: 'k' } },
-              //~ { data: { source: 'k', target: 'j' } },
-              //~ { data: { source: 'k', target: 'e' } },
-              //~ { data: { source: 'k', target: 'g' } },
-              //~ { data: { source: 'g', target: 'j' } }
-            //~ ]
-          //~ },
 
           layout: {
             name: 'grid',
@@ -112,25 +126,110 @@
           }
         });
 
+        //~ socket.on('my nodes response', function(msg) {
+            //~ console.log("Received nodes response : " + msg.data);
+            //~ data = [];
+            //~ $.each(msg.data, function (key, item) {
+                //~ console.log('x : '+item["posx"]);
+                //~ console.log('x : '+parseInt(item["posx"]));
+                //~ console.log('y : '+parseInt(item["posy"]));
+                //~ data.push({
+                        //~ group:'nodes',
+                        //~ data:{
+                            //~ id:''+item["node_id"],
+                            //~ name: item["name"]},
+                        //~ position: {
+                            //~ x: parseInt(item["posx"]),
+                            //~ y: parseInt(item["posy"]) }
+                //~ });
+                //~ if (item['neighbors'] != undefined) {
+                    //~ $.each(item['neighbors'], function (key2, item2) {
+                        //~ data.push({
+                                //~ group: 'edges',
+                                //~ data: {
+                                    //~ id:''+item["node_id"]+'-'+key2,
+                                    //~ source:''+item["node_id"],
+                                    //~ target: ''+key2 },
+                        //~ })
+                    //~ });
+                //~ }
+            //~ });
+            //~ window.ozw_map.load(data);
+        //~ });
         socket.on('my nodes response', function(msg) {
             console.log("Received nodes response : " + msg.data);
-            data = {nodes : [], edges : []};
+            var data = [];
+            var positions = {};
+            var classes = {};
+            window.ozw_map.load(data);
             $.each(msg.data, function (key, item) {
-                data['nodes'].push({data:{id:''+item["node_id"], name: item["name"]}})
+                console.log('x : '+parseInt(item["posx"]));
+                console.log('y : '+parseInt(item["posy"]));
+                window.ozw_map.add({
+                        group:'nodes',
+                        data:{
+                            id: String(item["node_id"]),
+                            name: item["name"]}
+                });
+                positions[String(item["node_id"])] = {
+                            x: parseInt(item["posx"]),
+                            y: parseInt(item["posy"]) }
                 if (item['neighbors'] != undefined) {
                     $.each(item['neighbors'], function (key2, item2) {
-                        data['edges'].push({data:{id:''+item["node_id"]+'-'+key2, source:''+item["node_id"], target: ''+key2}})
+                       data.push({
+                                group: 'edges',
+                                data: {
+                                    id:String(item["node_id"])+'-'+String(key2),
+                                    source:String(item["node_id"]),
+                                    target:String(key2) },
+                        })
+                    });
+                }
+                if (item['capabilities'] != undefined) {
+                    $.each(item['capabilities'], function (key2, item2) {
+                       if (classes[String(item["node_id"])] == undefined) {
+                           classes[String(item["node_id"])] = String(key2);
+                       } else {
+                           classes[String(item["node_id"])] = classes[String(item["node_id"])] + ' ' + String(key2);
+                       }
                     });
                 }
             });
-            window.ozw_map.load(data);
+            $.each(data, function (key2, item2) {
+                window.ozw_map.add(item2)
+            });
+            window.ozw_map.nodes().forEach(function( ele ){
+                console.log(positions[ele.id()]['x']);
+                console.log(classes[ele.id()]);
+                ele.position({ x: positions[ele.id()]['x'], y: positions[ele.id()]['y'] });
+                ele.addClass(classes[ele.id()]);
+            });
         });
 
         socket.on('my node response', function(msg) {
             console.log("Received node response : " + msg.data['node_id']);
             cynode = window.ozw_map.$('#'+msg.data['node_id']);
-            cynode.data({name:msg.data['name']});
-            window.ozw_map.forceRender()
+            //window.ozw_map.remove(cynode);
+            //window.ozw_map.add({ goup: 'nodes',
+            //                     data: {
+            //                        id:''+msg.data["node_id"],
+            //                        name: msg.data["name"] },
+            //});
+            //cynode = window.ozw_map.$('#'+msg.data['node_id']);
+            cynode.data('name', msg.data["name"]);
+            cynode.position({
+                x: parseInt(msg.data["posx"]),
+                y: parseInt(msg.data["posy"])
+            });
+        });
+
+        socket.on('my network response', function(msg) {
+            console.log("Received network response : " + msg.data['zoom']);
+            window.ozw_map.pan({x:parseInt(msg.data['panx']),y:parseInt(msg.data['pany'])})
+            window.ozw_map.zoom({
+                level:parseFloat(msg.data['zoomlevel']),
+                position: { x: parseInt(msg.data['zoomx']), y: parseInt(msg.data['zoomy']) }
+                });
         });
 
         socket.emit('my network event', {});
