@@ -25,9 +25,9 @@
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
         <h2 class='stats'>
-            125 statements &nbsp;
+            126 statements &nbsp;
             <span class='run hide_run shortkey_r button_toggle_run'>0 run</span>
-            <span class='mis shortkey_m button_toggle_mis'>125 missing</span>
+            <span class='mis shortkey_m button_toggle_mis'>126 missing</span>
             <span class='exc shortkey_x button_toggle_exc'>0 excluded</span>
             
         </h2>
@@ -379,16 +379,16 @@
 <p id='n316' class='stm mis'><a href='#n316'>316</a></p>
 <p id='n317' class='stm mis'><a href='#n317'>317</a></p>
 <p id='n318' class='stm mis'><a href='#n318'>318</a></p>
-<p id='n319' class='pln'><a href='#n319'>319</a></p>
-<p id='n320' class='stm mis'><a href='#n320'>320</a></p>
-<p id='n321' class='pln'><a href='#n321'>321</a></p>
+<p id='n319' class='stm mis'><a href='#n319'>319</a></p>
+<p id='n320' class='pln'><a href='#n320'>320</a></p>
+<p id='n321' class='stm mis'><a href='#n321'>321</a></p>
 <p id='n322' class='pln'><a href='#n322'>322</a></p>
 <p id='n323' class='pln'><a href='#n323'>323</a></p>
 <p id='n324' class='pln'><a href='#n324'>324</a></p>
 <p id='n325' class='pln'><a href='#n325'>325</a></p>
 <p id='n326' class='pln'><a href='#n326'>326</a></p>
-<p id='n327' class='stm mis'><a href='#n327'>327</a></p>
-<p id='n328' class='pln'><a href='#n328'>328</a></p>
+<p id='n327' class='pln'><a href='#n327'>327</a></p>
+<p id='n328' class='stm mis'><a href='#n328'>328</a></p>
 <p id='n329' class='pln'><a href='#n329'>329</a></p>
 <p id='n330' class='pln'><a href='#n330'>330</a></p>
 <p id='n331' class='pln'><a href='#n331'>331</a></p>
@@ -397,7 +397,8 @@
 <p id='n334' class='pln'><a href='#n334'>334</a></p>
 <p id='n335' class='pln'><a href='#n335'>335</a></p>
 <p id='n336' class='pln'><a href='#n336'>336</a></p>
-<p id='n337' class='stm mis'><a href='#n337'>337</a></p>
+<p id='n337' class='pln'><a href='#n337'>337</a></p>
+<p id='n338' class='stm mis'><a href='#n338'>338</a></p>
                 
             </td>
             <td class='text' valign='top'>
@@ -718,26 +719,27 @@
 <p id='t315' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>if</span> <span class='nam'>kvs</span><span class='op'>[</span><span class='nam'>key</span><span class='op'>]</span> <span class='key'>is</span> <span class='key'>not</span> <span class='nam'>None</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t316' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>logger</span><span class='op'>.</span><span class='nam'>debug</span><span class='op'>(</span><span class='str'>&quot;INSERT INTO %s(object_id, &#39;key&#39;, &#39;value&#39;) VALUES (%s,&#39;%s&#39;,&#39;%s&#39;);&quot;</span><span class='op'>,</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>__class__</span><span class='op'>.</span><span class='nam'>__name__</span><span class='op'>,</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>object_id</span><span class='op'>,</span> <span class='nam'>key</span><span class='op'>,</span> <span class='nam'>kvs</span><span class='op'>[</span><span class='nam'>key</span><span class='op'>]</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t317' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>cur</span><span class='op'>.</span><span class='nam'>execute</span><span class='op'>(</span><span class='str'>&quot;INSERT INTO %s(object_id, &#39;key&#39;, &#39;value&#39;) VALUES (%s,&#39;%s&#39;,&#39;%s&#39;);&quot;</span><span class='op'>%</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>__class__</span><span class='op'>.</span><span class='nam'>__name__</span><span class='op'>,</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>object_id</span><span class='op'>,</span> <span class='nam'>key</span><span class='op'>,</span> <span class='nam'>kvs</span><span class='op'>[</span><span class='nam'>key</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t318' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>True</span><span class='strut'>&nbsp;</span></p>
-<p id='t319' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t320' class='stm mis'><span class='key'>class</span> <span class='nam'>ZWaveNodeInterface</span><span class='op'>(</span><span class='nam'>object</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t321' class='pln'>&nbsp; &nbsp; <span class='str'>&quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
-<p id='t322' class='pln'><span class='str'>&nbsp; &nbsp; Represents an interface of a node. An interface can manage</span><span class='strut'>&nbsp;</span></p>
-<p id='t323' class='pln'><span class='str'>&nbsp; &nbsp; specific commandClasses (ie a switch, a dimmer, a thermostat, ...).</span><span class='strut'>&nbsp;</span></p>
-<p id='t324' class='pln'><span class='str'>&nbsp; &nbsp; Don&#39;t know what to do with it now but sure it must exist</span><span class='strut'>&nbsp;</span></p>
-<p id='t325' class='pln'><span class='str'>&nbsp; &nbsp; &quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
-<p id='t326' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t327' class='stm mis'>&nbsp; &nbsp; <span class='key'>def</span> <span class='nam'>__init__</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t328' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='str'>&quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
-<p id='t329' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; Initialize a Zwave Node Interface</span><span class='strut'>&nbsp;</span></p>
-<p id='t330' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t331' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :param object_id: ID of the object</span><span class='strut'>&nbsp;</span></p>
-<p id='t332' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :type object_id: int</span><span class='strut'>&nbsp;</span></p>
-<p id='t333' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :param network: The network object to access the manager</span><span class='strut'>&nbsp;</span></p>
-<p id='t334' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :type network: ZWaveNetwork</span><span class='strut'>&nbsp;</span></p>
-<p id='t335' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t336' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; &quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
-<p id='t337' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>_class</span> <span class='op'>=</span> <span class='str'>&quot;unknown&quot;</span><span class='strut'>&nbsp;</span></p>
+<p id='t318' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>network</span><span class='op'>.</span><span class='nam'>dbcon</span><span class='op'>.</span><span class='nam'>commit</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t319' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>True</span><span class='strut'>&nbsp;</span></p>
+<p id='t320' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t321' class='stm mis'><span class='key'>class</span> <span class='nam'>ZWaveNodeInterface</span><span class='op'>(</span><span class='nam'>object</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t322' class='pln'>&nbsp; &nbsp; <span class='str'>&quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
+<p id='t323' class='pln'><span class='str'>&nbsp; &nbsp; Represents an interface of a node. An interface can manage</span><span class='strut'>&nbsp;</span></p>
+<p id='t324' class='pln'><span class='str'>&nbsp; &nbsp; specific commandClasses (ie a switch, a dimmer, a thermostat, ...).</span><span class='strut'>&nbsp;</span></p>
+<p id='t325' class='pln'><span class='str'>&nbsp; &nbsp; Don&#39;t know what to do with it now but sure it must exist</span><span class='strut'>&nbsp;</span></p>
+<p id='t326' class='pln'><span class='str'>&nbsp; &nbsp; &quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
+<p id='t327' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t328' class='stm mis'>&nbsp; &nbsp; <span class='key'>def</span> <span class='nam'>__init__</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t329' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='str'>&quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
+<p id='t330' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; Initialize a Zwave Node Interface</span><span class='strut'>&nbsp;</span></p>
+<p id='t331' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t332' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :param object_id: ID of the object</span><span class='strut'>&nbsp;</span></p>
+<p id='t333' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :type object_id: int</span><span class='strut'>&nbsp;</span></p>
+<p id='t334' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :param network: The network object to access the manager</span><span class='strut'>&nbsp;</span></p>
+<p id='t335' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; :type network: ZWaveNetwork</span><span class='strut'>&nbsp;</span></p>
+<p id='t336' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t337' class='pln'><span class='str'>&nbsp; &nbsp; &nbsp; &nbsp; &quot;&quot;&quot;</span><span class='strut'>&nbsp;</span></p>
+<p id='t338' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>_class</span> <span class='op'>=</span> <span class='str'>&quot;unknown&quot;</span><span class='strut'>&nbsp;</span></p>
                 
             </td>
         </tr>

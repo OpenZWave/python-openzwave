@@ -20,7 +20,8 @@ python-openzwave 0.3.0-alpha2:
 
  * Fix bugs in lib
  * Fix bugs in API
- * A a web demo : Flask + socketIO + jquery
+ * Add kvals to API : allow user to store parameters with nodes, controllers, networks, ...
+ * A a web demo : Flask + socket.io + jquery
  * Add logging facilities in the lib. Define different loggers for lib and api.
 
 

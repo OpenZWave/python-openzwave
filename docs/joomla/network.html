@@ -34,7 +34,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
 <dl class="class">
 <dt id="openzwave.network.ZWaveNetwork">
-<em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>options</em>, <em>log=None</em>, <em>autostart=True</em><big>)</big></dt>
+<em class="property">class </em><tt class="descclassname">openzwave.network.</tt><tt class="descname">ZWaveNetwork</tt><big>(</big><em>options</em>, <em>log=None</em>, <em>autostart=True</em>, <em>kvals=True</em><big>)</big></dt>
 <dd><p>The network objet = homeid.
 It contains a reference to the manager and the controller.</p>
 <p>It dispatch the following louie signals :</p>
@@ -433,7 +433,7 @@ Can take a while on larger networks.</p>
 
 <dl class="method">
 <dt id="openzwave.network.ZWaveNetwork.nodes_to_dict">
-<tt class="descname">nodes_to_dict</tt><big>(</big><big>)</big></dt>
+<tt class="descname">nodes_to_dict</tt><big>(</big><em>kvals=True</em><big>)</big></dt>
 <dd><p>Return a dict representation of the network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -639,7 +639,7 @@ not routed, the message might not otherwise reach all the nodes).</p>
 
 <dl class="method">
 <dt id="openzwave.network.ZWaveNetwork.to_dict">
-<tt class="descname">to_dict</tt><big>(</big><big>)</big></dt>
+<tt class="descname">to_dict</tt><big>(</big><em>kvals=True</em><big>)</big></dt>
 <dd><p>Return a dict representation of the network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
