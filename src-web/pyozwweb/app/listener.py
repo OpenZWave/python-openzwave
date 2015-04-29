@@ -29,6 +29,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
 
+from gevent import monkey
+monkey.patch_all()
+
 import os
 import sys
 import time
@@ -60,9 +63,6 @@ listener = None
 class ListenerThread(Thread):
     def __init__(self, _socketio, _app):
         """The constructor"""
-        #server
-        #socketIO.emit('aaa')
-        #socketIO.wait(seconds=1)
         Thread.__init__(self)
         self._stopevent = threading.Event( )
         self.socketio = _socketio
@@ -151,7 +151,6 @@ class ListenerThread(Thread):
     def _louie_values(self, network, node, value):
             with self.app.test_request_context():
                 from flask import request
-#               request = req
                 if network is None:
                     self.socketio.emit('my values response',
                                        {'data': {'node_id':None, 'homeid':None, 'value_id':None},},
@@ -208,10 +207,8 @@ class ListenerThread(Thread):
         self.leave_room_values()
         self.leave_room_controller()
         self.leave_room_network()
+        self._stopevent.set( )
         logging.info("Stop listener")
-        #if self.is_alive() == True:
-        #self.terminate()
-        #self._stopevent.set( )
 
 def start_listener(app_, socketio_):
     global listener
@@ -222,6 +219,5 @@ def start_listener(app_, socketio_):
 
 def stop_listener():
     global listener
-    print "Stop listener"
     listener.stop()
     listener = None

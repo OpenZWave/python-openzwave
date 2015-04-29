@@ -105,6 +105,14 @@ def echo_node_event(message):
     if node_id == 0 or node_id not in current_app.extensions['zwnetwork'].nodes:
         logging.warning('Received invalid node_id : %s', message)
         return
+    keys = ['posx','posy']
+    kvals = {}
+    for key in keys:
+        if key in message:
+            kvals[key]=message[key]
+    if len(kvals) > 0:
+        current_app.extensions['zwnetwork'].nodes[node_id].kvals = kvals
+        #Should we emit an event ? Or the api should send a new python louie mesage ? Or nothing
     if 'name' in message:
         current_app.extensions['zwnetwork'].nodes[node_id].name = message['name']
     if 'location' in message:

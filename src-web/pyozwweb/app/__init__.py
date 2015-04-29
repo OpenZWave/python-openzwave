@@ -32,6 +32,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
 
+from gevent import monkey
+monkey.patch_all()
+
 import os
 import sys
 import time
@@ -59,14 +62,6 @@ logging.getLogger('pyozwweb').addHandler(NullHandler())
 
 import signal
 
-def signal_term_handler(signal, frame):
-    print 'got SIGTERM'
-    stop_all()
-    sys.exit(0)
-
-signal.signal(signal.SIGTERM, signal_term_handler)
-signal.signal(signal.SIGINT, signal_term_handler)
-
 from listener import start_listener, stop_listener
 
 fanstatic = None
@@ -74,6 +69,15 @@ app = None
 socketio = None
 
 def run_app(app_, socketio_, debug=False):
+
+    def signal_term_handler(signal, frame):
+        print 'got SIGTERM'
+        stop_all()
+        sys.exit(0)
+
+    signal.signal(signal.SIGTERM, signal_term_handler)
+    signal.signal(signal.SIGINT, signal_term_handler)
+
     global socketio
     socketio = socketio_
     global app
@@ -86,7 +90,7 @@ def run_app(app_, socketio_, debug=False):
     logging.debug("Flask url maps %s" % app.url_map)
     socketio.run(app, use_reloader=app.config['RELOADER'])
     #print "App has ran"
-    stop_all()
+    #stop_all()
 
 def stop_all():
     stop_listener()

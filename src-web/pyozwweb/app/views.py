@@ -91,6 +91,10 @@ def controller():
 def debug():
     return render_template('debug.html')
 
+@app.route('/map')
+def map():
+    return render_template('map.html')
+
 @app.route('/chat')
 def chat():
     return render_template('chat.html')

@@ -64,7 +64,7 @@
             $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
         });
         socket.on('my network response', function(msg) {
-            console.log("Received " + msg.data['state']);
+            console.log("Received network response : " + msg.data['state']);
             ozw_network_state_update(msg.data);
         });
         socket.on('my nodes response', function(msg) {
