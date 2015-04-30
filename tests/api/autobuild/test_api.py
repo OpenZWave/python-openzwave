@@ -54,7 +54,7 @@ class TestNetworkApi(TestPyZWave):
 
     @classmethod
     def setUpClass(self):
-        super(TestNetworkStartStop, self).setUpClass()
+        super(TestNetworkApi, self).setUpClass()
         self.options = None
         self.network = None
 
@@ -62,7 +62,7 @@ class TestNetworkApi(TestPyZWave):
     def tearDownClass(self):
         if self.network is not None:
             self.network.stop()
-        super(TestNetworkStartStop, self).tearDownClass()
+        super(TestNetworkApi, self).tearDownClass()
 
     def test_000_api_network(self):
         self.driver_ready = False
