@@ -45,7 +45,6 @@ from threading import Thread
 from louie import dispatcher, All
 #from socketIO_client import SocketIO, LoggingNamespace
 
-from pyozwweb.app.rooms import data_room_network
 from flask import Flask, render_template, session, request, current_app
 
 import logging

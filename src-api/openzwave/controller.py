@@ -697,7 +697,7 @@ class ZWaveController(ZWaveObject):
 
         """
         ret=self.node.to_dict()
-        ret['capabilities'].extend(dict.fromkeys(self.capabilities, 0))
+        ret['capabilities'].update(dict.fromkeys(self.capabilities, 0))
         ret["zw_version"] = self.library_version
         ret["zw_description"] = self.library_description
         ret["oz_version"] = self.ozw_library_version

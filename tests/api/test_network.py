@@ -76,7 +76,7 @@ class TestNetwork(TestApi):
         self.network.set_poll_interval(milliseconds=500, bIntervalBetweenPolls=True)
         self.assertEqual(self.network.get_poll_interval(), 500)
 
-    def test_200_network_nodes_json(self):
+    def test_200_network_to_dict(self):
         dnetwork = self.network.to_dict()
         self.assertEqual(type(dnetwork), type({}))
         res = json.dumps(dnetwork)
