@@ -211,8 +211,7 @@ tests:
 	@echo "Autobuild-tests for ZWave network finished."
 
 autobuild-tests:
-	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild ; unset NOSESKIP
+	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
 	@echo
 	@echo "Tests for ZWave network finished."
 
