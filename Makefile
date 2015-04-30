@@ -110,8 +110,9 @@ developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
 autobuild-deps : common-deps cython-deps tests-deps pip-deps
+	apt-get install -y git
 	@echo
-	@echo "Dependencies for users installed (python ${python_version_full})"
+	@echo "Dependencies for autobuilders (docker, travis, ...) installed (python ${python_version_full})"
 
 arch-deps : common-deps pip-deps
 	@echo
