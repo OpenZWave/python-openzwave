@@ -189,10 +189,10 @@ docs: clean-docs
 	@echo "Documentation finished."
 
 install:
-	sudo ${PYTHON_EXEC} setup-lib.py install
-	sudo ${PYTHON_EXEC} setup-api.py install
-	sudo ${PYTHON_EXEC} setup-manager.py install
-	sudo ${PYTHON_EXEC} setup-web.py install
+	${PYTHON_EXEC} setup-lib.py install
+	${PYTHON_EXEC} setup-api.py install
+	${PYTHON_EXEC} setup-manager.py install
+	${PYTHON_EXEC} setup-web.py install
 	@echo
 	@echo "Installation for users finished."
 
