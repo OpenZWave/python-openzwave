@@ -38,7 +38,7 @@ EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_mi
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update build develop install uninstall clean-docs docs tests pylint commit developper-deps repo-deps arch-deps common-deps cython-deps
+.PHONY: help clean all update build develop install uninstall clean-docs docs tests pylint commit developper-deps python-dep autobuild-deps arch-deps common-deps cython-deps
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -109,13 +109,21 @@ developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
-repo-deps : common-deps cython-deps tests-deps pip-deps
+autobuild-deps : common-deps cython-deps tests-deps pip-deps
 	@echo
 	@echo "Dependencies for users installed (python ${python_version_full})"
 
 arch-deps : common-deps pip-deps
 	@echo
 	@echo "Dependencies for users installed (python ${python_version_full})"
+
+python-deps:
+ifeq (${python_version_major},2)
+	apt-get install -y python2.7 python2.7-dev python2.7-minimal
+endif
+ifeq (${python_version_major},3)
+	-apt-get install -y python3 python3-dev python3-minimal
+endif
 
 cython-deps:
 ifeq (${python_version_major},2)
