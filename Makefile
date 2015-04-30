@@ -136,12 +136,10 @@ endif
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install -y python-pip python-dev python-docutils
-	apt-get install -y python-setuptools python-louie
+	apt-get install -y python-pip python-dev python-docutils python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3-pip python3-docutils
-	-apt-get install -y python3-dev python3-setuptools
+	-apt-get install -y python3-pip python3-docutils python3-dev python3-setuptools
 endif
 	apt-get install -y build-essential libudev-dev g++
 
