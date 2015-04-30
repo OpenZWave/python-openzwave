@@ -95,3 +95,7 @@ class TestPyZWave(unittest.TestCase):
     def touchFile(self, path):
         with open(path, 'a'):
             os.utime(path, None)
+
+    def rmFile(self, path):
+        if os.path.isfile(path):
+            os.remove(path)
