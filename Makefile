@@ -206,7 +206,7 @@ install: install-api
 	@echo
 	@echo "Installation for users finished."
 
-develop:
+develop: openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-lib.py develop
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
