@@ -2,16 +2,21 @@
 	
   <div class="section" id="changelog">
 <h1>Changelog</h1>
-<p>python-openzwave 0.3.0-alpha1:</p>
+<p>To do for python-openzwave 0.3.0-final :</p>
 <blockquote>
 <div><ul class="simple">
-<li>Update source tree to use setupttols develop mode : <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a></li>
-<li>Rewrite tests to use nosetest</li>
-<li>Full implementation and tests of Options</li>
-<li>PyLogLevels is now a dict of dicts to include doc : replace PyLogLevels[level] with PyLogLevels[level][&#8216;value&#8217;] in your code</li>
-<li>Remove old scripts. Replace them with a Makefile</li>
-<li>Remove old unworking examples.</li>
-<li>Add a constructor for PyOptions : def __init__(self, config_path=None, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;). Please update your code.</li>
+<li>Finish the archive install</li>
+<li>Fix pyozwman</li>
+<li>Add more tests for the library : switches, dimmers, polling, heal, test, ...</li>
+<li>Fix tests for controller commands</li>
+<li>Fix reloader problem : the network ist stop/start every time the app is realoaded. But in this case, the process terminates normally. But there seems to be 2 running instances of the network.</li>
+</ul>
+</div></blockquote>
+<p>python-openzwave 0.3.0-alpha3:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Fix bug in start/stop in pyozwwzb app and tests. The listener doesn&#8217;t stop. So must do a kill -9.</li>
+<li>Add map, scenes to PyOzwXeb</li>
 </ul>
 </div></blockquote>
 <p>python-openzwave 0.3.0-alpha2:</p>
@@ -24,15 +29,16 @@
 <li>Add logging facilities in the lib. Define different loggers for lib and api.</li>
 </ul>
 </div></blockquote>
-<p>To do for python-openzwave 0.3.0-final :</p>
+<p>python-openzwave 0.3.0-alpha1:</p>
 <blockquote>
 <div><ul class="simple">
-<li>Finish the archive install</li>
-<li>Fix pyozwman</li>
-<li>Add more tests for the library : switches, dimmers, polling, heal, test, ...</li>
-<li>Fix tests for controller commands</li>
-<li>Fix bug in start/stop in pyozwwzb app and tests. The listener doesn&#8217;t stop. So must do a kill -9.</li>
-<li>Fix reloader problem : the network ist stop/start every time the app is realoaded. But in this case, the process terminates normally. But there seems to be 2 running instances of the network.</li>
+<li>Update source tree to use setupttols develop mode : <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a></li>
+<li>Rewrite tests to use nosetest</li>
+<li>Full implementation and tests of Options</li>
+<li>PyLogLevels is now a dict of dicts to include doc : replace PyLogLevels[level] with PyLogLevels[level][&#8216;value&#8217;] in your code</li>
+<li>Remove old scripts. Replace them with a Makefile</li>
+<li>Remove old unworking examples.</li>
+<li>Add a constructor for PyOptions : def __init__(self, config_path=None, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;). Please update your code.</li>
 </ul>
 </div></blockquote>
 </div>
