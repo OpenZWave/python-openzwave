@@ -221,7 +221,7 @@ autobuild-tests:
 	@echo
 	@echo "Tests for ZWave network finished."
 
-commit: clean docs
+commit: clean merge-python3 docs
 	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo

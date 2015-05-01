@@ -24,5 +24,5 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 pyozw_version = '0.3.0-alpha2'
 
 if __name__ == '__main__':
-    print pyozw_version
+    print(pyozw_version)
 
