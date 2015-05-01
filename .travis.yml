@@ -16,7 +16,7 @@ install:
   - sudo make VIRTUAL_ENV=$VIRTUAL_ENV install
 # command to run tests
 script:
-  - nosetests --cover-package=libopenzwave,openzwave --with-coverage
+  - make VIRTUAL_ENV=$VIRTUAL_ENV autobuild-tests
 # package dependencies
 before_install:
   #- env
