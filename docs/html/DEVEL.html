@@ -59,7 +59,7 @@
 <p>Your password will be asked (by sudo) for installing eggs in your local directory.</p>
 <p>Develop, test, debug, test, ... :)</p>
 <p>Update the documentation if needed. You surely found the documentation useful, so please keep it up to date.</p>
-<p>You can create an account on travis to run the (futurs) tests.</p>
+<p>You can create an account on travis or docker to run the tests.</p>
 <p>At last but not least, submit your request.</p>
 </div>
 <div class="section" id="how-to-develop-for-libopenzwave-was-python-openzwave-lib">
@@ -71,19 +71,20 @@
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
-<p>Travis-ci, nosetests and pylint are used to test quality of code. There reports are here :</p>
+<p>Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. There reports are here :</p>
 <blockquote>
 <div><ul class="simple">
+<li>Docker : <a class="reference external" href="https://registry.hub.docker.com/u/bibi21000/python-openzwave/">https://registry.hub.docker.com/u/bibi21000/python-openzwave/</a></li>
 <li>Travis : <a class="reference external" href="https://travis-ci.org/bibi21000/python-openzwave">https://travis-ci.org/bibi21000/python-openzwave</a></li>
 <li><a class="reference external" href="file:../nosetests/nosetests.html">Nosetests report</a></li>
 <li><a class="reference external" href="file:../coverage/index.html">Coverage report</a></li>
 <li><a class="reference external" href="file:../pylint/report.html">Pylint report</a></li>
 </ul>
 </div></blockquote>
-</div>
-<div class="section" id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>Documentation is managed with sphinx.
+<p>Some tests don&#8217;t need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
+Documentation
+=============
+Documentation is managed with sphinx.
 Don&#8217;t utpdate txt files (README, INSTALL, ...), update the RST sources in docs.
 Use the following commands to generate all docs files (txt, html and joomla)</p>
 <p>You need to have installed python-openzave (in either develop or install mode) before generating the documentation.</p>
@@ -135,6 +136,15 @@ total 2428
 <p>And now, it&#8217;s time log off and log on. Groups are checked when you open the session.</p>
 <p>You can now install your packages without sudo.</p>
 </div>
+<div class="section" id="python3">
+<h2>python3<a class="headerlink" href="#python3" title="Permalink to this headline">¶</a></h2>
+<p>Python 3 is actually not supported.</p>
+<p>A branch (python3) has been created with a special Dockerfile. It build python-openzwave and launch some tests.
+This branch is automatically merged from master at &#8220;make commit&#8221;.</p>
+<p>So please, do not directly push under python3 branch. Make your developments under master or another branch.</p>
+<p>It&#8217;s important for me have python2/python3 compatibilty in the master branch.
+cython can help for this : <a class="reference external" href="http://docs.cython.org/src/tutorial/strings.html">http://docs.cython.org/src/tutorial/strings.html</a></p>
+</div>
 </div>
 
 
@@ -149,9 +159,9 @@ total 2428
 <li><a class="reference internal" href="#how-to-develop-for-python-openzwave">How to develop for python-openzwave</a></li>
 <li><a class="reference internal" href="#how-to-develop-for-libopenzwave-was-python-openzwave-lib">How to develop for libopenzwave (was python-openzwave-lib)</a></li>
 <li><a class="reference internal" href="#tests">Tests</a></li>
-<li><a class="reference internal" href="#documentation">Documentation</a></li>
 <li><a class="reference internal" href="#static-vs-dynamic-or-shared">Static vs dynamic (or shared)</a></li>
 <li><a class="reference internal" href="#about-sudo">About sudo</a></li>
+<li><a class="reference internal" href="#python3">python3</a></li>
 </ul>
 </li>
 </ul>
