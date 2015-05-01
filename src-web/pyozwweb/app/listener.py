@@ -34,16 +34,19 @@ monkey.patch_all()
 
 import os
 import sys
+if sys.hexversion >= 0x3000000:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
 import time
 
 from openzwave.network import ZWaveNetwork
 from openzwave.controller import ZWaveController
 from openzwave.option import ZWaveOption
+from openzwave.singleton import Singleton
 import threading
-#from multiprocessing import Process
 from threading import Thread
 from louie import dispatcher, All
-#from socketIO_client import SocketIO, LoggingNamespace
 
 from flask import Flask, render_template, session, request, current_app
 
@@ -60,6 +63,9 @@ logging.getLogger('pyozwweb').addHandler(NullHandler())
 listener = None
 
 class ListenerThread(Thread):
+    """ The listener Tread
+    """
+
     def __init__(self, _socketio, _app):
         """The constructor"""
         Thread.__init__(self)
@@ -69,6 +75,7 @@ class ListenerThread(Thread):
         self.connected = False
 
     def connect(self):
+        """Connect to the zwave notifications"""
         if self.connected == False:
             self.join_room_network()
             self.join_room_controller()
@@ -87,7 +94,6 @@ class ListenerThread(Thread):
 
     def join_room_network(self):
         """Join room network"""
-        #join_room("network")
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
@@ -97,7 +103,6 @@ class ListenerThread(Thread):
 
     def leave_room_network(self):
         """Leave room network"""
-        #join_room("network")
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
@@ -106,6 +111,7 @@ class ListenerThread(Thread):
         return True
 
     def _louie_network(self, network):
+        """Louie dispatch for netowrk"""
         if network is None:
             self.socketio.emit('my network response',
                 {'data': data_room_network(current_app.extensions['zwnetwork'])},
@@ -118,17 +124,16 @@ class ListenerThread(Thread):
 
     def join_room_node(self):
         """Join room nodes"""
-        #join_room("nodes")
         dispatcher.connect(self._louie_node, ZWaveNetwork.SIGNAL_NODE)
         return True
 
     def leave_room_node(self):
         """Leave room nodes"""
-        #join_room("nodes")
         dispatcher.disconnect(self._louie_node, ZWaveNetwork.SIGNAL_NODE)
         return True
 
     def _louie_node(self, network, node):
+        """Louie dispatch for node"""
         data=node.to_dict()
         self.socketio.emit('my node response',
             {'data': data},
@@ -137,68 +142,65 @@ class ListenerThread(Thread):
 
     def join_room_values(self):
         """Join room values"""
-        #join_room("values")
         dispatcher.connect(self._louie_values, ZWaveNetwork.SIGNAL_VALUE)
         return True
 
     def leave_room_values(self):
         """Leave room values"""
-        #join_room("values")
         dispatcher.disconnect(self._louie_values, ZWaveNetwork.SIGNAL_VALUE)
         return True
 
     def _louie_values(self, network, node, value):
-            with self.app.test_request_context():
-                from flask import request
-                if network is None:
-                    self.socketio.emit('my values response',
-                                       {'data': {'node_id':None, 'homeid':None, 'value_id':None},},
-                                       namespace='/ozwave')
-                    logging.debug('OpenZWave values notification : Network is None.')
-                elif node is None:
-                    logging.debug('OpenZWave values notification : Node is None.')
-                    self.socketio.emit('my values response',
-                                       {'data': {'node_id':None, 'homeid':network.home_id_str, 'value_id':None},},
-                                       namespace='/ozwave')
-                elif value is None:
-                    self.socketio.emit('my values response',
-                                       {'data': {'node_id':node.node_id, 'homeid':network.home_id_str, 'value_id':None},},
-                                       namespace='/ozwave')
-                    logging.debug('OpenZWave values notification : Value is None.')
-                else:
-                    self.socketio.emit('my values response',
-                                       {'data': network.nodes[node.node_id].values[value.value_id].to_dict(),},
-                                       namespace='/ozwave')
-                    logging.debug('OpenZWave values notification : homeid %0.8x - node %d - value %d.', network.home_id, node.node_id, value.value_id)
+        """Louie dispatch for values"""
+        with self.app.test_request_context():
+            from flask import request
+            if network is None:
+                self.socketio.emit('my values response',
+                                   {'data': {'node_id':None, 'homeid':None, 'value_id':None},},
+                                   namespace='/ozwave')
+                logging.debug('OpenZWave values notification : Network is None.')
+            elif node is None:
+                logging.debug('OpenZWave values notification : Node is None.')
+                self.socketio.emit('my values response',
+                                   {'data': {'node_id':None, 'homeid':network.home_id_str, 'value_id':None},},
+                                   namespace='/ozwave')
+            elif value is None:
+                self.socketio.emit('my values response',
+                                   {'data': {'node_id':node.node_id, 'homeid':network.home_id_str, 'value_id':None},},
+                                   namespace='/ozwave')
+                logging.debug('OpenZWave values notification : Value is None.')
+            else:
+                self.socketio.emit('my values response',
+                                   {'data': network.nodes[node.node_id].values[value.value_id].to_dict(),},
+                                   namespace='/ozwave')
+                logging.debug('OpenZWave values notification : homeid %0.8x - node %d - value %d.', network.home_id, node.node_id, value.value_id)
 
     def join_room_controller(self):
         """Join room controller"""
-        #join_room("values")
         dispatcher.connect(self._louie_controller, ZWaveController.SIGNAL_CTRL_WAITING)
         dispatcher.connect(self._louie_controller, ZWaveController.SIGNAL_CONTROLLER)
         return True
 
     def leave_room_controller(self):
         """Leave room controller"""
-        #join_room("values")
         dispatcher.disconnect(self._louie_controller, ZWaveController.SIGNAL_CTRL_WAITING)
         dispatcher.disconnect(self._louie_controller, ZWaveController.SIGNAL_CONTROLLER)
         return True
 
     def _louie_controller(self, state, message, network, controller):
-            with self.app.test_request_context():
-                from flask import request
-#               request = req
-                if network is None or controller is None:
-                    self.socketio.emit('my message response',
-                                       {'data': {'state':None, 'message':None},},
-                                       namespace='/ozwave')
-                    logging.debug('OpenZWave controller message : Nework or Controller is None.')
-                else:
-                    self.socketio.emit('my message response',
-                                       {'data': {'state':state, 'message':message},},
-                                       namespace='/ozwave')
-                    logging.debug('OpenZWave controller message : state %s - message %s.', state, message)
+        """Louie dispatch for controller"""
+        with self.app.test_request_context():
+            from flask import request
+            if network is None or controller is None:
+                self.socketio.emit('my message response',
+                                   {'data': {'state':None, 'message':None},},
+                                   namespace='/ozwave')
+                logging.debug('OpenZWave controller message : Nework or Controller is None.')
+            else:
+                self.socketio.emit('my message response',
+                                   {'data': {'state':state, 'message':message},},
+                                   namespace='/ozwave')
+                logging.debug('OpenZWave controller message : state %s - message %s.', state, message)
 
     def stop(self):
         """Stop the tread"""

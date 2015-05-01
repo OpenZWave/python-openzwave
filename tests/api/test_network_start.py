@@ -47,8 +47,8 @@ from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
-from openzwave.network import ZWaveNetwork
-from openzwave.option import ZWaveOption
+from openzwave.network import ZWaveNetwork, ZWaveNetworkSingleton
+from openzwave.option import ZWaveOption, ZWaveOptionSingleton
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
@@ -66,7 +66,14 @@ class TestNetworkStartStop(TestPyZWave):
     def tearDownClass(self):
         if self.network is not None:
             self.network.stop()
+            self.network = None
         super(TestNetworkStartStop, self).tearDownClass()
+
+    def driver_ready_message(self, network, controller):
+        self.driver_ready = True
+
+    def driver_removed_message(self, network):
+        self.driver_removed = True
 
     def test_000_network_start_stop(self):
         self.driver_ready = False
@@ -96,11 +103,35 @@ class TestNetworkStartStop(TestPyZWave):
         self.assertEqual(self.network.state, self.network.STATE_STOPPED)
         #self.assertTrue(self.driver_removed)
 
-    def driver_ready_message(self, network, controller):
-        self.driver_ready = True
-
-    def driver_removed_message(self, network):
-        self.driver_removed = True
+    def test_100_network_start_stop_singleton(self):
+        self.wipTest()
+        self.driver_ready = False
+        self.driver_removed = False
+        self.options = ZWaveOptionSingleton(device=self.device, user_path=self.userpath)
+        self.options.set_log_file("OZW_Log.log")
+        self.options.set_append_log_file(False)
+        self.options.set_console_output(False)
+        self.options.set_save_log_level("Debug")
+        self.options.set_logging(True)
+        self.options.lock()
+        dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_DRIVER_READY)
+        dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
+        self.network = ZWaveNetworkSingleton(self.options)
+        for i in range(0, SLEEP):
+            if self.network.state>=self.network.STATE_AWAKED:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(self.driver_ready)
+        network2 = ZWaveNetworkSingleton(self.options, autostart=False)
+        self.assertIs(self.network, network2)
+        self.network.stop()
+        for i in range(0, SLEEP):
+            if self.network.state==self.network.STATE_STOPPED:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(self.network.state, self.network.STATE_STOPPED)
 
 if __name__ == '__main__':
     sys.argv.append('-v')
