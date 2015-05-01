@@ -78,7 +78,7 @@ class TestScene(TestApi):
         self.assertTrue(ret)
         self.assertEqual(self.network.scenes_count, self.count)
 
-    def test_0100_scenes_to_dict(self):
+    def test_010_scenes_to_dict(self):
         dscenes = self.network.scenes_to_dict()
         self.assertEqual(type(dscenes), type({}))
         res = json.dumps(dscenes)
