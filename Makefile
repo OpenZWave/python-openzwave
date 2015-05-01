@@ -38,7 +38,7 @@ EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_mi
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update build develop install uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-dep autobuild-deps arch-deps common-deps cython-deps
+.PHONY: help clean all update build develop install uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
