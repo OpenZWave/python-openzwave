@@ -8,5 +8,5 @@ RUN make PYTHON_EXEC=python3 autobuild-deps
 RUN env
 RUN make PYTHON_EXEC=python3 update
 RUN make PYTHON_EXEC=python3 build
-RUN make PYTHON_EXEC=python3 install
+RUN make PYTHON_EXEC=python3 install-api
 RUN make PYTHON_EXEC=python3 autobuild-tests
