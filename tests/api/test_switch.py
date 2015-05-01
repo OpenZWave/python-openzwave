@@ -26,7 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-import sys, os, shutil
+import os, shutil
 import time
 import unittest
 from pprint import pprint
@@ -36,7 +36,11 @@ import socket
 import libopenzwave
 import re
 import time
-from louie import dispatcher, All
+import sys
+if sys.hexversion >= 0x3000000:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode

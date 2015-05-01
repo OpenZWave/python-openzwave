@@ -42,7 +42,11 @@ from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 
-from louie import dispatcher, All
+import sys
+if sys.hexversion >= 0x3000000:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
 
 from tests.common import SLEEP
 from tests.common import TestPyZWave
