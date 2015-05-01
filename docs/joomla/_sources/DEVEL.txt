@@ -47,6 +47,7 @@ Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. Th
  - `Pylint report <file:../pylint/report.html>`_
 
 Some tests don't need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
+
 Documentation
 =============
 Documentation is managed with sphinx.
@@ -121,3 +122,9 @@ So please, do not directly push under python3 branch. Make your developments und
 
 It's important for me have python2/python3 compatibilty in the master branch.
 cython can help for this : http://docs.cython.org/src/tutorial/strings.html
+
+Support
+=======
+You can ask for support on the google group : http://groups.google.com/d/forum/python-openzwave-discuss.
+
+Please don't ask for support in github issues or by email.

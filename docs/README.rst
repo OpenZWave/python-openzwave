@@ -1,5 +1,3 @@
-:orphan:
-
 ================
 python-openzwave
 ================
@@ -18,6 +16,13 @@ python-openzwave 0.3.0-alpha2 is out !!!
 Look at CHANGELOG to see new features, to do list and release notes.
 
 Look at INSTALL_REPO to test it now !!!
+
+Support
+=======
+You can ask for support on the google group : http://groups.google.com/d/forum/python-openzwave-discuss.
+
+Please don't ask for support in github issues or by email.
+
 
 ==============================================
 Migrating from python-openzwave 0.2.X to 0.3.0

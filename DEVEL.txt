@@ -55,10 +55,15 @@ of code. There reports are here :
 
 Some tests don't need a ZWave Stick to be launched, so they can be run
 on the autobuilders (travis, docker, ...). Place them in the autobuild
-directory. Documentation ============= Documentation is managed with
-sphinx. Don't utpdate txt files (README, INSTALL, ...), update the RST
-sources in docs. Use the following commands to generate all docs files
-(txt, html and joomla)
+directory.
+
+
+Documentation
+=============
+
+Documentation is managed with sphinx. Don't utpdate txt files (README,
+INSTALL, ...), update the RST sources in docs. Use the following
+commands to generate all docs files (txt, html and joomla)
 
 You need to have installed python-openzave (in either develop or
 install mode) before generating the documentation.
@@ -135,3 +140,12 @@ developments under master or another branch.
 It's important for me have python2/python3 compatibilty in the master
 branch. cython can help for this :
 http://docs.cython.org/src/tutorial/strings.html
+
+
+Support
+=======
+
+You can ask for support on the google group :
+http://groups.google.com/d/forum/python-openzwave-discuss.
+
+Please don't ask for support in github issues or by email.
