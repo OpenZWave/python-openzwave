@@ -24,7 +24,7 @@ Develop, test, debug, test, ... :)
 
 Update the documentation if needed. You surely found the documentation useful, so please keep it up to date.
 
-You can create an account on travis to run the (futurs) tests.
+You can create an account on travis or docker to run the tests.
 
 At last but not least, submit your request.
 
@@ -38,14 +38,15 @@ After updating the pyx, you need to reinstall it. Otherwise, your changes will n
 
 Tests
 =====
+Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. There reports are here :
 
-Travis-ci, nosetests and pylint are used to test quality of code. There reports are here :
-
+ - Docker : https://registry.hub.docker.com/u/bibi21000/python-openzwave/
  - Travis : https://travis-ci.org/bibi21000/python-openzwave
  - `Nosetests report <file:../nosetests/nosetests.html>`_
  - `Coverage report <file:../coverage/index.html>`_
  - `Pylint report <file:../pylint/report.html>`_
 
+Some tests don't need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
 Documentation
 =============
 Documentation is managed with sphinx.
@@ -108,3 +109,15 @@ Add the write right to the group staff
 And now, it's time log off and log on. Groups are checked when you open the session.
 
 You can now install your packages without sudo.
+
+python3
+=======
+Python 3 is actually not supported.
+
+A branch (python3) has been created with a special Dockerfile. It build python-openzwave and launch some tests.
+This branch is automatically merged from master at "make commit".
+
+So please, do not directly push under python3 branch. Make your developments under master or another branch.
+
+It's important for me have python2/python3 compatibilty in the master branch.
+cython can help for this : http://docs.cython.org/src/tutorial/strings.html
