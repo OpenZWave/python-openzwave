@@ -180,7 +180,8 @@ docs: clean-docs
 	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
 	cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && make docs
-	cp docs/_build/text/README.txt README.md
+	#cp docs/_build/text/README.txt README.md
+	cp docs/README.rst README.rst
 	cp docs/_build/text/INSTALL_REPO.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
 	cp docs/_build/text/INSTALL_MAC.txt .
@@ -226,7 +227,7 @@ autobuild-tests:
 	@echo "Tests for ZWave network finished."
 
 commit: clean merge-python3 docs
-	git commit -m "Auto-commit for docs" README.md INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
 	@echo "Commits pushed on github."
