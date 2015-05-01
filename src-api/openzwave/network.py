@@ -23,7 +23,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import os
+import os, sys
 #from collections import namedtuple
 import time
 if sys.hexversion >= 0x3000000:
