@@ -8,5 +8,5 @@ RUN make autobuild-deps
 RUN env
 RUN make update
 RUN make build
-RUN make install
+RUN make install-api
 RUN make autobuild-tests
