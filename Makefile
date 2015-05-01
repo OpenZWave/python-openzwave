@@ -25,15 +25,15 @@ endif
 
 python_openzwave_version := $(shell ${PYTHON_EXEC} pyozw_version.py)
 
-PIP_EXEC=pip
-ifeq (${python_version_major},3)
-	PIP_EXEC=pip3
-endif
-
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
 EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
+
+PIP_EXEC=pip
+ifeq (${python_version_major},3)
+	PIP_EXEC=pip3
+endif
 
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
