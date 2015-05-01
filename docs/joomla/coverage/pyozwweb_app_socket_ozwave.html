@@ -25,9 +25,9 @@
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
         <h2 class='stats'>
-            208 statements &nbsp;
-            <span class='run hide_run shortkey_r button_toggle_run'>47 run</span>
-            <span class='mis shortkey_m button_toggle_mis'>161 missing</span>
+            213 statements &nbsp;
+            <span class='run hide_run shortkey_r button_toggle_run'>48 run</span>
+            <span class='mis shortkey_m button_toggle_mis'>165 missing</span>
             <span class='exc shortkey_x button_toggle_exc'>0 excluded</span>
             
         </h2>
@@ -357,6 +357,14 @@
 <p id='n294' class='stm mis'><a href='#n294'>294</a></p>
 <p id='n295' class='stm mis'><a href='#n295'>295</a></p>
 <p id='n296' class='pln'><a href='#n296'>296</a></p>
+<p id='n297' class='pln'><a href='#n297'>297</a></p>
+<p id='n298' class='stm run hide_run'><a href='#n298'>298</a></p>
+<p id='n299' class='pln'><a href='#n299'>299</a></p>
+<p id='n300' class='stm mis'><a href='#n300'>300</a></p>
+<p id='n301' class='stm mis'><a href='#n301'>301</a></p>
+<p id='n302' class='stm mis'><a href='#n302'>302</a></p>
+<p id='n303' class='stm mis'><a href='#n303'>303</a></p>
+<p id='n304' class='pln'><a href='#n304'>304</a></p>
                 
             </td>
             <td class='text' valign='top'>
@@ -656,6 +664,14 @@
 <p id='t294' class='stm mis'>&nbsp; &nbsp; <span class='nam'>logging</span><span class='op'>.</span><span class='nam'>debug</span><span class='op'>(</span><span class='str'>&quot;Client %s value event : %s&quot;</span><span class='op'>,</span> <span class='nam'>request</span><span class='op'>.</span><span class='nam'>remote_addr</span><span class='op'>,</span> <span class='nam'>current_app</span><span class='op'>.</span><span class='nam'>extensions</span><span class='op'>[</span><span class='str'>&#39;zwnetwork&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>nodes</span><span class='op'>[</span><span class='nam'>node_id</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>values</span><span class='op'>[</span><span class='nam'>value_id</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>to_dict</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t295' class='stm mis'>&nbsp; &nbsp; <span class='nam'>emit</span><span class='op'>(</span><span class='str'>&#39;my value response&#39;</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t296' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class='op'>{</span><span class='str'>&#39;data&#39;</span><span class='op'>:</span> <span class='nam'>current_app</span><span class='op'>.</span><span class='nam'>extensions</span><span class='op'>[</span><span class='str'>&#39;zwnetwork&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>nodes</span><span class='op'>[</span><span class='nam'>node_id</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>values</span><span class='op'>[</span><span class='nam'>value_id</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>to_dict</span><span class='op'>(</span><span class='op'>)</span><span class='op'>,</span> <span class='str'>&#39;count&#39;</span><span class='op'>:</span> <span class='nam'>session</span><span class='op'>[</span><span class='str'>&#39;receive_count&#39;</span><span class='op'>]</span><span class='op'>}</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t297' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t298' class='stm run hide_run'><span class='op'>@</span><span class='nam'>socketio</span><span class='op'>.</span><span class='nam'>on</span><span class='op'>(</span><span class='str'>&#39;my scenes event&#39;</span><span class='op'>,</span> <span class='nam'>namespace</span><span class='op'>=</span><span class='str'>&#39;/ozwave&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t299' class='pln'><span class='key'>def</span> <span class='nam'>echo_scenes_event</span><span class='op'>(</span><span class='nam'>message</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t300' class='stm mis'>&nbsp; &nbsp; <span class='nam'>session</span><span class='op'>[</span><span class='str'>&#39;receive_count&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>session</span><span class='op'>.</span><span class='nam'>get</span><span class='op'>(</span><span class='str'>&#39;receive_count&#39;</span><span class='op'>,</span> <span class='num'>0</span><span class='op'>)</span> <span class='op'>+</span> <span class='num'>1</span><span class='strut'>&nbsp;</span></p>
+<p id='t301' class='stm mis'>&nbsp; &nbsp; <span class='nam'>logging</span><span class='op'>.</span><span class='nam'>debug</span><span class='op'>(</span><span class='str'>&quot;Client %s scenes event : %s&quot;</span><span class='op'>,</span> <span class='nam'>request</span><span class='op'>.</span><span class='nam'>remote_addr</span><span class='op'>,</span> <span class='nam'>message</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t302' class='stm mis'>&nbsp; &nbsp; <span class='key'>print</span> <span class='str'>&quot;%s&quot;</span><span class='op'>%</span><span class='nam'>current_app</span><span class='op'>.</span><span class='nam'>extensions</span><span class='op'>[</span><span class='str'>&#39;zwnetwork&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>get_scenes</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t303' class='stm mis'>&nbsp; &nbsp; <span class='nam'>emit</span><span class='op'>(</span><span class='str'>&#39;my scenes response&#39;</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t304' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; <span class='op'>{</span><span class='str'>&#39;data&#39;</span><span class='op'>:</span> <span class='nam'>current_app</span><span class='op'>.</span><span class='nam'>extensions</span><span class='op'>[</span><span class='str'>&#39;zwnetwork&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>get_scenes</span><span class='op'>(</span><span class='op'>)</span><span class='op'>,</span> <span class='str'>&#39;count&#39;</span><span class='op'>:</span> <span class='nam'>session</span><span class='op'>[</span><span class='str'>&#39;receive_count&#39;</span><span class='op'>]</span><span class='op'>}</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
                 
             </td>
         </tr>
