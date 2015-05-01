@@ -40,6 +40,7 @@ from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
+#from openzwave.network import ZWaveNetworkSingleton as ZWaveNetwork
 from openzwave.option import ZWaveOption
 
 import sys
@@ -78,6 +79,7 @@ class TestApi(TestPyZWave):
         self.network.stop()
         time.sleep(2.0)
         super(TestApi, self).tearDownClass()
+        self.network=None
 
     def setUp(self):
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)

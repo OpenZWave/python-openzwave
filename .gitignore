@@ -4,7 +4,7 @@
 *.o
 *.pyc
 *.log
-openzwave/
+/openzwave/
 build/
 dists/
 archive/

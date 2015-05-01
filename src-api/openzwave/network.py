@@ -29,9 +29,10 @@ import time
 import sys
 if sys.hexversion >= 0x3000000:
     from pydispatch import dispatcher
+    import _thread as thread
 else:
     from louie import dispatcher
-import thread
+    import thread
 import threading
 import libopenzwave
 import openzwave
@@ -40,6 +41,7 @@ from openzwave.controller import ZWaveController
 from openzwave.node import ZWaveNode
 from openzwave.option import ZWaveOption
 from openzwave.scene import ZWaveScene
+from openzwave.singleton import Singleton
 import json
 
 # Set default logging handler to avoid "No handler found" warnings.
@@ -236,6 +238,7 @@ class ZWaveNetwork(ZWaveObject):
     Deprecated : SIGNAL_DRIVER_* shouldn't be used anymore.
 
     """
+
     SIGNAL_NETWORK_FAILED = 'NetworkFailed'
     SIGNAL_NETWORK_STARTED = 'NetworkStarted'
     SIGNAL_NETWORK_READY = 'NetworkReady'
@@ -284,7 +287,6 @@ class ZWaveNetwork(ZWaveObject):
 
     ignoreSubsequent = True
 
-
     def __init__(self, options, log=None, autostart=True, kvals=True):
         """
         Initialize zwave network
@@ -321,6 +323,7 @@ class ZWaveNetwork(ZWaveObject):
                 self._check_db_tables()
             except lite.Error as e:
                 logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
+        self._started = False
         if autostart:
             self.start()
 
@@ -345,7 +348,7 @@ class ZWaveNetwork(ZWaveObject):
         if self.dbcon is None:
             return False
         cur = self.dbcon.cursor()
-        for mycls in ['ZWaveNetwork', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
+        for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
             cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % mycls)
             data = cur.fetchone()
             if data is None:
@@ -359,9 +362,12 @@ class ZWaveNetwork(ZWaveObject):
             - add a driver
 
         """
+        if self._started == True:
+            return
         logger.info("Start Openzwave network.")
         self._manager.addWatcher(self.zwcallback)
         self._manager.addDriver(self._options.device)
+        self._started = True
 
     def stop(self, fire=True):
         """
@@ -376,6 +382,8 @@ class ZWaveNetwork(ZWaveObject):
             dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
 
         """
+        if self._started == False:
+            return
         self.write_config()
         if self.dbcon is not None:
             self.dbcon.close()
@@ -424,6 +432,7 @@ class ZWaveNetwork(ZWaveObject):
             self._semaphore_nodes.release()
         self._manager.destroy()
         self._options.destroy()
+        self._started = False
 
     @property
     def home_id(self):
@@ -1594,4 +1603,11 @@ class ZWaveNetwork(ZWaveObject):
 
     [driverRemoved]
 """
+
+class ZWaveNetworkSingleton(ZWaveNetwork):
+    """
+    Represents a singleton Zwave network.
+
+    """
+    __metaclass__ = Singleton
 

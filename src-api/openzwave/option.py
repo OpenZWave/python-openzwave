@@ -26,8 +26,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 import os
 import libopenzwave
 from libopenzwave import PyLogLevels
-
 from openzwave.object import ZWaveException
+from openzwave.singleton import Singleton
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -312,3 +312,12 @@ class ZWaveOption(libopenzwave.PyOptions):
 
         """
         return self._user_path
+
+
+class ZWaveOptionSingleton(ZWaveOption):
+    """
+    Represents a singleton Zwave option used to start the manager.
+
+    """
+    __metaclass__ = Singleton
+

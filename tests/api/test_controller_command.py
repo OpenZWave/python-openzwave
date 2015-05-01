@@ -56,7 +56,8 @@ from tests.common import TestPyZWave
 
 class TestControllerCommand(TestApi):
 
-    def notest_010_command_send_node_information_nodeid_2(self):
+    def test_010_command_send_node_information_nodeid_2(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_send_node_information(2)
         self.assertTrue(ret)
         current = None
@@ -71,7 +72,8 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Completed")
 
-    def notest_020_command_send_node_information_nodeid_1(self):
+    def test_020_command_send_node_information_nodeid_1(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_send_node_information(1)
         self.assertTrue(ret)
         current = None
@@ -86,7 +88,8 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Completed")
 
-    def notest_110_command_request_network_update(self):
+    def test_110_command_request_network_update(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_request_network_update()
         self.assertTrue(ret)
         current = None
@@ -101,7 +104,8 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Completed")
 
-    def notest_210_command_request_node_neigbhor_update_node(self):
+    def test_210_command_request_node_neigbhor_update_node(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_request_node_neigbhor_update(2)
         self.assertTrue(ret)
         current = None
@@ -116,7 +120,8 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Completed")
 
-    def notest_220_command_request_node_neigbhor_update_controller(self):
+    def test_220_command_request_node_neigbhor_update_controller(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_request_node_neigbhor_update(1)
         self.assertTrue(ret)
         current = None
@@ -131,7 +136,8 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Failed")
 
-    def notest_910_command_command_replication_send(self):
+    def test_910_command_command_replication_send(self):
+        self.wipTest()
         ret = self.network.controller.begin_command_replication_send(1)
         self.assertTrue(ret)
         current = None

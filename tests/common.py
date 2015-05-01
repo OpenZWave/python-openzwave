@@ -28,7 +28,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 #The common sleep dealy to wait for network
 #We wait 1*SLEEP for network.STATE_AWAKED
 #After that we wait 1*SLEEP for network.STATE_READY
-SLEEP = 30
+SLEEP = 45
 
 import sys, os
 import time

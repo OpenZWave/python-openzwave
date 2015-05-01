@@ -45,8 +45,10 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 from flask_fanstatic import Fanstatic
 #from flask.ext.sqlalchemy import SQLAlchemy
 
-from openzwave.network import ZWaveNetwork
-from openzwave.option import ZWaveOption
+#from openzwave.network import ZWaveNetwork
+from openzwave.network import ZWaveNetworkSingleton as ZWaveNetwork
+#from openzwave.option import ZWaveOption
+from openzwave.option import ZWaveOptionSingleton as ZWaveOption
 import threading
 from louie import dispatcher, All
 
@@ -131,7 +133,6 @@ def start_zwnetwork(app):
     options.set_logging(app.config['ZWAVE_LOGGING'])
     options.lock()
     zwnetwork = ZWaveNetwork(options)
-    time.sleep(1.0)
     return zwnetwork
 
 def stop_zwnetwork(zwnetwork):
