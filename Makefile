@@ -38,7 +38,7 @@ endif
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update build develop install uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3
+.PHONY: help clean all update build develop install uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-pyhon3
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
