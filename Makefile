@@ -277,7 +277,6 @@ $(ARCHDIR):
 
 tgz: $(ARCHDIR) docs
 	cp docs/_build/text/README.txt $(ARCHDIR)/
-	cp docs/_build/text/INSTALL_REPO.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_MAC.txt $(ARCHDIR)/
