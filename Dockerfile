@@ -1,12 +1,12 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER bibi21000 <bibi21000@gmail.com>
-ADD . /home/docker-py2
-WORKDIR /home/docker-py2
-RUN apt-get update && apt-get install -y make python
-RUN make python-deps
-RUN make autobuild-deps
+ADD . /home/docker-py3
+WORKDIR /home/docker-py3
+RUN apt-get update && apt-get install -y make python3
+RUN make PYTHON_EXEC=python3 python-deps
+RUN make PYTHON_EXEC=python3 autobuild-deps
 RUN env
-RUN make update
-RUN make build
-RUN make install
-RUN make autobuild-tests
+RUN make PYTHON_EXEC=python3 update
+RUN make PYTHON_EXEC=python3 build
+RUN make PYTHON_EXEC=python3 install
+RUN make PYTHON_EXEC=python3 autobuild-tests
