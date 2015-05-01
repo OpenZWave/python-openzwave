@@ -28,7 +28,6 @@ python_openzwave_version := $(shell ${PYTHON_EXEC} pyozw_version.py)
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
 python_version_patch = $(word 3,${python_version_full})
-EASYPTH       = /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/easy-install.pth
 
 PIP_EXEC=pip
 ifeq (${python_version_major},3)
@@ -102,19 +101,17 @@ uninstall:
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/pyozwweb*
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
-	#-[ -f ${EASYPTH} ] && [ ! -f ${EASYPTH}.back ] && cp ${EASYPTH} ${EASYPTH}.back
-	#-[ -f ${EASYPTH} ] && cat ${EASYPTH} | sed -e "/.*python-openzwave.*/d" | tee ${EASYPTH} >/dev/null
 
-developper-deps : common-deps cython-deps tests-deps pip-deps doc-deps
+developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
-autobuild-deps : common-deps cython-deps tests-deps pip-deps
+autobuild-deps: common-deps cython-deps tests-deps pip-deps
 	apt-get install -y git
 	@echo
 	@echo "Dependencies for autobuilders (docker, travis, ...) installed (python ${python_version_full})"
 
-arch-deps : common-deps pip-deps
+arch-deps: common-deps pip-deps
 	@echo
 	@echo "Dependencies for users installed (python ${python_version_full})"
 
@@ -243,8 +240,6 @@ pylint:
 	@echo
 	@echo "Pylint finished."
 
-all: clean docs
-
 update: openzwave
 	git pull
 	cd openzwave && git pull
@@ -265,17 +260,21 @@ $(ARCHDIR):
 	-mkdir -p $(ARCHDIR)/src-lib
 	-mkdir -p $(ARCHDIR)/src-api
 	-mkdir -p $(ARCHDIR)/src-manager
+	-mkdir -p $(ARCHDIR)/src-web
 	cp -Rf openzwave $(ARCHDIR)/
 	cp -Rf src-lib/libopenzwave $(ARCHDIR)/src-lib
-	cp -Rf src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
 	cp -Rf src-api/openzwave $(ARCHDIR)/src-api
 	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
+	cp -Rf src-web/pyozwweb $(ARCHDIR)/src-web
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-cd $(ARCHDIR)/openzwave && make clean
 	-rm -Rf $(ARCHDIR)/openzwave/.git
 
 tgz: $(ARCHDIR) docs
+	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave/cpp/src/
+	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave.vers.cpp
+	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
 	cp docs/_build/text/README.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
@@ -285,12 +284,15 @@ tgz: $(ARCHDIR) docs
 	cp docs/_build/text/CHANGELOG.txt $(ARCHDIR)/
 	mkdir -p $(ARCHDIR)/docs
 	cp -Rf docs/_build/html/* $(ARCHDIR)/docs/
-	cp Makefile $(ARCHDIR)/
+	cp Makefile.archive $(ARCHDIR)/
 	cp setup-lib.py $(ARCHDIR)/
+	sed -i '|sources=["src-lib/libopenzwave/libopenzwave.pyx"]|sources=["src-lib/libopenzwave/libopenzwave.cpp"]|g' $(ARCHDIR)/setup-lib.py
 	cp setup-api.py $(ARCHDIR)/
 	cp setup-manager.py $(ARCHDIR)/
+	cp setup-web.py $(ARCHDIR)/
+	cp -Rf pyozw_version.py $(ARCHDIR)/pyozw_version.py
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
-	rm -Rf $(ARCHBASE)
+	#rm -Rf $(ARCHBASE)
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"

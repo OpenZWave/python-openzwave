@@ -41,9 +41,9 @@ from tests.common import pyozw_version
 class TestInit(TestLib):
 
     def test_000_init(self):
-        self._manager = libopenzwave.PyManager()
-        self.assertEqual(self._manager.getPythonLibraryVersionNumber(), pyozw_version)
-        vers=re.findall(r'\d+', self._manager.getOzwLibraryVersionNumber())
+        manager = libopenzwave.PyManager()
+        self.assertEqual(manager.getPythonLibraryVersionNumber(), pyozw_version)
+        vers=re.findall(r'\d+', manager.getOzwLibraryVersionNumber())
         self.assertEqual(len(vers),3)
 
     def test_010_options_exceptions(self):
@@ -74,20 +74,20 @@ class TestInit(TestLib):
         options = libopenzwave.PyOptions(config_path=None, user_path=None, cmd_line="")
 
     def test_020_options_without_command_line(self):
-        self._options = libopenzwave.PyOptions()
-        self._configpath = self._options.getConfigPath()
-        self.assertNotEqual(self._configpath, None)
-        self.assertTrue(os.path.exists(os.path.join(self._configpath, "zwcfg.xsd")))
-        self.assertTrue(self._options.destroy())
+        options = libopenzwave.PyOptions()
+        configpath = options.getConfigPath()
+        self.assertNotEqual(configpath, None)
+        self.assertTrue(os.path.exists(os.path.join(configpath, "zwcfg.xsd")))
+        self.assertTrue(options.destroy())
 
     def test_030_options_with_command_line(self):
-        self._options = libopenzwave.PyOptions(cmd_line='--LogFileName ozwlog.log --Logging --SaveLogLevel 1')
-        self.assertTrue(self._options.lock())
-        self.assertTrue(self._options.areLocked())
-        self.assertEqual(True, self._options.getOptionAsBool("Logging"))
-        self.assertEqual('ozwlog.log', self._options.getOptionAsString("LogFileName"))
-        self.assertEqual(1, self._options.getOptionAsInt("SaveLogLevel"))
-        self.assertTrue(self._options.destroy())
+        options = libopenzwave.PyOptions(cmd_line='--LogFileName ozwlog.log --Logging --SaveLogLevel 1')
+        self.assertTrue(options.lock())
+        self.assertTrue(options.areLocked())
+        self.assertEqual(True, options.getOptionAsBool("Logging"))
+        self.assertEqual('ozwlog.log', options.getOptionAsString("LogFileName"))
+        self.assertEqual(1, options.getOptionAsInt("SaveLogLevel"))
+        self.assertTrue(options.destroy())
 
 class TestOptions(TestLib):
     def setUp(self):
@@ -97,6 +97,8 @@ class TestOptions(TestLib):
 
     def tearDown(self):
         self._options.destroy()
+        self._configpath = None
+        self._options = None
 
     def test_010_options_string(self):
         self.assertTrue(self._options.addOptionString("LogFileName", 'ozwlog.log', False))

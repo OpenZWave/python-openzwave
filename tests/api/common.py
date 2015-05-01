@@ -42,6 +42,7 @@ from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 #from openzwave.network import ZWaveNetworkSingleton as ZWaveNetwork
 from openzwave.option import ZWaveOption
+#from openzwave.option import ZWaveOptionSingleton as ZWaveOption
 
 import sys
 if sys.hexversion >= 0x3000000:
