@@ -71,6 +71,17 @@ class TestNodes(TestApi):
                 res = None
             self.assertNotEqual(res, None)
 
+    def test_200_nodes_to_dict(self):
+        for node in self.network.nodes:
+            try :
+                nodes = self.network.nodes[node].to_dict()
+                self.assertEqual(type(nodes), type({}))
+                res = json.dumps(nodes)
+            except TypeError:
+                res = None
+            self.assertNotEqual(res, None)
+
+
     def test_210_controller_to_dict(self):
         try :
             nodes = self.network.controller.to_dict()

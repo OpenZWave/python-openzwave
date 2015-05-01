@@ -72,6 +72,10 @@ class FlaskServerTest(FlaskTestCase):
         rv = self.client.get('/map')
         self.assertEqual(rv.status,'200 OK')
 
+    def test_700_scenes_is_up(self):
+        rv = self.client.get('/scenes')
+        self.assertEqual(rv.status,'200 OK')
+
     #def test_500_socketio_home(self):
     #    rv = self.app.get('/socketio/')
     #    self.assertEqual(rv.status,'200 OK')

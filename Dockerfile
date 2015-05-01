@@ -1,4 +1,4 @@
-FROM debian:wheezie
+FROM debian:wheezy
 MAINTAINER bibi21000 <bibi21000@gmail.com>
 ADD . /home/docker-py
 WORKDIR /home/docker-py

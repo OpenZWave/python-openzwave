@@ -49,6 +49,7 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
+import json
 
 class TestScene(TestApi):
     count = 0
@@ -76,6 +77,24 @@ class TestScene(TestApi):
         ret = self.network.remove_scene(self.sceneid)
         self.assertTrue(ret)
         self.assertEqual(self.network.scenes_count, self.count)
+
+    def test_0100_scenes_to_dict(self):
+        dscenes = self.network.scenes_to_dict()
+        self.assertEqual(type(dscenes), type({}))
+        res = json.dumps(dscenes)
+        self.assertNotEqual(res, None)
+        self.assertTrue(len(res)>0)
+
+    def test_020_scene_to_dict(self):
+        scenes = self.network.get_scenes()
+        for scene in scenes:
+            try :
+                scene = scenes[scene].to_dict()
+                self.assertEqual(type(scene), type({}))
+                res = json.dumps(scene)
+            except TypeError:
+                res = None
+            self.assertNotEqual(res, None)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

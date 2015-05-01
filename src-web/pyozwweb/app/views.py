@@ -94,6 +94,10 @@ def debug():
 def map():
     return render_template('map.html')
 
+@app.route('/scenes')
+def scenes():
+    return render_template('scenes.html')
+
 @app.route('/chat')
 def chat():
     return render_template('chat.html')

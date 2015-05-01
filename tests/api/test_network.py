@@ -83,6 +83,13 @@ class TestNetwork(TestApi):
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
+    def test_220_network_nodes_to_dict(self):
+        dnodes = self.network.nodes_to_dict()
+        self.assertEqual(type(dnodes), type({}))
+        res = json.dumps(dnodes)
+        self.assertNotEqual(res, None)
+        self.assertTrue(len(res)>0)
+
     def test_300_network_kvals_nodes(self):
         nodes_id = self.network.nodes.keys()
         for nid in nodes_id:

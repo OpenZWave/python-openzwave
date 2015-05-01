@@ -725,6 +725,19 @@ class ZWaveNetwork(ZWaveObject):
         else:
             return self._load_scenes()
 
+    def scenes_to_dict(self, kvals=True):
+        """
+        Return a JSONifiable dict representation of the scenes.
+
+        :rtype: dict()
+
+        """
+        ret={}
+        scenes = self.get_scenes()
+        for scnid in scenes.keys():
+            ret[scnid] = scenes[scnid].to_dict(kvals=kvals)
+        return ret
+
     def _load_scenes(self):
         """
         Load the scenes of the network.
@@ -735,7 +748,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         ret = {}
         set_scenes = self._manager.getAllScenes()
-        logger.info('Load Scenes: %s' % set_scenes)
+        logger.debug('Load Scenes: %s', set_scenes)
         for scene_id in set_scenes:
             scene = ZWaveScene(scene_id, network=self)
             ret[scene_id] = scene
@@ -953,7 +966,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NETWORK_FAILED, **{'network': self})
 
         """
-        logger.error('Z-Wave Notification DriverFailed : %s', args)
+        logger.warning('Z-Wave Notification DriverFailed : %s', args)
         self._manager = None
         self._controller = None
         self.nodes = None
@@ -1538,7 +1551,6 @@ class ZWaveNetwork(ZWaveObject):
         The last message that was sent is now complete.
 
         """
-        logger.debug('Write ZWave configuration.')
         self._manager.writeConfig(self.home_id)
         logger.info('ZWave configuration wrote to user directory.')
 

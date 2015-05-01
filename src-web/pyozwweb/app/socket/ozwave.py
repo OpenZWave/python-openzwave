@@ -294,3 +294,11 @@ def echo_value_event(message):
     logging.debug("Client %s value event : %s", request.remote_addr, current_app.extensions['zwnetwork'].nodes[node_id].values[value_id].to_dict())
     emit('my value response',
          {'data': current_app.extensions['zwnetwork'].nodes[node_id].values[value_id].to_dict(), 'count': session['receive_count']})
+
+@socketio.on('my scenes event', namespace='/ozwave')
+def echo_scenes_event(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    logging.debug("Client %s scenes event : %s", request.remote_addr, message)
+    print "%s"%current_app.extensions['zwnetwork'].get_scenes()
+    emit('my scenes response',
+         {'data': current_app.extensions['zwnetwork'].get_scenes(), 'count': session['receive_count']})
