@@ -25,9 +25,12 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 import os
 #from collections import namedtuple
-import thread
 import time
-from louie import dispatcher, All
+if sys.hexversion >= 0x3000000:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
+import thread
 import threading
 import libopenzwave
 import openzwave
@@ -315,7 +318,7 @@ class ZWaveNetwork(ZWaveObject):
                 cur.execute('SELECT SQLITE_VERSION()')
                 data = cur.fetchone()
                 self._check_db_tables()
-            except lite.Error, e:
+            except lite.Error as e:
                 logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
         if autostart:
             self.start()

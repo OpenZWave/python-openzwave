@@ -13,7 +13,7 @@ install:
 #  - make pip
   - make VIRTUAL_ENV=$VIRTUAL_ENV update
   - make VIRTUAL_ENV=$VIRTUAL_ENV build
-  - make VIRTUAL_ENV=$VIRTUAL_ENV install
+  - sudo make VIRTUAL_ENV=$VIRTUAL_ENV install
 # command to run tests
 script:
   - nosetests --cover-package=libopenzwave,openzwave --with-coverage
