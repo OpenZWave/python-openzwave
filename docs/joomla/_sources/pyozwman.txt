@@ -19,7 +19,7 @@ Use the --help option to get all available options :
 
     ozwsh --help
 
-It allows you to :
+With PyOzwMan, you can :
 
     * Reset controller (hard and soft) and add/remove device/controller
     * Change node informations (name, location, ... )
