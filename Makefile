@@ -224,11 +224,17 @@ autobuild-tests:
 	@echo
 	@echo "Tests for ZWave network finished."
 
-commit: build develop merge-python3 docs
+push: build develop docs
 	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
-	@echo "Commits pushed on github."
+	@echo "Commits for branch master pushed on github."
+
+commit: push merge-python3
+	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	git push
+	@echo
+	@echo "Commits for branches master/python3 pushed on github."
 
 tag: commit
 	git tag v${python_openzwave_version}
