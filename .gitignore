@@ -32,3 +32,4 @@ src-manager/pyozwman.egg-info/
 src-web/pyozwweb.egg-info/
 .coverage
 .tests_user_path/
+ftp.sh

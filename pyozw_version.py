@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-pyozw_version = '0.3.0-alpha2'
+pyozw_version = '0.3.0-alpha3'
 
 if __name__ == '__main__':
     print(pyozw_version)

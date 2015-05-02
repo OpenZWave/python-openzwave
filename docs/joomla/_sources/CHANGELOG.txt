@@ -19,6 +19,8 @@ python-openzwave 0.3.0-alpha3:
  * Add new tests
  * Fix some tests for controller commands
  * Finish the archive install : the lib is already cythonized. No need to install cython anymore.
+ * Add a dockerfile
+ * Add a branch for dockering with ptyhon 3
 
 
 python-openzwave 0.3.0-alpha2:

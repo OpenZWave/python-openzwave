@@ -37,10 +37,8 @@ from pyozwweb.app import create_app, run_app, stop_all
 
 from tests.common import SLEEP
 from tests.common import TestPyZWave
-#import threading
 
 from multiprocessing import Process
-#from threading import Thread
 
 class TestServer(Process):
     def __init__(self):
@@ -50,20 +48,16 @@ class TestServer(Process):
         self.app = None
         self.client = None
         self.app, self.socketio = create_app(config_object='pyozwweb.config.TestingConfig')
-        #self._stopevent = threading.Event( )
 
     def run(self):
         """The running method"""
         run_app(self.app, self.socketio)
-        #while not self._stopevent.isSet():
-        #    self._stopevent.wait(1.0)
 
     def stop(self):
         """Stop the tread"""
         print 'got stop'
         Process.terminate(self)
         time.sleep(2.0)
-        #self._stopevent.wait(2.0)
         self.socketio = None
         self.app = None
         self.client = None

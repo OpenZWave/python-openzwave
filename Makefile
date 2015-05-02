@@ -307,3 +307,6 @@ tgz: build develop clean-archive $(ARCHDIR) docs
 	rm -Rf $(ARCHBASE)
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
+
+ftp:
+	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
