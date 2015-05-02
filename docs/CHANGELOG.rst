@@ -6,7 +6,6 @@ Changelog
 
 To do for python-openzwave 0.3.0-final :
 
- * Finish the archive install
  * Fix pyozwman
  * Add more tests for the library : switches, dimmers, polling, heal, test, ...
  * Fix tests for controller commands
@@ -15,8 +14,11 @@ To do for python-openzwave 0.3.0-final :
 
 python-openzwave 0.3.0-alpha3:
 
- * Fix bug in start/stop in pyozwwzb app and tests. The listener doesn't stop. So must do a kill -9.
- * Add map, scenes to PyOzwXeb
+ * Fix bug in start/stop in network.
+ * Fix bug in start/stop in pyozwweb app and tests.
+ * Add map, scenes to PyOzwWeb
+ * Add new tests
+ * Finish the archive install : the lib is already cythonized. No need to install cython anymore.
 
 
 python-openzwave 0.3.0-alpha2:
