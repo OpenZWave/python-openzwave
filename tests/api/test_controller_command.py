@@ -56,12 +56,24 @@ from tests.common import TestPyZWave
 
 class TestControllerCommand(TestApi):
 
-    def test_010_command_send_node_information_nodeid_2(self):
-        self.wipTest()
-        ret = self.network.controller.begin_command_send_node_information(2)
+    def setUp(self):
+        self.max_delay = 30
+        self.ctrl_command_result = None
+        dispatcher.connect(self.ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        self.node_result = None
+        dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
+
+    def tearDown(self):
+        self.network.controller.cancel_command()
+        dispatcher.disconnect(self.ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        dispatcher.disconnect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
+
+    def test_010_command_send_node_information_nodeid(self):
+        node_id = max(self.network.nodes.keys())
+        ret = self.network.controller.begin_command_send_node_information(node_id)
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
@@ -72,12 +84,12 @@ class TestControllerCommand(TestApi):
                 time.sleep(1.0)
         self.assertEqual(current, "Completed")
 
-    def test_020_command_send_node_information_nodeid_1(self):
-        self.wipTest()
-        ret = self.network.controller.begin_command_send_node_information(1)
+    def test_020_command_send_node_information_nodeid_controller(self):
+        node_id = self.network.controller.node_id
+        ret = self.network.controller.begin_command_send_node_information(node_id)
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
@@ -86,14 +98,14 @@ class TestControllerCommand(TestApi):
                 break
             else:
                 time.sleep(1.0)
-        self.assertEqual(current, "Completed")
+        self.assertEqual(current, "Failed")
 
     def test_110_command_request_network_update(self):
         self.wipTest()
         ret = self.network.controller.begin_command_request_network_update()
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
@@ -105,11 +117,11 @@ class TestControllerCommand(TestApi):
         self.assertEqual(current, "Completed")
 
     def test_210_command_request_node_neigbhor_update_node(self):
-        self.wipTest()
-        ret = self.network.controller.begin_command_request_node_neigbhor_update(2)
+        node_id = max(self.network.nodes.keys())
+        ret = self.network.controller.begin_command_request_node_neigbhor_update(node_id)
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
@@ -121,11 +133,11 @@ class TestControllerCommand(TestApi):
         self.assertEqual(current, "Completed")
 
     def test_220_command_request_node_neigbhor_update_controller(self):
-        self.wipTest()
-        ret = self.network.controller.begin_command_request_node_neigbhor_update(1)
+        node_id = self.network.controller.node_id
+        ret = self.network.controller.begin_command_request_node_neigbhor_update(node_id)
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
@@ -134,14 +146,32 @@ class TestControllerCommand(TestApi):
                 break
             else:
                 time.sleep(1.0)
-        self.assertEqual(current, "Failed")
+        self.assertEqual(current, "Completed")
 
     def test_910_command_command_replication_send(self):
         self.wipTest()
-        ret = self.network.controller.begin_command_replication_send(1)
+        node_id = max(self.network.nodes.keys())
+        ret = self.network.controller.begin_command_replication_send(node_id)
         self.assertTrue(ret)
         current = None
-        for i in range(0,SLEEP*3):
+        for i in range(0,SLEEP*2):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
+                current = self.ctrl_command_result
+                print(current)
+                self.ctrl_command_result = None
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(current, "Completed")
+
+    def test_920_command_command_replication_send_controller(self):
+        self.wipTest()
+        node_id = self.network.controller.node_id
+        ret = self.network.controller.begin_command_replication_send(node_id)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP*2):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
                 current = self.ctrl_command_result
