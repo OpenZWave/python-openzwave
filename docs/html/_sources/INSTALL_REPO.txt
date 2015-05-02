@@ -7,7 +7,6 @@ Installing python-openzwave from repository
 
 Install the needed tools
 ========================
-
 You must install git and make to retrieve sources of python-openzwave and
 openzwave.
 
@@ -20,7 +19,6 @@ On a debian like distribution :
 
 Get sources of python-openzwave
 ===============================
-
 You are now ready to download sources of python-openzwave :
 
 .. code-block:: bash
@@ -30,9 +28,9 @@ You are now ready to download sources of python-openzwave :
 The previous command will create a copy of the official repository on your
 computer in a directory called python-openzwave.
 
+
 Install dependencies
 ====================
-
 You need some tools (a c++ compiler, headers dir python, ...) to build python-openzwave and openzwave library.
 
 On a debian like distribution :
@@ -43,9 +41,9 @@ On a debian like distribution :
 
 For non-debian (fedora, ...), you can retrieve the packages needed in the Makefile.
 
+
 Update and build process
 ========================
-
 Go to the previously created directory
 
 .. code-block:: bash
@@ -71,9 +69,9 @@ Or if you have already build python-openzwave in a previous installation, you ca
 
     sudo make clean
 
+
 Installation
 ============
-
 You can now ready to install the eggs using the following command :
 
 .. code-block:: bash
@@ -86,9 +84,9 @@ You can also remove python-openzwave using :
 
     sudo make uninstall
 
+
 Running tests
 =============
-
 You can launch the regression tests using :
 
 .. code-block:: bash
@@ -97,21 +95,10 @@ You can launch the regression tests using :
 
 Keep in mind that the tests will "play" with your nodes : switching on and off, dimming, adding and removing scenes, ...
 
-Python3 and virtualenv
-======================
 
-The Makefile sill try to automatically configure your version of python (running python --version).
+About the repositroy
+====================
+This repository is a development tool, so it might be "unstable" ... yeah, sometimes it won't build anymore :)
 
-If you want to install python-openzwave in a python virtual environnement, you should use something like :
-
-.. code-block:: bash
-
-    make VIRTUAL_ENV=/path/to/my/venv ...
-
-If you use python 3 and your python executable is called python3 :
-
-.. code-block:: bash
-
-    make PYTHON_EXEC=python3 ...
-
-You can also put these variables in a CONFIG.make file instead of passing them to the command line
+If you want to retrieve the last "good" commit, look at https://github.com/bibi21000/python-openzwave/commits/master.
+The commits names "Auto-commit for docs" are done after the full process : build + test + docs, so they might be "working" (almost for me).

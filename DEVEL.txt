@@ -125,8 +125,8 @@ open the session.
 You can now install your packages without sudo.
 
 
-python3
-=======
+Python3 and virtualenv
+======================
 
 Python 3 is actually not supported.
 
@@ -141,11 +141,17 @@ It's important for me have python2/python3 compatibilty in the master
 branch. cython can help for this :
 http://docs.cython.org/src/tutorial/strings.html
 
+The Makefile sill try to automatically configure your version of
+python (running python --version).
 
-Support
-=======
+If you want to install python-openzwave in a python virtual
+environnement, you should use something like :
 
-You can ask for support on the google group :
-http://groups.google.com/d/forum/python-openzwave-discuss.
+   make VIRTUAL_ENV=/path/to/my/venv ...
 
-Please don't ask for support in github issues or by email.
+If you use python 3 and your python executable is called python3 :
+
+   make PYTHON_EXEC=python3 ...
+
+You can also put these variables in a CONFIG.make file instead of
+passing them to the command line

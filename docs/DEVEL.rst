@@ -111,8 +111,8 @@ And now, it's time log off and log on. Groups are checked when you open the sess
 
 You can now install your packages without sudo.
 
-python3
-=======
+Python3 and virtualenv
+======================
 Python 3 is actually not supported.
 
 A branch (python3) has been created with a special Dockerfile. It build python-openzwave and launch some tests.
@@ -123,8 +123,18 @@ So please, do not directly push under python3 branch. Make your developments und
 It's important for me have python2/python3 compatibilty in the master branch.
 cython can help for this : http://docs.cython.org/src/tutorial/strings.html
 
-Support
-=======
-You can ask for support on the google group : http://groups.google.com/d/forum/python-openzwave-discuss.
+The Makefile sill try to automatically configure your version of python (running python --version).
 
-Please don't ask for support in github issues or by email.
+If you want to install python-openzwave in a python virtual environnement, you should use something like :
+
+.. code-block:: bash
+
+    make VIRTUAL_ENV=/path/to/my/venv ...
+
+If you use python 3 and your python executable is called python3 :
+
+.. code-block:: bash
+
+    make PYTHON_EXEC=python3 ...
+
+You can also put these variables in a CONFIG.make file instead of passing them to the command line

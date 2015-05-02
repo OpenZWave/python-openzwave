@@ -6,49 +6,15 @@ python-openzwave
 
 You need to install and python-openzwave to test examples.
 
+pyozwman
+========
 
-ozwsh
-=====
+A shell manager for your ZWave network : :doc:`PyOzwMan documentation </pyozwman>`
 
-A shell manager for your ZWave network. It use urwid and louie python extensions.
-If needed, type the following command to install them :
+pyozwweb
+========
 
-.. code-block:: bash
-
-    sudo pip install urwid louie
-
-Start ozwsh with :
-
-.. code-block:: bash
-
-    ./ozwsh.sh --device=/dev/yourzwavestick
-
-It allows you to :
-
-    * Reset controller (hard and soft) and add/remove device/controller
-    * Change node informations (name, location, ... )
-    * view and change values informations
-    * view and change group informations
-    * Full management of scenes, switches, dimmers and sensors
-
-It's a shell like manager. You can visit your zwave network using the
-command cd. All available commands are displayed on every screens.
-You can use the tab keys to switch between the view panel and the edit panel
-and the up and down ones to view all informations.
-
-For the developpers : this a good example on how to use the api.
-Update are sent to uwird widget using louie notifications. ZWave data
-updates are done in the set, add, delete, remove, ... methods.
-
-There is some others examples, to test them :
-
-.. code-block:: bash
-
-    cd examples
-    ./build_examples.sh
-
-This will install all the needed files used by the examples in a temporary
-directory.
+A Flask + socket.io + jquery web application framework for your ZWave network : :doc:`PyOzwWeb documentation </pyozwweb>`
 
 api_demo
 ========

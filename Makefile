@@ -158,6 +158,8 @@ merge-python3:
 	git merge -m "Auto-merge from master" master
 	git push
 	git checkout master
+	@echo
+	@echo "Commits for branch python3 pushed on github."
 
 clean-docs:
 	cd docs && make clean
@@ -224,24 +226,6 @@ autobuild-tests:
 	@echo
 	@echo "Tests for ZWave network finished."
 
-push: build develop docs
-	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	git push
-	@echo
-	@echo "Commits for branch master pushed on github."
-
-commit: push merge-python3
-	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	git push
-	@echo
-	@echo "Commits for branches master/python3 pushed on github."
-
-tag: commit
-	git tag v${python_openzwave_version}
-	git push origin v${python_openzwave_version}
-	@echo
-	@echo "Tag pushed on github."
-
 pylint:
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
 	@echo
@@ -281,11 +265,16 @@ $(ARCHDIR):
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
 	cp -Rf src-web/pyozwweb $(ARCHDIR)/src-web
 	-find $(ARCHDIR) -name \*.pyc -delete
+	-find $(ARCHDIR) -name zwcfg_\*.xml -delete
+	-find $(ARCHDIR) -name OZW_Log.log -delete
+	-find $(ARCHDIR) -name ozwsh.log -delete
+	-find $(ARCHDIR) -name zwscene.xml -delete
+	-find $(ARCHDIR) -name pyozw.db -delete
 	-cd $(ARCHDIR)/openzwave && make clean
 	-rm -Rf $(ARCHDIR)/openzwave/.git
 	cp -f $(ARCHDIR)/openzwave.vers.cpp $(ARCHDIR)/openzwave/cpp/src/vers.cpp
 
-tgz: build develop clean-archive $(ARCHDIR) docs
+tgz: clean-archive $(ARCHDIR) docs
 	cp docs/_build/text/README.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
@@ -308,5 +297,27 @@ tgz: build develop clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
+push: docs
+	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	git push
+	@echo
+	@echo "Commits for branch master pushed on github."
+
+commit: push merge-python3
+	@echo
+	@echo "Commits for branches master/python3 pushed on github."
+
+tag: commit
+	git tag v${python_openzwave_version}
+	git push origin v${python_openzwave_version}
+	@echo
+	@echo "Tag pushed on github."
+
 ftp:
 	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
+	@echo
+	@echo "New version ${python_openzwave_version} published tp ftp"
+
+new-version: build develop tag tgz ftp
+	@echo
+	@echo "New version ${python_openzwave_version} created and published"

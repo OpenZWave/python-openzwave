@@ -6,18 +6,20 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
 
  * full manager implementation with options
  * an API to map the ZWave network in Python objects
- * a full-event webapp example : flask + socket.io + jquery (Look at API documentation to try it)
+ * a command line manager to manage / debug your ZWave network
+ * a full-event webapp example : flask + socket.io + jquery
  * a suite of tests
  * many examples
 
+
 python-openzwave 0.3.0-alpha3 is out !!!
 ========================================
-
 Look at CHANGELOG to see new features, to do list and release notes.
 
 Look at INSTALL_REPO to test it now !!!
 
 Look at INSTALL_ARCH to install from archive : no need to install cython anymore
+
 
 Support
 =======
@@ -26,10 +28,8 @@ You can ask for support on the google group : http://groups.google.com/d/forum/p
 Please don't ask for support in github issues or by email.
 
 
-==============================================
 Migrating from python-openzwave 0.2.X to 0.3.0
 ==============================================
-
 I need to update source tree of python-openzwave and modules's names because of a bug in setuptools : https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src .
 Sorry for that.
 

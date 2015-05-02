@@ -6,9 +6,11 @@ Changelog
 
 To do for python-openzwave 0.3.0-final :
 
- * Fix pyozwman
  * Add more tests for the library : switches, dimmers, polling, heal, test, ...
  * Fix reloader problem : the network ist stop/start every time the app is realoaded. But in this case, the process terminates normally. But there seems to be 2 running instances of the network.
+
+python-openzwave 0.3.0-alpha4:
+ * Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [--device=/dev/ttyUSB0] [--log=Debug] ...
 
 
 python-openzwave 0.3.0-alpha3:

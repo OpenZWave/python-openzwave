@@ -133,6 +133,7 @@ class TestControllerCommand(TestApi):
         self.assertEqual(current, "Completed")
 
     def test_220_command_request_node_neigbhor_update_controller(self):
+        self.wipTest()
         node_id = self.network.controller.node_id
         ret = self.network.controller.begin_command_request_node_neigbhor_update(node_id)
         self.assertTrue(ret)

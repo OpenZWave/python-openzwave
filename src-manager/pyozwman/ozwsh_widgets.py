@@ -1,7 +1,31 @@
 # -* coding: utf-8 -*-
 
-#Author: bibi21000
-#Licence : GPL
+"""
+.. module:: pyozwman.ozwsh_widgets
+
+This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+    :platform: Unix, Windows, MacOS X
+    :sinopsis: openzwave API
+
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+
+License : GPL(v3)
+
+**python-openzwave** is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+**python-openzwave** is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see http://www.gnu.org/licenses.
+
+"""
+
+__author__ = 'bibi21000'
 
 from select import select
 import sys
@@ -14,10 +38,6 @@ from urwid.raw_display import Screen
 from traceback import format_exc
 #from ucp import UrwidCmdProc, isUCP
 #from utils import utilInit, log
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('../build/tmp/usr/local/lib/python2.7/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.6/dist-packages'))
-sys.path.insert(0, os.path.abspath('build/tmp/usr/local/lib/python2.7/dist-packages'))
 from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
@@ -25,7 +45,7 @@ from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 from louie import dispatcher, All
-import logging
+#import logging
 #from frameapp import FrameApp, DIVIDER
 
 #logging.basicConfig(level=logging.DEBUG)
