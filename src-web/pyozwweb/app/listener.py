@@ -2,10 +2,6 @@
 
 """The listener.
 
-Note : always log after running
-
-2015-04-28 01:38:44,677 - openzwave - ERROR - Error in manager callback : ['Traceback (most recent call last):\n', '  File "/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py", line 847, in zwcallback\n    self._handle_node_naming(args)\n', '  File "/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py", line 1107, in _handle_node_naming\n    self._handle_node(self.nodes[args[\'nodeId\']])\n', '  File "/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py", line 1036, in _handle_node\n    **{\'network\': self, \'node\':node})\n', '  File "/usr/lib/python2.7/dist-packages/louie/dispatcher.py", line 348, in send\n    **named\n', '  File "/usr/lib/python2.7/dist-packages/louie/robustapply.py", line 56, in robust_apply\n    return receiver(*arguments, **named)\n', '  File "/home/sebastien/devel/python-openzwave/src-web/pyozwweb/app/listener.py", line 133, in _louie_node\n    logging.debug(\'OpenZWave node notification : node %s.\', data)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 1622, in debug\n    root.debug(msg, *args, **kwargs)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 1140, in debug\n    self._log(DEBUG, msg, args, **kwargs)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 1271, in _log\n    self.handle(record)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 1281, in handle\n    self.callHandlers(record)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 1321, in callHandlers\n    hdlr.handle(record)\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 747, in handle\n    self.acquire()\n', '  File "/usr/lib/python2.7/logging/__init__.py", line 698, in acquire\n    self.lock.acquire()\n', '  File "/usr/lib/python2.7/threading.py", line 173, in acquire\n    rc = self.__block.acquire(blocking)\n', '  File "_semaphore.pyx", line 112, in gevent._semaphore.Semaphore.acquire (gevent/gevent._semaphore.c:3004)\n', '  File "/usr/local/lib/python2.7/dist-packages/gevent/hub.py", line 331, in switch\n    return greenlet.switch(self)\n', 'LoopExit: This operation would block forever\n']
-
 """
 
 __license__ = """
@@ -75,7 +71,8 @@ class ListenerThread(Thread):
         self.connected = False
 
     def connect(self):
-        """Connect to the zwave notifications"""
+        """Connect to the zwave notifications
+        """
         if self.connected == False:
             self.join_room_network()
             self.join_room_controller()
@@ -85,7 +82,8 @@ class ListenerThread(Thread):
             logging.info("Listener connected")
 
     def run(self):
-        """The running method"""
+        """The running method
+        """
         logging.info("Start listener")
         self._stopevent.wait(5.0)
         self.connect()
@@ -93,7 +91,8 @@ class ListenerThread(Thread):
             self._stopevent.wait(0.1)
 
     def join_room_network(self):
-        """Join room network"""
+        """Join room network
+        """
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
         dispatcher.connect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
@@ -102,7 +101,8 @@ class ListenerThread(Thread):
         return True
 
     def leave_room_network(self):
-        """Leave room network"""
+        """Leave room network
+        """
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
         dispatcher.disconnect(self._louie_network, ZWaveNetwork.SIGNAL_NETWORK_AWAKED)
@@ -111,7 +111,8 @@ class ListenerThread(Thread):
         return True
 
     def _louie_network(self, network):
-        """Louie dispatch for netowrk"""
+        """Louie dispatch for netowrk
+        """
         if network is None:
             self.socketio.emit('my network response',
                 {'data': data_room_network(current_app.extensions['zwnetwork'])},
@@ -123,17 +124,20 @@ class ListenerThread(Thread):
             logging.debug('OpenZWave network notification : homeid %0.8x (state:%s) - %d nodes were found.' % (network.home_id, network.state, network.nodes_count))
 
     def join_room_node(self):
-        """Join room nodes"""
+        """Join room nodes
+        """
         dispatcher.connect(self._louie_node, ZWaveNetwork.SIGNAL_NODE)
         return True
 
     def leave_room_node(self):
-        """Leave room nodes"""
+        """Leave room nodes
+        """
         dispatcher.disconnect(self._louie_node, ZWaveNetwork.SIGNAL_NODE)
         return True
 
     def _louie_node(self, network, node):
-        """Louie dispatch for node"""
+        """Louie dispatch for node
+        """
         data=node.to_dict()
         self.socketio.emit('my node response',
             {'data': data},
@@ -141,17 +145,20 @@ class ListenerThread(Thread):
         logging.debug('OpenZWave node notification : node %s.', data)
 
     def join_room_values(self):
-        """Join room values"""
+        """Join room values
+        """
         dispatcher.connect(self._louie_values, ZWaveNetwork.SIGNAL_VALUE)
         return True
 
     def leave_room_values(self):
-        """Leave room values"""
+        """Leave room values
+        """
         dispatcher.disconnect(self._louie_values, ZWaveNetwork.SIGNAL_VALUE)
         return True
 
     def _louie_values(self, network, node, value):
-        """Louie dispatch for values"""
+        """Louie dispatch for values
+        """
         with self.app.test_request_context():
             from flask import request
             if network is None:
@@ -176,19 +183,22 @@ class ListenerThread(Thread):
                 logging.debug('OpenZWave values notification : homeid %0.8x - node %d - value %d.', network.home_id, node.node_id, value.value_id)
 
     def join_room_controller(self):
-        """Join room controller"""
+        """Join room controller
+        """
         dispatcher.connect(self._louie_controller, ZWaveController.SIGNAL_CTRL_WAITING)
         dispatcher.connect(self._louie_controller, ZWaveController.SIGNAL_CONTROLLER)
         return True
 
     def leave_room_controller(self):
-        """Leave room controller"""
+        """Leave room controller
+        """
         dispatcher.disconnect(self._louie_controller, ZWaveController.SIGNAL_CTRL_WAITING)
         dispatcher.disconnect(self._louie_controller, ZWaveController.SIGNAL_CONTROLLER)
         return True
 
     def _louie_controller(self, state, message, network, controller):
-        """Louie dispatch for controller"""
+        """Louie dispatch for controller
+        """
         with self.app.test_request_context():
             from flask import request
             if network is None or controller is None:
@@ -203,7 +213,8 @@ class ListenerThread(Thread):
                 logging.debug('OpenZWave controller message : state %s - message %s.', state, message)
 
     def stop(self):
-        """Stop the tread"""
+        """Stop the tread
+        """
         self.leave_room_node()
         self.leave_room_values()
         self.leave_room_controller()
@@ -212,6 +223,8 @@ class ListenerThread(Thread):
         logging.info("Stop listener")
 
 def start_listener(app_, socketio_):
+    """Start the listener
+    """
     global listener
     if listener is None:
         listener = ListenerThread(socketio_, app_)
@@ -219,6 +232,8 @@ def start_listener(app_, socketio_):
     return listener
 
 def stop_listener():
+    """Stop the listener
+    """
     global listener
     listener.stop()
     listener = None

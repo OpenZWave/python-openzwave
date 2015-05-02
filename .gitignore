@@ -7,7 +7,7 @@
 /openzwave/
 build/
 dists/
-archive/
+/archive/
 *.egg
 docs/_build/
 OZW_Log.txt

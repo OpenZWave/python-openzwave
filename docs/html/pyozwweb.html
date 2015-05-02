@@ -75,45 +75,78 @@
 </ul>
 </div>
 <span class="target" id="module-pyozwweb.app.listener"></span><p>The listener.</p>
-<p>Note : always log after running</p>
-<p>2015-04-28 01:38:44,677 - openzwave - ERROR - Error in manager callback : [&#8216;Traceback (most recent call last):
-&#8216;, &#8216;  File &#8220;/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py&#8221;, line 847, in zwcallback</p>
-<blockquote>
-<div>self._handle_node_naming(args)</div></blockquote>
-<dl class="docutils">
-<dt>&#8216;, &#8216;  File &#8220;/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py&#8221;, line 1107, in _handle_node_naming</dt>
-<dd>self._handle_node(self.nodes[args[&#8216;nodeId&#8217;]])</dd>
-<dt>&#8216;, &#8216;  File &#8220;/home/sebastien/devel/python-openzwave/src-api/openzwave/network.py&#8221;, line 1036, in _handle_node</dt>
-<dd><a href="#id1"><span class="problematic" id="id2">**</span></a>{&#8216;network&#8217;: self, &#8216;node&#8217;:node})</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/dist-packages/louie/dispatcher.py&#8221;, line 348, in send</dt>
-<dd><a href="#id3"><span class="problematic" id="id4">**</span></a>named</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/dist-packages/louie/robustapply.py&#8221;, line 56, in robust_apply</dt>
-<dd>return receiver(<a href="#id5"><span class="problematic" id="id6">*</span></a>arguments, <a href="#id7"><span class="problematic" id="id8">**</span></a>named)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/home/sebastien/devel/python-openzwave/src-web/pyozwweb/app/listener.py&#8221;, line 133, in _louie_node</dt>
-<dd>logging.debug(&#8216;OpenZWave node notification : node %s.&#8217;, data)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 1622, in debug</dt>
-<dd>root.debug(msg, <a href="#id9"><span class="problematic" id="id10">*</span></a>args, <a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 1140, in debug</dt>
-<dd>self._log(DEBUG, msg, args, <a href="#id13"><span class="problematic" id="id14">**</span></a>kwargs)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 1271, in _log</dt>
-<dd>self.handle(record)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 1281, in handle</dt>
-<dd>self.callHandlers(record)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 1321, in callHandlers</dt>
-<dd>hdlr.handle(record)</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 747, in handle</dt>
-<dd>self.acquire()</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/logging/__init__.py&#8221;, line 698, in acquire</dt>
-<dd>self.lock.acquire()</dd>
-<dt>&#8216;, &#8216;  File &#8220;/usr/lib/python2.7/threading.py&#8221;, line 173, in acquire</dt>
-<dd>rc = self.__block.acquire(blocking)</dd>
-</dl>
-<p>&#8216;, &#8216;  File &#8220;_semaphore.pyx&#8221;, line 112, in gevent._semaphore.Semaphore.acquire (gevent/gevent._semaphore.c:3004)
-&#8216;, &#8216;  File &#8220;/usr/local/lib/python2.7/dist-packages/gevent/hub.py&#8221;, line 331, in switch</p>
-<blockquote>
-<div>return greenlet.switch(self)</div></blockquote>
-<p>&#8216;, &#8216;LoopExit: This operation would block forever
-&#8216;]</p>
+<dl class="class">
+<dt id="pyozwweb.app.listener.ListenerThread">
+<em class="property">class </em><tt class="descclassname">pyozwweb.app.listener.</tt><tt class="descname">ListenerThread</tt><big>(</big><em>_socketio</em>, <em>_app</em><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>The listener Tread</p>
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.connect">
+<tt class="descname">connect</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the zwave notifications</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.join_room_controller">
+<tt class="descname">join_room_controller</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.join_room_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join room controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.join_room_network">
+<tt class="descname">join_room_network</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.join_room_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join room network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.join_room_node">
+<tt class="descname">join_room_node</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.join_room_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join room nodes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.join_room_values">
+<tt class="descname">join_room_values</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.join_room_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join room values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.leave_room_controller">
+<tt class="descname">leave_room_controller</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.leave_room_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave room controller</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.leave_room_network">
+<tt class="descname">leave_room_network</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.leave_room_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave room network</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.leave_room_node">
+<tt class="descname">leave_room_node</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.leave_room_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave room nodes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.leave_room_values">
+<tt class="descname">leave_room_values</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.leave_room_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave room values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>The running method</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyozwweb.app.listener.ListenerThread.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="headerlink" href="#pyozwweb.app.listener.ListenerThread.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the tread</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 

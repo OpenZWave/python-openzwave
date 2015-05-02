@@ -50,7 +50,7 @@ class TestServer(Process):
         self.app = None
         self.client = None
         self.app, self.socketio = create_app(config_object='pyozwweb.config.TestingConfig')
-        #self._stopevent = threading.Event( )
+        self._stopevent = threading.Event( )
 
     def run(self):
         """The running method"""
@@ -62,7 +62,8 @@ class TestServer(Process):
         """Stop the tread"""
         print 'got stop'
         Process.terminate(self)
-        time.sleep(2.0)
+        #time.sleep(2.0)
+        self._stopevent.wait(2.0)
         self.socketio = None
         self.app = None
         self.client = None
