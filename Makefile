@@ -315,6 +315,8 @@ tag: commit
 
 ftp:
 	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
+	@echo
+	@echo "New version ${python_openzwave_version} published tp ftp"
 
 new-version: build develop tag tgz ftp
 	@echo
