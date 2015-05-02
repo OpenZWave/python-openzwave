@@ -274,7 +274,7 @@ $(ARCHDIR):
 	-rm -Rf $(ARCHDIR)/openzwave/.git
 	cp -f $(ARCHDIR)/openzwave.vers.cpp $(ARCHDIR)/openzwave/cpp/src/vers.cpp
 
-tgz: build develop clean-archive $(ARCHDIR) docs
+tgz: clean-archive $(ARCHDIR) docs
 	cp docs/_build/text/README.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
@@ -297,7 +297,7 @@ tgz: build develop clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
-push: build develop docs
+push: docs
 	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
@@ -316,6 +316,6 @@ tag: commit
 ftp:
 	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
 
-new-version: tag tgz ftp
+new-version: build develop tag tgz ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
