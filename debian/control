@@ -10,9 +10,27 @@ Homepage: https://github.com/bibi21000/python-openzwave
 
 Package: python-openzwave
 Architecture: any
-Depends: libopenzwave1.0, python, python-louie, ${misc:Depends}, ${python:Depends}
+Depends: libopenzwave1.0|libopenzwave1.3, python, python-louie, ${misc:Depends}, ${python:Depends}
 Description: python-openzwave is another python wrapper around the openzwave project.
  The wrapper allows you to control a z-wave network from python.
  The one-to-one library is in beta state. You can try it.
  The new wrapper is in early developpement stage. So don't use it, but
  join us on https://github.com/bibi21000/python-openzwave.
+
+Package: python-openzwave-manager
+Architecture: any
+Depends: python-openzwave (= ${binary:Version}), python-urwid
+Description: A command line manager for your ZWave Network.
+ You can :
+    * Reset controller (hard and soft) and add/remove device/controller
+    * Change node informations (name, location, ... )
+    * view and change values informations
+    * view and change group informations
+    * view and change config parameters
+    * view and change gassociations
+    * Full management of scenes, switches, dimmers and sensors
+
+Package: python-openzwave-docs
+Architecture: any
+Description: Documentation for python-openzwave.
+ HTML format

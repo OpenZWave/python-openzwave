@@ -222,12 +222,12 @@ tests:
 	@echo "Autobuild-tests for ZWave network finished."
 
 autobuild-tests:
-	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
+	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo "Tests for ZWave network finished."
 
 pylint:
-	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
+	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/
 	@echo
 	@echo "Pylint finished."
 
