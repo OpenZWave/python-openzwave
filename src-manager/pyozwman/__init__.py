@@ -27,4 +27,3 @@ except:
     # bootstrapping
     pass
 
-VERSION = '0.1'

@@ -32,12 +32,7 @@ import sys
 import os
 import urwid
 from urwid.raw_display import Screen
-#import headerpanel
-#import dirpanel
-#import setuppanel
 from traceback import format_exc
-#from ucp import UrwidCmdProc, isUCP
-#from utils import utilInit, log
 from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
@@ -45,13 +40,7 @@ from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 from louie import dispatcher, All
-#import logging
-#from frameapp import FrameApp, DIVIDER
-
-#logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
-
-#logger = logging.getLogger('openzwave')
+import logging
 
 class OldestTree(urwid.ListWalker):
 
