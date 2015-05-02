@@ -317,3 +317,5 @@ ftp:
 	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
 
 new-version: tag tgz ftp
+	@echo
+	@echo "New version ${python_openzwave_version} created and published"
