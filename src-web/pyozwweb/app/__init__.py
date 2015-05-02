@@ -45,10 +45,10 @@ from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room
 from flask_fanstatic import Fanstatic
 #from flask.ext.sqlalchemy import SQLAlchemy
 
-#from openzwave.network import ZWaveNetwork
-from openzwave.network import ZWaveNetworkSingleton as ZWaveNetwork
-#from openzwave.option import ZWaveOption
-from openzwave.option import ZWaveOptionSingleton as ZWaveOption
+from openzwave.network import ZWaveNetwork
+#from openzwave.network import ZWaveNetworkSingleton as ZWaveNetwork
+from openzwave.option import ZWaveOption
+#from openzwave.option import ZWaveOptionSingleton as ZWaveOption
 import threading
 from louie import dispatcher, All
 

@@ -30,7 +30,7 @@ if os.path.isdir(os.path.join(os.getcwd(), '.git')):
     from Cython.Distutils import build_ext
 else:
     #Install from archive
-    from distutils.command import build_ext
+    from distutils.command.build_ext import build_ext
 from Cython.Build import cythonize
 from platform import system as platform_system
 import glob

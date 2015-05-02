@@ -7,7 +7,7 @@ BUILDDIR      = build
 DISTDIR       = dists
 NOSE          = $(shell which nosetests)
 NOSEOPTS      = --verbosity=2
-NOSECOVER     = --cover-package=libopenzwave,openzwave,pyozwman,pyozwweb --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
+NOSECOVER     = --cover-package=openzwave,pyozwman,pyozwweb --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
 PYLINT        = $(shell which pylint)
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
@@ -37,13 +37,14 @@ endif
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update build develop install uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3
+.PHONY: help clean all update build develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  build           : build python-openzwave and openzwave"
 	@echo "  develop         : install python-openzwave for developpers"
 	@echo "  install         : install python-openzwave for users"
+	@echo "  install-api     : install python-openzwave (API only) for users"
 	@echo "  uninstall       : uninstall python-openzwave"
 	@echo "  developper-deps : install dependencies for developpers"
 	@echo "  deps            : install dependencies for users"
@@ -53,14 +54,7 @@ help:
 	@echo "  clean           : clean the development directory"
 	@echo "  update          : update sources of python-openzwave and openzwave"
 
-clean-docs:
-	cd docs && make clean
-	-rm -Rf docs/html
-	-rm -Rf docs/joomla
-	-rm -Rf docs/pdf
-
-clean: clean-docs
-	-rm -rf $(ARCHBASE)
+clean: clean-docs clean-archive
 	-rm -rf $(BUILDDIR)
 	-find . -name \*.pyc -delete
 	-cd openzwave && make clean
@@ -83,6 +77,7 @@ uninstall:
 	${PYTHON_EXEC} setup-lib.py develop --uninstall
 	${PYTHON_EXEC} setup-api.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
+	${PYTHON_EXEC} setup-web.py develop --uninstall
 	-rm -f libopenzwave.so
 	-rm -f src-lib/libopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
@@ -164,6 +159,12 @@ merge-python3:
 	git push
 	git checkout master
 
+clean-docs:
+	cd docs && make clean
+	-rm -Rf docs/html
+	-rm -Rf docs/joomla
+	-rm -Rf docs/pdf
+
 docs: clean-docs
 	-mkdir -p docs/html/nosetests
 	-mkdir -p docs/html/coverage
@@ -172,12 +173,12 @@ docs: clean-docs
 	-mkdir -p docs/joomla/coverage
 	-mkdir -p docs/joomla/pylint
 	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
-	cp docs/html/nosetests/* docs/joomla/nosetests
-	cp docs/html/coverage/* docs/joomla/coverage
+	#$(NOSE) $(NOSEOPTS) tests/
+	-cp docs/html/nosetests/* docs/joomla/nosetests
+	-cp docs/html/coverage/* docs/joomla/coverage
 	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
-	cp docs/html/pylint/* docs/joomla/pylint/
+	-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && make docs
-	#cp docs/_build/text/README.txt README.md
 	cp docs/README.rst README.rst
 	cp docs/_build/text/INSTALL_REPO.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
@@ -223,7 +224,7 @@ autobuild-tests:
 	@echo
 	@echo "Tests for ZWave network finished."
 
-commit: clean merge-python3 docs
+commit: build develop merge-python3 docs
 	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
@@ -246,8 +247,9 @@ update: openzwave
 
 build: openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
-	#${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
-	#${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
+	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
+	${PYTHON_EXEC} setup-web.py build --build-base $(BUILDDIR)/web
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
@@ -256,13 +258,18 @@ openzwave/libopenzwave.a: openzwave
 	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && make
 
+clean-archive:
+	-rm -rf $(ARCHBASE)
+
 $(ARCHDIR):
 	-mkdir -p $(ARCHDIR)/src-lib
 	-mkdir -p $(ARCHDIR)/src-api
 	-mkdir -p $(ARCHDIR)/src-manager
 	-mkdir -p $(ARCHDIR)/src-web
 	cp -Rf openzwave $(ARCHDIR)/
+	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave.vers.cpp
 	cp -Rf src-lib/libopenzwave $(ARCHDIR)/src-lib
+	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
 	cp -Rf src-api/openzwave $(ARCHDIR)/src-api
 	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
@@ -270,11 +277,9 @@ $(ARCHDIR):
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-cd $(ARCHDIR)/openzwave && make clean
 	-rm -Rf $(ARCHDIR)/openzwave/.git
+	cp -f $(ARCHDIR)/openzwave.vers.cpp $(ARCHDIR)/openzwave/cpp/src/vers.cpp
 
-tgz: $(ARCHDIR) docs
-	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave/cpp/src/
-	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave.vers.cpp
-	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
+tgz: build develop clean-archive $(ARCHDIR) docs
 	cp docs/_build/text/README.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_ARCH.txt $(ARCHDIR)/
 	cp docs/_build/text/INSTALL_WIN.txt $(ARCHDIR)/
@@ -284,15 +289,15 @@ tgz: $(ARCHDIR) docs
 	cp docs/_build/text/CHANGELOG.txt $(ARCHDIR)/
 	mkdir -p $(ARCHDIR)/docs
 	cp -Rf docs/_build/html/* $(ARCHDIR)/docs/
-	cp Makefile.archive $(ARCHDIR)/
+	cp Makefile.archive $(ARCHDIR)/Makefile
 	cp setup-lib.py $(ARCHDIR)/
-	sed -i '|sources=["src-lib/libopenzwave/libopenzwave.pyx"]|sources=["src-lib/libopenzwave/libopenzwave.cpp"]|g' $(ARCHDIR)/setup-lib.py
+	sed -i 's|src-lib/libopenzwave/libopenzwave.pyx|src-lib/libopenzwave/libopenzwave.cpp|g' $(ARCHDIR)/setup-lib.py
 	cp setup-api.py $(ARCHDIR)/
 	cp setup-manager.py $(ARCHDIR)/
 	cp setup-web.py $(ARCHDIR)/
 	cp -Rf pyozw_version.py $(ARCHDIR)/pyozw_version.py
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
-	#rm -Rf $(ARCHBASE)
+	rm -Rf $(ARCHBASE)
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
