@@ -27,7 +27,11 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except ImportError:
+    pass
 from pyozwweb.app import create_app, run_app
 
 def main():

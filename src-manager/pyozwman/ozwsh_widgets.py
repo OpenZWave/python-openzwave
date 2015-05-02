@@ -27,6 +27,11 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 __author__ = 'bibi21000'
 
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except ImportError:
+    pass
 from select import select
 import sys
 import os
