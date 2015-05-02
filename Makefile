@@ -226,22 +226,6 @@ autobuild-tests:
 	@echo
 	@echo "Tests for ZWave network finished."
 
-push: build develop docs
-	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	git push
-	@echo
-	@echo "Commits for branch master pushed on github."
-
-commit: push merge-python3
-	@echo
-	@echo "Commits for branches master/python3 pushed on github."
-
-tag: commit
-	git tag v${python_openzwave_version}
-	git push origin v${python_openzwave_version}
-	@echo
-	@echo "Tag pushed on github."
-
 pylint:
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/
 	@echo
@@ -313,5 +297,23 @@ tgz: build develop clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
+push: build develop docs
+	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	git push
+	@echo
+	@echo "Commits for branch master pushed on github."
+
+commit: push merge-python3
+	@echo
+	@echo "Commits for branches master/python3 pushed on github."
+
+tag: commit
+	git tag v${python_openzwave_version}
+	git push origin v${python_openzwave_version}
+	@echo
+	@echo "Tag pushed on github."
+
 ftp:
 	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
+
+new-version: tag tgz ftp
