@@ -384,6 +384,8 @@ class ZWaveNetwork(ZWaveObject):
         """
         if self._started == False:
             return
+        if self.controller is not None:
+            self.controller.stop()
         self.write_config()
         if self.dbcon is not None:
             self.dbcon.close()

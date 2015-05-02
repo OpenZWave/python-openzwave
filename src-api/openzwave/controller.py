@@ -32,6 +32,7 @@ else:
 import time
 from openzwave.object import ZWaveObject
 from libopenzwave import PyStatDriver
+import threading
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -142,6 +143,16 @@ class ZWaveController(ZWaveObject):
         self._python_library_version = None
         self.ctrl_last_state = self.SIGNAL_CTRL_NORMAL
         self.ctrl_last_message = ""
+        self._timer_statistics = None
+        self._interval_statistics = 0.0
+
+    def stop(self):
+        """
+        Stop the controller and all this threads.
+
+        """
+        if self._timer_statistics is not None:
+            self._timer_statistics.cancel()
 
     def __str__(self):
         """
@@ -351,6 +362,45 @@ class ZWaveController(ZWaveObject):
         """
         #print "stat = %s" % stat
         return PyStatDriver[stat]
+
+    def do_poll_statistics(self):
+        """
+        Timer based polling system for statistics
+        """
+        self._timer_statistics = None
+        self._timer_statistics = threading.Timer(self._interval_statistics, do_poll_statistics)
+        #Will notify here
+
+    @property
+    def poll_stats(self):
+        """
+        The interval for polling statistics
+
+        :return: The interval in seconds
+        :rtype: float
+
+        """
+        return self._interval_statistics
+
+    @poll_stats.setter
+    def poll_stats(self, value):
+        """
+        The interval for polling statistics
+
+        :return: The interval in seconds
+        :rtype: ZWaveNode
+
+        :param value: The interval in seconds
+        :type value: float
+
+        """
+        if value != self._interval_statistics:
+            if self._timer_statistics is not None:
+                self._timer_statistics.cancel()
+            if value != 0:
+                self._interval_statistics = value
+                self._timer_statistics = threading.Timer(self._interval_statistics, do_poll_statistics)
+                self._timer_statistics.start()
 
     @property
     def capabilities(self):
