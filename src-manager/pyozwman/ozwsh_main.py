@@ -1,8 +1,30 @@
 #!/usr/bin/env python
 # -* coding: utf-8 -*-
 
-#Author: bibi21000
-#Licence : GPL
+"""
+.. module:: pyozwman.ozwsh_main
+
+This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+    :platform: Unix, Windows, MacOS X
+    :sinopsis: openzwave API
+
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+
+License : GPL(v3)
+
+**python-openzwave** is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+**python-openzwave** is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see http://www.gnu.org/licenses.
+
+"""
 
 __author__ = 'bibi21000'
 
@@ -39,29 +61,6 @@ from pyozwman.ozwsh_widgets import StatTree, StatBox
 
 from louie import dispatcher, All
 import logging
-#from frameapp import FrameApp, DIVIDER
-
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('openzwave')
-
-device = "/dev/ttyUSB0"
-log = "Debug"
-wait_for_network = True
-footer = True
-for arg in sys.argv:
-    if arg.startswith("--help") or arg.startswith("-h"):
-        print("Usage : ozwman [--device=/dev/zwave-aeon-s2] [--log=Debug]")
-        print("   --device=path_to_your_zwave_stick")
-        print("   --log=Info|Debug|None")
-        print("     Look at debug.log and OZW_Log.log")
-        sys.exit("")
-    elif arg.startswith("--device"):
-        temp,device = arg.split("=")
-    elif arg.startswith("--log"):
-        temp,log = arg.split("=")
-    elif arg.startswith("--nowait"):
-        wait_for_network = False
 
 MAIN_TITLE = "openzwave Shell"
 """
@@ -133,22 +132,34 @@ class HeaderBar(urwid.WidgetWrap):
             self.cwd_urwid.set_text(self.cwd % cwd)
 
 class MainWindow(Screen):
-    def __init__(self, device=None, footer=False, name=None):
+    def __init__(self, device=None, footer=True, loglevel="Info", user_path=".", config_path=None):
         Screen.__init__(self)
         self.device = device
         self.footer_display = footer
+        self.loglevel = logging.INFO
+        self.loglevel_ow = loglevel
+        self.user_path = user_path
+        self.config_path = config_path
         self._define_log()
         self._define_screen()
         self._connect_louie()
         self._start_network()
 
     def _define_log(self):
-        hdlr = logging.FileHandler('/tmp/urwidcmd.log')
+        hdlr = logging.FileHandler('ozwsh.log')
         formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
         hdlr.setFormatter(formatter)
-        self.log = logging.getLogger('openzwave')
+        if self.loglevel_ow == "Debug":
+            self.loglevel = logging.DEBUG
+        ozwlog = logging.getLogger('openzwave')
+        ozwlog.setLevel(self.loglevel)
+        ozwlog.addHandler(hdlr)
+        lozwlog = logging.getLogger('libopenzwave')
+        lozwlog.setLevel(self.loglevel)
+        lozwlog.addHandler(hdlr)
+        self.log = logging.getLogger('pyozwman')
+        self.log.setLevel(self.loglevel)
         self.log.addHandler(hdlr)
-        self.log.setLevel(logging.DEBUG)
         self.log.info("="*15 + " start " + "="*15)
 
     def _define_screen(self):
@@ -234,15 +245,16 @@ class MainWindow(Screen):
         """
         self.network.write_config()
         self.network.stop()
+        self.options.destroy()
         raise urwid.ExitMainLoop()
 
     def execute(self, command):
         """
         Parse an execute a commande
         """
-        if wait_for_network == True:
-            self.status_bar.set_command("Network is not ready. Please wait.")
-            return True
+        #if wait_for_network == True:
+        #    self.status_bar.set_command("Network is not ready. Please wait.")
+        #    return True
         command = command.strip()
         if command.startswith('ls') :
             if ' ' in command :
@@ -486,12 +498,13 @@ class MainWindow(Screen):
     def _start_network(self):
         #Define some manager options
         self.options = ZWaveOption(self.device, \
-          config_path="openzwave/config", \
-          user_path=".", cmd_line="")
+          config_path=self.config_path, \
+          user_path=self.user_path, cmd_line="", \
+          kvals = False)
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
         self.options.set_console_output(False)
-        self.options.set_save_log_level("Internal")
+        self.options.set_save_log_level(self.loglevel_ow)
         self.options.set_logging(True)
         self.options.lock()
         self.network = ZWaveNetwork(self.options, self.log)
@@ -566,19 +579,3 @@ class MainWindow(Screen):
         #self.status_bar.update(status='Message from controller: %s : %s' % (state,message))
         self.status_bar.update(status='Message from controller: %s' % (message))
         self.loop.draw_screen()
-
-window = None
-def main():
-    global window
-    window = MainWindow(device=device,footer=footer)
-    window.start()
-    window.loop.run()
-    window.stop()
-    window.log.info("="*15 + " exit " + "="*15)
-    return 0
-
-if __name__ == "__main__":
-    main()
-
-__all__ = ['main']
-

@@ -44,6 +44,7 @@ setup(
   url='https://github.com/bibi21000/python-openzwave',
   version = pyozw_version,
   zip_safe = False,
+  scripts=['src-manager/pyozwman/scripts/ozwsh'],
   package_dir = {'' : 'src-manager' },
   packages = find_packages('src-manager', exclude=["scripts"]),
   install_requires=[ "urwid >= 1.1.1", 'openzwave == %s' % pyozw_version ]
