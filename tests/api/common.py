@@ -91,6 +91,7 @@ class TestApi(TestPyZWave):
                 break
             else:
                 time.sleep(0.5)
+
     def wait_for_network_state(self, state, multiply=1):
         for i in range(0,SLEEP*multiply):
             if self.network.state>=state:
