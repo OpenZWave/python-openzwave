@@ -93,19 +93,24 @@ total 2428
 <p>And now, it&#8217;s time log off and log on. Groups are checked when you open the session.</p>
 <p>You can now install your packages without sudo.</p>
 </div>
-<div class="section" id="python3">
-<h2>python3</h2>
+<div class="section" id="python3-and-virtualenv">
+<h2>Python3 and virtualenv</h2>
 <p>Python 3 is actually not supported.</p>
 <p>A branch (python3) has been created with a special Dockerfile. It build python-openzwave and launch some tests.
 This branch is automatically merged from master at &#8220;make commit&#8221;.</p>
 <p>So please, do not directly push under python3 branch. Make your developments under master or another branch.</p>
 <p>It&#8217;s important for me have python2/python3 compatibilty in the master branch.
 cython can help for this : <a class="reference external" href="http://docs.cython.org/src/tutorial/strings.html">http://docs.cython.org/src/tutorial/strings.html</a></p>
+<p>The Makefile sill try to automatically configure your version of python (running python &#8211;version).</p>
+<p>If you want to install python-openzwave in a python virtual environnement, you should use something like :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make <span class="nv">VIRTUAL_ENV</span><span class="o">=</span>/path/to/my/venv ...
+</pre></div>
 </div>
-<div class="section" id="support">
-<h2>Support</h2>
-<p>You can ask for support on the google group : <a class="reference external" href="http://groups.google.com/d/forum/python-openzwave-discuss">http://groups.google.com/d/forum/python-openzwave-discuss</a>.</p>
-<p>Please don&#8217;t ask for support in github issues or by email.</p>
+<p>If you use python 3 and your python executable is called python3 :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make <span class="nv">PYTHON_EXEC</span><span class="o">=</span>python3 ...
+</pre></div>
+</div>
+<p>You can also put these variables in a CONFIG.make file instead of passing them to the command line</p>
 </div>
 </div>
 

@@ -3,41 +3,13 @@
   <div class="section" id="python-openzwave">
 <h1>python-openzwave</h1>
 <p>You need to install and python-openzwave to test examples.</p>
-<div class="section" id="ozwsh">
-<h2>ozwsh</h2>
-<p>A shell manager for your ZWave network. It use urwid and louie python extensions.
-If needed, type the following command to install them :</p>
-<div class="highlight-bash"><div class="highlight"><pre>sudo pip install urwid louie
-</pre></div>
+<div class="section" id="pyozwman">
+<h2>pyozwman</h2>
+<p>A shell manager for your ZWave network : <a class="reference internal" href="pyozwman.html"><em>PyOzwMan documentation</em></a></p>
 </div>
-<p>Start ozwsh with :</p>
-<div class="highlight-bash"><div class="highlight"><pre>./ozwsh.sh --device<span class="o">=</span>/dev/yourzwavestick
-</pre></div>
-</div>
-<p>It allows you to :</p>
-<blockquote>
-<div><ul class="simple">
-<li>Reset controller (hard and soft) and add/remove device/controller</li>
-<li>Change node informations (name, location, ... )</li>
-<li>view and change values informations</li>
-<li>view and change group informations</li>
-<li>Full management of scenes, switches, dimmers and sensors</li>
-</ul>
-</div></blockquote>
-<p>It&#8217;s a shell like manager. You can visit your zwave network using the
-command cd. All available commands are displayed on every screens.
-You can use the tab keys to switch between the view panel and the edit panel
-and the up and down ones to view all informations.</p>
-<p>For the developpers : this a good example on how to use the api.
-Update are sent to uwird widget using louie notifications. ZWave data
-updates are done in the set, add, delete, remove, ... methods.</p>
-<p>There is some others examples, to test them :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd </span>examples
-./build_examples.sh
-</pre></div>
-</div>
-<p>This will install all the needed files used by the examples in a temporary
-directory.</p>
+<div class="section" id="pyozwweb">
+<h2>pyozwweb</h2>
+<p>A Flask + socket.io + jquery web application framework for your ZWave network : <a class="reference internal" href="pyozwweb.html"><em>PyOzwWeb documentation</em></a></p>
 </div>
 <div class="section" id="api-demo">
 <h2>api_demo</h2>

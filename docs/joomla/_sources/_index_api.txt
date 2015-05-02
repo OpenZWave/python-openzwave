@@ -12,6 +12,7 @@
 * :doc:`Objects and Exceptions </object>`
 * :doc:`Enums and data types </data>`
 * :doc:`PyOzwWeb documentation </pyozwweb>`
+* :doc:`PyOzwMan documentation </pyozwman>`
 * `Nose tests result <nosetests/nosetests.html>`_
 * `Pylint report <pylint/report.html>`_
 * `Coverage report <coverage/index.html>`_
