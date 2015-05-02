@@ -8,7 +8,6 @@ To do for python-openzwave 0.3.0-final :
 
  * Fix pyozwman
  * Add more tests for the library : switches, dimmers, polling, heal, test, ...
- * Fix tests for controller commands
  * Fix reloader problem : the network ist stop/start every time the app is realoaded. But in this case, the process terminates normally. But there seems to be 2 running instances of the network.
 
 
@@ -18,6 +17,7 @@ python-openzwave 0.3.0-alpha3:
  * Fix bug in start/stop in pyozwweb app and tests.
  * Add map, scenes to PyOzwWeb
  * Add new tests
+ * Fix some tests for controller commands
  * Finish the archive install : the lib is already cythonized. No need to install cython anymore.
 
 
