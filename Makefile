@@ -297,7 +297,7 @@ tgz: clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
-push: docs
+push: build develop docs
 	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git push
 	@echo
@@ -318,6 +318,6 @@ ftp:
 	@echo
 	@echo "New version ${python_openzwave_version} published tp ftp"
 
-new-version: build develop tag tgz ftp
+new-version: tag tgz ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
