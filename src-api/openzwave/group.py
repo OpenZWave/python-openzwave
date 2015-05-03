@@ -156,3 +156,21 @@ class ZWaveGroup(ZWaveObject):
 
         """
         self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id)
+
+    def to_dict(self, extras=['all']):
+        """
+        Return a dict representation of the group.
+
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
+        :rtype: dict()
+
+        """
+        if 'all' in extras:
+                extras = ['associations']
+        ret={}
+        ret['label'] = self.label
+        if 'associations' in extras :
+                ret['associations'] = dict.fromkeys(self.associations, 0)
+        return ret

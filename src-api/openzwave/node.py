@@ -176,22 +176,31 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeProductId(self.home_id, self.object_id)
 
-    def to_dict(self, kvals=True):
+    def to_dict(self, extras=['all']):
         """
         Return a dict representation of the node.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
+        if 'all' in extras:
+                extras = ['kvals', 'capabilities', 'neighbors', 'groups']
         ret={}
         ret['name'] = self.name
         ret['location'] = self.location
         ret['product_type'] = self.product_type
         ret['product_name'] = self.product_name
         ret['node_id'] = self.node_id
-        ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
-        ret['capabilities'] = dict.fromkeys(self.capabilities, 0)
-        if kvals == True and self.network.dbcon is not None:
+        if 'groups' in extras :
+                ret['groups'] = self.groups_to_dict(extras=extras)
+        if 'neighbors' in extras :
+                ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
+        if 'capabilities' in extras :
+                ret['capabilities'] = dict.fromkeys(self.capabilities, 0)
+        if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():
                 ret[key]=vals[key]
@@ -258,6 +267,22 @@ class ZWaveNode(ZWaveObject,
         for i in range(1, number_groups+1):
             groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
         return groups
+
+    def groups_to_dict(self, extras=['all']):
+        """
+        Return a dict representation of the groups.
+
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
+        :rtype: dict()
+
+        """
+        groups = self.groups
+        ret={}
+        for gid in groups.keys():
+            ret[gid] = groups[gid].to_dict(extras=extras)
+        return ret
 
     def heal(self, upNodeRoute=False):
         """

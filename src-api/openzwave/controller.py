@@ -753,15 +753,21 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
 
-    def to_dict(self):
+    def to_dict(self, extras=['all']):
         """
         Return a dict representation of the controller.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
-        ret=self.node.to_dict()
-        ret['capabilities'].update(dict.fromkeys(self.capabilities, 0))
+        ret=self.node.to_dict(extras=extras)
+        if 'all' in extras:
+            extras = ['kvals', 'capabilities', 'neighbors']
+        if 'capabilities' in extras:
+            ret['capabilities'].update(dict.fromkeys(self.capabilities, 0))
         ret["zw_version"] = self.library_version
         ret["zw_description"] = self.library_description
         ret["oz_version"] = self.ozw_library_version

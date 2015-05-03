@@ -208,17 +208,20 @@ class ZWaveScene(ZWaveObject):
         """
         return self._network.manager.activateScene(self.object_id)
 
-    def to_dict(self, kvals=True):
+    def to_dict(self, extras=['kvals']):
         """
         Return a dict representation of the node.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
         ret={}
         ret['label'] = self.label
         ret['scene_id'] = self.scene_id
-        if kvals == True and self.network.dbcon is not None:
+        if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():
                 ret[key]=vals[key]
