@@ -541,17 +541,27 @@ class ZWaveValue(ZWaveObject):
         logger.debug('Set change verified %s for valueId [%s]', verify, self.value_id)
         self._network.manager.setChangeVerified(self.value_id, verify)
 
-    def to_dict(self):
+    def to_dict(self, extras=['all']):
         """
-        Return a dict representation of the value.
+        Return a dict representation of the node.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
+        if 'all' in extras:
+                extras = ['kvals']
         ret={}
         ret['label'] = self.label
         ret['value_id'] = self.value_id
         ret['node_id'] = self.node.node_id
         ret['units'] = self.units
+        ret['genre'] = self.genre
         ret['data'] = self.data
+        if 'kvals' in extras and self.network.dbcon is not None:
+            vals = self.kvals
+            for key in vals.keys():
+                ret[key]=vals[key]
         return ret

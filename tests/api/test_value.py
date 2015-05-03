@@ -55,44 +55,18 @@ from tests.api.common import TestApi
 from tests.common import TestPyZWave
 import json
 
-class TestNodes(TestApi):
+class TestValue(TestApi):
 
-    def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
-        self.assertTrue(self.network.nodes_count>0)
-
-    def test_100_nodes_test(self):
+    def test_200_values_to_dict(self):
         for node in self.network.nodes:
-            self.network.nodes[node].test(5)
-
-    def test_200_nodes_to_dict(self):
-        for node in self.network.nodes:
-            try :
-                nodes = self.network.nodes[node].to_dict()
-                self.assertEqual(type(nodes), type({}))
-                res = json.dumps(nodes)
-            except TypeError:
-                res = None
-            self.assertNotEqual(res, None)
-
-    def test_210_controller_to_dict(self):
-        try :
-            nodes = self.network.controller.to_dict()
-            self.assertEqual(type(nodes), type({}))
-            res = json.dumps(nodes)
-        except TypeError:
-            res = None
-        self.assertNotEqual(res, None)
-
-    def test_220_nodes_groups_to_dict(self):
-        for node in self.network.nodes:
-            try :
-                groups = self.network.nodes[node].groups_to_dict()
-                self.assertEqual(type(groups), type({}))
-                res = json.dumps(groups)
-            except TypeError:
-                res = None
-            self.assertNotEqual(res, None)
+            for value in self.network.nodes[node].values:
+                val = self.network.nodes[node].values[value].to_dict()
+                self.assertEqual(type(val), type({}))
+                try :
+                    res = json.dumps(val)
+                except TypeError:
+                    res = None
+                self.assertNotEqual(res, None)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

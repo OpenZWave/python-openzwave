@@ -187,13 +187,15 @@ class ZWaveNode(ZWaveObject,
 
         """
         if 'all' in extras:
-                extras = ['kvals', 'capabilities', 'neighbors', 'groups']
+                extras = ['kvals', 'capabilities', 'neighbors', 'groups', 'values']
         ret={}
         ret['name'] = self.name
         ret['location'] = self.location
         ret['product_type'] = self.product_type
         ret['product_name'] = self.product_name
         ret['node_id'] = self.node_id
+        if 'values' in extras :
+                ret['values'] = self.values_to_dict(extras=extras)
         if 'groups' in extras :
                 ret['groups'] = self.groups_to_dict(extras=extras)
         if 'neighbors' in extras :
@@ -437,6 +439,21 @@ class ZWaveNode(ZWaveObject,
               (readonly == 'All' or self.values[value].is_read_only == readonly) and \
               (writeonly == 'All' or self.values[value].is_write_only == writeonly):
                 ret[value] = self.values[value]
+        return ret
+
+    def values_to_dict(self, extras=['all']):
+        """
+        Return a dict representation of the values.
+
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
+        :rtype: dict()
+
+        """
+        ret={}
+        for vid in self.values.keys():
+            ret[vid] = self.values[vid].to_dict(extras=extras)
         return ret
 
     def add_value(self, value_id):
