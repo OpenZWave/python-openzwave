@@ -268,7 +268,9 @@ $(ARCHDIR):
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-find $(ARCHDIR) -name zwcfg_\*.xml -delete
 	-find $(ARCHDIR) -name OZW_Log.log -delete
+	-find $(ARCHDIR) -name OZW_Log.txt -delete
 	-find $(ARCHDIR) -name ozwsh.log -delete
+	-find $(ARCHDIR) -name errors.log -delete
 	-find $(ARCHDIR) -name zwscene.xml -delete
 	-find $(ARCHDIR) -name pyozw.db -delete
 	-cd $(ARCHDIR)/openzwave && make clean
