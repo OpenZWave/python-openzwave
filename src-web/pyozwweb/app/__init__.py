@@ -107,9 +107,27 @@ def create_app(config_object='pyozwweb.config.DevelopmentConfig'):
     _app.config.from_object(config_object)
     global app
     app = _app
+    #Logging configuration
     import logging.config, yaml
-    logging.config.dictConfig(yaml.load(open(app.config['LOGGING_CONF'])))
+    logs = yaml.load(open(app.config['LOGGING_CONF']))
+    logging.config.dictConfig(logs)
     logging.debug("Load config from %s"%config_object)
+    if logs['loggers']['libopenzwave']['level'] == 'DEBUG':
+        ZWAVE_DEBUG = "Debug"
+    elif logs['loggers']['libopenzwave']['level'] == 'ERROR':
+        ZWAVE_DEBUG = "Error"
+    elif logs['loggers']['libopenzwave']['level'] == 'WARNING':
+        ZWAVE_DEBUG = "Warning"
+    else:
+        ZWAVE_DEBUG = "Info"
+    #Application configuration
+    from ConfigParser import SafeConfigParser
+    settings = SafeConfigParser()
+    settings.read(app.config['APP_CONF'])
+    section = "zwave"
+    if settings.has_option(section, 'device'):
+        app.config['ZWAVE_DEVICE'] = settings.get(section, 'device')
+    #Flask stuff
     global fanstatic
     fanstatic = Fanstatic(app)
     global socketio

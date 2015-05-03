@@ -47,6 +47,7 @@ class Config(object):
     DATABASE_URI = 'sqlite://:memory:'
 
     LOGGING_CONF = 'logging.conf'
+    APP_CONF = 'app.conf'
 
     SECRET_KEY = 'This string will be replaced with a proper key in production.'
 
@@ -60,7 +61,7 @@ class Config(object):
     RECAPTCHA_PRIVATE_KEY = '6LeYIbsSAAAAAJezaIq3Ft_hSTo0YtyeFG-JgRtu'
     RECAPTCHA_OPTIONS = {'theme': 'white'}
 
-    ZWAVE_DEVICE = "/dev/ttyUSB0"
+    ZWAVE_DEVICE = "/dev/ttyUSB1"
     ZWAVE_DEBUG = "Debug"
     ZWAVE_LOGGING = True
     ZWAVE_DIR = None
