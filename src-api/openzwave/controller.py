@@ -34,7 +34,6 @@ if sys.hexversion >= 0x3000000:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
-import time
 from openzwave.object import ZWaveObject
 from libopenzwave import PyStatDriver
 import threading
@@ -489,7 +488,11 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
             **{'network':self._network})
         self._network.manager.resetController(self._network.home_id)
-        time.sleep(5)
+        try:
+            self.network.network_event.wait(5.0)
+        except AssertionError:
+            #For gevent AssertionError: Impossible to call blocking function in the event loop callback
+            pass
 
     def soft_reset(self):
         """

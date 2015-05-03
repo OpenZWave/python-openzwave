@@ -1060,8 +1060,8 @@ class ZWaveNetwork(ZWaveObject):
         try:
             self._semaphore_nodes.acquire()
             logger.debug('DriverReset received. Remove all nodes')
-            #self.nodes = None
-            #self._state = self.STATE_RESETTED
+            self.nodes = None
+            self._state = self.STATE_RESETTED
             dispatcher.send(self.SIGNAL_DRIVER_RESET, \
                 **{'network': self})
             dispatcher.send(self.SIGNAL_NETWORK_RESETTED, \
