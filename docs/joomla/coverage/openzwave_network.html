@@ -25,9 +25,9 @@
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
         <h2 class='stats'>
-            546 statements &nbsp;
+            548 statements &nbsp;
             <span class='run hide_run shortkey_r button_toggle_run'>0 run</span>
-            <span class='mis shortkey_m button_toggle_mis'>546 missing</span>
+            <span class='mis shortkey_m button_toggle_mis'>548 missing</span>
             <span class='exc shortkey_x button_toggle_exc'>0 excluded</span>
             
         </h2>
@@ -1123,8 +1123,8 @@
 <p id='n1060' class='stm mis'><a href='#n1060'>1060</a></p>
 <p id='n1061' class='stm mis'><a href='#n1061'>1061</a></p>
 <p id='n1062' class='stm mis'><a href='#n1062'>1062</a></p>
-<p id='n1063' class='pln'><a href='#n1063'>1063</a></p>
-<p id='n1064' class='pln'><a href='#n1064'>1064</a></p>
+<p id='n1063' class='stm mis'><a href='#n1063'>1063</a></p>
+<p id='n1064' class='stm mis'><a href='#n1064'>1064</a></p>
 <p id='n1065' class='stm mis'><a href='#n1065'>1065</a></p>
 <p id='n1066' class='pln'><a href='#n1066'>1066</a></p>
 <p id='n1067' class='stm mis'><a href='#n1067'>1067</a></p>
@@ -2755,8 +2755,8 @@
 <p id='t1060' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>try</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t1061' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>_semaphore_nodes</span><span class='op'>.</span><span class='nam'>acquire</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t1062' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>logger</span><span class='op'>.</span><span class='nam'>debug</span><span class='op'>(</span><span class='str'>&#39;DriverReset received. Remove all nodes&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t1063' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='com'>#self.nodes = None</span><span class='strut'>&nbsp;</span></p>
-<p id='t1064' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='com'>#self._state = self.STATE_RESETTED</span><span class='strut'>&nbsp;</span></p>
+<p id='t1063' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>nodes</span> <span class='op'>=</span> <span class='nam'>None</span><span class='strut'>&nbsp;</span></p>
+<p id='t1064' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>self</span><span class='op'>.</span><span class='nam'>_state</span> <span class='op'>=</span> <span class='nam'>self</span><span class='op'>.</span><span class='nam'>STATE_RESETTED</span><span class='strut'>&nbsp;</span></p>
 <p id='t1065' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>dispatcher</span><span class='op'>.</span><span class='nam'>send</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>SIGNAL_DRIVER_RESET</span><span class='op'>,</span> <span class='xx'>\</span><span class='strut'>&nbsp;</span></p>
 <p id='t1066' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='op'>**</span><span class='op'>{</span><span class='str'>&#39;network&#39;</span><span class='op'>:</span> <span class='nam'>self</span><span class='op'>}</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t1067' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>dispatcher</span><span class='op'>.</span><span class='nam'>send</span><span class='op'>(</span><span class='nam'>self</span><span class='op'>.</span><span class='nam'>SIGNAL_NETWORK_RESETTED</span><span class='op'>,</span> <span class='xx'>\</span><span class='strut'>&nbsp;</span></p>
