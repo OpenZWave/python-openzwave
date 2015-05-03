@@ -331,6 +331,24 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.node.ZWaveNode.groups_to_dict">
+<tt class="descname">groups_to_dict</tt><big>(</big><em>extras=['all']</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.groups_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict representation of the groups.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[]</em>) &#8211; The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.node.ZWaveNode.has_command_class">
 <tt class="descname">has_command_class</tt><big>(</big><em>class_id</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.has_command_class" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that this node use this commandClass.</p>
@@ -846,12 +864,16 @@ has been made.</p>
 
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.to_dict">
-<tt class="descname">to_dict</tt><big>(</big><em>kvals=True</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.to_dict" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">to_dict</tt><big>(</big><em>extras=['all']</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.to_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict representation of the node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[]</em>) &#8211; The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
 </tr>
 </tbody>
@@ -863,6 +885,24 @@ has been made.</p>
 <tt class="descname">type</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a human-readable label describing the node
 :rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.values_to_dict">
+<tt class="descname">values_to_dict</tt><big>(</big><em>extras=['all']</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.values_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict representation of the values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[]</em>) &#8211; The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
