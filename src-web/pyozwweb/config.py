@@ -46,6 +46,9 @@ class Config(object):
     RELOADER = False
     DATABASE_URI = 'sqlite://:memory:'
 
+    HOST = "127.0.0.1"
+    PORT = "5000"
+
     LOGGING_CONF = 'logging.conf'
     APP_CONF = 'app.conf'
 

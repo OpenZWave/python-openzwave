@@ -90,7 +90,7 @@ def run_app(app_, socketio_, debug=False):
     app_.debug = app.config['DEBUG']
     app_.testing = app.config['TESTING']
     logging.debug("Flask url maps %s" % app.url_map)
-    socketio.run(app, use_reloader=app.config['RELOADER'])
+    socketio.run(app, use_reloader=app.config['RELOADER'],host=app.config['HOST'], port=app.config['PORT'])
     #print "App has ran"
     #stop_all()
 
@@ -127,6 +127,11 @@ def create_app(config_object='pyozwweb.config.DevelopmentConfig'):
     section = "zwave"
     if settings.has_option(section, 'device'):
         app.config['ZWAVE_DEVICE'] = settings.get(section, 'device')
+    section = "server"
+    if settings.has_option(section, 'host'):
+        app.config['HOST'] = settings.get(section, 'host')
+    if settings.has_option(section, 'port'):
+        app.config['PORT'] = settings.getint(section, 'port')
     #Flask stuff
     global fanstatic
     fanstatic = Fanstatic(app)
