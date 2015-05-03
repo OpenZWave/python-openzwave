@@ -178,7 +178,7 @@ docs: clean-docs
 	#$(NOSE) $(NOSEOPTS) tests/
 	-cp docs/html/nosetests/* docs/joomla/nosetests
 	-cp docs/html/coverage/* docs/joomla/coverage
-	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ >docs/html/pylint/report.html
+	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
 	-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && make docs
 	cp docs/README.rst README.rst
@@ -264,6 +264,7 @@ $(ARCHDIR):
 	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
 	cp -Rf src-web/pyozwweb $(ARCHDIR)/src-web
+	cp -Rf examples $(ARCHDIR)
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-find $(ARCHDIR) -name zwcfg_\*.xml -delete
 	-find $(ARCHDIR) -name OZW_Log.log -delete
