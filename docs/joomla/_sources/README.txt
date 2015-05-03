@@ -12,11 +12,11 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
 
 
-python-openzwave 0.3.0-alpha3 is out !!!
-========================================
-Look at CHANGELOG to see new features, to do list and release notes.
+python-openzwave 0.3.0-beta1 is out !!!
+=======================================
+Look at CHANGELOG to see new features and release notes.
 
-Look at INSTALL_REPO to test it now !!!
+Look at INSTALL_REPO to test it now
 
 Look at INSTALL_ARCH to install from archive : no need to install cython anymore
 
