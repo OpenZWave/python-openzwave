@@ -113,15 +113,17 @@ class ListenerThread(Thread):
     def _louie_network(self, network):
         """Louie dispatch for netowrk
         """
-        if network is None:
-            self.socketio.emit('my network response',
-                {'data': data_room_network(current_app.extensions['zwnetwork'])},
-                namespace='/ozwave')
-        else:
-            self.socketio.emit('my network response',
-                {'data': data_room_network(current_app.extensions['zwnetwork'])},
-                namespace='/ozwave')
-            logging.debug('OpenZWave network notification : homeid %0.8x (state:%s) - %d nodes were found.' % (network.home_id, network.state, network.nodes_count))
+        with self.app.test_request_context():
+            from flask import request
+            if network is None:
+                self.socketio.emit('my network response',
+                    {'data': data_room_network(current_app.extensions['zwnetwork'])},
+                    namespace='/ozwave')
+            else:
+                self.socketio.emit('my network response',
+                    {'data': data_room_network(current_app.extensions['zwnetwork'])},
+                    namespace='/ozwave')
+                logging.debug('OpenZWave network notification : homeid %0.8x (state:%s) - %d nodes were found.' % (network.home_id, network.state, network.nodes_count))
 
     def join_room_node(self):
         """Join room nodes

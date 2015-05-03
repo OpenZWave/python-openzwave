@@ -20,17 +20,26 @@ Update the config :
 
 .. code-block:: bash
 
-    vim config.py
+    vim app.conf
 
-    ZWAVE_DEVICE = "/dev/ttyUSB0"
+    [zwave]
+    device = /dev/ttyUSB0
 
-You can fine tune logging in logging.conf. You can run the app :
+You can fine tune logging in logging.conf and run the app :
 
 .. code-block:: bash
 
     ./run.py
 
 And connect to http://127.0.0.1:5000 using your favorite browser.
+
+You can also change the ip/port to allow remote connections :
+
+.. code-block:: bash
+
+    [server]
+    host = 0.0.0.0
+    port = 8080
 
 Source
 ------

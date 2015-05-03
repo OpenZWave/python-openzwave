@@ -90,7 +90,7 @@ def run_app(app_, socketio_, debug=False):
     app_.debug = app.config['DEBUG']
     app_.testing = app.config['TESTING']
     logging.debug("Flask url maps %s" % app.url_map)
-    socketio.run(app, use_reloader=app.config['RELOADER'])
+    socketio.run(app, use_reloader=app.config['RELOADER'],host=app.config['HOST'], port=app.config['PORT'])
     #print "App has ran"
     #stop_all()
 
@@ -107,9 +107,32 @@ def create_app(config_object='pyozwweb.config.DevelopmentConfig'):
     _app.config.from_object(config_object)
     global app
     app = _app
+    #Logging configuration
     import logging.config, yaml
-    logging.config.dictConfig(yaml.load(open(app.config['LOGGING_CONF'])))
+    logs = yaml.load(open(app.config['LOGGING_CONF']))
+    logging.config.dictConfig(logs)
     logging.debug("Load config from %s"%config_object)
+    if logs['loggers']['libopenzwave']['level'] == 'DEBUG':
+        ZWAVE_DEBUG = "Debug"
+    elif logs['loggers']['libopenzwave']['level'] == 'ERROR':
+        ZWAVE_DEBUG = "Error"
+    elif logs['loggers']['libopenzwave']['level'] == 'WARNING':
+        ZWAVE_DEBUG = "Warning"
+    else:
+        ZWAVE_DEBUG = "Info"
+    #Application configuration
+    from ConfigParser import SafeConfigParser
+    settings = SafeConfigParser()
+    settings.read(app.config['APP_CONF'])
+    section = "zwave"
+    if settings.has_option(section, 'device'):
+        app.config['ZWAVE_DEVICE'] = settings.get(section, 'device')
+    section = "server"
+    if settings.has_option(section, 'host'):
+        app.config['HOST'] = settings.get(section, 'host')
+    if settings.has_option(section, 'port'):
+        app.config['PORT'] = settings.getint(section, 'port')
+    #Flask stuff
     global fanstatic
     fanstatic = Fanstatic(app)
     global socketio

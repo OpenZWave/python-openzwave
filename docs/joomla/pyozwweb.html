@@ -13,16 +13,23 @@
 </pre></div>
 </div>
 <p>Update the config :</p>
-<div class="highlight-bash"><div class="highlight"><pre>vim config.py
+<div class="highlight-bash"><div class="highlight"><pre>vim app.conf
 
-<span class="nv">ZWAVE_DEVICE</span> <span class="o">=</span> <span class="s2">&quot;/dev/ttyUSB0&quot;</span>
+<span class="o">[</span>zwave<span class="o">]</span>
+<span class="nv">device</span> <span class="o">=</span> /dev/ttyUSB0
 </pre></div>
 </div>
-<p>You can fine tune logging in logging.conf. You can run the app :</p>
+<p>You can fine tune logging in logging.conf and run the app :</p>
 <div class="highlight-bash"><div class="highlight"><pre>./run.py
 </pre></div>
 </div>
 <p>And connect to <a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a> using your favorite browser.</p>
+<p>You can also change the ip/port to allow remote connections :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="o">[</span>server<span class="o">]</span>
+<span class="nv">host</span> <span class="o">=</span> 0.0.0.0
+<span class="nv">port</span> <span class="o">=</span> 8080
+</pre></div>
+</div>
 </div>
 <div class="section" id="source">
 <h2>Source</h2>

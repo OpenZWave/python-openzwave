@@ -23,6 +23,11 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except ImportError:
+    pass
 import os
 #from collections import namedtuple
 import time
@@ -384,6 +389,8 @@ class ZWaveNetwork(ZWaveObject):
         """
         if self._started == False:
             return
+        if self.controller is not None:
+            self.controller.stop()
         self.write_config()
         if self.dbcon is not None:
             self.dbcon.close()
@@ -577,22 +584,28 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._nodes
 
-    def nodes_to_dict(self, kvals=True):
+    def nodes_to_dict(self, extras=['all']):
         """
         Return a dict representation of the network.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
         ret={}
         for ndid in self._nodes.keys():
-            ret[ndid]=self._nodes[ndid].to_dict(kvals=kvals)
+            ret[ndid]=self._nodes[ndid].to_dict(extras=extras)
         return ret
 
-    def to_dict(self, kvals=True):
+    def to_dict(self, extras=['kvals']):
         """
         Return a dict representation of the network.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
@@ -601,7 +614,7 @@ class ZWaveNetwork(ZWaveObject):
         ret['state_str'] = self.state_str,
         ret['home_id'] = self.home_id_str,
         ret['nodes_count'] = self.nodes_count,
-        if kvals == True and self.network.dbcon is not None:
+        if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():
                 ret[key]=vals[key]
@@ -738,17 +751,20 @@ class ZWaveNetwork(ZWaveObject):
         else:
             return self._load_scenes()
 
-    def scenes_to_dict(self, kvals=True):
+    def scenes_to_dict(self, extras=['all']):
         """
         Return a JSONifiable dict representation of the scenes.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
         ret={}
         scenes = self.get_scenes()
         for scnid in scenes.keys():
-            ret[scnid] = scenes[scnid].to_dict(kvals=kvals)
+            ret[scnid] = scenes[scnid].to_dict(extras=extras)
         return ret
 
     def _load_scenes(self):

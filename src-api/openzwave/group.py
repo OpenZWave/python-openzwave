@@ -23,6 +23,11 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except ImportError:
+    pass
 from openzwave.object import ZWaveObject
 
 # Set default logging handler to avoid "No handler found" warnings.
@@ -151,3 +156,21 @@ class ZWaveGroup(ZWaveObject):
 
         """
         self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id)
+
+    def to_dict(self, extras=['all']):
+        """
+        Return a dict representation of the group.
+
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
+        :rtype: dict()
+
+        """
+        if 'all' in extras:
+                extras = ['associations']
+        ret={}
+        ret['label'] = self.label
+        if 'associations' in extras :
+                ret['associations'] = dict.fromkeys(self.associations, 0)
+        return ret

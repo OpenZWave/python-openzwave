@@ -24,6 +24,11 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+try:
+    from gevent import monkey
+    monkey.patch_all()
+except ImportError:
+    pass
 import sys
 if sys.hexversion >= 0x3000000:
     from pydispatch import dispatcher
@@ -32,6 +37,7 @@ else:
 import time
 from openzwave.object import ZWaveObject
 from libopenzwave import PyStatDriver
+import threading
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -101,6 +107,7 @@ class ZWaveController(ZWaveObject):
     SIGNAL_CTRL_NODEFAILED = 'NodeFailed'
 
     SIGNAL_CONTROLLER = 'Message'
+    SIGNAL_CONTROLLER_STATS = 'ControllerStats'
 
     CMD_NONE = 0
     CMD_ADDDEVICE = 1
@@ -142,6 +149,16 @@ class ZWaveController(ZWaveObject):
         self._python_library_version = None
         self.ctrl_last_state = self.SIGNAL_CTRL_NORMAL
         self.ctrl_last_message = ""
+        self._timer_statistics = None
+        self._interval_statistics = 0.0
+
+    def stop(self):
+        """
+        Stop the controller and all this threads.
+
+        """
+        if self._timer_statistics is not None:
+            self._timer_statistics.cancel()
 
     def __str__(self):
         """
@@ -352,6 +369,49 @@ class ZWaveController(ZWaveObject):
         #print "stat = %s" % stat
         return PyStatDriver[stat]
 
+    def do_poll_statistics(self):
+        """
+        Timer based polling system for statistics
+        """
+        self._timer_statistics = None
+        stats = self.stats
+        dispatcher.send(self.SIGNAL_CONTROLLER_STATS, \
+            **{'controller':self, 'stats':stats})
+
+        self._timer_statistics = threading.Timer(self._interval_statistics, self.do_poll_statistics)
+        self._timer_statistics.start()
+
+    @property
+    def poll_stats(self):
+        """
+        The interval for polling statistics
+
+        :return: The interval in seconds
+        :rtype: float
+
+        """
+        return self._interval_statistics
+
+    @poll_stats.setter
+    def poll_stats(self, value):
+        """
+        The interval for polling statistics
+
+        :return: The interval in seconds
+        :rtype: ZWaveNode
+
+        :param value: The interval in seconds
+        :type value: float
+
+        """
+        if value != self._interval_statistics:
+            if self._timer_statistics is not None:
+                self._timer_statistics.cancel()
+            if value != 0:
+                self._interval_statistics = value
+                self._timer_statistics = threading.Timer(self._interval_statistics, self.do_poll_statistics)
+                self._timer_statistics.start()
+
     @property
     def capabilities(self):
         """
@@ -427,7 +487,7 @@ class ZWaveController(ZWaveObject):
         """
         self._network.state = self._network.STATE_RESETTED
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
-            **{'network': self._network})
+            **{'network':self._network})
         self._network.manager.resetController(self._network.home_id)
         time.sleep(5)
 
@@ -693,15 +753,21 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
 
-    def to_dict(self):
+    def to_dict(self, extras=['all']):
         """
         Return a dict representation of the controller.
 
+        :param extras: The extra inforamtions to add
+        :type extras: []
+        :returns: A dict
         :rtype: dict()
 
         """
-        ret=self.node.to_dict()
-        ret['capabilities'].update(dict.fromkeys(self.capabilities, 0))
+        ret=self.node.to_dict(extras=extras)
+        if 'all' in extras:
+            extras = ['kvals', 'capabilities', 'neighbors']
+        if 'capabilities' in extras:
+            ret['capabilities'].update(dict.fromkeys(self.capabilities, 0))
         ret["zw_version"] = self.library_version
         ret["zw_description"] = self.library_description
         ret["oz_version"] = self.ozw_library_version
