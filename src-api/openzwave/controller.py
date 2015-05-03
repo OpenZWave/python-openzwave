@@ -107,6 +107,7 @@ class ZWaveController(ZWaveObject):
     SIGNAL_CTRL_NODEFAILED = 'NodeFailed'
 
     SIGNAL_CONTROLLER = 'Message'
+    SIGNAL_CONTROLLER_STATS = 'ControllerStats'
 
     CMD_NONE = 0
     CMD_ADDDEVICE = 1
@@ -373,8 +374,12 @@ class ZWaveController(ZWaveObject):
         Timer based polling system for statistics
         """
         self._timer_statistics = None
-        self._timer_statistics = threading.Timer(self._interval_statistics, do_poll_statistics)
-        #Will notify here
+        stats = self.stats
+        dispatcher.send(self.SIGNAL_CONTROLLER_STATS, \
+            **{'controller':self, 'stats':stats})
+
+        self._timer_statistics = threading.Timer(self._interval_statistics, self.do_poll_statistics)
+        self._timer_statistics.start()
 
     @property
     def poll_stats(self):
@@ -404,7 +409,7 @@ class ZWaveController(ZWaveObject):
                 self._timer_statistics.cancel()
             if value != 0:
                 self._interval_statistics = value
-                self._timer_statistics = threading.Timer(self._interval_statistics, do_poll_statistics)
+                self._timer_statistics = threading.Timer(self._interval_statistics, self.do_poll_statistics)
                 self._timer_statistics.start()
 
     @property
@@ -482,7 +487,7 @@ class ZWaveController(ZWaveObject):
         """
         self._network.state = self._network.STATE_RESETTED
         dispatcher.send(self._network.SIGNAL_NETWORK_RESETTED, \
-            **{'network': self._network})
+            **{'network':self._network})
         self._network.manager.resetController(self._network.home_id)
         time.sleep(5)
 

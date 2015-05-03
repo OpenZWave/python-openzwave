@@ -143,9 +143,41 @@ class TestController(TestApi):
         self.assertEqual(type(self.network.controller.node.security), type(0))
         self.assertTrue(self.network.controller.node.security >= 0)
 
-    def notest_910_controller_node_refresh(self):
+    def test_830_controller_node_refresh(self):
         #self.wait_for_queue()
         self.assertTrue(self.network.controller.node.refresh_info())
+
+    def louie_controller_stats(self, controller, stats):
+        self.stats_received = stats
+
+    def test_910_controller_stats_poll(self):
+        self.stats_received = None
+        dispatcher.connect(self.louie_controller_stats, ZWaveController.SIGNAL_CONTROLLER_STATS)
+        self.network.controller.poll_stats = 10
+        for i in range(0,12):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.stats_received is not None:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(type(self.stats_received), type({}))
+        self.stats_received = None
+        for i in range(0,12):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.stats_received is not None:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(type(self.stats_received), type({}))
+        self.network.controller.poll_stats = 0
+        self.stats_received = None
+        for i in range(0,15):
+            #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
+            if self.stats_received is not None:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(self.stats_received, None)
 
 if __name__ == '__main__':
     sys.argv.append('-v')
