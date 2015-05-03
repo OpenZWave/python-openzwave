@@ -153,16 +153,17 @@ class TestController(TestApi):
     def test_910_controller_stats_poll(self):
         self.stats_received = None
         dispatcher.connect(self.louie_controller_stats, ZWaveController.SIGNAL_CONTROLLER_STATS)
-        self.network.controller.poll_stats = 10
-        for i in range(0,12):
+        self.network.controller.poll_stats = 8
+        for i in range(0,10):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.stats_received is not None:
                 break
             else:
                 time.sleep(1.0)
         self.assertEqual(type(self.stats_received), type({}))
+        self.assertTrue('SOFCnt' in self.stats_received)
         self.stats_received = None
-        for i in range(0,12):
+        for i in range(0,10):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.stats_received is not None:
                 break
@@ -171,7 +172,7 @@ class TestController(TestApi):
         self.assertEqual(type(self.stats_received), type({}))
         self.network.controller.poll_stats = 0
         self.stats_received = None
-        for i in range(0,15):
+        for i in range(0,12):
             #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
             if self.stats_received is not None:
                 break

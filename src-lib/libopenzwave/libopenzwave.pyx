@@ -446,7 +446,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         n['buttonId'] = notification.GetButtonId()
     elif notification.GetType() == Type_DriverReset:
         logger.warning("Notification : Type_DriverReset received : clean all valueids")
-        #values_map.empty()
+        values_map.empty()
     elif notification.GetType() == Type_SceneEvent:
         n['sceneId'] = notification.GetSceneId()
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
@@ -1230,7 +1230,6 @@ Get a string containing the openzwave library version.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         """
-        #return "OpenZWave version %s" %(ozw_version_string)
         cdef string c_string = self.manager.getVersionAsString()
         return c_string.c_str()
 
@@ -1243,7 +1242,6 @@ _getOzwLibraryVersionNumber: Get the openzwave library version number.
 :see: getLibraryVersion_, getPythonLibraryVersion_, getLibraryTypeName_
 
         '''
-        #return "%d.%d.%d" %(ozw_vers_major, ozw_vers_minor, ozw_vers_revision)
         cdef string c_string = self.manager.getVersionAsString()
         return c_string.c_str()
 
