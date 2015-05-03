@@ -264,6 +264,7 @@ $(ARCHDIR):
 	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
 	cp -Rf src-web/pyozwweb $(ARCHDIR)/src-web
+	cp -Rf examples $(ARCHDIR)
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-find $(ARCHDIR) -name zwcfg_\*.xml -delete
 	-find $(ARCHDIR) -name OZW_Log.log -delete
