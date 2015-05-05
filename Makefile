@@ -222,7 +222,7 @@ tests:
 	@echo "Autobuild-tests for ZWave network finished."
 
 autobuild-tests:
-	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild tests/manager/autobuild tests/web/autobuild
 	@echo
 	@echo "Tests for ZWave network finished."
 
