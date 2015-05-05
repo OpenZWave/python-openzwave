@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 .. module:: libopenzwave
 
@@ -30,7 +31,8 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libc.stdlib cimport malloc, free
-from mylibc cimport string
+from libcpp.string cimport string
+#from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
@@ -721,7 +723,7 @@ Retrieve option of a value.
             return self.getOptionAsInt(name)
         return False
 
-    def getOptionAsBool(self, name):
+    def getOptionAsBool(self, string name):
         """
 .. _getOptionAsBool:
 
@@ -736,11 +738,11 @@ Retrieve boolean value of an option.
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(string(name), &type_bool)
+        cret = self.options.GetOptionAsBool(name, &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
-    def getOptionAsInt(self, name):
+    def getOptionAsInt(self, string name):
         """
 .. _getOptionAsInt:
 
@@ -755,11 +757,11 @@ Retrieve integer value of an option.
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(string(name), &type_int)
+        cret = self.options.GetOptionAsInt(name, &type_int)
         ret = type_int if cret==True else None
         return ret
 
-    def getOptionAsString(self, name):
+    def getOptionAsString(self, string name):
         """
 .. _getOptionAsString:
 
@@ -774,7 +776,7 @@ Retrieve string value of an option.
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(string(name), &type_string)
+        cret = self.options.GetOptionAsString(name, &type_string)
         ret = type_string.c_str() if cret==True else None
         return ret
 
@@ -2554,7 +2556,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string = value
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2562,7 +2564,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string = value
                 #logger.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 #logger.debug("SetValueListSelection %s" % cret)
@@ -4014,7 +4016,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string = value
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4022,7 +4024,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string = value
                 cret = self.manager.AddSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4102,7 +4104,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string = value
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4110,7 +4112,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string = value
                 cret = self.manager.SetSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
