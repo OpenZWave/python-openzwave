@@ -68,6 +68,6 @@ setup(
                     ],
   #include_package_data=True,
   package_data={
-    'pyozwweb': ['app/static/*', 'app/static/*/*', 'app/static/*/*/*', 'app/templates/*', 'app/templates/*/*'],
+    'pyozwweb': ['app/static/css/*', 'app/static/js/*', 'app/static/images/*', 'app/static/includes/css/*', 'app/static/includes/js/*', 'app/static/includes/images/*', 'app/templates/*'],
   },
 )
