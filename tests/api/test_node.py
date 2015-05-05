@@ -93,6 +93,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].name, name)
 
     def test_422_controller_node_name_utf(self):
+        self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = u"Contrôleur"
         self.network.nodes[node_id].name = name
