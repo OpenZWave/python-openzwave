@@ -117,11 +117,11 @@ class ListenerThread(Thread):
             from flask import request
             if network is None:
                 self.socketio.emit('my network response',
-                    {'data': data_room_network(current_app.extensions['zwnetwork'])},
+                    {'data': {'state':"unknown", 'state_str':"unknown", 'home_id':"unknown", 'nodes_count':"unknown"}},
                     namespace='/ozwave')
             else:
                 self.socketio.emit('my network response',
-                    {'data': data_room_network(current_app.extensions['zwnetwork'])},
+                    {'data': network.to_dict()},
                     namespace='/ozwave')
                 logging.debug('OpenZWave network notification : homeid %0.8x (state:%s) - %d nodes were found.' % (network.home_id, network.state, network.nodes_count))
 

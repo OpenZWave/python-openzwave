@@ -222,7 +222,7 @@ tests:
 	@echo "Autobuild-tests for ZWave network finished."
 
 autobuild-tests:
-	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild tests/manager/autobuild tests/web/autobuild
 	@echo
 	@echo "Tests for ZWave network finished."
 
@@ -268,7 +268,9 @@ $(ARCHDIR):
 	-find $(ARCHDIR) -name \*.pyc -delete
 	-find $(ARCHDIR) -name zwcfg_\*.xml -delete
 	-find $(ARCHDIR) -name OZW_Log.log -delete
+	-find $(ARCHDIR) -name OZW_Log.txt -delete
 	-find $(ARCHDIR) -name ozwsh.log -delete
+	-find $(ARCHDIR) -name errors.log -delete
 	-find $(ARCHDIR) -name zwscene.xml -delete
 	-find $(ARCHDIR) -name pyozw.db -delete
 	-cd $(ARCHDIR)/openzwave && make clean

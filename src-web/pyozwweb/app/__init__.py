@@ -42,7 +42,7 @@ import time
 from flask import Flask, current_app, render_template, session, request
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-from flask_fanstatic import Fanstatic
+#from flask_fanstatic import Fanstatic
 #from flask.ext.sqlalchemy import SQLAlchemy
 
 from openzwave.network import ZWaveNetwork
@@ -133,8 +133,8 @@ def create_app(config_object='pyozwweb.config.DevelopmentConfig'):
     if settings.has_option(section, 'port'):
         app.config['PORT'] = settings.getint(section, 'port')
     #Flask stuff
-    global fanstatic
-    fanstatic = Fanstatic(app)
+    #global fanstatic
+    #fanstatic = Fanstatic(app)
     global socketio
     socketio = SocketIO(app)
     if not app.config['DEBUG']:

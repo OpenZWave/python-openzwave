@@ -1,8 +1,12 @@
-{{- g.fanstatic.needs('js.jquery:jquery') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
-{{- g.fanstatic.needs('js.socketio:socketio') -}}
 {% extends "layout.html" %}
+
+{% import 'includes.html' as includes %}
+{% block head %}
+{{ includes.socketio() }}
+{{ includes.datatables() }}
+<script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+{% endblock %}
+
 {% import 'widgets.html' as widgets %}
 {% block content %}
     <script type="text/javascript" charset="utf-8">

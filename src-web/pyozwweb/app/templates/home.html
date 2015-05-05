@@ -1,8 +1,12 @@
-{{- g.fanstatic.needs('js.jquery:jquery') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
-{{- g.fanstatic.needs('js.socketio:socketio') -}}
 {% extends "layout.html" %}
+
+{% import 'includes.html' as includes %}
+{% block head %}
+{{ includes.socketio() }}
+{{ includes.datatables() }}
+<script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+{% endblock %}
+
 {% import 'widgets.html' as widgets %}
 {% block content %}
     <script type="text/javascript" charset="utf-8">
@@ -17,13 +21,10 @@
     <h2>Network:</h2>
     {{ widgets.network_state(size='small') }}
     <h2>Nodes:</h2>
-    <table id="nodes" class="display" cellspacing="0" width="100%">
+    <table id="nodes" class="display responsive nowrap" cellspacing="0" width="100%">
       <thead>
-        <tr><th class="node_id">Id</th><th>Name</th><th>Location</th><th>Product</th><th>Type</th></tr>
+        <tr><th>Id</th><th>Name</th><th>Location</th><th>Product</th><th>Type</th></tr>
       </thead>
-      <tfoot>
-        <tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th></tr>
-      </tfoot>
       <tbody>
       </tbody>
     </table>
@@ -34,24 +35,20 @@
         $("#nodes").dataTable({
           "aaData":[
           ],
-          "aoColumnDefs":[{
-                "sTitle":"Site name"
-              , "aTargets": [ "site_name" ]
-            },
+          "aoColumnDefs":[
             {
                   "aTargets": [ 0 ]
-                , "bSortable": false
                 , "mRender": function ( url, type, full )  {
                     return  '<a href="/node/'+url+'">' + url + '</a>';
                 }
-          }],
+            }
+          ],
           "fnRowCallback": function(nRow, aData, iDisplayIndex) {
             nRow.setAttribute('id',aData[0]);
-          }
+          },
+          responsive: true,
         });
         // Add `no-wrap` class so the text doesn't wrap for this example
-        $('#nodes').addClass('no-wrap');
-        $('#nodes').responsive = true;
         socket.on('connect', function() {
             socket.emit('my echo event', {data: 'I\'m connected!'});
         });
@@ -59,7 +56,6 @@
         // the data is displayed in the "Received" section of the page
         socket.on('my echo response', function(msg) {
             console.log("Received " + msg.data);
-            $('#log').append('<br>Response #' + msg.count + ': ' + msg.data);
         });
         socket.on('my network response', function(msg) {
             console.log("Received network response : " + msg.data['state']);

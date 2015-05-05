@@ -103,6 +103,11 @@ class TestController(TestApi):
         self.network.controller.node.name = name
         self.assertEqual(self.network.controller.node.name, name)
 
+    def test_421_controller_node_name_utf(self):
+        name = "Contrôleur"
+        self.network.controller.node.name = name
+        self.assertEqual(self.network.controller.node.name, name)
+
     def test_430_controller_node_product_location(self):
         location = "TestUnit location"
         self.network.controller.node.location = location

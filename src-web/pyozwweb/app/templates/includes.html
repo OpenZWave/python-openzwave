@@ -1,0 +1,53 @@
+{% macro jquery() -%}
+{% if config['DEBUG'] == true %}
+    <script type="text/javascript" src="/static/includes/js/jquery-1.11.2.js"></script>
+{% else %}
+    <script type="text/javascript" src="/static/includes/js/jquery-1.11.2.min.js"></script>
+{% endif %}
+{%- endmacro %}
+
+{% macro bootstrap() -%}
+{% if config['DEBUG'] == true %}
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/bootstrap-theme.css" />
+    {{ jquery() }}
+    <script type="text/javascript" src="/static/includes/js/bootstrap.js"></script>
+{% else %}
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/bootstrap-theme.min.css" />
+    {{ jquery() }}
+    <script type="text/javascript" src="/static/includes/js/bootstrap.min.js"></script>
+{% endif %}
+{%- endmacro %}
+
+{% macro datatables() -%}
+{% if config['DEBUG'] == true %}
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/jquery.dataTables.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/dataTables.responsive.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/jquery.dataTables_themeroller.css" />
+    <script type="text/javascript" src="/static/includes/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/static/includes/js/dataTables.responsive.js"></script>
+{% else %}
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/dataTables.responsive.css" />
+    <link rel="stylesheet" type="text/css" href="/static/includes/css/jquery.dataTables_themeroller.css" />
+    <script type="text/javascript" src="/static/includes/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/static/includes/js/dataTables.responsive.min.js"></script>
+{% endif %}
+{%- endmacro %}
+
+{% macro cytoscape() -%}
+{% if config['DEBUG'] == true %}
+    <script type="text/javascript" src="/static/includes/js/cytoscape.js"></script>
+{% else %}
+    <script type="text/javascript" src="/static/includes/js/cytoscape.min.js"></script>
+{% endif %}
+{%- endmacro %}
+
+{% macro socketio() -%}
+{% if config['DEBUG'] == true %}
+    <script type="text/javascript" src="/static/includes/js/socket.io-0.9.16.min.js"></script>
+{% else %}
+    <script type="text/javascript" src="/static/includes/js/socket.io-0.9.16.min.min.js"></script>
+{% endif %}
+{%- endmacro %}

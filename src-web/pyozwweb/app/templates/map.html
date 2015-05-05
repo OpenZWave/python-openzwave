@@ -1,8 +1,12 @@
-{{- g.fanstatic.needs('js.jquery:jquery') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
-{{- g.fanstatic.needs('js.socketio:socketio') -}}
 {% extends "layout.html" %}
+
+{% import 'includes.html' as includes %}
+{% block head %}
+{{ includes.socketio() }}
+{{ includes.cytoscape() }}
+<script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+{% endblock %}
+
 {% import 'widgets.html' as widgets %}
 {% block content %}
     <script type="text/javascript" charset="utf-8">
@@ -13,8 +17,6 @@
         // event handler for server sent data
         // the data is displayed in the "Received" section of the page
     </script>
-    <script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/js/cytoscape.min.js" charset="utf-8"></script>
     <h2>Network:</h2>
     <form id="map_save_form" name="map_save_form">
         <input type='submit' id="map_save_button" name="map_save_button" value="Save map">

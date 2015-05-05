@@ -389,7 +389,7 @@ I38
 sg24
 I0
 sbssg25
-S'\xb9e}%\xfe\x15\x8e+\xf2\x95\xf2\xf8Z\xaa\xde\xe1'
+S'\x87\x00\xcb\x92\xaf\xbc\x82t\xe39\xa7j]\xd6\xb7='
 p103
 ssS'openzwave_option'
 p104
@@ -753,7 +753,7 @@ I1
 sg19
 I0
 sg20
-I112
+I110
 sg21
 I0
 sg22
@@ -763,7 +763,7 @@ I22
 sg24
 I0
 sbssg25
-S'\xe9,`Y}\x8bS@#\x12Lh\x93"\x87U'
+S"\x07c\xe4e\xae\xb1-'\xbaX\x87J\x17\x08\xce("
 p191
 sssS'version'
 p192

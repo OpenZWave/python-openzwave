@@ -62,7 +62,10 @@ class TestServer(Process):
         self.app = None
         self.client = None
 
-class FlaskTestCase(TestPyZWave):
+class FlaskTestBase(TestPyZWave):
+    pass
+
+class FlaskTestCase(FlaskTestBase):
 
     @classmethod
     def setUpClass(self):

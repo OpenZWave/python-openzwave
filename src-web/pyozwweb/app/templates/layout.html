@@ -2,7 +2,10 @@
 <html>
   <head>
     <title>PyOzwWeb</title>
-    {{ g.fanstatic.top }}
+    {% import 'includes.html' as includes %}
+    {{ includes.bootstrap() }}
+    {% block head %}
+    {% endblock %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">;
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </head>
@@ -16,6 +19,5 @@
       {% block content %}
       {% endblock %}
     </div>
-  {{ g.fanstatic.bottom }}
   </body>
 </html>

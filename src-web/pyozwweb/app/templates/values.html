@@ -1,8 +1,12 @@
-{{- g.fanstatic.needs('js.jquery:jquery') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
-{{- g.fanstatic.needs('js.socketio:socketio') -}}
 {% extends "layout.html" %}
+
+{% import 'includes.html' as includes %}
+{% block head %}
+{{ includes.socketio() }}
+{{ includes.datatables() }}
+<script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+{% endblock %}
+
 {% import 'widgets.html' as widgets %}
 {% block content %}
     <script type="text/javascript" charset="utf-8">
@@ -17,7 +21,7 @@
     <h2>Network:</h2>
     {{ widgets.network_state(size='small') }}
     <h2>Values:</h2>
-    <table id="values" class="display" cellspacing="0" width="100%">
+    <table id="values" class="display responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr><th class="value_id">Id</th><th>Node id</th><th>Label</th><th>Value</th><th>Units</th></tr>
       </thead>
@@ -48,10 +52,9 @@
           }],
           "fnRowCallback": function(nRow, aData, iDisplayIndex) {
             nRow.setAttribute('id',aData[0]);
-          }
+          },
+          responsive: true,
         });
-        $('#values').addClass('no-wrap');
-        $('#values').responsive = true;
         socket.on('connect', function() {
             socket.emit('my echo event', {data: 'I\'m connected!'});
         });

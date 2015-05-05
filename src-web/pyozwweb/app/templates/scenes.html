@@ -1,8 +1,12 @@
-{{- g.fanstatic.needs('js.jquery:jquery') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:jquery_datatables') -}}
-{{- g.fanstatic.needs('js.jquery_datatables:responsive') -}}
-{{- g.fanstatic.needs('js.socketio:socketio') -}}
 {% extends "layout.html" %}
+
+{% import 'includes.html' as includes %}
+{% block head %}
+{{ includes.socketio() }}
+{{ includes.datatables() }}
+<script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
+{% endblock %}
+
 {% import 'widgets.html' as widgets %}
 {% block content %}
     <script type="text/javascript" charset="utf-8">
@@ -12,12 +16,14 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
         // event handler for server sent data
         // the data is displayed in the "Received" section of the page
+        var editor;
+        // use a global for the submit and return data rendering in the examples
     </script>
     <script type="text/javascript" src="/static/js/zwnetwork.js" charset="utf-8"></script>
     <h2>Network:</h2>
     {{ widgets.network_state(size='small') }}
     <h2>Scenes:</h2>
-    <table id="scenes" class="display" cellspacing="0" width="100%">
+    <table id="scenes" class="display responsive nowrap" cellspacing="0" width="100%">
       <thead>
         <tr><th class="Scene_id">Id</th><th>Label</th></tr>
       </thead>
@@ -35,23 +41,17 @@
           "aaData":[
           ],
           "aoColumnDefs":[{
-                "sTitle":"Site name"
-              , "aTargets": [ "site_name" ]
-            },
-            {
                   "aTargets": [ 0 ]
-                , "bSortable": false
                 , "mRender": function ( url, type, full )  {
                     return  '<a href="/scene/'+url+'">' + url + '</a>';
                 }
           }],
           "fnRowCallback": function(nRow, aData, iDisplayIndex) {
             nRow.setAttribute('id',aData[0]);
-          }
+          },
+          responsive: true,
         });
         // Add `no-wrap` class so the text doesn't wrap for this example
-        $('#scenes').addClass('no-wrap');
-        $('#scenes').responsive = true;
         socket.on('connect', function() {
             socket.emit('my echo event', {data: 'I\'m connected!'});
         });
