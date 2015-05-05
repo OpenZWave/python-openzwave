@@ -2556,7 +2556,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = value
+                type_string = value.c_str()
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2564,7 +2564,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = value
+                type_string = value.c_str()
                 #logger.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 #logger.debug("SetValueListSelection %s" % cret)
