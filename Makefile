@@ -102,7 +102,7 @@ developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
 
 autobuild-deps: common-deps cython-deps tests-deps pip-deps
-	apt-get install -y git
+	apt-get install -y git rsyslog
 	@echo
 	@echo "Dependencies for autobuilders (docker, travis, ...) installed (python ${python_version_full})"
 
