@@ -504,15 +504,14 @@ class MainWindow(Screen):
         #Define some manager options
         self.options = ZWaveOption(self.device, \
           config_path=self.config_path, \
-          user_path=self.user_path, cmd_line="", \
-          kvals = False)
+          user_path=self.user_path, cmd_line="")
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
         self.options.set_console_output(False)
         self.options.set_save_log_level(self.loglevel_ow)
         self.options.set_logging(True)
         self.options.lock()
-        self.network = ZWaveNetwork(self.options, self.log)
+        self.network = ZWaveNetwork(self.options, self.log, kvals = False)
         self.status_bar.update(status='Start Network')
 
     def _connect_louie(self):
