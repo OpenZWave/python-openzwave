@@ -65,6 +65,12 @@ class TestNodes(TestApi):
         for node in self.network.nodes:
             self.network.nodes[node].test(5)
 
+    def test_110_nodes_heal(self):
+        for node in self.network.nodes:
+            self.network.nodes[node].heal()
+        for node in self.network.nodes:
+            self.network.nodes[node].heal(True)
+
     def test_200_nodes_to_dict(self):
         for node in self.network.nodes:
             try :

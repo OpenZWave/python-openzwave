@@ -293,14 +293,14 @@ class ZWaveNode(ZWaveObject,
 
         :param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
         :type upNodeRoute: bool
-        :return: True is the ControllerCommand ins sent. False otherwise
+        :return: True is the ControllerCommand is sent. False otherwise
         :rtype: bool
 
         """
         if not self.isNodeAwake:
             logger.warning('Node state must a minimum set to awake')
             return False
-        self.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
+        self._network.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
         return True
 
     def test(self, count=1):
