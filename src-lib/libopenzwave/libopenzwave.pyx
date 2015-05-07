@@ -34,7 +34,7 @@ from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
-from mylibc cimport PyEval_InitThreads
+#from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -977,7 +977,8 @@ Z-Wave controller in turn.
 :see: destroy_
         '''
         self.manager = CreateManager()
-        PyEval_InitThreads()
+        #Commented to try to fix seg fault at import
+        #PyEval_InitThreads()
 
     def destroy(self):
         '''
