@@ -34,7 +34,7 @@ from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
-from mylibc cimport PyEval_InitThreads
+#from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -723,7 +723,7 @@ Retrieve option of a value.
             return self.getOptionAsInt(name)
         return False
 
-    def getOptionAsBool(self, string name):
+    def getOptionAsBool(self, name):
         """
 .. _getOptionAsBool:
 
@@ -738,11 +738,11 @@ Retrieve boolean value of an option.
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(name, &type_bool)
+        cret = self.options.GetOptionAsBool(string(name), &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
-    def getOptionAsInt(self, string name):
+    def getOptionAsInt(self, name):
         """
 .. _getOptionAsInt:
 
@@ -757,11 +757,11 @@ Retrieve integer value of an option.
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(name, &type_int)
+        cret = self.options.GetOptionAsInt(string(name), &type_int)
         ret = type_int if cret==True else None
         return ret
 
-    def getOptionAsString(self, string name):
+    def getOptionAsString(self, name):
         """
 .. _getOptionAsString:
 
@@ -776,7 +776,7 @@ Retrieve string value of an option.
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(name, &type_string)
+        cret = self.options.GetOptionAsString(string(name), &type_string)
         ret = type_string.c_str() if cret==True else None
         return ret
 
@@ -977,7 +977,8 @@ Z-Wave controller in turn.
 :see: destroy_
         '''
         self.manager = CreateManager()
-        PyEval_InitThreads()
+        #Commented to try to fix seg fault at import
+        #PyEval_InitThreads()
 
     def destroy(self):
         '''
