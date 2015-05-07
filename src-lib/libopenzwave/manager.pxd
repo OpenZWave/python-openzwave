@@ -20,8 +20,8 @@ from cython.operator cimport dereference as deref
 from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
-from libcpp.string cimport string
-#from mylibc cimport string
+#from libcpp.string cimport string
+from mylibc cimport string
 from node cimport NodeData
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t

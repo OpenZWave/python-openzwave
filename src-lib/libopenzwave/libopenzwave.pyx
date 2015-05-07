@@ -31,8 +31,8 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libc.stdlib cimport malloc, free
-from libcpp.string cimport string
-#from mylibc cimport string
+#from libcpp.string cimport string
+from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads
 from node cimport NodeData_t, NodeData
@@ -2556,7 +2556,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = value
+                type_string = string(value)
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2564,7 +2564,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = value
+                type_string = string(value)
                 #logger.debug("SetValueListSelection %s" % value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 #logger.debug("SetValueListSelection %s" % cret)
@@ -4016,7 +4016,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = value
+                type_string = string(value)
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4024,7 +4024,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = value
+                type_string = string(value)
                 cret = self.manager.AddSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4104,7 +4104,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = value
+                type_string = string(value)
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4112,7 +4112,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = value
+                type_string = string(value)
                 cret = self.manager.SetSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret

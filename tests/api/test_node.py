@@ -92,13 +92,6 @@ class TestNode(TestApi):
         self.network.nodes[node_id].name = name
         self.assertEqual(self.network.nodes[node_id].name, name)
 
-    def test_422_controller_node_name_utf(self):
-        self.wipTest()
-        node_id = max(self.network.nodes.keys())
-        name = u"Contrôleur"
-        self.network.nodes[node_id].name = name
-        self.assertEqual(self.network.nodes[node_id].name, name)
-
     def test_430_controller_node_product_location(self):
         node_id = max(self.network.nodes.keys())
         location = "TestUnit location"
