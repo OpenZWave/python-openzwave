@@ -1,6 +1,6 @@
 Format: http://dep.debian.net/deps/dep5
 Upstream-Name: python-openzwave
-Source: https://github.com/bibi21000/python-openzwave
+Source: https://github.com/OpenZWave/python-openzwave
 
 Files: *
 Copyright: (C) 2012 bibi21000 aka Sébastien GALLET <sgallet@gmail.com>

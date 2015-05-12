@@ -10,7 +10,7 @@ See http://werkzeug.pocoo.org/docs/0.9/wrappers/
 
 __license__ = """
 
-This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
 
 License : GPL(v3)
 
@@ -39,7 +39,8 @@ from tests.web.common import FlaskTestBase
 class FlaskTest(FlaskTestBase):
 
     def test_000_import_listener(self):
-        from pyozwweb.app.listener import *
+        from pyozwweb.app.listener import ListenerThread, start_listener, stop_listener
+        from pyozwweb.app import run_app, create_app
 
 if __name__ == '__main__':
     sys.argv.append('-v')

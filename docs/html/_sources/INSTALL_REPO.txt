@@ -23,7 +23,7 @@ You are now ready to download sources of python-openzwave :
 
 .. code-block:: bash
 
-    git clone https://github.com/bibi21000/python-openzwave
+    git clone https://github.com/OpenZWave/python-openzwave
 
 The previous command will create a copy of the official repository on your
 computer in a directory called python-openzwave.
@@ -100,5 +100,5 @@ About the repositroy
 ====================
 This repository is a development tool, so it might be "unstable" ... yeah, sometimes it won't build anymore :)
 
-If you want to retrieve the last "good" commit, look at https://github.com/bibi21000/python-openzwave/commits/master.
+If you want to retrieve the last "good" commit, look at https://github.com/OpenZWave/python-openzwave/commits/master.
 The commits names "Auto-commit for docs" are done after the full process : build + test + docs, so they might be "working" (almost for me).

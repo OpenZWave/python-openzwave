@@ -3,7 +3,7 @@
 """
 .. module:: ozwsh
 
-This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
     :platform: Unix, Windows, MacOS X
     :sinopsis: openzwave API
 
@@ -57,7 +57,7 @@ def main():
         default="Info",
         type="choice",
         choices=['Debug', 'Info'],
-        help="The log level")
+        help="The log level (Debug|Info)")
 
     def callback_config(option, opt_str, value, parser):
         if value is None :

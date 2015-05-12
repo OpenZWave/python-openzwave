@@ -10,7 +10,7 @@ Credits : https://github.com/mitsuhiko/flask/wiki/Large-app-how-to
 
 __license__ = """
 
-This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
 
 License : GPL(v3)
 

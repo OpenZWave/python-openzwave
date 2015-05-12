@@ -1,6 +1,6 @@
 /*!
  * ZwNetwork Library
- * https://github.com/bibi21000/python-openzwave
+ * https://github.com/OpenZWave/python-openzwave
  *
  * Copyright 2015 Sébastien GALLET aka bibi21000 <bibi21000@gmail.com>
  * Released under the GPL v3 license
