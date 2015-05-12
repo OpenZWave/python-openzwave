@@ -57,7 +57,7 @@ def main():
         default="Info",
         type="choice",
         choices=['Debug', 'Info'],
-        help="The log level")
+        help="The log level (Debug|Info)")
 
     def callback_config(option, opt_str, value, parser):
         if value is None :
