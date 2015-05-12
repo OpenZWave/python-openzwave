@@ -4,7 +4,7 @@
 """
 .. module:: tests
 
-This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
     :platform: Unix, Windows, MacOS X
     :sinopsis: openzwave Library
 

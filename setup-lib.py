@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-This file is part of **python-openzwave** project https://github.com/bibi21000/python-openzwave.
+This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
     :platform: Unix, Windows, MacOS X
 
 .. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
@@ -112,7 +112,7 @@ setup(
   author_email='bibi21000@gmail.com',
   version = pyozw_version,
   zip_safe = False,
-  url='https://github.com/bibi21000/python-openzwave',
+  url='https://github.com/OpenZWave/python-openzwave',
   cmdclass = {'build_ext': build_ext},
   ext_modules = ext_modules,
   #ext_modules = cythonize(ext_modules),
