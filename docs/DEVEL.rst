@@ -10,7 +10,7 @@ Get the sources
 
 .. code-block:: bash
 
-    git clone https://github.com/bibi21000/python-openzwave
+    git clone https://github.com/OpenZWave/python-openzwave
 
 You must now install python-openzwave in develop mode
 
