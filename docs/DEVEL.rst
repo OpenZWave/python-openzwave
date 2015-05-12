@@ -1,8 +1,8 @@
 :orphan:
 
-=======================
-Developpers information
-=======================
+======================
+Developers information
+======================
 
 How to develop for python-openzwave
 ===================================
