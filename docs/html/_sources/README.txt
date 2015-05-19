@@ -28,6 +28,11 @@ You can ask for support on the google group : http://groups.google.com/d/forum/p
 Please don't ask for support in github issues or by email.
 
 
+Pull requests
+=============
+Please read DEVEL documentation before submitting pull request.
+A lot of project tasks are done automatically or with makefile, so they must be done in a certain place or in a special order.
+
 Migrating from python-openzwave 0.2.X to 0.3.0
 ==============================================
 I need to update source tree of python-openzwave and modules's names because of a bug in setuptools : https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src .
