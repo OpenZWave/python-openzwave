@@ -4,7 +4,7 @@
 python-openzwave
 ================
 
-You need to install and python-openzwave to test examples.
+You need to install and build python-openzwave to test examples.
 
 pyozwman
 ========

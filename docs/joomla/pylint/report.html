@@ -91,8 +91,8 @@ yaml (pyozwweb.app)</pre></div>
 <td>code</td>
 <td>5008</td>
 <td>51.43</td>
-<td>5009</td>
-<td>-1.00</td>
+<td>5008</td>
+<td>=</td>
 </tr>
 <tr class="odd">
 <td>docstring</td>
@@ -135,8 +135,8 @@ yaml (pyozwweb.app)</pre></div>
 <tr class="odd">
 <th>percent duplicated lines</th>
 <td>21.405</td>
-<td>21.403</td>
-<td>+0.00</td>
+<td>21.405</td>
+<td>=</td>
 </tr>
 </table>
 </div>
@@ -170,8 +170,8 @@ yaml (pyozwweb.app)</pre></div>
 <tr class="odd">
 <td>error</td>
 <td>86</td>
-<td>87</td>
-<td>-1.00</td>
+<td>86</td>
+<td>=</td>
 </tr>
 </table>
 </div>
@@ -549,7 +549,7 @@ yaml (pyozwweb.app)</pre></div>
 </div>
 <div>
 <h2>Global evaluation</h2>
-Your code has been rated at 5.41/10 (previous run: 5.39/10, +0.01)</div>
+Your code has been rated at 5.41/10 (previous run: 5.41/10, +0.00)</div>
 <div>
 <h2>Messages</h2>
 <table>
@@ -827,7 +827,7 @@ Your code has been rated at 5.41/10 (previous run: 5.39/10, +0.01)</div>
 <td>ZWaveNode.__init__</td>
 <td>59</td>
 <td>4</td>
-<td>__init__ method from base class 'ZWaveNodeSwitch' is not called</td>
+<td>__init__ method from base class 'ZWaveNodeBasic' is not called</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
@@ -835,7 +835,7 @@ Your code has been rated at 5.41/10 (previous run: 5.39/10, +0.01)</div>
 <td>ZWaveNode.__init__</td>
 <td>59</td>
 <td>4</td>
-<td>__init__ method from base class 'ZWaveNodeSecurity' is not called</td>
+<td>__init__ method from base class 'ZWaveNodeSwitch' is not called</td>
 </tr>
 <tr class="even">
 <td>warning</td>
@@ -843,7 +843,7 @@ Your code has been rated at 5.41/10 (previous run: 5.39/10, +0.01)</div>
 <td>ZWaveNode.__init__</td>
 <td>59</td>
 <td>4</td>
-<td>__init__ method from base class 'ZWaveNodeBasic' is not called</td>
+<td>__init__ method from base class 'ZWaveNodeSecurity' is not called</td>
 </tr>
 <tr class="odd">
 <td>warning</td>
@@ -14367,22 +14367,22 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
+from gevent import monkey
+monkey.patch_all()
 
-import os
-_basedir = os.path.abspath(os.path.dirname(__file__))
+import os, sys
+import time
+from threading import Thread
 
-class Config(object):
-    DEBUG = False
-    TESTING = False
-    RELOADER = False
-    DATABASE_URI = 'sqlite://:memory:'
+from flask import Flask, render_template, session, request, current_app
+from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 
-    HOST = "127.0.0.1"
-    PORT = 5000
-
-    LOGGING_CONF = 'logging.conf'
-    APP_CONF = 'app.conf'
-</td>
+import libopenzwave
+import openzwave
+from openzwave.node import ZWaveNode
+from openzwave.value import ZWaveValue
+from openzwave.scene import ZWaveScene
+from openzwave.controller import ZWaveController</td>
 </tr>
 <tr class="even">
 <td>refactor</td>
@@ -14562,15 +14562,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
-__copyright__ = "Copyright © 2013-2014 Sébastien GALLET aka bibi21000"
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
 
-try:
-    __import__('pkg_resources').declare_namespace(__name__)
-except:  # pragma: no cover
-    # bootstrapping
-    pass # pragma: no cover</td>
+import os
+import readline
+from pprint import pprint
+
+from flask import *
+from app import *</td>
 </tr>
 <tr class="even">
 <td>refactor</td>

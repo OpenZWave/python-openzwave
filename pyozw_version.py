@@ -24,5 +24,13 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 pyozw_version = '0.3.0-beta1'
 
 if __name__ == '__main__':
-    print(pyozw_version)
+    import sys
+    if len(sys.argv)>1 and sys.argv[1]=="--major":
+        if "-" in pyozw_version:
+            res = pyozw_version.split("-")
+            print(res[0])
+        else:
+            print(pyozw_version)
+    else:
+        print(pyozw_version)
 
