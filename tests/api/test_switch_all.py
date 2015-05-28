@@ -100,7 +100,7 @@ class TestSwitchAll(TestApi):
                 item = self.network.nodes[node].get_switch_all_item(val)
                 if item == "On and Off Enabled" or item == "On Enabled":
                     ran = True
-                    #print "Node/State : %s/%s" % (node,network.nodes[node].get_switch_all_state(val))
+                    print "Node/State : %s/%s" % (node,network.nodes[node].get_switch_all_state(val))
                     self.assertTrue(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'On Enabled' found")
