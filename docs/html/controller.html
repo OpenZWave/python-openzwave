@@ -165,8 +165,63 @@ controller to learn new data.</p>
 </ul>
 </div></blockquote>
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.add_node">
+<tt class="descname">add_node</tt><big>(</big><em>homeid</em>, <em>doSecurity</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.add_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the Inclusion Process to add a Node to the Network.</p>
+<p>The Status of the Node Inclusion is communicated via Notifications. Specifically, you should
+monitor ControllerCommand Notifications.</p>
+<p>Results of the AddNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>doSecurity</strong> (<em>bool</em>) &#8211; Whether to initialize the Network Key on the device if it supports the Security CC</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.assign_return_route">
+<tt class="descname">assign_return_route</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.assign_return_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to update its update its Return Route to the Controller</p>
+<p>This command will ask a Node to update its Return Route to the Controller</p>
+<p>Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_add_device">
-<tt class="descname">begin_command_add_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_add_device</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new device to the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -187,7 +242,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_assign_return_route">
-<tt class="descname">begin_command_assign_return_route</tt><big>(</big><em>from_node_id</em>, <em>to_node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_assign_return_route</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign a network return route from a node to another one.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -211,7 +266,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_create_button">
-<tt class="descname">begin_command_create_button</tt><big>(</big><em>node_id</em>, <em>arg=0</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_button" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_create_button</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a handheld button id</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -235,7 +290,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_create_new_primary">
-<tt class="descname">begin_command_create_new_primary</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_create_new_primary</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -251,7 +306,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_delete_all_return_routes">
-<tt class="descname">begin_command_delete_all_return_routes</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_delete_all_return_routes</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all network return routes from a device.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -269,7 +324,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_delete_button">
-<tt class="descname">begin_command_delete_button</tt><big>(</big><em>node_id</em>, <em>arg=0</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_button" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_delete_button</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a handheld button id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -293,7 +348,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_has_node_failed">
-<tt class="descname">begin_command_has_node_failed</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_has_node_failed" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_has_node_failed</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_has_node_failed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a node is in the controller&#8217;s failed nodes list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -311,7 +366,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_receive_configuration">
-<tt class="descname">begin_command_receive_configuration</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_receive_configuration" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_receive_configuration</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_receive_configuration" title="Permalink to this definition">¶</a></dt>
 <dd><ul class="simple">
 <li></li>
 </ul>
@@ -329,7 +384,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_device">
-<tt class="descname">begin_command_remove_device</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_remove_device</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a device from the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -350,7 +405,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_failed_node">
-<tt class="descname">begin_command_remove_failed_node</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_failed_node" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_remove_failed_node</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_failed_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move a node to the controller&#8217;s list of failed nodes.  The node must
 actually have failed or have been disabled since the command
 will fail if it responds.  A node must be in the controller&#8217;s
@@ -371,7 +426,7 @@ failed nodes list for ControllerCommand_ReplaceFailedNode to work.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_replace_failed_node">
-<tt class="descname">begin_command_replace_failed_node</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replace_failed_node" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_replace_failed_node</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replace_failed_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace a failed device with another. If the node is not in
 the controller&#8217;s failed nodes list, or the node responds, this command will fail.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -390,7 +445,7 @@ the controller&#8217;s failed nodes list, or the node responds, this command wil
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_replication_send">
-<tt class="descname">begin_command_replication_send</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replication_send" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_replication_send</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replication_send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send information from primary to secondary.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -410,7 +465,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_network_update">
-<tt class="descname">begin_command_request_network_update</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_request_network_update</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the controller with network information from the SUC/SIS.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -426,7 +481,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update">
-<tt class="descname">begin_command_request_node_neigbhor_update</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_request_node_neigbhor_update</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a node to rebuild its neighbors list.
 This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -445,7 +500,7 @@ This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_send_node_information">
-<tt class="descname">begin_command_send_node_information</tt><big>(</big><em>node_id</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_send_node_information" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_send_node_information</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_send_node_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a node information frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -463,7 +518,7 @@ This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_transfer_primary_role">
-<tt class="descname">begin_command_transfer_primary_role</tt><big>(</big><em>high_power=False</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">begin_command_transfer_primary_role</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a different controller the primary.
 The existing primary will become a secondary controller.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -485,7 +540,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.cancel_command">
-<tt class="descname">cancel_command</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.cancel_command" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cancel_command</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.cancel_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Cancels any in-progress command running on a controller.</p>
 </dd></dl>
 
@@ -500,6 +555,109 @@ operate at normal power levels instead.  Defaults to false.</td>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The capabilities of the controller</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">set</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.create_button">
+<tt class="descname">create_button</tt><big>(</big><em>homeid</em>, <em>nodeid</em>, <em>buttonid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.create_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.create_new_primary">
+<tt class="descname">create_new_primary</tt><big>(</big><em>homeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.create_new_primary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new primary controller when old primary fails. Requires SUC.</p>
+<p>This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function.</p>
+<p>Results of the CreateNewPrimary Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.delete_all_return_routes">
+<tt class="descname">delete_all_return_routes</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to delete all Return Route.</p>
+<p>This command will ask a Node to delete all its return routes, and will rediscover when needed.</p>
+<p>Results of the DeleteAllReturnRoutes Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.delete_button">
+<tt class="descname">delete_button</tt><big>(</big><em>homeid</em>, <em>nodeid</em>, <em>buttonid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.delete_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -556,6 +714,33 @@ Louie&#8217;s clients must disconnect from nodes and values signals</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_RESETTED</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="p">})</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.has_node_failed">
+<tt class="descname">has_node_failed</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.has_node_failed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the HasNodeFailed Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
@@ -792,6 +977,220 @@ Louie&#8217;s clients must disconnect from nodes and values signals</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.receive_configuration">
+<tt class="descname">receive_configuration</tt><big>(</big><em>homeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.receive_configuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Receive network configuration information from primary controller. Requires secondary.</p>
+<p>This command prepares the controller to recieve Network Configuration from a Secondary Controller.</p>
+<p>Results of the ReceiveConfiguration Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.remove_failed_node">
+<tt class="descname">remove_failed_node</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.remove_failed_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the Controller Believes a Node has Failed.</p>
+<p>This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
+our list of Failed Nodes, which might be different.</p>
+<p>The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications</p>
+<p>Results of the RemoveFailedNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.remove_node">
+<tt class="descname">remove_node</tt><big>(</big><em>homeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.remove_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a Device from the Z-Wave Network</p>
+<p>The Status of the Node Removal is communicated via Notifications. Specifically, you should
+monitor ControllerCommand Notifications.</p>
+<p>Results of the RemoveNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>doSecurity</strong> (<em>bool</em>) &#8211; Whether to initialize the Network Key on the device if it supports the Security CC</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.replace_failed_node">
+<tt class="descname">replace_failed_node</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.replace_failed_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace a failed device with another.</p>
+<p>If the node is not in the controller&#8217;s failed nodes list, or the node responds, this command will fail.</p>
+<p>You can check if a Node is in the Controllers Failed node list by using the HasNodeFailed method.</p>
+<p>Results of the ReplaceFailedNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.replication_send">
+<tt class="descname">replication_send</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.replication_send" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the ReplicationSend Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.request_network_update">
+<tt class="descname">request_network_update</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.request_network_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the controller with network information from the SUC/SIS.</p>
+<p>Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.request_node_neighbor_update">
+<tt class="descname">request_node_neighbor_update</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.request_node_neighbor_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.send_node_information">
+<tt class="descname">send_node_information</tt><big>(</big><em>homeid</em>, <em>nodeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.send_node_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new primary controller when old primary fails. Requires SUC.</p>
+<p>This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function</p>
+<p>Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.controller.ZWaveController.send_queue_count">
 <tt class="descname">send_queue_count</tt><a class="headerlink" href="#openzwave.controller.ZWaveController.send_queue_count" title="Permalink to this definition">¶</a></dt>
@@ -869,6 +1268,27 @@ Resets a controller without erasing its network configuration settings.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.transfer_primary_role">
+<tt class="descname">transfer_primary_role</tt><big>(</big><em>homeid</em><big>)</big><a class="headerlink" href="#openzwave.controller.ZWaveController.transfer_primary_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new controller to the network and make it the primary.</p>
+<p>The existing primary will become a secondary controller.</p>
+<p>Results of the TransferPrimaryRole Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>

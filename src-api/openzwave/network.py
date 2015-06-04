@@ -282,6 +282,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_ALL_NODES_QUERIED_SOME_DEAD = 'AllNodesQueriedSomeDead'
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
     SIGNAL_NOTIFICATION = 'Notification'
+    SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -979,6 +980,8 @@ class ZWaveNetwork(ZWaveObject):
                 self._handle_notification(args)
             elif notify_type == self.SIGNAL_DRIVER_REMOVED:
                 self._handle_driver_removed(args)
+            elif notify_type == self.SIGNAL_CONTROLLER_COMMAND:
+                self._handle_controller_command(args)
             else:
                 logger.warning('Skipping unhandled notification [%s]', args)
         except:
@@ -1560,6 +1563,20 @@ class ZWaveNetwork(ZWaveObject):
         logger.debug('Z-Wave Notification : %s', args)
         dispatcher.send(self.SIGNAL_NOTIFICATION, \
             **{'network': self, 'args': args})
+
+    def _handle_controller_command(self, args):
+        """
+        Called when a message from controller is sent.
+
+        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, **{'network': self, 'controller': self.controller, 'state': args['controllerState'], 'command': args['controllerCommand']})
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logger.debug('Z-Wave ControllerCommand : %s', args)
+        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \
+            **{'network': self, 'controller': self.controller, 'state': args['controllerState'], 'command': args['controllerCommand']})
 
     def _handle_msg_complete(self, args):
         """

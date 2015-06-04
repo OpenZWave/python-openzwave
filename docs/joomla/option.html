@@ -107,6 +107,20 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_custom_secured_cc">
+<tt class="descname">set_custom_secured_cc</tt><big>(</big><em>custom_cc='0x62</em>, <em>0x4c</em>, <em>0x63'</em><big>)</big></dt>
+<dd><p>What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>custom_cc</strong> (<em>str</em>) &#8211; List of Custom CC</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.option.ZWaveOption.set_driver_max_attempts">
 <tt class="descname">set_driver_max_attempts</tt><big>(</big><em>attempts</em><big>)</big></dt>
 <dd><p>Set the driver max attempts before raising an error.</p>
@@ -283,6 +297,20 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.option.ZWaveOption.set_security_strategy">
+<tt class="descname">set_security_strategy</tt><big>(</big><em>strategy='SUPPORTED'</em><big>)</big></dt>
+<dd><p>Should we encrypt CC&#8217;s that are available via both clear text and Security CC?</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>strategy</strong> (<em>str</em>) &#8211; The security strategy : SUPPORTED|ESSENTIAL|CUSTOM</td>
 </tr>
 </tbody>
 </table>

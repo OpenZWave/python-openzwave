@@ -58,6 +58,7 @@ cdef extern from "Notification.h" namespace "OpenZWave::Notification":
         Type_AllNodesQueried = 25               # All nodes have been queried, so client application can expected complete data.
         Type_Notification = 26                  # A manager notification report.
         Type_DriverRemoved = 27                 # The Driver is being removed. (either due to Error or by request) Do Not Call Any Driver Related Methods after receiving this call.
+        Type_ControllerCommand = 28             # When Controller Commands are executed, Notifications of Success/Failure etc are communicated via this Notification * Notification::GetEvent returns Driver::ControllerCommand and Notification::GetNotification returns Driver::ControllerState
 
 cdef extern from "Notification.h" namespace "OpenZWave::Notification":
 

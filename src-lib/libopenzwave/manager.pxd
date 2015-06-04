@@ -51,6 +51,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bint IsStaticUpdateController(uint32_t homeid)
         bint IsBridgeController(uint32_t homeid)
         string getVersionAsString()
+        string getVersionLongAsString()
         string GetLibraryVersion(uint32_t homeid)
         string GetLibraryTypeName(uint32_t homeid)
         int32_t GetSendQueueCount( uint32_t homeId )
@@ -172,8 +173,27 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         # // Controller Commands
         void ResetController(uint32_t homeid)
         void SoftReset(uint32_t homeid)
+        #Deprecated
         bool BeginControllerCommand(uint32_t homeid, ControllerCommand _command, pfnControllerCallback_t _callback, void* _context, bool _highPower, uint8_t _nodeId, uint8_t _arg )
+        #Deprecated
         bool CancelControllerCommand(uint32_t homeid)
+        bool AddNode(uint32_t homeid, bool _doSecurity)
+
+        bool RemoveNode(uint32_t homeid)
+        bool RemoveFailedNode(uint32_t homeid, uint8_t nodeid)
+        bool HasNodeFailed(uint32_t homeid, uint8_t nodeid)
+        bool ReplaceFailedNode(uint32_t homeid, uint8_t nodeid)
+        bool AssignReturnRoute(uint32_t homeid, uint8_t nodeid)
+        bool RequestNodeNeighborUpdate(uint32_t homeid, uint8_t nodeid)
+        bool RequestNetworkUpdate(uint32_t homeid, uint8_t nodeid)
+        bool ReplicationSend(uint32_t homeid, uint8_t nodeid)
+        bool DeleteAllReturnRoutes(uint32_t homeid, uint8_t nodeid)
+        bool SendNodeInformation(uint32_t homeid, uint8_t nodeid)
+        bool CreateNewPrimary(uint32_t homeid)
+        bool TransferPrimaryRole(uint32_t homeid)
+        bool ReceiveConfiguration(uint32_t homeid)
+        bool CreateButton(uint32_t homeid, uint8_t nodeid, uint8_t buttonid)
+        bool DeleteButton(uint32_t homeid, uint8_t nodeid, uint8_t buttonid)
         # // Scene commands
         uint8_t GetNumScenes()
         uint8_t GetAllScenes(uint8_t** sceneIds)

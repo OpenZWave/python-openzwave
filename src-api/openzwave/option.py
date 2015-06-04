@@ -288,6 +288,27 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         return self.addOptionBool("SuppressValueRefresh", status)
 
+    def set_security_strategy(self, strategy='SUPPORTED'):
+        """
+        Should we encrypt CC's that are available via both clear text and Security CC?
+
+        :param strategy: The security strategy : SUPPORTED|ESSENTIAL|CUSTOM
+        :type strategy: str
+
+        """
+        return self.addOptionString("SecurityStrategy", strategy, False)
+
+    def set_custom_secured_cc(self, custom_cc='0x62,0x4c,0x63'):
+        """
+        What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.
+
+        :param custom_cc: List of Custom CC
+        :type custom_cc: str
+
+        """
+        return self.addOptionString("CustomSecuredCC", custom_cc, False)
+
+
     @property
     def device(self):
         """
