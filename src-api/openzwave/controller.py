@@ -34,7 +34,7 @@ if sys.hexversion >= 0x3000000:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
-from openzwave.object import ZWaveObject
+from openzwave.object import ZWaveObject, deprecated
 from libopenzwave import PyStatDriver
 import threading
 
@@ -502,6 +502,7 @@ class ZWaveController(ZWaveObject):
         """
         self._network.manager.softResetController(self._network.home_id)
 
+    @deprecated
     def begin_command_send_node_information(self, node_id):
         """
         Send a node information frame.
@@ -515,6 +516,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_SENDNODEINFORMATION, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_replication_send(self, high_power=False):
         """
         Send information from primary to secondary.
@@ -530,6 +532,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REPLICATIONSEND, self.zwcallback, highPower=high_power)
 
+    @deprecated
     def begin_command_request_network_update(self):
         """
         Update the controller with network information from the SUC/SIS.
@@ -541,6 +544,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REQUESTNETWORKUPDATE, self.zwcallback)
 
+    @deprecated
     def begin_command_add_device(self, high_power=False):
         """
         Add a new device to the Z-Wave network.
@@ -557,6 +561,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_ADDDEVICE, self.zwcallback, highPower=high_power)
 
+    @deprecated
     def begin_command_remove_device(self, high_power=False):
         """
         Remove a device from the Z-Wave network.
@@ -573,6 +578,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REMOVEDEVICE, self.zwcallback, highPower=high_power)
 
+    @deprecated
     def begin_command_remove_failed_node(self, node_id):
         """
         Move a node to the controller's list of failed nodes.  The node must
@@ -589,6 +595,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REMOVEFAILEDNODE, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_has_node_failed(self, node_id):
         """
         Check whether a node is in the controller's failed nodes list.
@@ -602,6 +609,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_HASNODEFAILED, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_replace_failed_node(self, node_id):
         """
         Replace a failed device with another. If the node is not in
@@ -616,6 +624,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REPLACEFAILEDNODE, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_request_node_neigbhor_update(self, node_id):
         """
         Get a node to rebuild its neighbors list.
@@ -630,6 +639,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_REQUESTNODENEIGHBORUPDATE, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_create_new_primary(self):
         """
         Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC.
@@ -641,6 +651,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_CREATENEWPRIMARY, self.zwcallback)
 
+    @deprecated
     def begin_command_transfer_primary_role(self, high_power=False):
         """
         Make a different controller the primary.
@@ -658,6 +669,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_TRANSFERPRIMARYROLE, self.zwcallback, highPower=high_power)
 
+    @deprecated
     def begin_command_receive_configuration(self):
         """
         -
@@ -669,6 +681,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_RECEIVECONFIGURATION, self.zwcallback)
 
+    @deprecated
     def begin_command_assign_return_route(self, from_node_id, to_node_id):
         """
         Assign a network return route from a node to another one.
@@ -684,6 +697,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_ASSIGNRETURNROUTE, self.zwcallback, nodeId=from_node_id, arg=to_node_id)
 
+    @deprecated
     def begin_command_delete_all_return_routes(self, node_id):
         """
         Delete all network return routes from a device.
@@ -697,6 +711,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_DELETEALLRETURNROUTES, self.zwcallback, nodeId=node_id)
 
+    @deprecated
     def begin_command_create_button(self, node_id, arg=0):
         """
         Create a handheld button id
@@ -712,6 +727,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_CREATEBUTTON, self.zwcallback, nodeId=node_id, arg=arg)
 
+    @deprecated
     def begin_command_delete_button(self, node_id, arg=0):
         """
         Delete a handheld button id.
@@ -727,6 +743,7 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.beginControllerCommand(self._network.home_id, \
             self.CMD_DELETEBUTTON, self.zwcallback, nodeId=node_id, arg=arg)
 
+    @deprecated
     def cancel_command(self):
         """
         Cancels any in-progress command running on a controller.
@@ -757,8 +774,7 @@ class ZWaveController(ZWaveObject):
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
 
     def to_dict(self, extras=['all']):
-        """
-        Return a dict representation of the controller.
+        """Return a dict representation of the controller.
 
         :param extras: The extra inforamtions to add
         :type extras: []
@@ -777,5 +793,297 @@ class ZWaveController(ZWaveObject):
         ret["py_version"] = self.python_library_version
         return ret
 
+    def create_new_primary(self, homeid):
+        '''Create a new primary controller when old primary fails. Requires SUC.
+
+        This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function.
+
+        Results of the CreateNewPrimary Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.createNewPrimary(homeid)
+
+    def transfer_primary_role(self, homeid):
+        '''
+
+        Add a new controller to the network and make it the primary.
+
+        The existing primary will become a secondary controller.
+
+        Results of the TransferPrimaryRole Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.transferPrimaryRole(homeid)
+
+    def receive_configuration(self, homeid):
+        '''Receive network configuration information from primary controller. Requires secondary.
+
+        This command prepares the controller to recieve Network Configuration from a Secondary Controller.
+
+        Results of the ReceiveConfiguration Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.receiveConfiguration(homeid)
+
+    def add_node(self, homeid, doSecurity):
+        '''Start the Inclusion Process to add a Node to the Network.
+
+        The Status of the Node Inclusion is communicated via Notifications. Specifically, you should
+        monitor ControllerCommand Notifications.
+
+        Results of the AddNode Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param doSecurity: Whether to initialize the Network Key on the device if it supports the Security CC
+        :type doSecurity: bool
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.addNode(homeid, doSecurity)
+
+    def remove_node(self, homeid):
+        '''Remove a Device from the Z-Wave Network
+
+        The Status of the Node Removal is communicated via Notifications. Specifically, you should
+        monitor ControllerCommand Notifications.
+
+        Results of the RemoveNode Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param doSecurity: Whether to initialize the Network Key on the device if it supports the Security CC
+        :type doSecurity: bool
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.removeNode(homeid)
+
+    def remove_failed_node(self, homeid, nodeid):
+        '''Check if the Controller Believes a Node has Failed.
+
+        This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
+        our list of Failed Nodes, which might be different.
+
+        The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications
+
+        Results of the RemoveFailedNode Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.removeFailedNode(homeid, nodeid)
+
+    def has_node_failed(self, homeid, nodeid):
+        '''Ask a Node to update its Neighbor Tables
+
+        This command will ask a Node to update its Neighbor Tables.
+
+        Results of the HasNodeFailed Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.hasNodeFailed(homeid, nodeid)
+
+    def request_node_neighbor_update(self, homeid, nodeid):
+        '''Ask a Node to update its Neighbor Tables
+
+        This command will ask a Node to update its Neighbor Tables.
+
+        Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.requestNodeNeighborUpdate(homeid, nodeid)
+
+    def assign_return_route(self, homeid, nodeid):
+        '''Ask a Node to update its update its Return Route to the Controller
+
+        This command will ask a Node to update its Return Route to the Controller
+
+        Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.assignReturnRoute(homeid, nodeid)
+
+    def delete_all_return_routes(self, homeid, nodeid):
+        '''Ask a Node to delete all Return Route.
+
+        This command will ask a Node to delete all its return routes, and will rediscover when needed.
+
+        Results of the DeleteAllReturnRoutes Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.deleteAllReturnRoutes(homeid, nodeid)
+
+    def send_node_information(self, homeid, nodeid):
+        '''Create a new primary controller when old primary fails. Requires SUC.
+
+        This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function
+
+        Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.sendNodeInformation(homeid, nodeid)
+
+    def replace_failed_node(self, homeid, nodeid):
+        '''Replace a failed device with another.
+
+        If the node is not in the controller's failed nodes list, or the node responds, this command will fail.
+
+        You can check if a Node is in the Controllers Failed node list by using the HasNodeFailed method.
+
+        Results of the ReplaceFailedNode Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.replaceFailedNode(homeid, nodeid)
+
+    def request_network_update(self, homeid, nodeid):
+        '''Update the controller with network information from the SUC/SIS.
+
+        Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.requestNetworkUpdate(homeid, nodeid)
+
+    def replication_send(self, homeid, nodeid):
+        '''Create a handheld button id.
+
+        Only intended for Bridge Firmware Controllers.
+
+        Results of the ReplicationSend Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :param buttonid: the ID of the Button to query.
+        :type buttonid: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.replicationSend(homeid, nodeid)
+
+    def create_button(self, homeid, nodeid, buttonid):
+        '''Create a handheld button id.
+
+        Only intended for Bridge Firmware Controllers.
+
+        Results of the CreateButton Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :param buttonid: the ID of the Button to query.
+        :type buttonid: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.createButton(homeid, nodeid, buttonid)
+
+    def delete_button(self, homeid, nodeid, buttonid):
+        '''Delete a handheld button id.
+
+        Only intended for Bridge Firmware Controllers.
+
+        Results of the CreateButton Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param homeId: The Home ID of the Z-Wave controller that manages the node.
+        :type homeId: int
+        :param nodeId: The ID of the node to query.
+        :type nodeId: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        return self._network.manager.deleteButton(homeid, nodeid, buttonid)
 
 
