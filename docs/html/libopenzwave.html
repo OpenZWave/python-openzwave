@@ -233,6 +233,34 @@ Home ID is required by most of the OpenZWave Manager class methods.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.addNode">
+<tt class="descname">addNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.addNode" title="Permalink to this definition">¶</a></dt>
+<dd><p id="addnode">Start the Inclusion Process to add a Node to the Network.</p>
+<p>The Status of the Node Inclusion is communicated via Notifications. Specifically, you should
+monitor ControllerCommand Notifications.</p>
+<p>Results of the AddNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>doSecurity</strong> (<em>bool</em>) &#8211; Whether to initialize the Network Key on the device if it supports the Security CC</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.addSceneValue">
 <tt class="descname">addSceneValue</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.addSceneValue" title="Permalink to this definition">¶</a></dt>
 <dd><p id="addscenevalue">Add a ValueID of value to an existing scene.</p>
@@ -279,6 +307,33 @@ add a single watcher - all notifications will be reported to it.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pythonfunc</strong> (<em>callback</em>) &#8211; Watcher pointer to a function that will be called by the notification system.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#removewatcher">removeWatcher</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.assignReturnRoute">
+<tt class="descname">assignReturnRoute</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.assignReturnRoute" title="Permalink to this definition">¶</a></dt>
+<dd><p id="assignreturnroute">Ask a Node to update its update its Return Route to the Controller</p>
+<p>This command will ask a Node to update its Return Route to the Controller</p>
+<p>Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -411,6 +466,55 @@ Z-Wave controller in turn.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.createButton">
+<tt class="descname">createButton</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.createButton" title="Permalink to this definition">¶</a></dt>
+<dd><p id="createbutton">Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.createNewPrimary">
+<tt class="descname">createNewPrimary</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.createNewPrimary" title="Permalink to this definition">¶</a></dt>
+<dd><p id="createnewprimary">Create a new primary controller when old primary fails. Requires SUC.</p>
+<p>This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function.</p>
+<p>Results of the CreateNewPrimary Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.createScene">
 <tt class="descname">createScene</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.createScene" title="Permalink to this definition">¶</a></dt>
 <dd><p id="createscene">Create a Scene.</p>
@@ -423,6 +527,60 @@ Z-Wave controller in turn.</p>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">id</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#activatescene">activateScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.deleteAllReturnRoutes">
+<tt class="descname">deleteAllReturnRoutes</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.deleteAllReturnRoutes" title="Permalink to this definition">¶</a></dt>
+<dd><p id="deleteallreturnroutes">Ask a Node to delete all Return Route.</p>
+<p>This command will ask a Node to delete all its return routes, and will rediscover when needed.</p>
+<p>Results of the DeleteAllReturnRoutes Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.deleteButton">
+<tt class="descname">deleteButton</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.deleteButton" title="Permalink to this definition">¶</a></dt>
+<dd><p id="deletebutton">Delete a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1420,6 +1578,24 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getOzwLibraryLongVersion">
+<tt class="descname">getOzwLibraryLongVersion</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getOzwLibraryLongVersion" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getozwlibrarylongversion">Get a string containing the openzwave library version.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A string containing the library type.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getOzwLibraryVersion">
 <tt class="descname">getOzwLibraryVersion</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getOzwLibraryVersion" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getozwlibraryversion">Get a string containing the openzwave library version.</p>
@@ -1431,7 +1607,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a></td>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getpythonlibraryversion">getPythonLibraryVersion</a>, <a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getozwlibrarylongversion">getOzwLibraryLongVersion</a></td>
 </tr>
 </tbody>
 </table>
@@ -1496,7 +1672,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a>, getOzwLibraryLongVersion</td>
 </tr>
 </tbody>
 </table>
@@ -1514,7 +1690,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a></td>
+<tr class="field-odd field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getlibrarytypename">getLibraryTypeName</a>, <a class="reference internal" href="#getlibraryversion">getLibraryVersion</a>, <a class="reference internal" href="#getozwlibraryversion">getOzwLibraryVersion</a>, getOzwLibraryLongVersion</td>
 </tr>
 </tbody>
 </table>
@@ -2049,6 +2225,33 @@ only the SensorMultilevel command class ever does this.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.hasNodeFailed">
+<tt class="descname">hasNodeFailed</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.hasNodeFailed" title="Permalink to this definition">¶</a></dt>
+<dd><p id="hasnodefailed">Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the HasNodeFailed Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.healNetwork">
 <tt class="descname">healNetwork</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.healNetwork" title="Permalink to this definition">¶</a></dt>
 <dd><p id="healnetwork">Heal network by requesting nodes rediscover their neighbors.
@@ -2505,6 +2708,27 @@ no notification callbacks are sent.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.receiveConfiguration">
+<tt class="descname">receiveConfiguration</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.receiveConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><p id="receiveconfiguration">Receive network configuration information from primary controller. Requires secondary.</p>
+<p>This command prepares the controller to recieve Network Configuration from a Secondary Controller.</p>
+<p>Results of the ReceiveConfiguration Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.refreshNodeInfo">
 <tt class="descname">refreshNodeInfo</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.refreshNodeInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p id="refreshnodeinfo">Trigger the fetching of fixed data about a node.</p>
@@ -2641,6 +2865,63 @@ handled automatically.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.removeFailedNode">
+<tt class="descname">removeFailedNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.removeFailedNode" title="Permalink to this definition">¶</a></dt>
+<dd><p id="removefailednode">Check if the Controller Believes a Node has Failed.</p>
+<p>This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
+our list of Failed Nodes, which might be different.</p>
+<p>The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications</p>
+<p>Results of the RemoveFailedNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.removeNode">
+<tt class="descname">removeNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.removeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p id="removenode">Remove a Device from the Z-Wave Network</p>
+<p>The Status of the Node Removal is communicated via Notifications. Specifically, you should
+monitor ControllerCommand Notifications.</p>
+<p>Results of the RemoveNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>doSecurity</strong> (<em>bool</em>) &#8211; Whether to initialize the Network Key on the device if it supports the Security CC</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.removeScene">
 <tt class="descname">removeScene</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.removeScene" title="Permalink to this definition">¶</a></dt>
 <dd><p id="removescene">Remove an existing Scene.</p>
@@ -2732,6 +3013,62 @@ handled automatically.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.replaceFailedNode">
+<tt class="descname">replaceFailedNode</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.replaceFailedNode" title="Permalink to this definition">¶</a></dt>
+<dd><p id="replacefailednode">Replace a failed device with another.</p>
+<p>If the node is not in the controller&#8217;s failed nodes list, or the node responds, this command will fail.</p>
+<p>You can check if a Node is in the Controllers Failed node list by using the HasNodeFailed method.</p>
+<p>Results of the ReplaceFailedNode Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.replicationSend">
+<tt class="descname">replicationSend</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.replicationSend" title="Permalink to this definition">¶</a></dt>
+<dd><p id="replicationsend">Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the ReplicationSend Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+<li><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.requestAllConfigParams">
 <tt class="descname">requestAllConfigParams</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.requestAllConfigParams" title="Permalink to this definition">¶</a></dt>
 <dd><p id="requestallconfigparams">Request the values of all known configurable parameters from a device.</p>
@@ -2784,6 +3121,32 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.requestNetworkUpdate">
+<tt class="descname">requestNetworkUpdate</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.requestNetworkUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p id="requestnetworkupdate">Update the controller with network information from the SUC/SIS.</p>
+<p>Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.requestNodeDynamic">
 <tt class="descname">requestNodeDynamic</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.requestNodeDynamic" title="Permalink to this definition">¶</a></dt>
 <dd><p id="requestnodedynamic">Trigger the fetching of fixed data about a node.</p>
@@ -2793,6 +3156,33 @@ automatically by OpenZWave, but if you know that a node has been changed,
 calling this method will force a refresh of the data held by the library.  This
 can be especially useful for devices that were asleep when the application was
 first run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.requestNodeNeighborUpdate">
+<tt class="descname">requestNodeNeighborUpdate</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.requestNodeNeighborUpdate" title="Permalink to this definition">¶</a></dt>
+<dd><p id="requestnodeneighborupdate">Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2892,6 +3282,33 @@ controller becomes a primary controller ready to add devices to a new network.</
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict containing : {valueid : value, ...}</td>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#getnumscenes">getNumScenes</a>, <a class="reference internal" href="#getallscenes">getAllScenes</a>, <a class="reference internal" href="#sceneexists">sceneExists</a>, <a class="reference internal" href="#createscene">createScene</a>, <a class="reference internal" href="#removescene">removeScene</a>, <a class="reference internal" href="#getscenelabel">getSceneLabel</a>, <a class="reference internal" href="#setscenelabel">setSceneLabel</a>, <a class="reference internal" href="#removescenevalue">removeSceneValue</a>, <a class="reference internal" href="#addscenevalue">addSceneValue</a>, <a class="reference internal" href="#setscenevalue">setSceneValue</a>, <a class="reference internal" href="#scenegetvalues">sceneGetValues</a>, <a class="reference internal" href="#removeallscenes">removeAllScenes</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.sendNodeInformation">
+<tt class="descname">sendNodeInformation</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.sendNodeInformation" title="Permalink to this definition">¶</a></dt>
+<dd><p id="sendnodeinformation">Create a new primary controller when old primary fails. Requires SUC.</p>
+<p>This command Creates a new Primary Controller when the Old Primary has Failed. Requires a SUC on the network to function</p>
+<p>Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the request was sent successfully.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -3452,6 +3869,27 @@ will be turned on.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#testnetwork">testNetwork</a></p>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.transferPrimaryRole">
+<tt class="descname">transferPrimaryRole</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.transferPrimaryRole" title="Permalink to this definition">¶</a></dt>
+<dd><p id="transferprimaryrole">Add a new controller to the network and make it the primary.</p>
+<p>The existing primary will become a secondary controller.</p>
+<p>Results of the TransferPrimaryRole Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>

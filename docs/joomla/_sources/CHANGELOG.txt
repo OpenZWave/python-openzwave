@@ -8,8 +8,12 @@ Known bugs
  * reloader problem : the network stop/start every time the app is realoaded. But in this case, the process terminates normally.
  But there seems to be 2 running instances of the network.
 
+python-openzwave 0.3.0-beta3:
+ * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
+
 python-openzwave 0.3.0-beta2:
  * Move to OpenZWave git organisation
+
 
 python-openzwave 0.3.0-beta1:
  * Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [--device=/dev/ttyUSB0] [--log=Debug] ...
