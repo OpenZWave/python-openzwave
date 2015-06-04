@@ -51,6 +51,7 @@ from manager cimport Manager, Create as CreateManager, Get as GetManager
 from log cimport LogLevel
 import os
 import sys
+import warnings
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -148,7 +149,7 @@ PyNotifications = [
     EnumWithDoc('AllNodesQueriedSomeDead').setDoc("All nodes have been queried but some dead nodes found."),
     EnumWithDoc('Notification').setDoc("A manager notification report."),
     EnumWithDoc('DriverRemoved').setDoc("The Driver is being removed."),
-    EnumWithDoc('Type_ControllerCommand').setDoc("When Controller Commands are executed, Notifications of Success/Failure etc are communicated via this Notification."),
+    EnumWithDoc('ControllerCommand').setDoc("When Controller Commands are executed, Notifications of Success/Failure etc are communicated via this Notification."),
     ]
 
 PyNotificationCodes = [
@@ -451,6 +452,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() == Type_ControllerCommand:
         n['controllerState'] = notification.GetNotification()
         n['controllerCommand'] = notification.GetEvent()
+        n['controllerMessage'] = PyControllerState[notification.GetNotification()].doc
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     elif notification.GetType() == Type_DriverReset:
@@ -3727,7 +3729,6 @@ Resets a controller without erasing its network configuration settings.
     def cancelControllerCommand(self, homeid):
         '''
 .. _cancelControllerCommand:
-DEPRECATED
 
 Cancels any in-progress command running on a controller.
 
@@ -3748,7 +3749,6 @@ Cancels any in-progress command running on a controller.
 .. _beginControllerCommand:
 
 Start a controller command process.
-DEPRECATED
 
 Commands :
 
