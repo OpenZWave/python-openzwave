@@ -101,7 +101,9 @@ class TestApi(TestPyZWave):
                 #sys.stdout.flush()
                 time.sleep(1.0)
 
-    def ctrl_message(self, network, controller, node, node_id, state, command, message):
+    def ctrl_message(self, network, controller, node, node_id,
+            state_int, state, state_full,
+            error_int, error, error_full,):
         self.ctrl_command_result = state
         print "catched"
 

@@ -1561,7 +1561,8 @@ class ZWaveNetwork(ZWaveObject):
 
         The state could be obtained here :
         dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
-            **{'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+            **{'network': self, 'controller': self.controller,
+               'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
                })
 
         And the full command here :
@@ -1581,7 +1582,8 @@ class ZWaveNetwork(ZWaveObject):
 
         if args['controllerState'] == self.controller.STATE_WAITING:
             dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
-                **{'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+                **{'network': self, 'controller': self.controller,
+                   'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
                    })
 
         dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \

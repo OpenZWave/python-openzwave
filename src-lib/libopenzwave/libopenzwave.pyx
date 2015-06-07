@@ -469,7 +469,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
         addValueId(notification.GetValueID(), n)
     elif notification.GetType() == Type_ValueRemoved:
-        n['valudeId'] = {'id' : notification.GetValueID().GetId()}
+        n['valueId'] = {'id' : notification.GetValueID().GetId()}
     #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
     #    #Maybe we should enable/disable this
     #    addValueId(notification.GetValueID(), n)
