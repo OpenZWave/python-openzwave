@@ -145,9 +145,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>Unit Test Report</h1>
-<p class='attribute'><strong>Start Time:</strong> 2015-06-04 21:44:41</p>
-<p class='attribute'><strong>Duration:</strong> 0:05:52.494550</p>
-<p class='attribute'><strong>Status:</strong> Pass 94</p>
+<p class='attribute'><strong>Start Time:</strong> 2015-06-08 01:53:33</p>
+<p class='attribute'><strong>Duration:</strong> 0:04:16.521715</p>
+<p class='attribute'><strong>Status:</strong> Pass 96</p>
 
 <p class='description'></p>
 </div>
@@ -181,7 +181,7 @@ function showOutput(id, name) {
 
 <tr class='passClass'>
     <td>tests.api.test_controller:TestController</td>
-    <td>35.01</td>
+    <td>33.00</td>
     <td>22</td>
     <td>22</td>
     <td>0</td>
@@ -191,7 +191,7 @@ function showOutput(id, name) {
 
 <tr id='pt1.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_010_controller</div></td>
-    <td>2.00</td>
+    <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
@@ -322,42 +322,54 @@ function showOutput(id, name) {
 </tr>
 
 <tr class='passClass'>
-    <td>tests.api.test_protection:TestProtection</td>
-    <td>30.01</td>
-    <td>4</td>
-    <td>4</td>
+    <td>tests.api.test_controller_command:TestControllerCommand</td>
+    <td>28.00</td>
+    <td>6</td>
+    <td>6</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c2',4)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c2',6)">Detail</a></td>
 </tr>
 
 <tr id='pt2.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_protection_item</div></td>
-    <td>2.00</td>
+    <td class='none'><div class='testcase'>test_010_command_send_node_information_nodes</div></td>
+    <td>1.05</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt2.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_020_protection_set_item_no_operation</div></td>
-    <td>14.00</td>
+    <td class='none'><div class='testcase'>test_015_command_send_node_information_controller</div></td>
+    <td>5.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt2.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_030_protection_set_item_unprotected</div></td>
-    <td>14.00</td>
+    <td class='none'><div class='testcase'>test_020_command_request_node_neighbor_update_nodes</div></td>
+    <td>2.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt2.4' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_050_protection_items</div></td>
-    <td>0.00</td>
+    <td class='none'><div class='testcase'>test_025_command_request_node_neighbor_update_controller</div></td>
+    <td>17.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_030_command_request_network_update_nodes</div></td>
+    <td>1.05</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_035_command_request_network_update_controller</div></td>
+    <td>1.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
-    <td>tests.api.test_switch:TestSwitch</td>
-    <td>26.00</td>
+    <td>tests.api.test_dimmer:TestDimmer</td>
+    <td>8.00</td>
     <td>2</td>
     <td>2</td>
     <td>0</td>
@@ -366,70 +378,70 @@ function showOutput(id, name) {
 </tr>
 
 <tr id='pt3.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_switch_state</div></td>
-    <td>5.00</td>
+    <td class='none'><div class='testcase'>test_010_dimmer_level</div></td>
+    <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt3.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_110_switch_on_off</div></td>
-    <td>21.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_controller_command:TestControllerCommand</td>
-    <td>12.00</td>
-    <td>3</td>
-    <td>3</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c4',3)">Detail</a></td>
-</tr>
-
-<tr id='pt4.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_command_send_node_information_nodeid</div></td>
-    <td>1.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt4.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_020_command_send_node_information_nodeid_controller</div></td>
-    <td>10.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt4.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_210_command_request_node_neigbhor_update_node</div></td>
-    <td>1.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_dimmer:TestDimmer</td>
-    <td>10.00</td>
-    <td>2</td>
-    <td>2</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c5',2)">Detail</a></td>
-</tr>
-
-<tr id='pt5.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_dimmer_level</div></td>
-    <td>2.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt5.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_110_dimmer_on_off</div></td>
     <td>8.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
+    <td>tests.api.test_network_start:TestNetworkStartStop</td>
+    <td>5.00</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c4',1)">Detail</a></td>
+</tr>
+
+<tr id='pt4.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_000_network_start_stop</div></td>
+    <td>5.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_protection:TestProtection</td>
+    <td>5.00</td>
+    <td>4</td>
+    <td>4</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c5',4)">Detail</a></td>
+</tr>
+
+<tr id='pt5.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_010_protection_item</div></td>
+    <td>1.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_020_protection_set_item_no_operation</div></td>
+    <td>2.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_030_protection_set_item_unprotected</div></td>
+    <td>2.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_050_protection_items</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
     <td>tests.api.test_switch_all:TestSwitchAll</td>
-    <td>8.00</td>
+    <td>4.00</td>
     <td>3</td>
     <td>3</td>
     <td>0</td>
@@ -439,13 +451,13 @@ function showOutput(id, name) {
 
 <tr id='pt6.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_010_switch_all_item</div></td>
-    <td>2.00</td>
+    <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt6.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_015_switch_all_set_item</div></td>
-    <td>6.00</td>
+    <td>4.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
@@ -456,396 +468,196 @@ function showOutput(id, name) {
 </tr>
 
 <tr class='passClass'>
-    <td>tests.api.test_network_start:TestNetworkStartStop</td>
-    <td>7.00</td>
-    <td>1</td>
-    <td>1</td>
+    <td>tests.api.test_network:TestNetwork</td>
+    <td>3.08</td>
+    <td>9</td>
+    <td>9</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c7',1)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c7',9)">Detail</a></td>
 </tr>
 
 <tr id='pt7.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_000_network_start_stop</div></td>
-    <td>7.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_network:TestNetwork</td>
-    <td>5.07</td>
-    <td>9</td>
-    <td>9</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c8',9)">Detail</a></td>
-</tr>
-
-<tr id='pt8.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_000_network_awake</div></td>
-    <td>3.00</td>
+    <td>1.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.2' class='hiddenRow'>
+<tr id='pt7.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_010_network_ready</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.3' class='hiddenRow'>
+<tr id='pt7.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_100_network_test</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.4' class='hiddenRow'>
+<tr id='pt7.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_110_network_heal</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.5' class='hiddenRow'>
+<tr id='pt7.5' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_120_network_poll</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.6' class='hiddenRow'>
+<tr id='pt7.6' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_200_network_to_dict</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.7' class='hiddenRow'>
+<tr id='pt7.7' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_220_network_nodes_to_dict</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.8' class='hiddenRow'>
+<tr id='pt7.8' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_300_network_kvals_nodes</div></td>
-    <td>2.02</td>
+    <td>1.06</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt8.9' class='hiddenRow'>
+<tr id='pt7.9' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_310_network_kvals_controller</div></td>
-    <td>0.05</td>
+    <td>1.01</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
-    <td>tests.api.test_nodes:TestNodes</td>
-    <td>4.00</td>
-    <td>6</td>
-    <td>6</td>
+    <td>tests.api.test_switch:TestSwitch</td>
+    <td>3.00</td>
+    <td>2</td>
+    <td>2</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c9',6)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c8',2)">Detail</a></td>
+</tr>
+
+<tr id='pt8.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_010_switch_state</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_110_switch_on_off</div></td>
+    <td>3.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.autobuild.test_api:TestNetworkApi</td>
+    <td>0.08</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c9',3)">Detail</a></td>
 </tr>
 
 <tr id='pt9.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_000_nodes_count</div></td>
-    <td>4.00</td>
+    <td class='none'><div class='testcase'>test_000_api_network</div></td>
+    <td>0.08</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt9.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_100_nodes_test</div></td>
+    <td class='none'><div class='testcase'>test_900_api_singleton</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt9.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_110_nodes_heal</div></td>
+    <td class='none'><div class='testcase'>test_905_network_singleton</div></td>
     <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt9.4' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_200_nodes_to_dict</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt9.5' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_210_controller_to_dict</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt9.6' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_220_nodes_groups_to_dict</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_node:TestNode</td>
-    <td>3.00</td>
-    <td>13</td>
-    <td>13</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c10',13)">Detail</a></td>
-</tr>
-
-<tr id='pt10.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_020_node_capabilities</div></td>
-    <td>3.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_310_node</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_330_controller_node_neighbors</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.4' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_340_controller_node_baud_rate</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.5' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_410_controller_node_product</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.6' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_420_controller_node_name</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.7' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_421_controller_node_name_accent</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.8' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_430_controller_node_product_location</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.9' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_440_controller_node_product_name</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.10' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_510_controller_node_group</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.11' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_610_controller_node_command_class</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.12' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_710_controller_node_manufacturer_name</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt10.13' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_810_controller_node_values</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_sensor:TestSensor</td>
-    <td>2.00</td>
-    <td>3</td>
-    <td>3</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c11',3)">Detail</a></td>
-</tr>
-
-<tr id='pt11.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_sensor_bool</div></td>
-    <td>2.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt11.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_310_sensor_int</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt11.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_410_sensor_decimal</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_value:TestValue</td>
-    <td>2.00</td>
-    <td>1</td>
-    <td>1</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c12',1)">Detail</a></td>
-</tr>
-
-<tr id='pt12.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_200_values_to_dict</div></td>
-    <td>2.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.api.test_scene:TestScene</td>
-    <td>2.00</td>
-    <td>3</td>
-    <td>3</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c13',3)">Detail</a></td>
-</tr>
-
-<tr id='pt13.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_005_scene_add_remove</div></td>
-    <td>2.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt13.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_010_scenes_to_dict</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt13.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_020_scene_to_dict</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr class='passClass'>
-    <td>tests.manager.autobuild.test_manager:ManagerTest</td>
-    <td>0.07</td>
-    <td>1</td>
-    <td>1</td>
-    <td>0</td>
-    <td>0</td>
-    <td><a href="javascript:showClassDetail('c14',1)">Detail</a></td>
-</tr>
-
-<tr id='pt14.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_000_import</div></td>
-    <td>0.07</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
     <td>tests.web.test_server:FlaskServerTest</td>
-    <td>0.04</td>
+    <td>0.03</td>
     <td>9</td>
     <td>9</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c15',9)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c10',9)">Detail</a></td>
 </tr>
 
-<tr id='pt15.1' class='hiddenRow'>
+<tr id='pt10.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_000_server_start</div></td>
-    <td>0.02</td>
+    <td>0.01</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.2' class='hiddenRow'>
+<tr id='pt10.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_001_error_404</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.3' class='hiddenRow'>
+<tr id='pt10.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_100_home_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.4' class='hiddenRow'>
+<tr id='pt10.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_200_controller_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.5' class='hiddenRow'>
+<tr id='pt10.5' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_300_values_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.6' class='hiddenRow'>
+<tr id='pt10.6' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_400_controller_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.7' class='hiddenRow'>
+<tr id='pt10.7' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_500_node_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.8' class='hiddenRow'>
+<tr id='pt10.8' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_600_map_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt15.9' class='hiddenRow'>
+<tr id='pt10.9' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_700_scenes_is_up</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='passClass'>
-    <td>tests.api.autobuild.test_api:TestNetworkApi</td>
-    <td>0.00</td>
-    <td>3</td>
-    <td>3</td>
+    <td>tests.manager.autobuild.test_manager:ManagerTest</td>
+    <td>0.02</td>
+    <td>1</td>
+    <td>1</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c16',3)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c11',1)">Detail</a></td>
 </tr>
 
-<tr id='pt16.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_000_api_network</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt16.2' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_900_api_singleton</div></td>
-    <td>0.00</td>
-    <td colspan='5' align='center'>pass</td>
-</tr>
-
-<tr id='pt16.3' class='hiddenRow'>
-    <td class='none'><div class='testcase'>test_905_network_singleton</div></td>
-    <td>0.00</td>
+<tr id='pt11.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_000_import</div></td>
+    <td>0.02</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
@@ -856,29 +668,191 @@ function showOutput(id, name) {
     <td>4</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c17',4)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c12',4)">Detail</a></td>
 </tr>
 
-<tr id='pt17.1' class='hiddenRow'>
+<tr id='pt12.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_000_init</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt17.2' class='hiddenRow'>
+<tr id='pt12.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_010_options_exceptions</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt17.3' class='hiddenRow'>
+<tr id='pt12.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_020_options_without_command_line</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt17.4' class='hiddenRow'>
+<tr id='pt12.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_030_options_with_command_line</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_nodes:TestNodes</td>
+    <td>0.00</td>
+    <td>6</td>
+    <td>6</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c13',6)">Detail</a></td>
+</tr>
+
+<tr id='pt13.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_000_nodes_count</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt13.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_100_nodes_test</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt13.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_110_nodes_heal</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt13.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_200_nodes_to_dict</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt13.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_210_controller_to_dict</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt13.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_220_nodes_groups_to_dict</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_node:TestNode</td>
+    <td>0.00</td>
+    <td>13</td>
+    <td>13</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c14',13)">Detail</a></td>
+</tr>
+
+<tr id='pt14.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_020_node_capabilities</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_310_node</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_330_controller_node_neighbors</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_340_controller_node_baud_rate</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_410_controller_node_product</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_420_controller_node_name</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_421_controller_node_name_accent</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_430_controller_node_product_location</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_440_controller_node_product_name</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_510_controller_node_group</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_610_controller_node_command_class</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_710_controller_node_manufacturer_name</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt14.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_810_controller_node_values</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_scene:TestScene</td>
+    <td>0.00</td>
+    <td>3</td>
+    <td>3</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c15',3)">Detail</a></td>
+</tr>
+
+<tr id='pt15.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_005_scene_add_remove</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt15.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_010_scenes_to_dict</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt15.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_020_scene_to_dict</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
@@ -890,29 +864,67 @@ function showOutput(id, name) {
     <td>4</td>
     <td>0</td>
     <td>0</td>
-    <td><a href="javascript:showClassDetail('c18',4)">Detail</a></td>
+    <td><a href="javascript:showClassDetail('c16',4)">Detail</a></td>
 </tr>
 
-<tr id='pt18.1' class='hiddenRow'>
+<tr id='pt16.1' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_010_options_string</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt18.2' class='hiddenRow'>
+<tr id='pt16.2' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_020_options_bool</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt18.3' class='hiddenRow'>
+<tr id='pt16.3' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_030_options_int</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='pt18.4' class='hiddenRow'>
+<tr id='pt16.4' class='hiddenRow'>
     <td class='none'><div class='testcase'>test_040_options_generic</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_value:TestValue</td>
+    <td>0.00</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c17',1)">Detail</a></td>
+</tr>
+
+<tr id='pt17.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_200_values_to_dict</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>tests.api.test_sensor:TestSensor</td>
+    <td>0.00</td>
+    <td>2</td>
+    <td>2</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c18',2)">Detail</a></td>
+</tr>
+
+<tr id='pt18.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_010_sensor_bool</div></td>
+    <td>0.00</td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt18.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_410_sensor_decimal</div></td>
     <td>0.00</td>
     <td colspan='5' align='center'>pass</td>
 </tr>
@@ -935,9 +947,9 @@ function showOutput(id, name) {
 
 <tr id='total_row'>
     <td>Total</td>
-    <td>2:28.07</td>
-    <td>94</td>
-    <td>94</td>
+    <td>1:31.05</td>
+    <td>96</td>
+    <td>96</td>
     <td>0</td>
     <td>0</td>
     <td>&nbsp;</td>
