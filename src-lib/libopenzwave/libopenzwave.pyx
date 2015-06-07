@@ -196,22 +196,6 @@ PyControllerState = [
     EnumWithDoc('NodeFailed').setDoc("Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed."),
     ]
 
-PyControllerError = [
-    EnumWithDoc('None').setDoc("None."),
-    EnumWithDoc('ButtonNotFound').setDoc("Button."),
-    EnumWithDoc('NodeNotFound').setDoc("Button."),
-    EnumWithDoc('NotBridge').setDoc("Button."),
-    EnumWithDoc('NotSUC').setDoc("CreateNewPrimary."),
-    EnumWithDoc('NotSecondary').setDoc("CreateNewPrimary."),
-    EnumWithDoc('NotPrimary').setDoc("RemoveFailedNode, AddNodeToNetwork."),
-    EnumWithDoc('IsPrimary').setDoc("ReceiveConfiguration."),
-    EnumWithDoc('NotFound').setDoc("RemoveFailedNode."),
-    EnumWithDoc('Busy').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
-    EnumWithDoc('Failed').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
-    EnumWithDoc('Disabled').setDoc("RequestNetworkUpdate error."),
-    EnumWithDoc('Overflow').setDoc("RequestNetworkUpdate error."),
-    ]
-
 PyControllerCommand = [
     EnumWithDoc('None').setDoc("No command."),
     EnumWithDoc('AddDevice').setDoc("Add a new device (but not a controller) to the Z-Wave network."),
@@ -230,6 +214,22 @@ PyControllerCommand = [
     EnumWithDoc('ReplicationSend').setDoc("Send information from primary to secondary."),
     EnumWithDoc('CreateButton').setDoc("Create an id that tracks handheld button presses."),
     EnumWithDoc('DeleteButton').setDoc("Delete id that tracks handheld button presses."),
+    ]
+
+PyControllerError = [
+    EnumWithDoc('None').setDoc("None."),
+    EnumWithDoc('ButtonNotFound').setDoc("Button."),
+    EnumWithDoc('NodeNotFound').setDoc("Button."),
+    EnumWithDoc('NotBridge').setDoc("Button."),
+    EnumWithDoc('NotSUC').setDoc("CreateNewPrimary."),
+    EnumWithDoc('NotSecondary').setDoc("CreateNewPrimary."),
+    EnumWithDoc('NotPrimary').setDoc("RemoveFailedNode, AddNodeToNetwork."),
+    EnumWithDoc('IsPrimary').setDoc("ReceiveConfiguration."),
+    EnumWithDoc('NotFound').setDoc("RemoveFailedNode."),
+    EnumWithDoc('Busy').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
+    EnumWithDoc('Failed').setDoc("RemoveFailedNode, RequestNetworkUpdate."),
+    EnumWithDoc('Disabled').setDoc("RequestNetworkUpdate error."),
+    EnumWithDoc('Overflow').setDoc("RequestNetworkUpdate error."),
     ]
 
 PyControllerInterface = [
@@ -450,9 +450,15 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() == Type_Notification:
         n['notificationCode'] = notification.GetNotification()
     elif notification.GetType() == Type_ControllerCommand:
-        n['controllerState'] = notification.GetNotification()
-        n['controllerCommand'] = notification.GetEvent()
-        n['controllerMessage'] = PyControllerState[notification.GetNotification()].doc
+        state = notification.GetEvent()
+        n['controllerStateInt'] = state
+        n['controllerState'] = PyControllerState[state]
+        n['controllerStateDoc'] = PyControllerState[state].doc
+        #Notification is filled with error
+        error = notification.GetNotification()
+        n['controllerErrorInt'] = error
+        n['controllerError'] = PyControllerError[error]
+        n['controllerErrorDoc'] = PyControllerError[error].doc
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         n['buttonId'] = notification.GetButtonId()
     elif notification.GetType() == Type_DriverReset:
@@ -463,12 +469,14 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
         addValueId(notification.GetValueID(), n)
     elif notification.GetType() == Type_ValueRemoved:
-        delValueId(notification.GetValueID(), n)
+        n['valudeId'] = {'id' : notification.GetValueID().GetId()}
     #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
     #    #Maybe we should enable/disable this
     #    addValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : call callback context")
     (<object>_context)(n)
+    if notification.GetType() == Type_ValueRemoved:
+        delValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : end")
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -489,10 +497,10 @@ cpdef object driverData():
 
 def configPath():
     '''
-Retrieve the config path. This directory hold the xml files.
+    Retrieve the config path. This directory hold the xml files.
 
-:return: A string containing the library config path or None.
-:rtype: str
+    :return: A string containing the library config path or None.
+    :rtype: str
 
     '''
     if os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
@@ -512,7 +520,7 @@ Retrieve the config path. This directory hold the xml files.
 
 cdef class PyOptions:
     """
-Manage options manager
+    Manage options manager
     """
 
     cdef str _config_path
@@ -523,16 +531,16 @@ Manage options manager
 
     def __init__(self, config_path=None, user_path=".", cmd_line=""):
         """
-Create an option object and check that parameters are valid.
+        Create an option object and check that parameters are valid.
 
-:param device: The device to use
-:type device: str
-:param config_path: The openzwave config directory. If None, try to configure automatically.
-:type config_path: str
-:param user_path: The user directory
-:type user_path: str
-:param cmd_line: The "command line" options of the openzwave library
-:type cmd_line: str
+        :param device: The device to use
+        :type device: str
+        :param config_path: The openzwave config directory. If None, try to configure automatically.
+        :type config_path: str
+        :param user_path: The user directory
+        :type user_path: str
+        :param cmd_line: The "command line" options of the openzwave library
+        :type cmd_line: str
 
         """
         if config_path is None:
@@ -562,18 +570,18 @@ Create an option object and check that parameters are valid.
 
     def create(self, char *a, char *b, char *c):
         """
-.. _createoptions:
+        .. _createoptions:
 
-Create an option object used to start the manager
+        Create an option object used to start the manager
 
-:param a: The path of the config directory
-:type a: str
-:param b: The path of the user directory
-:type b: str
-:param c: The "command line" options of the openzwave library
-:type c: str
+        :param a: The path of the config directory
+        :type a: str
+        :param b: The path of the user directory
+        :type b: str
+        :param c: The "command line" options of the openzwave library
+        :type c: str
 
-:see: destroyoptions_
+        :see: destroyoptions_
 
         """
         self.options = CreateOptions(string(a), string(b), string(c))
@@ -581,121 +589,121 @@ Create an option object used to start the manager
 
     def destroy(self):
         """
-.. _destroyoptions:
+        .. _destroyoptions:
 
- Deletes the Options and cleans up any associated objects.
- The application is responsible for destroying the Options object,
- but this must not be done until after the Manager object has been
- destroyed.
+         Deletes the Options and cleans up any associated objects.
+         The application is responsible for destroying the Options object,
+         but this must not be done until after the Manager object has been
+         destroyed.
 
-:return: The result of the operation.
-:rtype: bool
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: createoptions_
+        :see: createoptions_
 
         """
         return self.options.Destroy()
 
     def lock(self):
         """
-.. _lock:
+        .. _lock:
 
-Lock the options. Needed to start the manager
+        Lock the options. Needed to start the manager
 
-:return: The result of the operation.
-:rtype: bool
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: areLocked_
+        :see: areLocked_
 
         """
         return self.options.Lock()
 
     def areLocked(self):
         '''
-.. _areLocked:
+        .. _areLocked:
 
- Test whether the options have been locked.
+         Test whether the options have been locked.
 
-:return: true if the options have been locked.
-:rtype: boolean
+        :return: true if the options have been locked.
+        :rtype: boolean
 
-:see: lock_
+        :see: lock_
 
         '''
         return self.options.AreLocked()
 
     def addOptionBool(self, char *name, value):
         """
-.. _addOptionBool:
+        .. _addOptionBool:
 
-Add a boolean option.
+        Add a boolean option.
 
-:param name: The name of the option.
-:type name: str
-:param value: The value of the option.
-:type value: boolean
-:return: The result of the operation.
-:rtype: bool
+        :param name: The name of the option.
+        :type name: str
+        :param value: The value of the option.
+        :type value: boolean
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: addOption_, addOptionInt_, addOptionString_
+        :see: addOption_, addOptionInt_, addOptionString_
 
         """
         return self.options.AddOptionBool(string(name), value)
 
     def addOptionInt(self, char *name, value):
         """
-.. _addOptionInt:
+        .. _addOptionInt:
 
-Add an integer option.
+        Add an integer option.
 
-:param name: The name of the option.
-:type name: str
-:param value: The value of the option.
-:type value: boolean
-:return: The result of the operation.
-:rtype: bool
+        :param name: The name of the option.
+        :type name: str
+        :param value: The value of the option.
+        :type value: boolean
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: addOption_, addOptionBool_, addOptionString_
+        :see: addOption_, addOptionBool_, addOptionString_
 
         """
         return self.options.AddOptionInt(string(name), value)
 
     def addOptionString(self, char *name, char *value, append=False):
         """
-.. _addOptionString:
+        .. _addOptionString:
 
-Add a string option.
+        Add a string option.
 
-:param name: The name of the option.  Option names are case insensitive and must be unique.
-:type name: str
-:param value: The value of the option.
-:type value: str
-:param append: Setting append to true will cause values read from the command line
- or XML file to be concatenated into a comma delimited set.  If _append is false,
- newer values will overwrite older ones.
-:type append: boolean
-:return: The result of the operation.
-:rtype: bool
+        :param name: The name of the option.  Option names are case insensitive and must be unique.
+        :type name: str
+        :param value: The value of the option.
+        :type value: str
+        :param append: Setting append to true will cause values read from the command line
+         or XML file to be concatenated into a comma delimited set.  If _append is false,
+         newer values will overwrite older ones.
+        :type append: boolean
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: addOption_, addOptionBool_, addOptionInt_
+        :see: addOption_, addOptionBool_, addOptionInt_
 
         """
         return self.options.AddOptionString(string(name), string(value), append)
 
     def addOption(self, name, value):
         """
-.. _addOption:
+        .. _addOption:
 
-Add an option.
+        Add an option.
 
-:param name: The name of the option.
-:type name: string
-:param value: The value of the option.
-:type value: boolean, integer, string
-:return: The result of the operation.
-:rtype: bool
+        :param name: The name of the option.
+        :type name: string
+        :param value: The value of the option.
+        :type value: boolean, integer, string
+        :return: The result of the operation.
+        :rtype: bool
 
-:see: addOptionBool_, addOptionInt_, addOptionString_
+        :see: addOptionBool_, addOptionInt_, addOptionString_
 
         """
         if name not in PyOptionList:
@@ -710,16 +718,16 @@ Add an option.
 
     def getOption(self, name):
         """
-.. _getOption:
+        .. _getOption:
 
-Retrieve option of a value.
+        Retrieve option of a value.
 
-:param name: The name of the option.
-:type name: string
-:return: The value
-:rtype: boolean, integer, string or None
+        :param name: The name of the option.
+        :type name: string
+        :return: The value
+        :rtype: boolean, integer, string or None
 
-:see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
+        :see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
 
         """
         if name not in PyOptionList:
@@ -734,16 +742,16 @@ Retrieve option of a value.
 
     def getOptionAsBool(self, name):
         """
-.. _getOptionAsBool:
+        .. _getOptionAsBool:
 
-Retrieve boolean value of an option.
+        Retrieve boolean value of an option.
 
-:param name: The name of the option.
-:type name: string
-:return: The value or None
-:rtype: boolean or None
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: boolean or None
 
-:see: getOption_, getOptionAsInt_, getOptionAsString_
+        :see: getOption_, getOptionAsInt_, getOptionAsString_
 
         """
         cdef bool type_bool
@@ -753,16 +761,16 @@ Retrieve boolean value of an option.
 
     def getOptionAsInt(self, name):
         """
-.. _getOptionAsInt:
+        .. _getOptionAsInt:
 
-Retrieve integer value of an option.
+        Retrieve integer value of an option.
 
-:param name: The name of the option.
-:type name: string
-:return: The value or None
-:rtype: Integer or None
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: Integer or None
 
-:see: getOption_, getOptionAsBool_, getOptionAsString_
+        :see: getOption_, getOptionAsBool_, getOptionAsString_
 
         """
         cdef int32_t type_int
@@ -772,16 +780,16 @@ Retrieve integer value of an option.
 
     def getOptionAsString(self, name):
         """
-.. _getOptionAsString:
+        .. _getOptionAsString:
 
-Retrieve string value of an option.
+        Retrieve string value of an option.
 
-:param name: The name of the option.
-:type name: string
-:return: The value or None
-:rtype: String or None
+        :param name: The name of the option.
+        :type name: string
+        :return: The value or None
+        :rtype: String or None
 
-:see: getOption_, getOptionAsBool_, getOptionAsInt_
+        :see: getOption_, getOptionAsBool_, getOptionAsInt_
 
         """
         cdef string type_string
@@ -791,12 +799,12 @@ Retrieve string value of an option.
 
     def getConfigPath(self):
         '''
-.. _getConfigPath:
+        .. _getConfigPath:
 
-Retrieve the config path. This directory hold the xml files.
+        Retrieve the config path. This directory hold the xml files.
 
-:return: A string containing the library config path or None.
-:rtype: str
+        :return: A string containing the library config path or None.
+        :rtype: str
 
         '''
         return configPath()
@@ -804,9 +812,9 @@ Retrieve the config path. This directory hold the xml files.
 
 cdef class RetAlloc:
     """
-Map an array of uint8_t used when retrieving sets.
-Allocate memory at init and free it when no more reference to it exist.
-Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
+    Map an array of uint8_t used when retrieving sets.
+    Allocate memory at init and free it when no more reference to it exist.
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
 
     """
     cdef uint32_t siz

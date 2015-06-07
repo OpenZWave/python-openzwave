@@ -20,9 +20,11 @@ debian/python-openzwave
 pyozw.db
 zwcfg_*
 zwscene.xml
+zwbutton.xml
 examples/pyozw.db
 examples/zwcfg_*
 examples/zwscene.xml
+examples/zwbutton.xml
 install.files
 src-lib/libopenzwave.so
 src-lib/libopenzwave.egg-info/

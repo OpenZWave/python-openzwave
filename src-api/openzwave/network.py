@@ -283,6 +283,7 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_MSG_COMPLETE = 'MsgComplete'
     SIGNAL_NOTIFICATION = 'Notification'
     SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
+    SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -390,22 +391,12 @@ class ZWaveNetwork(ZWaveObject):
         """
         if self._started == False:
             return
+        logger.info("Stop Openzave network.")
         if self.controller is not None:
             self.controller.stop()
         self.write_config()
         if self.dbcon is not None:
             self.dbcon.close()
-        logger.info("Stop Openzave network.")
-        for i in range(0, 60):
-            if self.controller.send_queue_count <= 0:
-                break
-            else:
-                try:
-                    self.network_event.wait(1.0)
-                except AssertionError:
-                    #For gevent AssertionError: Impossible to call blocking function in the event loop callback
-                    pass
-        logger.debug("Wait for empty send_queue during %s second(s).", i)
         try:
             self._semaphore_nodes.acquire()
             self._manager.removeWatcher(self.zwcallback)
@@ -1568,15 +1559,37 @@ class ZWaveNetwork(ZWaveObject):
         """
         Called when a message from controller is sent.
 
-        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, **{'network': self, 'controller': self.controller, 'state': args['controllerState'], 'command': args['controllerCommand']})
+        The state could be obtained here :
+        dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
+            **{'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+               })
+
+        And the full command here :
+
+        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \
+            **{'network': self, 'controller': self.controller,
+               'node':self.nodes[args['nodeId']] if args['nodeId'] in self.nodes else None, 'node_id' : args['nodeId'],
+               'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+               'error_int': args['controllerErrorInt'], 'error': args['controllerError'], 'error_full': args['controllerErrorDoc'],
+               })
 
         :param args: data sent by the notification
         :type args: dict()
 
         """
         logger.debug('Z-Wave ControllerCommand : %s', args)
+
+        if args['controllerState'] == self.controller.STATE_WAITING:
+            dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
+                **{'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+                   })
+
         dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \
-            **{'network': self, 'controller': self.controller, 'state': args['controllerState'], 'command': args['controllerCommand']})
+            **{'network': self, 'controller': self.controller,
+               'node':self.nodes[args['nodeId']] if args['nodeId'] in self.nodes else None, 'node_id' : args['nodeId'],
+               'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
+               'error_int': args['controllerErrorInt'], 'error': args['controllerError'], 'error_full': args['controllerErrorDoc'],
+               })
 
     def _handle_msg_complete(self, args):
         """

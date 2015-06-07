@@ -65,6 +65,9 @@ class TestPyZWave(unittest.TestCase):
         self.skip = True
         if 'NOSESKIP' in os.environ:
             self.skip = eval(os.environ['NOSESKIP'])
+        self.skipManual = True
+        if 'MANUALSKIP' in os.environ:
+            self.skipManual = eval(os.environ['MANUALSKIP'])
         try:
             os.makedirs(self.userpath)
         except:
@@ -81,6 +84,12 @@ class TestPyZWave(unittest.TestCase):
         """
         if 'TRAVIS_OS_NAME' in os.environ:
             raise SkipTest("%s" % ("Skip on travis : %s" % message))
+
+    def skipManualTest(self, message=''):
+        """Skip a manual test (need human intervention)
+        """
+        if self.skipManual == True:
+            raise SkipTest("%s" % ("Skip manual test : %s" % message))
 
     def skipNotReady(self, message):
         """Skip a test because zwave network is not ready

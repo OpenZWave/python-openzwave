@@ -83,19 +83,19 @@ cdef extern from "Driver.h" namespace "OpenZWave::Driver":
         ControllerState_NodeFailed = 10                    # Used only with ControllerCommand_HasNodeFailed to indicate that the controller thinks the node has failed. */
 
     cdef enum ControllerError:
-          ControllerError_None = 0
-          ControllerError_ButtonNotFound = 1                # Button */
-          ControllerError_NodeNotFound = 2                  # Button */
-          ControllerError_NotBridge = 3                     # Button */
-          ControllerError_NotSUC = 4                        # CreateNewPrimary */
-          ControllerError_NotSecondary = 5                  # CreateNewPrimary */
-          ControllerError_NotPrimary = 6                    # RemoveFailedNode, AddNodeToNetwork */
-          ControllerError_IsPrimary = 7                     # ReceiveConfiguration */
-          ControllerError_NotFound = 8                      # RemoveFailedNode */
-          ControllerError_Busy = 9                          # RemoveFailedNode, RequestNetworkUpdate */
-          ControllerError_Failed = 10                       # RemoveFailedNode, RequestNetworkUpdate */
-          ControllerError_Disabled = 11                     # RequestNetworkUpdate error */
-          ControllerError_Overflow = 12                     # RequestNetworkUpdate error */
+        ControllerError_None = 0
+        ControllerError_ButtonNotFound = 1                # Button */
+        ControllerError_NodeNotFound = 2                  # Button */
+        ControllerError_NotBridge = 3                     # Button */
+        ControllerError_NotSUC = 4                        # CreateNewPrimary */
+        ControllerError_NotSecondary = 5                  # CreateNewPrimary */
+        ControllerError_NotPrimary = 6                    # RemoveFailedNode, AddNodeToNetwork */
+        ControllerError_IsPrimary = 7                     # ReceiveConfiguration */
+        ControllerError_NotFound = 8                      # RemoveFailedNode */
+        ControllerError_Busy = 9                          # RemoveFailedNode, RequestNetworkUpdate */
+        ControllerError_Failed = 10                       # RemoveFailedNode, RequestNetworkUpdate */
+        ControllerError_Disabled = 11                     # RequestNetworkUpdate error */
+        ControllerError_Overflow = 12                     # RequestNetworkUpdate error */
 
 ctypedef DriverData DriverData_t
 

@@ -276,6 +276,7 @@ $(ARCHDIR):
 	-find $(ARCHDIR) -name ozwsh.log -delete
 	-find $(ARCHDIR) -name errors.log -delete
 	-find $(ARCHDIR) -name zwscene.xml -delete
+	-find $(ARCHDIR) -name zwbutton.xml -delete
 	-find $(ARCHDIR) -name pyozw.db -delete
 	-cd $(ARCHDIR)/openzwave && make clean
 	-rm -Rf $(ARCHDIR)/openzwave/.git
