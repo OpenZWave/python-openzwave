@@ -384,8 +384,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :rtype: dict()
 
         """
-        return self.get_values(class_id=0x27, genre='System', \
-        type='List', readonly=False, writeonly=False)
+        return self.get_values(class_id=0x27, genre='System', type='List', readonly=False, writeonly=False)
 
     def set_switch_all(self, value_id, value):
         """

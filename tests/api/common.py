@@ -68,11 +68,11 @@ class TestApi(TestPyZWave):
         self.options.set_save_log_level("Debug")
         self.options.set_logging(True)
         self.options.lock()
-        self.ctrl_command_result = None
-        dispatcher.connect(self.ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
         self.node_result = None
         dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
         self.network = ZWaveNetwork(self.options)
+        self.ctrl_command_result = None
+        dispatcher.connect(self.ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
         time.sleep(1.0)
 
     @classmethod
@@ -101,8 +101,11 @@ class TestApi(TestPyZWave):
                 #sys.stdout.flush()
                 time.sleep(1.0)
 
-    def ctrl_message(self, state, message, network, controller):
+    def ctrl_message(self, network, controller, node, node_id,
+            state_int, state, state_full,
+            error_int, error, error_full,):
         self.ctrl_command_result = state
+        print "catched"
 
     def node_update(self, network, node):
         self.node_result = node

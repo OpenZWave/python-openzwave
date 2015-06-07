@@ -94,3 +94,13 @@ If you want to retrieve the last "good" commit, look at
 https://github.com/OpenZWave/python-openzwave/commits/master. The
 commits names "Auto-commit for docs" are done after the full process :
 build + test + docs, so they might be "working" (almost for me).
+
+You can also build a released version of python-openzwave using tags :
+
+   git tag
+
+   v0.3.0-alpha2
+   v0.3.0-alpha3
+   v0.3.0-beta1
+   v0.3.0-beta2
+   v0.3.0a1
