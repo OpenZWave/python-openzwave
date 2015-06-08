@@ -1533,13 +1533,17 @@ class ZWaveNetwork(ZWaveObject):
         if args['nodeId'] not in self.nodes:
             logger.warning('Z-Wave Notification ValueRemoved (%s) for an unknown node %s', args['valueId'], args['nodeId'])
             return False
+        if args['valueId']['id'] in self.nodes[args['nodeId']].values:
+            logger.warning('Z-Wave Notification ValueRemoved for an unknown value (%s) on node %s', args['valueId'], args['nodeId'])
+            return False
         val = self.nodes[args['nodeId']].values[args['valueId']['id']]
         if self.nodes[args['nodeId']].remove_value(args['valueId']['id']):
             dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
                 **{'network': self, 'node' : self.nodes[args['nodeId']], \
                     'value' : val})
             #self._handle_value(node=self.nodes[args['nodeId']], value=val)
-        del self.nodes[args['nodeId']].values[args['valueId']['id']]
+        if args['nodeId'] in self.nodes and args['valueId']['id'] in self.nodes[args['nodeId']].values:
+            del self.nodes[args['nodeId']].values[args['valueId']['id']]
 
     def _handle_notification(self, args):
         """
