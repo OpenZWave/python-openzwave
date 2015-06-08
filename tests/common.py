@@ -83,18 +83,18 @@ class TestPyZWave(unittest.TestCase):
         """Skip a test on travis
         """
         if 'TRAVIS_OS_NAME' in os.environ:
-            raise SkipTest("%s" % ("Skip on travis : %s" % message))
+            raise SkipTest("%s" % ("travis : %s" % message))
 
     def skipManualTest(self, message=''):
         """Skip a manual test (need human intervention)
         """
         if self.skipManual == True:
-            raise SkipTest("%s" % ("Skip manual test : %s" % message))
+            raise SkipTest("%s" % ("manual test (%s)" % message))
 
     def skipNotReady(self, message):
         """Skip a test because zwave network is not ready
         """
-        raise SkipTest("%s" % ("Skip NotReady : %s" % message))
+        raise SkipTest("%s" % ("network NotReady : %s" % message))
 
     def wipTest(self):
         """Work In Progress test

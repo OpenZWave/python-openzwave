@@ -82,6 +82,17 @@
 </ul>
 </div></blockquote>
 <p>Some tests don&#8217;t need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.</p>
+<p>Some tests need manual operations (ie to add a node, to remove one, ...). For example, to test the remove node, use :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">MANUALSKIP</span><span class="o">=</span><span class="s1">&#39;False&#39;</span> <span class="o">&amp;&amp;</span> /usr/local/bin/nosetests --verbosity<span class="o">=</span>2 tests/api/test_controller_command.py -m test_150 <span class="o">&amp;&amp;</span> <span class="nb">unset </span>MANUALSKIP
+test_150_command_remove_node_and_wait_for_user <span class="o">(</span>tests.api.test_controller_command.TestControllerCommand<span class="o">)</span> ... ok
+
+----------------------------------------------------------------------
+Ran 1 <span class="nb">test </span>in 16.031s
+
+OK
+</pre></div>
+</div>
+<p>You should push the inclusion button of the node before the end of the test.</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>

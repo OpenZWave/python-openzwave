@@ -225,89 +225,204 @@ class TestControllerCommand(TestPyZWave):
                 time.sleep(1.0)
         self.assertEqual(current, self.network.controller.STATE_FAILED)
 
-    #~ def test_110_command_request_network_update(self):
-        #~ self.wipTest()
-        #~ ret = self.network.controller.begin_command_request_network_update()
-        #~ self.assertTrue(ret)
-        #~ current = None
-        #~ for i in range(0,SLEEP*2):
-            #~ #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
-            #~ if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
-                #~ current = self.ctrl_command_result
-                #~ #print(current)
-                #~ self.ctrl_command_result = None
-                #~ break
-            #~ else:
-                #~ time.sleep(1.0)
-        #~ self.assertEqual(current, "Completed")
-#~
-    #~ def test_210_command_request_node_neigbhor_update_node(self):
-        #~ self.wipTest()
-        #~ node_id = max(self.network.nodes.keys())
-        #~ ret = self.network.controller.begin_command_request_node_neigbhor_update(node_id)
-        #~ self.assertTrue(ret)
-        #~ current = None
-        #~ for i in range(0,SLEEP*2):
-            #~ #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
-            #~ if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
-                #~ current = self.ctrl_command_result
-                #~ print(current)
-                #~ self.ctrl_command_result = None
-                #~ break
-            #~ else:
-                #~ time.sleep(1.0)
-        #~ self.assertEqual(current, "Completed")
-#~
-    #~ def test_220_command_request_node_neigbhor_update_controller(self):
-        #~ self.wipTest()
-        #~ node_id = self.network.controller.node_id
-        #~ ret = self.network.controller.begin_command_request_node_neigbhor_update(node_id)
-        #~ self.assertTrue(ret)
-        #~ current = None
-        #~ for i in range(0,SLEEP*2):
-            #~ #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
-            #~ if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
-                #~ current = self.ctrl_command_result
-                #~ #print(current)
-                #~ self.ctrl_command_result = None
-                #~ break
-            #~ else:
-                #~ time.sleep(1.0)
-        #~ self.assertEqual(current, "Completed")
-#~
-    #~ def test_910_command_command_replication_send(self):
-        #~ self.wipTest()
-        #~ node_id = max(self.network.nodes.keys())
-        #~ ret = self.network.controller.begin_command_replication_send(node_id)
-        #~ self.assertTrue(ret)
-        #~ current = None
-        #~ for i in range(0,SLEEP*2):
-            #~ #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
-            #~ if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
-                #~ current = self.ctrl_command_result
-                #~ print(current)
-                #~ self.ctrl_command_result = None
-                #~ break
-            #~ else:
-                #~ time.sleep(1.0)
-        #~ self.assertEqual(current, "Completed")
-#~
-    #~ def test_920_command_command_replication_send_controller(self):
-        #~ self.wipTest()
-        #~ node_id = self.network.controller.node_id
-        #~ ret = self.network.controller.begin_command_replication_send(node_id)
-        #~ self.assertTrue(ret)
-        #~ current = None
-        #~ for i in range(0,SLEEP*2):
-            #~ #print("self.ctrl_command_result = %s" % self.ctrl_command_result)
-            #~ if self.ctrl_command_result != None and self.ctrl_command_result != "InProgress":
-                #~ current = self.ctrl_command_result
-                #~ print(current)
-                #~ self.ctrl_command_result = None
-                #~ break
-            #~ else:
-                #~ time.sleep(1.0)
-        #~ self.assertEqual(current, "Completed")
+    def test_040_command_delete_all_return_routes_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.delete_all_return_routes(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_COMPLETED)
+
+    def test_045_command_delete_all_return_routes_controller(self):
+        node_id = self.network.controller.node_id
+        ret = self.network.controller.delete_all_return_routes(node_id)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(current, self.network.controller.STATE_FAILED)
+
+    def test_050_command_assign_return_route_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.assign_return_route(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_COMPLETED)
+
+    def test_055_command_assign_return_route_controller(self):
+        node_id = self.network.controller.node_id
+        ret = self.network.controller.assign_return_route(node_id)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(current, self.network.controller.STATE_FAILED)
+
+    def test_060_command_has_node_failed_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.has_node_failed(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_NODEOK)
+
+    def test_070_command_remove_failed_node_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.remove_failed_node(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_FAILED)
+
+    def test_080_command_replace_failed_node_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.replace_failed_node(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_FAILED)
+
+    def test_080_command_replace_failed_node_nodes(self):
+        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        for node_id in node_ids:
+            node_id = max(self.network.nodes.keys())
+            ret = self.network.controller.replace_failed_node(node_id)
+            self.assertTrue(ret)
+            current = None
+            for i in range(0,SLEEP):
+                #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                    current = self.ctrl_state_result
+                    break
+                else:
+                    time.sleep(1.0)
+            self.assertEqual(current, self.network.controller.STATE_FAILED)
+
+    def test_100_command_add_node_secure_off_and_wait_for_user(self):
+        self.skipManualTest()
+        nb_nodes = len(self.network.nodes)
+        ret = self.network.controller.add_node(False)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.network.controller.cancel_command()
+        self.assertEqual(len(self.network.nodes), nb_nodes+1)
+
+    def test_110_command_add_node_secure_on_and_wait_for_user(self):
+        self.skipManualTest()
+        nb_nodes = len(self.network.nodes)
+        ret = self.network.controller.add_node(True)
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.network.controller.cancel_command()
+        self.assertEqual(len(self.network.nodes), nb_nodes-1)
+
+    def test_150_command_remove_node_and_wait_for_user(self):
+        self.skipManualTest()
+        nb_nodes = len(self.network.nodes)
+        ret = self.network.controller.remove_node()
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.network.controller.cancel_command()
+        self.assertEqual(len(self.network.nodes), nb_nodes-1)
+
+    def test_200_command_create_new_primary(self):
+        self.skipManualTest()
+        nb_nodes = len(self.network.nodes)
+        ret = self.network.controller.create_new_primary()
+        self.assertTrue(ret)
+        current = None
+        for i in range(0,SLEEP):
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
+                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(current, self.network.controller.STATE_COMPLETED)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

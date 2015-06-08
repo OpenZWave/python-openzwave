@@ -644,10 +644,12 @@ Louie&#8217;s clients must disconnect from nodes and values signals</p>
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.has_node_failed">
 <tt class="descname">has_node_failed</tt><big>(</big><em>nodeid</em><big>)</big></dt>
-<dd><p>Ask a Node to update its Neighbor Tables</p>
-<p>This command will ask a Node to update its Neighbor Tables.</p>
-<p>Results of the HasNodeFailed Command will be send as a Notification with the Notification type as
-Notification::Type_ControllerCommand</p>
+<dd><p>Check if the Controller Believes a Node has Failed.</p>
+<blockquote>
+<div><p>This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
+our list of Failed Nodes, which might be different.</p>
+<p>The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications</p>
+</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -918,10 +920,12 @@ Notification::Type_ControllerCommand</p>
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.remove_failed_node">
 <tt class="descname">remove_failed_node</tt><big>(</big><em>nodeid</em><big>)</big></dt>
-<dd><p>Check if the Controller Believes a Node has Failed.</p>
-<p>This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
-our list of Failed Nodes, which might be different.</p>
-<p>The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications</p>
+<dd><p>Remove a Failed Device from the Z-Wave Network</p>
+<p>This Command will remove a failed node from the network. The Node should be on the Controllers Failed
+Node List, otherwise this command will fail. You can use the HasNodeFailed function below to test if the Controller
+believes the Node has Failed.</p>
+<p>The Status of the Node Removal is communicated via Notifications. Specifically, you should
+monitor ControllerCommand Notifications.</p>
 <p>Results of the RemoveFailedNode Command will be send as a Notification with the Notification type as
 Notification::Type_ControllerCommand</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -985,10 +989,10 @@ Notification::Type_ControllerCommand</p>
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.replication_send">
 <tt class="descname">replication_send</tt><big>(</big><em>nodeid</em><big>)</big></dt>
-<dd><p>Create a handheld button id.</p>
-<p>Only intended for Bridge Firmware Controllers.</p>
-<p>Results of the ReplicationSend Command will be send as a Notification with the Notification type as
-Notification::Type_ControllerCommand</p>
+<dd><p>Send information from primary to secondary</p>
+<blockquote>
+<div>Results of the ReplicationSend Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</div></blockquote>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
