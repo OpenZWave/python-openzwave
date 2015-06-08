@@ -48,6 +48,20 @@ Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. Th
 
 Some tests don't need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
 
+Some tests need manual operations (ie to add a node, to remove one, ...). For example, to test the remove node, use :
+
+.. code-block:: bash
+
+    export MANUALSKIP='False' && /usr/local/bin/nosetests --verbosity=2 tests/api/test_controller_command.py -m test_150 && unset MANUALSKIP
+    test_150_command_remove_node_and_wait_for_user (tests.api.test_controller_command.TestControllerCommand) ... ok
+
+    ----------------------------------------------------------------------
+    Ran 1 test in 16.031s
+
+    OK
+
+You should push the inclusion button of the node before the end of the test.
+
 Documentation
 =============
 Documentation is managed with sphinx.
