@@ -929,12 +929,14 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.removeNode(self.home_id)
 
     def remove_failed_node(self, nodeid):
-        '''Check if the Controller Believes a Node has Failed.
+        '''Remove a Failed Device from the Z-Wave Network
 
-        This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
-        our list of Failed Nodes, which might be different.
+        This Command will remove a failed node from the network. The Node should be on the Controllers Failed
+        Node List, otherwise this command will fail. You can use the HasNodeFailed function below to test if the Controller
+        believes the Node has Failed.
 
-        The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications
+        The Status of the Node Removal is communicated via Notifications. Specifically, you should
+        monitor ControllerCommand Notifications.
 
         Results of the RemoveFailedNode Command will be send as a Notification with the Notification type as
         Notification::Type_ControllerCommand
@@ -949,12 +951,12 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.removeFailedNode(self.home_id, nodeid)
 
     def has_node_failed(self, nodeid):
-        '''Ask a Node to update its Neighbor Tables
+        '''Check if the Controller Believes a Node has Failed.
 
-        This command will ask a Node to update its Neighbor Tables.
+         This is different from the IsNodeFailed call in that we test the Controllers Failed Node List, whereas the IsNodeFailed is testing
+         our list of Failed Nodes, which might be different.
 
-        Results of the HasNodeFailed Command will be send as a Notification with the Notification type as
-        Notification::Type_ControllerCommand
+         The Results will be communicated via Notifications. Specifically, you should monitor the ControllerCommand notifications
 
         :param nodeId: The ID of the node to query.
         :type nodeId: int
@@ -1067,12 +1069,10 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.requestNetworkUpdate(self.home_id, nodeid)
 
     def replication_send(self, nodeid):
-        '''Create a handheld button id.
+        '''Send information from primary to secondary
 
-        Only intended for Bridge Firmware Controllers.
-
-        Results of the ReplicationSend Command will be send as a Notification with the Notification type as
-        Notification::Type_ControllerCommand
+         Results of the ReplicationSend Command will be send as a Notification with the Notification type as
+         Notification::Type_ControllerCommand
 
         :param nodeId: The ID of the node to query.
         :type nodeId: int
