@@ -111,6 +111,25 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.assign_return_route">
+<tt class="descname">assign_return_route</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.assign_return_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the to update its update its Return Route to the Controller</p>
+<p>This command will ask a Node to update its Return Route to the Controller</p>
+<p>Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.basic">
 <tt class="descname">basic</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.basic" title="Permalink to this definition">¶</a></dt>
@@ -182,6 +201,48 @@ Not implemented</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.create_button">
+<tt class="descname">create_button</tt><big>(</big><em>buttonid</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.create_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.delete_button">
+<tt class="descname">delete_button</tt><big>(</big><em>buttonid</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.delete_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>buttonid</strong> (<em>int</em>) &#8211; the ID of the Button to query.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.generic">
 <tt class="descname">generic</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.generic" title="Permalink to this definition">¶</a></dt>
@@ -191,20 +252,6 @@ Not implemented</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.getNodeQueryStage">
-<tt class="descname">getNodeQueryStage</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.getNodeQueryStage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this node a awake.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -383,52 +430,10 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 </table>
 </dd></dl>
 
-<dl class="method">
-<dt id="openzwave.node.ZWaveNode.isNodeAwake">
-<tt class="descname">isNodeAwake</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.isNodeAwake" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_awake">
+<tt class="descname">is_awake</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_awake" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node a awake.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.isNodeFailed">
-<tt class="descname">isNodeFailed</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isNodeFailed" title="Permalink to this definition">¶</a></dt>
-<dd><p>Is this node is presume failed.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.isNodeInfoReceived">
-<tt class="descname">isNodeInfoReceived</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isNodeInfoReceived" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get whether the node information has been received. Returns True if the node information has been received yet</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="openzwave.node.ZWaveNode.isReady">
-<tt class="descname">isReady</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.isReady" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get whether the node is ready to operate (QueryStage Completed).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -454,9 +459,37 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_failed">
+<tt class="descname">is_failed</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_failed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node is presume failed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.is_frequent_listening_device">
 <tt class="descname">is_frequent_listening_device</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_frequent_listening_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node a frequent listening device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_info_received">
+<tt class="descname">is_info_received</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_info_received" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node information has been received. Returns True if the node information has been received yet</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -485,6 +518,20 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 <dt id="openzwave.node.ZWaveNode.is_locked">
 <tt class="descname">is_locked</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_locked" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_ready">
+<tt class="descname">is_ready</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node is ready to operate (QueryStage Completed).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -599,6 +646,25 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.neighbor_update">
+<tt class="descname">neighbor_update</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.neighbor_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.neighbors">
 <tt class="descname">neighbors</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.neighbors" title="Permalink to this definition">¶</a></dt>
@@ -608,6 +674,24 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.network_update">
+<tt class="descname">network_update</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.network_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the controller with network information from the SUC/SIS.</p>
+<p>Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
@@ -678,6 +762,20 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.query_stage">
+<tt class="descname">query_stage</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.query_stage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a awake.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
 </tr>
 </tbody>
 </table>
@@ -765,6 +863,22 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 </table>
 </dd></dl>
 
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.request_state">
+<tt class="descname">request_state</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.request_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger the fetching of just the dynamic value data for a node.
+Causes the node&#8217;s values to be requested from the Z-Wave network. This is the
+same as the query state starting from the dynamic state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.security">
 <tt class="descname">security</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.security" title="Permalink to this definition">¶</a></dt>
@@ -776,6 +890,25 @@ as returned by a call to Configuration::StaticGetCommandClassId.</p>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The security type of the node</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.send_information">
+<tt class="descname">send_information</tt><big>(</big><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.send_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a NIF frame from the Controller to a Node.
+This command send a NIF frame from the Controller to a Node</p>
+<p>Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
 </tr>
 </tbody>
 </table>
