@@ -438,7 +438,9 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     """
     logger.debug("notif_callback : new notification")
     cdef Notification* notification = <Notification*>_notification
-    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", PyNotifications[notification.GetType()], notification.GetNodeId())
+    notif_type_str = PyNotifications[notification.GetType()] if notification.GetType() in PyNotifications else 'None'
+    notif_node_str = notification.GetNodeId()
+    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", notif_type_str, notif_node_str)
     n = {'notificationType' : PyNotifications[notification.GetType()],
          'homeId' : notification.GetHomeId(),
          'nodeId' : notification.GetNodeId(),
