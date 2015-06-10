@@ -803,6 +803,7 @@ class ZWaveController(ZWaveObject):
         """
         return self._network.manager.cancelControllerCommand(self.home_id)
 
+    @deprecated
     def zwcallback(self, args):
         """
         The Callback Handler used when sendig commands to the controller.

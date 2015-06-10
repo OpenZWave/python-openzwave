@@ -64,15 +64,16 @@ class TestApi(TestPyZWave):
         self.options = ZWaveOption(device=self.device, user_path=self.userpath)
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
-        self.options.set_console_output(False)
-        self.options.set_save_log_level("Debug")
+        self.options.set_console_output(self.ozwout)
+        self.options.set_save_log_level(self.ozwlog)
         self.options.set_logging(True)
         self.options.lock()
         self.node_result = None
         dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
         self.network = ZWaveNetwork(self.options)
         self.ctrl_command_result = None
-        dispatcher.connect(self.ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
+        self.ctrl_command_signal = None
+        #dispatcher.connect(self.ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
         time.sleep(1.0)
 
     @classmethod
@@ -97,17 +98,28 @@ class TestApi(TestPyZWave):
             if self.network.state>=state:
                 break
             else:
-                #sys.stdout.write(".")
-                #sys.stdout.flush()
                 time.sleep(1.0)
 
     def ctrl_message(self, network, controller, node, node_id,
             state_int, state, state_full,
             error_int, error, error_full,):
-        self.ctrl_command_result = state
-        print "catched"
+        self.ctrl_state_result = state
+        self.ctrl_command_signal = {
+            'network':network,
+            'controller':controller,
+            'node':node,
+            'node_id':node_id,
+            'state_int':state_int,
+            'state':state,
+            'state_full':state_full,
+            'error_int':error_int,
+            'error':error,
+            'error_full':error_full,
+        }
+
+    def ctrl_waiting(self, network, controller,
+            state_int, state, state_full):
+        self.ctrl_state_result = state
 
     def node_update(self, network, node):
         self.node_result = node
-
-

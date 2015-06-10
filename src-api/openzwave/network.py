@@ -421,9 +421,6 @@ class ZWaveNetwork(ZWaveObject):
                         #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                         pass
             self.nodes = None
-            self._state = self.STATE_STOPPED
-            if fire:
-                dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
         except:
             import sys, traceback
             logger.error('Stop network : %s', traceback.format_exception(*sys.exc_info()))
@@ -432,6 +429,14 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.destroy()
         self._options.destroy()
         self._started = False
+        self._state = self.STATE_STOPPED
+        try:
+            self.network_event.wait(1.0)
+        except AssertionError:
+            #For gevent AssertionError: Impossible to call blocking function in the event loop callback
+            pass
+        if fire:
+            dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
 
     @property
     def home_id(self):
@@ -1270,7 +1275,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         logger.debug('Z-Wave Notification NodeQueriesComplete : %s', args)
         #the query stage are now completed, set the flag is ready to operate
-        self.nodes[args['nodeId']].isReady = True
+        self.nodes[args['nodeId']].is_ready = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
         self._handle_node(self.nodes[args['nodeId']])
@@ -1292,6 +1297,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_ALL_NODES_QUERIED, \
             **{'network': self, 'controller': self._controller})
+
     def _handle_all_nodes_queried_some_dead(self, args):
         """
         All nodes have been queried, but some node ar mark dead, so client application can expected

@@ -77,6 +77,7 @@ class TestController(TestApi):
         time.sleep(5)
         self.network.controller.soft_reset()
         self.assertTrue(self.network.controller.node.refresh_info())
+        time.sleep(5)
 
     def test_310_controller_node(self):
         self.assertEqual(type(self.network.controller.node.node_id), type(0))

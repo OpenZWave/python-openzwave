@@ -286,33 +286,6 @@ class ZWaveNode(ZWaveObject,
             ret[gid] = groups[gid].to_dict(extras=extras)
         return ret
 
-    def heal(self, upNodeRoute=False):
-        """
-        Heal network node by requesting the node rediscover their neighbors.
-        Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
-
-        :param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
-        :type upNodeRoute: bool
-        :return: True is the ControllerCommand is sent. False otherwise
-        :rtype: bool
-
-        """
-        if not self.isNodeAwake:
-            logger.warning('Node state must a minimum set to awake')
-            return False
-        self._network.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
-        return True
-
-    def test(self, count=1):
-        """
-        Send a number of test messages to node and record results.
-
-        :param count: The number of test messages to send.
-        :type count: int
-
-        """
-        self._network.manager.testNetworkNode(self.home_id, self.object_id, count)
-
     @property
     def command_classes(self):
         """
@@ -738,6 +711,48 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeMaxBaudRate(self.home_id, self.object_id)
 
+    def heal(self, upNodeRoute=False):
+        """
+        Heal network node by requesting the node rediscover their neighbors.
+        Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.
+
+        :param upNodeRoute: Optional Whether to perform return routes initialization. (default = false).
+        :type upNodeRoute: bool
+        :return: True is the ControllerCommand is sent. False otherwise
+        :rtype: bool
+
+        """
+        if self.is_awake == False:
+            logger.warning('Node state must a minimum set to awake')
+            return False
+        self._network.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
+        return True
+
+    def test(self, count=1):
+        """
+        Send a number of test messages to node and record results.
+
+        :param count: The number of test messages to send.
+        :type count: int
+
+        """
+        self._network.manager.testNetworkNode(self.home_id, self.object_id, count)
+
+    def assign_return_route(self):
+        '''Ask the to update its update its Return Route to the Controller
+
+        This command will ask a Node to update its Return Route to the Controller
+
+        Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('assign_return_route for node [%s]' % (self.object_id,))
+        return self._network.controller.assign_return_route(self.object_id)
+
     def refresh_info(self):
         """
         Trigger the fetching of fixed data about a node.
@@ -752,7 +767,96 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        return self._network.manager.refreshNodeInfo(self.home_id, self.object_id)#
+        logger.debug('refresh_info for node [%s]' % (self.object_id,))
+        return self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
+
+    def request_state(self):
+        """
+        Trigger the fetching of just the dynamic value data for a node.
+        Causes the node's values to be requested from the Z-Wave network. This is the
+        same as the query state starting from the dynamic state.
+
+        :rtype: bool
+
+        """
+        logger.debug('request_state for node [%s]' % (self.object_id,))
+        return self._network.manager.requestNodeState(self.home_id, self.object_id)
+
+    def send_information(self):
+        '''Send a NIF frame from the Controller to a Node.
+        This command send a NIF frame from the Controller to a Node
+
+        Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('send_information for node [%s]' % (self.object_id,))
+        return self._network.controller.send_node_information(self.object_id)
+
+    def network_update(self):
+        '''Update the controller with network information from the SUC/SIS.
+
+        Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('network_update for node [%s]' % (self.object_id,))
+        return self._network.controller.request_network_update(self.object_id)
+
+    def neighbor_update(self):
+        '''Ask a Node to update its Neighbor Tables
+
+        This command will ask a Node to update its Neighbor Tables.
+
+        Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('neighbor_update for node [%s]' % (self.object_id,))
+        return self._network.controller.request_node_neighbor_update(self.object_id)
+
+    def create_button(self, buttonid):
+        '''Create a handheld button id.
+
+        Only intended for Bridge Firmware Controllers.
+
+        Results of the CreateButton Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param buttonid: the ID of the Button to query.
+        :type buttonid: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('create_button for node [%s]' % (self.object_id,))
+        return self._network.controller.create_button(self.object_id, buttonid)
+
+    def delete_button(self, buttonid):
+        '''Delete a handheld button id.
+
+        Only intended for Bridge Firmware Controllers.
+
+        Results of the CreateButton Command will be send as a Notification with the Notification type as
+        Notification::Type_ControllerCommand
+
+        :param buttonid: the ID of the Button to query.
+        :type buttonid: int
+        :return: True if the request was sent successfully.
+        :rtype: bool
+
+        '''
+        logger.debug('delete_button for node [%s]' % (self.object_id,))
+        return self._network.controller.delete_button(self.object_id, buttonid)
 
     def request_all_config_params(self):
         """
@@ -824,7 +928,8 @@ class ZWaveNode(ZWaveObject,
 #        self._log.debug('Requesting setNodeLevel for node {0} with new level {1}'.format(node.id, level))
 #        self._manager.setNodeLevel(node.home_id, node.id, level)
 
-    def isNodeAwake(self):
+    @property
+    def is_awake(self):
         """
         Is this node a awake.
 
@@ -835,7 +940,7 @@ class ZWaveNode(ZWaveObject,
         return self._network.manager.isNodeAwake(self.home_id, self.object_id)
 
     @property
-    def isNodeFailed(self):
+    def is_failed(self):
         """
         Is this node is presume failed.
 
@@ -846,7 +951,7 @@ class ZWaveNode(ZWaveObject,
         return self._network.manager.isNodeFailed(self.home_id, self.object_id)
 
     @property
-    def getNodeQueryStage(self):
+    def query_stage(self):
         """
         Is this node a awake.
 
@@ -856,7 +961,7 @@ class ZWaveNode(ZWaveObject,
         return self._network.manager.getNodeQueryStage(self.home_id, self.object_id)
 
     @property
-    def isReady(self):
+    def is_ready(self):
         """
         Get whether the node is ready to operate (QueryStage Completed).
 
@@ -865,8 +970,8 @@ class ZWaveNode(ZWaveObject,
         """
         return self._isReady
 
-    @isReady.setter
-    def isReady(self, value):
+    @is_ready.setter
+    def is_ready(self, value):
         """
         Set whether the node is ready to operate.
         automatically set to True by notification SIGNAL_NODE_QUERIES_COMPLETE
@@ -878,7 +983,7 @@ class ZWaveNode(ZWaveObject,
         self._isReady = value
 
     @property
-    def isNodeInfoReceived(self):
+    def is_info_received(self):
         """
         Get whether the node information has been received. Returns True if the node information has been received yet
 

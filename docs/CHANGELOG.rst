@@ -10,6 +10,13 @@ Known bugs
 
 python-openzwave 0.3.0-beta3:
  * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
+ * Add 2 signals for controller commands : ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND and ZWaveNetwork.SIGNAL_CONTROLLER_WAITING
+ * Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.
+ * Add tests for controller commands.
+ * Update isNodeAwake from function to property
+ * rename methods from node to be python compliant : is_awake, is_failed, is_ready, query_stage, is_info_received
+ * Add facilities to run controller commands directly from node
+ * Add request_state for node
 
 python-openzwave 0.3.0-beta2:
  * Move to OpenZWave git organisation

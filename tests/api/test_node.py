@@ -66,62 +66,128 @@ class TestNode(TestApi):
         self.assertEqual(type(self.network.nodes[node_id].node_id), type(0))
         self.assertTrue(self.network.nodes[node_id].node_id > 0)
 
-    def test_330_controller_node_neighbors(self):
+    def test_330_node_neighbors(self):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].neighbors), type(set()))
 
-    def test_340_controller_node_baud_rate(self):
+    def test_340_node_baud_rate(self):
         node_id = max(self.network.nodes.keys())
         self.assertTrue(type(self.network.nodes[node_id].max_baud_rate) in [type(long()), type(int())])
         self.assertTrue(self.network.nodes[node_id].max_baud_rate > 0)
 
-    def test_410_controller_node_product(self):
+    def test_410_node_product(self):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].product_type), type(""))
         self.assertEqual(type(self.network.nodes[node_id].product_id), type(""))
 
-    def test_420_controller_node_name(self):
+    def test_420_node_name(self):
         node_id = max(self.network.nodes.keys())
         name = "TestUnit name"
         self.network.nodes[node_id].name = name
         self.assertEqual(self.network.nodes[node_id].name, name)
 
-    def test_421_controller_node_name_accent(self):
+    def test_421_node_name_accent(self):
         node_id = max(self.network.nodes.keys())
         name = "Contrôleur"
         self.network.nodes[node_id].name = name
         self.assertEqual(self.network.nodes[node_id].name, name)
 
-    def test_430_controller_node_product_location(self):
+    def test_430_node_product_location(self):
         node_id = max(self.network.nodes.keys())
         location = "TestUnit location"
         self.network.nodes[node_id].location = location
         self.assertEqual(self.network.nodes[node_id].location, location)
 
-    def test_440_controller_node_product_name(self):
+    def test_440_node_product_name(self):
         node_id = max(self.network.nodes.keys())
         name = "TestUnit product name"
         self.network.nodes[node_id].product_name = name
         self.assertEqual(self.network.nodes[node_id].product_name, name)
 
-    def test_510_controller_node_group(self):
-        node_id = max(self.network.nodes.keys())
-        self.assertTrue(self.network.nodes[node_id].num_groups >= 0)
-        self.assertEqual(type(self.network.nodes[node_id].groups), type(dict()))
-
-    def test_610_controller_node_command_class(self):
-        node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].command_classes), type(set()))
-        self.assertTrue(len(self.network.nodes[node_id].command_classes) >= 0)
-
-    def test_710_controller_node_manufacturer_name(self):
+    def test_450_node_manufacturer_name(self):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].manufacturer_id), type(""))
         name = "TestUnit manufacturer name"
         self.network.nodes[node_id].manufacturer_name = name
         self.assertEqual(self.network.nodes[node_id].manufacturer_name, name)
 
-    def test_810_controller_node_values(self):
+    def test_510_node_group(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertTrue(self.network.nodes[node_id].num_groups >= 0)
+        self.assertEqual(type(self.network.nodes[node_id].groups), type(dict()))
+
+    def test_550_request_all_config_params(self):
+        node_id = max(self.network.nodes.keys())
+        self.network.nodes[node_id].request_all_config_params()
+
+    def test_580_node_command_class(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].command_classes), type(set()))
+        self.assertTrue(len(self.network.nodes[node_id].command_classes) >= 0)
+
+    def test_610_node_is_awake(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].is_awake), type(True))
+
+    def test_615_node_is_ready(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].is_ready), type(True))
+
+    def test_620_node_is_failed(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].is_failed), type(True))
+
+    def test_630_node_is_info_received(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].is_info_received), type(True))
+
+    def test_680_node_query_stage(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].query_stage), type(""))
+
+    def test_690_node_type(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].type), type(""))
+
+    def test_710_node_test(self):
+        node_id = max(self.network.nodes.keys())
+        self.network.nodes[node_id].test()
+
+    def test_720_node_heal(self):
+        node_id = max(self.network.nodes.keys())
+        self.network.nodes[node_id].heal()
+
+    def test_730_node_assign_return_route(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].assign_return_route()
+        self.assertEqual(ret, True)
+
+    def test_740_node_refresh_info(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].refresh_info()
+        self.assertEqual(ret, True)
+
+    def test_745_node_send_information(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].send_information()
+        self.assertEqual(ret, True)
+
+    def test_750_node_network_update(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].network_update()
+        self.assertEqual(ret, True)
+
+    def test_760_node_neighbor_update(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].neighbor_update()
+        self.assertEqual(ret, True)
+
+    def test_770_node_request_state(self):
+        node_id = max(self.network.nodes.keys())
+        ret=self.network.nodes[node_id].request_state()
+        self.assertEqual(ret, True)
+
+    def test_810_node_values(self):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].get_values()), type(dict()))
 
