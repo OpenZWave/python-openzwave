@@ -28,6 +28,7 @@ try:
     monkey.patch_all()
 except ImportError:
     pass
+from six import string_types
 from openzwave.object import ZWaveObject
 
 # Set default logging handler to avoid "No handler found" warnings.
@@ -352,7 +353,7 @@ class ZWaveValue(ZWaveObject):
         logger.debug("check_data type :%s", self.type)
         if self.type == "Bool":
             new_data = data
-            if type(data) == type(""):
+            if isinstance(data, string_types):
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
                 else:
@@ -396,13 +397,13 @@ class ZWaveValue(ZWaveObject):
             new_data = data
         elif self.type == "Button":
             new_data = data
-            if type(data) == type(""):
+            if isinstance(data, string_types):
                 if data == "False" or data == "false" or data == "0":
                     new_data = False
                 else:
                     new_data = True
         elif self.type == "List":
-            if type(data) == type(""):
+            if isinstance(data, string_types):
                 if data in self.data_items:
                     new_data = data
                 else:
