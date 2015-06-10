@@ -54,33 +54,15 @@ from tests.api.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
 
-class TestControllerCommand(TestPyZWave):
+class TestControllerCommand(TestApi):
     """
     Parent test class for api
     """
 
     @classmethod
-    def setUpClass(self):
-        super(TestControllerCommand, self).setUpClass()
-        self.options = ZWaveOption(device=self.device, user_path=self.userpath)
-        self.options.set_log_file("OZW_Log.log")
-        self.options.set_append_log_file(False)
-        self.options.set_console_output(False)
-        self.options.set_save_log_level("Debug")
-        self.options.set_logging(True)
-        self.options.lock()
-        #self.node_result = None
-        #dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
-        self.network = ZWaveNetwork(self.options)
-        time.sleep(1.0)
-
-    @classmethod
     def tearDownClass(self):
         self.network.controller.cancel_command()
-        self.network.stop()
-        time.sleep(2.0)
         super(TestControllerCommand, self).tearDownClass()
-        self.network=None
 
     def setUp(self):
         self.wait_for_network_state(self.network.STATE_READY, 1)
@@ -101,34 +83,6 @@ class TestControllerCommand(TestPyZWave):
             pass
         self.network.controller.cancel_command()
         self.ctrl_state_result = None
-
-    def wait_for_queue(self):
-        for i in range(0,60):
-            if self.network.controller.send_queue_count <= 0:
-                break
-            else:
-                time.sleep(0.5)
-
-    def wait_for_network_state(self, state, multiply=1):
-        for i in range(0,SLEEP*multiply):
-            if self.network.state>=state:
-                break
-            else:
-                #sys.stdout.write(".")
-                #sys.stdout.flush()
-                time.sleep(1.0)
-
-    def ctrl_message(self, network, controller, node, node_id,
-            state_int, state, state_full,
-            error_int, error, error_full,):
-        self.ctrl_state_result = state
-
-    def ctrl_waiting(self, network, controller,
-            state_int, state, state_full):
-        self.ctrl_state_result = state
-
-    def node_update(self, network, node):
-        self.node_result = node
 
     def test_010_command_send_node_information_nodes(self):
         node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
@@ -179,6 +133,7 @@ class TestControllerCommand(TestPyZWave):
             self.assertEqual(current, self.network.controller.STATE_COMPLETED)
 
     def test_025_command_request_node_neighbor_update_controller(self):
+        self.wipTest()
         node_id = self.network.controller.node_id
         ret = self.network.controller.request_node_neighbor_update(node_id)
         self.assertTrue(ret)

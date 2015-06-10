@@ -1270,7 +1270,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         logger.debug('Z-Wave Notification NodeQueriesComplete : %s', args)
         #the query stage are now completed, set the flag is ready to operate
-        self.nodes[args['nodeId']].isReady = True
+        self.nodes[args['nodeId']].is_ready = True
         dispatcher.send(self.SIGNAL_NODE_QUERIES_COMPLETE, \
             **{'network': self, 'node': self.nodes[args['nodeId']]})
         self._handle_node(self.nodes[args['nodeId']])
@@ -1292,6 +1292,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_NETWORK_READY, **{'network': self})
         dispatcher.send(self.SIGNAL_ALL_NODES_QUERIED, \
             **{'network': self, 'controller': self._controller})
+
     def _handle_all_nodes_queried_some_dead(self, args):
         """
         All nodes have been queried, but some node ar mark dead, so client application can expected
