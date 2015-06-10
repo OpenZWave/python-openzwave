@@ -161,6 +161,7 @@ def start_zwnetwork(app):
 def stop_zwnetwork(zwnetwork):
     if zwnetwork is not None:
         zwnetwork.stop()
+        zwnetwork.destroy()
         #time.sleep(1.5)
         zwnetwork = None
 

@@ -66,6 +66,7 @@ class TestNetworkStartStop(TestPyZWave):
     def tearDownClass(self):
         if self.network is not None:
             self.network.stop()
+            self.network.destroy()
             self.network = None
         super(TestNetworkStartStop, self).tearDownClass()
 
@@ -73,6 +74,12 @@ class TestNetworkStartStop(TestPyZWave):
         self.driver_ready = True
 
     def driver_removed_message(self, network):
+        self.driver_removed = True
+
+    def network_started_message(self, network):
+        self.driver_removed = True
+
+    def network_stopped_message(self, network):
         self.driver_removed = True
 
     def test_000_network_start_stop(self):
@@ -94,6 +101,48 @@ class TestNetworkStartStop(TestPyZWave):
             else:
                 time.sleep(1.0)
         self.assertTrue(self.driver_ready)
+        self.network.stop()
+        for i in range(0, SLEEP):
+            if self.network.state==self.network.STATE_STOPPED:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(self.network.state, self.network.STATE_STOPPED)
+        #self.assertTrue(self.driver_removed)
+
+    def test_010_network_start_stop_start_stop(self):
+        self.driver_ready = False
+        self.driver_removed = False
+        self.options = ZWaveOption(device=self.device, user_path=self.userpath)
+        self.options.set_log_file("OZW_Log.log")
+        self.options.set_append_log_file(False)
+        self.options.set_console_output(False)
+        self.options.set_save_log_level("Debug")
+        self.options.set_logging(True)
+        self.options.lock()
+        dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_DRIVER_READY)
+        dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
+        dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
+        dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
+        self.network = ZWaveNetwork(self.options)
+        for i in range(0, SLEEP):
+            if self.network.state>=self.network.STATE_STARTED:
+                break
+            else:
+                time.sleep(1.0)
+        self.network.stop()
+        for i in range(0, SLEEP):
+            if self.network.state==self.network.STATE_STOPPED:
+                break
+            else:
+                time.sleep(1.0)
+        self.assertEqual(self.network.state, self.network.STATE_STOPPED)
+        self.network.start()
+        for i in range(0, SLEEP):
+            if self.network.state>=self.network.STATE_STARTED:
+                break
+            else:
+                time.sleep(1.0)
         self.network.stop()
         for i in range(0, SLEEP):
             if self.network.state==self.network.STATE_STOPPED:

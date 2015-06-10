@@ -80,8 +80,9 @@ class TestApi(TestPyZWave):
     def tearDownClass(self):
         self.network.stop()
         time.sleep(2.0)
+        self.network.destroy()
         super(TestApi, self).tearDownClass()
-        self.network=None
+        self.network = None
 
     def setUp(self):
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)

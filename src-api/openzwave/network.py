@@ -426,8 +426,6 @@ class ZWaveNetwork(ZWaveObject):
             logger.error('Stop network : %s', traceback.format_exception(*sys.exc_info()))
         finally:
             self._semaphore_nodes.release()
-        self._manager.destroy()
-        self._options.destroy()
         self._started = False
         self._state = self.STATE_STOPPED
         try:
@@ -437,6 +435,15 @@ class ZWaveNetwork(ZWaveObject):
             pass
         if fire:
             dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
+
+    def destroy(self):
+        """
+        Destroy the netwok and all related stuff.
+        """
+        self._manager.destroy()
+        self._options.destroy()
+        self._manager = None
+        self._options = None
 
     @property
     def home_id(self):

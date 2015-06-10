@@ -17,6 +17,7 @@ python-openzwave 0.3.0-beta3:
  * rename methods from node to be python compliant : is_awake, is_failed, is_ready, query_stage, is_info_received
  * Add facilities to run controller commands directly from node
  * Add request_state for node
+ * Add new destroy method to network : use it to clean all openzwave c++ ressources
 
 python-openzwave 0.3.0-beta2:
  * Move to OpenZWave git organisation
