@@ -55,7 +55,7 @@ class TestServer(Process):
 
     def stop(self):
         """Stop the tread"""
-        print 'got stop'
+        print('got stop')
         Process.terminate(self)
         time.sleep(2.0)
         self.socketio = None
