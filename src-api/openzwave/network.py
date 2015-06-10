@@ -421,9 +421,6 @@ class ZWaveNetwork(ZWaveObject):
                         #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                         pass
             self.nodes = None
-            self._state = self.STATE_STOPPED
-            if fire:
-                dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
         except:
             import sys, traceback
             logger.error('Stop network : %s', traceback.format_exception(*sys.exc_info()))
@@ -432,6 +429,14 @@ class ZWaveNetwork(ZWaveObject):
         self._manager.destroy()
         self._options.destroy()
         self._started = False
+        self._state = self.STATE_STOPPED
+        try:
+            self.network_event.wait(1.0)
+        except AssertionError:
+            #For gevent AssertionError: Impossible to call blocking function in the event loop callback
+            pass
+        if fire:
+            dispatcher.send(self.SIGNAL_NETWORK_STOPPED, **{'network': self})
 
     @property
     def home_id(self):
