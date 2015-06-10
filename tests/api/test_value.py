@@ -68,6 +68,31 @@ class TestValue(TestApi):
                     res = None
                 self.assertNotEqual(res, None)
 
+    def test_210_values_check_data(self):
+        for node in self.network.nodes:
+            for value in self.network.nodes[node].values:
+                val = self.network.nodes[node].values[value]
+                if val.is_read_only == False:
+                    if val.type == "Bool":
+                        for data in ['False', 'false', '0']:
+                            self.assertFalse(val.check_data(data))
+                        for data in ['True', 'true', '1', "what else"]:
+                            self.assertTrue(val.check_data(data))
+                    elif val.type == "Byte":
+                        pass
+                    elif val.type == "Decimal":
+                        pass
+                    elif val.type == "Int":
+                        pass
+                    elif val.type == "Short":
+                        pass
+                    elif val.type == "String":
+                        pass
+                    elif val.type == "Button":
+                        pass
+                    elif val.type == "List":
+                        pass
+
 if __name__ == '__main__':
     sys.argv.append('-v')
     unittest.main()
