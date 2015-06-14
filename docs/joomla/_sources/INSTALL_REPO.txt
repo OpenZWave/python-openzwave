@@ -28,7 +28,6 @@ You are now ready to download sources of python-openzwave :
 The previous command will create a copy of the official repository on your
 computer in a directory called python-openzwave.
 
-
 Install dependencies
 ====================
 You need some tools (a c++ compiler, headers dir python, ...) to build python-openzwave and openzwave library.
@@ -68,6 +67,8 @@ Or if you have already build python-openzwave in a previous installation, you ca
 .. code-block:: bash
 
     sudo make clean
+
+Do not use root to build python-openzwave as it will surely fails. Please use a "normal user".
 
 
 Installation

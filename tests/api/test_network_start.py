@@ -129,26 +129,26 @@ class TestNetworkStartStop(TestPyZWave):
             if self.network.state>=self.network.STATE_STARTED:
                 break
             else:
-                time.sleep(1.0)
+                time.sleep(0.1)
         self.network.stop()
-        for i in range(0, SLEEP):
+        for i in range(0, SLEEP*10):
             if self.network.state==self.network.STATE_STOPPED:
                 break
             else:
-                time.sleep(1.0)
+                time.sleep(0.1)
         self.assertEqual(self.network.state, self.network.STATE_STOPPED)
         self.network.start()
-        for i in range(0, SLEEP):
+        for i in range(0, SLEEP*10):
             if self.network.state>=self.network.STATE_STARTED:
                 break
             else:
-                time.sleep(1.0)
+                time.sleep(0.1)
         self.network.stop()
-        for i in range(0, SLEEP):
+        for i in range(0, SLEEP*10):
             if self.network.state==self.network.STATE_STOPPED:
                 break
             else:
-                time.sleep(1.0)
+                time.sleep(0.1)
         self.assertEqual(self.network.state, self.network.STATE_STOPPED)
         #self.assertTrue(self.driver_removed)
 

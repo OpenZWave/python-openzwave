@@ -97,6 +97,11 @@ uninstall:
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
 
+check: .git
+
+.git:
+	@echo "Invalid git repository" && exit 1
+
 developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
@@ -239,7 +244,7 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: openzwave/libopenzwave.a
+build: check openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
