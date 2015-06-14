@@ -14,7 +14,7 @@ python-openzwave 0.3.0-beta3:
  * Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.
  * Add tests for controller commands.
  * Update isNodeAwake from function to property
- * rename methods from node to be python compliant : is_awake, is_failed, is_ready, query_stage, is_info_received
+ * Rename methods from node to be python compliant : is_awake, is_failed, is_ready, query_stage, is_info_received
  * Add facilities to run controller commands directly from node
  * Add request_state for node
  * Add new destroy method to network : use it to clean all openzwave c++ ressources
