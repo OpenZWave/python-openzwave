@@ -67,6 +67,10 @@ clean:
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	cp -f openzwave.vers.cpp openzwave/cpp/src/vers.cpp
 
+openzwave/libopenzwave.a:
+	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	cd openzwave && make
+
 ###This part is a copy/paste from the original Makefile
 ###
 uninstall:
@@ -168,11 +172,5 @@ build: openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
 	${PYTHON_EXEC} setup-web.py build --build-base $(BUILDDIR)/web
 
-openzwave:
-	git clone git://github.com/OpenZWave/open-zwave.git openzwave
-
-openzwave/libopenzwave.a: openzwave
-	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	cd openzwave && make
 ###
 ###This part is a copy/paste from the original Makefile
