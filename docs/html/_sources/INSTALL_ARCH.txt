@@ -57,6 +57,9 @@ you can use the clean option :
     sudo make clean
     make build
 
+Do not use root to build python-openzwave as it will surely fails. Please use a "normal user".
+
+
 Installation
 ============
 
@@ -72,3 +75,9 @@ python-openzwave using the following command :
 .. code-block:: bash
 
     sudo make uninstall
+
+If it fails
+===========
+
+Simply remove the python-openzwave-x.y.z directory and extract it again.
+

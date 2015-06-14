@@ -60,6 +60,9 @@ installation, you can use the clean target to remove old builds.
 
    sudo make clean
 
+Do not use root to build python-openzwave as it will surely fails.
+Please use a "normal user".
+
 
 Installation
 ============
