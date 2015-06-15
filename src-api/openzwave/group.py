@@ -168,9 +168,9 @@ class ZWaveGroup(ZWaveObject):
 
         """
         if 'all' in extras:
-                extras = ['associations']
-        ret={}
+            extras = ['associations']
+        ret = {}
         ret['label'] = self.label
-        if 'associations' in extras :
-                ret['associations'] = dict.fromkeys(self.associations, 0)
+        if 'associations' in extras:
+            ret['associations'] = dict.fromkeys(self.associations, 0)
         return ret

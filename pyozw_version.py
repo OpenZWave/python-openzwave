@@ -22,15 +22,15 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 pyozw_version = '0.3.0-beta3'
+if "-" in pyozw_version:
+    pyozw_version_short = pyozw_version.split("-")
+else:
+    pyozw_version_short = pyozw_version
 
 if __name__ == '__main__':
     import sys
     if len(sys.argv)>1 and sys.argv[1]=="--major":
-        if "-" in pyozw_version:
-            res = pyozw_version.split("-")
-            print(res[0])
-        else:
-            print(pyozw_version)
+        print(pyozw_version_short)
     else:
         print(pyozw_version)
 

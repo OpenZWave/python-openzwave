@@ -7,7 +7,7 @@ BUILDDIR      = build
 DISTDIR       = dists
 NOSE          = $(shell which nosetests)
 NOSEOPTS      = --verbosity=2
-NOSECOVER     = --cover-package=openzwave,pyozwman,pyozwweb --cover-min-percentage= --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
+NOSECOVER     = --cover-package=openzwave,pyozwman,pyozwweb --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
 PYLINT        = $(shell which pylint)
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
 
@@ -225,8 +225,8 @@ develop: openzwave/libopenzwave.a
 	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
-	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
+	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
 	@echo
 	@echo "Autobuild-tests for ZWave network finished."
 

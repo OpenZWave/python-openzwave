@@ -218,7 +218,7 @@ class ZWaveScene(ZWaveObject):
         :rtype: dict()
 
         """
-        ret={}
+        ret = {}
         ret['label'] = self.label
         ret['scene_id'] = self.scene_id
         if 'kvals' in extras and self.network.dbcon is not None:

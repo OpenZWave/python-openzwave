@@ -28,7 +28,7 @@ import sys, os
 #sys.path.insert(1, os.path.abspath('../lib'))
 #sys.path.insert(1, os.path.abspath('../python_openzwave_lib.egg-info'))
 sys.path.insert(1, os.path.abspath('..'))
-from pyozw_version import pyozw_version
+from pyozw_version import pyozw_version, pyozw_version_short
 
 # -- General configuration -----------------------------------------------------
 
@@ -64,7 +64,7 @@ copyright = u'2012,2013,2014,2015, bibi21000'
 # built documents.
 #
 # The short X.Y version.
-version = pyozw_version
+version = pyozw_version_short
 # The full version, including alpha/beta/rc tags.
 release = pyozw_version
 

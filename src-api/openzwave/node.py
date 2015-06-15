@@ -66,7 +66,7 @@ class ZWaveNode(ZWaveObject,
         :type network: ZWaveNetwork
 
         """
-        logger.debug("Create object node (node_id:%s)" % (node_id))
+        logger.debug("Create object node (node_id:%s)", node_id)
         ZWaveObject.__init__(self, node_id, network)
         #No cache management for values in nodes
         self.values = dict()
@@ -187,7 +187,7 @@ class ZWaveNode(ZWaveObject,
 
         """
         if 'all' in extras:
-                extras = ['kvals', 'capabilities', 'neighbors', 'groups', 'values']
+            extras = ['kvals', 'capabilities', 'neighbors', 'groups', 'values']
         ret={}
         ret['name'] = self.name
         ret['location'] = self.location
@@ -195,13 +195,13 @@ class ZWaveNode(ZWaveObject,
         ret['product_name'] = self.product_name
         ret['node_id'] = self.node_id
         if 'values' in extras :
-                ret['values'] = self.values_to_dict(extras=extras)
+            ret['values'] = self.values_to_dict(extras=extras)
         if 'groups' in extras :
-                ret['groups'] = self.groups_to_dict(extras=extras)
+            ret['groups'] = self.groups_to_dict(extras=extras)
         if 'neighbors' in extras :
-                ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
+            ret['neighbors'] = dict.fromkeys(self.neighbors, 0)
         if 'capabilities' in extras :
-                ret['capabilities'] = dict.fromkeys(self.capabilities, 0)
+            ret['capabilities'] = dict.fromkeys(self.capabilities, 0)
         if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():
@@ -476,7 +476,7 @@ class ZWaveNode(ZWaveObject,
 
         """
         if value_id in self.values:
-            logger.debug("Remove value : %s" % self.values[value_id])
+            logger.debug("Remove value : %s", self.values[value_id])
             del self.values[value_id]
             return True
         return False
@@ -750,7 +750,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('assign_return_route for node [%s]' % (self.object_id,))
+        logger.debug('assign_return_route for node [%s]', self.object_id)
         return self._network.controller.assign_return_route(self.object_id)
 
     def refresh_info(self):
@@ -767,7 +767,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('refresh_info for node [%s]' % (self.object_id,))
+        logger.debug('refresh_info for node [%s]', self.object_id)
         return self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
 
     def request_state(self):
@@ -779,7 +779,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('request_state for node [%s]' % (self.object_id,))
+        logger.debug('request_state for node [%s]', self.object_id)
         return self._network.manager.requestNodeState(self.home_id, self.object_id)
 
     def send_information(self):
@@ -793,7 +793,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('send_information for node [%s]' % (self.object_id,))
+        logger.debug('send_information for node [%s]', self.object_id)
         return self._network.controller.send_node_information(self.object_id)
 
     def network_update(self):
@@ -806,7 +806,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('network_update for node [%s]' % (self.object_id,))
+        logger.debug('network_update for node [%s]', self.object_id)
         return self._network.controller.request_network_update(self.object_id)
 
     def neighbor_update(self):
@@ -821,7 +821,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('neighbor_update for node [%s]' % (self.object_id,))
+        logger.debug('neighbor_update for node [%s]', self.object_id)
         return self._network.controller.request_node_neighbor_update(self.object_id)
 
     def create_button(self, buttonid):
@@ -838,7 +838,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('create_button for node [%s]' % (self.object_id,))
+        logger.debug('create_button for node [%s]', self.object_id)
         return self._network.controller.create_button(self.object_id, buttonid)
 
     def delete_button(self, buttonid):
@@ -855,7 +855,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('delete_button for node [%s]' % (self.object_id,))
+        logger.debug('delete_button for node [%s]', self.object_id)
         return self._network.controller.delete_button(self.object_id, buttonid)
 
     def request_all_config_params(self):
@@ -863,7 +863,7 @@ class ZWaveNode(ZWaveObject,
         Request the values of all known configurable parameters from a device.
 
         """
-        logger.debug('Requesting config params for node [%s]' % (self.object_id,))
+        logger.debug('Requesting config params for node [%s]', self.object_id)
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 
     def request_config_param(self, param):
@@ -884,7 +884,7 @@ class ZWaveNode(ZWaveObject,
         :type param:
 
         """
-        logger.debug('Requesting config param %s for node [%s]' % (param, self.object_id))
+        logger.debug('Requesting config param %s for node [%s]', param, self.object_id)
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 
     def set_config_param(self, param, value, size=2):
@@ -907,7 +907,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('Set config param %s for node [%s]' % (param, self.object_id,))
+        logger.debug('Set config param %s for node [%s]', param, self.object_id)
         return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value, size)
 
 #    def setNodeOn(self, node):

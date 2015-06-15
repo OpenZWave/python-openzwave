@@ -1,4 +1,5 @@
 :orphan:
+
 =========
 Changelog
 =========
@@ -6,7 +7,8 @@ Changelog
 Known bugs
 
  * reloader problem : the network stop/start every time the app is realoaded. But in this case, the process terminates normally.
- But there seems to be 2 running instances of the network.
+   But there seems to be 2 running instances of the network.
+
 
 python-openzwave 0.3.0-beta3:
  * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
@@ -18,6 +20,7 @@ python-openzwave 0.3.0-beta3:
  * Add facilities to run controller commands directly from node
  * Add request_state for node
  * Add new destroy method to network : use it to clean all openzwave c++ ressources
+
 
 python-openzwave 0.3.0-beta2:
  * Move to OpenZWave git organisation
