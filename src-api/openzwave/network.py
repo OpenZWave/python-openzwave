@@ -598,7 +598,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: dict()
 
         """
-        ret={}
+        ret = {}
         for ndid in self._nodes.keys():
             ret[ndid]=self._nodes[ndid].to_dict(extras=extras)
         return ret
@@ -613,7 +613,7 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: dict()
 
         """
-        ret={}
+        ret = {}
         ret['state'] = self.state,
         ret['state_str'] = self.state_str,
         ret['home_id'] = self.home_id_str,

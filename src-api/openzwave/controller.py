@@ -835,7 +835,7 @@ class ZWaveController(ZWaveObject):
         :rtype: dict()
 
         """
-        ret=self.node.to_dict(extras=extras)
+        ret = self.node.to_dict(extras=extras)
         if 'all' in extras:
             extras = ['kvals', 'capabilities', 'neighbors']
         if 'capabilities' in extras:
