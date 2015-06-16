@@ -7,7 +7,6 @@ Build-Depends: debhelper (>= 7.0.50~), python (>= 2.6.6-3~), python-setuptools,
  python-dev, cython, libopenzwave1.0-dev|libopenzwave1.3-dev, python-louie, sphinx-common,
  python-sphinxcontrib.actdiag, python-sphinxcontrib.blockdiag,
  python-sphinxcontrib.nwdiag, python-sphinxcontrib.seqdiag
-
 Standards-Version: 3.9.1
 Homepage: https://github.com/OpenZWave/python-openzwave
 
