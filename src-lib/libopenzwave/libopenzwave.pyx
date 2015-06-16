@@ -507,6 +507,8 @@ def configPath():
     '''
     if os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
+    elif os.path.isdir(os.path.join("/etc","openzwave")):
+        return os.path.join("/etc","openzwave")
     elif os.path.isdir(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
     elif os.path.isdir(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
