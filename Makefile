@@ -340,9 +340,12 @@ ftp:
 	@echo
 	@echo "New version ${python_openzwave_version} published tp ftp"
 
-new-version: tag tgz deb ftp
+new-version: tag tgz debch deb ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
-deb:
+debch:
 	dch --newversion ${python_openzwave_version} --maintmaint "Automatic release from upstream"
+
+deb:
+	dpkg-buildpackage
