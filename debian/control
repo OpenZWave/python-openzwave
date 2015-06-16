@@ -3,7 +3,7 @@ Section: python
 Priority: optional
 Maintainer: Sébastien GALLET <sgallet@gmail.com>
 X-Python-Version: >= 2.7
-Build-Depends: debhelper (>= 7.0.50~), python (>= 2.6.6-3~), python-setuptools,
+Build-Depends: debhelper (>= 7.0.50~), python (>= 2.6.6-3~), python-setuptools, python-pygraphviz,
  python-dev, cython, libopenzwave1.0-dev|libopenzwave1.3-dev, python-louie, sphinx-common,
  python-sphinxcontrib.actdiag, python-sphinxcontrib.blockdiag,
  python-sphinxcontrib.nwdiag, python-sphinxcontrib.seqdiag
