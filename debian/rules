@@ -7,13 +7,21 @@ override_dh_auto_build:
 	python setup-lib.py build --debian-package
 
 override_dh_auto_install:
-	cd docs && make html
-	cd docs && make text
-	python setup-lib.py install --root=debian/python-openzwave-lib/ --install-layout=deb
+	python setup-lib.py install --root=debian/python-openzwave-lib/ --install-layout=deb --debian-package
 	rm -rf debian/python-openzwave-lib/usr/config
 	rm -rf build
-	python setup-api.py install --root=debian/python-openzwave-api/ --install-layout=deb
+	python setup-api.py install --root=debian/python-openzwave-api/ --install-layout=deb --debian-package
 	rm -rf build
-	python setup-manager.py install --root=debian/python-openzwave-manager/ --install-layout=deb
+	python setup-manager.py install --root=debian/python-openzwave-manager/ --install-layout=deb --debian-package
 	rm -rf build
-	python setup-web.py install --root=debian/python-openzwave-web/ --install-layout=deb
+	python setup-web.py install --root=debian/python-openzwave-web/ --install-layout=deb --debian-package
+	python setup-lib.py develop --debian-package
+	python setup-api.py develop --debian-package
+	python setup-manager.py develop --debian-package
+	python setup-web.py develop --debian-package
+	cd docs && make html
+	cd docs && make text
+	python setup-lib.py develop --uninstall
+	python setup-api.py develop --uninstall
+	python setup-manager.py develop --uninstall
+	python setup-web.py develop --uninstall
