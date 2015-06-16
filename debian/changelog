@@ -1,8 +1,14 @@
+python-openzwave (0.3.0-beta3) UNRELEASED; urgency=medium
+
+  * Automatic release from upstream
+
+ -- bibi21000 <bibi21000t@gmail.com>  Tue, 16 Jun 2015 00:18:00 +0200
+
 python-openzwave (0.3.0-alpha3) oneiric; urgency=low
 
   * Automatic update from upstream
 
- -- Sébastien Gallet <sgallet@gmail.com>  Mon, 04 May 2015 08:41:59 +0100
+ -- bibi21000 <bibi21000t@gmail.com>  Mon, 04 May 2015 08:41:59 +0100
 
 python-openzwave (20120828-oneiric-9) oneiric; urgency=low
 

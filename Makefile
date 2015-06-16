@@ -64,6 +64,15 @@ clean: clean-docs clean-archive
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
+	-rm -rf debian/python-openzwave-api/
+	-rm -rf debian/python-openzwave-doc/
+	-rm -rf debian/python-openzwave-lib/
+	-rm -rf debian/python-openzwave-manager/
+	-rm -rf debian/python-openzwave-web/
+	-rm debian/files
+	-rm debian/*.debhelper
+	-rm debian/*.debhelper.log
+	-rm debian/*.substvars
 
 uninstall:
 	-rm -rf $(BUILDDIR)
@@ -331,6 +340,9 @@ ftp:
 	@echo
 	@echo "New version ${python_openzwave_version} published tp ftp"
 
-new-version: tag tgz ftp
+new-version: tag tgz deb ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
+
+deb:
+	dch --newversion ${python_openzwave_version} --maintmaint "Automatic release from upstream"

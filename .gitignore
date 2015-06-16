@@ -35,3 +35,12 @@ src-web/pyozwweb.egg-info/
 .coverage
 .tests_user_path/
 ftp.sh
+debian/files
+debian/*.debhelper
+debian/*.debhelper.log
+debian/*.substvars
+debian/python-openzwave-api/
+debian/python-openzwave-doc/
+debian/python-openzwave-lib/
+debian/python-openzwave-manager/
+debian/python-openzwave-web/

@@ -94,7 +94,7 @@ elif DEBIAN_PACKAGE == True:
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++', 'openzwave'],
                              language="c++",
-                             extra_objects=['/usr/libopenzwave.a'],
+                             #extra_objects=['/usr/libopenzwave.a'],
                              include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"]
     )]
 else:
