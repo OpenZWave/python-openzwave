@@ -4,16 +4,24 @@
 	dh $@ --with python2
 
 override_dh_auto_build:
-	dh_auto_build build -- --debian-package
-
+	python setup-lib.py build --debian-package
 
 override_dh_auto_install:
-	dh_auto_install install -- --debian-package 
+	python setup-lib.py install --root=debian/python-openzwave-lib/ --install-layout=deb --debian-package
+	rm -rf debian/python-openzwave-lib/usr/config
+	rm -rf build
+	python setup-api.py install --root=debian/python-openzwave-api/ --install-layout=deb --debian-package
+	rm -rf build
+	python setup-manager.py install --root=debian/python-openzwave-manager/ --install-layout=deb --debian-package
+	rm -rf build
+	python setup-web.py install --root=debian/python-openzwave-web/ --install-layout=deb --debian-package
+	python setup-lib.py develop --debian-package
+	python setup-api.py develop --debian-package
+	python setup-manager.py develop --debian-package
+	python setup-web.py develop --debian-package
 	cd docs && make html
-	dh_auto_install install -- --debian-package
-	PYTHONPATH=.:debian/python-openzwave/usr/lib/python2.7/dist-packages/ python setup-lib.py install --record install.files --prefix=debian/python-openzwave/usr/ --install-layout=deb
-	PYTHONPATH=.:debian/python-openzwave/usr/lib/python2.7/dist-packages/ python setup-api.py install --record install.tm --prefix=debian/python-openzwave/usr/ --install-layout=deb
-	rm -rf debian/python-openzwave/usr/share/pyshared/site.py
-	rm -rf debian/python-openzwave/usr/share/pyshared/easy-install.pth
-	rm -rf debian/python-openzwave/usr/lib/python2.7/dist-packages/site.py
-	rm -rf debian/python-openzwave/usr/lib/python2.7/dist-packages/easy-install.pth
+	cd docs && make text
+	python setup-lib.py develop --uninstall
+	python setup-api.py develop --uninstall
+	python setup-manager.py develop --uninstall
+	python setup-web.py develop --uninstall

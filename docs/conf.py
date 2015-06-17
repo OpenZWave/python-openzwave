@@ -39,7 +39,7 @@ from pyozw_version import pyozw_version, pyozw_version_short
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.todo', 'sphinxcontrib.blockdiag',
  'sphinxcontrib.nwdiag', 'sphinxcontrib.actdiag', 'sphinxcontrib.seqdiag', 'sphinx.ext.graphviz',
- 'sphinx.ext.inheritance_diagram', 'sphinxcontrib.plantuml']
+ 'sphinx.ext.inheritance_diagram']
 
 blockdiag_fontpath = '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf'
 

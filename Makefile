@@ -64,6 +64,15 @@ clean: clean-docs clean-archive
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
+	-rm -rf debian/python-openzwave-api/
+	-rm -rf debian/python-openzwave-doc/
+	-rm -rf debian/python-openzwave-lib/
+	-rm -rf debian/python-openzwave-manager/
+	-rm -rf debian/python-openzwave-web/
+	-rm debian/files
+	-rm debian/*.debhelper
+	-rm debian/*.debhelper.log
+	-rm debian/*.substvars
 
 uninstall:
 	-rm -rf $(BUILDDIR)
@@ -225,8 +234,8 @@ develop: openzwave/libopenzwave.a
 	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
+	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
 	@echo
 	@echo "Autobuild-tests for ZWave network finished."
 
@@ -331,6 +340,12 @@ ftp:
 	@echo
 	@echo "New version ${python_openzwave_version} published tp ftp"
 
-new-version: tag tgz ftp
+new-version: tag tgz debch deb ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
+
+debch:
+	dch --newversion ${python_openzwave_version} --maintmaint "Automatic release from upstream"
+
+deb:
+	dpkg-buildpackage
