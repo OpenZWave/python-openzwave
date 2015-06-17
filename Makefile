@@ -234,8 +234,8 @@ develop: openzwave/libopenzwave.a
 	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
+	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
 	@echo
 	@echo "Autobuild-tests for ZWave network finished."
 

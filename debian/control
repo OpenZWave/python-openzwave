@@ -23,6 +23,7 @@ Description: python-openzwave is another python wrapper around the openzwave pro
 Package: python-openzwave-api
 Architecture: all
 Depends: libopenzwave1.0|libopenzwave1.3, python-louie, python-openzwave-lib (= ${binary:Version}), ${misc:Depends}, ${python:Depends}
+Suggests: python-pysqlite2
 Description: python-openzwave is another python wrapper around the openzwave project.
  The wrapper allows you to control a z-wave network from python.
  The one-to-one library is in beta state. You can try it.
@@ -30,7 +31,7 @@ Description: python-openzwave is another python wrapper around the openzwave pro
 
 Package: python-openzwave-manager
 Architecture: all
-Depends: python-openzwave (= ${binary:Version}), python-urwid
+Depends: python-openzwave-api (= ${binary:Version}), python-urwid
 Description: A command line manager for your ZWave Network.
  You can :
     * Reset controller (hard and soft) and add/remove device/controller
@@ -43,7 +44,7 @@ Description: A command line manager for your ZWave Network.
 
 Package: python-openzwave-web
 Architecture: all
-Depends: python-openzwave (= ${binary:Version}), python-flask, python-flaskext.wtf, python-flask-babel, python-socketio
+Depends: python-openzwave-api (= ${binary:Version}), python-flask, python-flaskext.wtf, python-flask-babel, python-socketio
 Description: The webapp.
  Work in progress
 
