@@ -291,7 +291,7 @@ class ZWaveValue(ZWaveObject):
             value.data = new_val
 
         :param value: The new data value
-        :type value: str
+        :type value:
 
         """
         self._network.manager.setValue(self.value_id, value)
@@ -352,12 +352,16 @@ class ZWaveValue(ZWaveObject):
         new_data = None
         logger.debug("check_data type :%s", self.type)
         if self.type == "Bool":
-            new_data = data
             if isinstance(data, string_types):
-                if data == "False" or data == "false" or data == "0":
+                if data in ["False", "false", "FALSE", "0"]:
                     new_data = False
                 else:
                     new_data = True
+            else:
+                try:
+                    new_data = bool(data)
+                except:
+                    new_data = None
         elif self.type == "Byte":
             try:
                 new_data = int(data)
@@ -396,12 +400,16 @@ class ZWaveValue(ZWaveObject):
         elif self.type == "String":
             new_data = data
         elif self.type == "Button":
-            new_data = data
             if isinstance(data, string_types):
-                if data == "False" or data == "false" or data == "0":
+                if data in ["False", "false", "FALSE", "0"]:
                     new_data = False
                 else:
                     new_data = True
+            else:
+                try:
+                    new_data = bool(data)
+                except:
+                    new_data = None
         elif self.type == "List":
             if isinstance(data, string_types):
                 if data in self.data_items:
