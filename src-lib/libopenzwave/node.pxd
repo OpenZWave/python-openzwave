@@ -19,7 +19,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libcpp.vector cimport vector
 #from libcpp.string cimport string
-from mylibc cimport string
+from libopenzwave.mylibc cimport string
 
 cdef extern from "Node.h" namespace "OpenZWave::Node":
 

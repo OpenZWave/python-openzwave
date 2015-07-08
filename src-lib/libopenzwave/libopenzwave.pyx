@@ -32,23 +32,23 @@ from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
-from mylibc cimport string
+from libopenzwave.mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 #from mylibc cimport PyEval_InitThreads
-from node cimport NodeData_t, NodeData
-from node cimport SecurityFlag
-from driver cimport DriverData_t, DriverData
-from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
-from notification cimport Notification, NotificationType, NotificationCode
-from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
-from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
-from notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
-from notification cimport Type_ControllerCommand
-from notification cimport const_notification, pfnOnNotification_t
-from values cimport ValueGenre, ValueType, ValueID
-from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
-from manager cimport Manager, Create as CreateManager, Get as GetManager
-from log cimport LogLevel
+from libopenzwave.node cimport NodeData_t, NodeData
+from libopenzwave.node cimport SecurityFlag
+from libopenzwave.driver cimport DriverData_t, DriverData
+from libopenzwave.driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
+from libopenzwave.notification cimport Notification, NotificationType, NotificationCode
+from libopenzwave.notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
+from libopenzwave.notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
+from libopenzwave.notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
+from libopenzwave.notification cimport Type_ControllerCommand
+from libopenzwave.notification cimport const_notification, pfnOnNotification_t
+from libopenzwave.values cimport ValueGenre, ValueType, ValueID
+from libopenzwave.options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
+from libopenzwave.manager cimport Manager, Create as CreateManager, Get as GetManager
+from libopenzwave.log cimport LogLevel
 import os
 import sys
 import warnings
@@ -897,7 +897,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x30: 'COMMAND_CLASS_SENSOR_BINARY',
         0x31: 'COMMAND_CLASS_SENSOR_MULTILEVEL',
         0x32: 'COMMAND_CLASS_METER',
-        0x33: 'COMMAND_CLASS_ZIP_ADV_SERVER',
+        0x33: 'COMMAND_CLASS_COLOR',
         0x34: 'COMMAND_CLASS_ZIP_ADV_CLIENT',
         0x35: 'COMMAND_CLASS_METER_PULSE',
         0x3C: 'COMMAND_CLASS_METER_TBL_CONFIG',
@@ -915,6 +915,9 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x4E: 'COMMAND_CLASS_SCHEDULE_ENTRY_LOCK',
         0x50: 'COMMAND_CLASS_BASIC_WINDOW_COVERING',
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
+        0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
+        0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
+        0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
         0x61: 'COMMAND_CLASS_DISPLAY',
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
