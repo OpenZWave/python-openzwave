@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
 
@@ -18,8 +19,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from cython.operator cimport dereference as deref
 from libcpp cimport bool
+#from libc.stdint cimport bint
 from libcpp.vector cimport vector
-from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
+from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
 #from libcpp.string cimport string
 from libopenzwave.mylibc cimport string
 from libopenzwave.node cimport NodeData
@@ -43,13 +45,13 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void WriteConfig(uint32_t homeid)
         Options* GetOptions()
         # // Drivers
-        bint AddDriver(string serialport)
-        bint RemoveDriver(string controllerPath)
+        bool AddDriver(string serialport)
+        bool RemoveDriver(string controllerPath)
         uint8_t GetControllerNodeId(uint32_t homeid)
         uint8_t GetSUCNodeId(uint32_t homeid)
-        bint IsPrimaryController(uint32_t homeid)
-        bint IsStaticUpdateController(uint32_t homeid)
-        bint IsBridgeController(uint32_t homeid)
+        bool IsPrimaryController(uint32_t homeid)
+        bool IsStaticUpdateController(uint32_t homeid)
+        bool IsBridgeController(uint32_t homeid)
         string getVersionAsString()
         string getVersionLongAsString()
         string GetLibraryVersion(uint32_t homeid)
@@ -68,7 +70,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         # // Polling
         uint32_t GetPollInterval()
         void SetPollInterval(uint32_t milliseconds, bIntervalBetweenPolls)
-        bint EnablePoll(ValueID& valueId, uint8_t intensity)
+        bool EnablePoll(ValueID& valueId, uint8_t intensity)
         bool DisablePoll(ValueID& valueId)
         bool isPolled(ValueID& valueId)
         void SetPollIntensity( ValueID& valueId, uint8_t intensity)
@@ -175,7 +177,6 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SoftReset(uint32_t homeid)
         #Deprecated
         bool BeginControllerCommand(uint32_t homeid, ControllerCommand _command, pfnControllerCallback_t _callback, void* _context, bool _highPower, uint8_t _nodeId, uint8_t _arg )
-        #Deprecated
         bool CancelControllerCommand(uint32_t homeid)
         bool AddNode(uint32_t homeid, bool _doSecurity)
 
