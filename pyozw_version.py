@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-pyozw_version = '0.3.0-beta3'
+pyozw_version = '0.3.0b3'
 if "-" in pyozw_version:
     pyozw_version_short = pyozw_version.split("-")
 else:
