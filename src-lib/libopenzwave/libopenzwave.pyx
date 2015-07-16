@@ -438,7 +438,7 @@ cdef addValueId(ValueID v, n):
                         }
     logger.debug("addValueId : Notification : %s", n)
 
-cdef void notif_callback(const_notification _notification, void* _context) with gil:
+cdef void notif_callback(const_notification _notification, void* _context):
     """
     Notification callback to the C++ library
 
@@ -488,7 +488,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         delValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : end")
 
-cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
+cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context):
     """
     Controller callback to the C++ library
 
