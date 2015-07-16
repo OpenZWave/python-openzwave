@@ -23,14 +23,14 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
 #from libcpp.string cimport string
-from libopenzwave.mylibc cimport string
-from libopenzwave.node cimport NodeData
-from libopenzwave.driver cimport DriverData_t, DriverData
-from libopenzwave.driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
-from libopenzwave.notification cimport Notification, NotificationType, Type_Notification, Type_Group, Type_NodeEvent, const_notification, pfnOnNotification_t
-from libopenzwave.values cimport ValueGenre, ValueType, ValueID
-from libopenzwave.options cimport Options
-from libopenzwave.log cimport LogLevel
+from mylibc cimport string
+from node cimport NodeData
+from driver cimport DriverData_t, DriverData
+from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
+from notification cimport Notification, NotificationType, Type_Notification, Type_Group, Type_NodeEvent, const_notification, pfnOnNotification_t
+from values cimport ValueGenre, ValueType, ValueID
+from options cimport Options
+from log cimport LogLevel
 import os
 
 # Singleton or not ?

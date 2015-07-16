@@ -35,23 +35,23 @@ from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
-from libopenzwave.mylibc cimport string
+from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 #from mylibc cimport PyEval_InitThreads
-from libopenzwave.node cimport NodeData_t, NodeData
-from libopenzwave.node cimport SecurityFlag
-from libopenzwave.driver cimport DriverData_t, DriverData
-from libopenzwave.driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
-from libopenzwave.notification cimport Notification, NotificationType, NotificationCode
-from libopenzwave.notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
-from libopenzwave.notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
-from libopenzwave.notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
-from libopenzwave.notification cimport Type_ControllerCommand
-from libopenzwave.notification cimport const_notification, pfnOnNotification_t
-from libopenzwave.values cimport ValueGenre, ValueType, ValueID
-from libopenzwave.options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
-from libopenzwave.manager cimport Manager, Create as CreateManager, Get as GetManager
-from libopenzwave.log cimport LogLevel
+from node cimport NodeData_t, NodeData
+from node cimport SecurityFlag
+from driver cimport DriverData_t, DriverData
+from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
+from notification cimport Notification, NotificationType, NotificationCode
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
+from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
+from notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
+from notification cimport Type_ControllerCommand
+from notification cimport const_notification, pfnOnNotification_t
+from values cimport ValueGenre, ValueType, ValueID
+from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
+from manager cimport Manager, Create as CreateManager, Get as GetManager
+from log cimport LogLevel
 import os
 import sys
 import warnings

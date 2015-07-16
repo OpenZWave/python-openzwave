@@ -19,7 +19,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
 #from libcpp.string cimport string
-from libopenzwave.mylibc cimport string
+from mylibc cimport string
 from libcpp cimport bool
 #from libc.stdint cimport bint
 
