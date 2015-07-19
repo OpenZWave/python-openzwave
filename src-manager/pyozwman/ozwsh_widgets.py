@@ -881,7 +881,7 @@ class NodeTree(OldestTree):
             self.window.status_bar.update(status='Refresh info requested')
             return True
         elif command.startswith('update_neighbors'):
-            self.window.network.controller.begin_command_request_node_neigbhor_update(self.key)
+            self.window.network.controller.request_network_update(self.key)
             self.window.status_bar.update(status='Neighbors nodes requested')
             return True
         return False
@@ -988,12 +988,12 @@ class ControllerTree(OldestTree):
         self.usage.append("reset soft : reset the controller in a soft way. Node association is not required")
         self.usage.append("reset hard : reset the controller. Warning : all nodes must be re-associated with your stick.")
         self.usage.append("send cancel : cancel the current command.")
-        self.usage.append("send network_update : update the controller with network information from the SUC/SIS.")
+        self.usage.append("send network_update <node_id> : update the network of <node_id>.")
         self.usage.append("send update_neighbors <node_id> : update the <node_id> neighbors.")
-        self.usage.append("send add_device : add a device (not a controller) on the network.")
+        self.usage.append("send add_device <True|False>: add a device on the network with security support activated or not.")
         self.usage.append("send remove_device : remove a device (not a controller) on the network.")
-        self.usage.append("send add_controller : add a controller on the network.")
-        self.usage.append("send remove_controller : remove a controller on the network.")
+        #self.usage.append("send add_controller : add a controller on the network.")
+        #self.usage.append("send remove_controller : remove a controller on the network.")
         self.usage.append("send has_node_failed <node_id> : Check whether the node <node_id> is in the controller's failed nodes list.")
         self.usage.append("send remove_failed_node <node_id> : move the node <node_id> to the controller's list of failed nodes.")
         self.usage.append("send replace_failed_node <node_id> : Replace the failed <node_id> device with another.")
@@ -1011,17 +1011,17 @@ class ControllerTree(OldestTree):
         self.refresh()
         self.window.log.info("ControllerTree _louie_network_ready")
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
-        #dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        #dispatcher.connect(self._louie_ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
         #dispatcher.connect(self._louie_ctrl_message_waiting, ZWaveController.SIGNAL_CTRL_WAITING)
 
     def _louie_node_update(self, network, node):
         self.refresh()
 
-    #def _louie_ctrl_message_waiting(self, state, message, network, controller):
-    #    self.window.status_bar.update(status='Message from controller: %s : %s' % (state,message))
-
-    #def _louie_ctrl_message(self, state, message, network, controller):
-    #    self.window.status_bar.update(status='Message from controller: %s' % (state))
+    #~ def _louie_ctrl_message_waiting(self, network, controller, state_int, state, state_full ):
+        #~ self.window.status_bar.update(status='Message from controller: %s : %s' % (state,state_full))
+#~
+    #~ def _louie_ctrl_message(self, network, controller, node, node_id, state_int, state, state_full, error_int, error, error_full ):
+        #~ self.window.status_bar.update(status='Message from controller: %s' % (state_full))
 
     def set(self, param, value):
         if param in ['name', 'location', 'product_name', 'manufacturer_name' ]:
@@ -1044,8 +1044,18 @@ class ControllerTree(OldestTree):
 
     def send(self, command):
         if command == 'network_update':
-            self.window.network.controller.begin_command_request_network_update()
-            #self.window.status_bar.update(status='Reset controller softly')
+            if ' ' in command :
+                cmd,node = command.split(' ',1)
+            else:
+                self.window.status_bar.update("usage : send network_update <node_id>")
+                return False
+            node = node.strip()
+            try :
+                node = int(node)
+            except :
+                self.window.status_bar.update("Invalid node_id")
+                return False
+            self.window.network.controller.request_network_update(node)
             return True
         elif command.startswith('update_neighbors'):
             if ' ' in command :
@@ -1059,7 +1069,7 @@ class ControllerTree(OldestTree):
             except :
                 self.window.status_bar.update("Invalid node_id")
                 return False
-            self.window.network.controller.begin_command_request_node_neigbhor_update(node)
+            self.window.network.controller.request_node_neighbor_update(node)
             return True
         elif command.startswith('has_node_failed'):
             if ' ' in command :
@@ -1073,7 +1083,7 @@ class ControllerTree(OldestTree):
             except :
                 self.window.status_bar.update("Invalid node_id")
                 return False
-            self.window.network.controller.begin_command_has_node_failed(node)
+            self.window.network.controller.has_node_failed(node)
             return True
         elif command.startswith('remove_failed_node'):
             if ' ' in command :
@@ -1087,7 +1097,7 @@ class ControllerTree(OldestTree):
             except :
                 self.window.status_bar.update("Invalid node_id")
                 return False
-            self.window.network.controller.begin_command_remove_failed_node(node)
+            self.window.network.controller.remove_failed_node(node)
             return True
         elif command.startswith('replace_failed_node'):
             if ' ' in command :
@@ -1101,13 +1111,21 @@ class ControllerTree(OldestTree):
             except :
                 self.window.status_bar.update("Invalid node_id")
                 return False
-            self.window.network.controller.begin_command_replace_failed_node(node)
+            self.window.network.controller.replace_failed_node(node)
             return True
-        elif command == 'add_device':
-            self.window.network.controller.begin_command_add_device()
+        elif command.startswith('add_device'):
+            if ' ' in command :
+                cmd,security = command.split(' ',1)
+            else:
+                security = False
+            try :
+                security = bool(security)
+            except :
+                security = False
+            self.window.network.controller.add_node(security)
             return True
         elif command == 'remove_device':
-            self.window.network.controller.begin_command_remove_device()
+            self.window.network.controller.remove_node()
             return True
         elif command == 'add_controller':
             self.window.network.controller.begin_command_add_controller()

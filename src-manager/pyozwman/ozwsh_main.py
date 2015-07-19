@@ -250,7 +250,7 @@ class MainWindow(Screen):
         """
         self.network.write_config()
         self.network.stop()
-        self.options.destroy()
+        self.network.destroy()
         raise urwid.ExitMainLoop()
 
     def execute(self, command):
@@ -537,7 +537,7 @@ class MainWindow(Screen):
 
     def _louie_network_stopped(self, network):
         self.log.info('OpenZWave network is stopped.')
-        self.network = None
+        #self.network = None
         self.status_bar.update(status='OpenZWave network was stopped ... please quit')
         self.loop.draw_screen()
 
@@ -561,14 +561,15 @@ class MainWindow(Screen):
         dispatcher.disconnect(self._louie_group, ZWaveNetwork.SIGNAL_GROUP)
         dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         dispatcher.disconnect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-        dispatcher.disconnect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        dispatcher.disconnect(self._louie_ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
 
     def _connect_louie_node_and_value(self):
         #pass
         dispatcher.connect(self._louie_group, ZWaveNetwork.SIGNAL_GROUP)
         dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_NODE)
         dispatcher.connect(self._louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
-        dispatcher.connect(self._louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
+        dispatcher.connect(self._louie_ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
+        dispatcher.connect(self._louie_ctrl_message_waiting, ZWaveController.SIGNAL_CTRL_WAITING)
 
     def _louie_node_update(self, network, node):
         self.loop.draw_screen()
@@ -579,7 +580,11 @@ class MainWindow(Screen):
     def _louie_group(self, network, node):
         self.loop.draw_screen()
 
-    def _louie_ctrl_message(self, state, message, network, controller):
-        #self.status_bar.update(status='Message from controller: %s : %s' % (state,message))
-        self.status_bar.update(status='Message from controller: %s' % (message))
+    def _louie_ctrl_message(self, network, controller, node, node_id, state_int, state, state_full, error_int, error, error_full ):
+        self.status_bar.update(status='Message from controller: %s' % (state_full))
         self.loop.draw_screen()
+
+    def _louie_ctrl_message_waiting(self, network, controller, state_int, state, state_full ):
+        self.status_bar.update(status='Message from controller: %s : %s' % (state,state_full))
+        self.loop.draw_screen()
+
