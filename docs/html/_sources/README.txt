@@ -66,4 +66,48 @@ If you have problems, please submit an issue with :
  - the content of /usr/local/lib/python2.7/dist-packages/easy-install.pth (for python 2.7)
 
 
+Ubuntu 64bits ... and the others
+================================
 
+If you're using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
+you certainly have the segfault problem : https://github.com/OpenZWave/python-openzwave/issues/121
+
+It appears with the last update of python :
+
+.. code-block:: bash
+
+    $ python
+    Python 2.7.6 (default, Jun 22 2015, 17:58:13)
+    [GCC 4.8.2] on linux2
+    Type "help", "copyright", "credits" or "license" for more information.
+
+
+I've open a discussion on cython-users here : https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk
+
+The only way I found to avoid this is to rebuild and reinstall the old release of python :
+
+.. code-block:: bash
+
+    wget https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.dsc https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6.orig.tar.gz https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.diff.gz
+
+    dpkg-source -x python2.7_2.7.6-8.dsc
+
+    sudo apt-get build-dep python2.7
+
+    cd python2.7-2.7.6
+
+    dpkg-buildpackage
+
+Wait, wait and await again :)
+
+.. code-block:: bash
+
+    cd ..
+
+    sudo dpkg -i *.deb
+
+To prevent future updates of python, you could mark its packages. For example, if you use apt to update your distribution, use the following command :
+
+.. code-block:: bash
+
+    sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples

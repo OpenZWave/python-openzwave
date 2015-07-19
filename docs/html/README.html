@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>python-openzwave &mdash; python-openzwave 0.3.0-beta3 documentation</title>
+    <title>python-openzwave &mdash; python-openzwave 0.3.0b3 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0-beta3',
+        VERSION:     '0.3.0b3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.3.0-beta3 documentation" href="index.html" /> 
+    <link rel="top" title="python-openzwave 0.3.0b3 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0-beta3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0b3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -100,6 +100,41 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
 </ul>
 </div></blockquote>
 </div>
+<div class="section" id="ubuntu-64bits-and-the-others">
+<h2>Ubuntu 64bits ... and the others<a class="headerlink" href="#ubuntu-64bits-and-the-others" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
+you certainly have the segfault problem : <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/issues/121">https://github.com/OpenZWave/python-openzwave/issues/121</a></p>
+<p>It appears with the last update of python :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
+Python 2.7.6 <span class="o">(</span>default, Jun 22 2015, 17:58:13<span class="o">)</span>
+<span class="o">[</span>GCC 4.8.2<span class="o">]</span> on linux2
+Type <span class="s2">&quot;help&quot;</span>, <span class="s2">&quot;copyright&quot;</span>, <span class="s2">&quot;credits&quot;</span> or <span class="s2">&quot;license&quot;</span> <span class="k">for </span>more information.
+</pre></div>
+</div>
+<p>I&#8217;ve open a discussion on cython-users here : <a class="reference external" href="https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk">https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk</a></p>
+<p>The only way I found to avoid this is to rebuild and reinstall the old release of python :</p>
+<div class="highlight-bash"><div class="highlight"><pre>wget https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.dsc https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6.orig.tar.gz https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.diff.gz
+
+dpkg-source -x python2.7_2.7.6-8.dsc
+
+sudo apt-get build-dep python2.7
+
+<span class="nb">cd </span>python2.7-2.7.6
+
+dpkg-buildpackage
+</pre></div>
+</div>
+<p>Wait, wait and await again :)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">cd</span> ..
+
+sudo dpkg -i *.deb
+</pre></div>
+</div>
+<p>To prevent future updates of python, you could mark its packages. For example, if you use apt to update your distribution, use the following command :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples
+</pre></div>
+</div>
+</div>
 </div>
 
 
@@ -115,6 +150,7 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
 <li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
 <li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>
+<li><a class="reference internal" href="#ubuntu-64bits-and-the-others">Ubuntu 64bits ... and the others</a></li>
 </ul>
 </li>
 </ul>
@@ -150,7 +186,7 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0-beta3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0b3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
