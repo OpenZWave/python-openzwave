@@ -342,7 +342,7 @@ ftp:
 	@echo
 	@echo "New version ${python_openzwave_version} published tp ftp"
 
-new-version: tag tgz debch deb ftp
+new-version: tag tgz debch ftp
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
