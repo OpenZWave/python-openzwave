@@ -53,6 +53,8 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
+import six
+from six import string_types
 
 class TestSwitchAll(TestApi):
 
@@ -61,7 +63,7 @@ class TestSwitchAll(TestApi):
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 ran = True
-                self.assertEqual(type(self.network.nodes[node].get_switch_all_item(val)), type(""))
+                self.assertTrue(isinstance(self.network.nodes[node].get_switch_all_item(val), string_types))
         if not ran :
             self.skipTest("No Switch_All found")
 
@@ -87,7 +89,7 @@ class TestSwitchAll(TestApi):
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 ran = True
-                self.assertTrue(type(self.network.nodes[node].get_switch_all_items(val)) in [type(""), type(set())])
+                self.assertTrue(isinstance(self.network.nodes[node].get_switch_all_item(val), string_types) or type(self.network.nodes[node].get_switch_all_items(val)) == type(""))
         if not ran :
             self.skipTest("No Switch_All found")
 

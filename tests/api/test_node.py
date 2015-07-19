@@ -88,6 +88,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].name, name)
 
     def test_421_node_name_accent(self):
+        self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "noeud éééé"
         self.network.nodes[node_id].name = name
@@ -100,6 +101,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].location, location)
 
     def test_431_node_location_accent(self):
+        self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "location éééé"
         self.network.nodes[node_id].location = name
@@ -112,6 +114,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].product_name, name)
 
     def test_441_node_product_name_accent(self):
+        self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "product éééé"
         self.network.nodes[node_id].product_name = name
@@ -125,6 +128,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].manufacturer_name, name)
 
     def test_451_node_manufacturer_name_accent(self):
+        self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "manufacturer_name éééé"
         self.network.nodes[node_id].manufacturer_name = name
