@@ -53,7 +53,8 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-
+import six
+from six import string_types
 
 class TestNode(TestApi):
 
@@ -77,8 +78,8 @@ class TestNode(TestApi):
 
     def test_410_node_product(self):
         node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].product_type), type(""))
-        self.assertEqual(type(self.network.nodes[node_id].product_id), type(""))
+        self.assertTrue(isinstance(self.network.nodes[node_id].product_type, string_types))
+        self.assertTrue(isinstance(self.network.nodes[node_id].product_id, string_types))
 
     def test_420_node_name(self):
         node_id = max(self.network.nodes.keys())
@@ -88,15 +89,21 @@ class TestNode(TestApi):
 
     def test_421_node_name_accent(self):
         node_id = max(self.network.nodes.keys())
-        name = "Contrôleur"
+        name = "noeud éééé"
         self.network.nodes[node_id].name = name
         self.assertEqual(self.network.nodes[node_id].name, name)
 
-    def test_430_node_product_location(self):
+    def test_430_node_location(self):
         node_id = max(self.network.nodes.keys())
         location = "TestUnit location"
         self.network.nodes[node_id].location = location
         self.assertEqual(self.network.nodes[node_id].location, location)
+
+    def test_431_node_location_accent(self):
+        node_id = max(self.network.nodes.keys())
+        name = "location éééé"
+        self.network.nodes[node_id].location = name
+        self.assertEqual(self.network.nodes[node_id].location, name)
 
     def test_440_node_product_name(self):
         node_id = max(self.network.nodes.keys())
@@ -104,10 +111,22 @@ class TestNode(TestApi):
         self.network.nodes[node_id].product_name = name
         self.assertEqual(self.network.nodes[node_id].product_name, name)
 
+    def test_441_node_product_name_accent(self):
+        node_id = max(self.network.nodes.keys())
+        name = "product éééé"
+        self.network.nodes[node_id].product_name = name
+        self.assertEqual(self.network.nodes[node_id].product_name, name)
+
     def test_450_node_manufacturer_name(self):
         node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].manufacturer_id), type(""))
+        self.assertTrue(isinstance(self.network.nodes[node_id].manufacturer_id, string_types))
         name = "TestUnit manufacturer name"
+        self.network.nodes[node_id].manufacturer_name = name
+        self.assertEqual(self.network.nodes[node_id].manufacturer_name, name)
+
+    def test_451_node_manufacturer_name_accent(self):
+        node_id = max(self.network.nodes.keys())
+        name = "manufacturer_name éééé"
         self.network.nodes[node_id].manufacturer_name = name
         self.assertEqual(self.network.nodes[node_id].manufacturer_name, name)
 
@@ -143,11 +162,11 @@ class TestNode(TestApi):
 
     def test_680_node_query_stage(self):
         node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].query_stage), type(""))
+        self.assertTrue(isinstance(self.network.nodes[node_id].query_stage, string_types))
 
     def test_690_node_type(self):
         node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].type), type(""))
+        self.assertTrue(isinstance(self.network.nodes[node_id].type, string_types))
 
     def test_710_node_test(self):
         node_id = max(self.network.nodes.keys())

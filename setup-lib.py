@@ -120,4 +120,7 @@ setup(
   #The following line install config drectory in share/python-openzwave
   data_files = data_files,
   packages = find_packages('src-lib', exclude=["scripts"]),
+  install_requires=[
+                     'six',
+                    ]
 )

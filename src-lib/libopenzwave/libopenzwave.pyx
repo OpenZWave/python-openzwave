@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#cython: c_string_type=unicode, c_string_encoding=ascii
+#cython: c_string_type=unicode, c_string_encoding=utf8
 
 """
 .. module:: libopenzwave
@@ -37,7 +37,7 @@ from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
-#from mylibc cimport PyEval_InitThreads
+from mylibc cimport PyEval_InitThreads, Py_Initialize
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -438,7 +438,7 @@ cdef addValueId(ValueID v, n):
                         }
     logger.debug("addValueId : Notification : %s", n)
 
-cdef void notif_callback(const_notification _notification, void* _context):
+cdef void notif_callback(const_notification _notification, void* _context) with gil:
     """
     Notification callback to the C++ library
 
@@ -488,7 +488,7 @@ cdef void notif_callback(const_notification _notification, void* _context):
         delValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : end")
 
-cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context):
+cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
     """
     Controller callback to the C++ library
 
@@ -1007,9 +1007,10 @@ Z-Wave controller in turn.
 
 :see: destroy_
         '''
-        self.manager = CreateManager()
         #Commented to try to fix seg fault at import
-        #PyEval_InitThreads()
+        Py_Initialize()
+        PyEval_InitThreads()
+        self.manager = CreateManager()
 
     def destroy(self):
         '''

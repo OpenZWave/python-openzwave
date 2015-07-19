@@ -30,8 +30,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 #stdlib int8_t
 #ctypedef signed char int8_t
 
-#cdef extern from "Python.h":
-#    void PyEval_InitThreads()
+cdef extern from "Python.h":
+    void PyEval_InitThreads()
+    void Py_Initialize()
 
 cdef extern from *:
     ctypedef char* const_char_ptr "const char*"

@@ -53,15 +53,15 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-
+from six import string_types
 
 class TestController(TestApi):
 
     def test_010_controller(self):
-        self.assertEqual(type(self.network.controller.name), type(""))
-        self.assertEqual(type(self.network.controller.ozw_library_version), type(""))
-        self.assertEqual(type(self.network.controller.python_library_version), type(""))
-        self.assertEqual(type(self.network.controller.library_description), type(""))
+        self.assertTrue(isinstance(self.network.controller.name, string_types))
+        self.assertTrue(isinstance(self.network.controller.ozw_library_version, string_types))
+        self.assertTrue(isinstance(self.network.controller.python_library_version, string_types))
+        self.assertTrue(isinstance(self.network.controller.library_description, string_types))
 
     def test_020_controller_capabilities(self):
         self.assertEqual(type(self.network.controller.capabilities), type(set()))
@@ -96,8 +96,8 @@ class TestController(TestApi):
         self.assertTrue(self.network.controller.node.max_baud_rate > 0)
 
     def test_410_controller_node_product(self):
-        self.assertEqual(type(self.network.controller.node.product_type), type(""))
-        self.assertEqual(type(self.network.controller.node.product_id), type(""))
+        self.assertTrue(isinstance(self.network.controller.node.product_type, string_types))
+        self.assertTrue(isinstance(self.network.controller.node.product_id, string_types))
 
     def test_420_controller_node_name(self):
         name = "TestUnit name"
@@ -128,13 +128,13 @@ class TestController(TestApi):
         self.assertTrue(len(self.network.controller.node.command_classes) >= 0)
 
     def test_710_controller_node_manufacturer_name(self):
-        self.assertEqual(type(self.network.controller.node.manufacturer_id), type(""))
+        self.assertTrue(isinstance(self.network.controller.node.manufacturer_id, string_types))
         name = "TestUnit manufacturer name"
         self.network.controller.node.manufacturer_name = name
         self.assertEqual(self.network.controller.node.manufacturer_name, name)
 
     def test_760_controller_stats_label(self):
-        self.assertEqual(type(self.network.controller.get_stats_label('retries')), type(""))
+        self.assertTrue(isinstance(self.network.controller.get_stats_label('retries'), string_types))
 
     def test_810_controller_node_values(self):
         self.assertEqual(type(self.network.controller.node.get_values()), type(dict()))
