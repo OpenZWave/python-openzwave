@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
 
@@ -16,8 +17,9 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from libc.stdint cimport uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
+from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
 from libcpp cimport bool
+#from libc.stdint cimport bint
 #from libcpp.string cimport string
 from mylibc cimport string
 

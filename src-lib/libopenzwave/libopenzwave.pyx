@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#cython: c_string_type=unicode, c_string_encoding=utf8
+
 """
 .. module:: libopenzwave
 
@@ -7,7 +9,7 @@ This file is part of **python-openzwave** project https://github.com/OpenZWave/p
 :platform: Unix, Windows, MacOS X
 :sinopsis: openzwave C++
 
-.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: bibi21000 aka Sebastien GALLET <bibi21000@gmail.com>
 .. moduleauthor: Maarten Damen <m.damen@gmail.com>
 
 License : GPL(v3)
@@ -28,13 +30,14 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
+#from libc.stdint cimport bint
 from libcpp.vector cimport vector
 from libc.stdint cimport uint16_t,  uint32_t, uint64_t, int32_t, int16_t, uint8_t, int8_t
 from libc.stdlib cimport malloc, free
 #from libcpp.string cimport string
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
-#from mylibc cimport PyEval_InitThreads
+from mylibc cimport PyEval_InitThreads, Py_Initialize
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -66,6 +69,8 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
+__version__ = "0.3.0b3"
+libopenzwave_file = 'not_installed'
 try:
     _dist = get_distribution('libopenzwave')
 except DistributionNotFound:
@@ -94,20 +99,22 @@ class LibZWaveException(Exception):
 #     http://stackoverflow.com/questions/616645/how-do-i-duplicate-sys-stdout-to-a-log-file-in-python
 #     https://github.com/nose-devs/nose/blob/master/nose/plugins/capture.py
 
-class StdOutToLogger(object):
-    """
-    Capture stdout and send it to logging.debug
-    """
-    def __init__(self):
-        self.stdout = sys.stdout
-        sys.stdout = self
 
-    def __del__(self):
-        sys.stdout = self.stdout
-        self.file.close()
-
-    def write(self, data):
-        logger.debug(data)
+#~ class StdOutToLogger(object):
+#~     """
+#~     Capture stdout and send it to logging.debug
+#~     """
+#~     def __init__(self):
+#~         self.stdout = sys.stdout
+#~         sys.stdout = self
+#~
+#~     def __del__(self):
+#~         sys.stdout = self.stdout
+#~         self.file.close()
+#~
+#~     def write(self, data):
+#~         pass
+#~         logger.debug(data)
 
 PYLIBRARY = __version__
 PY_OZWAVE_CONFIG_DIRECTORY = "config"
@@ -323,7 +330,7 @@ PyLogLevels = {
 
 cdef map[uint64_t, ValueID] values_map
 
-cdef getValueFromType(Manager *manager, valueId) except+ MemoryError:
+cdef getValueFromType(Manager *manager, valueId):
     """
     Translate a value in the right type
     """
@@ -396,7 +403,7 @@ cdef addValueId(ValueID v, n):
     logger.debug("addValueId : ValueID : %s", v.GetId())
     #check is a valid value
     if v.GetInstance() == 0:
-        return None
+        return
     cdef Manager *manager = GetManager()
     values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     genre = PyGenres[v.GetGenre()]
@@ -897,7 +904,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x30: 'COMMAND_CLASS_SENSOR_BINARY',
         0x31: 'COMMAND_CLASS_SENSOR_MULTILEVEL',
         0x32: 'COMMAND_CLASS_METER',
-        0x33: 'COMMAND_CLASS_ZIP_ADV_SERVER',
+        0x33: 'COMMAND_CLASS_COLOR',
         0x34: 'COMMAND_CLASS_ZIP_ADV_CLIENT',
         0x35: 'COMMAND_CLASS_METER_PULSE',
         0x3C: 'COMMAND_CLASS_METER_TBL_CONFIG',
@@ -915,6 +922,9 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x4E: 'COMMAND_CLASS_SCHEDULE_ENTRY_LOCK',
         0x50: 'COMMAND_CLASS_BASIC_WINDOW_COVERING',
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
+        0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
+        0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
+        0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
         0x61: 'COMMAND_CLASS_DISPLAY',
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
@@ -997,9 +1007,10 @@ Z-Wave controller in turn.
 
 :see: destroy_
         '''
-        self.manager = CreateManager()
         #Commented to try to fix seg fault at import
-        #PyEval_InitThreads()
+        Py_Initialize()
+        PyEval_InitThreads()
+        self.manager = CreateManager()
 
     def destroy(self):
         '''
@@ -2601,9 +2612,9 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 ret = 1 if cret else 0
             elif datatype == "List":
                 type_string = string(value)
-                #logger.debug("SetValueListSelection %s" % value)
+                logger.debug("SetValueListSelection %s", value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
-                #logger.debug("SetValueListSelection %s" % cret)
+                logger.debug("SetValueListSelection %s", cret)
                 ret = 1 if cret else 0
         return ret
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
 
@@ -31,6 +32,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 cdef extern from "Python.h":
     void PyEval_InitThreads()
+    void Py_Initialize()
 
 cdef extern from *:
     ctypedef char* const_char_ptr "const char*"
@@ -46,8 +48,8 @@ cdef extern from "<string>" namespace "std":
 #    void* malloc(size_t size)
 #    void free(void* ptr)
 
-cdef extern from "<new>" namespace "std":
-    void* new(size_t size)
-    void delete(void* ptr)
+#cdef extern from "<new>" namespace "std":
+#    void* new(size_t size)
+#    void delete(void* ptr)
 #    void* new[](size_t size)
 #    void delete[](void* ptr)

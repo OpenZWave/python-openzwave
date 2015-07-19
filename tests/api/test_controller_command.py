@@ -117,6 +117,7 @@ class TestControllerCommand(TestApi):
         self.assertEqual(current, self.network.controller.STATE_FAILED)
 
     def test_020_command_request_node_neighbor_update_nodes(self):
+        self.wipTest()
         node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             ret = self.network.controller.request_node_neighbor_update(node_id)
