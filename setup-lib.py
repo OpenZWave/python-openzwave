@@ -94,6 +94,9 @@ elif DEBIAN_PACKAGE == True:
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++', 'openzwave'],
                              language="c++",
+                             define_macros=[ 
+                                 ('PY_SSIZE_T_CLEAN',1),
+                             ],
                              #extra_objects=['/usr/libopenzwave.a'],
                              include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"]
     )]
@@ -102,6 +105,9 @@ else:
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
+                             define_macros=[ 
+                                 ('PY_SSIZE_T_CLEAN',1),
+                             ],
                              extra_objects=['openzwave/libopenzwave.a'],
                              include_dirs=['openzwave/cpp/src/', 'openzwave/cpp/src/value_classes/', 'openzwave/cpp/src/platform/', 'openzwave/cpp/build/linux/']
     )]

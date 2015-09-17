@@ -54,7 +54,7 @@ def main():
     parser.add_option(
         '-l', '--log',
         dest='log',
-        default="Info",
+        default="Debug",
         type="choice",
         choices=['Debug', 'Info'],
         help="The log level (Debug|Info)")
