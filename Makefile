@@ -253,7 +253,7 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: build-openzwave
+build: openzwave/libopenzwave.a
 	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
