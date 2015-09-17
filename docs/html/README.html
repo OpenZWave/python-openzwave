@@ -57,8 +57,8 @@
 <li>many examples</li>
 </ul>
 </div></blockquote>
-<div class="section" id="python-openzwave-0-3-0-b4-is-out">
-<h2>python-openzwave 0.3.0-b4 is out !!!<a class="headerlink" href="#python-openzwave-0-3-0-b4-is-out" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-openzwave-0-3-0-b5-is-out">
+<h2>python-openzwave 0.3.0-b5 is out !!!<a class="headerlink" href="#python-openzwave-0-3-0-b5-is-out" title="Permalink to this headline">¶</a></h2>
 <p>Look at CHANGELOG to see new features and release notes.</p>
 <p>Look at INSTALL_REPO to test it now</p>
 <p>Look at INSTALL_ARCH to install from archive : no need to install cython anymore</p>
@@ -103,7 +103,7 @@ Compilation is ok but a segfault appears when launching the tests. Please remove
 <div class="section" id="ubuntu-64bits-and-the-others">
 <h2>Ubuntu 64bits ... and the others<a class="headerlink" href="#ubuntu-64bits-and-the-others" title="Permalink to this headline">¶</a></h2>
 <p>If you&#8217;re using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
-you certainly have the segfault problem : <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/issues/121">https://github.com/OpenZWave/python-openzwave/issues/121</a></p>
+you certainly have the segfault problem.</p>
 <p>It appears with the last update of python :</p>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>python
 Python 2.7.6 <span class="o">(</span>default, Jun 22 2015, 17:58:13<span class="o">)</span>
@@ -134,6 +134,7 @@ sudo dpkg -i *.deb
 <div class="highlight-bash"><div class="highlight"><pre>sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples
 </pre></div>
 </div>
+<p>Some users have reported that building python-openzwave using the archive (INSTALL_ARCH) can also do the trick. Let me know if it works for you.</p>
 </div>
 </div>
 
@@ -146,7 +147,7 @@ sudo dpkg -i *.deb
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">python-openzwave</a><ul>
-<li><a class="reference internal" href="#python-openzwave-0-3-0-b4-is-out">python-openzwave 0.3.0-b4 is out !!!</a></li>
+<li><a class="reference internal" href="#python-openzwave-0-3-0-b5-is-out">python-openzwave 0.3.0-b5 is out !!!</a></li>
 <li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
 <li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>

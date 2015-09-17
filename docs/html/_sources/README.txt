@@ -12,7 +12,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
 
 
-python-openzwave 0.3.0-b4 is out !!!
+python-openzwave 0.3.0-b5 is out !!!
 ====================================
 Look at CHANGELOG to see new features and release notes.
 
@@ -70,7 +70,7 @@ Ubuntu 64bits ... and the others
 ================================
 
 If you're using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
-you certainly have the segfault problem : https://github.com/OpenZWave/python-openzwave/issues/121
+you certainly have the segfault problem.
 
 It appears with the last update of python :
 
@@ -111,3 +111,5 @@ To prevent future updates of python, you could mark its packages. For example, i
 .. code-block:: bash
 
     sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples
+
+Some users have reported that building python-openzwave using the archive (INSTALL_ARCH) can also do the trick. Let me know if it works for you.
