@@ -72,7 +72,7 @@ data_files.extend(data_files_config('config','openzwave/config','*.xsd'))
 cmdclass = { }
 ext_modules = [ ]
 
-if os_name == 'win32':
+if os_name == 'win32' or os_name=='nt':
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['setupapi', 'stdc++'],
