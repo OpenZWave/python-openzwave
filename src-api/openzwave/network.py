@@ -1630,7 +1630,7 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         self._manager.writeConfig(self.home_id)
-        logger.info('ZWave configuration wrote to user directory.')
+        logger.info('ZWave configuration written to user directory.')
 
 """
     initialization callback sequence:
