@@ -664,7 +664,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        return not self.isNodeAwake
+        return not self.is_awake
 
 
 #    @property
