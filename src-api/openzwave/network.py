@@ -356,7 +356,7 @@ class ZWaveNetwork(ZWaveObject):
             return False
         cur = self.dbcon.cursor()
         for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
-            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % mycls)
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls,))
             data = cur.fetchone()
             if data is None:
                 cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
