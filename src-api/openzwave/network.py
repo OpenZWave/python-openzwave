@@ -396,6 +396,7 @@ class ZWaveNetwork(ZWaveObject):
             self.controller.stop()
         self.write_config()
         if self.dbcon is not None:
+            self.dbcon.commit()
             self.dbcon.close()
         try:
             self._semaphore_nodes.acquire()
