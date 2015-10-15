@@ -356,7 +356,7 @@ class ZWaveNetwork(ZWaveObject):
             return False
         cur = self.dbcon.cursor()
         for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
-            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % mycls)
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls,))
             data = cur.fetchone()
             if data is None:
                 cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
@@ -391,11 +391,12 @@ class ZWaveNetwork(ZWaveObject):
         """
         if self._started == False:
             return
-        logger.info("Stop Openzave network.")
+        logger.info("Stop Openzwave network.")
         if self.controller is not None:
             self.controller.stop()
         self.write_config()
         if self.dbcon is not None:
+            self.dbcon.commit()
             self.dbcon.close()
         try:
             self._semaphore_nodes.acquire()
@@ -1630,7 +1631,7 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         self._manager.writeConfig(self.home_id)
-        logger.info('ZWave configuration wrote to user directory.')
+        logger.info('ZWave configuration written to user directory.')
 
 """
     initialization callback sequence:
