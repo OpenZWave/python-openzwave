@@ -37,7 +37,7 @@ endif
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update build develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3 check
+.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3 check
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -257,18 +257,12 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: openzwave/libopenzwave.a
-	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
-	${PYTHON_EXEC} setup-web.py build --build-base $(BUILDDIR)/web
-
-build-openzwave: openzwave/libopenzwave.a
+build: openzwave openzwave/.lib/
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
-openzwave/libopenzwave.a: openzwave
+openzwave/.lib/: openzwave
 	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && make
 
