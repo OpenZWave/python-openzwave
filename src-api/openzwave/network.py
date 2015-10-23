@@ -351,7 +351,7 @@ class ZWaveNetwork(ZWaveObject):
             return False
         cur = self.dbcon.cursor()
         for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
-            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls,))
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls))
             data = cur.fetchone()
             if data is None:
                 cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
@@ -390,9 +390,6 @@ class ZWaveNetwork(ZWaveObject):
         if self.controller is not None:
             self.controller.stop()
         self.write_config()
-        if self.dbcon is not None:
-            self.dbcon.commit()
-            self.dbcon.close()
         try:
             self._semaphore_nodes.acquire()
             self._manager.removeWatcher(self.zwcallback)
@@ -436,6 +433,9 @@ class ZWaveNetwork(ZWaveObject):
         """
         Destroy the netwok and all related stuff.
         """
+        if self.dbcon is not None:
+            self.dbcon.commit()
+            self.dbcon.close()
         self._manager.destroy()
         self._options.destroy()
         self._manager = None
