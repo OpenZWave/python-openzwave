@@ -318,10 +318,10 @@ class ZWaveNetwork(ZWaveObject):
         self.dbcon = None
         if kvals == True:
             try:
-                self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.db'), check_same_thread=False)
+                self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.sqlite'), check_same_thread=False)
                 cur = self.dbcon.cursor()
-                cur.execute('SELECT SQLITE_VERSION()')
-                data = cur.fetchone()
+                version = cur.execute('SELECT SQLITE_VERSION()').fetchone()
+                logger.debug("Use sqlite version : %s", version)
                 self._check_db_tables()
             except lite.Error as e:
                 logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
@@ -351,7 +351,7 @@ class ZWaveNetwork(ZWaveObject):
             return False
         cur = self.dbcon.cursor()
         for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
-            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls))
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls,))
             data = cur.fetchone()
             if data is None:
                 cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
