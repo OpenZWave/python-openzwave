@@ -23,11 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
@@ -664,7 +659,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        return not self.isNodeAwake
+        return not self.is_awake
 
 
 #    @property

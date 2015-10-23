@@ -24,11 +24,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 import sys
 if sys.hexversion >= 0x3000000:
     from pydispatch import dispatcher
@@ -219,8 +214,15 @@ class ZWaveController(ZWaveObject):
         :rtype: str
 
         """
+        node_name = ""
+        product_name = ""
+
+        if self._node is not None:
+            node_name = self._node.name
+            product_name = self._node.product_name
+
         return 'home_id: [%s] id: [%s] name: [%s] product: [%s] capabilities: %s library: [%s]' % \
-          (self._network.home_id_str, self._object_id, self._node.name, self._node.product_name, self.capabilities, self.library_description)
+          (self._network.home_id_str, self._object_id, node_name, product_name, self.capabilities, self.library_description)
 
     @property
     def node(self):

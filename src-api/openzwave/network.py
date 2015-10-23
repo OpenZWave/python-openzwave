@@ -23,11 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 import os
 #from collections import namedtuple
 import time
@@ -323,10 +318,10 @@ class ZWaveNetwork(ZWaveObject):
         self.dbcon = None
         if kvals == True:
             try:
-                self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.db'), check_same_thread=False)
+                self.dbcon = lite.connect(os.path.join(self._options.user_path, 'pyozw.sqlite'), check_same_thread=False)
                 cur = self.dbcon.cursor()
-                cur.execute('SELECT SQLITE_VERSION()')
-                data = cur.fetchone()
+                version = cur.execute('SELECT SQLITE_VERSION()').fetchone()
+                logger.debug("Use sqlite version : %s", version)
                 self._check_db_tables()
             except lite.Error as e:
                 logger.warning("Can't connect to sqlite database : kvals are disabled - %s", e.args[0])
@@ -356,7 +351,7 @@ class ZWaveNetwork(ZWaveObject):
             return False
         cur = self.dbcon.cursor()
         for mycls in ['ZWaveOption', 'ZWaveOptionSingleton', 'ZWaveNetwork', 'ZWaveNetworkSingleton', 'ZWaveNode', 'ZWaveController', 'ZWaveValue']:
-            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='%s';" % mycls)
+            cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name=?", (mycls,))
             data = cur.fetchone()
             if data is None:
                 cur.execute("CREATE TABLE %s(object_id INT, key TEXT, value TEXT)" % mycls)
@@ -391,12 +386,10 @@ class ZWaveNetwork(ZWaveObject):
         """
         if self._started == False:
             return
-        logger.info("Stop Openzave network.")
+        logger.info("Stop Openzwave network.")
         if self.controller is not None:
             self.controller.stop()
         self.write_config()
-        if self.dbcon is not None:
-            self.dbcon.close()
         try:
             self._semaphore_nodes.acquire()
             self._manager.removeWatcher(self.zwcallback)
@@ -440,6 +433,9 @@ class ZWaveNetwork(ZWaveObject):
         """
         Destroy the netwok and all related stuff.
         """
+        if self.dbcon is not None:
+            self.dbcon.commit()
+            self.dbcon.close()
         self._manager.destroy()
         self._options.destroy()
         self._manager = None
@@ -1630,7 +1626,7 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         self._manager.writeConfig(self.home_id)
-        logger.info('ZWave configuration wrote to user directory.')
+        logger.info('ZWave configuration written to user directory.')
 
 """
     initialization callback sequence:

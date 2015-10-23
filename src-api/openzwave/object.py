@@ -23,11 +23,6 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
 import warnings
@@ -307,7 +302,7 @@ class ZWaveObject(object):
             return None
         res = {}
         cur = self.network.dbcon.cursor()
-        cur.execute("SELECT key,value FROM %s WHERE object_id=%s"%(self.__class__.__name__, self.object_id))
+        cur.execute("SELECT key,value FROM %s WHERE object_id=?"%(self.__class__.__name__), (self.object_id,))
         while True:
             row = cur.fetchone()
             if row == None:
@@ -332,10 +327,10 @@ class ZWaveObject(object):
         cur = self.network.dbcon.cursor()
         for key in kvs.keys():
             logger.debug("DELETE FROM %s WHERE object_id=%s and key='%s'", self.__class__.__name__, self.object_id, key)
-            cur.execute("DELETE FROM %s WHERE object_id=%s and key='%s'"%(self.__class__.__name__, self.object_id, key))
+            cur.execute("DELETE FROM %s WHERE object_id=? and key=?"%(self.__class__.__name__), (self.object_id, key))
             if kvs[key] is not None:
                 logger.debug("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');", self.__class__.__name__, self.object_id, key, kvs[key])
-                cur.execute("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');"%(self.__class__.__name__, self.object_id, key, kvs[key]))
+                cur.execute("INSERT INTO %s(object_id, 'key', 'value') VALUES (?,?,?)"%(self.__class__.__name__), (self.object_id, key, kvs[key]))
         self.network.dbcon.commit()
         return True
 

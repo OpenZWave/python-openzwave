@@ -81,6 +81,7 @@ class TestApi(TestPyZWave):
         self.network.stop()
         time.sleep(2.0)
         self.network.destroy()
+        time.sleep(1.0)
         super(TestApi, self).tearDownClass()
         self.network = None
 

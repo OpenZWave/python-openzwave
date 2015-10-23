@@ -67,8 +67,8 @@ clean:
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	cp -f openzwave.vers.cpp openzwave/cpp/src/vers.cpp
 
-openzwave/libopenzwave.a:
-	sed -i '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+openzwave openzwave/.lib/:
+	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && make
 
 ###This part is a copy/paste from the original Makefile
@@ -166,11 +166,7 @@ pip-deps:
 
 ###This part is a copy/paste from the original Makefile
 ###
-build: openzwave/libopenzwave.a
-	${PYTHON_EXEC} setup-lib.py build --build-base $(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py build --build-base $(BUILDDIR)/api
-	${PYTHON_EXEC} setup-manager.py build --build-base $(BUILDDIR)/manager
-	${PYTHON_EXEC} setup-web.py build --build-base $(BUILDDIR)/web
+build: openzwave openzwave/.lib/
 
 ###
 ###This part is a copy/paste from the original Makefile
