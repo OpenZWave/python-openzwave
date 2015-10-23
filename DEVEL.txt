@@ -79,7 +79,7 @@ Documentation is managed with sphinx. Don't utpdate txt files (README,
 INSTALL, ...), update the RST sources in docs. Use the following
 commands to generate all docs files (txt, html and joomla)
 
-You need to have installed python-openzave (in either develop or
+You need to have installed python-openzwave (in either develop or
 install mode) before generating the documentation.
 
    make docs
