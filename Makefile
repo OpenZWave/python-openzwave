@@ -213,8 +213,12 @@ docs: clean-docs
 	@echo
 	@echo "Documentation finished."
 
-install-api: build
+install-lib: build
 	${PYTHON_EXEC} setup-lib.py install
+	@echo
+	@echo "Installation of lib finished."
+
+install-api: install-lib
 	${PYTHON_EXEC} setup-api.py install
 	@echo
 	@echo "Installation of API finished."
