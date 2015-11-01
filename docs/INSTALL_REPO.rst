@@ -30,6 +30,12 @@ computer in a directory called python-openzwave.
 
 Install dependencies
 ====================
+Go to the previously created directory
+
+.. code-block:: bash
+
+    cd python-openzwave
+
 You need some tools (a c++ compiler, headers dir python, ...) to build python-openzwave and openzwave library.
 
 On a debian like distribution :
@@ -43,11 +49,6 @@ For non-debian (fedora, ...), you can retrieve the packages needed in the Makefi
 
 Update and build process
 ========================
-Go to the previously created directory
-
-.. code-block:: bash
-
-    cd python-openzwave
 
 The following command will update your local repository to the last release
 of python-openzwave and openzwave.
