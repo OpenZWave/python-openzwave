@@ -33,8 +33,10 @@ python-openzwave and openzwave library.
 
 On a debian like distribution :
 
+   cd python-openzwave
    sudo make repo-deps
-
+   cd ..
+   
 For non-debian (fedora, ...), you can retrieve the packages needed in
 the Makefile.
 
