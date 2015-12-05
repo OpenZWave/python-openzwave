@@ -12,7 +12,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
 
 
-python-openzwave 0.3.0-b5 is out !!!
+python-openzwave 0.3.0-b6 is out !!!
 ====================================
 Look at CHANGELOG to see new features and release notes.
 
