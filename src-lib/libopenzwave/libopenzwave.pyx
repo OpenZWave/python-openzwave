@@ -69,7 +69,7 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.0b3"
+__version__ = "0.3.0b7"
 libopenzwave_file = 'not_installed'
 try:
     _dist = get_distribution('libopenzwave')
