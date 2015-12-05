@@ -67,7 +67,7 @@ options = ZWaveOption(device, \
 options.set_log_file("OZW_Log.log")
 options.set_append_log_file(False)
 options.set_console_output(False)
-options.set_save_log_level('Debug')
+options.set_save_log_level(log)
 options.set_logging(True)
 options.lock()
 
