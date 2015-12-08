@@ -130,10 +130,10 @@ arch-deps: common-deps pip-deps
 
 python-deps:
 ifeq (${python_version_major},2)
-	apt-get install -y python2.7 python2.7-dev python2.7-minimal
+	apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3 python3-dev python3-minimal
+	-apt-get install -y python3 python3-dev python3-minimal libyaml-dev
 endif
 
 cython-deps:
@@ -192,11 +192,11 @@ docs: clean-docs
 	-mkdir -p docs/joomla/nosetests
 	-mkdir -p docs/joomla/coverage
 	-mkdir -p docs/joomla/pylint
-	$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
+	#$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
 	#$(NOSE) $(NOSEOPTS) tests/
 	-cp docs/html/nosetests/* docs/joomla/nosetests
 	-cp docs/html/coverage/* docs/joomla/coverage
-	-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
+	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
 	-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && make docs
 	cp docs/README.rst README.rst
