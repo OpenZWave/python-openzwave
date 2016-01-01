@@ -680,7 +680,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionInt_, addOptionString_
 
         """
-        return self.options.AddOptionBool(string(name), value)
+        return self.options.AddOptionBool(str.encode(name), value)
 
     def addOptionInt(self, name, value):
         """
@@ -698,7 +698,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionString_
 
         """
-        return self.options.AddOptionInt(string(name), value)
+        return self.options.AddOptionInt(str.encode(name), value)
 
     def addOptionString(self, name, value, append=False):
         """
@@ -720,7 +720,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionInt_
 
         """
-        return self.options.AddOptionString(string(name),str.encode(value), append)
+        return self.options.AddOptionString(str.encode(name),str.encode(value), append)
 
     def addOption(self, name, value):
         """
@@ -787,7 +787,7 @@ cdef class PyOptions:
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(string(name), &type_bool)
+        cret = self.options.GetOptionAsBool(str.encode(name), &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
@@ -806,7 +806,7 @@ cdef class PyOptions:
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(string(name), &type_int)
+        cret = self.options.GetOptionAsInt(str.encode(name), &type_int)
         ret = type_int if cret==True else None
         return ret
 
@@ -825,7 +825,7 @@ cdef class PyOptions:
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(string(name), &type_string)
+        cret = self.options.GetOptionAsString(str.encode(name), &type_string)
         ret = type_string.c_str() if cret==True else None
         return ret
 
@@ -1096,7 +1096,7 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :see: removeDriver_
 
         '''
-        self.manager.AddDriver(string(serialport))
+        self.manager.AddDriver(str.encode(serialport))
 
     def removeDriver(self, serialport):
         '''
@@ -1114,7 +1114,7 @@ handled automatically.
 :see: addDriver_
 
         '''
-        self.manager.RemoveDriver(string(serialport))
+        self.manager.RemoveDriver(str.encode(serialport))
 
     def getControllerInterfaceType(self, homeid):
         '''
