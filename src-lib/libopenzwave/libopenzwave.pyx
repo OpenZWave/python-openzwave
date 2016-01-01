@@ -504,6 +504,11 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
 cpdef object driverData():
     cdef DriverData data
 
+cdef unicode to_unicode(s):
+    if isinstance(s, bytes):
+        return (<bytes>s).decode('utf8')
+    return s
+
 def configPath():
     '''
     Retrieve the config path. This directory hold the xml files.
@@ -579,7 +584,7 @@ cdef class PyOptions:
         self.create(self._config_path, self._user_path, self._cmd_line)
 
 
-    def create(self, char *a, char *b, char *c):
+    def create(self, a, b, c):
         """
         .. _createoptions:
 
@@ -643,7 +648,7 @@ cdef class PyOptions:
         '''
         return self.options.AreLocked()
 
-    def addOptionBool(self, char *name, value):
+    def addOptionBool(self, name, value):
         """
         .. _addOptionBool:
 
@@ -661,7 +666,7 @@ cdef class PyOptions:
         """
         return self.options.AddOptionBool(string(name), value)
 
-    def addOptionInt(self, char *name, value):
+    def addOptionInt(self, name, value):
         """
         .. _addOptionInt:
 
@@ -679,7 +684,7 @@ cdef class PyOptions:
         """
         return self.options.AddOptionInt(string(name), value)
 
-    def addOptionString(self, char *name, char *value, append=False):
+    def addOptionString(self, name, value, append=False):
         """
         .. _addOptionString:
 
@@ -1054,7 +1059,7 @@ etc.
 # -----------------------------------------------------------------------------
 # Methods for adding and removing drivers and obtaining basic controller information.
 #
-    def addDriver(self, char *serialport):
+    def addDriver(self, serialport):
         '''
 .. _addDriver:
 
@@ -1077,7 +1082,7 @@ Home ID is required by most of the OpenZWave Manager class methods.
         '''
         self.manager.AddDriver(string(serialport))
 
-    def removeDriver(self, char *serialport):
+    def removeDriver(self, serialport):
         '''
 .. _removeDriver:
 
@@ -2200,7 +2205,7 @@ data.
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
         return c_string.c_str()
 
-    def setNodeManufacturerName(self, homeid, nodeid, char *manufacturerName):
+    def setNodeManufacturerName(self, homeid, nodeid, manufacturerName):
         '''
 .. _setNodeManufacturerName:
 
@@ -2225,7 +2230,7 @@ class Value object.
         '''
         self.manager.SetNodeManufacturerName(homeid, nodeid, string(manufacturerName))
 
-    def setNodeProductName(self, homeid, nodeid, char *productName):
+    def setNodeProductName(self, homeid, nodeid, productName):
         '''
 .. _setNodeProductName:
 
@@ -2250,7 +2255,7 @@ class Value object.
         '''
         self.manager.SetNodeProductName(homeid, nodeid, string(productName))
 
-    def setNodeName(self, homeid, nodeid, char *name):
+    def setNodeName(self, homeid, nodeid, name):
         '''
 .. _setNodeName:
 
@@ -2275,7 +2280,7 @@ node name is 16 characters.
         '''
         self.manager.SetNodeName(homeid, nodeid, string(name))
 
-    def setNodeLocation(self, homeid, nodeid, char *location):
+    def setNodeLocation(self, homeid, nodeid, location):
         '''
 .. _setNodeLocation:
 
@@ -2653,7 +2658,7 @@ Gets the user-friendly label for the value
         else :
             return None
 
-    def setValueLabel(self, id, char *label):
+    def setValueLabel(self, id, label):
         '''
 .. _setValueLabel:
 
@@ -2689,7 +2694,7 @@ Gets the units that the value is measured in.
         else :
             return None
 
-    def setValueUnits(self, id, char *unit):
+    def setValueUnits(self, id, unit):
         '''
 .. _setValueUnits:
 
@@ -2725,7 +2730,7 @@ Gets a help string describing the value's purpose and usage.
         else :
             return None
 
-    def setValueHelp(self, id, char *help):
+    def setValueHelp(self, id, help):
         '''
 .. _setValueHelp:
 
@@ -4524,7 +4529,7 @@ sceneGetValues_
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
         return c_string.c_str()
 
-    def setSceneLabel(self, sceneid, char *label):
+    def setSceneLabel(self, sceneid, label):
         '''
 .. _setSceneLabel:
 
@@ -4577,4 +4582,3 @@ sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
-
