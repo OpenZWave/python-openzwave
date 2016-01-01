@@ -600,7 +600,7 @@ cdef class PyOptions:
         :see: destroyoptions_
 
         """
-        self.options = CreateOptions(string(a), string(b), string(c))
+        self.options = CreateOptions(a, b, c)
         return True
 
     def destroy(self):
