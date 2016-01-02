@@ -66,20 +66,20 @@ options.set_save_log_level(log)
 options.set_logging(False)
 options.lock()
 
-print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
+print("Memory use : {} Mo".format( (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0)))
 
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
 time_started = 0
-print "------------------------------------------------------------"
-print "Waiting for network awaked : "
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Waiting for network awaked : ")
+print("------------------------------------------------------------")
 for i in range(0,300):
     if network.state>=network.STATE_AWAKED:
 
         print(" done")
-        print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
+        print("Memory use : {} Mo".format( (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0)))
         break
     else:
         sys.stdout.write(".")
@@ -87,22 +87,22 @@ for i in range(0,300):
         time_started += 1
         time.sleep(1.0)
 if network.state<network.STATE_AWAKED:
-    print "."
-    print "Network is not awake but continue anyway"
-print "------------------------------------------------------------"
-print "Use openzwave library : %s" % network.controller.ozw_library_version
-print "Use python library : %s" % network.controller.python_library_version
-print "Use ZWave library : %s" % network.controller.library_description
-print "Network home id : %s" % network.home_id_str
-print "Controller node id : %s" % network.controller.node.node_id
-print "Controller node version : %s" % (network.controller.node.version)
-print "Nodes in network : %s" % network.nodes_count
-print "------------------------------------------------------------"
-print "Waiting for network ready : "
+    print(".")
+    print("Network is not awake but continue anyway")
+print("------------------------------------------------------------")
+print("Use openzwave library : {}".format(network.controller.ozw_library_version))
+print("Use python library : {}".format(network.controller.python_library_version)
+print("Use ZWave library : {}".format(network.controller.library_description))
+print("Network home id : {}".format(network.home_id_str))
+print("Controller node id : {}".format(network.controller.node.node_id))
+print("Controller node version : {}".format(network.controller.node.version))
+print("Nodes in network : {}".format(network.nodes_count))
+print("------------------------------------------------------------")
+print("Waiting for network ready : ")
 print "------------------------------------------------------------"
 for i in range(0,300):
     if network.state>=network.STATE_READY:
-        print " done in %s seconds" % time_started
+        print(" done in {} seconds".format(time_started))
         break
     else:
         sys.stdout.write(".")
@@ -116,18 +116,21 @@ for i in range(0,300):
         time.sleep(1.0)
 
 print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
+
 if not network.is_ready:
     print "."
     print "Network is not ready but continue anyway"
-print "------------------------------------------------------------"
+
+print("------------------------------------------------------------")
 print "Controller capabilities : %s" % network.controller.capabilities
 print "Controller node capabilities : %s" % network.controller.node.capabilities
 print "Nodes in network : %s" % network.nodes_count
 print "Driver statistics : %s" % network.controller.stats
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
 for node in network.nodes:
     print
-    print "------------------------------------------------------------"
+
+    print("------------------------------------------------------------")
     print "%s - Name : %s" % (network.nodes[node].node_id,network.nodes[node].name)
     print "%s - Manufacturer name / id : %s / %s" % (network.nodes[node].node_id,network.nodes[node].manufacturer_name, network.nodes[node].manufacturer_id)
     print "%s - Product name / id / type : %s / %s / %s" % (network.nodes[node].node_id,network.nodes[node].product_name, network.nodes[node].product_id, network.nodes[node].product_type)
@@ -261,7 +264,7 @@ for node in network.nodes:
         print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  value : %s" % (network.nodes[node].get_power_level(val)))
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
 #print
 #print "------------------------------------------------------------"
 #print "Activate the switches on the network"
@@ -277,19 +280,16 @@ print "------------------------------------------------------------"
 #        print("Dectivate switch %s on node %s" % \
 #                (network.nodes[node].values[val].label,node))
 #        network.nodes[node].set_switch(val,False)
-#print "%s" % ('Done')
-#print "------------------------------------------------------------"
+#print("Done"))
+#print("------------------------------------------------------------")
 
-print
-print "------------------------------------------------------------"
-print "Driver statistics : %s" % network.controller.stats
-print "Driver label : %s" % \
-    network.controller.get_stats_label('retries')
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Driver statistics : {}".format(network.controller.stats))
+print("Driver label : {}".format(network.controller.get_stats_label('retries'))) 
+print("------------------------------------------------------------")
 
-print
-print "------------------------------------------------------------"
-print "Stop network"
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Stop network")
+print("------------------------------------------------------------")
 network.stop()
 print("Memory use : %s Mo" % (resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0))
