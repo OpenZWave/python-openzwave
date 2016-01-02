@@ -1,0 +1,76 @@
+
+	
+  <div class="section" id="changelog">
+<h1>Changelog</h1>
+<p>Known bugs</p>
+<blockquote>
+<div><ul class="simple">
+<li>reloader problem : the network stop/start every time the app is realoaded. But in this case, the process terminates normally.
+But there seems to be 2 running instances of the network.</li>
+</ul>
+</div></blockquote>
+<dl class="docutils">
+<dt>python-openzwave 0.3.0-beta3:</dt>
+<dd><ul class="first last simple">
+<li>Add security rewrite support. See <a class="reference external" href="https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J">https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J</a></li>
+<li>Add 2 signals for controller commands : ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND and ZWaveNetwork.SIGNAL_CONTROLLER_WAITING</li>
+<li>Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.</li>
+<li>Add tests for controller commands.</li>
+<li>Update isNodeAwake from function to property</li>
+<li>Rename methods from node to be python compliant : is_awake, is_failed, is_ready, query_stage, is_info_received</li>
+<li>Add facilities to run controller commands directly from node</li>
+<li>Add request_state for node</li>
+<li>Add new destroy method to network : use it to clean all openzwave c++ ressources</li>
+</ul>
+</dd>
+<dt>python-openzwave 0.3.0-beta2:</dt>
+<dd><ul class="first last simple">
+<li>Move to OpenZWave git organisation</li>
+</ul>
+</dd>
+<dt>python-openzwave 0.3.0-beta1:</dt>
+<dd><ul class="first last simple">
+<li>Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [&#8211;device=/dev/ttyUSB0] [&#8211;log=Debug] ...</li>
+<li>Add pyozwweb confiuration file.</li>
+<li>Add version management in Makefile.</li>
+</ul>
+</dd>
+</dl>
+<p>python-openzwave 0.3.0-alpha3:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Fix bug in start/stop in network.</li>
+<li>Fix bug in start/stop in pyozwweb app and tests.</li>
+<li>Add map, scenes to PyOzwWeb</li>
+<li>Add new tests</li>
+<li>Fix some tests for controller commands</li>
+<li>Finish the archive install : the lib is already cythonized. No need to install cython anymore.</li>
+<li>Add a dockerfile</li>
+<li>Add a branch for dockering with ptyhon 3</li>
+</ul>
+</div></blockquote>
+<p>python-openzwave 0.3.0-alpha2:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Fix bugs in lib</li>
+<li>Fix bugs in API</li>
+<li>Add kvals to API : allow user to store parameters with nodes, controllers, networks, ...</li>
+<li>A a web demo : Flask + socket.io + jquery</li>
+<li>Add logging facilities in the lib. Define different loggers for lib and api.</li>
+</ul>
+</div></blockquote>
+<p>python-openzwave 0.3.0-alpha1:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Update source tree to use setupttols develop mode : <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a></li>
+<li>Rewrite tests to use nosetest</li>
+<li>Full implementation and tests of Options</li>
+<li>PyLogLevels is now a dict of dicts to include doc : replace PyLogLevels[level] with PyLogLevels[level][&#8216;value&#8217;] in your code</li>
+<li>Remove old scripts. Replace them with a Makefile</li>
+<li>Remove old unworking examples.</li>
+<li>Add a constructor for PyOptions : def __init__(self, config_path=None, user_path=&#8221;.&#8221;, cmd_line=&#8221;&#8221;). Please update your code.</li>
+</ul>
+</div></blockquote>
+</div>
+
+
