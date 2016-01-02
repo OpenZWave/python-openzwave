@@ -616,7 +616,7 @@ cdef class PyOptions:
         :see: destroyoptions_
 
         """
-        self.options = CreateOptions(str.encode(a),str.encode(b),str.encode(c))
+        self.options = CreateOptions(_ustring(a),_ustring(b),_ustring(c))
         return True
 
     def destroy(self):
@@ -680,7 +680,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionInt_, addOptionString_
 
         """
-        return self.options.AddOptionBool(str.encode(name), value)
+        return self.options.AddOptionBool(_ustring(name), value)
 
     def addOptionInt(self, name, value):
         """
@@ -698,7 +698,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionString_
 
         """
-        return self.options.AddOptionInt(str.encode(name), value)
+        return self.options.AddOptionInt(_ustring(name), value)
 
     def addOptionString(self, name, value, append=False):
         """
@@ -720,7 +720,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionInt_
 
         """
-        return self.options.AddOptionString(str.encode(name),str.encode(value), append)
+        return self.options.AddOptionString(_ustring(name),_ustring(value), append)
 
     def addOption(self, name, value):
         """
@@ -787,7 +787,7 @@ cdef class PyOptions:
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(str.encode(name), &type_bool)
+        cret = self.options.GetOptionAsBool(_ustring(name), &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
@@ -806,7 +806,7 @@ cdef class PyOptions:
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(str.encode(name), &type_int)
+        cret = self.options.GetOptionAsInt(_ustring(name), &type_int)
         ret = type_int if cret==True else None
         return ret
 
@@ -825,7 +825,7 @@ cdef class PyOptions:
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(str.encode(name), &type_string)
+        cret = self.options.GetOptionAsString(_ustring(name), &type_string)
         ret = type_string.c_str() if cret==True else None
         return ret
 
@@ -1096,7 +1096,7 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :see: removeDriver_
 
         '''
-        self.manager.AddDriver(str.encode(serialport))
+        self.manager.AddDriver(_ustring(serialport))
 
     def removeDriver(self, serialport):
         '''
@@ -1114,7 +1114,7 @@ handled automatically.
 :see: addDriver_
 
         '''
-        self.manager.RemoveDriver(str.encode(serialport))
+        self.manager.RemoveDriver(_ustring(serialport))
 
     def getControllerInterfaceType(self, homeid):
         '''
@@ -2244,7 +2244,7 @@ class Value object.
 :see: getNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
-        self.manager.SetNodeManufacturerName(homeid, nodeid,str.encode(manufacturerName))
+        self.manager.SetNodeManufacturerName(homeid, nodeid,_ustring(manufacturerName))
 
     def setNodeProductName(self, homeid, nodeid, productName):
         '''
@@ -2269,7 +2269,7 @@ class Value object.
 :see: getNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
 
         '''
-        self.manager.SetNodeProductName(homeid, nodeid,str.encode(productName))
+        self.manager.SetNodeProductName(homeid, nodeid,_ustring(productName))
 
     def setNodeName(self, homeid, nodeid, name):
         '''
@@ -2294,7 +2294,7 @@ node name is 16 characters.
 :see: getNodeName_, getNodeLocation_, setNodeLocation_
 
         '''
-        self.manager.SetNodeName(homeid, nodeid,str.encode(name))
+        self.manager.SetNodeName(homeid, nodeid,_ustring(name))
 
     def setNodeLocation(self, homeid, nodeid, location):
         '''
@@ -2318,7 +2318,7 @@ Node Naming command class, the new location will be sent to the node.
 :see: getNodeLocation_, getNodeName_, setNodeName_
 
         '''
-        self.manager.SetNodeLocation(homeid, nodeid,str.encode(location))
+        self.manager.SetNodeLocation(homeid, nodeid,_ustring(location))
 
     def setNodeOn(self, homeid, nodeid):
         '''
@@ -2624,7 +2624,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2632,7 +2632,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 logger.debug("SetValueListSelection %s", value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 logger.debug("SetValueListSelection %s", cret)
@@ -2688,7 +2688,7 @@ Sets the user-friendly label for the value
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueLabel(values_map.at(id),str.encode(label))
+            self.manager.SetValueLabel(values_map.at(id),_ustring(label))
 
     def getValueUnits(self, id):
         '''
@@ -2724,7 +2724,7 @@ Sets the units that the value is measured in.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueUnits(values_map.at(id),str.encode(unit))
+            self.manager.SetValueUnits(values_map.at(id),_ustring(unit))
 
     def getValueHelp(self, id):
         '''
@@ -2760,7 +2760,7 @@ Sets a help string describing the value's purpose and usage.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueHelp(values_map.at(id),str.encode(help))
+            self.manager.SetValueHelp(values_map.at(id),_ustring(help))
 
     def getValueMin(self, id):
         '''
@@ -4423,7 +4423,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4431,7 +4431,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 cret = self.manager.AddSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4511,7 +4511,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4519,7 +4519,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string =str.encode(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4561,7 +4561,7 @@ getSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
-        self.manager.SetSceneLabel(sceneid,str.encode(label))
+        self.manager.SetSceneLabel(sceneid,_ustring(label))
 
     def sceneExists(self, sceneid):
         '''
