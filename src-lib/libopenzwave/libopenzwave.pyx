@@ -28,6 +28,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from cython.operator cimport dereference as deref
+from cpython.version cimport PY_MAJOR_VERSION
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 #from libc.stdint cimport bint
@@ -504,6 +505,12 @@ cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _c
 cpdef object driverData():
     cdef DriverData data
 
+def _ustring(s):
+    if PY_MAJOR_VERSION < 3:
+        return string(s)
+    elif PY_MAJOR_VERSION >=  3:
+        return str.encode(s)
+
 def configPath():
     '''
     Retrieve the config path. This directory hold the xml files.
@@ -579,7 +586,7 @@ cdef class PyOptions:
         self.create(self._config_path, self._user_path, self._cmd_line)
 
 
-    def create(self, char *a, char *b, char *c):
+    def create(self, a, b, c):
         """
         .. _createoptions:
 
@@ -595,7 +602,7 @@ cdef class PyOptions:
         :see: destroyoptions_
 
         """
-        self.options = CreateOptions(string(a), string(b), string(c))
+        self.options = CreateOptions(_ustring(a),_ustring(b),_ustring(c))
         return True
 
     def destroy(self):
@@ -643,7 +650,7 @@ cdef class PyOptions:
         '''
         return self.options.AreLocked()
 
-    def addOptionBool(self, char *name, value):
+    def addOptionBool(self, name, value):
         """
         .. _addOptionBool:
 
@@ -659,9 +666,9 @@ cdef class PyOptions:
         :see: addOption_, addOptionInt_, addOptionString_
 
         """
-        return self.options.AddOptionBool(string(name), value)
+        return self.options.AddOptionBool(_ustring(name), value)
 
-    def addOptionInt(self, char *name, value):
+    def addOptionInt(self, name, value):
         """
         .. _addOptionInt:
 
@@ -677,9 +684,9 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionString_
 
         """
-        return self.options.AddOptionInt(string(name), value)
+        return self.options.AddOptionInt(_ustring(name), value)
 
-    def addOptionString(self, char *name, char *value, append=False):
+    def addOptionString(self, name, value, append=False):
         """
         .. _addOptionString:
 
@@ -699,7 +706,7 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionInt_
 
         """
-        return self.options.AddOptionString(string(name), string(value), append)
+        return self.options.AddOptionString(_ustring(name),_ustring(value), append)
 
     def addOption(self, name, value):
         """
@@ -766,7 +773,7 @@ cdef class PyOptions:
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(string(name), &type_bool)
+        cret = self.options.GetOptionAsBool(_ustring(name), &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
@@ -785,7 +792,7 @@ cdef class PyOptions:
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(string(name), &type_int)
+        cret = self.options.GetOptionAsInt(_ustring(name), &type_int)
         ret = type_int if cret==True else None
         return ret
 
@@ -804,7 +811,7 @@ cdef class PyOptions:
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(string(name), &type_string)
+        cret = self.options.GetOptionAsString(_ustring(name), &type_string)
         ret = type_string.c_str() if cret==True else None
         return ret
 
@@ -1054,7 +1061,7 @@ etc.
 # -----------------------------------------------------------------------------
 # Methods for adding and removing drivers and obtaining basic controller information.
 #
-    def addDriver(self, char *serialport):
+    def addDriver(self, serialport):
         '''
 .. _addDriver:
 
@@ -1075,9 +1082,9 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :see: removeDriver_
 
         '''
-        self.manager.AddDriver(string(serialport))
+        self.manager.AddDriver(_ustring(serialport))
 
-    def removeDriver(self, char *serialport):
+    def removeDriver(self, serialport):
         '''
 .. _removeDriver:
 
@@ -1093,7 +1100,7 @@ handled automatically.
 :see: addDriver_
 
         '''
-        self.manager.RemoveDriver(string(serialport))
+        self.manager.RemoveDriver(_ustring(serialport))
 
     def getControllerInterfaceType(self, homeid):
         '''
@@ -2200,7 +2207,7 @@ data.
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
         return c_string.c_str()
 
-    def setNodeManufacturerName(self, homeid, nodeid, char *manufacturerName):
+    def setNodeManufacturerName(self, homeid, nodeid, manufacturerName):
         '''
 .. _setNodeManufacturerName:
 
@@ -2223,9 +2230,9 @@ class Value object.
 :see: getNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
-        self.manager.SetNodeManufacturerName(homeid, nodeid, string(manufacturerName))
+        self.manager.SetNodeManufacturerName(homeid, nodeid,_ustring(manufacturerName))
 
-    def setNodeProductName(self, homeid, nodeid, char *productName):
+    def setNodeProductName(self, homeid, nodeid, productName):
         '''
 .. _setNodeProductName:
 
@@ -2248,9 +2255,9 @@ class Value object.
 :see: getNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
 
         '''
-        self.manager.SetNodeProductName(homeid, nodeid, string(productName))
+        self.manager.SetNodeProductName(homeid, nodeid,_ustring(productName))
 
-    def setNodeName(self, homeid, nodeid, char *name):
+    def setNodeName(self, homeid, nodeid, name):
         '''
 .. _setNodeName:
 
@@ -2273,9 +2280,9 @@ node name is 16 characters.
 :see: getNodeName_, getNodeLocation_, setNodeLocation_
 
         '''
-        self.manager.SetNodeName(homeid, nodeid, string(name))
+        self.manager.SetNodeName(homeid, nodeid,_ustring(name))
 
-    def setNodeLocation(self, homeid, nodeid, char *location):
+    def setNodeLocation(self, homeid, nodeid, location):
         '''
 .. _setNodeLocation:
 
@@ -2297,7 +2304,7 @@ Node Naming command class, the new location will be sent to the node.
 :see: getNodeLocation_, getNodeName_, setNodeName_
 
         '''
-        self.manager.SetNodeLocation(homeid, nodeid, string(location))
+        self.manager.SetNodeLocation(homeid, nodeid,_ustring(location))
 
     def setNodeOn(self, homeid, nodeid):
         '''
@@ -2603,7 +2610,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2611,7 +2618,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string =_ustring(value)
                 logger.debug("SetValueListSelection %s", value)
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 logger.debug("SetValueListSelection %s", cret)
@@ -2653,7 +2660,7 @@ Gets the user-friendly label for the value
         else :
             return None
 
-    def setValueLabel(self, id, char *label):
+    def setValueLabel(self, id, label):
         '''
 .. _setValueLabel:
 
@@ -2667,7 +2674,7 @@ Sets the user-friendly label for the value
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueLabel(values_map.at(id), string(label))
+            self.manager.SetValueLabel(values_map.at(id),_ustring(label))
 
     def getValueUnits(self, id):
         '''
@@ -2689,7 +2696,7 @@ Gets the units that the value is measured in.
         else :
             return None
 
-    def setValueUnits(self, id, char *unit):
+    def setValueUnits(self, id, unit):
         '''
 .. _setValueUnits:
 
@@ -2703,7 +2710,7 @@ Sets the units that the value is measured in.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueUnits(values_map.at(id), string(unit))
+            self.manager.SetValueUnits(values_map.at(id),_ustring(unit))
 
     def getValueHelp(self, id):
         '''
@@ -2725,7 +2732,7 @@ Gets a help string describing the value's purpose and usage.
         else :
             return None
 
-    def setValueHelp(self, id, char *help):
+    def setValueHelp(self, id, help):
         '''
 .. _setValueHelp:
 
@@ -2739,7 +2746,7 @@ Sets a help string describing the value's purpose and usage.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueHelp(values_map.at(id), string(help))
+            self.manager.SetValueHelp(values_map.at(id),_ustring(help))
 
     def getValueMin(self, id):
         '''
@@ -4402,7 +4409,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string =_ustring(value)
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4410,7 +4417,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string =_ustring(value)
                 cret = self.manager.AddSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4490,7 +4497,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -4498,7 +4505,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
+                type_string =_ustring(value)
                 cret = self.manager.SetSceneValueListSelection(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
         return ret
@@ -4524,7 +4531,7 @@ sceneGetValues_
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
         return c_string.c_str()
 
-    def setSceneLabel(self, sceneid, char *label):
+    def setSceneLabel(self, sceneid, label):
         '''
 .. _setSceneLabel:
 
@@ -4540,7 +4547,7 @@ getSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
-        self.manager.SetSceneLabel(sceneid, string(label))
+        self.manager.SetSceneLabel(sceneid,_ustring(label))
 
     def sceneExists(self, sceneid):
         '''
@@ -4577,4 +4584,3 @@ sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
-
