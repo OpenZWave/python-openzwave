@@ -130,10 +130,10 @@ arch-deps: common-deps pip-deps
 
 python-deps:
 ifeq (${python_version_major},2)
-	sudo apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev pip
+	sudo apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev python-pip
 endif
 ifeq (${python_version_major},3)
-	-sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev pip3
+	-sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev python-pip3
 endif
 
 cython-deps:
