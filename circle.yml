@@ -8,6 +8,7 @@
 
 dependencies:
     pre:
+<<<<<<< HEAD
         - make PYTHON_EXEC=python3 python-deps
         - make PYTHON_EXEC=python3 autobuild-deps
         - make PYTHON_EXEC=python3 update
@@ -18,3 +19,15 @@ dependencies:
 test:
     override:
         - make PYTHON_EXEC=python3 autobuild-tests
+=======
+        - make python-deps
+        - make autobuild-deps
+        - make update
+        - make build
+        - make install
+        - make update
+
+test:
+    override:
+        - make autobuild-tests
+>>>>>>> master
