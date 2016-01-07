@@ -120,7 +120,7 @@ repo-deps: common-deps cython-deps tests-deps pip-deps
 	@echo "Dependencies for users installed (python ${python_version_full})"
 
 autobuild-deps: common-deps cython-deps tests-deps pip-deps
-	apt-get install -y git
+	sudo apt-get install -y git
 	@echo
 	@echo "Dependencies for autobuilders (docker, travis, ...) installed (python ${python_version_full})"
 
@@ -130,29 +130,29 @@ arch-deps: common-deps pip-deps
 
 python-deps:
 ifeq (${python_version_major},2)
-	apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev
+	sudo apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3 python3-dev python3-minimal libyaml-dev
+	-sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev
 endif
 
 cython-deps:
 ifeq (${python_version_major},2)
-	apt-get install -y cython
+	sudo apt-get install -y cython
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y cython3
+	-sudo  apt-get install -y cython3
 endif
 
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install -y python-pip python-dev python-docutils python-setuptools python-louie
+	sudo apt-get install -y python-pip python-dev python-docutils python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-apt-get install -y python3-pip python3-docutils python3-dev python3-setuptools
+	-sudo  apt-get install -y python3-pip python3-docutils python3-dev python3-setuptools
 endif
-	apt-get install -y build-essential libudev-dev g++
+	sudo apt-get install -y build-essential libudev-dev g++
 
 tests-deps:
 	${PIP_EXEC} install nose-html
@@ -162,7 +162,7 @@ tests-deps:
 	${PIP_EXEC} install pylint
 
 doc-deps:
-	-apt-get install -y python-sphinx
+	-sudo  apt-get install -y python-sphinx
 	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 pip-deps:
