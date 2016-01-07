@@ -214,18 +214,18 @@ docs: clean-docs
 	@echo "Documentation finished."
 
 install-lib: build
-	${PYTHON_EXEC} setup-lib.py install
+	sudo ${PYTHON_EXEC} setup-lib.py install
 	@echo
 	@echo "Installation of lib finished."
 
 install-api: install-lib
-	${PYTHON_EXEC} setup-api.py install
+	sudo ${PYTHON_EXEC} setup-api.py install
 	@echo
 	@echo "Installation of API finished."
 
 install: install-api
-	${PYTHON_EXEC} setup-manager.py install
-	${PYTHON_EXEC} setup-web.py install
+	sudo ${PYTHON_EXEC} setup-manager.py install
+	sudo ${PYTHON_EXEC} setup-web.py install
 	@echo
 	@echo "Installation for users finished."
 
