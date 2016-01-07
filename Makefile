@@ -133,7 +133,7 @@ ifeq (${python_version_major},2)
 	sudo apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev python-pip
 endif
 ifeq (${python_version_major},3)
-	-sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev python3-pip
+	sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev python3-pip
 endif
 
 cython-deps:
@@ -141,7 +141,7 @@ ifeq (${python_version_major},2)
 	sudo apt-get install -y cython
 endif
 ifeq (${python_version_major},3)
-	-sudo  apt-get install -y cython3
+	sudo  apt-get install -y cython3
 endif
 
 common-deps:
