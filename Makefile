@@ -155,21 +155,21 @@ endif
 	sudo apt-get install -y build-essential libudev-dev g++
 
 tests-deps:
-	${PIP_EXEC} install nose-html
-	${PIP_EXEC} install nose-progressive
-	${PIP_EXEC} install coverage
-	${PIP_EXEC} install nose
-	${PIP_EXEC} install pylint
+	sudo ${PIP_EXEC} install nose-html
+	sudo ${PIP_EXEC} install nose-progressive
+	sudo ${PIP_EXEC} install coverage
+	sudo ${PIP_EXEC} install nose
+	sudo ${PIP_EXEC} install pylint
 
 doc-deps:
 	-sudo  apt-get install -y python-sphinx
-	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+	sudo ${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 pip-deps:
-	#${PIP_EXEC} install docutils
-	#${PIP_EXEC} install setuptools
+	#sudo ${PIP_EXEC} install docutils
+	#sudo ${PIP_EXEC} install setuptools
 	#The following line crashes with a core dump
-	#${PIP_EXEC} install "Cython==0.22"
+	#sudo ${PIP_EXEC} install "Cython==0.22"
 
 merge-python3:
 	git checkout python3
