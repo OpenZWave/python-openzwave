@@ -57,7 +57,7 @@ help:
 clean: clean-docs clean-archive
 	-rm -rf $(BUILDDIR)
 	-find . -name \*.pyc -delete
-	-cd openzwave && make clean
+	-cd openzwave && $(MAKE) clean
 	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
@@ -180,7 +180,7 @@ merge-python3:
 	@echo "Commits for branch python3 pushed on github."
 
 clean-docs:
-	cd docs && make clean
+	cd docs && $(MAKE) clean
 	-rm -Rf docs/html
 	-rm -Rf docs/joomla
 	-rm -Rf docs/pdf
@@ -198,7 +198,7 @@ docs: clean-docs
 	-cp docs/html/coverage/* docs/joomla/coverage
 	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
 	-cp docs/html/pylint/* docs/joomla/pylint/
-	cd docs && make docs
+	cd docs && $(MAKE) docs
 	cp docs/README.rst README.rst
 	cp docs/_build/text/INSTALL_REPO.txt .
 	cp docs/_build/text/INSTALL_ARCH.txt .
@@ -264,7 +264,7 @@ openzwave:
 
 openzwave/.lib/: openzwave
 	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	cd openzwave && make
+	cd openzwave && $(MAKE) 
 
 clean-archive:
 	-rm -rf $(ARCHBASE)
@@ -292,7 +292,7 @@ $(ARCHDIR):
 	-find $(ARCHDIR) -name zwscene.xml -delete
 	-find $(ARCHDIR) -name zwbutton.xml -delete
 	-find $(ARCHDIR) -name pyozw.db -delete
-	-cd $(ARCHDIR)/openzwave && make clean
+	-cd $(ARCHDIR)/openzwave && $(MAKE) clean
 	-rm -Rf $(ARCHDIR)/openzwave/.git
 	cp -f $(ARCHDIR)/openzwave.vers.cpp $(ARCHDIR)/openzwave/cpp/src/vers.cpp
 
