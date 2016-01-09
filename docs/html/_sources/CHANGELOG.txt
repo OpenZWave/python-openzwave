@@ -9,6 +9,9 @@ Known bugs
  * reloader problem : the network stop/start every time the app is realoaded. But in this case, the process terminates normally.
    But there seems to be 2 running instances of the network.
 
+python-openzwave 0.3.0-beta8:
+ * Improve unicode
+ * Add minimal Python 3 support
 
 python-openzwave 0.3.0-beta3:
  * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
