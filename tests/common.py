@@ -36,6 +36,7 @@ import unittest
 import threading
 import logging
 import json as mjson
+import six
 
 from nose.plugins.skip import SkipTest
 
@@ -79,6 +80,12 @@ class TestPyZWave(unittest.TestCase):
         """
         if self.skip == True:
             raise SkipTest("%s" % (message))
+
+    def skipPython3(self):
+        """Skip a test on python 3
+        """
+        if six.PY3:
+            raise SkipTest("Skip on Python 3")
 
     def skipTravisTest(self, message):
         """Skip a test on travis

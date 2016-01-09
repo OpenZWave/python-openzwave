@@ -55,6 +55,7 @@ from log cimport LogLevel
 import os
 import sys
 import warnings
+import six
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -82,6 +83,18 @@ try:
     libopenzwave_file = _dist.__file__
 except AttributeError:
     libopenzwave_file = 'not_installed'
+
+cdef string str_to_cppstr(str s):
+    if isinstance(s, unicode):
+        b = s.encode('utf-8')
+    else:
+        b = s
+    return string(b)
+
+cdef cstr_to_str(s):
+    if six.PY3 and not isinstance(s, str):
+        return s.decode('utf-8')
+    return s.encode('utf-8')
 
 class LibZWaveException(Exception):
     """
@@ -579,7 +592,7 @@ cdef class PyOptions:
         self.create(self._config_path, self._user_path, self._cmd_line)
 
 
-    def create(self, char *a, char *b, char *c):
+    def create(self, str a, str b, str c):
         """
         .. _createoptions:
 
@@ -595,7 +608,8 @@ cdef class PyOptions:
         :see: destroyoptions_
 
         """
-        self.options = CreateOptions(string(a), string(b), string(c))
+        self.options = CreateOptions(
+            str_to_cppstr(a), str_to_cppstr(b), str_to_cppstr(c))
         return True
 
     def destroy(self):
@@ -643,7 +657,7 @@ cdef class PyOptions:
         '''
         return self.options.AreLocked()
 
-    def addOptionBool(self, char *name, value):
+    def addOptionBool(self, str name, value):
         """
         .. _addOptionBool:
 
@@ -659,9 +673,9 @@ cdef class PyOptions:
         :see: addOption_, addOptionInt_, addOptionString_
 
         """
-        return self.options.AddOptionBool(string(name), value)
+        return self.options.AddOptionBool(str_to_cppstr(name), value)
 
-    def addOptionInt(self, char *name, value):
+    def addOptionInt(self, str name, value):
         """
         .. _addOptionInt:
 
@@ -677,9 +691,9 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionString_
 
         """
-        return self.options.AddOptionInt(string(name), value)
+        return self.options.AddOptionInt(str_to_cppstr(name), value)
 
-    def addOptionString(self, char *name, char *value, append=False):
+    def addOptionString(self, str name, str value, append=False):
         """
         .. _addOptionString:
 
@@ -699,7 +713,8 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionInt_
 
         """
-        return self.options.AddOptionString(string(name), string(value), append)
+        return self.options.AddOptionString(
+            str_to_cppstr(name), str_to_cppstr(value), append)
 
     def addOption(self, name, value):
         """
@@ -805,7 +820,7 @@ cdef class PyOptions:
         """
         cdef string type_string
         cret = self.options.GetOptionAsString(string(name), &type_string)
-        ret = type_string.c_str() if cret==True else None
+        ret = cstr_to_str(type_string.c_str()) if cret==True else None
         return ret
 
     def getConfigPath(self):
@@ -1054,7 +1069,7 @@ etc.
 # -----------------------------------------------------------------------------
 # Methods for adding and removing drivers and obtaining basic controller information.
 #
-    def addDriver(self, char *serialport):
+    def addDriver(self, str serialport):
         '''
 .. _addDriver:
 
@@ -1075,9 +1090,9 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :see: removeDriver_
 
         '''
-        self.manager.AddDriver(string(serialport))
+        self.manager.AddDriver(str_to_cppstr(serialport))
 
-    def removeDriver(self, char *serialport):
+    def removeDriver(self, str serialport):
         '''
 .. _removeDriver:
 
@@ -1093,7 +1108,7 @@ handled automatically.
 :see: addDriver_
 
         '''
-        self.manager.RemoveDriver(string(serialport))
+        self.manager.RemoveDriver(str_to_cppstr(serialport))
 
     def getControllerInterfaceType(self, homeid):
         '''
@@ -1119,7 +1134,7 @@ Retrieve controller interface path, name or path used to open the controller har
 
         '''
         cdef string c_string = self.manager.GetControllerPath(homeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getControllerNodeId(self, homeid):
         '''
@@ -1226,7 +1241,7 @@ Get the version of the Z-Wave API library used by a controller.
 
         '''
         cdef string c_string = self.manager.GetLibraryVersion(homeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getPythonLibraryVersion(self):
         '''
@@ -1266,7 +1281,7 @@ Get a string containing the openzwave library version.
 
         """
         cdef string c_string = self.manager.getVersionAsString()
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getOzwLibraryLongVersion(self):
         """
@@ -1280,7 +1295,7 @@ Get a string containing the openzwave library version.
 
         """
         cdef string c_string = self.manager.getVersionLongAsString()
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getOzwLibraryVersionNumber(self):
         '''
@@ -1292,7 +1307,7 @@ _getOzwLibraryVersionNumber: Get the openzwave library version number.
 
         '''
         cdef string c_string = self.manager.getVersionAsString()
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getLibraryTypeName(self, homeid):
         '''
@@ -1323,7 +1338,7 @@ method.
 
         '''
         cdef string c_string = self.manager.GetLibraryTypeName(homeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getSendQueueCount(self, homeid):
         '''
@@ -1976,7 +1991,7 @@ on which of those values are specified by the node.
 
         '''
         cdef string c_string = self.manager.GetNodeType(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getNodeNeighbors(self, homeid, nodeid):
         '''
@@ -2045,7 +2060,7 @@ class Value object.
 
         '''
         cdef string manufacturer_string = self.manager.GetNodeManufacturerName(homeid, nodeid)
-        return manufacturer_string.c_str()
+        return cstr_to_str(manufacturer_string.c_str())
 
     def getNodeProductName(self, homeid, nodeid):
         '''
@@ -2071,7 +2086,7 @@ class Value object.
 
         '''
         cdef string productname_string = self.manager.GetNodeProductName(homeid, nodeid)
-        return productname_string.c_str()
+        return cstr_to_str(productname_string.c_str())
 
     def getNodeName(self, homeid, nodeid):
         '''
@@ -2095,7 +2110,7 @@ characters.
 
         '''
         cdef string c_string = self.manager.GetNodeName(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getNodeLocation(self, homeid, nodeid):
         '''
@@ -2118,7 +2133,7 @@ reporting it via a command class Value object.
 
         '''
         cdef string c_string = self.manager.GetNodeLocation(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getNodeManufacturerId(self, homeid, nodeid):
         '''
@@ -2145,7 +2160,7 @@ specific data.
 
         '''
         cdef string c_string = self.manager.GetNodeManufacturerId(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getNodeProductType(self, homeid, nodeid):
         '''
@@ -2172,7 +2187,7 @@ data.
 
         '''
         cdef string c_string = self.manager.GetNodeProductType(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def getNodeProductId(self, homeid, nodeid):
         '''
@@ -2198,9 +2213,9 @@ data.
 
         '''
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
-    def setNodeManufacturerName(self, homeid, nodeid, char *manufacturerName):
+    def setNodeManufacturerName(self, homeid, nodeid, str manufacturerName):
         '''
 .. _setNodeManufacturerName:
 
@@ -2223,9 +2238,10 @@ class Value object.
 :see: getNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
-        self.manager.SetNodeManufacturerName(homeid, nodeid, string(manufacturerName))
+        self.manager.SetNodeManufacturerName(
+            homeid, nodeid, str_to_cppstr(manufacturerName))
 
-    def setNodeProductName(self, homeid, nodeid, char *productName):
+    def setNodeProductName(self, homeid, nodeid, str productName):
         '''
 .. _setNodeProductName:
 
@@ -2248,9 +2264,9 @@ class Value object.
 :see: getNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
 
         '''
-        self.manager.SetNodeProductName(homeid, nodeid, string(productName))
+        self.manager.SetNodeProductName(homeid, nodeid, str_to_cppstr(productName))
 
-    def setNodeName(self, homeid, nodeid, char *name):
+    def setNodeName(self, homeid, nodeid, str name):
         '''
 .. _setNodeName:
 
@@ -2273,9 +2289,9 @@ node name is 16 characters.
 :see: getNodeName_, getNodeLocation_, setNodeLocation_
 
         '''
-        self.manager.SetNodeName(homeid, nodeid, string(name))
+        self.manager.SetNodeName(homeid, nodeid, str_to_cppstr(name))
 
-    def setNodeLocation(self, homeid, nodeid, char *location):
+    def setNodeLocation(self, homeid, nodeid, str location):
         '''
 .. _setNodeLocation:
 
@@ -2297,7 +2313,7 @@ Node Naming command class, the new location will be sent to the node.
 :see: getNodeLocation_, getNodeName_, setNodeName_
 
         '''
-        self.manager.SetNodeLocation(homeid, nodeid, string(location))
+        self.manager.SetNodeLocation(homeid, nodeid, str_to_cppstr(location))
 
     def setNodeOn(self, homeid, nodeid):
         '''
@@ -2451,7 +2467,7 @@ Helper method to return whether a particular class is available in a node
 
         '''
         cdef string c_string = self.manager.GetNodeQueryStage(homeId, nodeId)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
 
     def getNodeQueryStageCode(self, queryStage):
@@ -2649,11 +2665,11 @@ Gets the user-friendly label for the value
         cdef string c_string
         if values_map.find(id) != values_map.end():
             c_string = self.manager.GetValueLabel(values_map.at(id))
-            return c_string.c_str()
+            return cstr_to_str(c_string.c_str())
         else :
             return None
 
-    def setValueLabel(self, id, char *label):
+    def setValueLabel(self, id, str label):
         '''
 .. _setValueLabel:
 
@@ -2667,7 +2683,7 @@ Sets the user-friendly label for the value
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueLabel(values_map.at(id), string(label))
+            self.manager.SetValueLabel(values_map.at(id), str_to_cppstr(label))
 
     def getValueUnits(self, id):
         '''
@@ -2685,11 +2701,11 @@ Gets the units that the value is measured in.
         cdef string c_string
         if values_map.find(id) != values_map.end():
             c_string = self.manager.GetValueUnits(values_map.at(id))
-            return c_string.c_str()
+            return cstr_to_str(c_string.c_str())
         else :
             return None
 
-    def setValueUnits(self, id, char *unit):
+    def setValueUnits(self, id, str unit):
         '''
 .. _setValueUnits:
 
@@ -2703,7 +2719,7 @@ Sets the units that the value is measured in.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueUnits(values_map.at(id), string(unit))
+            self.manager.SetValueUnits(values_map.at(id), str_to_cppstr(unit))
 
     def getValueHelp(self, id):
         '''
@@ -2721,11 +2737,11 @@ Gets a help string describing the value's purpose and usage.
         cdef string c_string
         if values_map.find(id) != values_map.end():
             c_string = self.manager.GetValueHelp(values_map.at(id))
-            return c_string.c_str()
+            return cstr_to_str(c_string.c_str())
         else :
             return None
 
-    def setValueHelp(self, id, char *help):
+    def setValueHelp(self, id, str help):
         '''
 .. _setValueHelp:
 
@@ -2739,7 +2755,7 @@ Sets a help string describing the value's purpose and usage.
 
         '''
         if values_map.find(id) != values_map.end():
-            self.manager.SetValueHelp(values_map.at(id), string(help))
+            self.manager.SetValueHelp(values_map.at(id), str_to_cppstr(help))
 
     def getValueMin(self, id):
         '''
@@ -3617,7 +3633,7 @@ This label is populated by the device specific configuration files.
 
         '''
         cdef string c_string = self.manager.GetGroupLabel(homeid, nodeid, groupidx)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
     def addAssociation(self, homeid, nodeid, groupidx, targetnodeid):
         '''
@@ -4522,9 +4538,9 @@ sceneGetValues_
 
         '''
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
-        return c_string.c_str()
+        return cstr_to_str(c_string.c_str())
 
-    def setSceneLabel(self, sceneid, char *label):
+    def setSceneLabel(self, sceneid, str label):
         '''
 .. _setSceneLabel:
 
@@ -4540,7 +4556,7 @@ getSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
-        self.manager.SetSceneLabel(sceneid, string(label))
+        self.manager.SetSceneLabel(sceneid, str_to_cppstr(label))
 
     def sceneExists(self, sceneid):
         '''
@@ -4577,4 +4593,3 @@ sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
-

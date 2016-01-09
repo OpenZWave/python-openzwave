@@ -36,8 +36,8 @@ import socket
 import libopenzwave
 import re
 import time
-import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
