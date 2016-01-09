@@ -94,32 +94,37 @@ class TestSwitchAll(TestApi):
             self.skipTest("No Switch_All found")
 
     def test_110_switch_all_on(self):
-        self.wipTest()
+        #~ self.wipTest()
+        self.wait_for_queue()
+        time.sleep(2)
         ran = False
         self.network.switch_all(True)
-        time.sleep(5)
+        time.sleep(3)
+        self.wait_for_queue()
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 item = self.network.nodes[node].get_switch_all_item(val)
                 if item == "On and Off Enabled" or item == "On Enabled":
                     ran = True
-                    print "Node/State : %s/%s" % (node,self.network.nodes[node].get_switch_all_state(val))
+                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
                     self.assertTrue(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'On Enabled' found")
 
     def test_120_switch_all_off(self):
-        self.wipTest()
+        #~ self.wipTest()
+        self.wait_for_queue()
+        time.sleep(2)
         ran = False
         self.network.switch_all(False)
-        time.sleep(5)
+        time.sleep(3)
+        self.wait_for_queue()
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 item = self.network.nodes[node].get_switch_all_item(val)
-                self.wait_for_queue()
                 if item == "On and Off Enabled" or item == "Off Enabled":
                     ran = True
-                    #print "Node/State : %s/%s" % (node,network.nodes[node].get_switch_all_state(val))
+                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
                     self.assertFalse(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'Off Enabled' found")
