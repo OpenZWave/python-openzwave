@@ -129,7 +129,7 @@ class TestOptions(TestLib):
         self.assertEqual('ozwlog.log', _options.getOption("LogFileName"))
         self.assertTrue(_options.addOption("Logging", True))
         self.assertEqual(True, _options.getOption("Logging"))
-        self.assertTruel(_options.addOption("SaveLogLevel", libopenzwave.PyLogLevels['Always']['value']))
+        self.assertTrue(_options.addOption("SaveLogLevel", libopenzwave.PyLogLevels['Always']['value']))
         self.assertEqual(libopenzwave.PyLogLevels['Always']['value'], _options.getOption("SaveLogLevel"))
         _options.destroy()
         _configpath = None
