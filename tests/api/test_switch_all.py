@@ -37,7 +37,8 @@ import libopenzwave
 import re
 import time
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
@@ -53,7 +54,6 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-import six
 from six import string_types
 
 class TestSwitchAll(TestApi):

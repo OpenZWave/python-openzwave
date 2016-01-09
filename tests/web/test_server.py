@@ -35,7 +35,7 @@ import logging
 import json as mjson
 
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
-from flask.ext.socketio.test_client import TestServer, TestSocket, TestBaseNamespace, SocketIOTestClient
+from flask.ext.socketio.test_client import SocketIOTestClient
 from tests.web.common import FlaskTestCase
 
 class FlaskServerTest(FlaskTestCase):

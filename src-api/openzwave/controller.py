@@ -25,7 +25,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher

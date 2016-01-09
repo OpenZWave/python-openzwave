@@ -229,7 +229,7 @@ install: install-api
 	@echo
 	@echo "Installation for users finished."
 
-develop: build
+develop:
 	${PYTHON_EXEC} setup-lib.py develop
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
@@ -264,7 +264,7 @@ openzwave:
 
 openzwave/.lib/: openzwave
 	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
-	cd openzwave && $(MAKE) 
+	cd openzwave && $(MAKE)
 
 clean-archive:
 	-rm -rf $(ARCHBASE)
