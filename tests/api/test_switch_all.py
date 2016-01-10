@@ -110,6 +110,8 @@ class TestSwitchAll(TestApi):
                     self.assertTrue(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'On Enabled' found")
+        else:
+            time.sleep(5)
 
     def test_120_switch_all_off(self):
         #~ self.wipTest()
@@ -128,6 +130,8 @@ class TestSwitchAll(TestApi):
                     self.assertFalse(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'Off Enabled' found")
+        else:
+            time.sleep(5)
 
 if __name__ == '__main__':
     sys.argv.append('-v')

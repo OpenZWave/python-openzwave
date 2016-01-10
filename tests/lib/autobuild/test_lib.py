@@ -37,6 +37,7 @@ import libopenzwave
 from tests.lib.common import TestLib
 import re
 from tests.common import pyozw_version
+import six
 
 class TestInit(TestLib):
 
@@ -85,7 +86,7 @@ class TestInit(TestLib):
         self.assertTrue(options.lock())
         self.assertTrue(options.areLocked())
         self.assertEqual(True, options.getOptionAsBool("Logging"))
-        self.assertEqual('ozwlog.log', options.getOptionAsString("LogFileName"))
+        self.assertEqual(six.u('ozwlog.log'), six.u(options.getOptionAsString("LogFileName")))
         self.assertEqual(1, options.getOptionAsInt("SaveLogLevel"))
         self.assertTrue(options.destroy())
 
