@@ -1448,7 +1448,6 @@ class ZWaveNetwork(ZWaveObject):
         :type valueid: int
 
         """
-        logger.debug('Z-Wave Notification Value : node=%s value=%s' % (node, value))
         dispatcher.send(self.SIGNAL_VALUE, \
             **{'network': self, 'node' : node, \
                 'value' : value})
