@@ -781,7 +781,7 @@ cdef class PyOptions:
 
         """
         cdef bool type_bool
-        cret = self.options.GetOptionAsBool(string(name), &type_bool)
+        cret = self.options.GetOptionAsBool(str_to_cppstr(name), &type_bool)
         ret = type_bool if cret==True else None
         return ret
 
@@ -800,7 +800,7 @@ cdef class PyOptions:
 
         """
         cdef int32_t type_int
-        cret = self.options.GetOptionAsInt(string(name), &type_int)
+        cret = self.options.GetOptionAsInt(str_to_cppstr(name), &type_int)
         ret = type_int if cret==True else None
         return ret
 
@@ -819,7 +819,7 @@ cdef class PyOptions:
 
         """
         cdef string type_string
-        cret = self.options.GetOptionAsString(string(name), &type_string)
+        cret = self.options.GetOptionAsString(str_to_cppstr(name), &type_string)
         ret = cstr_to_str(type_string.c_str()) if cret==True else None
         return ret
 

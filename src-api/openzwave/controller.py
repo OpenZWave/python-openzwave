@@ -520,11 +520,13 @@ class ZWaveController(ZWaveObject):
         """
         Get count of messages in the outgoing send queue.
 
-        :return: Thr count of messages in the outgoing send queue.
+        :return: The count of messages in the outgoing send queue.
         :rtype: int
 
         """
-        return self._network.manager.getSendQueueCount(self.home_id)
+        if self.home_id is not None:
+            return self._network.manager.getSendQueueCount(self.home_id)
+        return -1
 
     def hard_reset(self):
         """
@@ -804,7 +806,9 @@ class ZWaveController(ZWaveObject):
         Cancels any in-progress command running on a controller.
 
         """
-        return self._network.manager.cancelControllerCommand(self.home_id)
+        if self.home_id is not None:
+            return self._network.manager.cancelControllerCommand(self.home_id)
+        return False
 
     @deprecated
     def zwcallback(self, args):
