@@ -54,7 +54,7 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-from six import string_types
+from six import string_types, integer_types
 
 class TestNode(TestApi):
 
@@ -73,7 +73,7 @@ class TestNode(TestApi):
 
     def test_340_node_baud_rate(self):
         node_id = max(self.network.nodes.keys())
-        self.assertTrue(type(self.network.nodes[node_id].max_baud_rate) in [type(long()), type(int())])
+        self.assertTrue(isinstance(self.network.nodes[node_id].max_baud_rate, integer_types))
         self.assertTrue(self.network.nodes[node_id].max_baud_rate > 0)
 
     def test_410_node_product(self):
