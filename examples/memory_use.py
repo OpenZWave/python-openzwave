@@ -72,114 +72,114 @@ options.lock()
 #Create a network object
 network = ZWaveNetwork(options, log=None)
 
-print "------------------------------------------------------------"
-print "Try to evaluate memory use                                  "
-print "------------------------------------------------------------"
-print "------------------------------------------------------------"
-print "Waiting for driver :                                        "
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Try to evaluate memory use                                  ")
+print("------------------------------------------------------------")
+print("------------------------------------------------------------")
+print("Waiting for driver :                                        ")
+print("------------------------------------------------------------")
 for i in range(0,20):
     if network.state>=network.STATE_STARTED:
-        print " done"
+        print(" done")
         break
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
 if network.state<network.STATE_STARTED:
-    print "."
-    print "Can't initialise driver! Look at the logs in OZW_Log.log"
+    print(".")
+    print("Can't initialise driver! Look at the logs in OZW_Log.log")
     quit(1)
-print "------------------------------------------------------------"
-print "Use openzwave library : %s" % network.controller.ozw_library_version
-print "Use python library : %s" % network.controller.python_library_version
-print "Use ZWave library : %s" % network.controller.library_description
-print "Network home id : %s" % network.home_id_str
-print "Controller node id : %s" % network.controller.node.node_id
-print "Controller node version : %s" % (network.controller.node.version)
-print "Nodes in network : %s" % network.nodes_count
-print "------------------------------------------------------------"
-print "Waiting for network to become ready : "
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Use openzwave library : {}".format(network.controller.ozw_library_version))
+print("Use python library : {}".format(network.controller.python_library_version))
+print("Use ZWave library : {}".format(network.controller.library_description))
+print("Network home id : {}".format(network.home_id_str))
+print("Controller node id : {}".format(network.controller.node.node_id))
+print("Controller node version : {}".format(network.controller.node.version))
+print("Nodes in network : {}".format(network.nodes_count))
+print("------------------------------------------------------------")
+print("Waiting for network to become ready : ")
+print("------------------------------------------------------------")
 for i in range(0,90):
     if network.state>=network.STATE_READY:
-        print " done"
+        print(" done")
         break
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
 if not network.is_ready:
-    print "."
-    print "Can't start network! Look at the logs in OZW_Log.log"
+    print(".")
+    print("Can't start network! Look at the logs in OZW_Log.log")
     quit(2)
-print "------------------------------------------------------------"
-print "Controller capabilities : %s" % network.controller.capabilities
-print "Controller node capabilities : %s" % network.controller.node.capabilities
-print "------------------------------------------------------------"
-print "Driver statistics : %s" % network.controller.stats
-print "------------------------------------------------------------"
-print "Nodes in network : %s" % network.nodes_count
-print "------------------------------------------------------------"
-print "Memory use : "
-print "------------------------------------------------------------"
-print "Memory use for network %s : " %(network.home_id_str)
-print "  asizeof   : %s bytes" %(asizeof(network))
-print "  basicsize : %s bytes" %(basicsize(network))
-print "  itemsize  : %s bytes" %(itemsize(network))
-print "  flatsize  : %s bytes" %(flatsize(network))
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Controller capabilities : {}".format(network.controller.capabilities))
+print("Controller node capabilities : {}".format(network.controller.node.capabilities))
+print("------------------------------------------------------------")
+print("Driver statistics : {}".format(network.controller.stats))
+print("------------------------------------------------------------")
+print("Nodes in network : {}".format(network.nodes_count))
+print("------------------------------------------------------------")
+print("Memory use : ")
+print("------------------------------------------------------------")
+print("Memory use for network {} : ".format(network.home_id_str))
+print("  asizeof   : {} bytes".format(asizeof(network)))
+print("  basicsize : {} bytes".format(basicsize(network)))
+print("  itemsize  : {} bytes".format(itemsize(network)))
+print("  flatsize  : {} bytes".format(flatsize(network)))
+print("------------------------------------------------------------")
 manager = network.manager
-print "Memory use for manager : "
-print "  asizeof   : %s bytes" %(asizeof(manager))
-print "  basicsize : %s bytes" %(basicsize(manager))
-print "  itemsize  : %s bytes" %(itemsize(manager))
-print "  flatsize  : %s bytes" %(flatsize(manager))
-print "------------------------------------------------------------"
-print "Memory use for controller : "
-print "  asizeof   : %s bytes" %(asizeof(network.controller))
-print "  basicsize : %s bytes" %(basicsize(network.controller))
-print "  itemsize  : %s bytes" %(itemsize(network.controller))
-print "  flatsize  : %s bytes" %(flatsize(network.controller))
-print "------------------------------------------------------------"
-print "Memory use for %s scenes (scenes are generated on call) : " %(network.scenes_count)
+print("Memory use for manager : ")
+print("  asizeof   : {} bytes".format(asizeof(manager)))
+print("  basicsize : {} bytes".format(basicsize(manager)))
+print("  itemsize  : {} bytes".format(itemsize(manager)))
+print("  flatsize  : {} bytes".format(flatsize(manager)))
+print("------------------------------------------------------------")
+print("Memory use for controller : ")
+print("  asizeof   : {} bytes".format(asizeof(network.controller)))
+print("  basicsize : {} bytes".format(basicsize(network.controller)))
+print("  itemsize  : {} bytes".format(itemsize(network.controller)))
+print("  flatsize  : {} bytes".format(flatsize(network.controller)))
+print("------------------------------------------------------------")
+print("Memory use for {} scenes (scenes are generated on call) : ".format(network.scenes_count))
 scenes = network.get_scenes()
-print "  asizeof   : %s bytes" %(asizeof(scenes))
-print "  basicsize : %s bytes" %(basicsize(scenes))
-print "  itemsize  : %s bytes" %(itemsize(scenes))
-print "  flatsize  : %s bytes" %(flatsize(scenes))
-print "------------------------------------------------------------"
-print "Parsing scenes"
+print("  asizeof   : {} bytes".format(asizeof(scenes)))
+print("  basicsize : {} bytes".format(basicsize(scenes)))
+print("  itemsize  : {} bytes".format(itemsize(scenes)))
+print("  flatsize  : {} bytes".format(flatsize(scenes)))
+print("------------------------------------------------------------")
+print("Parsing scenes")
 for scene in scenes:
-    print "  Memory use for scene %s: " %(scene)
-    print "    asizeof   : %s bytes" %(asizeof(scenes[scene]))
-    print "    basicsize : %s bytes" %(basicsize(scenes[scene]))
-    print "    itemsize  : %s bytes" %(itemsize(scenes[scene]))
-    print "    flatsize  : %s bytes" %(flatsize(scenes[scene]))
-print "------------------------------------------------------------"
-print "Memory use for %s nodes : " %(network.nodes_count)
+    print("  Memory use for scene {}: ".format(scene))
+    print("    asizeof   : {} bytes".format(asizeof(scenes[scene])))
+    print("    basicsize : {} bytes".format(basicsize(scenes[scene])))
+    print("    itemsize  : {} bytes".format(itemsize(scenes[scene])))
+    print("    flatsize  : {} bytes".format(flatsize(scenes[scene])))
+print("------------------------------------------------------------")
+print("Memory use for {} nodes : ".format(network.nodes_count))
 nodes = network.nodes
-print "  asizeof   : %s bytes" %(asizeof(nodes))
-print "  basicsize : %s bytes" %(basicsize(nodes))
-print "  itemsize  : %s bytes" %(itemsize(nodes))
-print "  flatsize  : %s bytes" %(flatsize(nodes))
-print "------------------------------------------------------------"
-print "Parsing nodes"
+print("  asizeof   : {} bytes".format(asizeof(nodes)))
+print("  basicsize : {} bytes".format(basicsize(nodes)))
+print("  itemsize  : {} bytes".format(itemsize(nodes)))
+print("  flatsize  : {} bytes".format(flatsize(nodes)))
+print("------------------------------------------------------------")
+print("Parsing nodes")
 for node in nodes:
-    print "  Memory use for node %s: " %(node)
-    print "    asizeof   : %s bytes" %(asizeof(nodes[node]))
-    print "    basicsize : %s bytes" %(basicsize(nodes[node]))
-    print "    itemsize  : %s bytes" %(itemsize(nodes[node]))
-    print "    flatsize  : %s bytes" %(flatsize(nodes[node]))
+    print("  Memory use for node {}: ".format(node))
+    print("    asizeof   : {} bytes".format(asizeof(nodes[node])))
+    print("    basicsize : {} bytes".format(basicsize(nodes[node])))
+    print("    itemsize  : {} bytes".format(itemsize(nodes[node])))
+    print("    flatsize  : {} bytes".format(flatsize(nodes[node])))
     for value in nodes[node].values:
-        print "    Memory use for value %s : " %(value)
-        print "      asizeof   : %s bytes" %(asizeof(nodes[node].values[value]))
-        print "      basicsize : %s bytes" %(basicsize(nodes[node].values[value]))
-        print "      itemsize  : %s bytes" %(itemsize(nodes[node].values[value]))
-        print "      flatsize  : %s bytes" %(flatsize(nodes[node].values[value]))
-print "------------------------------------------------------------"
-print
-print "------------------------------------------------------------"
-print "Stop network"
-print "------------------------------------------------------------"
+        print("    Memory use for value {} : ".format(value))
+        print("      asizeof   : {} bytes".format(asizeof(nodes[node].values[value])))
+        print("      basicsize : {} bytes".format(basicsize(nodes[node].values[value])))
+        print("      itemsize  : {} bytes".format(itemsize(nodes[node].values[value])))
+        print("      flatsize  : {} bytes".format(flatsize(nodes[node].values[value])))
+print("------------------------------------------------------------")
+print("")
+print("------------------------------------------------------------")
+print("Stop network")
+print("------------------------------------------------------------")
 network.stop()
