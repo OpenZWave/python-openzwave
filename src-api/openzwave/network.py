@@ -27,7 +27,8 @@ import os
 #from collections import namedtuple
 import time
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
     import _thread as thread
 else:
@@ -1447,7 +1448,6 @@ class ZWaveNetwork(ZWaveObject):
         :type valueid: int
 
         """
-        logger.debug('Z-Wave Notification Value : node=%s value=%s' % (node, value))
         dispatcher.send(self.SIGNAL_VALUE, \
             **{'network': self, 'node' : node, \
                 'value' : value})

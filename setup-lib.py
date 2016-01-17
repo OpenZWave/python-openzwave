@@ -100,6 +100,17 @@ elif DEBIAN_PACKAGE == True:
                              #extra_objects=['/usr/libopenzwave.a'],
                              include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"]
     )]
+elif platform_system() == 'FreeBSD':
+    ext_modules = [Extension("libopenzwave",
+                             sources=["src-lib/libopenzwave/libopenzwave.pyx"],
+                             libraries=['usb', 'stdc++'],
+                             language="c++",
+                             define_macros=[
+                                 ('PY_SSIZE_T_CLEAN',1),
+                             ],
+                             extra_objects=['openzwave/libopenzwave.a'],
+                             include_dirs=['openzwave/cpp/src/', 'openzwave/cpp/src/value_classes/', 'openzwave/cpp/src/platform/', 'openzwave/cpp/build/linux/']
+    )]
 else:
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],

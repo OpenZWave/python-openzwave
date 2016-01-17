@@ -37,7 +37,8 @@ import libopenzwave
 import re
 import time
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
@@ -53,8 +54,7 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-import six
-from six import string_types
+from six import string_types, integer_types
 
 class TestNode(TestApi):
 
@@ -73,7 +73,7 @@ class TestNode(TestApi):
 
     def test_340_node_baud_rate(self):
         node_id = max(self.network.nodes.keys())
-        self.assertTrue(type(self.network.nodes[node_id].max_baud_rate) in [type(long()), type(int())])
+        self.assertTrue(isinstance(self.network.nodes[node_id].max_baud_rate, integer_types))
         self.assertTrue(self.network.nodes[node_id].max_baud_rate > 0)
 
     def test_410_node_product(self):
@@ -88,7 +88,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].name, name)
 
     def test_421_node_name_accent(self):
-        self.wipTest()
+        #~ self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "noeud éééé"
         self.network.nodes[node_id].name = name
@@ -101,7 +101,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].location, location)
 
     def test_431_node_location_accent(self):
-        self.wipTest()
+        #~ self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "location éééé"
         self.network.nodes[node_id].location = name
@@ -114,7 +114,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].product_name, name)
 
     def test_441_node_product_name_accent(self):
-        self.wipTest()
+        #~ self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "product éééé"
         self.network.nodes[node_id].product_name = name
@@ -128,7 +128,7 @@ class TestNode(TestApi):
         self.assertEqual(self.network.nodes[node_id].manufacturer_name, name)
 
     def test_451_node_manufacturer_name_accent(self):
-        self.wipTest()
+        #~ self.wipTest()
         node_id = max(self.network.nodes.keys())
         name = "manufacturer_name éééé"
         self.network.nodes[node_id].manufacturer_name = name

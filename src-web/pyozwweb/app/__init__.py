@@ -73,7 +73,7 @@ socketio = None
 def run_app(app_, socketio_, debug=False):
 
     def signal_term_handler(signal, frame):
-        print 'got SIGTERM'
+        print('got SIGTERM')
         stop_all()
         sys.exit(0)
 
@@ -91,7 +91,7 @@ def run_app(app_, socketio_, debug=False):
     app_.testing = app.config['TESTING']
     logging.debug("Flask url maps %s" % app.url_map)
     socketio.run(app, use_reloader=app.config['RELOADER'],host=app.config['HOST'], port=app.config['PORT'])
-    #print "App has ran"
+    #print("App has ran")
     #stop_all()
 
 def stop_all():

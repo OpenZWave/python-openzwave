@@ -37,7 +37,8 @@ import libopenzwave
 import re
 import time
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
@@ -83,7 +84,7 @@ class TestNetworkApi(TestPyZWave):
         self.rmFile('ttyUSBO_fake')
 
     def test_900_api_singleton(self):
-
+        self.skipPython3()
         class SingletonTest(object):
             __metaclass__ = Singleton
 
@@ -92,6 +93,7 @@ class TestNetworkApi(TestPyZWave):
         self.assertIs(s1, s2)
 
     def test_905_network_singleton(self):
+        self.skipPython3()
         self.touchFile('ttyUSBO_fake')
         self.options = ZWaveOptionSingleton(device='ttyUSBO_fake', user_path=self.userpath)
         self.options.set_log_file("OZW_Log.log")

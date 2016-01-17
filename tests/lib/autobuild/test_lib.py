@@ -37,13 +37,14 @@ import libopenzwave
 from tests.lib.common import TestLib
 import re
 from tests.common import pyozw_version
+import six
 
 class TestInit(TestLib):
 
     def test_000_init(self):
         manager = libopenzwave.PyManager()
         self.assertEqual(manager.getPythonLibraryVersionNumber(), pyozw_version)
-        vers=re.findall(r'\d+', manager.getOzwLibraryVersionNumber())
+        vers=re.findall(b'\d+', manager.getOzwLibraryVersionNumber())
         self.assertEqual(len(vers),3)
 
     def test_010_options_exceptions(self):
@@ -85,7 +86,7 @@ class TestInit(TestLib):
         self.assertTrue(options.lock())
         self.assertTrue(options.areLocked())
         self.assertEqual(True, options.getOptionAsBool("Logging"))
-        self.assertEqual('ozwlog.log', options.getOptionAsString("LogFileName"))
+        self.assertEqual(six.u('ozwlog.log'), six.u(options.getOptionAsString("LogFileName")))
         self.assertEqual(1, options.getOptionAsInt("SaveLogLevel"))
         self.assertTrue(options.destroy())
 

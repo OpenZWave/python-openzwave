@@ -37,7 +37,8 @@ import libopenzwave
 import re
 import time
 import sys
-if sys.hexversion >= 0x3000000:
+import six
+if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
@@ -53,7 +54,6 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-import six
 from six import string_types
 
 class TestSwitchAll(TestApi):
@@ -94,35 +94,44 @@ class TestSwitchAll(TestApi):
             self.skipTest("No Switch_All found")
 
     def test_110_switch_all_on(self):
-        self.wipTest()
+        #~ self.wipTest()
+        self.wait_for_queue()
+        time.sleep(2)
         ran = False
         self.network.switch_all(True)
-        time.sleep(5)
+        time.sleep(3)
+        self.wait_for_queue()
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 item = self.network.nodes[node].get_switch_all_item(val)
                 if item == "On and Off Enabled" or item == "On Enabled":
                     ran = True
-                    print "Node/State : %s/%s" % (node,self.network.nodes[node].get_switch_all_state(val))
+                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
                     self.assertTrue(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'On Enabled' found")
+        else:
+            time.sleep(5)
 
     def test_120_switch_all_off(self):
-        self.wipTest()
+        #~ self.wipTest()
+        self.wait_for_queue()
+        time.sleep(2)
         ran = False
         self.network.switch_all(False)
-        time.sleep(5)
+        time.sleep(3)
+        self.wait_for_queue()
         for node in self.network.nodes:
             for val in self.network.nodes[node].get_switches_all() :
                 item = self.network.nodes[node].get_switch_all_item(val)
-                self.wait_for_queue()
                 if item == "On and Off Enabled" or item == "Off Enabled":
                     ran = True
-                    #print "Node/State : %s/%s" % (node,network.nodes[node].get_switch_all_state(val))
+                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
                     self.assertFalse(self.network.nodes[node].get_switch_all_state(val))
         if not ran :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'Off Enabled' found")
+        else:
+            time.sleep(5)
 
 if __name__ == '__main__':
     sys.argv.append('-v')
