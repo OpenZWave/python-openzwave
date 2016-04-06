@@ -146,7 +146,7 @@ def echo_node_event(message):
 def echo_nodes_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     logging.debug("Client %s nodes event : %s", request.remote_addr, message)
-    print "%s"%current_app.extensions['zwnetwork'].nodes_to_dict()
+    print("%s"%current_app.extensions['zwnetwork'].nodes_to_dict())
     emit('my nodes response',
          {'data': current_app.extensions['zwnetwork'].nodes_to_dict(), 'count': session['receive_count']})
 
@@ -303,6 +303,6 @@ def echo_value_event(message):
 def echo_scenes_event(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     logging.debug("Client %s scenes event : %s", request.remote_addr, message)
-    print "%s"%current_app.extensions['zwnetwork'].get_scenes()
+    print("%s"%current_app.extensions['zwnetwork'].get_scenes())
     emit('my scenes response',
          {'data': current_app.extensions['zwnetwork'].get_scenes(), 'count': session['receive_count']})
