@@ -564,6 +564,43 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             return self.values[value_id].data
         return None
 
+    def get_rgbbulbs(self):
+        """
+        The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+        Retrieve the list of values to consider as RGBW bulbs.
+        Filter rules are :
+
+            command_class = 0x33
+            genre = "User"
+            type = "String"
+            readonly = False
+            writeonly = False
+
+        :return: The list of dimmers on this node
+        :rtype: dict()
+
+        """
+        return self.get_values(class_id=0x33, genre='User', \
+        type='String', readonly=False, writeonly=False)
+
+    def set_rgbw(self, value_id, value):
+        """
+        The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+        Set RGBW to value (using value value_id).
+
+        :param value_id: The value to retrieve state
+        :type value_id: String
+        :param value: The level : a RGBW value 
+        :type value: int
+
+        """
+        logger.debug("set_rgbw value:%s", value)
+        if value_id in self.get_rgbbulbs():
+            self.values[value_id].data = value
+            return True
+        return False
+
+
 class ZWaveNodeSensor(ZWaveNodeInterface):
     """
     Represents an interface to Sensor Commands
