@@ -3321,7 +3321,7 @@ getValueType_, getValueInstance_, getValueIndex_
             if self.manager.GetValueListValues(values_map.at(id), &vect):
                 while not vect.empty() :
                     temp = vect.back()
-                    ret.add(temp.c_str())
+                    ret.add(temp)
                     vect.pop_back();
         return ret
 
