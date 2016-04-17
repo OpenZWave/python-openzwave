@@ -61,7 +61,7 @@ logging.getLogger('pyozwweb').addHandler(NullHandler())
 def test_message(message):
     session['receive_count'] = session.get('receive_count', 0) + 1
     logging.debug("Client %s echo message : %s", request.remote_addr, message)
-    print("Client %s echo message : %s" % (request.remote_addr, message))
+    print "Client %s echo message : %s" % (request.remote_addr, message)
     emit('my response',
          {'data': message['data'], 'count': session['receive_count']})
 

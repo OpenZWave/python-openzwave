@@ -94,10 +94,7 @@ cdef string str_to_cppstr(str s):
 cdef cstr_to_str(s):
     if six.PY3 and not isinstance(s, str):
         return s.decode('utf-8')
-    elif six.PY3:
-        return s
-    else:
-        return s.encode('utf-8')
+    return s.encode('utf-8')
 
 class LibZWaveException(Exception):
     """

@@ -121,16 +121,6 @@ class TestSensor(TestApi):
                 self.assertTrue(good)
         if not ran :
             self.skipTest("No Decimal sensor found")
-            
-    def test_510_sensor_label(self):
-        ran = False
-        for node in self.network.nodes:
-            for sensorid, sensor in self.network.nodes[node].get_sensors().items():
-                ran = True
-                label = sensor.label
-                self.assertTrue(isinstance(label, str))
-        if not ran :
-            self.skipTest("No sensor found")
 
 if __name__ == '__main__':
     sys.argv.append('-v')
