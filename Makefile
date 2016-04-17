@@ -320,8 +320,8 @@ tgz: clean-archive $(ARCHDIR) docs
 	@echo "Archive for version ${python_openzwave_version} created"
 
 push: build develop
-	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	git push
+	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	-git push
 	@echo
 	@echo "Commits for branch master pushed on github."
 
