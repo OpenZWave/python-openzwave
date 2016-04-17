@@ -241,12 +241,12 @@ tests:
 	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
 	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
 	@echo
-	@echo "Autobuild-tests for ZWave network finished."
+	@echo "Tests for ZWave network finished."
 
 autobuild-tests:
 	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
 	@echo
-	@echo "Tests for ZWave network finished."
+	@echo "Autobuild-tests for ZWave network finished."
 
 pylint:
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/
@@ -263,7 +263,7 @@ openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
 openzwave/.lib/: openzwave
-	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	#~ sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && $(MAKE)
 
 clean-archive:

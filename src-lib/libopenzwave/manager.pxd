@@ -21,7 +21,7 @@ from cython.operator cimport dereference as deref
 from libcpp cimport bool
 #from libc.stdint cimport bint
 from libcpp.vector cimport vector
-from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
+from libc.stdint cimport uint32_t, int32_t, uint16_t, int16_t, uint8_t, int8_t
 #from libcpp.string cimport string
 from mylibc cimport string
 from node cimport NodeData
@@ -84,6 +84,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool IsNodeBeamingDevice( uint32_t homeId, uint8_t nodeId )
         bool IsNodeRoutingDevice(uint32_t homeid, uint8_t nodeid)
         bool IsNodeSecurityDevice( uint32_t homeId, uint8_t nodeId )
+        bool IsNodeZWavePlus( uint32_t homeId, uint8_t nodeId )
         uint32_t GetNodeMaxBaudRate(uint32_t homeid, uint8_t nodeid)
         uint8_t GetNodeVersion(uint32_t homeid, uint8_t nodeid)
         uint8_t GetNodeSecurity(uint32_t homeid, uint8_t nodeid)
@@ -91,6 +92,12 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         uint8_t GetNodeGeneric(uint32_t homeid, uint8_t nodeid)
         uint8_t GetNodeSpecific(uint32_t homeid, uint8_t nodeid)
         string GetNodeType(uint32_t homeid, uint8_t nodeid)
+        uint16_t GetNodeDeviceType(uint32_t homeid, uint8_t nodeid)
+        string GetNodeDeviceTypeString(uint32_t homeid, uint8_t nodeid)
+        uint8_t GetNodeRole(uint32_t homeid, uint8_t nodeid)
+        string GetNodeRoleString(uint32_t homeid, uint8_t nodeid)
+        uint8_t GetNodePlusType(uint32_t homeid, uint8_t nodeid)
+        string GetNodePlusTypeString(uint32_t homeid, uint8_t nodeid)
         uint32_t GetNodeNeighbors(uint32_t homeid, uint8_t nodeid, uint8_t** nodeNeighbors)
         string GetNodeManufacturerName(uint32_t homeid, uint8_t nodeid)
         string GetNodeProductName(uint32_t homeid, uint8_t nodeid)
@@ -107,11 +114,14 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SetNodeOff(uint32_t homeid, uint8_t nodeid)
         void SetNodeLevel(uint32_t homeid, uint8_t nodeid, uint8_t level)
         bool IsNodeInfoReceived(uint32_t homeid, uint8_t nodeid)
+        bool IsNodePlusInfoReceived(uint32_t homeid, uint8_t nodeid)
         bool GetNodeClassInformation( uint32_t homeId, uint8_t nodeId, uint8_t commandClassId,
                           string *className, uint8_t *classVersion)
         bool IsNodeAwake(uint32_t homeid, uint8_t nodeid)
         bool IsNodeFailed(uint32_t homeid, uint8_t nodeid)
         string GetNodeQueryStage(uint32_t homeid, uint8_t nodeid)
+        uint8_t GetNodeIcon(uint32_t homeid, uint8_t nodeid)
+        string GetNodeIconName(uint32_t homeid, uint8_t nodeid)
         # // Values
         string GetValueLabel(ValueID& valueid)
         void SetValueLabel(ValueID& valueid, string value)
@@ -135,6 +145,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueListSelection(ValueID& valueid, string* o_value)
         bool GetValueListSelection(ValueID& valueid, int32_t* o_value)
         bool GetValueListItems(ValueID& valueid, vector[string]* o_value)
+        bool GetValueListValues(ValueID& valueid, vector[int32_t]* o_value)
         bool SetValue(ValueID& valueid, bool value)
         bool SetValue(ValueID& valueid, uint8_t value)
         bool SetValue(ValueID& valueid, float value)
@@ -167,8 +178,8 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         uint32_t GetAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t** o_associations)
         uint8_t GetMaxAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx)
         string GetGroupLabel(uint32_t homeid, uint8_t nodeid, uint8_t groupidx)
-        void AddAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid)
-        void RemoveAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid)
+        void AddAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid, uint8_t instance)
+        void RemoveAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid, uint8_t instance)
         bool AddWatcher(pfnOnNotification_t notification, void* context)
         bool RemoveWatcher(pfnOnNotification_t notification, void* context)
         # void NotifyWatchers(Notification*)

@@ -171,6 +171,26 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeProductId(self.home_id, self.object_id)
 
+    @property
+    def device_type(self):
+        """
+        The device_type of the node.
+
+        :rtype: str
+
+        """
+        return self._network.manager.getNodeDeviceTypeString(self.home_id, self.object_id)
+
+    @property
+    def role(self):
+        """
+        The role of the node.
+
+        :rtype: str
+
+        """
+        return self._network.manager.getNodeRoleString(self.home_id, self.object_id)
+
     def to_dict(self, extras=['all']):
         """
         Return a dict representation of the node.
@@ -640,6 +660,16 @@ class ZWaveNode(ZWaveObject,
 
         """
         return self._network.manager.isNodeRoutingDevice(self.home_id, self.object_id)
+
+    @property
+    def is_zwave_plus(self):
+        """
+        Is this node a zwave plus one.
+
+        :rtype: bool
+
+        """
+        return self._network.manager.isNodeZWavePlus(self.home_id, self.object_id)
 
     @property
     def is_locked(self):

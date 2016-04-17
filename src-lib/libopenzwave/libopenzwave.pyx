@@ -2392,6 +2392,104 @@ Get whether the node information has been received
         '''
         return self.manager.IsNodeInfoReceived(homeid, nodeid)
 
+    def getNodeRole(self, homeid, nodeid):
+        '''
+.. _getNodeRole:
+
+Get the node role as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodeRole(homeid, nodeid)
+
+    def getNodeRoleString(self, homeId, nodeId):
+        '''
+.. getNodeRoleString:
+
+Get the node role (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodeRoleString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
+
+    def getNodeDeviceType(self, homeid, nodeid):
+        '''
+.. _getNodeDeviceType:
+
+Get the node DeviceType as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodeDeviceType(homeid, nodeid)
+
+    def getNodeDeviceTypeString(self, homeId, nodeId):
+        '''
+.. getNodeRoleString:
+
+Get the node DeviceType (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodeDeviceTypeString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
+
+    def getNodePlusType(self, homeid, nodeid):
+        '''
+.. _getNodePlusType:
+
+Get the node plus type as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodePlusType(homeid, nodeid)
+
+    def getNodePlusTypeString(self, homeId, nodeId):
+        '''
+.. getNodePlusTypeString:
+
+Get the node plus type (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodePlusTypeString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
 
     def getNodeClassInformation(self, homeid, nodeid, commandClassId, className = None, classVersion = None):
         '''
@@ -2441,7 +2539,9 @@ Helper method to return whether a particular class is available in a node
 
     def isNodeFailed(self, homeId, nodeId):
         '''
-.. isNodeFailed: Get whether the node is working or has failed
+.. isNodeFailed:
+
+Get whether the node is working or has failed
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
@@ -2452,6 +2552,23 @@ Helper method to return whether a particular class is available in a node
 
         '''
         return self.manager.IsNodeFailed(homeId, nodeId)
+
+
+    def isNodeZWavePlus(self, homeId, nodeId):
+        '''
+.. isNodeZWavePlus:
+
+Get whether the node is a ZWave+ one
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the node has failed and is no longer part of the network.
+:rtype: bool
+
+        '''
+        return self.manager.IsNodeZWavePlus(homeId, nodeId)
 
 
     def getNodeQueryStage(self, homeId, nodeId):
@@ -3172,7 +3289,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
         '''
-        #print "**** libopenzwave.GetValueListItems ******"
         cdef vector[string] vect
         ret = set()
         if values_map.find(id) != values_map.end():
@@ -3181,7 +3297,32 @@ getValueType_, getValueInstance_, getValueIndex_
                     temp = vect.back()
                     ret.add(temp.c_str())
                     vect.pop_back();
-            #print "++++ list des items : " ,  ret
+        return ret
+
+    def getValueListValues(self, id):
+        '''
+.. _getValueListValues:
+
+Gets the list of values from a list value.
+
+:param id: The ID of a value.
+:type id: int
+:return: The list of values
+:rtype: set()
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ , getValueListSelectionNum_ \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
+
+        '''
+        cdef vector[int32_t] vect
+        ret = set()
+        if values_map.find(id) != values_map.end():
+            if self.manager.GetValueListValues(values_map.at(id), &vect):
+                while not vect.empty() :
+                    temp = vect.back()
+                    ret.add(temp.c_str())
+                    vect.pop_back();
         return ret
 
     def pressButton(self, id):
@@ -3635,7 +3776,7 @@ This label is populated by the device specific configuration files.
         cdef string c_string = self.manager.GetGroupLabel(homeid, nodeid, groupidx)
         return cstr_to_str(c_string.c_str())
 
-    def addAssociation(self, homeid, nodeid, groupidx, targetnodeid):
+    def addAssociation(self, homeid, nodeid, groupidx, targetnodeid, instance=0x00):
         '''
 .. _addAssociation:
 
@@ -3655,12 +3796,14 @@ both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be added to the association group.
 :type targetNodeId: int
+:param instance: Identifier for the instance that will be added to the association group.
+:type instance: int
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, removeAssociation_
 
         '''
-        self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
+        self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid, instance)
 
-    def removeAssociation(self, homeid, nodeid, groupidx, targetnodeid):
+    def removeAssociation(self, homeid, nodeid, groupidx, targetnodeid, instance=0x00):
         '''
 .. _removeAssociation:
 
@@ -3680,10 +3823,12 @@ in both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be removed from the association group.
 :type targetNodeId: int
+:param instance: Identifier for the instance that will be added to the association group.
+:type instance: int
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, addAssociation_
 
         '''
-        self.manager.RemoveAssociation(homeid, nodeid, groupidx, targetnodeid)
+        self.manager.RemoveAssociation(homeid, nodeid, groupidx, targetnodeid, instance)
 #
 # -----------------------------------------------------------------------------
 # Notifications
