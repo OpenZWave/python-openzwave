@@ -72,7 +72,7 @@ clean:
 	cp -f openzwave.vers.cpp openzwave/cpp/src/vers.cpp
 
 openzwave openzwave/.lib/:
-	#~ sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && make
 
 ###This part is a copy/paste from the original Makefile
