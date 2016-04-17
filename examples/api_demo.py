@@ -207,6 +207,16 @@ for node in network.nodes:
         print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
         print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
 print "------------------------------------------------------------"
+print "Retrieve RGB Bulbs on the network"
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_rgbbulbs() :
+        print("node/name/index/instance : %s/%s/%s/%s" % (node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
+        print("  label/help : %s/%s" % (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  id on the network : %s" % (network.nodes[node].values[val].id_on_network))
+        print("  level: %s" % (network.nodes[node].get_dimmer_level(val)))
+print "------------------------------------------------------------"
 print "Retrieve sensors on the network"
 print "------------------------------------------------------------"
 values = {}

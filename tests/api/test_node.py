@@ -160,6 +160,10 @@ class TestNode(TestApi):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].is_failed), type(True))
 
+    def test_625_node_is_zwave_plus(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].is_zwave_plus), type(True))
+
     def test_630_node_is_info_received(self):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].is_info_received), type(True))
@@ -171,6 +175,14 @@ class TestNode(TestApi):
     def test_690_node_type(self):
         node_id = max(self.network.nodes.keys())
         self.assertTrue(isinstance(self.network.nodes[node_id].type, string_types))
+
+    def test_691_node_device_type(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertTrue(isinstance(self.network.nodes[node_id].device_type, string_types))
+
+    def test_692_node_role(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertTrue(isinstance(self.network.nodes[node_id].role, string_types))
 
     def test_710_node_test(self):
         node_id = max(self.network.nodes.keys())
