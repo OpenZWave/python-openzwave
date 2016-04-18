@@ -280,9 +280,13 @@ class ZWaveNode(ZWaveObject,
 
         """
         groups = dict()
-        number_groups = self.num_groups
-        for i in range(1, number_groups+1):
-            groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
+        groups_added = 0
+        i = 1
+        while groups_added < self.num_groups and i<256:
+            if self._network.manager.getMaxAssociations(self.home_id, self.node_id, i) > 0:
+                groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
+                groups_added += 1
+            i += 1
         return groups
 
     def groups_to_dict(self, extras=['all']):
