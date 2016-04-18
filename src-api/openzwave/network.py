@@ -1106,7 +1106,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         logger.debug('Z-Wave Notification Group : %s', args)
         dispatcher.send(self.SIGNAL_GROUP, \
-                **{'network': self, 'node': self.nodes[args['nodeId']]})
+                **{'network': self, 'node': self.nodes[args['nodeId']], 'groupidx': args['groupIdx']})
 
     def _handle_node(self, node):
         """
