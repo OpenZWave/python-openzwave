@@ -267,6 +267,17 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNumGroups(self.home_id, self.object_id)
 
+    def get_max_associations(self, groupidx):
+        """
+        Gets the maximum number of associations for a group.
+
+        :param groupidx: The group to query
+        :type groupidx: int
+        :rtype: int
+
+        """
+        return self._network.manager.getMaxAssociations(self.home_id, self.node_id, groupidx)
+
     @property
     def groups(self):
         """
@@ -283,7 +294,7 @@ class ZWaveNode(ZWaveObject,
         groups_added = 0
         i = 1
         while groups_added < self.num_groups and i<256:
-            if self._network.manager.getMaxAssociations(self.home_id, self.node_id, i) > 0:
+            if self.get_max_associations(i) > 0:
                 groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
                 groups_added += 1
             i += 1
