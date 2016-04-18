@@ -61,7 +61,7 @@ setup(
                      'Flask-Themes >= 0.1.3',
                      'WebOb >= 1.4',
                      'Jinja2 >= 2.5.5',
-                     'gevent == 1.0.2',
+                     'gevent == 1.1.1',
                      'gevent-socketio >= 0.3.6',
                      'Flask-SocketIO >= 0.6.0',
                      #'js.socketio < 1.0.0',
