@@ -83,7 +83,7 @@ if os_name == 'win32' or os_name=='nt':
 elif platform_system() == 'darwin':
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
-                             libraries=['udev', 'stdc++'],
+                             libraries=['stdc++'],
                              language="c++",
                              extra_link_args=['-framework', 'CoreFoundation', '-framework', 'IOKit'],
                              extra_objects=['openzwave/libopenzwave.a'],
@@ -94,7 +94,7 @@ elif DEBIAN_PACKAGE == True:
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++', 'openzwave'],
                              language="c++",
-                             define_macros=[ 
+                             define_macros=[
                                  ('PY_SSIZE_T_CLEAN',1),
                              ],
                              #extra_objects=['/usr/libopenzwave.a'],
@@ -116,7 +116,7 @@ else:
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['udev', 'stdc++'],
                              language="c++",
-                             define_macros=[ 
+                             define_macros=[
                                  ('PY_SSIZE_T_CLEAN',1),
                              ],
                              extra_objects=['openzwave/libopenzwave.a'],
