@@ -53,7 +53,7 @@ class ZWaveScene(ZWaveObject):
 
         """
         ZWaveObject.__init__(self, scene_id, network)
-        logger.debug("Create object scene (scene_id:%s)", scene_id)
+        logger.debug(u"Create object scene (scene_id:%s)", scene_id)
         self.values = dict()
 
     def __str__(self):
@@ -63,7 +63,7 @@ class ZWaveScene(ZWaveObject):
         :rtype: str
 
         """
-        return 'scene_id: [%s] label: [%s]' % (self.scene_id, self.label)
+        return u'scene_id: [%s] label: [%s]' % (self.scene_id, self.label)
 
     @property
     def scene_id(self):

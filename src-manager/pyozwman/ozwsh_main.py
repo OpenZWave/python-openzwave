@@ -577,7 +577,7 @@ class MainWindow(Screen):
     def _louie_value_update(self, network, node, value):
         self.loop.draw_screen()
 
-    def _louie_group(self, network, node):
+    def _louie_group(self, network, node, groupidx):
         self.loop.draw_screen()
 
     def _louie_ctrl_message(self, network, controller, node, node_id, state_int, state, state_full, error_int, error, error_full ):
