@@ -38,6 +38,7 @@ from libc.stdlib cimport malloc, free
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads, Py_Initialize
+from group cimport InstanceAssociation_t, InstanceAssociation
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -51,6 +52,7 @@ from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
 from manager cimport Manager, Create as CreateManager, Get as GetManager
+from manager cimport struct_associations, int_associations
 from log cimport LogLevel
 import os
 import sys
@@ -852,6 +854,23 @@ cdef class RetAlloc:
     def __cinit__(self,  uint32_t siz):
         self.siz = siz
         self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz)
+
+    def __dealloc__(self):
+        free(self.data)
+
+cdef class InstanceAssociationAlloc:
+    """
+    Map an array of InstanceAssociation_t used when retrieving sets of associationInstances.
+    Allocate memory at init and free it when no more reference to it exist.
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
+
+    """
+    cdef uint32_t siz
+    cdef uint8_t* data
+
+    def __cinit__(self,  uint32_t siz):
+        self.siz = siz
+        self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz * 2)
 
     def __dealloc__(self):
         free(self.data)
@@ -3694,12 +3713,59 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 
         '''
         return self.manager.GetNumGroups(homeid, nodeid)
+#~ cython overloading problem
+#~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
+#~
+#~
+#~
+#~     def getAssociations(self, homeid, nodeid, groupidx):
+#~         '''
+#~ .. _getAssociations:
+#~
+#~ Gets the associations for a group
+#~
+#~ :param homeId: The Home ID of the Z-Wave controller that manages the node.
+#~ :type homeId: int
+#~ :param nodeId: The ID of the node whose associations we are interested in.
+#~ :type nodeId: int
+#~ :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
+#~ :type groupIdx: int
+#~ :return: A set containing IDs of members of the group
+#~ :rtype: set()
+#~ :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
+#~
+#~         '''
+#~         data = set()
+#~         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
+#~         #Allocate memory
+#~         cdef int_associations dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+#~         # return value is pointer to uint8_t[]
+#~         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+#~         if count == 0:
+#~             #Don't need to allocate memory.
+#~             free(dbuf)
+#~             return data
+#~         cdef RetAlloc retuint8 = RetAlloc(count)
+#~         cdef uint8_t* p
+#~         cdef uint32_t start = 0
+#~         if count:
+#~             try:
+#~                 p = dbuf[0] # p is now pointing at first element of array
+#~                 for i in range(start, count):
+#~                     retuint8.data[i] = p[0]
+#~                     data.add(retuint8.data[i])
+#~                     p += 1
+#~             finally:
+#~                 # Free memory
+#~                 free(dbuf)
+#~                 pass
+#~         return data
 
-    def getAssociations(self, homeid, nodeid, groupidx):
+    def getAssociationsInstances(self, homeid, nodeid, groupidx):
         '''
-.. _getAssociations:
+.. _getAssociationsInstances:
 
-Gets the associations for a group
+Gets the associationsInstances for a group
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
@@ -3707,30 +3773,31 @@ Gets the associations for a group
 :type nodeId: int
 :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
 :type groupIdx: int
-:return: A set containing IDs of members of the group
-:rtype: set()
+:return: A set containing tuples containing the node_id and the instance
+:rtype: set((node_id,instance))
 :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
 
         '''
         data = set()
         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
         #Allocate memory
-        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+        cdef struct_associations dbuf = <InstanceAssociation_t**>malloc(sizeof(InstanceAssociation_t) * size)
         # return value is pointer to uint8_t[]
         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
-        cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8_t* p
+        cdef RetAlloc retassinst = InstanceAssociationAlloc(count)
+        cdef InstanceAssociation_t* p
         cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8.data[i] = p[0]
-                    data.add(retuint8.data[i])
+                    retassinst.data[2*i] = p[0].m_nodeId
+                    retassinst.data[2*i+1] = p[0].m_instance
+                    data.add((retassinst.data[2*i],retassinst.data[2*i+1]))
                     p += 1
             finally:
                 # Free memory

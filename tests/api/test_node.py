@@ -42,14 +42,15 @@ if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
-import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
+from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
+import libopenzwave
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
@@ -138,6 +139,29 @@ class TestNode(TestApi):
         node_id = max(self.network.nodes.keys())
         self.assertTrue(self.network.nodes[node_id].num_groups >= 0)
         self.assertEqual(type(self.network.nodes[node_id].groups), type(dict()))
+
+    def test_520_node_group_associations(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertTrue(self.network.nodes[node_id].num_groups >= 0)
+        groups = self.network.nodes[node_id].groups
+        self.assertEqual(type(groups), type(dict()))
+        for grp in groups.keys():
+            associations = groups[grp].associations
+            for ass in associations:
+                self.assertEqual(type(ass), type(0))
+                self.assertTrue(0 <= associations[ass] <= 255)
+
+    def test_530_node_group_associations_instances(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertTrue(self.network.nodes[node_id].num_groups >= 0)
+        groups = self.network.nodes[node_id].groups
+        self.assertEqual(type(groups), type(dict()))
+        for grp in groups.keys():
+            associations = groups[grp].associations_instances
+            for ass in associations:
+                self.assertEqual(type(ass), type((0,0)))
+                self.assertTrue(0 <= associations[ass][0] <= 255)
+                self.assertTrue(0 <= associations[ass][1] <= 255)
 
     def test_550_request_all_config_params(self):
         node_id = max(self.network.nodes.keys())
