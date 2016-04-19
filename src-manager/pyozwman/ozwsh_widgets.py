@@ -398,16 +398,16 @@ class GroupsTree(OldestTree):
 
     def _louie_network_resetted(self, network):
         self.window.log.info('GroupsTree _louie_network_resetted.')
-        #dispatcher.disconnect(self._louie_node_update, ZWaveNetwork.SIGNAL_GROUP)
+        dispatcher.disconnect(self._louie_group_update, ZWaveNetwork.SIGNAL_GROUP)
         self.window.log.info('GroupsTree _louie_network_resetted.')
 
     def _louie_network_ready(self, network):
         self.window.log.info("GroupsTree _louie_network_ready")
         self.refresh()
-        dispatcher.connect(self._louie_node_update, ZWaveNetwork.SIGNAL_GROUP)
+        dispatcher.connect(self._louie_group_update, ZWaveNetwork.SIGNAL_GROUP)
         self.window.log.info("GroupsTree _louie_network_ready")
 
-    def _louie_node_update(self, network, node):
+    def _louie_group_update(self, network, node, groupidx):
         self.window.log.info("GroupsTree _louie_node_update")
         self.refresh()
         self.window.log.info("GroupsTree _louie_node_update")

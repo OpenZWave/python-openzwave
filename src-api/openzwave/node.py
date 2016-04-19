@@ -171,6 +171,26 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeProductId(self.home_id, self.object_id)
 
+    @property
+    def device_type(self):
+        """
+        The device_type of the node.
+
+        :rtype: str
+
+        """
+        return self._network.manager.getNodeDeviceTypeString(self.home_id, self.object_id)
+
+    @property
+    def role(self):
+        """
+        The role of the node.
+
+        :rtype: str
+
+        """
+        return self._network.manager.getNodeRoleString(self.home_id, self.object_id)
+
     def to_dict(self, extras=['all']):
         """
         Return a dict representation of the node.
@@ -247,6 +267,17 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNumGroups(self.home_id, self.object_id)
 
+    def get_max_associations(self, groupidx):
+        """
+        Gets the maximum number of associations for a group.
+
+        :param groupidx: The group to query
+        :type groupidx: int
+        :rtype: int
+
+        """
+        return self._network.manager.getMaxAssociations(self.home_id, self.node_id, groupidx)
+
     @property
     def groups(self):
         """
@@ -260,9 +291,13 @@ class ZWaveNode(ZWaveObject,
 
         """
         groups = dict()
-        number_groups = self.num_groups
-        for i in range(1, number_groups+1):
-            groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
+        groups_added = 0
+        i = 1
+        while groups_added < self.num_groups and i<256:
+            if self.get_max_associations(i) > 0:
+                groups[i] = ZWaveGroup(i, network=self._network, node_id=self.node_id)
+                groups_added += 1
+            i += 1
         return groups
 
     def groups_to_dict(self, extras=['all']):
@@ -640,6 +675,16 @@ class ZWaveNode(ZWaveObject,
 
         """
         return self._network.manager.isNodeRoutingDevice(self.home_id, self.object_id)
+
+    @property
+    def is_zwave_plus(self):
+        """
+        Is this node a zwave plus one.
+
+        :rtype: bool
+
+        """
+        return self._network.manager.isNodeZWavePlus(self.home_id, self.object_id)
 
     @property
     def is_locked(self):

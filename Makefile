@@ -241,12 +241,12 @@ tests:
 	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
 	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
 	@echo
-	@echo "Autobuild-tests for ZWave network finished."
+	@echo "Tests for ZWave network finished."
 
 autobuild-tests:
 	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
 	@echo
-	@echo "Tests for ZWave network finished."
+	@echo "Autobuild-tests for ZWave network finished."
 
 pylint:
 	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/
@@ -319,9 +319,9 @@ tgz: clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
-push: build develop docs
-	git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	git push
+push: build develop
+	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	-git push
 	@echo
 	@echo "Commits for branch master pushed on github."
 

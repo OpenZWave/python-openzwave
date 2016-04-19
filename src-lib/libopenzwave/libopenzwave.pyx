@@ -38,6 +38,7 @@ from libc.stdlib cimport malloc, free
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads, Py_Initialize
+from group cimport InstanceAssociation_t, InstanceAssociation
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -51,6 +52,7 @@ from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
 from manager cimport Manager, Create as CreateManager, Get as GetManager
+from manager cimport struct_associations, int_associations
 from log cimport LogLevel
 import os
 import sys
@@ -98,7 +100,10 @@ cdef string str_to_cppstr(str s):
 cdef cstr_to_str(s):
     if six.PY3 and not isinstance(s, str):
         return s.decode('utf-8')
-    return s.encode('utf-8')
+    elif six.PY3:
+        return s
+    else:
+        return s.encode('utf-8')
 
 class LibZWaveException(Exception):
     """
@@ -855,6 +860,23 @@ cdef class RetAlloc:
     def __cinit__(self,  uint32_t siz):
         self.siz = siz
         self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz)
+
+    def __dealloc__(self):
+        free(self.data)
+
+cdef class InstanceAssociationAlloc:
+    """
+    Map an array of InstanceAssociation_t used when retrieving sets of associationInstances.
+    Allocate memory at init and free it when no more reference to it exist.
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
+
+    """
+    cdef uint32_t siz
+    cdef uint8_t* data
+
+    def __cinit__(self,  uint32_t siz):
+        self.siz = siz
+        self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz * 2)
 
     def __dealloc__(self):
         free(self.data)
@@ -2398,6 +2420,104 @@ Get whether the node information has been received
         '''
         return self.manager.IsNodeInfoReceived(homeid, nodeid)
 
+    def getNodeRole(self, homeid, nodeid):
+        '''
+.. _getNodeRole:
+
+Get the node role as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodeRole(homeid, nodeid)
+
+    def getNodeRoleString(self, homeId, nodeId):
+        '''
+.. getNodeRoleString:
+
+Get the node role (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodeRoleString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
+
+    def getNodeDeviceType(self, homeid, nodeid):
+        '''
+.. _getNodeDeviceType:
+
+Get the node DeviceType as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodeDeviceType(homeid, nodeid)
+
+    def getNodeDeviceTypeString(self, homeId, nodeId):
+        '''
+.. getNodeRoleString:
+
+Get the node DeviceType (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodeDeviceTypeString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
+
+    def getNodePlusType(self, homeid, nodeid):
+        '''
+.. _getNodePlusType:
+
+Get the node plus type as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: The node version number
+:rtype: int
+
+        '''
+        return self.manager.GetNodePlusType(homeid, nodeid)
+
+    def getNodePlusTypeString(self, homeId, nodeId):
+        '''
+.. getNodePlusTypeString:
+
+Get the node plus type (string) as reported in the Z-Wave+ Info report.
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: name of current query stage as a string.
+:rtype: str
+
+        '''
+        cdef string c_string = self.manager.GetNodePlusTypeString(homeId, nodeId)
+        return cstr_to_str(c_string.c_str())
 
     def getNodeClassInformation(self, homeid, nodeid, commandClassId, className = None, classVersion = None):
         '''
@@ -2447,7 +2567,9 @@ Helper method to return whether a particular class is available in a node
 
     def isNodeFailed(self, homeId, nodeId):
         '''
-.. isNodeFailed: Get whether the node is working or has failed
+.. isNodeFailed:
+
+Get whether the node is working or has failed
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
@@ -2458,6 +2580,23 @@ Helper method to return whether a particular class is available in a node
 
         '''
         return self.manager.IsNodeFailed(homeId, nodeId)
+
+
+    def isNodeZWavePlus(self, homeId, nodeId):
+        '''
+.. isNodeZWavePlus:
+
+Get whether the node is a ZWave+ one
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the node has failed and is no longer part of the network.
+:rtype: bool
+
+        '''
+        return self.manager.IsNodeZWavePlus(homeId, nodeId)
 
 
     def getNodeQueryStage(self, homeId, nodeId):
@@ -3178,7 +3317,6 @@ getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
 getValueType_, getValueInstance_, getValueIndex_
 
         '''
-        #print "**** libopenzwave.GetValueListItems ******"
         cdef vector[string] vect
         ret = set()
         if values_map.find(id) != values_map.end():
@@ -3187,7 +3325,32 @@ getValueType_, getValueInstance_, getValueIndex_
                     temp = vect.back()
                     ret.add(temp.c_str())
                     vect.pop_back();
-            #print "++++ list des items : " ,  ret
+        return ret
+
+    def getValueListValues(self, id):
+        '''
+.. _getValueListValues:
+
+Gets the list of values from a list value.
+
+:param id: The ID of a value.
+:type id: int
+:return: The list of values
+:rtype: set()
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ , getValueListSelectionNum_ \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueAsString_, \
+getValueType_, getValueInstance_, getValueIndex_
+
+        '''
+        cdef vector[int32_t] vect
+        ret = set()
+        if values_map.find(id) != values_map.end():
+            if self.manager.GetValueListValues(values_map.at(id), &vect):
+                while not vect.empty() :
+                    temp = vect.back()
+                    ret.add(temp)
+                    vect.pop_back();
         return ret
 
     def pressButton(self, id):
@@ -3556,12 +3719,59 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 
         '''
         return self.manager.GetNumGroups(homeid, nodeid)
+#~ cython overloading problem
+#~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
+#~
+#~
+#~
+#~     def getAssociations(self, homeid, nodeid, groupidx):
+#~         '''
+#~ .. _getAssociations:
+#~
+#~ Gets the associations for a group
+#~
+#~ :param homeId: The Home ID of the Z-Wave controller that manages the node.
+#~ :type homeId: int
+#~ :param nodeId: The ID of the node whose associations we are interested in.
+#~ :type nodeId: int
+#~ :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
+#~ :type groupIdx: int
+#~ :return: A set containing IDs of members of the group
+#~ :rtype: set()
+#~ :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
+#~
+#~         '''
+#~         data = set()
+#~         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
+#~         #Allocate memory
+#~         cdef int_associations dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+#~         # return value is pointer to uint8_t[]
+#~         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+#~         if count == 0:
+#~             #Don't need to allocate memory.
+#~             free(dbuf)
+#~             return data
+#~         cdef RetAlloc retuint8 = RetAlloc(count)
+#~         cdef uint8_t* p
+#~         cdef uint32_t start = 0
+#~         if count:
+#~             try:
+#~                 p = dbuf[0] # p is now pointing at first element of array
+#~                 for i in range(start, count):
+#~                     retuint8.data[i] = p[0]
+#~                     data.add(retuint8.data[i])
+#~                     p += 1
+#~             finally:
+#~                 # Free memory
+#~                 free(dbuf)
+#~                 pass
+#~         return data
 
-    def getAssociations(self, homeid, nodeid, groupidx):
+    def getAssociationsInstances(self, homeid, nodeid, groupidx):
         '''
-.. _getAssociations:
+.. _getAssociationsInstances:
 
-Gets the associations for a group
+Gets the associationsInstances for a group
 
 :param homeId: The Home ID of the Z-Wave controller that manages the node.
 :type homeId: int
@@ -3569,30 +3779,31 @@ Gets the associations for a group
 :type nodeId: int
 :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
 :type groupIdx: int
-:return: A set containing IDs of members of the group
-:rtype: set()
+:return: A set containing tuples containing the node_id and the instance
+:rtype: set((node_id,instance))
 :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
 
         '''
         data = set()
         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
         #Allocate memory
-        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+        cdef struct_associations dbuf = <InstanceAssociation_t**>malloc(sizeof(InstanceAssociation_t) * size)
         # return value is pointer to uint8_t[]
         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
-        cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8_t* p
+        cdef RetAlloc retassinst = InstanceAssociationAlloc(count)
+        cdef InstanceAssociation_t* p
         cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8.data[i] = p[0]
-                    data.add(retuint8.data[i])
+                    retassinst.data[2*i] = p[0].m_nodeId
+                    retassinst.data[2*i+1] = p[0].m_instance
+                    data.add((retassinst.data[2*i],retassinst.data[2*i+1]))
                     p += 1
             finally:
                 # Free memory
@@ -3641,7 +3852,7 @@ This label is populated by the device specific configuration files.
         cdef string c_string = self.manager.GetGroupLabel(homeid, nodeid, groupidx)
         return cstr_to_str(c_string.c_str())
 
-    def addAssociation(self, homeid, nodeid, groupidx, targetnodeid):
+    def addAssociation(self, homeid, nodeid, groupidx, targetnodeid, instance=0x00):
         '''
 .. _addAssociation:
 
@@ -3661,12 +3872,14 @@ both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be added to the association group.
 :type targetNodeId: int
+:param instance: Identifier for the instance that will be added to the association group.
+:type instance: int
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, removeAssociation_
 
         '''
-        self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid)
+        self.manager.AddAssociation(homeid, nodeid, groupidx, targetnodeid, instance)
 
-    def removeAssociation(self, homeid, nodeid, groupidx, targetnodeid):
+    def removeAssociation(self, homeid, nodeid, groupidx, targetnodeid, instance=0x00):
         '''
 .. _removeAssociation:
 
@@ -3686,10 +3899,12 @@ in both cases.
 :type groupIdx: int
 :param targetNodeId: Identifier for the node that will be removed from the association group.
 :type targetNodeId: int
+:param instance: Identifier for the instance that will be added to the association group.
+:type instance: int
 :see: getNumGroups_, getAssociations_, getMaxAssociations_, addAssociation_
 
         '''
-        self.manager.RemoveAssociation(homeid, nodeid, groupidx, targetnodeid)
+        self.manager.RemoveAssociation(homeid, nodeid, groupidx, targetnodeid, instance)
 #
 # -----------------------------------------------------------------------------
 # Notifications
