@@ -149,7 +149,7 @@ class TestNode(TestApi):
             associations = groups[grp].associations
             for ass in associations:
                 self.assertEqual(type(ass), type(0))
-                self.assertTrue(0 <= associations[ass] <= 255)
+                self.assertTrue(0 <= ass <= 255)
 
     def test_530_node_group_associations_instances(self):
         node_id = max(self.network.nodes.keys())
@@ -160,8 +160,8 @@ class TestNode(TestApi):
             associations = groups[grp].associations_instances
             for ass in associations:
                 self.assertEqual(type(ass), type((0,0)))
-                self.assertTrue(0 <= associations[ass][0] <= 255)
-                self.assertTrue(0 <= associations[ass][1] <= 255)
+                self.assertTrue(0 <= ass[0] <= 255)
+                self.assertTrue(0 <= ass[1] <= 255)
 
     def test_550_request_all_config_params(self):
         node_id = max(self.network.nodes.keys())

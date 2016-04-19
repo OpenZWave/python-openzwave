@@ -75,7 +75,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: str
 
         """
-        return 'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
+        return u'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
           (self._network.home_id_str, self._object_id, self.name, self.product_name)
 
     @property
@@ -763,7 +763,7 @@ class ZWaveNode(ZWaveObject,
 
         """
         if self.is_awake == False:
-            logger.warning('Node state must a minimum set to awake')
+            logger.warning(u'Node state must a minimum set to awake')
             return False
         self._network.manager.healNetworkNode(self.home_id, self.object_id, upNodeRoute)
         return True
@@ -807,7 +807,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('refresh_info for node [%s]', self.object_id)
+        logger.debug(u'refresh_info for node [%s]', self.object_id)
         return self._network.manager.refreshNodeInfo(self.home_id, self.object_id)
 
     def request_state(self):
@@ -819,7 +819,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('request_state for node [%s]', self.object_id)
+        logger.debug(u'request_state for node [%s]', self.object_id)
         return self._network.manager.requestNodeState(self.home_id, self.object_id)
 
     def send_information(self):
@@ -833,7 +833,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('send_information for node [%s]', self.object_id)
+        logger.debug(u'send_information for node [%s]', self.object_id)
         return self._network.controller.send_node_information(self.object_id)
 
     def network_update(self):
@@ -846,7 +846,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('network_update for node [%s]', self.object_id)
+        logger.debug(u'network_update for node [%s]', self.object_id)
         return self._network.controller.request_network_update(self.object_id)
 
     def neighbor_update(self):
@@ -861,7 +861,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('neighbor_update for node [%s]', self.object_id)
+        logger.debug(u'neighbor_update for node [%s]', self.object_id)
         return self._network.controller.request_node_neighbor_update(self.object_id)
 
     def create_button(self, buttonid):
@@ -878,7 +878,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('create_button for node [%s]', self.object_id)
+        logger.debug(u'create_button for node [%s]', self.object_id)
         return self._network.controller.create_button(self.object_id, buttonid)
 
     def delete_button(self, buttonid):
@@ -895,7 +895,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         '''
-        logger.debug('delete_button for node [%s]', self.object_id)
+        logger.debug(u'delete_button for node [%s]', self.object_id)
         return self._network.controller.delete_button(self.object_id, buttonid)
 
     def request_all_config_params(self):
@@ -903,7 +903,7 @@ class ZWaveNode(ZWaveObject,
         Request the values of all known configurable parameters from a device.
 
         """
-        logger.debug('Requesting config params for node [%s]', self.object_id)
+        logger.debug(u'Requesting config params for node [%s]', self.object_id)
         self._network.manager.requestAllConfigParams(self.home_id, self.object_id)
 
     def request_config_param(self, param):
@@ -924,7 +924,7 @@ class ZWaveNode(ZWaveObject,
         :type param:
 
         """
-        logger.debug('Requesting config param %s for node [%s]', param, self.object_id)
+        logger.debug(u'Requesting config param %s for node [%s]', param, self.object_id)
         self._network.manager.requestConfigParam(self.home_id, self.object_id, param)
 
     def set_config_param(self, param, value, size=2):
@@ -947,7 +947,7 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
-        logger.debug('Set config param %s for node [%s]', param, self.object_id)
+        logger.debug(u'Set config param %s for node [%s]', param, self.object_id)
         return self._network.manager.setConfigParam(self.home_id, self.object_id, param, value, size)
 
 #    def setNodeOn(self, node):
