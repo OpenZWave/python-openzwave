@@ -206,7 +206,7 @@ class ZWaveController(ZWaveObject):
                 except AssertionError:
                     #For gevent AssertionError: Impossible to call blocking function in the event loop callback
                     pass
-        logger.debug("Wait for empty send_queue during %s second(s).", i)
+        logger.debug(u"Wait for empty send_queue during %s second(s).", i)
 
     def __str__(self):
         """
@@ -222,7 +222,7 @@ class ZWaveController(ZWaveObject):
             node_name = self._node.name
             product_name = self._node.product_name
 
-        return 'home_id: [%s] id: [%s] name: [%s] product: [%s] capabilities: %s library: [%s]' % \
+        return u'home_id: [%s] id: [%s] name: [%s] product: [%s] capabilities: %s library: [%s]' % \
           (self._network.home_id_str, self._object_id, node_name, product_name, self.capabilities, self.library_description)
 
     @property
@@ -822,7 +822,7 @@ class ZWaveController(ZWaveObject):
         :type args: dict()
 
         """
-        logger.debug('Controller state change : %s', args)
+        logger.debug(u'Controller state change : %s', args)
         state = args['state']
         message = args['message']
         self.ctrl_last_state = state
@@ -865,7 +865,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s', 'create_new_primary')
+        logger.debug(u'Send controller command : %s', 'create_new_primary')
         return self._network.manager.createNewPrimary(self.home_id)
 
     def transfer_primary_role(self):
@@ -882,7 +882,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s', 'transfer_primary_role')
+        logger.debug(u'Send controller command : %s', 'transfer_primary_role')
         return self._network.manager.transferPrimaryRole(self.home_id)
 
     def receive_configuration(self):
@@ -897,7 +897,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s', 'receive_configuration')
+        logger.debug(u'Send controller command : %s', 'receive_configuration')
         return self._network.manager.receiveConfiguration(self.home_id)
 
     def add_node(self, doSecurity=False):
@@ -915,7 +915,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : secure : %s', 'add_node', doSecurity)
+        logger.debug(u'Send controller command : %s, : secure : %s', 'add_node', doSecurity)
         return self._network.manager.addNode(self.home_id, doSecurity)
 
     def remove_node(self):
@@ -933,7 +933,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s', 'remove_node')
+        logger.debug(u'Send controller command : %s', 'remove_node')
         return self._network.manager.removeNode(self.home_id)
 
     def remove_failed_node(self, nodeid):
@@ -955,7 +955,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'remove_failed_node', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'remove_failed_node', nodeid)
         return self._network.manager.removeFailedNode(self.home_id, nodeid)
 
     def has_node_failed(self, nodeid):
@@ -972,7 +972,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'has_node_failed', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'has_node_failed', nodeid)
         return self._network.manager.hasNodeFailed(self.home_id, nodeid)
 
     def request_node_neighbor_update(self, nodeid):
@@ -989,7 +989,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'request_node_neighbor_update', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'request_node_neighbor_update', nodeid)
         return self._network.manager.requestNodeNeighborUpdate(self.home_id, nodeid)
 
     def assign_return_route(self, nodeid):
@@ -1006,7 +1006,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'assign_return_route', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'assign_return_route', nodeid)
         return self._network.manager.assignReturnRoute(self.home_id, nodeid)
 
     def delete_all_return_routes(self, nodeid):
@@ -1023,7 +1023,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'delete_all_return_routes', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'delete_all_return_routes', nodeid)
         return self._network.manager.deleteAllReturnRoutes(self.home_id, nodeid)
 
     def send_node_information(self, nodeid):
@@ -1039,7 +1039,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'send_node_information', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'send_node_information', nodeid)
         return self._network.manager.sendNodeInformation(self.home_id, nodeid)
 
     def replace_failed_node(self, nodeid):
@@ -1058,7 +1058,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'replace_failed_node', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'replace_failed_node', nodeid)
         return self._network.manager.replaceFailedNode(self.home_id, nodeid)
 
     def request_network_update(self, nodeid):
@@ -1073,7 +1073,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'request_network_update', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'request_network_update', nodeid)
         return self._network.manager.requestNetworkUpdate(self.home_id, nodeid)
 
     def replication_send(self, nodeid):
@@ -1088,7 +1088,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s', 'replication_send', nodeid)
+        logger.debug(u'Send controller command : %s, : node : %s', 'replication_send', nodeid)
         return self._network.manager.replicationSend(self.home_id, nodeid)
 
     def create_button(self, nodeid, buttonid):
@@ -1107,7 +1107,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s, button : %s', 'create_button', nodeid, buttonid)
+        logger.debug(u'Send controller command : %s, : node : %s, button : %s', 'create_button', nodeid, buttonid)
         return self._network.manager.createButton(self.home_id, nodeid, buttonid)
 
     def delete_button(self, nodeid, buttonid):
@@ -1126,7 +1126,7 @@ class ZWaveController(ZWaveObject):
         :rtype: bool
 
         '''
-        logger.debug('Send controller command : %s, : node : %s, button : %s', 'delete_button', nodeid, buttonid)
+        logger.debug(u'Send controller command : %s, : node : %s, button : %s', 'delete_button', nodeid, buttonid)
         return self._network.manager.deleteButton(self.home_id, nodeid, buttonid)
 
 

@@ -244,6 +244,20 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.device_type">
+<tt class="descname">device_type</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.device_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The device_type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.generic">
 <tt class="descname">generic</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.generic" title="Permalink to this definition">¶</a></dt>
 <dd><p>The generic type of the node.</p>
@@ -282,6 +296,22 @@ Notification::Type_ControllerCommand</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_max_associations">
+<tt class="descname">get_max_associations</tt><big>(</big><em>groupidx</em><big>)</big><a class="headerlink" href="#openzwave.node.ZWaveNode.get_max_associations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the maximum number of associations for a group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groupidx</strong> (<em>int</em>) &#8211; The group to query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -574,6 +604,20 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 <dt id="openzwave.node.ZWaveNode.is_sleeping">
 <tt class="descname">is_sleeping</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_sleeping" title="Permalink to this definition">¶</a></dt>
 <dd><p>Is this node sleeping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_zwave_plus">
+<tt class="descname">is_zwave_plus</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.is_zwave_plus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a zwave plus one.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -880,6 +924,20 @@ same as the query state starting from the dynamic state.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.role">
+<tt class="descname">role</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>The role of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.security">
 <tt class="descname">security</tt><a class="headerlink" href="#openzwave.node.ZWaveNode.security" title="Permalink to this definition">¶</a></dt>
 <dd><p>The security type of the node.</p>
@@ -1113,7 +1171,7 @@ has been made.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

@@ -532,7 +532,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: int
 
         """
-        logger.debug("set_dimmer Level:%s", value)
+        logger.debug(u"set_dimmer Level:%s", value)
         if value_id in self.get_dimmers():
             if 99 < value < 255:
                 value = 99
@@ -594,7 +594,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
         :type value: int
 
         """
-        logger.debug("set_rgbw value:%s", value)
+        logger.debug(u"set_rgbw value:%s", value)
         if value_id in self.get_rgbbulbs():
             self.values[value_id].data = value
             return True

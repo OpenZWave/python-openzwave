@@ -99,8 +99,14 @@ cdef cstr_to_str(s):
     elif six.PY3:
         return s
     else:
-        return s.encode('utf-8')
-
+        try:
+            return s.encode('utf-8')
+        except:
+            try:
+                return s.decode('utf-8')
+            except:
+                return s
+                
 class LibZWaveException(Exception):
     """
     Exception class for LibOpenZWave
@@ -3788,7 +3794,7 @@ Gets the associationsInstances for a group
             #Don't need to allocate memory.
             free(dbuf)
             return data
-        cdef RetAlloc retassinst = InstanceAssociationAlloc(count)
+        cdef InstanceAssociationAlloc retassinst = InstanceAssociationAlloc(count)
         cdef InstanceAssociation_t* p
         cdef uint32_t start = 0
         if count:

@@ -100,6 +100,15 @@ along with python-openzwave. If not, see <a class="reference external" href="htt
 
 </dd></dl>
 
+<dl class="class">
+<dt id="libopenzwave.InstanceAssociationAlloc">
+<em class="property">class </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">InstanceAssociationAlloc</tt><a class="headerlink" href="#libopenzwave.InstanceAssociationAlloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Map an array of InstanceAssociation_t used when retrieving sets of associationInstances.
+Allocate memory at init and free it when no more reference to it exist.
+Give it to lion as Nico0084 says : <a class="reference external" href="http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg">http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg</a></p>
+</dd></dl>
+
 <dl class="exception">
 <dt id="libopenzwave.LibZWaveException">
 <em class="property">exception </em><tt class="descclassname">libopenzwave.</tt><tt class="descname">LibZWaveException</tt><a class="headerlink" href="#libopenzwave.LibZWaveException" title="Permalink to this definition">¶</a></dt>
@@ -195,10 +204,11 @@ both cases.</p>
 <li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node whose associations are to be changed.</li>
 <li><strong>groupIdx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
 <li><strong>targetNodeId</strong> (<em>int</em>) &#8211; Identifier for the node that will be added to the association group.</li>
+<li><strong>instance</strong> (<em>int</em>) &#8211; Identifier for the instance that will be added to the association group.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id1"><span class="problematic" id="id2">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -666,9 +676,9 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="libopenzwave.PyManager.getAssociations">
-<tt class="descname">getAssociations</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getAssociations" title="Permalink to this definition">¶</a></dt>
-<dd><p id="getassociations">Gets the associations for a group</p>
+<dt id="libopenzwave.PyManager.getAssociationsInstances">
+<tt class="descname">getAssociationsInstances</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getAssociationsInstances" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getassociationsinstances">Gets the associationsInstances for a group</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -680,10 +690,10 @@ Notification::Type_ControllerCommand</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A set containing IDs of members of the group</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A set containing tuples containing the node_id and the instance</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">set()</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">set((node_id,instance))</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a></p>
@@ -842,7 +852,7 @@ Retrieve controller interface path, name or path used to open the controller har
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id3"><span class="problematic" id="id4">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -926,7 +936,7 @@ method.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getassociations">getAssociations</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a href="#id5"><span class="problematic" id="id6">getAssociations_</span></a></p>
 </td>
 </tr>
 </tbody>
@@ -981,6 +991,54 @@ method.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeDeviceType">
+<tt class="descname">getNodeDeviceType</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeDeviceType" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getnodedevicetype">Get the node DeviceType as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node version number</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeDeviceTypeString">
+<tt class="descname">getNodeDeviceTypeString</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeDeviceTypeString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the node DeviceType (string) as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">name of current query stage as a string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
 </td>
 </tr>
 </tbody>
@@ -1192,6 +1250,54 @@ characters.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getNodePlusType">
+<tt class="descname">getNodePlusType</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodePlusType" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getnodeplustype">Get the node plus type as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node version number</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodePlusTypeString">
+<tt class="descname">getNodePlusTypeString</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodePlusTypeString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the node plus type (string) as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">name of current query stage as a string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getNodeProductId">
 <tt class="descname">getNodeProductId</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeProductId" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getnodeproductid">Get the product ID of a device</p>
@@ -1325,6 +1431,54 @@ data.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">code value.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeRole">
+<tt class="descname">getNodeRole</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeRole" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getnoderole">Get the node role as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The node version number</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.getNodeRoleString">
+<tt class="descname">getNodeRoleString</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getNodeRoleString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the node role (string) as reported in the Z-Wave+ Info report.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">name of current query stage as a string.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -1532,7 +1686,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a href="#id7"><span class="problematic" id="id8">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -2145,6 +2299,26 @@ only the SensorMultilevel command class ever does this.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getValueListValues">
+<tt class="descname">getValueListValues</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getValueListValues" title="Permalink to this definition">¶</a></dt>
+<dd><p id="getvaluelistvalues">Gets the list of values from a list value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>id</strong> (<em>int</em>) &#8211; The ID of a value.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The list of values</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><a class="reference internal" href="#isvalueset">isValueSet</a>, <a class="reference internal" href="#getvalue">getValue</a>, <a class="reference internal" href="#getvalueasbool">getValueAsBool</a>, <a class="reference internal" href="#getvalueasbyte">getValueAsByte</a>, <a class="reference internal" href="#getvaluelistselectionstr">getValueListSelectionStr</a> , <a class="reference internal" href="#getvaluelistselectionnum">getValueListSelectionNum</a> <a class="reference internal" href="#getvalueasfloat">getValueAsFloat</a>, <a class="reference internal" href="#getvalueasshort">getValueAsShort</a>, <a class="reference internal" href="#getvalueasint">getValueAsInt</a>, <a class="reference internal" href="#getvalueasstring">getValueAsString</a>, <a class="reference internal" href="#getvaluetype">getValueType</a>, <a class="reference internal" href="#getvalueinstance">getValueInstance</a>, <a class="reference internal" href="#getvalueindex">getValueIndex</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getValueMax">
 <tt class="descname">getValueMax</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.getValueMax" title="Permalink to this definition">¶</a></dt>
 <dd><p id="getvaluemax">Gets the maximum that this value may contain.</p>
@@ -2372,7 +2546,8 @@ with other controllers to enable events to be passed on.</p>
 <dl class="method">
 <dt id="libopenzwave.PyManager.isNodeFailed">
 <tt class="descname">isNodeFailed</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isNodeFailed" title="Permalink to this definition">¶</a></dt>
-<dd><table class="docutils field-list" frame="void" rules="none">
+<dd><p>Get whether the node is working or has failed</p>
+<table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
@@ -2516,6 +2691,30 @@ can be woken up by a beam. Useful to determine node and controller consistency.<
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#isnodebeamingdevice">isNodeBeamingDevice</a>, <a class="reference internal" href="#isnodelisteningdevice">isNodeListeningDevice</a>, <a class="reference internal" href="#isnodefrequentlisteningdevice">isNodeFrequentListeningDevice</a>, <a class="reference internal" href="#isnoderoutingdevice">isNodeRoutingDevice</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="libopenzwave.PyManager.isNodeZWavePlus">
+<tt class="descname">isNodeZWavePlus</tt><big>(</big><big>)</big><a class="headerlink" href="#libopenzwave.PyManager.isNodeZWavePlus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node is a ZWave+ one</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node to query.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True if the node has failed and is no longer part of the network.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
 </td>
 </tr>
 </tbody>
@@ -2832,10 +3031,11 @@ in both cases.</p>
 <li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node whose associations are to be changed.</li>
 <li><strong>groupIdx</strong> (<em>int</em>) &#8211; One-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
 <li><strong>targetNodeId</strong> (<em>int</em>) &#8211; Identifier for the node that will be removed from the association group.</li>
+<li><strong>instance</strong> (<em>int</em>) &#8211; Identifier for the instance that will be added to the association group.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id9"><span class="problematic" id="id10">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -4301,7 +4501,7 @@ Give it to lion as Nico0084 says : <a class="reference external" href="http://bl
     </div>
     <div class="footer">
         &copy; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

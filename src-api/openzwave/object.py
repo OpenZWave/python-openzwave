@@ -57,7 +57,7 @@ class ZWaveException(Exception):
     """
     def __init__(self, value):
         Exception.__init__(self)
-        self.msg = "Zwave Generic Exception"
+        self.msg = u"Zwave Generic Exception"
         self.value = value
 
     def __str__(self):
@@ -69,7 +69,7 @@ class ZWaveCacheException(ZWaveException):
     """
     def __init__(self, value):
         ZWaveException.__init__(self)
-        self.msg = "Zwave Cache Exception"
+        self.msg = u"Zwave Cache Exception"
         self.value = value
 
     def __str__(self):
@@ -81,7 +81,7 @@ class ZWaveTypeException(ZWaveException):
     """
     def __init__(self, value):
         ZWaveException.__init__(self)
-        self.msg = "Zwave Type Exception"
+        self.msg = u"Zwave Type Exception"
         self.value = value
 
     def __str__(self):
@@ -93,7 +93,7 @@ class ZWaveCommandClassException(ZWaveException):
     """
     def __init__(self, value):
         ZWaveException.__init__(self)
-        self.msg = "Zwave Command Class Exception"
+        self.msg = u"Zwave Command Class Exception"
         self.value = value
 
     def __str__(self):
@@ -208,9 +208,9 @@ class ZWaveObject(object):
                     self._cached_properties[prop] = True
                 self._outdated = value
             else:
-                raise ZWaveCacheException("Can't set outdated to False manually. It is done automatically.")
+                raise ZWaveCacheException(u"Can't set outdated to False manually. It is done automatically.")
         else:
-            raise ZWaveCacheException("Cache not enabled")
+            raise ZWaveCacheException(u"Cache not enabled")
 
     def is_outdated(self, prop):
         """
@@ -229,7 +229,7 @@ class ZWaveObject(object):
                 #This property is not cached so return true
                 return True
         else:
-            raise ZWaveCacheException("Cache not enabled")
+            raise ZWaveCacheException(u"Cache not enabled")
 
     def outdate(self, prop):
         """
@@ -244,7 +244,7 @@ class ZWaveObject(object):
                 self._cached_properties[str(prop)] = True
                 self._outdated = True
         else:
-            raise ZWaveCacheException("Cache not enabled")
+            raise ZWaveCacheException(u"Cache not enabled")
 
     def update(self, prop):
         """
@@ -264,7 +264,7 @@ class ZWaveObject(object):
                         break
                 self._outdated = out_dated
         else:
-            raise ZWaveCacheException("Cache not enabled")
+            raise ZWaveCacheException(u"Cache not enabled")
 
     def cache_property(self, prop):
         """
@@ -277,7 +277,7 @@ class ZWaveObject(object):
         if self._use_cache:
             self._cached_properties[str(prop)] = True
         else:
-            raise ZWaveCacheException("Cache not enabled")
+            raise ZWaveCacheException(u"Cache not enabled")
 
     @property
     def object_id(self):
@@ -326,10 +326,10 @@ class ZWaveObject(object):
             return True
         cur = self.network.dbcon.cursor()
         for key in kvs.keys():
-            logger.debug("DELETE FROM %s WHERE object_id=%s and key='%s'", self.__class__.__name__, self.object_id, key)
+            logger.debug(u"DELETE FROM %s WHERE object_id=%s and key='%s'", self.__class__.__name__, self.object_id, key)
             cur.execute("DELETE FROM %s WHERE object_id=? and key=?"%(self.__class__.__name__), (self.object_id, key))
             if kvs[key] is not None:
-                logger.debug("INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');", self.__class__.__name__, self.object_id, key, kvs[key])
+                logger.debug(u"INSERT INTO %s(object_id, 'key', 'value') VALUES (%s,'%s','%s');", self.__class__.__name__, self.object_id, key, kvs[key])
                 cur.execute("INSERT INTO %s(object_id, 'key', 'value') VALUES (?,?,?)"%(self.__class__.__name__), (self.object_id, key, kvs[key]))
         self.network.dbcon.commit()
         return True
