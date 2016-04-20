@@ -106,7 +106,7 @@ cdef cstr_to_str(s):
                 return s.decode('utf-8')
             except:
                 return s
-                
+
 class LibZWaveException(Exception):
     """
     Exception class for LibOpenZWave
