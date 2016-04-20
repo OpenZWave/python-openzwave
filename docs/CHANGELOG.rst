@@ -10,6 +10,8 @@ python-openzwave 0.3.0-beta8:
  * Update GROUP notification : please update your code to add the parameter
  * Improve unicode : you may need to delete your old config file
  * Add Python 3 support
+ * Improve controllers_command : add a lock and a way to retrieve current status
+ * Add support for RGB bulbs
 
 
 python-openzwave 0.3.0-beta3:
