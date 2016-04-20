@@ -6,6 +6,7 @@ Changelog
 
 
 python-openzwave 0.3.0-beta8:
+
  * Add multi instance support
  * Update GROUP notification : please update your code to add the new parameter
  * Update VALUE_REMOVED notification : please update your code to add the new parameter
