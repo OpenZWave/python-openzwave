@@ -94,7 +94,7 @@ class TestSwitchAll(TestApi):
             self.skipTest("No Switch_All found")
 
     def test_110_switch_all_on(self):
-        #~ self.wipTest()
+        self.wipTest()
         self.wait_for_queue()
         time.sleep(2)
         ran = False
@@ -114,7 +114,7 @@ class TestSwitchAll(TestApi):
             time.sleep(5)
 
     def test_120_switch_all_off(self):
-        #~ self.wipTest()
+        self.wipTest()
         self.wait_for_queue()
         time.sleep(2)
         ran = False
