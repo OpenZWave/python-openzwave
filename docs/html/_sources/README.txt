@@ -12,21 +12,19 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
 
 
-python-openzwave 0.3.0-b7 is out !!!
-====================================
+python-openzwave 0.3.0 is out !!!
+=================================
 Look at CHANGELOG to see new features and release notes.
 
-Look at INSTALL_REPO to test it now
+Look at INSTALL_REPO to test it now.
 
-Look at INSTALL_ARCH to install from archive : no need to install cython anymore
-
+Look at INSTALL_ARCH to install from archive : no need to install cython anymore.
 
 Support
 =======
 You can ask for support on the google group : http://groups.google.com/d/forum/python-openzwave-discuss.
 
 Please don't ask for support in github issues or by email.
-
 
 Pull requests
 =============
@@ -71,6 +69,8 @@ Ubuntu 64bits ... and the others
 
 If you're using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
 you certainly have the segfault problem.
+
+Ubuntu 12.04 and 14.04 seems to be affected by this bug. Ubuntu 15.10 and Debian Jessie not.
 
 It appears with the last update of python :
 

@@ -78,12 +78,13 @@ both cases.</p>
 <dl class="attribute">
 <dt id="openzwave.group.ZWaveGroup.associations_instances">
 <tt class="descname">associations_instances</tt></dt>
-<dd><p>The members of associations.</p>
+<dd><p>The members of associations with theirs instances.
+Nodes that does not support multi-instances have an instanceid equal to 0.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set() of tuples</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set() of tuples (nodeid,instanceid)</td>
 </tr>
 </tbody>
 </table>

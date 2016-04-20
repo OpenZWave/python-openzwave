@@ -170,7 +170,7 @@ class TestControllerCommand(TestApi):
                 break
             else:
                 time.sleep(1.0)
-        self.assertEqual(current, self.network.controller.STATE_COMPLETED)
+        self.assertTrue(current in [self.network.controller.STATE_COMPLETED, self.network.controller.STATE_FAILED])
 
     def test_030_command_request_network_update_nodes(self):
         self.ctrl_state_result = None

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Changelog &mdash; python-openzwave 0.3.0b8 documentation</title>
+    <title>Changelog &mdash; python-openzwave 0.3.0b9 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0b8',
+        VERSION:     '0.3.0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.3.0b8 documentation" href="index.html" /> 
+    <link rel="top" title="python-openzwave 0.3.0b9 documentation" href="index.html" /> 
   </head>
   <body>
     <div class="related">
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0b8 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0b9 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -46,17 +46,21 @@
             
   <div class="section" id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
-<dl class="docutils">
-<dt>python-openzwave 0.3.0-beta8:</dt>
-<dd><ul class="first last simple">
+<p>python-openzwave 0.3.0-beta8:</p>
+<blockquote>
+<div><ul class="simple">
 <li>Add multi instance support</li>
-<li>Update GROUP notification : please update your code to add the parameter</li>
+<li>Update GROUP notification : please update your code to add the new parameter</li>
+<li>Update VALUE_REMOVED notification : please update your code to add the new parameter</li>
 <li>Improve unicode : you may need to delete your old config file</li>
 <li>Add Python 3 support</li>
+<li>Improve controllers_command : add a lock and a way to retrieve current status</li>
+<li>Add support for RGB bulbs</li>
 </ul>
-</dd>
-<dt>python-openzwave 0.3.0-beta3:</dt>
-<dd><ul class="first last simple">
+</div></blockquote>
+<p>python-openzwave 0.3.0-beta3:</p>
+<blockquote>
+<div><ul class="simple">
 <li>Add security rewrite support. See <a class="reference external" href="https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J">https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J</a></li>
 <li>Add 2 signals for controller commands : ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND and ZWaveNetwork.SIGNAL_CONTROLLER_WAITING</li>
 <li>Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.</li>
@@ -67,20 +71,21 @@
 <li>Add request_state for node</li>
 <li>Add new destroy method to network : use it to clean all openzwave c++ ressources</li>
 </ul>
-</dd>
-<dt>python-openzwave 0.3.0-beta2:</dt>
-<dd><ul class="first last simple">
+</div></blockquote>
+<p>python-openzwave 0.3.0-beta2:</p>
+<blockquote>
+<div><ul class="simple">
 <li>Move to OpenZWave git organisation</li>
 </ul>
-</dd>
-<dt>python-openzwave 0.3.0-beta1:</dt>
-<dd><ul class="first last simple">
+</div></blockquote>
+<p>python-openzwave 0.3.0-beta1:</p>
+<blockquote>
+<div><ul class="simple">
 <li>Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [&#8211;device=/dev/ttyUSB0] [&#8211;log=Debug] ...</li>
 <li>Add pyozwweb confiuration file.</li>
 <li>Add version management in Makefile.</li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 <p>python-openzwave 0.3.0-alpha3:</p>
 <blockquote>
 <div><ul class="simple">
@@ -155,7 +160,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0b8 documentation</a> &raquo;</li> 
+        <li><a href="index.html">python-openzwave 0.3.0b9 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

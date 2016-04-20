@@ -50,15 +50,11 @@ def data_files_config(target, source, pattern):
     tup = list()
     tup.append(target)
     tup.append(glob.glob(os.path.join(source,pattern)))
-    #print tup
     ret.append(tup)
     dirs = _getDirs(source)
     if len(dirs):
         for d in dirs:
-            #print os.path.abspath(d)
             rd = d.replace(source+os.sep, "", 1)
-            #print target,rd
-            #print os.path.join(target,rd)
             ret.extend(data_files_config(os.path.join(target,rd), \
                 os.path.join(source,rd), pattern))
     return ret

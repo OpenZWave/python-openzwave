@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Group documentation &mdash; python-openzwave 0.3.0b8 documentation</title>
+    <title>Group documentation &mdash; python-openzwave 0.3.0b9 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3.0b8',
+        VERSION:     '0.3.0b9',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -23,7 +23,7 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="python-openzwave 0.3.0b8 documentation" href="index.html" />
+    <link rel="top" title="python-openzwave 0.3.0b9 documentation" href="index.html" />
     <link rel="up" title="API documentation" href="openzwave.html" />
     <link rel="next" title="Value documentation" href="value.html" />
     <link rel="prev" title="Command documentation" href="command.html" /> 
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="command.html" title="Command documentation"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0b8 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.3.0b9 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" accesskey="U">API documentation</a> &raquo;</li> 
       </ul>
     </div>  
@@ -132,12 +132,13 @@ both cases.</p>
 <dl class="attribute">
 <dt id="openzwave.group.ZWaveGroup.associations_instances">
 <tt class="descname">associations_instances</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.associations_instances" title="Permalink to this definition">¶</a></dt>
-<dd><p>The members of associations.</p>
+<dd><p>The members of associations with theirs instances.
+Nodes that does not support multi-instances have an instanceid equal to 0.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set() of tuples</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set() of tuples (nodeid,instanceid)</td>
 </tr>
 </tbody>
 </table>
@@ -279,7 +280,7 @@ in both cases.</p>
         <li class="right" >
           <a href="command.html" title="Command documentation"
              >previous</a> |</li>
-        <li><a href="index.html">python-openzwave 0.3.0b8 documentation</a> &raquo;</li>
+        <li><a href="index.html">python-openzwave 0.3.0b9 documentation</a> &raquo;</li>
           <li><a href="openzwave.html" >API documentation</a> &raquo;</li> 
       </ul>
     </div>

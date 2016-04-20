@@ -156,7 +156,7 @@ both cases.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id1"><span class="problematic" id="id2">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -624,6 +624,34 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="libopenzwave.PyManager.getAssociations">
+<tt class="descname">getAssociations</tt><big>(</big><big>)</big></dt>
+<dd><p id="getassociations">Gets the associations for a group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>homeId</strong> (<em>int</em>) &#8211; The Home ID of the Z-Wave controller that manages the node.</li>
+<li><strong>nodeId</strong> (<em>int</em>) &#8211; The ID of the node whose associations we are interested in.</li>
+<li><strong>groupIdx</strong> (<em>int</em>) &#8211; one-based index of the group (because Z-Wave product manuals use one-based group numbering).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A set containing IDs of members of the group</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">set()</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="libopenzwave.PyManager.getAssociationsInstances">
 <tt class="descname">getAssociationsInstances</tt><big>(</big><big>)</big></dt>
 <dd><p id="getassociationsinstances">Gets the associationsInstances for a group</p>
@@ -800,7 +828,7 @@ Retrieve controller interface path, name or path used to open the controller har
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">str</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id3"><span class="problematic" id="id4">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -884,7 +912,7 @@ method.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a href="#id5"><span class="problematic" id="id6">getAssociations_</span></a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a>, <a class="reference internal" href="#getassociations">getAssociations</a></p>
 </td>
 </tr>
 </tbody>
@@ -1634,7 +1662,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">int</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a href="#id7"><span class="problematic" id="id8">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a>, <a class="reference internal" href="#removeassociation">removeAssociation</a></p>
 </td>
 </tr>
 </tbody>
@@ -2983,7 +3011,7 @@ in both cases.</p>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a href="#id9"><span class="problematic" id="id10">getAssociations_</span></a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
+<tr class="field-even field"><th class="field-name">See:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#getnumgroups">getNumGroups</a>, <a class="reference internal" href="#getassociations">getAssociations</a>, <a class="reference internal" href="#getmaxassociations">getMaxAssociations</a>, <a class="reference internal" href="#addassociation">addAssociation</a></p>
 </td>
 </tr>
 </tbody>
