@@ -1544,15 +1544,19 @@ class ZWaveNetwork(ZWaveObject):
             return False
         if args['valueId']['id'] in self.nodes[args['nodeId']].values:
             logger.warning(u'Z-Wave Notification ValueRemoved for an unknown value (%s) on node %s', args['valueId'], args['nodeId'])
+            dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
+                **{'network': self, 'node' : self.nodes[args['nodeId']], \
+                    'value' : None, 'valueId' : args['valueId']['id']})
             return False
         val = self.nodes[args['nodeId']].values[args['valueId']['id']]
         if self.nodes[args['nodeId']].remove_value(args['valueId']['id']):
             dispatcher.send(self.SIGNAL_VALUE_REMOVED, \
                 **{'network': self, 'node' : self.nodes[args['nodeId']], \
-                    'value' : val})
+                    'value' : val, 'valueId' : args['valueId']['id']})
             #self._handle_value(node=self.nodes[args['nodeId']], value=val)
         if args['nodeId'] in self.nodes and args['valueId']['id'] in self.nodes[args['nodeId']].values:
             del self.nodes[args['nodeId']].values[args['valueId']['id']]
+        return True
 
     def _handle_notification(self, args):
         """
@@ -1591,20 +1595,7 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         """
-        logger.debug(u'Z-Wave ControllerCommand : %s', args)
-
-        if args['controllerState'] == self.controller.STATE_WAITING:
-            dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
-                **{'network': self, 'controller': self.controller,
-                   'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
-                   })
-
-        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \
-            **{'network': self, 'controller': self.controller,
-               'node':self.nodes[args['nodeId']] if args['nodeId'] in self.nodes else None, 'node_id' : args['nodeId'],
-               'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
-               'error_int': args['controllerErrorInt'], 'error': args['controllerError'], 'error_full': args['controllerErrorDoc'],
-               })
+        self._controller._handle_controller_command(args)
 
     def _handle_msg_complete(self, args):
         """

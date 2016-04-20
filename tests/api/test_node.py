@@ -220,31 +220,37 @@ class TestNode(TestApi):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].assign_return_route()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_740_node_refresh_info(self):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].refresh_info()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_745_node_send_information(self):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].send_information()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_750_node_network_update(self):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].network_update()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_760_node_neighbor_update(self):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].neighbor_update()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_770_node_request_state(self):
         node_id = max(self.network.nodes.keys())
         ret=self.network.nodes[node_id].request_state()
         self.assertEqual(ret, True)
+        self.network.controller.kill_command()
 
     def test_810_node_values(self):
         node_id = max(self.network.nodes.keys())
