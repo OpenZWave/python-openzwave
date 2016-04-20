@@ -120,7 +120,7 @@ repo-deps: common-deps cython-deps tests-deps pip-deps
 	@echo "Dependencies for users installed (python ${python_version_full})"
 
 autobuild-deps: common-deps cython-deps tests-deps pip-deps
-	sudo apt-get install -y git
+	apt-get install --force-yes -y git
 	@echo
 	@echo "Dependencies for autobuilders (docker, travis, ...) installed (python ${python_version_full})"
 
@@ -130,46 +130,46 @@ arch-deps: common-deps pip-deps
 
 python-deps:
 ifeq (${python_version_major},2)
-	sudo apt-get install -y python2.7 python2.7-dev python2.7-minimal libyaml-dev python-pip
+	apt-get install --force-yes -y python2.7 python2.7-dev python2.7-minimal libyaml-dev python-pip
 endif
 ifeq (${python_version_major},3)
-	sudo  apt-get install -y python3 python3-dev python3-minimal libyaml-dev python3-pip
+	apt-get install --force-yes -y python3 python3-dev python3-minimal libyaml-dev python3-pip
 endif
 
 cython-deps:
 ifeq (${python_version_major},2)
-	sudo apt-get install -y cython
+	apt-get install --force-yes -y cython
 endif
 ifeq (${python_version_major},3)
-	sudo  apt-get install -y cython3
+	 apt-get install --force-yes -y cython3
 endif
 
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	sudo apt-get install -y python-pip python-dev python-docutils python-setuptools python-louie
+	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	-sudo  apt-get install -y python3-pip python3-docutils python3-dev python3-setuptools
+	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
 endif
-	sudo apt-get install -y build-essential libudev-dev g++
+	apt-get install --force-yes -y build-essential libudev-dev g++
 
 tests-deps:
-	sudo ${PIP_EXEC} install nose-html
-	sudo ${PIP_EXEC} install nose-progressive
-	sudo ${PIP_EXEC} install coverage
-	sudo ${PIP_EXEC} install nose
-	sudo ${PIP_EXEC} install pylint
+	${PIP_EXEC} install nose-html
+	${PIP_EXEC} install nose-progressive
+	${PIP_EXEC} install coverage
+	${PIP_EXEC} install nose
+	${PIP_EXEC} install pylint
 
 doc-deps:
-	-sudo  apt-get install -y python-sphinx
-	sudo ${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+	-apt-get install --force-yes -y python-sphinx
+	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 pip-deps:
-	#sudo ${PIP_EXEC} install docutils
-	#sudo ${PIP_EXEC} install setuptools
+	#${PIP_EXEC} install docutils
+	#${PIP_EXEC} install setuptools
 	#The following line crashes with a core dump
-	#sudo ${PIP_EXEC} install "Cython==0.22"
+	#${PIP_EXEC} install "Cython==0.22"
 
 merge-python3:
 	git checkout python3
@@ -214,18 +214,18 @@ docs: clean-docs
 	@echo "Documentation finished."
 
 install-lib: build
-	sudo ${PYTHON_EXEC} setup-lib.py install
+	${PYTHON_EXEC} setup-lib.py install
 	@echo
 	@echo "Installation of lib finished."
 
 install-api: install-lib
-	sudo ${PYTHON_EXEC} setup-api.py install
+	${PYTHON_EXEC} setup-api.py install
 	@echo
 	@echo "Installation of API finished."
 
 install: install-api
-	sudo ${PYTHON_EXEC} setup-manager.py install
-	sudo ${PYTHON_EXEC} setup-web.py install
+	${PYTHON_EXEC} setup-manager.py install
+	${PYTHON_EXEC} setup-web.py install
 	@echo
 	@echo "Installation for users finished."
 
@@ -239,7 +239,7 @@ develop:
 
 tests:
 	#export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests ; unset NOSESKIP
+	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/lib tests/api tests/manager ; unset NOSESKIP
 	@echo
 	@echo "Tests for ZWave network finished."
 
@@ -257,7 +257,8 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: openzwave openzwave/.lib/
+build: openzwave/.lib/
+	${PYTHON_EXEC} setup-lib.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
@@ -316,6 +317,7 @@ tgz: clean-archive $(ARCHDIR) docs
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
+	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz archives/
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 

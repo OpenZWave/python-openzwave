@@ -83,7 +83,27 @@ class TestControllerCommand(TestApi):
         except :
             pass
         self.network.controller.cancel_command()
+        self.wait_for_queue()
+        self.network.controller.kill_command()
         self.ctrl_state_result = None
+
+    def test_005_request_controller_status(self):
+        self.ctrl_state_result = None
+        current = None
+        self.ctrl_state_result = None
+        first = True
+        for i in range(0,SLEEP):
+            if first:
+                ret = self.network.controller.request_controller_status()
+                self.assertTrue(ret)
+                first = False
+            #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
+                current = self.ctrl_state_result
+                break
+            else:
+                time.sleep(1.0)
+        self.assertTrue(current in [self.network.controller.STATE_COMPLETED, self.network.controller.STATE_NORMAL])
 
     def test_010_command_send_node_information_nodes(self):
         self.ctrl_state_result = None
@@ -96,8 +116,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -112,8 +131,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -131,8 +149,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #~ print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -148,8 +165,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -167,8 +183,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -183,8 +198,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -202,8 +216,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -218,8 +231,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -237,8 +249,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -253,8 +264,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -272,8 +282,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -291,8 +300,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -310,8 +318,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -329,8 +336,7 @@ class TestControllerCommand(TestApi):
             self.ctrl_state_result = None
             for i in range(0,SLEEP):
                 #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-                if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                        self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+                if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                     current = self.ctrl_state_result
                     break
                 else:
@@ -345,8 +351,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -362,8 +367,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -379,8 +383,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
@@ -396,8 +399,7 @@ class TestControllerCommand(TestApi):
         current = None
         for i in range(0,SLEEP):
             #print("self.ctrl_state_result = %s" % self.ctrl_state_result)
-            if self.ctrl_state_result != None and self.ctrl_state_result not in [self.network.controller.STATE_STARTING,
-                    self.network.controller.STATE_WAITING, self.network.controller.STATE_INPROGRESS]:
+            if self.ctrl_state_result != None and self.ctrl_state_result not in self.network.controller.STATES_LOCKED:
                 current = self.ctrl_state_result
                 break
             else:
