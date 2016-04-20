@@ -6,7 +6,7 @@ Installing python-openzwave from archive
 
 This is the simplest (and the fastest) way to install python-openzwave. It cames with openzwave source files and is already cythonized.
 
-This is surely the best soltion to install python-openzwave on a raspberry pi.
+This is surely the best solution to install python-openzwave on a raspberry pi.
 
 Get archive of python-openzwave
 ===============================
@@ -50,28 +50,27 @@ Now, you can compile sources :
 
     make build
 
-If you have already built python-openzwave or the build failed
-you can use the clean option :
+If you have already built python-openzwave or if the build failed
+you can use the clean target and build again :
 
 .. code-block:: bash
 
     sudo make clean
     make build
 
-Do not use root to build python-openzwave as it will surely fails. Please use a "normal user".
+Do not use root to build python-openzwave as root it will surely fails. Please use a "normal user".
 
 
 Installation
 ============
 
-You can now install the packages using the following command will.
+You can now install the packages using the following command :
 
 .. code-block:: bash
 
     sudo make install
 
-The installation script create a list of installed files. So you can remove
-python-openzwave using the following command :
+You can remove python-openzwave using :
 
 .. code-block:: bash
 
