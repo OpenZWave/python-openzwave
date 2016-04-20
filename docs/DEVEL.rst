@@ -38,21 +38,30 @@ After updating the pyx, you need to reinstall it. Otherwise, your changes will n
 
 Tests
 =====
-Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. There reports are here :
 
- - Docker : https://registry.hub.docker.com/u/bibi21000/python-openzwave/
- - Travis : https://travis-ci.org/bibi21000/python-openzwave
- - `Nosetests report <file:../nosetests/nosetests.html>`_
- - `Coverage report <file:../coverage/index.html>`_
- - `Pylint report <file:../pylint/report.html>`_
+First, install the dependances :
 
-Some tests don't need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
+.. code-block:: bash
+
+    sudo make tests-deps
+
+To launch all the tests suite (about 140 tests), use the followind command :
+
+.. code-block:: bash
+
+    make tests
+
+To launch on ly some tests :
+
+.. code-block:: bash
+
+    nosetests --verbosity=2 tests/api/test_controller_command.py
 
 Some tests need manual operations (ie to add a node, to remove one, ...). For example, to test the remove node, use :
 
 .. code-block:: bash
 
-    export MANUALSKIP='False' && /usr/local/bin/nosetests --verbosity=2 tests/api/test_controller_command.py -m test_150 && unset MANUALSKIP
+    export MANUALSKIP='False' && nosetests --verbosity=2 tests/api/test_controller_command.py -m test_150 && unset MANUALSKIP
     test_150_command_remove_node_and_wait_for_user (tests.api.test_controller_command.TestControllerCommand) ... ok
 
     ----------------------------------------------------------------------
@@ -62,8 +71,25 @@ Some tests need manual operations (ie to add a node, to remove one, ...). For ex
 
 You should push the inclusion button of the node before the end of the test.
 
+Some tests don't need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.
+
+Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. There reports are here :
+
+ - Docker : https://registry.hub.docker.com/u/bibi21000/python-openzwave/
+ - Travis : https://travis-ci.org/bibi21000/python-openzwave
+ - `Nosetests report <file:../nosetests/nosetests.html>`_
+ - `Coverage report <file:../coverage/index.html>`_
+ - `Pylint report <file:../pylint/report.html>`_
+
 Documentation
 =============
+
+First, install the dependances :
+
+.. code-block:: bash
+
+    sudo make doc-deps
+
 Documentation is managed with sphinx.
 Don't utpdate txt files (README, INSTALL, ...), update the RST sources in docs.
 Use the following commands to generate all docs files (txt, html and joomla)
