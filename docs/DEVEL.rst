@@ -6,11 +6,18 @@ Developers information
 
 How to develop for python-openzwave
 ===================================
+
 Get the sources
 
 .. code-block:: bash
 
     git clone https://github.com/OpenZWave/python-openzwave
+
+You can install all the dependances to develop for python-openzwave using the command :
+
+.. code-block:: bash
+
+    sudo make developper-deps
 
 You must now install python-openzwave in develop mode
 
