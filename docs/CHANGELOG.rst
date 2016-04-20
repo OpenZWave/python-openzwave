@@ -16,6 +16,7 @@ python-openzwave 0.3.0-beta8:
 
 
 python-openzwave 0.3.0-beta3:
+
  * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
  * Add 2 signals for controller commands : ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND and ZWaveNetwork.SIGNAL_CONTROLLER_WAITING
  * Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.
@@ -28,10 +29,12 @@ python-openzwave 0.3.0-beta3:
 
 
 python-openzwave 0.3.0-beta2:
+
  * Move to OpenZWave git organisation
 
 
 python-openzwave 0.3.0-beta1:
+
  * Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [--device=/dev/ttyUSB0] [--log=Debug] ...
  * Add pyozwweb confiuration file.
  * Add version management in Makefile.
