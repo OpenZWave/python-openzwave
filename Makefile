@@ -338,12 +338,7 @@ tag: commit
 	@echo
 	@echo "Tag pushed on github."
 
-ftp:
-	@./ftp.sh python-openzwave-${python_openzwave_version}.tgz
-	@echo
-	@echo "New version ${python_openzwave_version} published tp ftp"
-
-new-version: tag tgz debch ftp
+new-version: tag tgz
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
