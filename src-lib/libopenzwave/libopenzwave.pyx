@@ -110,7 +110,7 @@ cdef cstr_to_str(s):
                 return s.decode('utf-8')
             except:
                 return s
-                
+
 class LibZWaveException(Exception):
     """
     Exception class for LibOpenZWave
@@ -551,12 +551,12 @@ def configPath():
     elif os.path.isdir(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
         return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
     else:
-        if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
         if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
             return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
         if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
             return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
+        if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
     return None
 
 cdef class PyOptions:
