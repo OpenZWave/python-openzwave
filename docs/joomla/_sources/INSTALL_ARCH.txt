@@ -15,7 +15,7 @@ You are now ready to download sources of python-openzwave here :
 
 .. code-block:: bash
 
-    http://bibi21000.no-ip.biz/python-openzwave/
+    https://github.com/OpenZWave/python-openzwave/tree/master/archives
 
 This archive contains sources of python-openzwave and openzwave.
 
