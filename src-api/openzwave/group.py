@@ -101,19 +101,6 @@ class ZWaveGroup(ZWaveObject):
         """
         return self._network.manager.getMaxAssociations(self.home_id, self._node_id, self.index)
 
-#~ cython overloading problem
-#~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
-#~
-    #~ @property
-    #~ def associations(self):
-        #~ """
-        #~ The members of associations.
-#~
-        #~ :rtype: set()
-#~
-        #~ """
-        #~ return self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
-
     @property
     def associations(self):
         """
@@ -122,14 +109,15 @@ class ZWaveGroup(ZWaveObject):
         :rtype: set()
 
         """
-        return [ x[0] for x in self._network.manager.getAssociationsInstances(self.home_id, self._node_id, self.index) ]
+        return self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
 
     @property
     def associations_instances(self):
         """
-        The members of associations.
+        The members of associations with theirs instances.
+        Nodes that does not support multi-instances have an instanceid equal to 0.
 
-        :rtype: set() of tuples
+        :rtype: set() of tuples (nodeid,instanceid)
 
         """
         return self._network.manager.getAssociationsInstances(self.home_id, self._node_id, self.index)

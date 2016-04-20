@@ -3725,32 +3725,31 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 
         '''
         return self.manager.GetNumGroups(homeid, nodeid)
+
+    def getAssociations(self, homeid, nodeid, groupidx):
+        '''
+.. _getAssociations:
+
+Gets the associations for a group
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node whose associations we are interested in.
+:type nodeId: int
+:param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
+:type groupIdx: int
+:return: A set containing IDs of members of the group
+:rtype: set()
+:see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
+        '''
 #~ cython overloading problem
 #~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
 #~
 #~
-#~
-#~     def getAssociations(self, homeid, nodeid, groupidx):
-#~         '''
-#~ .. _getAssociations:
-#~
-#~ Gets the associations for a group
-#~
-#~ :param homeId: The Home ID of the Z-Wave controller that manages the node.
-#~ :type homeId: int
-#~ :param nodeId: The ID of the node whose associations we are interested in.
-#~ :type nodeId: int
-#~ :param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
-#~ :type groupIdx: int
-#~ :return: A set containing IDs of members of the group
-#~ :rtype: set()
-#~ :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
-#~
-#~         '''
 #~         data = set()
 #~         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
 #~         #Allocate memory
-#~         cdef int_associations dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+#~         cdef int_associations dbuf = <int_associations>malloc(sizeof(uint8_t) * size)
 #~         # return value is pointer to uint8_t[]
 #~         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
 #~         if count == 0:
@@ -3772,6 +3771,7 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 #~                 free(dbuf)
 #~                 pass
 #~         return data
+        return [ x[0] for x in self.getAssociationsInstances(homeid, nodeid, groupidx) if x[1] == 0x00 ]
 
     def getAssociationsInstances(self, homeid, nodeid, groupidx):
         '''
@@ -3793,7 +3793,7 @@ Gets the associationsInstances for a group
         data = set()
         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
         #Allocate memory
-        cdef struct_associations dbuf = <InstanceAssociation_t**>malloc(sizeof(InstanceAssociation_t) * size)
+        cdef struct_associations dbuf = <struct_associations>malloc(sizeof(InstanceAssociation_t) * size)
         # return value is pointer to uint8_t[]
         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
