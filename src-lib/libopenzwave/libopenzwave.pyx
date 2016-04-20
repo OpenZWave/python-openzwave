@@ -73,6 +73,7 @@ logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
 __version__ = "0.3.0b8"
+libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
     _dist = get_distribution('libopenzwave')
@@ -80,11 +81,14 @@ except DistributionNotFound:
     __version__ = 'Not installed'
 else:
     __version__ = _dist.version
-try:
-    _dist = get_distribution('libopenzwave')
-    libopenzwave_file = _dist.__file__
-except AttributeError:
-    libopenzwave_file = 'not_installed'
+    libopenzwave_location = _dist.location
+if libopenzwave_location == 'not_installed' :
+   try:
+        _dist = get_distribution('libopenzwave')
+        __version__ = _dist.version
+        libopenzwave_file = _dist.__file__
+   except AttributeError:
+        libopenzwave_file = 'not_installed'
 
 cdef string str_to_cppstr(str s):
     if isinstance(s, unicode):
@@ -106,7 +110,7 @@ cdef cstr_to_str(s):
                 return s.decode('utf-8')
             except:
                 return s
-                
+
 class LibZWaveException(Exception):
     """
     Exception class for LibOpenZWave
@@ -551,6 +555,8 @@ def configPath():
             return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
         if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
             return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
+        if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
     return None
 
 cdef class PyOptions:
