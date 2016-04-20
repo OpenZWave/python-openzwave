@@ -133,7 +133,7 @@ ifeq (${python_version_major},2)
 	apt-get install --force-yes -y python2.7 python2.7-dev python2.7-minimal libyaml-dev python-pip
 endif
 ifeq (${python_version_major},3)
-	 apt-get install --force-yes -y python3 python3-dev python3-minimal libyaml-dev python3-pip
+	apt-get install --force-yes -y python3 python3-dev python3-minimal libyaml-dev python3-pip
 endif
 
 cython-deps:
@@ -150,7 +150,7 @@ ifeq (${python_version_major},2)
 	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-louie
 endif
 ifeq (${python_version_major},3)
-	- apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
+	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
 endif
 	apt-get install --force-yes -y build-essential libudev-dev g++
 
@@ -213,7 +213,7 @@ docs: clean-docs
 	@echo
 	@echo "Documentation finished."
 
-install-lib:
+install-lib: build
 	${PYTHON_EXEC} setup-lib.py install
 	@echo
 	@echo "Installation of lib finished."
@@ -257,13 +257,13 @@ update: openzwave
 	git pull
 	cd openzwave && git pull
 
-build: openzwave/.libs/*.o
+build: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
-openzwave/.libs/*.o: openzwave
+openzwave/.lib/: openzwave
 	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && $(MAKE)
 
