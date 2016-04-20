@@ -600,6 +600,21 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             return True
         return False
 
+    def get_rgbw(self, value_id):
+        """
+        The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+        Get the RGW value (using value value_id).
+
+        :param value_id: The value to retrieve level
+        :type value_id: int
+        :return: The level : a value between 0-99
+        :rtype: int
+
+        """
+        if value_id in self.get_rgbbulbs():
+            return self.values[value_id].data
+        return None
+
 
 class ZWaveNodeSensor(ZWaveNodeInterface):
     """

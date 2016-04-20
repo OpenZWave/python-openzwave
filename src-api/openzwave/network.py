@@ -1591,20 +1591,7 @@ class ZWaveNetwork(ZWaveObject):
         :type args: dict()
 
         """
-        logger.debug(u'Z-Wave ControllerCommand : %s', args)
-
-        if args['controllerState'] == self.controller.STATE_WAITING:
-            dispatcher.send(self.SIGNAL_CONTROLLER_WAITING, \
-                **{'network': self, 'controller': self.controller,
-                   'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
-                   })
-
-        dispatcher.send(self.SIGNAL_CONTROLLER_COMMAND, \
-            **{'network': self, 'controller': self.controller,
-               'node':self.nodes[args['nodeId']] if args['nodeId'] in self.nodes else None, 'node_id' : args['nodeId'],
-               'state_int': args['controllerStateInt'], 'state': args['controllerState'], 'state_full': args['controllerStateDoc'],
-               'error_int': args['controllerErrorInt'], 'error': args['controllerError'], 'error_full': args['controllerErrorDoc'],
-               })
+        self._controller._handle_controller_command(args)
 
     def _handle_msg_complete(self, args):
         """
