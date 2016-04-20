@@ -3,6 +3,7 @@
 
 # You can set these variables from the command line.
 ARCHBASE      = archive
+ARCHIVES      = archives
 BUILDDIR      = build
 DISTDIR       = dists
 NOSE          = $(shell which nosetests)
@@ -317,11 +318,11 @@ tgz: clean-archive $(ARCHDIR) docs
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
-	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz archives/
+	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)/
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
-push: build develop
+push: develop
 	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-git push
 	@echo
