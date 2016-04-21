@@ -318,11 +318,8 @@ tgz: clean-archive $(ARCHDIR) docs
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
-	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)/
-	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
-	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	@echo
-	@echo "Archive for version ${python_openzwave_version} created"
+	@echo "Archive for version ${python_openzwave_version} created and ready do be uploaded"
 
 push: develop
 	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
