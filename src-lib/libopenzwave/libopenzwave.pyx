@@ -72,7 +72,7 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.0b8"
+__version__ = "0.3.0b9"
 libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
@@ -423,7 +423,7 @@ cdef getValueFromType(Manager *manager, valueId):
     return ret
 
 cdef delValueId(ValueID v, n):
-    logger.warning("delValueId : ValueID : %s", v.GetId())
+    logger.debug("delValueId : ValueID : %s", v.GetId())
     if values_map.find(v.GetId()) != values_map.end():
         values_map.erase(values_map.find(v.GetId()))
 
@@ -432,6 +432,7 @@ cdef addValueId(ValueID v, n):
     #check is a valid value
     if v.GetInstance() == 0:
         return
+    logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
     values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     genre = PyGenres[v.GetGenre()]
@@ -473,47 +474,87 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     """
     logger.debug("notif_callback : new notification")
     cdef Notification* notification = <Notification*>_notification
-    notif_type_str = PyNotifications[notification.GetType()] if notification.GetType() in PyNotifications else 'None'
-    notif_node_str = notification.GetNodeId()
-    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", notif_type_str, notif_node_str)
-    n = {'notificationType' : PyNotifications[notification.GetType()],
-         'homeId' : notification.GetHomeId(),
-         'nodeId' : notification.GetNodeId(),
-        }
+    logger.debug("notif_callback : Notification type : %s, nodeId : %s", notification.GetType(), notification.GetNodeId())
+    try:
+        n = {'notificationType' : PyNotifications[notification.GetType()],
+             'homeId' : notification.GetHomeId(),
+             'nodeId' : notification.GetNodeId(),
+            }
+    except:
+        logger.exception("notif_callback exception")
     if notification.GetType() == Type_Group:
-        n['groupIdx'] = notification.GetGroupIdx()
+        try:
+            n['groupIdx'] = notification.GetGroupIdx()
+        except:
+            logger.exception("notif_callback exception")
     elif notification.GetType() == Type_NodeEvent:
-        n['event'] = notification.GetEvent()
+        try:
+            n['event'] = notification.GetEvent()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_Notification:
-        n['notificationCode'] = notification.GetNotification()
+        try:
+            n['notificationCode'] = notification.GetNotification()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_ControllerCommand:
-        state = notification.GetEvent()
-        n['controllerStateInt'] = state
-        n['controllerState'] = PyControllerState[state]
-        n['controllerStateDoc'] = PyControllerState[state].doc
-        #Notification is filled with error
-        error = notification.GetNotification()
-        n['controllerErrorInt'] = error
-        n['controllerError'] = PyControllerError[error]
-        n['controllerErrorDoc'] = PyControllerError[error].doc
+        try:
+            state = notification.GetEvent()
+            n['controllerStateInt'] = state
+            n['controllerState'] = PyControllerState[state]
+            n['controllerStateDoc'] = PyControllerState[state].doc
+            #Notification is filled with error
+            error = notification.GetNotification()
+            n['controllerErrorInt'] = error
+            n['controllerError'] = PyControllerError[error]
+            n['controllerErrorDoc'] = PyControllerError[error].doc
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
-        n['buttonId'] = notification.GetButtonId()
+        try:
+            n['buttonId'] = notification.GetButtonId()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_DriverReset:
-        logger.warning("Notification : Type_DriverReset received : clean all valueids")
-        values_map.empty()
+        try:
+            logger.debug("Notification : Type_DriverReset received : clean all valueids")
+            values_map.empty()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_SceneEvent:
-        n['sceneId'] = notification.GetSceneId()
+        try:
+            n['sceneId'] = notification.GetSceneId()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
-        addValueId(notification.GetValueID(), n)
+        try:
+            addValueId(notification.GetValueID(), n)
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_ValueRemoved:
-        n['valueId'] = {'id' : notification.GetValueID().GetId()}
+        try:
+            n['valueId'] = {'id' : notification.GetValueID().GetId()}
+        except:
+            logger.exception("notif_callback exception")
+            raise
     #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
     #    #Maybe we should enable/disable this
     #    addValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : call callback context")
     (<object>_context)(n)
     if notification.GetType() == Type_ValueRemoved:
-        delValueId(notification.GetValueID(), n)
+        try:
+            delValueId(notification.GetValueID(), n)
+        except:
+            logger.exception("notif_callback exception")
+            raise
     logger.debug("notif_callback : end")
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -973,6 +1014,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
         0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
         0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
+        0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
         0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
         0x61: 'COMMAND_CLASS_DISPLAY',

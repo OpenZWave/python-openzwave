@@ -72,20 +72,19 @@ options.set_logging(True)
 options.lock()
 
 def louie_network_started(network):
-    print("Hello from network : I'm started : homeid {0:08x} - {0:d} nodes were found.".format( \
-        (network.home_id, network.nodes_count)))
+    print("Hello from network : I'm started : homeid {:08x} - {} nodes were found.".format(network.home_id, network.nodes_count))
 
 def louie_network_failed(network):
     print("Hello from network : can't load :(.")
 
 def louie_network_ready(network):
-    print("Hello from network : I'm ready : {0:d} nodes were found.".format(network.nodes_count))
+    print("Hello from network : I'm ready : {} nodes were found.".format(network.nodes_count))
     print("Hello from network : my controller is : {}".format(network.controller))
     dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
     dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
 
 def louie_node_update(network, node):
-    print("Hello from node : ().".format(node))
+    print("Hello from node : {}.".format(node))
 
 def louie_value_update(network, node, value):
     print("Hello from value : {}.".format( value ))
