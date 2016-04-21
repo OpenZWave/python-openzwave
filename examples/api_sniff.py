@@ -74,8 +74,7 @@ options.lock()
 
 def louie_network_started(network):
     print('//////////// ZWave network is started ////////////')
-    print('Louie signal : OpenZWave network is started : homeid {0:08x} - {} nodes were found.'.format(\
-        network.home_id, network.nodes_count))
+    print('Louie signal : OpenZWave network is started : homeid {:08x} - {} nodes were found.'.format(network.home_id, network.nodes_count))
 
 def louie_network_resetted(network):
     print('Louie signal : OpenZWave network is resetted.')

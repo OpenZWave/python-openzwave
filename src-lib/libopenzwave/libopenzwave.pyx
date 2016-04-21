@@ -423,7 +423,7 @@ cdef getValueFromType(Manager *manager, valueId):
     return ret
 
 cdef delValueId(ValueID v, n):
-    logger.warning("delValueId : ValueID : %s", v.GetId())
+    logger.debug("delValueId : ValueID : %s", v.GetId())
     if values_map.find(v.GetId()) != values_map.end():
         values_map.erase(values_map.find(v.GetId()))
 
@@ -432,6 +432,7 @@ cdef addValueId(ValueID v, n):
     #check is a valid value
     if v.GetInstance() == 0:
         return
+    logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
     values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     genre = PyGenres[v.GetGenre()]
@@ -473,9 +474,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     """
     logger.debug("notif_callback : new notification")
     cdef Notification* notification = <Notification*>_notification
-    notif_type_str = PyNotifications[notification.GetType()] if notification.GetType() in PyNotifications else 'None'
-    notif_node_str = notification.GetNodeId()
-    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", notif_type_str, notif_node_str)
+    logger.debug("notif_callback : Notification type : %s, nodeId : %s", notification.GetType(), notification.GetNodeId())
     try:
         n = {'notificationType' : PyNotifications[notification.GetType()],
              'homeId' : notification.GetHomeId(),
@@ -522,7 +521,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
             raise
     elif notification.GetType() == Type_DriverReset:
         try:
-            logger.warning("Notification : Type_DriverReset received : clean all valueids")
+            logger.debug("Notification : Type_DriverReset received : clean all valueids")
             values_map.empty()
         except:
             logger.exception("notif_callback exception")
