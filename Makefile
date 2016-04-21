@@ -319,6 +319,8 @@ tgz: clean-archive $(ARCHDIR) docs
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
 	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)/
+	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
+	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
@@ -332,13 +334,13 @@ commit: push merge-python3
 	@echo
 	@echo "Commits for branches master/python3 pushed on github."
 
-tag: commit
+tag:
 	git tag v${python_openzwave_version}
 	git push origin v${python_openzwave_version}
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: tag tgz
+new-version: commit tgz tag commit
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
