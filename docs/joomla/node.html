@@ -190,6 +190,20 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.device_type">
+<tt class="descname">device_type</tt></dt>
+<dd><p>The device_type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.generic">
 <tt class="descname">generic</tt></dt>
 <dd><p>The generic type of the node.</p>
@@ -228,6 +242,22 @@ Notification::Type_ControllerCommand</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_max_associations">
+<tt class="descname">get_max_associations</tt><big>(</big><em>groupidx</em><big>)</big></dt>
+<dd><p>Gets the maximum number of associations for a group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groupidx</strong> (<em>int</em>) &#8211; The group to query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>
 </tbody>
 </table>
@@ -531,6 +561,20 @@ Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_zwave_plus">
+<tt class="descname">is_zwave_plus</tt></dt>
+<dd><p>Is this node a zwave plus one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.location">
 <tt class="descname">location</tt></dt>
 <dd><p>The location of the node.</p>
@@ -820,6 +864,20 @@ same as the query state starting from the dynamic state.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.role">
+<tt class="descname">role</tt></dt>
+<dd><p>The role of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
 </tr>
 </tbody>
 </table>

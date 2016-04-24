@@ -71,7 +71,7 @@ class ZWaveValue(ZWaveObject):
         :type network: ZWaveNetwork
         """
         ZWaveObject.__init__(self, value_id, network=network)
-        logger.debug("Create object value (valueId:%s)", value_id)
+        logger.debug(u"Create object value (valueId:%s)", value_id)
         self._parent = parent
 
     def __str__(self):
@@ -81,7 +81,7 @@ class ZWaveValue(ZWaveObject):
         :rtype: str
 
         """
-        return 'home_id: [%s] id: [%s] parent_id: [%s] label: [%s] data: [%s]' % \
+        return u'home_id: [%s] id: [%s] parent_id: [%s] label: [%s] data: [%s]' % \
           (self._network.home_id_str, self._object_id, self.parent_id, self.label, self.data)
 
     @property
@@ -345,7 +345,7 @@ class ZWaveValue(ZWaveObject):
         if self.is_read_only:
             return None
         new_data = None
-        logger.debug("check_data type :%s", self.type)
+        logger.debug(u"check_data type :%s", self.type)
         if self.type == "Bool":
             if isinstance(data, string_types):
                 if data in ["False", "false", "FALSE", "0"]:
@@ -542,7 +542,7 @@ class ZWaveValue(ZWaveObject):
         :param verify: if true, verify changes; if false, don't verify changes.
         :type verify: bool
         """
-        logger.debug('Set change verified %s for valueId [%s]', verify, self.value_id)
+        logger.debug(u'Set change verified %s for valueId [%s]', verify, self.value_id)
         self._network.manager.setChangeVerified(self.value_id, verify)
 
     def to_dict(self, extras=['all']):

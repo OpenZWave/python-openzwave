@@ -61,14 +61,6 @@ class ZWaveGroup(ZWaveObject):
 
         self._node_id = node_id
         self._index = group_index
-        #self._label = None
-        #self.cache_property("self.label")
-        #self._max_associations = set()
-        #self.cache_property("self.max_associations")
-        #self._members = set()
-        #self.cache_property("self.members")
-        #self._associations = set()
-        #self.cache_property("self.associations")
 
     def __str__(self):
         """
@@ -109,7 +101,6 @@ class ZWaveGroup(ZWaveObject):
         """
         return self._network.manager.getMaxAssociations(self.home_id, self._node_id, self.index)
 
-
     @property
     def associations(self):
         """
@@ -120,7 +111,18 @@ class ZWaveGroup(ZWaveObject):
         """
         return self._network.manager.getAssociations(self.home_id, self._node_id, self.index)
 
-    def add_association(self, target_node_id):
+    @property
+    def associations_instances(self):
+        """
+        The members of associations with theirs instances.
+        Nodes that does not support multi-instances have an instanceid equal to 0.
+
+        :rtype: set() of tuples (nodeid,instanceid)
+
+        """
+        return self._network.manager.getAssociationsInstances(self.home_id, self._node_id, self.index)
+
+    def add_association(self, target_node_id, instance=0x00):
         """
         Adds a node to an association group.
 
@@ -132,11 +134,13 @@ class ZWaveGroup(ZWaveObject):
 
         :param target_node_id: Identifier for the node that will be added to the association group.
         :type target_node_id: int
+        :param instance: The instance that will be added to the association group.
+        :type instance: int
 
         """
-        self._network.manager.addAssociation(self.home_id, self._node_id, self.index, target_node_id)
+        self._network.manager.addAssociation(self.home_id, self._node_id, self.index, target_node_id, instance)
 
-    def remove_association(self, target_node_id):
+    def remove_association(self, target_node_id, instance=0x00):
         """
         Removes a node from an association group.
 
@@ -148,9 +152,11 @@ class ZWaveGroup(ZWaveObject):
 
         :param target_node_id: Identifier for the node that will be removed from the association group.
         :type target_node_id: int
+        :param instance: The instance that will be added to the association group.
+        :type instance: int
 
         """
-        self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id)
+        self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id, instance)
 
     def to_dict(self, extras=['all']):
         """

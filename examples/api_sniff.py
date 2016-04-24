@@ -74,28 +74,27 @@ options.lock()
 
 def louie_network_started(network):
     print('//////////// ZWave network is started ////////////')
-    print('Louie signal : OpenZWave network is started : homeid %0.8x - %d nodes were found.' % \
-        (network.home_id, network.nodes_count))
+    print('Louie signal : OpenZWave network is started : homeid {:08x} - {} nodes were found.'.format(network.home_id, network.nodes_count))
 
 def louie_network_resetted(network):
     print('Louie signal : OpenZWave network is resetted.')
 
 def louie_network_ready(network):
     print('//////////// ZWave network is ready ////////////')
-    print('Louie signal : ZWave network is ready : %d nodes were found.' % network.nodes_count)
-    print('Louie signal : Controller : %s' % network.controller)
+    print('Louie signal : ZWave network is ready : {} nodes were found.'.format(network.nodes_count))
+    print('Louie signal : Controller : {}'.format(network.controller))
     dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
     dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
     dispatcher.connect(louie_ctrl_message, ZWaveController.SIGNAL_CONTROLLER)
 
 def louie_node_update(network, node):
-    print('Louie signal : Node update : %s.' % node)
+    print('Louie signal : Node update : {}.'.format(node))
 
 def louie_value_update(network, node, value):
-    print('Louie signal : Value update : %s.' % value)
+    print('Louie signal : Value update : {}.'.format(value))
 
 def louie_ctrl_message(state, message, network, controller):
-    print('Louie signal : Controller message : %s.' % message)
+    print('Louie signal : Controller message : {}.'.format(message))
 
 #Create a network object
 network = ZWaveNetwork(options, log=None)
@@ -104,35 +103,35 @@ dispatcher.connect(louie_network_started, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
 dispatcher.connect(louie_network_resetted, ZWaveNetwork.SIGNAL_NETWORK_RESETTED)
 dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 
-print "------------------------------------------------------------"
-print "Waiting for driver : "
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Waiting for driver : ")
+print("------------------------------------------------------------")
 for i in range(0,300):
     if network.state>=network.STATE_STARTED:
-        print " done"
+        print(" done")
         break
     else:
         sys.stdout.write(".")
         sys.stdout.flush()
         time.sleep(1.0)
 if network.state<network.STATE_STARTED:
-    print "."
-    print "Can't initialise driver! Look at the logs in OZW_Log.log"
+    print(".")
+    print("Can't initialise driver! Look at the logs in OZW_Log.log")
     quit(1)
-print "------------------------------------------------------------"
-print "Use openzwave library : %s" % network.controller.ozw_library_version
-print "Use python library : %s" % network.controller.python_library_version
-print "Use ZWave library : %s" % network.controller.library_description
-print "Network home id : %s" % network.home_id_str
-print "Controller node id : %s" % network.controller.node.node_id
-print "Controller node version : %s" % (network.controller.node.version)
-print "Nodes in network : %s" % network.nodes_count
-print "------------------------------------------------------------"
-print "Waiting for network to become ready : "
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Use openzwave library : {}".format(network.controller.ozw_library_version))
+print("Use python library : {}".format(network.controller.python_library_version))
+print("Use ZWave library : {}".format(network.controller.library_description))
+print("Network home id : {}".format(network.home_id_str))
+print("Controller node id : {}".format(network.controller.node.node_id))
+print("Controller node version : {}".format(network.controller.node.version))
+print("Nodes in network : {}".format(network.nodes_count))
+print("------------------------------------------------------------")
+print("Waiting for network to become ready : ")
+print("------------------------------------------------------------")
 for i in range(0,300):
     if network.state>=network.STATE_READY:
-        print " done"
+        print(" done")
         break
     else:
         sys.stdout.write(".")
@@ -144,26 +143,26 @@ for i in range(0,300):
         sys.stdout.flush()
         time.sleep(1.0)
 if not network.is_ready:
-    print "."
-    print "Can't start network! Look at the logs in OZW_Log.log"
+    print(".")
+    print("Can't start network! Look at the logs in OZW_Log.log")
     quit(2)
 
-print "------------------------------------------------------------"
-print "Controller capabilities : %s" % network.controller.capabilities
-print "Controller node capabilities : %s" % network.controller.node.capabilities
-print "Nodes in network : %s" % network.nodes_count
-print "Driver statistics : %s" % network.controller.stats
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Controller capabilities : {}".format(network.controller.capabilities))
+print("Controller node capabilities : {}".format(network.controller.node.capabilities))
+print("Nodes in network : {}".format(network.nodes_count))
+print("Driver statistics : {}".format(network.controller.stats))
+print("------------------------------------------------------------")
 
 time.sleep(sniff)
 
-print
-print "------------------------------------------------------------"
-print "Driver statistics : %s" % network.controller.stats
-print "------------------------------------------------------------"
+print("")
+print("------------------------------------------------------------")
+print("Driver statistics : {}".format(network.controller.stats))
+print("------------------------------------------------------------")
 
-print
-print "------------------------------------------------------------"
-print "Stop network"
-print "------------------------------------------------------------"
+print("")
+print("------------------------------------------------------------")
+print("Stop network")
+print("------------------------------------------------------------")
 network.stop()

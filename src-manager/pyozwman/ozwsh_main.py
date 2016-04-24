@@ -28,11 +28,6 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 __author__ = 'bibi21000'
 
-try:
-    from gevent import monkey
-    monkey.patch_all()
-except ImportError:
-    pass
 from select import select
 import sys
 import os
@@ -577,7 +572,7 @@ class MainWindow(Screen):
     def _louie_value_update(self, network, node, value):
         self.loop.draw_screen()
 
-    def _louie_group(self, network, node):
+    def _louie_group(self, network, node, groupidx):
         self.loop.draw_screen()
 
     def _louie_ctrl_message(self, network, controller, node, node_id, state_int, state, state_full, error_int, error, error_full ):

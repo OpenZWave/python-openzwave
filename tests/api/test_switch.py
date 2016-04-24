@@ -60,16 +60,25 @@ class TestSwitch(TestApi):
     def test_010_switch_state(self):
         ran = False
         for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches() :
+            for val in self.network.nodes[node].get_switches():
                 ran = True
                 self.assertTrue(self.network.nodes[node].get_switch_state(val) in [True, False])
         if not ran :
             self.skipTest("No Switch found")
 
+    def test_020_switch_rgb_state(self):
+        ran = False
+        for node in self.network.nodes:
+            for val in self.network.nodes[node].get_rgbbulbs():
+                ran = True
+                self.assertTrue(self.network.nodes[node].get_switch_state(val) in [True, False])
+        if not ran :
+            self.skipTest("No RGB bulb found")
+
     def test_110_switch_on_off(self):
         ran = False
         for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches() :
+            for val in self.network.nodes[node].get_switches():
                 ran = True
                 time.sleep(1)
                 self.network.nodes[node].set_switch(val,True)
@@ -86,6 +95,43 @@ class TestSwitch(TestApi):
                 self.assertFalse(self.network.nodes[node].get_switch_state(val))
         if not ran :
             self.skipTest("No Switch found")
+
+    def test_120_switch_rgbbulbs(self):
+        ran = False
+        for node in self.network.nodes:
+            for val in self.network.nodes[node].get_rgbbulbs():
+                ran = True
+                time.sleep(1)
+                self.network.nodes[node].set_switch(val,True)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_switch_state(val) == False :
+                    time.sleep(5)
+                self.assertTrue(self.network.nodes[node].get_switch_state(val))
+
+                oldrgbw = self.network.nodes[node].get_rgbw(val)
+                rgbw = 114
+                self.network.nodes[node].set_rgbw(val,rgbw)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_rgbw(val) != rgbw:
+                    time.sleep(5)
+                self.assertEqual(rgbw, self.network.nodes[node].get_rgbw(val))
+                self.network.nodes[node].set_rgbw(val,oldrgbw)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_rgbw(val) != rgbw :
+                    time.sleep(5)
+                self.assertEqual(oldrgbw, self.network.nodes[node].get_rgbw(val))
+
+                self.network.nodes[node].set_switch(val,False)
+                #self.wait_for_queue()
+                time.sleep(1)
+                if self.network.nodes[node].get_switch_state(val) == True :
+                    time.sleep(5)
+                self.assertFalse(self.network.nodes[node].get_switch_state(val))
+        if not ran :
+            self.skipTest("No RGB bulb found")
 
 if __name__ == '__main__':
     sys.argv.append('-v')

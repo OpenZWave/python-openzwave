@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
-    :platform: Unix, Windows, MacOS X
-    :sinopsis: openzwave API
-
-.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 
 License : GPL(v3)
 
@@ -21,16 +17,13 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-pyozw_version = '0.3.0b9'
-if "-" in pyozw_version:
-    pyozw_version_short = pyozw_version.split("-")
-else:
-    pyozw_version_short = pyozw_version
+from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
 
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv)>1 and sys.argv[1]=="--major":
-        print(pyozw_version_short)
-    else:
-        print(pyozw_version)
+cdef extern from "Group.h" namespace "OpenZWave":
+
+    ctypedef struct InstanceAssociation:
+        uint8_t m_nodeId
+        uint8_t m_instance
+
+ctypedef InstanceAssociation InstanceAssociation_t
 

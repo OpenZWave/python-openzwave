@@ -26,6 +26,7 @@ from libc.stdint cimport uint32_t, int32_t, uint16_t, int16_t, uint8_t, int8_t
 from mylibc cimport string
 from node cimport NodeData
 from driver cimport DriverData_t, DriverData
+from group cimport InstanceAssociation_t, InstanceAssociation
 from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
 from notification cimport Notification, NotificationType, Type_Notification, Type_Group, Type_NodeEvent, const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
@@ -33,8 +34,8 @@ from options cimport Options
 from log cimport LogLevel
 import os
 
-# Singleton or not ?
-# https://groups.google.com/forum/?fromgroups#!topic/cython-users/J8zb9KocMaw
+ctypedef uint8_t** int_associations
+ctypedef InstanceAssociation_t** struct_associations
 
 cdef extern from "Manager.h" namespace "OpenZWave":
 
@@ -175,7 +176,10 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void RequestAllConfigParams(uint32_t homeid, uint8_t nodeid)
         # // Groups
         uint8_t GetNumGroups(uint32_t homeid, uint8_t nodeid)
-        uint32_t GetAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t** o_associations)
+        uint32_t GetAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, struct_associations o_associations)
+#~ cython overloading problem
+#~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
+#~         uint32_t GetAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, int_associations o_associations)
         uint8_t GetMaxAssociations(uint32_t homeid, uint8_t nodeid, uint8_t groupidx)
         string GetGroupLabel(uint32_t homeid, uint8_t nodeid, uint8_t groupidx)
         void AddAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid, uint8_t instance)

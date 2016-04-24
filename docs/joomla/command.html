@@ -393,6 +393,49 @@ writeonly = False</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_rgbbulbs">
+<tt class="descname">get_rgbbulbs</tt><big>(</big><big>)</big></dt>
+<dd><p>The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+Retrieve the list of values to consider as RGBW bulbs.
+Filter rules are :</p>
+<blockquote>
+<div>command_class = 0x33
+genre = &#8220;User&#8221;
+type = &#8220;String&#8221;
+readonly = False
+writeonly = False</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The list of dimmers on this node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.get_rgbw">
+<tt class="descname">get_rgbw</tt><big>(</big><em>value_id</em><big>)</big></dt>
+<dd><p>The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+Get the RGW value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve level</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The level : a value between 0-99</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.command.ZWaveNodeSwitch.get_switch_all_item">
 <tt class="descname">get_switch_all_item</tt><big>(</big><em>value_id</em><big>)</big></dt>
 <dd><p>The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
@@ -528,6 +571,25 @@ Set switch to value (using value value_id).</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value_id</strong> (<em>int</em>) &#8211; The value to retrieve state</li>
 <li><strong>value</strong> (<em>int</em>) &#8211; The level : a value between 0-99 or 255. 255 set the level to the last value.         0 turn the dimmer off</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.command.ZWaveNodeSwitch.set_rgbw">
+<tt class="descname">set_rgbw</tt><big>(</big><em>value_id</em>, <em>value</em><big>)</big></dt>
+<dd><p>The command 0x33 (COMMAND_CLASS_COLOR) of this node.
+Set RGBW to value (using value value_id).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value_id</strong> (<em>String</em>) &#8211; The value to retrieve state</li>
+<li><strong>value</strong> (<em>int</em>) &#8211; The level : a RGBW value</li>
 </ul>
 </td>
 </tr>

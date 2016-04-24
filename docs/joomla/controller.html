@@ -679,6 +679,13 @@ our list of Failed Nodes, which might be different.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.is_locked">
+<tt class="descname">is_locked</tt></dt>
+<dd><p>Check if the controller is locked or not. Should not be used.
+Listen to notifications and use request_controller_status to retrieve the status of the controller</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.controller.ZWaveController.is_primary_controller">
 <tt class="descname">is_primary_controller</tt></dt>
 <dd><p>Is this node a primary controller of the network.</p>
@@ -704,6 +711,12 @@ our list of Failed Nodes, which might be different.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.controller.ZWaveController.kill_command">
+<tt class="descname">kill_command</tt><big>(</big><big>)</big></dt>
+<dd><p>Cancels any in-progress command running on a controller and release the lock.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -1008,6 +1021,23 @@ Notification::Type_ControllerCommand</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.request_controller_status">
+<tt class="descname">request_controller_status</tt><big>(</big><big>)</big></dt>
+<dd><p>Generate a notification with the current status of the controller.
+You can check the lock in your code using something like this:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>if controllerState in network.controller.STATES_UNLOCKED:</dt>
+<dd>hide_cancel_button()
+show_command_buttons()</dd>
+<dt>else:</dt>
+<dd>show_cancel_button()
+hide_command_buttons()</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.request_network_update">
 <tt class="descname">request_network_update</tt><big>(</big><em>nodeid</em><big>)</big></dt>
 <dd><p>Update the controller with network information from the SUC/SIS.</p>
@@ -1077,7 +1107,7 @@ Notification::Type_ControllerCommand</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Thr count of messages in the outgoing send queue.</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The count of messages in the outgoing send queue.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
 </tr>

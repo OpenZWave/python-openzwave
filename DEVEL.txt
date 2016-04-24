@@ -10,6 +10,11 @@ Get the sources
 
    git clone https://github.com/OpenZWave/python-openzwave
 
+You can install all the dependances to develop for python-openzwave
+using the command :
+
+   sudo make developper-deps
+
 You must now install python-openzwave in develop mode
 
    make develop
@@ -39,6 +44,37 @@ changes will not be applied :
 Tests
 =====
 
+First, install the dependances :
+
+   sudo make tests-deps
+
+To launch all the tests suite (about 140 tests), use the followind
+command :
+
+   make tests
+
+To launch on ly some tests :
+
+   nosetests --verbosity=2 tests/api/test_controller_command.py
+
+Some tests need manual operations (ie to add a node, to remove one,
+...). For example, to test the remove node, use :
+
+   export MANUALSKIP='False' && nosetests --verbosity=2 tests/api/test_controller_command.py -m test_150 && unset MANUALSKIP
+   test_150_command_remove_node_and_wait_for_user (tests.api.test_controller_command.TestControllerCommand) ... ok
+
+   ----------------------------------------------------------------------
+   Ran 1 test in 16.031s
+
+   OK
+
+You should push the inclusion button of the node before the end of the
+test.
+
+Some tests don't need a ZWave Stick to be launched, so they can be run
+on the autobuilders (travis, docker, ...). Place them in the autobuild
+directory.
+
 Travis-ci, Docker Hub, nosetests and pylint are used to test quality
 of code. There reports are here :
 
@@ -53,27 +89,13 @@ of code. There reports are here :
 
    * Pylint report
 
-Some tests don't need a ZWave Stick to be launched, so they can be run
-on the autobuilders (travis, docker, ...). Place them in the autobuild
-directory.
-
-Some tests need manual operations (ie to add a node, to remove one,
-...). For example, to test the remove node, use :
-
-   export MANUALSKIP='False' && /usr/local/bin/nosetests --verbosity=2 tests/api/test_controller_command.py -m test_150 && unset MANUALSKIP
-   test_150_command_remove_node_and_wait_for_user (tests.api.test_controller_command.TestControllerCommand) ... ok
-
-   ----------------------------------------------------------------------
-   Ran 1 test in 16.031s
-
-   OK
-
-You should push the inclusion button of the node before the end of the
-test.
-
 
 Documentation
 =============
+
+First, install the dependances :
+
+   sudo make doc-deps
 
 Documentation is managed with sphinx. Don't utpdate txt files (README,
 INSTALL, ...), update the RST sources in docs. Use the following

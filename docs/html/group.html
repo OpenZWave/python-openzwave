@@ -94,7 +94,7 @@ Hold options of the manager
 Also used to retrieve information about the library, ...</p>
 <dl class="method">
 <dt id="openzwave.group.ZWaveGroup.add_association">
-<tt class="descname">add_association</tt><big>(</big><em>target_node_id</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.add_association" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">add_association</tt><big>(</big><em>target_node_id</em>, <em>instance=0</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.add_association" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a node to an association group.</p>
 <p>Due to the possibility of a device being asleep, the command is assumed to
 complete with success, and the association data held in this class is updated directly.  This
@@ -105,7 +105,11 @@ both cases.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be added to the association group.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be added to the association group.</li>
+<li><strong>instance</strong> (<em>int</em>) &#8211; The instance that will be added to the association group.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -120,6 +124,21 @@ both cases.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.group.ZWaveGroup.associations_instances">
+<tt class="descname">associations_instances</tt><a class="headerlink" href="#openzwave.group.ZWaveGroup.associations_instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>The members of associations with theirs instances.
+Nodes that does not support multi-instances have an instanceid equal to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set() of tuples (nodeid,instanceid)</td>
 </tr>
 </tbody>
 </table>
@@ -169,7 +188,7 @@ both cases.</p>
 
 <dl class="method">
 <dt id="openzwave.group.ZWaveGroup.remove_association">
-<tt class="descname">remove_association</tt><big>(</big><em>target_node_id</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.remove_association" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">remove_association</tt><big>(</big><em>target_node_id</em>, <em>instance=0</em><big>)</big><a class="headerlink" href="#openzwave.group.ZWaveGroup.remove_association" title="Permalink to this definition">¶</a></dt>
 <dd><p>Removes a node from an association group.</p>
 <p>Due to the possibility of a device being asleep, the command is assumed to
 succeed, and the association data held in this class is updated directly.  This
@@ -180,7 +199,11 @@ in both cases.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be removed from the association group.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>target_node_id</strong> (<em>int</em>) &#8211; Identifier for the node that will be removed from the association group.</li>
+<li><strong>instance</strong> (<em>int</em>) &#8211; The instance that will be added to the association group.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -263,7 +286,7 @@ in both cases.</p>
     </div>
     <div class="footer">
         &copy; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

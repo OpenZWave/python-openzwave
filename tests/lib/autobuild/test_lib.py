@@ -44,7 +44,7 @@ class TestInit(TestLib):
     def test_000_init(self):
         manager = libopenzwave.PyManager()
         self.assertEqual(manager.getPythonLibraryVersionNumber(), pyozw_version)
-        vers=re.findall(b'\d+', manager.getOzwLibraryVersionNumber())
+        vers=re.findall(u'\d+', manager.getOzwLibraryVersionNumber())
         self.assertEqual(len(vers),3)
 
     def test_010_options_exceptions(self):

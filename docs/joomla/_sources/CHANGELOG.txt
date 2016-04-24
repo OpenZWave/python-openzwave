@@ -4,16 +4,20 @@
 Changelog
 =========
 
-Known bugs
-
- * reloader problem : the network stop/start every time the app is realoaded. But in this case, the process terminates normally.
-   But there seems to be 2 running instances of the network.
 
 python-openzwave 0.3.0-beta8:
- * Improve unicode
- * Add minimal Python 3 support
+
+ * Add multi instance support
+ * Update GROUP notification : please update your code to add the new parameter
+ * Update VALUE_REMOVED notification : please update your code to add the new parameter
+ * Improve unicode : you may need to delete your old config file
+ * Add Python 3 support
+ * Improve controllers_command : add a lock and a way to retrieve current status
+ * Add support for RGB bulbs
+
 
 python-openzwave 0.3.0-beta3:
+
  * Add security rewrite support. See https://groups.google.com/forum/#!msg/openzwave/cPjrvJJaESY/toK7QxEgRn0J
  * Add 2 signals for controller commands : ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND and ZWaveNetwork.SIGNAL_CONTROLLER_WAITING
  * Mark old methods and signals as deprecated. It is strongly recommended to use the new schema.
@@ -26,10 +30,12 @@ python-openzwave 0.3.0-beta3:
 
 
 python-openzwave 0.3.0-beta2:
+
  * Move to OpenZWave git organisation
 
 
 python-openzwave 0.3.0-beta1:
+
  * Add pyozwman script : after installing you can launch it wit : Usage: ozwsh [--device=/dev/ttyUSB0] [--log=Debug] ...
  * Add pyozwweb confiuration file.
  * Add version management in Makefile.

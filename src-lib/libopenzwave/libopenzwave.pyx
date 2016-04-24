@@ -38,6 +38,7 @@ from libc.stdlib cimport malloc, free
 from mylibc cimport string
 #from vers cimport ozw_vers_major, ozw_vers_minor, ozw_vers_revision, ozw_version_string
 from mylibc cimport PyEval_InitThreads, Py_Initialize
+from group cimport InstanceAssociation_t, InstanceAssociation
 from node cimport NodeData_t, NodeData
 from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
@@ -51,6 +52,7 @@ from notification cimport const_notification, pfnOnNotification_t
 from values cimport ValueGenre, ValueType, ValueID
 from options cimport Options, Create as CreateOptions, OptionType, OptionType_Invalid, OptionType_Bool, OptionType_Int, OptionType_String
 from manager cimport Manager, Create as CreateManager, Get as GetManager
+from manager cimport struct_associations, int_associations
 from log cimport LogLevel
 import os
 import sys
@@ -70,7 +72,8 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.0b8"
+__version__ = "0.3.0b9"
+libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
     _dist = get_distribution('libopenzwave')
@@ -78,11 +81,14 @@ except DistributionNotFound:
     __version__ = 'Not installed'
 else:
     __version__ = _dist.version
-try:
-    _dist = get_distribution('libopenzwave')
-    libopenzwave_file = _dist.__file__
-except AttributeError:
-    libopenzwave_file = 'not_installed'
+    libopenzwave_location = _dist.location
+if libopenzwave_location == 'not_installed' :
+   try:
+        _dist = get_distribution('libopenzwave')
+        __version__ = _dist.version
+        libopenzwave_file = _dist.__file__
+   except AttributeError:
+        libopenzwave_file = 'not_installed'
 
 cdef string str_to_cppstr(str s):
     if isinstance(s, unicode):
@@ -97,7 +103,13 @@ cdef cstr_to_str(s):
     elif six.PY3:
         return s
     else:
-        return s.encode('utf-8')
+        try:
+            return s.encode('utf-8')
+        except:
+            try:
+                return s.decode('utf-8')
+            except:
+                return s
 
 class LibZWaveException(Exception):
     """
@@ -411,7 +423,7 @@ cdef getValueFromType(Manager *manager, valueId):
     return ret
 
 cdef delValueId(ValueID v, n):
-    logger.warning("delValueId : ValueID : %s", v.GetId())
+    logger.debug("delValueId : ValueID : %s", v.GetId())
     if values_map.find(v.GetId()) != values_map.end():
         values_map.erase(values_map.find(v.GetId()))
 
@@ -420,6 +432,7 @@ cdef addValueId(ValueID v, n):
     #check is a valid value
     if v.GetInstance() == 0:
         return
+    logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
     values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     genre = PyGenres[v.GetGenre()]
@@ -461,47 +474,87 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     """
     logger.debug("notif_callback : new notification")
     cdef Notification* notification = <Notification*>_notification
-    notif_type_str = PyNotifications[notification.GetType()] if notification.GetType() in PyNotifications else 'None'
-    notif_node_str = notification.GetNodeId()
-    logger.debug("notif_callback : Notification (type,nodeId) : (%s, %s)", notif_type_str, notif_node_str)
-    n = {'notificationType' : PyNotifications[notification.GetType()],
-         'homeId' : notification.GetHomeId(),
-         'nodeId' : notification.GetNodeId(),
-        }
+    logger.debug("notif_callback : Notification type : %s, nodeId : %s", notification.GetType(), notification.GetNodeId())
+    try:
+        n = {'notificationType' : PyNotifications[notification.GetType()],
+             'homeId' : notification.GetHomeId(),
+             'nodeId' : notification.GetNodeId(),
+            }
+    except:
+        logger.exception("notif_callback exception")
     if notification.GetType() == Type_Group:
-        n['groupIdx'] = notification.GetGroupIdx()
+        try:
+            n['groupIdx'] = notification.GetGroupIdx()
+        except:
+            logger.exception("notif_callback exception")
     elif notification.GetType() == Type_NodeEvent:
-        n['event'] = notification.GetEvent()
+        try:
+            n['event'] = notification.GetEvent()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_Notification:
-        n['notificationCode'] = notification.GetNotification()
+        try:
+            n['notificationCode'] = notification.GetNotification()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_ControllerCommand:
-        state = notification.GetEvent()
-        n['controllerStateInt'] = state
-        n['controllerState'] = PyControllerState[state]
-        n['controllerStateDoc'] = PyControllerState[state].doc
-        #Notification is filled with error
-        error = notification.GetNotification()
-        n['controllerErrorInt'] = error
-        n['controllerError'] = PyControllerError[error]
-        n['controllerErrorDoc'] = PyControllerError[error].doc
+        try:
+            state = notification.GetEvent()
+            n['controllerStateInt'] = state
+            n['controllerState'] = PyControllerState[state]
+            n['controllerStateDoc'] = PyControllerState[state].doc
+            #Notification is filled with error
+            error = notification.GetNotification()
+            n['controllerErrorInt'] = error
+            n['controllerError'] = PyControllerError[error]
+            n['controllerErrorDoc'] = PyControllerError[error].doc
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
-        n['buttonId'] = notification.GetButtonId()
+        try:
+            n['buttonId'] = notification.GetButtonId()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_DriverReset:
-        logger.warning("Notification : Type_DriverReset received : clean all valueids")
-        values_map.empty()
+        try:
+            logger.debug("Notification : Type_DriverReset received : clean all valueids")
+            values_map.empty()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_SceneEvent:
-        n['sceneId'] = notification.GetSceneId()
+        try:
+            n['sceneId'] = notification.GetSceneId()
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
-        addValueId(notification.GetValueID(), n)
+        try:
+            addValueId(notification.GetValueID(), n)
+        except:
+            logger.exception("notif_callback exception")
+            raise
     elif notification.GetType() == Type_ValueRemoved:
-        n['valueId'] = {'id' : notification.GetValueID().GetId()}
+        try:
+            n['valueId'] = {'id' : notification.GetValueID().GetId()}
+        except:
+            logger.exception("notif_callback exception")
+            raise
     #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
     #    #Maybe we should enable/disable this
     #    addValueId(notification.GetValueID(), n)
     logger.debug("notif_callback : call callback context")
     (<object>_context)(n)
     if notification.GetType() == Type_ValueRemoved:
-        delValueId(notification.GetValueID(), n)
+        try:
+            delValueId(notification.GetValueID(), n)
+        except:
+            logger.exception("notif_callback exception")
+            raise
     logger.debug("notif_callback : end")
 
 cdef void ctrl_callback(ControllerState _state, ControllerError _error, void* _context) with gil:
@@ -543,6 +596,8 @@ def configPath():
             return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
         if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
             return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
+        if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
     return None
 
 cdef class PyOptions:
@@ -856,6 +911,23 @@ cdef class RetAlloc:
     def __dealloc__(self):
         free(self.data)
 
+cdef class InstanceAssociationAlloc:
+    """
+    Map an array of InstanceAssociation_t used when retrieving sets of associationInstances.
+    Allocate memory at init and free it when no more reference to it exist.
+    Give it to lion as Nico0084 says : http://blog.naviso.fr/wordpress/wp-sphinxdoc/uploads/2011/11/MemoryLeaks3.jpg
+
+    """
+    cdef uint32_t siz
+    cdef uint8_t* data
+
+    def __cinit__(self,  uint32_t siz):
+        self.siz = siz
+        self.data = <uint8_t*>malloc(sizeof(uint8_t) * siz * 2)
+
+    def __dealloc__(self):
+        free(self.data)
+
 cdef class PyManager:
     '''
 The main public interface to OpenZWave.
@@ -942,6 +1014,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
         0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
         0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
+        0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
         0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
         0x61: 'COMMAND_CLASS_DISPLAY',
@@ -3710,27 +3783,75 @@ Gets the associations for a group
 :return: A set containing IDs of members of the group
 :rtype: set()
 :see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
+        '''
+#~ cython overloading problem
+#~ src-lib/libopenzwave/libopenzwave.pyx:3739:58: no suitable method found
+#~
+#~
+#~         data = set()
+#~         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
+#~         #Allocate memory
+#~         cdef int_associations dbuf = <int_associations>malloc(sizeof(uint8_t) * size)
+#~         # return value is pointer to uint8_t[]
+#~         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
+#~         if count == 0:
+#~             #Don't need to allocate memory.
+#~             free(dbuf)
+#~             return data
+#~         cdef RetAlloc retuint8 = RetAlloc(count)
+#~         cdef uint8_t* p
+#~         cdef uint32_t start = 0
+#~         if count:
+#~             try:
+#~                 p = dbuf[0] # p is now pointing at first element of array
+#~                 for i in range(start, count):
+#~                     retuint8.data[i] = p[0]
+#~                     data.add(retuint8.data[i])
+#~                     p += 1
+#~             finally:
+#~                 # Free memory
+#~                 free(dbuf)
+#~                 pass
+#~         return data
+        return [ x[0] for x in self.getAssociationsInstances(homeid, nodeid, groupidx) if x[1] == 0x00 ]
+
+    def getAssociationsInstances(self, homeid, nodeid, groupidx):
+        '''
+.. _getAssociationsInstances:
+
+Gets the associationsInstances for a group
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node whose associations we are interested in.
+:type nodeId: int
+:param groupIdx: one-based index of the group (because Z-Wave product manuals use one-based group numbering).
+:type groupIdx: int
+:return: A set containing tuples containing the node_id and the instance
+:rtype: set((node_id,instance))
+:see: getNumGroups_, addAssociation_, removeAssociation_, getMaxAssociations_
 
         '''
         data = set()
         cdef uint32_t size = self.manager.GetMaxAssociations(homeid, nodeid, groupidx)
         #Allocate memory
-        cdef uint8_t** dbuf = <uint8_t**>malloc(sizeof(uint8_t) * size)
+        cdef struct_associations dbuf = <struct_associations>malloc(sizeof(InstanceAssociation_t) * size)
         # return value is pointer to uint8_t[]
         cdef uint32_t count = self.manager.GetAssociations(homeid, nodeid, groupidx, dbuf)
         if count == 0:
             #Don't need to allocate memory.
             free(dbuf)
             return data
-        cdef RetAlloc retuint8 = RetAlloc(count)
-        cdef uint8_t* p
+        cdef InstanceAssociationAlloc retassinst = InstanceAssociationAlloc(count)
+        cdef InstanceAssociation_t* p
         cdef uint32_t start = 0
         if count:
             try:
                 p = dbuf[0] # p is now pointing at first element of array
                 for i in range(start, count):
-                    retuint8.data[i] = p[0]
-                    data.add(retuint8.data[i])
+                    retassinst.data[2*i] = p[0].m_nodeId
+                    retassinst.data[2*i+1] = p[0].m_instance
+                    data.add((retassinst.data[2*i],retassinst.data[2*i+1]))
                     p += 1
             finally:
                 # Free memory

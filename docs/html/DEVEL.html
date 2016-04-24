@@ -52,6 +52,10 @@
 <div class="highlight-bash"><div class="highlight"><pre>git clone https://github.com/OpenZWave/python-openzwave
 </pre></div>
 </div>
+<p>You can install all the dependances to develop for python-openzwave using the command :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo make developper-deps
+</pre></div>
+</div>
 <p>You must now install python-openzwave in develop mode</p>
 <div class="highlight-bash"><div class="highlight"><pre>make develop
 </pre></div>
@@ -71,6 +75,30 @@
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p>First, install the dependances :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo make tests-deps
+</pre></div>
+</div>
+<p>To launch all the tests suite (about 140 tests), use the followind command :</p>
+<div class="highlight-bash"><div class="highlight"><pre>make tests
+</pre></div>
+</div>
+<p>To launch on ly some tests :</p>
+<div class="highlight-bash"><div class="highlight"><pre>nosetests --verbosity<span class="o">=</span><span class="m">2</span> tests/api/test_controller_command.py
+</pre></div>
+</div>
+<p>Some tests need manual operations (ie to add a node, to remove one, ...). For example, to test the remove node, use :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">MANUALSKIP</span><span class="o">=</span><span class="s1">&#39;False&#39;</span> <span class="o">&amp;&amp;</span> nosetests --verbosity<span class="o">=</span><span class="m">2</span> tests/api/test_controller_command.py -m test_150 <span class="o">&amp;&amp;</span> <span class="nb">unset </span>MANUALSKIP
+test_150_command_remove_node_and_wait_for_user <span class="o">(</span>tests.api.test_controller_command.TestControllerCommand<span class="o">)</span> ... ok
+
+----------------------------------------------------------------------
+Ran <span class="m">1</span> <span class="nb">test </span>in 16.031s
+
+OK
+</pre></div>
+</div>
+<p>You should push the inclusion button of the node before the end of the test.</p>
+<p>Some tests don&#8217;t need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.</p>
 <p>Travis-ci, Docker Hub, nosetests and pylint are used to test quality of code. There reports are here :</p>
 <blockquote>
 <div><ul class="simple">
@@ -81,21 +109,13 @@
 <li><a class="reference external" href="file:../pylint/report.html">Pylint report</a></li>
 </ul>
 </div></blockquote>
-<p>Some tests don&#8217;t need a ZWave Stick to be launched, so they can be run on the autobuilders (travis, docker, ...). Place them in the autobuild directory.</p>
-<p>Some tests need manual operations (ie to add a node, to remove one, ...). For example, to test the remove node, use :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nb">export </span><span class="nv">MANUALSKIP</span><span class="o">=</span><span class="s1">&#39;False&#39;</span> <span class="o">&amp;&amp;</span> /usr/local/bin/nosetests --verbosity<span class="o">=</span>2 tests/api/test_controller_command.py -m test_150 <span class="o">&amp;&amp;</span> <span class="nb">unset </span>MANUALSKIP
-test_150_command_remove_node_and_wait_for_user <span class="o">(</span>tests.api.test_controller_command.TestControllerCommand<span class="o">)</span> ... ok
-
-----------------------------------------------------------------------
-Ran 1 <span class="nb">test </span>in 16.031s
-
-OK
-</pre></div>
-</div>
-<p>You should push the inclusion button of the node before the end of the test.</p>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>First, install the dependances :</p>
+<div class="highlight-bash"><div class="highlight"><pre>sudo make doc-deps
+</pre></div>
+</div>
 <p>Documentation is managed with sphinx.
 Don&#8217;t utpdate txt files (README, INSTALL, ...), update the RST sources in docs.
 Use the following commands to generate all docs files (txt, html and joomla)</p>
@@ -128,12 +148,12 @@ Of course, this program MUST use the shared library too.</li>
 <p>Look at your python local library, it should looks like :</p>
 <div class="highlight-bash"><div class="highlight"><pre>ls -lisa /usr/local/lib/python2.7/dist-packages/
 total 2428
-1445174  12 drwxrwsr-x 115 root staff  12288 avril  9 21:35 .
-1445172   4 drwxrwsr-x   4 root staff   4096 mai    2  2014 ..
-1457164   4 drwxr-sr-x   5 root staff   4096 nov.  26  2013 actdiag
-1715480   4 drwxr-sr-x   2 root staff   4096 nov.  26  2013 actdiag-0.5.1.egg-info
-1457163   4 -rw-r--r--   1 root staff   1004 nov.  26  2013 actdiag_sphinxhelper.py
-1457172   4 -rw-r--r--   1 root staff    620 nov.  26  2013 actdiag_sphinxhelper.pyc
+<span class="m">1445174</span>  <span class="m">12</span> drwxrwsr-x <span class="m">115</span> root staff  <span class="m">12288</span> avril  <span class="m">9</span> 21:35 .
+<span class="m">1445172</span>   <span class="m">4</span> drwxrwsr-x   <span class="m">4</span> root staff   <span class="m">4096</span> mai    <span class="m">2</span>  <span class="m">2014</span> ..
+<span class="m">1457164</span>   <span class="m">4</span> drwxr-sr-x   <span class="m">5</span> root staff   <span class="m">4096</span> nov.  <span class="m">26</span>  <span class="m">2013</span> actdiag
+<span class="m">1715480</span>   <span class="m">4</span> drwxr-sr-x   <span class="m">2</span> root staff   <span class="m">4096</span> nov.  <span class="m">26</span>  <span class="m">2013</span> actdiag-0.5.1.egg-info
+<span class="m">1457163</span>   <span class="m">4</span> -rw-r--r--   <span class="m">1</span> root staff   <span class="m">1004</span> nov.  <span class="m">26</span>  <span class="m">2013</span> actdiag_sphinxhelper.py
+<span class="m">1457172</span>   <span class="m">4</span> -rw-r--r--   <span class="m">1</span> root staff    <span class="m">620</span> nov.  <span class="m">26</span>  <span class="m">2013</span> actdiag_sphinxhelper.pyc
 ....
 </pre></div>
 </div>
@@ -225,7 +245,7 @@ cython can help for this : <a class="reference external" href="http://docs.cytho
     </div>
     <div class="footer">
         &copy; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
     </div>
   </body>
 </html>

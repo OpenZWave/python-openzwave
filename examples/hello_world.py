@@ -72,23 +72,22 @@ options.set_logging(True)
 options.lock()
 
 def louie_network_started(network):
-    print("Hello from network : I'm started : homeid %0.8x - %d nodes were found." % \
-        (network.home_id, network.nodes_count))
+    print("Hello from network : I'm started : homeid {:08x} - {} nodes were found.".format(network.home_id, network.nodes_count))
 
 def louie_network_failed(network):
     print("Hello from network : can't load :(.")
 
 def louie_network_ready(network):
-    print("Hello from network : I'm ready : %d nodes were found." % network.nodes_count)
-    print("Hello from network : my controller is : %s" % network.controller)
+    print("Hello from network : I'm ready : {} nodes were found.".format(network.nodes_count))
+    print("Hello from network : my controller is : {}".format(network.controller))
     dispatcher.connect(louie_node_update, ZWaveNetwork.SIGNAL_NODE)
     dispatcher.connect(louie_value_update, ZWaveNetwork.SIGNAL_VALUE)
 
 def louie_node_update(network, node):
-    print('Hello from node : %s.' % node)
+    print("Hello from node : {}.".format(node))
 
 def louie_value_update(network, node, value):
-    print('Hello from value : %s.' % value)
+    print("Hello from value : {}.".format( value ))
 
 #Create a network object
 network = ZWaveNetwork(options, autostart=False)
@@ -101,10 +100,10 @@ dispatcher.connect(louie_network_ready, ZWaveNetwork.SIGNAL_NETWORK_READY)
 network.start()
 
 #We wait for the network.
-print "***** Waiting for network to become ready : "
+print("***** Waiting for network to become ready : ")
 for i in range(0,90):
     if network.state>=network.STATE_READY:
-        print "***** Network is ready"
+        print("***** Network is ready")
         break
     else:
         sys.stdout.write(".")
@@ -139,7 +138,7 @@ time.sleep(5.0)
 
 for node in network.nodes:
     for val in network.nodes[node].get_dimmers() :
-        print("Activate dimmer : %s" % network.nodes[node])
+        print("Activate dimmer : {}".format(network.nodes[node]))
         network.nodes[node].set_dimmer(val,80)
         time.sleep(10.0)
         print("Deactivate dimmer")
