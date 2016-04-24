@@ -224,8 +224,12 @@ install-api: install-lib
 	@echo
 	@echo "Installation of API finished."
 
-install: install-api
+install-manager: install-api
 	${PYTHON_EXEC} setup-manager.py install
+	@echo
+	@echo "Installation of manager finished."
+
+install: install-manager
 	${PYTHON_EXEC} setup-web.py install
 	@echo
 	@echo "Installation for users finished."
