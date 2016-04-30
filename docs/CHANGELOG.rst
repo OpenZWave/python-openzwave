@@ -5,6 +5,9 @@ Changelog
 =========
 
 
+python-openzwave 0.3.0:
+
+
 python-openzwave 0.3.0-beta8:
 
  * Add multi instance support
