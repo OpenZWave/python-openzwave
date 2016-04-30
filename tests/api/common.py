@@ -87,6 +87,7 @@ class TestApi(TestPyZWave):
 
     def setUp(self):
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)
+        self.wait_for_queue()
 
     def wait_for_queue(self):
         for i in range(0,60):
