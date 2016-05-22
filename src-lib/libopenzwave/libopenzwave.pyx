@@ -72,7 +72,7 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
@@ -1021,6 +1021,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
         0x63: 'COMMAND_CLASS_USER_CODE',
         0x64: 'COMMAND_CLASS_GARAGE_DOOR',
+        0x66: 'COMMAND_CLASS_BARRIER_OPERATOR',
         0x70: 'COMMAND_CLASS_CONFIGURATION',
         0x71: 'COMMAND_CLASS_ALARM',
         0x72: 'COMMAND_CLASS_MANUFACTURER_SPECIFIC',

@@ -34,7 +34,7 @@ from libopenzwave import configPath
 import signal
 
 def signal_term_handler(signal, frame):
-    print 'got SIGTERM'
+    print('got SIGTERM')
     raise urwid.ExitMainLoop()
 
 signal.signal(signal.SIGTERM, signal_term_handler)
