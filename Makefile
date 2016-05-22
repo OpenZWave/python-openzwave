@@ -345,6 +345,7 @@ tag:
 	@echo "Tag pushed on github."
 
 new-version: commit tgz tag commit
+	git push
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
