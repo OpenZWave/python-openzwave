@@ -164,7 +164,6 @@ PyNotifications = [
     EnumWithDoc('NodeNew').setDoc("A new node has been found (not already stored in zwcfg*.xml file)."),
     EnumWithDoc('NodeAdded').setDoc("A new node has been added to OpenZWave's set.  This may be due to a device being added to the Z-Wave network, or because the application is initializing itself."),
     EnumWithDoc('NodeRemoved').setDoc("A node has been removed from OpenZWave's set.  This may be due to a device being removed from the Z-Wave network, or because the application is closing."),
-    EnumWithDoc('NodeReset').setDoc("A node has been reset from OpenZWave's set.  The Device has been reset and thus removed from the NodeList in OZW."),
     EnumWithDoc('NodeProtocolInfo').setDoc("Basic node information has been receievd, such as whether the node is a setening device, a routing device and its baud rate and basic, generic and specific types. It is after this notification that you can call Manager::GetNodeType to obtain a label containing the device description."),
     EnumWithDoc('NodeNaming').setDoc("One of the node names has changed (name, manufacturer, product)."),
     EnumWithDoc('NodeEvent').setDoc("A node has triggered an event.  This is commonly caused when a node sends a Basic_Set command to the controller.  The event value is stored in the notification."),
@@ -186,6 +185,7 @@ PyNotifications = [
     EnumWithDoc('Notification').setDoc("A manager notification report."),
     EnumWithDoc('DriverRemoved').setDoc("The Driver is being removed."),
     EnumWithDoc('ControllerCommand').setDoc("When Controller Commands are executed, Notifications of Success/Failure etc are communicated via this Notification."),
+    EnumWithDoc('NodeReset').setDoc("A node has been reset from OpenZWave's set.  The Device has been reset and thus removed from the NodeList in OZW."),
     ]
 
 PyNotificationCodes = [
