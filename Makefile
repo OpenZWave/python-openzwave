@@ -59,8 +59,7 @@ clean: clean-docs clean-archive
 	-rm -rf $(BUILDDIR)
 	-find . -name \*.pyc -delete
 	-cd openzwave && $(MAKE) clean
-	${PYTHON_EXEC} setup-lib.py clean --all --build-base $(BUILDDIR)/lib
-	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
+	${PYTHON_EXEC} setup.py clean --all --build-base $(BUILDDIR)/lib
 	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
 	-rm lib/libopenzwave.cpp
@@ -84,19 +83,17 @@ uninstall:
 	-yes | ${PIP_EXEC} uninstall openzwave
 	-yes | ${PIP_EXEC} uninstall pyozwman
 	-yes | ${PIP_EXEC} uninstall pyozwweb
-	${PYTHON_EXEC} setup-lib.py develop --uninstall
-	${PYTHON_EXEC} setup-api.py develop --uninstall
+	${PYTHON_EXEC} setup.py develop --uninstall
+	${PYTHON_EXEC} setup.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
 	${PYTHON_EXEC} setup-web.py develop --uninstall
 	-rm -f libopenzwave.so
-	-rm -f src-lib/libopenzwave.so
+	-rm -f src/libopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
 	-rm -Rf python_openzwave_api.egg-info/
-	-rm -Rf src-api/python_openzwave_api.egg-info/
-	-rm -Rf src-api/openzwave.egg-info/
+	-rm -Rf src/python_openzwave_api.egg-info/
+	-rm -Rf src/openzwave.egg-info/
 	-rm -Rf src-manager/pyozwman.egg-info/
-	-rm -Rf src-lib/python_openzwave_lib.egg-info/
-	-rm -Rf src-lib/libopenzwave.egg-info/
 	-rm -Rf src-web/pyozwweb.egg-info/
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python-openzwave*
 	-rm -Rf /usr/local/lib/python${python_version_major}.${python_version_minor}/dist-packages/python_openzwave*
@@ -197,7 +194,7 @@ docs: clean-docs
 	#$(NOSE) $(NOSEOPTS) tests/
 	-cp docs/html/nosetests/* docs/joomla/nosetests
 	-cp docs/html/coverage/* docs/joomla/coverage
-	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
+	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src/libopenzwave/ src/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
 	-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && $(MAKE) docs
 	cp docs/README.rst README.rst
@@ -214,13 +211,8 @@ docs: clean-docs
 	@echo
 	@echo "Documentation finished."
 
-install-lib: build
-	${PYTHON_EXEC} setup-lib.py install
-	@echo
-	@echo "Installation of lib finished."
-
-install-api: install-lib
-	${PYTHON_EXEC} setup-api.py install
+install-api: build
+	${PYTHON_EXEC} setup.py install
 	@echo
 	@echo "Installation of API finished."
 
@@ -235,8 +227,7 @@ install: install-manager
 	@echo "Installation for users finished."
 
 develop:
-	${PYTHON_EXEC} setup-lib.py develop
-	${PYTHON_EXEC} setup-api.py develop
+	${PYTHON_EXEC} setup.py develop
 	${PYTHON_EXEC} setup-manager.py develop
 	${PYTHON_EXEC} setup-web.py develop
 	@echo
@@ -254,7 +245,7 @@ autobuild-tests:
 	@echo "Autobuild-tests for ZWave network finished."
 
 pylint:
-	$(PYLINT) $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/
+	$(PYLINT) $(PYLINTOPTS) src/libopenzwave/ src/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/
 	@echo
 	@echo "Pylint finished."
 
@@ -263,7 +254,7 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/.lib/
-	${PYTHON_EXEC} setup-lib.py build
+	${PYTHON_EXEC} setup.py build
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
@@ -276,15 +267,14 @@ clean-archive:
 	-rm -rf $(ARCHBASE)
 
 $(ARCHDIR):
-	-mkdir -p $(ARCHDIR)/src-lib
-	-mkdir -p $(ARCHDIR)/src-api
+	-mkdir -p $(ARCHDIR)/src
 	-mkdir -p $(ARCHDIR)/src-manager
 	-mkdir -p $(ARCHDIR)/src-web
 	cp -Rf openzwave $(ARCHDIR)/
 	cp -f openzwave/cpp/src/vers.cpp $(ARCHDIR)/openzwave.vers.cpp
-	cp -Rf src-lib/libopenzwave $(ARCHDIR)/src-lib
-	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src-lib/libopenzwave/
-	cp -Rf src-api/openzwave $(ARCHDIR)/src-api
+	cp -Rf src/libopenzwave $(ARCHDIR)/src
+	cp -f src/libopenzwave/libopenzwave.cpp $(ARCHDIR)/src/libopenzwave/
+	cp -Rf src/openzwave $(ARCHDIR)/src
 	cp -Rf src-manager/pyozwman $(ARCHDIR)/src-manager
 	cp -Rf src-manager/scripts $(ARCHDIR)/src-manager
 	cp -Rf src-web/pyozwweb $(ARCHDIR)/src-web
@@ -313,9 +303,8 @@ tgz: clean-archive $(ARCHDIR) docs
 	mkdir -p $(ARCHDIR)/docs
 	cp -Rf docs/_build/html/* $(ARCHDIR)/docs/
 	cp Makefile.archive $(ARCHDIR)/Makefile
-	cp setup-lib.py $(ARCHDIR)/
-	sed -i 's|src-lib/libopenzwave/libopenzwave.pyx|src-lib/libopenzwave/libopenzwave.cpp|g' $(ARCHDIR)/setup-lib.py
-	cp setup-api.py $(ARCHDIR)/
+	cp setup.py $(ARCHDIR)/
+	sed -i 's|src/libopenzwave/libopenzwave.pyx|src/libopenzwave/libopenzwave.cpp|g' $(ARCHDIR)/setup.py
 	cp setup-manager.py $(ARCHDIR)/
 	cp setup-web.py $(ARCHDIR)/
 	cp -Rf pyozw_version.py $(ARCHDIR)/pyozw_version.py
