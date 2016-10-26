@@ -8,13 +8,13 @@
 
 dependencies:
     pre:
-        - make python-deps
-        - make autobuild-deps
-        - make update
-        - make build
-        - make install
-        - make update
+        - make PYTHON_EXEC=python3 python-deps
+        - make PYTHON_EXEC=python3 autobuild-deps
+        - make PYTHON_EXEC=python3 update
+        - make PYTHON_EXEC=python3 build
+        - make PYTHON_EXEC=python3 install
+        - make PYTHON_EXEC=python3 update
 
 test:
     override:
-        - make autobuild-tests
+        - make PYTHON_EXEC=python3 autobuild-tests
