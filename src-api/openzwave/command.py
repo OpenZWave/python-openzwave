@@ -666,6 +666,159 @@ class ZWaveNodeSensor(ZWaveNodeInterface):
             return self.values[value_id].data
         return None
 
+
+class ZWaveNodeThermostat(ZWaveNodeInterface):
+    """
+    Represents an interface to Thermostat Commands
+
+    """
+
+    def get_thermostats(self, type='All'):
+        """
+        The command 0x40 (COMMAND_CLASS_THERMOSTAT_MODE) of this node.
+        The command 0x42 (COMMAND_CLASS_THERMOSTAT_OPERATING_STATE) of this node.
+        The command 0x43 (COMMAND_CLASS_THERMOSTAT_SETPOINT) of this node.
+        The command 0x44 (COMMAND_CLASS_THERMOSTAT_FAN_MODE) of this node.
+        The command 0x45 (COMMAND_CLASS_THERMOSTAT_FAN_STATE) of this node.
+        Retrieve the list of values to consider as thermostats.
+        Filter rules are :
+
+            command_class = 0x40-45
+            genre = "User"
+            readonly = True/False
+            writeonly = False
+
+        :param type: the type of value
+        :type type: 'All' or PyValueTypes
+        :return: The list of switches on this node
+        :rtype: dict()
+
+        """
+        values = {}
+        values.update(self.get_values(type=type, class_id=0x40, genre='User', \
+            readonly=False, writeonly=False))
+        values.update(self.get_values(type=type, class_id=0x42, genre='User', \
+            readonly=True, writeonly=False))
+        values.update(self.get_values(type=type, class_id=0x43, genre='User', \
+            readonly=False, writeonly=False))
+        values.update(self.get_values(type=type, class_id=0x44, genre='User', \
+            readonly=False, writeonly=False))
+        values.update(self.get_values(type=type, class_id=0x45, genre='User', \
+            readonly=True, writeonly=False))
+        return values
+
+    def get_thermostat_value(self, value_id):
+        """
+        The command 0x40 (COMMAND_CLASS_THERMOSTAT_MODE) of this node.
+        The command 0x42 (COMMAND_CLASS_THERMOSTAT_OPERATING_STATE) of this node.
+        The command 0x43 (COMMAND_CLASS_THERMOSTAT_SETPOINT) of this node.
+        The command 0x44 (COMMAND_CLASS_THERMOSTAT_FAN_MODE) of this node.
+        The command 0x45 (COMMAND_CLASS_THERMOSTAT_FAN_STATE) of this node.
+
+        :param value_id: The value to retrieve value
+        :type value_id: int
+        :return: The state of the thermostats
+        :rtype: variable
+
+        """
+        if value_id in self.get_thermostats():
+            return self.values[value_id].data
+        return None
+
+    def set_thermostat_mode(self, value):
+        """
+        The command 0x40 (COMMAND_CLASS_THERMOSTAT_MODE) of this node.
+        Set MODE to value (using value).
+
+        :param value: The mode : 'Off', 'Heat', 'Cool'
+        :type value: String
+
+        """
+        logger.debug(u"set_thermostat_mode value:%s", value)
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x40 and self.values[v].label == 'Mode':
+                self.values[v].data = value
+                return True
+        return False
+
+    def set_thermostat_fan_mode(self, value):
+        """
+        The command 0x44 (COMMAND_CLASS_THERMOSTAT_FAN_MODE) of this node.
+        Set FAN_MODE to value (using value).
+
+        :param value: The mode : 'On Low', 'Auto Low'
+        :type value: String
+
+        """
+        logger.debug(u"set_thermostat_fan_mode value:%s", value)
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x44 and self.values[v].label == 'Fan Mode':
+                self.values[v].data = value
+                return True
+        return False
+
+    def set_thermostat_heating(self, value):
+        """
+        The command 0x43 (COMMAND_CLASS_THERMOSTAT_SETPOINT) of this node.
+        Set Target Heat temperature.
+
+        :param value: The Temperature.
+        :type value: Decimal
+
+        """
+        logger.debug(u"set_thermostat_heating value:%s", value)
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x43 and self.values[v].label == 'Heating 1':
+                self.values[v].data = value
+                return True
+        return False
+
+    def set_thermostat_cooling(self, value):
+        """
+        The command 0x43 (COMMAND_CLASS_THERMOSTAT_SETPOINT) of this node.
+        Set MODE to value (using value).
+        Set Target Cool temperature.
+
+        :param value: The Temperature.
+        :type value: Decimal
+
+        """
+        logger.debug(u"set_thermostat_cooling value:%s", value)
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x43 and self.values[v].label == 'Cooling 1':
+                self.values[v].data = value
+                return True
+        return False
+
+    def get_thermostat_state(self):
+        """
+        The command 0x42 (COMMAND_CLASS_THERMOSTAT_OPERATING_STATE) of this node.
+        Get thermostat state.
+
+        :param value: None
+        :rtype value: String
+
+        """
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x42 and self.values[v].label == 'Operating State':
+                return self.values[v].data
+        return None
+
+    def get_thermostat_fan_state(self):
+        """
+        The command 0x45 (COMMAND_CLASS_THERMOSTAT_FAN_STATE) of this node.
+        Get thermostat state.
+
+        :param value: None
+        :rtype value: String
+
+        """
+        for v in self.get_thermostats():
+            if self.values[v].command_class == 0x45 and self.values[v].label == 'Fan State':
+                return self.values[v].data
+        return None
+
+
 class ZWaveNodeSecurity(ZWaveNodeInterface):
     """
     Represents an interface to Security Commands

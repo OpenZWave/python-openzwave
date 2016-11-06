@@ -228,6 +228,16 @@ for node in network.nodes:
         print("  label/help : {}/{}".format(network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : {}".format(network.nodes[node].values[val].id_on_network))
         print("  value: {} {}".format(network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
+print "------------------------------------------------------------"
+print "Retrieve thermostats on the network"
+print "------------------------------------------------------------"
+values = {}
+for node in network.nodes:
+    for val in network.nodes[node].get_thermostats() :
+        print("node/name/index/instance : {}/{}/{}/{}".format(node,network.nodes[node].name,network.nodes[node].values[val].index,network.nodes[node].values[val].instance))
+        print("  label/help : {}/{}".format(network.nodes[node].values[val].label,network.nodes[node].values[val].help))
+        print("  id on the network : {}".format(network.nodes[node].values[val].id_on_network))
+        print("  value: {} {}".format(network.nodes[node].get_thermostat_value(val), network.nodes[node].values[val].units))
 print("------------------------------------------------------------")
 print("Retrieve switches all compatibles devices on the network    ")
 print("------------------------------------------------------------")
