@@ -5,8 +5,6 @@ Installing python-openzwave on Windows
 ======================================
 
 
-Reference : https://github.com/OpenZWave/python-openzwave/issues/53
-
 How To Build python-openzwave on Windows with VS2015
 ====================================================
 
@@ -78,3 +76,5 @@ And install it (in a virtualenv if needed) :
 
     python setup-lib install
     python setup-api install
+
+Reference : https://github.com/OpenZWave/python-openzwave/issues/53
