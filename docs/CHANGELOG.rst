@@ -4,6 +4,18 @@
 Changelog
 =========
 
+python-openzwave 0.3.2:
+
+ * Openzwave update
+ * Add thermostat
+
+python-openzwave 0.3.1:
+
+ * Fix bugs and openzwave update
+
+python-openzwave 0.3.0:
+
+ * Fix bugs and openzwave update
 
 python-openzwave 0.3.0-beta8:
 

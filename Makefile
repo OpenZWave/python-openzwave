@@ -201,10 +201,10 @@ docs: clean-docs
 	-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && $(MAKE) docs
 	cp docs/README.rst README.rst
-	cp docs/_build/text/INSTALL_REPO.txt .
-	cp docs/_build/text/INSTALL_ARCH.txt .
-	cp docs/_build/text/INSTALL_MAC.txt .
-	cp docs/_build/text/INSTALL_WIN.txt .
+	cp docs/INSTALL_REPO.rst .
+	cp docs/INSTALL_ARCH.rst .
+	cp docs/INSTALL_MAC.rst .
+	cp docs/INSTALL_WIN.rst .
 	cp docs/_build/text/COPYRIGHT.txt .
 	cp docs/_build/text/CHANGELOG.txt .
 	cp docs/_build/text/DEVEL.txt .
@@ -329,7 +329,7 @@ tgz: clean-archive $(ARCHDIR) docs
 	@echo "Archive for version ${python_openzwave_version} created"
 
 push: develop
-	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.txt INSTALL_MAC.txt INSTALL_WIN.txt INSTALL_ARCH.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-git push
 	@echo
 	@echo "Commits for branch master pushed on github."
@@ -345,6 +345,7 @@ tag:
 	@echo "Tag pushed on github."
 
 new-version: commit tgz tag commit
+	git push
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
