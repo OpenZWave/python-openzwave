@@ -24,6 +24,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import os
+from platform import system as platform_system
+
 import libopenzwave
 from libopenzwave import PyLogLevels
 from openzwave.object import ZWaveException
