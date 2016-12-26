@@ -24,6 +24,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import os
+from platform import system as platform_system
+
 import libopenzwave
 from libopenzwave import PyLogLevels
 from openzwave.object import ZWaveException
@@ -60,19 +62,23 @@ class ZWaveOption(libopenzwave.PyOptions):
         :type cmd_line: str
 
         """
-        try:
-            if os.path.exists(device):
-                if os.access(device, os.R_OK) and os.access(device, os.W_OK):
-                    self._device = device
+        if platform_system() == 'Windows':
+            self._device = device
+        else:
+            #For linux
+            try:
+                if os.path.exists(device):
+                    if os.access(device, os.R_OK) and os.access(device, os.W_OK):
+                        self._device = device
+                    else:
+                        import sys, traceback
+                        raise ZWaveException(u"Can't write to device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
                 else:
                     import sys, traceback
-                    raise ZWaveException(u"Can't write to device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
-            else:
+                    raise ZWaveException(u"Can't find device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
+            except:
                 import sys, traceback
-                raise ZWaveException(u"Can't find device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
-        except:
-            import sys, traceback
-            raise ZWaveException(u"Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
+                raise ZWaveException(u"Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
         libopenzwave.PyOptions.__init__(self, config_path=config_path, user_path=user_path, cmd_line=cmd_line)
         self._user_path = user_path
         self._config_path = config_path

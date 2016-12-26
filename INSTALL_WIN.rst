@@ -67,14 +67,14 @@ From a Command Prompt, build it :
 
 .. code-block:: bash
 
-    python setup-lib.py build
-    python setup-api.py build
+    python setup-lib build
+    python setup-api build
 
 And install it (in a virtualenv if needed) :
 
 .. code-block:: bash
 
-    python setup-lib.py install
-    python setup-api.py install
+    python setup-lib install
+    python setup-api install
 
 Reference : https://github.com/OpenZWave/python-openzwave/issues/53

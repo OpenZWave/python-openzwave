@@ -185,6 +185,7 @@ PyNotifications = [
     EnumWithDoc('Notification').setDoc("A manager notification report."),
     EnumWithDoc('DriverRemoved').setDoc("The Driver is being removed."),
     EnumWithDoc('ControllerCommand').setDoc("When Controller Commands are executed, Notifications of Success/Failure etc are communicated via this Notification."),
+    EnumWithDoc('NodeReset').setDoc("A node has been reset from OpenZWave's set.  The Device has been reset and thus removed from the NodeList in OZW."),
     ]
 
 PyNotificationCodes = [
