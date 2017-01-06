@@ -269,7 +269,7 @@ openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
 openzwave/.lib/: openzwave
-	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	#sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && $(MAKE)
 
 clean-archive:
