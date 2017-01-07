@@ -438,7 +438,7 @@ cdef addValueId(ValueID v, n):
     #values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     item = new pair[uint64_t, ValueID](v.GetId(), v)
     values_map.insert(deref(item))
-    del item
+    #del item
     genre = PyGenres[v.GetGenre()]
     #handle basic value in different way
     if genre =="Basic":
