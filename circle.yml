@@ -7,6 +7,7 @@
 #####
 dependencies:
     pre:
+        - sudo apt-get update
         - sudo make python-deps
         - sudo make autobuild-deps
         - make update
