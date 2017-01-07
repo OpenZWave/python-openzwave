@@ -5,16 +5,13 @@
 # For circle.yml explanation, see: https://circleci.com/docs/manually
 # Python specific configuration, see: https://circleci.com/docs/language-python
 #####
-
 dependencies:
     pre:
         - sudo make python-deps
         - sudo make autobuild-deps
         - make update
         - make build
-        - make install
-        - make update
-
+        - sudo make install
 test:
     override:
         - make autobuild-tests
