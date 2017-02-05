@@ -33,10 +33,7 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -66,13 +63,13 @@ class TestScene(TestApi):
         self.sceneid = self.network.create_scene("TestUnit Scene")
         self.assertTrue(self.sceneid > 0)
         scene = self.network.get_scenes()[self.sceneid]
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches() :
                 ret = scene.add_value(val, True)
                 self.assertTrue(ret)
         scene = self.network.get_scenes()[self.sceneid]
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_dimmers() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_dimmers() :
                 ret = scene.add_value(val, self.level)
                 self.assertTrue(ret)
         self.assertTrue(self.network.scene_exists(self.sceneid))
@@ -85,7 +82,7 @@ class TestScene(TestApi):
 
     def test_010_scenes_to_dict(self):
         dscenes = self.network.scenes_to_dict()
-        self.assertEqual(type(dscenes), type({}))
+        self.assertEqual(type(dscenes), type(dict()))
         res = json.dumps(dscenes)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
@@ -95,7 +92,7 @@ class TestScene(TestApi):
         for scene in scenes:
             try :
                 scene = scenes[scene].to_dict()
-                self.assertEqual(type(scene), type({}))
+                self.assertEqual(type(scene), type(dict()))
                 res = json.dumps(scene)
             except TypeError:
                 res = None

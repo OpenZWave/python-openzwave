@@ -68,9 +68,9 @@ class TestApi(TestPyZWave):
         self.options.set_save_log_level(self.ozwlog)
         self.options.set_logging(True)
         self.options.lock()
-        self.node_result = None
         dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
         self.network = ZWaveNetwork(self.options)
+        self.node_result = None
         self.ctrl_command_result = None
         self.ctrl_command_signal = None
         #dispatcher.connect(self.ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
@@ -86,8 +86,17 @@ class TestApi(TestPyZWave):
         self.network = None
 
     def setUp(self):
+        self.node_result = None
+        self.ctrl_command_result = None
+        self.ctrl_command_signal = None
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)
+        time.sleep(1.0)
         self.wait_for_queue()
+        self.active_nodes = {}
+        for node in self.network.nodes:
+            if self.network.nodes[node].is_info_received:
+                self.active_nodes[node] = self.network.nodes[node]
+        print('active nodes : %s' % self.active_nodes)
 
     def wait_for_queue(self):
         for i in range(0,60):

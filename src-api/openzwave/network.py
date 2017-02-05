@@ -1029,8 +1029,9 @@ class ZWaveNetwork(ZWaveObject):
             logger.info(u'Driver ready using library %s', self._controller.library_description)
             logger.info(u'home_id 0x%0.8x, controller node id is %d', self.home_id, self._controller.node_id)
             logger.debug(u'Network %s', self)
-            dispatcher.send(self.SIGNAL_DRIVER_READY, \
-                **{'network': self, 'controller': self._controller})
+            #Not needed. Already sent by the lib
+            #~ dispatcher.send(self.SIGNAL_DRIVER_READY, \
+                #~ **{'network': self, 'controller': self._controller})
             self._state = self.STATE_STARTED
             dispatcher.send(self.SIGNAL_NETWORK_STARTED, \
                 **{'network': self})

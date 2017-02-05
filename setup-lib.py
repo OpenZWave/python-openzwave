@@ -73,7 +73,7 @@ if platform_system() == 'Windows':
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
                              libraries=['setupapi', 'msvcrt', 'ws2_32', 'dnsapi'],
                              language="c++",
-                             extra_objects=['openzwave/libopenzwave.a'],
+                             extra_objects=['openzwave/cpp/build/windows/vs2010/Release/openzwave.lib'],
                              include_dirs=['openzwave/cpp/src', 'openzwave/cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows', "src-lib/libopenzwave"]
     )]
 elif platform_system() == 'Darwin':

@@ -23,6 +23,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+import sys
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
@@ -77,8 +78,12 @@ class ZWaveNode(ZWaveObject,
         :rtype: str
 
         """
-        return u'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
-          (self._network.home_id_str, self._object_id, self.name, self.product_name)
+        try:
+                return u'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
+                        (self._network.home_id_str, self._object_id, self.name, self.product_name)
+        except UnicodeDecodeError:
+                return u'home_id: [%s] id: [%s] name: [%s] model: [%s]' % \
+                        (self._network.home_id_str, self._object_id, self.name.decode('utf-8', 'ignore'), self.product_name.decode('utf-8', 'ignore'))
 
     @property
     def node_id(self):

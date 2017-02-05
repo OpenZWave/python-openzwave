@@ -33,15 +33,14 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
+import json
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -54,29 +53,28 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-import json
 
 class TestNodes(TestApi):
 
     def test_000_nodes_count(self):
-        self.assertEqual(type(self.network.nodes_count), type(0))
+        self.assertTrue(isinstance(self.network.nodes_count, integer_types))
         self.assertTrue(self.network.nodes_count>0)
 
     def test_100_nodes_test(self):
-        for node in self.network.nodes:
-            self.network.nodes[node].test(5)
+        for node in self.active_nodes:
+            self.active_nodes[node].test(5)
 
     def test_110_nodes_heal(self):
-        for node in self.network.nodes:
-            self.network.nodes[node].heal()
-        for node in self.network.nodes:
-            self.network.nodes[node].heal(True)
+        for node in self.active_nodes:
+            self.active_nodes[node].heal()
+        for node in self.active_nodes:
+            self.active_nodes[node].heal(True)
 
     def test_200_nodes_to_dict(self):
-        for node in self.network.nodes:
+        for node in self.active_nodes:
             try :
-                nodes = self.network.nodes[node].to_dict()
-                self.assertEqual(type(nodes), type({}))
+                nodes = self.active_nodes[node].to_dict()
+                self.assertEqual(type(nodes), type(dict()))
                 res = json.dumps(nodes)
             except TypeError:
                 res = None
@@ -85,17 +83,17 @@ class TestNodes(TestApi):
     def test_210_controller_to_dict(self):
         try :
             nodes = self.network.controller.to_dict()
-            self.assertEqual(type(nodes), type({}))
+            self.assertEqual(type(nodes), type(dict()))
             res = json.dumps(nodes)
         except TypeError:
             res = None
         self.assertNotEqual(res, None)
 
     def test_220_nodes_groups_to_dict(self):
-        for node in self.network.nodes:
+        for node in self.active_nodes:
             try :
-                groups = self.network.nodes[node].groups_to_dict()
-                self.assertEqual(type(groups), type({}))
+                groups = self.active_nodes[node].groups_to_dict()
+                self.assertEqual(type(groups), type(dict()))
                 res = json.dumps(groups)
             except TypeError:
                 res = None

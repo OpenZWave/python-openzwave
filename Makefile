@@ -6,8 +6,7 @@ ARCHBASE      = archive
 ARCHIVES      = archives
 BUILDDIR      = build
 DISTDIR       = dists
-NOSE          = $(shell which nosetests)
-NOSEOPTS      = --verbosity=2 --with-id
+NOSEOPTS      = --verbosity=2
 NOSECOVER     = --cover-package=openzwave,pyozwman,pyozwweb --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=docs/html/coverage --with-html --html-file=docs/html/nosetests/nosetests.html
 PYLINT        = $(shell which pylint)
 PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq --ignored-classes=zmq --min-public-methods=0
@@ -16,6 +15,10 @@ PYLINTOPTS    = --max-line-length=140 --max-args=9 --extension-pkg-whitelist=zmq
 
 ifndef PYTHON_EXEC
 PYTHON_EXEC=python
+endif
+
+ifndef NOSE_EXEC
+NOSE_EXEC=$(shell which nosetests)
 endif
 
 ifdef VIRTUAL_ENV
@@ -153,7 +156,7 @@ endif
 ifeq (${python_version_major},3)
 	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
 endif
-	apt-get install --force-yes -y build-essential libudev-dev g++
+	apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
 
 tests-deps:
 	${PIP_EXEC} install nose-html
@@ -192,8 +195,8 @@ docs: clean-docs
 	-mkdir -p docs/joomla/nosetests
 	-mkdir -p docs/joomla/coverage
 	-mkdir -p docs/joomla/pylint
-	#$(NOSE) $(NOSEOPTS) $(NOSECOVER) tests/
-	#$(NOSE) $(NOSEOPTS) tests/
+	#${NOSE_EXEC} $(NOSEOPTS) $(NOSECOVER) tests/
+	#${NOSE_EXEC} $(NOSEOPTS) tests/
 	-cp docs/html/nosetests/* docs/joomla/nosetests
 	-cp docs/html/coverage/* docs/joomla/coverage
 	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
@@ -242,14 +245,13 @@ develop:
 	@echo "Installation for developpers of python-openzwave finished."
 
 tests:
-	@echo "Tests for ZWave network start."
-	@echo "Python-openzwave version :" ${python_openzwave_version}
-	export NOSESKIP=False && $(NOSE) $(NOSEOPTS) tests/lib tests/api tests/manager ; unset NOSESKIP
+	#export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
+	export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/lib tests/api tests/manager ; unset NOSESKIP
 	@echo
 	@echo "Tests for ZWave network finished."
 
 autobuild-tests:
-	$(NOSE) $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
+	${NOSE_EXEC} $(NOSEOPTS) tests/lib/autobuild tests/api/autobuild
 	@echo
 	@echo "Autobuild-tests for ZWave network finished."
 
@@ -269,7 +271,7 @@ openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
 openzwave/.lib/: openzwave
-	sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
+	#sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && $(MAKE)
 
 clean-archive:
@@ -354,3 +356,22 @@ debch:
 
 deb:
 	dpkg-buildpackage
+
+venv2:
+	virtualenv --python=python2 venv2
+	venv2/bin/pip install cython
+	venv2/bin/pip install nose
+	$(MAKE) PYTHON_EXEC=venv2/bin/python install
+	
+venv3:
+	virtualenv --python=python3 venv3
+	venv3/bin/pip install cython
+	venv3/bin/pip install nose
+	$(MAKE) PYTHON_EXEC=venv3/bin/python install
+
+venv-tests: venv2 venv3
+	$(MAKE) PYTHON_EXEC=venv2/bin/python install >/dev/null
+	$(MAKE) PYTHON_EXEC=venv3/bin/python install >/dev/null
+	@echo "Files installed in venv"
+	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
+	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests

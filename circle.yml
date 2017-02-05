@@ -1,20 +1,19 @@
 #####
 # Circle CI
-# 
+#
 # For running docker images on circle ci, see: https://circleci.com/docs/docker
 # For circle.yml explanation, see: https://circleci.com/docs/manually
 # Python specific configuration, see: https://circleci.com/docs/language-python
 #####
-
 dependencies:
     pre:
+        - sudo apt-get update
         - make PYTHON_EXEC=python3 python-deps
         - make PYTHON_EXEC=python3 autobuild-deps
         - make PYTHON_EXEC=python3 update
         - make PYTHON_EXEC=python3 build
         - make PYTHON_EXEC=python3 install
         - make PYTHON_EXEC=python3 update
-
 test:
     override:
         - make PYTHON_EXEC=python3 autobuild-tests

@@ -44,7 +44,7 @@ from node cimport SecurityFlag
 from driver cimport DriverData_t, DriverData
 from driver cimport ControllerCommand, ControllerState, ControllerError, pfnControllerCallback_t
 from notification cimport Notification, NotificationType, NotificationCode
-from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset
+from notification cimport Type_Notification, Type_Group, Type_NodeEvent, Type_SceneEvent, Type_DriverReset, Type_DriverRemoved
 from notification cimport Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff
 from notification cimport Type_ValueAdded, Type_ValueRemoved, Type_ValueChanged, Type_ValueRefreshed
 from notification cimport Type_ControllerCommand
@@ -435,7 +435,10 @@ cdef addValueId(ValueID v, n):
         return
     logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
-    values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
+    #values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
+    item = new pair[uint64_t, ValueID](v.GetId(), v)
+    values_map.insert(deref(item))
+    del item
     genre = PyGenres[v.GetGenre()]
     #handle basic value in different way
     if genre =="Basic":
@@ -517,6 +520,13 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         try:
             n['buttonId'] = notification.GetButtonId()
+        except:
+            logger.exception("notif_callback exception")
+            raise
+    elif notification.GetType() == Type_DriverRemoved:
+        try:
+            logger.debug("Notification : Type_DriverRemoved received : clean all valueids")
+            values_map.empty()
         except:
             logger.exception("notif_callback exception")
             raise

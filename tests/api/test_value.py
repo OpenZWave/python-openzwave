@@ -59,10 +59,10 @@ import json
 class TestValue(TestApi):
 
     def test_200_values_to_dict(self):
-        for node in self.network.nodes:
-            for value in self.network.nodes[node].values:
-                val = self.network.nodes[node].values[value].to_dict()
-                self.assertEqual(type(val), type({}))
+        for node in self.active_nodes:
+            for value in self.active_nodes[node].values:
+                val = self.active_nodes[node].values[value].to_dict()
+                self.assertEqual(type(val), type(dict()))
                 try :
                     res = json.dumps(val)
                 except TypeError:
@@ -70,9 +70,9 @@ class TestValue(TestApi):
                 self.assertNotEqual(res, None)
 
     def test_210_values_check_data(self):
-        for node in self.network.nodes:
-            for value in self.network.nodes[node].values:
-                val = self.network.nodes[node].values[value]
+        for node in self.active_nodes:
+            for value in self.active_nodes[node].values:
+                val = self.active_nodes[node].values[value]
                 if val.is_read_only == False:
                     if val.type == "Bool":
                         for data in ['False', 'false', '0']:

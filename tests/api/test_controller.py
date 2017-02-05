@@ -33,15 +33,13 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -54,7 +52,6 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-from six import string_types
 
 class TestController(TestApi):
 
@@ -68,7 +65,7 @@ class TestController(TestApi):
         self.assertEqual(type(self.network.controller.capabilities), type(set()))
 
     def test_030_controller_send_queue(self):
-        self.assertEqual(type(self.network.controller.send_queue_count), type(0))
+        self.assertTrue(isinstance(self.network.controller.send_queue_count, integer_types))
         self.assertTrue(self.network.controller.send_queue_count >= 0)
 
     def test_040_controller_stats(self):
@@ -81,9 +78,9 @@ class TestController(TestApi):
         time.sleep(5)
 
     def test_310_controller_node(self):
-        self.assertEqual(type(self.network.controller.node.node_id), type(0))
+        self.assertTrue(isinstance(self.network.controller.node_id, integer_types))
         self.assertTrue(self.network.controller.node.node_id > 0)
-        self.assertEqual(type(self.network.controller.node.version), type(0))
+        self.assertTrue(isinstance(self.network.controller.node.version, integer_types))
         self.assertTrue(self.network.controller.node.version > 0)
 
     def test_320_controller_node_capabilities(self):
@@ -93,7 +90,7 @@ class TestController(TestApi):
         self.assertEqual(type(self.network.controller.node.neighbors), type(set()))
 
     def test_340_controller_node_baud_rate(self):
-        self.assertTrue(type(self.network.controller.node.max_baud_rate) in [type(long()), type(int())])
+        self.assertTrue(isinstance(self.network.controller.node.max_baud_rate, integer_types))
         self.assertTrue(self.network.controller.node.max_baud_rate > 0)
 
     def test_410_controller_node_product(self):
@@ -136,13 +133,13 @@ class TestController(TestApi):
         self.assertEqual(type(self.network.controller.node.get_values()), type(dict()))
 
     def test_820_controller_node_generic(self):
-        self.assertEqual(type(self.network.controller.node.generic), type(0))
+        self.assertTrue(isinstance(self.network.controller.node.generic, integer_types))
         self.assertTrue(self.network.controller.node.generic > 0)
-        self.assertEqual(type(self.network.controller.node.basic), type(0))
+        self.assertTrue(isinstance(self.network.controller.node.basic, integer_types))
         self.assertTrue(self.network.controller.node.basic > 0)
-        self.assertEqual(type(self.network.controller.node.specific), type(0))
+        self.assertTrue(isinstance(self.network.controller.node.specific, integer_types))
         self.assertTrue(self.network.controller.node.specific >= 0)
-        self.assertEqual(type(self.network.controller.node.security), type(0))
+        self.assertTrue(isinstance(self.network.controller.node.security, integer_types))
         self.assertTrue(self.network.controller.node.security >= 0)
 
     def test_830_controller_node_refresh(self):
@@ -162,7 +159,7 @@ class TestController(TestApi):
                 break
             else:
                 time.sleep(1.0)
-        self.assertEqual(type(self.stats_received), type({}))
+        self.assertEqual(type(self.stats_received), type(dict()))
         self.assertTrue('SOFCnt' in self.stats_received)
         self.stats_received = None
         for i in range(0,10):
@@ -171,7 +168,7 @@ class TestController(TestApi):
                 break
             else:
                 time.sleep(1.0)
-        self.assertEqual(type(self.stats_received), type({}))
+        self.assertEqual(type(self.stats_received), type(dict()))
         self.network.controller.poll_stats = 0
         self.stats_received = None
         for i in range(0,12):

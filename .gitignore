@@ -25,6 +25,7 @@ examples/pyozw.db
 examples/zwcfg_*
 examples/zwscene.xml
 examples/zwbutton.xml
+examples/pyozw.sqlite
 install.files
 src-lib/libopenzwave.so
 src-lib/libopenzwave.egg-info/
@@ -44,3 +45,8 @@ debian/python-openzwave-doc/
 debian/python-openzwave-lib/
 debian/python-openzwave-manager/
 debian/python-openzwave-web/
+lib.txt
+pyozw.sqlite
+venv2/
+venv3/
+

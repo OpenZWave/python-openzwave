@@ -30,16 +30,21 @@ __author__ = 'bibi21000'
 from select import select
 import sys
 import os
+from traceback import format_exc
+import six
+if six.PY3:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
 import urwid
 from urwid.raw_display import Screen
-from traceback import format_exc
 from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
-from louie import dispatcher, All
+
 import logging
 
 class OldestTree(urwid.ListWalker):

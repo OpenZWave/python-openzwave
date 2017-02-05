@@ -33,15 +33,13 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import openzwave
 from openzwave.node import ZWaveNode
 from openzwave.group import ZWaveGroup
@@ -55,7 +53,6 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-from six import string_types, integer_types
 
 class TestNode(TestApi):
 
@@ -65,7 +62,7 @@ class TestNode(TestApi):
 
     def test_310_node(self):
         node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].node_id), type(0))
+        self.assertTrue(isinstance(self.network.nodes[node_id].node_id, integer_types))
         self.assertTrue(self.network.nodes[node_id].node_id > 0)
 
     def test_330_node_neighbors(self):
@@ -148,7 +145,7 @@ class TestNode(TestApi):
         for grp in groups.keys():
             associations = groups[grp].associations
             for ass in associations:
-                self.assertEqual(type(ass), type(0))
+                self.assertTrue(isinstance(ass, integer_types))
                 self.assertTrue(0 <= ass <= 255)
 
     def test_530_node_group_associations_instances(self):
@@ -159,7 +156,8 @@ class TestNode(TestApi):
         for grp in groups.keys():
             associations = groups[grp].associations_instances
             for ass in associations:
-                self.assertEqual(type(ass), type((0,0)))
+                self.assertTrue(isinstance(ass[0], integer_types))
+                self.assertTrue(isinstance(ass[1], integer_types))
                 self.assertTrue(0 <= ass[0] <= 255)
                 self.assertTrue(0 <= ass[1] <= 255)
 
