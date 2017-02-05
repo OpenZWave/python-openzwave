@@ -8,14 +8,19 @@ python-openzwave 0.3.2:
 
  * Openzwave update
  * Add thermostat
+ * Add patch from https://github.com/ebisso/python-openzwave/commit/8776daccc730cb5d7f71a178e9e0cc1d191ad115
+ * Can compile dynamically
+
 
 python-openzwave 0.3.1:
 
  * Fix bugs and openzwave update
 
+
 python-openzwave 0.3.0:
 
  * Fix bugs and openzwave update
+
 
 python-openzwave 0.3.0-beta8:
 
