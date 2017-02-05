@@ -14,7 +14,7 @@ install:
   - make venv3
 # command to run tests
 script:
-  - make autobuild-tests
+  - make venv-autobuild-tests
 # package dependencies
 before_install:
   #- env
