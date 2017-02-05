@@ -33,14 +33,13 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -139,7 +138,7 @@ class TestControllerCommand(TestApi):
         self.assertEqual(current, self.network.controller.STATE_FAILED)
 
     def test_020_command_request_node_neighbor_update_nodes(self):
-        #~ self.wipTest()
+        self.wipTest()
         self.ctrl_state_result = None
         node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:

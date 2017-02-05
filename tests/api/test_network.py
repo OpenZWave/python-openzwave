@@ -33,15 +33,14 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
+import json
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -54,7 +53,6 @@ from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
 from tests.common import TestPyZWave
-import json
 
 class TestNetwork(TestApi):
 
@@ -83,14 +81,14 @@ class TestNetwork(TestApi):
 
     def test_200_network_to_dict(self):
         dnetwork = self.network.to_dict()
-        self.assertEqual(type(dnetwork), type({}))
+        self.assertEqual(type(dnetwork), type(dict()))
         res = json.dumps(dnetwork)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
     def test_220_network_nodes_to_dict(self):
         dnodes = self.network.nodes_to_dict()
-        self.assertEqual(type(dnodes), type({}))
+        self.assertEqual(type(dnodes), type(dict()))
         res = json.dumps(dnodes)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)

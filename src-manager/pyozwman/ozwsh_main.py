@@ -31,12 +31,18 @@ __author__ = 'bibi21000'
 from select import select
 import sys
 import os
+from traceback import format_exc
+import logging
+import six
+if six.PY3:
+    from pydispatch import dispatcher
+else:
+    from louie import dispatcher
 import urwid
 from urwid.raw_display import Screen
 #import headerpanel
 #import dirpanel
 #import setuppanel
-from traceback import format_exc
 #from ucp import UrwidCmdProc, isUCP
 #from utils import utilInit, log
 from openzwave.node import ZWaveNode
@@ -59,8 +65,6 @@ from pyozwman.ozwsh_widgets import SceneTree, SceneBox, SceneItem
 from pyozwman.ozwsh_widgets import ScenesTree, ScenesBox, ScenesItem
 from pyozwman.ozwsh_widgets import StatTree, StatBox
 
-from louie import dispatcher, All
-import logging
 
 MAIN_TITLE = "openzwave Shell"
 """

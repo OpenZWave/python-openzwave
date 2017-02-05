@@ -33,10 +33,7 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -60,50 +57,50 @@ class TestProtection(TestApi):
 
     def test_010_protection_item(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_protections() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_protections() :
                 ran = True
-                self.assertTrue(isinstance(self.network.nodes[node].get_protection_item(val), string_types))
-        if not ran :
+                self.assertTrue(isinstance(self.active_nodes[node].get_protection_item(val), string_types))
+        if ran == False :
             self.skipTest("No Protection found")
 
     def test_020_protection_set_item_no_operation(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_protections() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_protections() :
                 ran = True
-                old_value = self.network.nodes[node].get_protection_item(val)
+                old_value = self.active_nodes[node].get_protection_item(val)
                 new_value = "No Operation Possible"
-                self.network.nodes[node].set_protection(val, new_value)
+                self.active_nodes[node].set_protection(val, new_value)
                 time.sleep(1)
-                self.assertEqual(self.network.nodes[node].get_protection_item(val), new_value)
-                self.network.nodes[node].set_protection(val, old_value)
+                self.assertEqual(self.active_nodes[node].get_protection_item(val), new_value)
+                self.active_nodes[node].set_protection(val, old_value)
                 time.sleep(1)
-        if not ran :
+        if ran == False :
             self.skipTest("No Protection found")
 
     def test_030_protection_set_item_unprotected(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_protections() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_protections() :
                 ran = True
-                old_value = self.network.nodes[node].get_protection_item(val)
+                old_value = self.active_nodes[node].get_protection_item(val)
                 new_value = "Unprotected"
-                self.network.nodes[node].set_protection(val, new_value)
+                self.active_nodes[node].set_protection(val, new_value)
                 time.sleep(1)
-                self.assertEqual(self.network.nodes[node].get_protection_item(val), new_value)
-                self.network.nodes[node].set_protection(val, old_value)
+                self.assertEqual(self.active_nodes[node].get_protection_item(val), new_value)
+                self.active_nodes[node].set_protection(val, old_value)
                 time.sleep(1)
-        if not ran :
+        if ran == False :
             self.skipTest("No Protection found")
 
     def test_050_protection_items(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_protections() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_protections() :
                 ran = True
-                self.assertTrue(type(self.network.nodes[node].get_protection_items(val)) == type(set()) or isinstance(self.network.nodes[node].get_protection_items(val), string_types))
-        if not ran :
+                self.assertTrue(type(self.active_nodes[node].get_protection_items(val)) == type(set()) or isinstance(self.active_nodes[node].get_protection_items(val), string_types))
+        if ran == False :
             self.skipTest("No Protection found")
 
 if __name__ == '__main__':

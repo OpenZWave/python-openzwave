@@ -59,11 +59,11 @@ class TestBattery(TestApi):
 
     def test_010_battery_item(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_battery_levels() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_battery_levels() :
                 ran = True
-                self.assertEqual(type(self.network.nodes[node].get_battery_level(val)), type(0))
-        if not ran :
+                self.assertTrue(isinstance(self.network.controller.get_battery_level(val), integer_types))
+        if ran == False :
             self.skipTest("No battery found")
 
 if __name__ == '__main__':

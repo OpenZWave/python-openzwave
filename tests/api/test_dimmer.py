@@ -33,14 +33,13 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -58,30 +57,30 @@ class TestDimmer(TestApi):
 
     def test_010_dimmer_level(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_dimmers() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_dimmers() :
                 ran = True
-                self.assertTrue(self.network.nodes[node].get_dimmer_level(val) in range(0,256))
-        if not ran :
+                self.assertTrue(self.active_nodes[node].get_dimmer_level(val) in range(0,256))
+        if ran == False :
             self.skipTest("No Dimmer found")
 
     def test_110_dimmer_on_off(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_dimmers() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_dimmers() :
                 ran = True
                 level = 80
-                self.network.nodes[node].set_dimmer(val,level)
+                self.active_nodes[node].set_dimmer(val,level)
                 time.sleep(1)
-                if self.network.nodes[node].get_dimmer_level(val) not in range(level-5,level+5):
+                if self.active_nodes[node].get_dimmer_level(val) not in range(level-5,level+5):
                     time.sleep(5)
-                self.assertTrue(self.network.nodes[node].get_dimmer_level(val) in range(level-5,level+5))
-                self.network.nodes[node].set_dimmer(val,0)
+                self.assertTrue(self.active_nodes[node].get_dimmer_level(val) in range(level-5,level+5))
+                self.active_nodes[node].set_dimmer(val,0)
                 time.sleep(2)
-                if self.network.nodes[node].get_dimmer_level(val) != 0:
+                if self.active_nodes[node].get_dimmer_level(val) != 0:
                     time.sleep(5)
-                self.assertEqual(self.network.nodes[node].get_dimmer_level(val), 0)
-        if not ran :
+                self.assertEqual(self.active_nodes[node].get_dimmer_level(val), 0)
+        if ran == False :
             self.skipTest("No Dimmer found")
 
 if __name__ == '__main__':

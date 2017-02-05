@@ -33,15 +33,13 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
+from six import string_types, integer_types
 import libopenzwave
 import openzwave
 from openzwave.node import ZWaveNode
@@ -71,21 +69,23 @@ class TestNetworkStartStop(TestPyZWave):
             self.network = None
         super(TestNetworkStartStop, self).tearDownClass()
 
-    def driver_ready_message(self, network, controller):
+    def driver_ready_message(self, network):
         self.driver_ready = True
 
     def driver_removed_message(self, network):
         self.driver_removed = True
 
     def network_started_message(self, network):
-        self.driver_removed = True
+        self.network_started = True
 
     def network_stopped_message(self, network):
-        self.driver_removed = True
+        self.network_stopped = True
 
     def test_000_network_start_stop(self):
         self.driver_ready = False
         self.driver_removed = False
+        self.network_started = False
+        self.network_stopped = False
         self.options = ZWaveOption(device=self.device, user_path=self.userpath)
         self.options.set_log_file("OZW_Log.log")
         self.options.set_append_log_file(False)
@@ -95,13 +95,18 @@ class TestNetworkStartStop(TestPyZWave):
         self.options.lock()
         dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_DRIVER_READY)
         dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
+        dispatcher.connect(self.driver_ready_message, ZWaveNetwork.SIGNAL_NETWORK_STARTED)
+        dispatcher.connect(self.driver_removed_message, ZWaveNetwork.SIGNAL_DRIVER_REMOVED)
         self.network = ZWaveNetwork(self.options)
         for i in range(0, SLEEP):
-            if self.network.state>=self.network.STATE_AWAKED:
+            if self.network.state>=self.network.STATE_STARTED:
                 break
             else:
                 time.sleep(1.0)
+        time.sleep(5.0)
         self.assertTrue(self.driver_ready)
+        #~ time.sleep(5.0)
+        #~ self.assertTrue(self.network_started)
         self.network.stop()
         for i in range(0, SLEEP):
             if self.network.state==self.network.STATE_STOPPED:
@@ -109,7 +114,8 @@ class TestNetworkStartStop(TestPyZWave):
             else:
                 time.sleep(1.0)
         self.assertEqual(self.network.state, self.network.STATE_STOPPED)
-        #self.assertTrue(self.driver_removed)
+        #~ self.assertTrue(self.network_stopped)
+        #~ self.assertTrue(self.driver_removed)
 
     def test_010_network_start_stop_start_stop(self):
         self.driver_ready = False

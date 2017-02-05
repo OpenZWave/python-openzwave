@@ -33,10 +33,7 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -59,77 +56,77 @@ class TestSensor(TestApi):
 
     def test_010_sensor_bool(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_sensors(type='Bool') :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_sensors(type='Bool') :
                 ran = True
-                self.assertTrue(self.network.nodes[node].get_sensor_value(val) in [True, False])
-        if not ran :
+                self.assertTrue(self.active_nodes[node].get_sensor_value(val) in [True, False])
+        if ran == False :
             self.skipTest("No Bool sensor found")
 
     def test_110_sensor_byte(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_sensors(type='Byte') :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_sensors(type='Byte') :
                 ran = True
                 good = True
                 try :
-                    newval = int(self.network.nodes[node].get_sensor_value(val))
+                    newval = int(self.active_nodes[node].get_sensor_value(val))
                 except :
                     good = False
                 self.assertTrue(good)
-        if not ran :
+        if ran == False :
             self.skipTest("No Byte sensor found")
 
     def test_210_sensor_short(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_sensors(type='Short') :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_sensors(type='Short') :
                 ran = True
                 good = True
                 try :
-                    newval = int(self.network.nodes[node].get_sensor_value(val))
+                    newval = int(self.active_nodes[node].get_sensor_value(val))
                 except :
                     good = False
                 self.assertTrue(good)
-        if not ran :
+        if ran == False :
             self.skipTest("No Short sensor found")
 
     def test_310_sensor_int(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_sensors(type='Int') :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_sensors(type='Int') :
                 ran = True
                 good = True
                 try :
-                    newval = int(self.network.nodes[node].get_sensor_value(val))
+                    newval = int(self.active_nodes[node].get_sensor_value(val))
                 except :
                     good = False
                 self.assertTrue(good)
-        if not ran :
+        if ran == False :
             self.skipTest("No Int sensor found")
 
     def test_410_sensor_decimal(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_sensors(type='Decimal') :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_sensors(type='Decimal') :
                 ran = True
                 good = True
                 try :
-                    newval = float(self.network.nodes[node].get_sensor_value(val))
+                    newval = float(self.active_nodes[node].get_sensor_value(val))
                 except :
                     good = False
                 self.assertTrue(good)
-        if not ran :
+        if ran == False :
             self.skipTest("No Decimal sensor found")
             
     def test_510_sensor_label(self):
         ran = False
-        for node in self.network.nodes:
-            for sensorid, sensor in self.network.nodes[node].get_sensors().items():
+        for node in self.active_nodes:
+            for sensorid, sensor in self.active_nodes[node].get_sensors().items():
                 ran = True
                 label = sensor.label
                 self.assertTrue(isinstance(label, str))
-        if not ran :
+        if ran == False :
             self.skipTest("No sensor found")
 
 if __name__ == '__main__':

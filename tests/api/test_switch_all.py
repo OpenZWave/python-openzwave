@@ -33,10 +33,7 @@ from pprint import pprint
 import datetime
 import random
 import socket
-import libopenzwave
 import re
-import time
-import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -60,75 +57,75 @@ class TestSwitchAll(TestApi):
 
     def test_010_switch_all_item(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches_all() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches_all() :
                 ran = True
-                self.assertTrue(isinstance(self.network.nodes[node].get_switch_all_item(val), string_types))
-        if not ran :
+                self.assertTrue(isinstance(self.active_nodes[node].get_switch_all_item(val), string_types))
+        if ran == False :
             self.skipTest("No Switch_All found")
 
     def test_015_switch_all_set_item(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches_all() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches_all() :
                 self.wait_for_queue()
                 ran = True
-                old_value = self.network.nodes[node].get_switch_all_item(val)
+                old_value = self.active_nodes[node].get_switch_all_item(val)
                 new_value = "Disabled"
-                self.network.nodes[node].set_switch_all(val, new_value)
+                self.active_nodes[node].set_switch_all(val, new_value)
                 time.sleep(1)
                 self.wait_for_queue()
-                self.assertEqual(self.network.nodes[node].get_switch_all_item(val), new_value)
-                self.network.nodes[node].set_switch_all(val, old_value)
+                self.assertEqual(self.active_nodes[node].get_switch_all_item(val), new_value)
+                self.active_nodes[node].set_switch_all(val, old_value)
                 time.sleep(1)
-        if not ran :
+        if ran == False :
             self.skipTest("No Switch_All found")
 
     def test_020_switch_all_items(self):
         ran = False
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches_all() :
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches_all() :
                 ran = True
-                self.assertTrue(isinstance(self.network.nodes[node].get_switch_all_item(val), string_types) or type(self.network.nodes[node].get_switch_all_items(val)) == type(""))
-        if not ran :
+                self.assertTrue(isinstance(self.active_nodes[node].get_switch_all_item(val), string_types) or type(self.active_nodes[node].get_switch_all_items(val)) == type(""))
+        if ran == False :
             self.skipTest("No Switch_All found")
 
     def test_110_switch_all_on(self):
-        self.wipTest()
+        #~ self.wipTest()
         self.wait_for_queue()
         time.sleep(2)
         ran = False
         self.network.switch_all(True)
-        time.sleep(3)
+        time.sleep(5)
         self.wait_for_queue()
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches_all() :
-                item = self.network.nodes[node].get_switch_all_item(val)
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches_all() :
+                item = self.active_nodes[node].get_switch_all_item(val)
                 if item == "On and Off Enabled" or item == "On Enabled":
                     ran = True
-                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
-                    self.assertTrue(self.network.nodes[node].get_switch_all_state(val))
-        if not ran :
+                    print("Node/State : %s/%s" % (node, self.active_nodes[node].get_switch_all_state(val)))
+                    self.assertTrue(self.active_nodes[node].get_switch_all_state(val))
+        if ran == False :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'On Enabled' found")
         else:
             time.sleep(5)
 
     def test_120_switch_all_off(self):
-        self.wipTest()
+        #~ self.wipTest()
         self.wait_for_queue()
         time.sleep(2)
         ran = False
         self.network.switch_all(False)
-        time.sleep(3)
+        time.sleep(5)
         self.wait_for_queue()
-        for node in self.network.nodes:
-            for val in self.network.nodes[node].get_switches_all() :
-                item = self.network.nodes[node].get_switch_all_item(val)
+        for node in self.active_nodes:
+            for val in self.active_nodes[node].get_switches_all() :
+                item = self.active_nodes[node].get_switch_all_item(val)
                 if item == "On and Off Enabled" or item == "Off Enabled":
                     ran = True
-                    print "Node/State : %s/%s" % (node, self.network.nodes[node].get_switch_all_state(val))
-                    self.assertFalse(self.network.nodes[node].get_switch_all_state(val))
-        if not ran :
+                    print("Node/State : %s/%s" % (node, self.active_nodes[node].get_switch_all_state(val)))
+                    self.assertFalse(self.active_nodes[node].get_switch_all_state(val))
+        if ran == False :
             self.skipTest("No Switch_All with 'On and Off Enabled' or 'Off Enabled' found")
         else:
             time.sleep(5)
