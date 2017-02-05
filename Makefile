@@ -358,6 +358,9 @@ debch:
 deb:
 	dpkg-buildpackage
 
+venv-deps:
+	apt-get install --force-yes -y python-all python3-all
+
 venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/pip install cython
@@ -376,3 +379,7 @@ venv-tests: venv2 venv3
 	@echo "Files installed in venv"
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
+
+venv-autobuild-tests: venv2 venv3
+	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests/lib/autobuild tests/api/autobuild
+	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests/lib/autobuild tests/api/autobuild
