@@ -358,8 +358,8 @@ debch:
 deb:
 	dpkg-buildpackage
 
-venv-deps:
-	apt-get install --force-yes -y python-all python3-all
+venv-deps: common-deps
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev
 
 venv2:
 	virtualenv --python=python2 venv2
