@@ -8,11 +8,11 @@
 dependencies:
     pre:
         - sudo apt-get update
-        - sudo make python-deps
-        - sudo make autobuild-deps
+        - sudo make venv-deps
         - make update
-        - make build
-        - sudo make install
+        - cd openzwave && make && cd ..
+        - make venv2
+        - make venv3
 test:
     override:
-        - make autobuild-tests
+        - make venv-autobuild-tests
