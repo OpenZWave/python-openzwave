@@ -269,9 +269,6 @@ update: openzwave
 build: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build
 
-build-deb:
-	${PYTHON_EXEC} setup-lib.py build --debian-package
-
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 

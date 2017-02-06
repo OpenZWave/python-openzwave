@@ -49,4 +49,4 @@ lib.txt
 pyozw.sqlite
 venv2/
 venv3/
-
+.pybuild/

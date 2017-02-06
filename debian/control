@@ -2,53 +2,20 @@ Source: python-openzwave
 Section: python
 Priority: optional
 Maintainer: Sébastien GALLET <sgallet@gmail.com>
+Build-Depends: debhelper (>= 9), dh-python,
+ python-all (>=2.6.6-3~), python-setuptools,
+ python3-all (>=3.2), python3-setuptools,
+ cython, cython3, build-essential
+#libopenzwave1.4-dev
+Standards-Version: 3.9.5
 X-Python-Version: >= 2.7
-Build-Depends: debhelper (>= 7.0.50~), python (>= 2.6.6-3~), python-setuptools,
- python-dev, cython, build-essential, libopenzwave1.0-dev|libopenzwave1.3-dev
-Build-Depends-Indep: debhelper (>= 7.0.50~), python (>= 2.6.6-3~), python-setuptools,
- python-dev, python-pygraphviz, python-louie, sphinx-common,
- python-sphinxcontrib.actdiag, python-sphinxcontrib.blockdiag,
- python-sphinxcontrib.nwdiag, python-sphinxcontrib.seqdiag
-Standards-Version: 3.9.1
+X-Python3-Version: >= 3.2
+XS-Python-Version: >= 2.7
+XS-Python3-Version: >= 3.2
 Homepage: https://github.com/OpenZWave/python-openzwave
 
-Package: python-openzwave-lib
+Package: python-openzwave
 Architecture: any
-Depends: libopenzwave1.0|libopenzwave1.3, python, ${misc:Depends}, ${python:Depends}
-Description: python-openzwave is another python wrapper around the openzwave project.
+Depends: ${misc:Depends}, ${python:Depends}
+Description: python-openzwave is a python wrapper for the openzwave project.
  The wrapper allows you to control a z-wave network from python.
- The one-to-one library is in beta state. You can try it.
- The new wrapper is in early developpement stage. So don't use it, but
-
-Package: python-openzwave-api
-Architecture: all
-Depends: libopenzwave1.0|libopenzwave1.3, python-louie, python-openzwave-lib (= ${binary:Version}), ${misc:Depends}, ${python:Depends}
-Suggests: python-pysqlite2
-Description: python-openzwave is another python wrapper around the openzwave project.
- The wrapper allows you to control a z-wave network from python.
- The one-to-one library is in beta state. You can try it.
- The new wrapper is in early developpement stage. So don't use it, but
-
-Package: python-openzwave-manager
-Architecture: all
-Depends: python-openzwave-api (= ${binary:Version}), python-urwid
-Description: A command line manager for your ZWave Network.
- You can :
-    * Reset controller (hard and soft) and add/remove device/controller
-    * Change node informations (name, location, ... )
-    * view and change values informations
-    * view and change group informations
-    * view and change config parameters
-    * view and change gassociations
-    * Full management of scenes, switches, dimmers and sensors
-
-Package: python-openzwave-web
-Architecture: all
-Depends: python-openzwave-api (= ${binary:Version}), python-flask, python-flaskext.wtf, python-flask-babel, python-socketio
-Description: The webapp.
- Work in progress
-
-Package: python-openzwave-doc
-Architecture: all
-Description: Documentation for python-openzwave.
- HTML format

@@ -1,27 +1,57 @@
 #!/usr/bin/make -f
-
+ 
+# see EXAMPLES in dpkg-buildflags(1) and read /usr/share/dpkg/*
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+ 
+# Don't set this or else the .install files will fail
+#export PYBUILD_NAME = vdns
+export PYBUILD_SYSTEM = custom
+ 
+# Otherwise the usr/bin/vdns.py file is from python2
+#~ export PYBUILD_INSTALL_ARGS_python2 = --install-scripts=/dev/null
+#~ export PYBUILD_SYSTEM=distutils
+ 
+export PYBUILD_NAME=openzwave
+ 
+# main packaging script based on dh7 syntax
 %:
-	dh $@ --with python2
+	dh $@ --with python3,python2 --buildsystem=pybuild
 
+#~ export PYBUILD_BUILD_ARGS=rm -f src-lib/libopenzwave/libopenzwave.cpp && python{version} setup-lib.py build --debian-package
+
+export PYBUILD_INSTALL_ARGS=rm -f src-lib/libopenzwave/libopenzwave.cpp && python{version} setup-lib.py install --debian-package --install-layout=deb --root=debian/python-openzwave && python{version} setup-api.py install --debian-package --install-layout=deb --root=debian/python-openzwave && python{version} setup-manager.py install --debian-package --install-layout=deb --root=debian/python-openzwave
+
+override_dh_auto_clean:
+	make clean
+	-rm -rf venv*
+	-rm -rf openzwave
+	-rm -rf dist
+	-rm -rf dists
+	-rm -rf archives
+	
 override_dh_auto_build:
-	python setup-lib.py build --debian-package
 
-override_dh_auto_install:
-	python setup-lib.py install --root=debian/python-openzwave-lib/ --install-layout=deb --debian-package
-	rm -rf debian/python-openzwave-lib/usr/config
-	rm -rf build
-	python setup-api.py install --root=debian/python-openzwave-api/ --install-layout=deb --debian-package
-	rm -rf build
-	python setup-manager.py install --root=debian/python-openzwave-manager/ --install-layout=deb --debian-package
-	rm -rf build
-	python setup-web.py install --root=debian/python-openzwave-web/ --install-layout=deb --debian-package
-	python setup-lib.py develop --debian-package
-	python setup-api.py develop --debian-package
-	python setup-manager.py develop --debian-package
-	python setup-web.py develop --debian-package
-	cd docs && make html
-	cd docs && make text
-	python setup-lib.py develop --uninstall
-	python setup-api.py develop --uninstall
-	python setup-manager.py develop --uninstall
-	python setup-web.py develop --uninstall
+override_dh_auto_configure:
+	
+override_dh_auto_test:
+	
+
+#~ 	python setup-lib.py develop --debian-package
+#~ 	python setup-api.py develop --debian-package
+#~ 	python setup-manager.py develop --debian-package
+#~ 	python setup-web.py develop --debian-package
+#~ 	cd docs && make html
+#~ 	cd docs && make text
+#~ 	python setup-lib.py develop --uninstall
+#~ 	python setup-api.py develop --uninstall
+#~ 	python setup-manager.py develop --uninstall
+#~ 	python setup-web.py develop --uninstall
+
+#~ export PYBUILD_SYSTEM=custom
+#~ export PYBUILD_CLEAN_ARGS=make clean
+#~ export PYBUILD_CONFIGURE_ARGS=./configure --python={version}
+#~ export PYBUILD_BUILD_ARGS=make build --dir={build_dir} --python={version}
+#~ export PYBUILD_INSTALL_ARGS=make --destdir={destdir} --python={version} --install-dir={install_dir}
+#~ export PYBUILD_TEST_ARGS_python2=cd {build_dir}; nosetests
+#~ export PYBUILD_TEST_ARGS_python3=cd {build_dir}; python{version} -m discover

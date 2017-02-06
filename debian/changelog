@@ -1,3 +1,9 @@
+python-openzwave (0.3.2) UNRELEASED; urgency=medium
+
+  * Try to fix
+
+ -- bibi21000 <bibi21000t@gmail.com>  Sun, 05 Feb 2017 22:41:03 +0100
+
 python-openzwave (0.3.0b8) UNRELEASED; urgency=medium
 
   * Automatic release from upstream
