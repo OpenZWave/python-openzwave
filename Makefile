@@ -383,5 +383,5 @@ venv-tests: venv2 venv3
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
 venv-autobuild-tests: venv2 venv3
-	-venv2/bin/nosetests --verbose 2 tests/lib/autobuild tests/api/autobuild
-	-venv3/bin/nosetests --verbose 2 tests/lib/autobuild tests/api/autobuild
+	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
