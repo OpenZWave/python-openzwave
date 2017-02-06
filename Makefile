@@ -365,12 +365,14 @@ venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/pip install cython
 	venv2/bin/pip install nose
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	$(MAKE) PYTHON_EXEC=venv2/bin/python install
 	
 venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/pip install cython
 	venv3/bin/pip install nose
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	$(MAKE) PYTHON_EXEC=venv3/bin/python install
 
 venv-tests: venv2 venv3
@@ -381,5 +383,5 @@ venv-tests: venv2 venv3
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
 venv-autobuild-tests: venv2 venv3
-	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests/lib/autobuild tests/api/autobuild
-	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests/lib/autobuild tests/api/autobuild
+	-venv2/bin/nosetests tests/lib/autobuild tests/api/autobuild
+	-venv3/bin/nosetests tests/lib/autobuild tests/api/autobuild
