@@ -77,6 +77,7 @@ clean: clean-docs clean-archive
 	-rm debian/*.debhelper
 	-rm debian/*.debhelper.log
 	-rm debian/*.substvars
+	-rm -rf .tests_user_path/
 
 uninstall:
 	-rm -rf $(BUILDDIR)
@@ -267,6 +268,9 @@ update: openzwave
 
 build: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build
+
+build-deb:
+	${PYTHON_EXEC} setup-lib.py build --debian-package
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
