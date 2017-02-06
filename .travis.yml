@@ -10,7 +10,7 @@ install:
 #  - env
 #  - make pip
   - make update
-  - make build
+  - cd openzwave && make
   - make venv2
   - make venv3
 # command to run tests
