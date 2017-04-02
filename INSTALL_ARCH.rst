@@ -4,7 +4,7 @@
 Installing python-openzwave from archive
 ========================================
 
-This is the simplest (and the fastest) way to install python-openzwave. It cames with openzwave source files and is already cythonized.
+This is the simplest (and the fastest) way to install python-openzwave. It comes with openzwave source files and is already cythonized.
 
 This is surely the best solution to install python-openzwave on a raspberry pi.
 
