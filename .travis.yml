@@ -1,24 +1,24 @@
 language: cpp
+dist: trusty
+sudo: required
 cache:
   - apt
 python:
   - "2.7"
-#  - "3.2"
-#  - "3.3"
-#  - "3.4"
+  - "3.4"
 install:
 #  - env
 #  - make pip
   - make update
-  - make build
-  - sudo make install
+  - cd openzwave && make && cd ..
+  - make venv2
+  - make venv3
 # command to run tests
 script:
-  - make autobuild-tests
+  - make venv-autobuild-tests
 # package dependencies
 before_install:
   #- env
   #- sudo -E env
   - sudo apt-get update -y -qq
-  - sudo -E make python-deps
-  - sudo -E make autobuild-deps
+  - sudo -E make venv-deps

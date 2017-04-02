@@ -1,3 +1,11 @@
+.. image:: https://travis-ci.org/OpenZWave/python-openzwave.svg?branch=master
+    :target: https://travis-ci.org/OpenZWave/python-openzwave
+    :alt: Travis status
+
+.. image:: https://circleci.com/gh/OpenZWave/python-openzwave.png?style=shield
+    :target: https://circleci.com/gh/OpenZWave/python-openzwave
+    :alt: Circle status
+
 ================
 python-openzwave
 ================

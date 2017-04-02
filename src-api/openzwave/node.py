@@ -442,7 +442,8 @@ class ZWaveNode(ZWaveObject,
 
         """
         ret = dict()
-        for value in self.values:
+        valkeys = self.values.keys()
+        for value in valkeys:
             if (class_id == 'All' or self.values[value].command_class == class_id) and \
               (genre == 'All' or self.values[value].genre == genre) and \
               (type == 'All' or self.values[value].type == type) and \

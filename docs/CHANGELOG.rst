@@ -4,6 +4,13 @@
 Changelog
 =========
 
+python-openzwave 0.3.3:
+
+ * Openzwave update
+ * Update values getter in nodes. See #70
+ * Fix setvalue for string types in python3
+ 
+ 
 python-openzwave 0.3.2:
 
  * Openzwave update

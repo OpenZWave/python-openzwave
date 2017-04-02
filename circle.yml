@@ -8,12 +8,12 @@
 dependencies:
     pre:
         - sudo apt-get update
-        - make PYTHON_EXEC=python3 python-deps
-        - make PYTHON_EXEC=python3 autobuild-deps
-        - make PYTHON_EXEC=python3 update
-        - make PYTHON_EXEC=python3 build
-        - make PYTHON_EXEC=python3 install
-        - make PYTHON_EXEC=python3 update
+        - sudo make venv-deps
+        - make update
+        - cd openzwave && make && cd ..
+        - make venv2
+        - make venv3
 test:
     override:
-        - make PYTHON_EXEC=python3 autobuild-tests
+        - make venv-autobuild-tests
+

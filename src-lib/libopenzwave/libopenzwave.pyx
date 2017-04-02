@@ -72,7 +72,7 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
@@ -1060,7 +1060,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x8B: 'COMMAND_CLASS_TIME_PARAMETERS',
         0x8C: 'COMMAND_CLASS_GEOGRAPHIC_LOCATION',
         0x8D: 'COMMAND_CLASS_COMPOSITE',
-        0x8E: 'COMMAND_CLASS_MULTI_INSTANCE_ASSOCIATION',
+        0x8E: 'COMMAND_CLASS_MULTI_CHANNEL_ASSOCIATION',
         0x8F: 'COMMAND_CLASS_MULTI_CMD',
         0x90: 'COMMAND_CLASS_ENERGY_PRODUCTION',
         0x91: 'COMMAND_CLASS_MANUFACTURER_PROPRIETARY',
@@ -2824,7 +2824,10 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                if six.PY3:
+                    type_string = str_to_cppstr(value)
+                else:
+                    type_string = str_to_cppstr(string(value))
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2832,8 +2835,11 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
                 logger.debug("SetValueListSelection %s", value)
+                if six.PY3:
+                    type_string = str_to_cppstr(value)
+                else:
+                    type_string = str_to_cppstr(string(value))
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 logger.debug("SetValueListSelection %s", cret)
                 ret = 1 if cret else 0

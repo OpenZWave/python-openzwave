@@ -23,6 +23,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 from os import name as os_name
 import os, sys
+import re
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 if os.path.isdir(os.path.join(os.getcwd(), '.git')):
@@ -33,6 +34,8 @@ else:
     from distutils.command.build_ext import build_ext
 from platform import system as platform_system
 import glob
+import subprocess
+
 from pyozw_version import pyozw_version
 
 DEBIAN_PACKAGE = False
@@ -47,6 +50,36 @@ sys.argv = filtered_args
 
 def _getDirs(base):
     return [x for x in glob.iglob(os.path.join( base, '*')) if os.path.isdir(x) ]
+
+def pkg_config_cflags_ozw():
+    p = subprocess.Popen('pkg-config --cflags libopenzwave', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in p.stdout.readlines():
+        try:
+            #python 2
+            return line.replace('\n', '')
+        except TypeError:
+            #python 3
+            return line.decode("utf-8").replace('\n', '')
+            #~ return re.sub('\n', '', str(line))
+
+def pkg_config_libs_ozw():
+    p = subprocess.Popen('pkg-config --libs libopenzwave', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    for line in p.stdout.readlines():
+        try:
+            #python 2
+            return line.replace('\n', '')
+            #~ return re.sub(r'\n', '', line)
+        except TypeError:
+            #python 3
+            return line.decode("utf-8").replace('\n', '')
+            #~ return re.sub('\n', '', str(line))
+
+def pkg_config_ozw():
+    flags = pkg_config_cflags_ozw()
+    libs = pkg_config_libs_ozw()
+    return [ libs, flags] + [ flags.replace('//', '/%s/' % ndir) for ndir in ['aes', 'command_classes', 'platform', 'value_classes'] ]
+    #~ return [ libs, flags] + [ re.sub(r'//', '/%s/' % ndir, flags) for ndir in ['aes', 'command_classes', 'platform', 'value_classes'] ]
+    
 
 def data_files_config(target, source, pattern):
     ret = list()
@@ -100,13 +133,14 @@ elif DEBIAN_PACKAGE == True:
     #For linux dynamic
     ext_modules = [Extension("libopenzwave",
                              sources=["src-lib/libopenzwave/libopenzwave.pyx"],
-                             libraries=['udev', 'stdc++', 'openzwave'],
+                             libraries=['udev', 'stdc++'],
                              language="c++",
                              define_macros=[
                                  ('PY_SSIZE_T_CLEAN',1),
                              ],
                              #extra_objects=['/usr/libopenzwave.a'],
-                             include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"]
+                             extra_compile_args=pkg_config_ozw(),
+                             #~ include_dirs=['/usr/include/openzwave', '/usr/include/openzwave/value_classes', '/usr/include/openzwave/platform', "src-lib/libopenzwave"],
     )]
 else:
     #For linux static

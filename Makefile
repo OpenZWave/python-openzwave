@@ -77,6 +77,7 @@ clean: clean-docs clean-archive
 	-rm debian/*.debhelper
 	-rm debian/*.debhelper.log
 	-rm debian/*.substvars
+	-rm -rf .tests_user_path/
 
 uninstall:
 	-rm -rf $(BUILDDIR)
@@ -357,16 +358,21 @@ debch:
 deb:
 	dpkg-buildpackage
 
+venv-deps: common-deps
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev
+
 venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/pip install cython
 	venv2/bin/pip install nose
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	$(MAKE) PYTHON_EXEC=venv2/bin/python install
 	
 venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/pip install cython
 	venv3/bin/pip install nose
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	$(MAKE) PYTHON_EXEC=venv3/bin/python install
 
 venv-tests: venv2 venv3
@@ -375,3 +381,7 @@ venv-tests: venv2 venv3
 	@echo "Files installed in venv"
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
+
+venv-autobuild-tests: venv2 venv3
+	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
