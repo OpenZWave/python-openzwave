@@ -2824,7 +2824,10 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
-                type_string = string(value)
+                if six.PY3:
+                    type_string = str_to_cppstr(value)
+                else:
+                    type_string = str_to_cppstr(string(value))
                 cret = self.manager.SetValue(values_map.at(id), type_string)
                 ret = 1 if cret else 0
             elif datatype == "Button":
@@ -2832,8 +2835,11 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_bool)
                 ret = 1 if cret else 0
             elif datatype == "List":
-                type_string = string(value)
                 logger.debug("SetValueListSelection %s", value)
+                if six.PY3:
+                    type_string = str_to_cppstr(value)
+                else:
+                    type_string = str_to_cppstr(string(value))
                 cret = self.manager.SetValueListSelection(values_map.at(id), type_string)
                 logger.debug("SetValueListSelection %s", cret)
                 ret = 1 if cret else 0
