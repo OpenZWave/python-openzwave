@@ -22,7 +22,7 @@ NOSE_EXEC=$(shell which nosetests)
 endif
 
 ifdef VIRTUAL_ENV
-python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/${PYTHON_EXEC} --version 2>&1)))
+python_version_full := ${VIRTUAL_ENV}/bin/${PYTHON_EXEC} --version 2>&1
 else
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 endif
