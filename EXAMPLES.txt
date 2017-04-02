@@ -8,14 +8,14 @@ You need to install and build python-openzwave to test examples.
 pyozwman
 ========
 
-A shell manager for your ZWave network : *PyOzwMan documentation*
+A shell manager for your ZWave network : PyOzwMan documentation
 
 
 pyozwweb
 ========
 
 A Flask + socket.io + jquery web application framework for your ZWave
-network : *PyOzwWeb documentation*
+network : PyOzwWeb documentation
 
 
 api_demo
