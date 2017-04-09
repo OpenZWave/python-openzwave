@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y make python sudo
 RUN make python-deps
 RUN make autobuild-deps
 RUN env
-RUN make update
-RUN make build
-RUN make install
-RUN make autobuild-tests
+RUN make openzwave.gzip
+RUN make buildso
+RUN make venv-autobuild-tests

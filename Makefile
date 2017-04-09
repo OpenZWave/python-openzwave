@@ -265,6 +265,11 @@ build: openzwave/.lib/
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
+openzwave.gzip:
+	wget https://codeload.github.com/OpenZWave/open-zwave/zip/master
+	unzip open-zwave-master.zip
+	mv open-zwave-master openzwave
+	
 openzwave/.lib/: openzwave
 	#sed -i -e '253s/.*//' openzwave/cpp/src/value_classes/ValueID.h
 	cd openzwave && $(MAKE)
