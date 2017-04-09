@@ -316,7 +316,7 @@ class Template(object):
                 print("already have directory %s but remove it" % self.openzwave)
                 os.remove(self.openzwave)
                 os.remove(dest_file)
-        print("fetching {0} into {1}".format(url, dest_file))
+        print("fetching {0} into {1} for wersion {2}".format(url, dest_file, pyozw_version))
         if not os.path.exists(dest):
             os.makedirs(dest)
         try:
