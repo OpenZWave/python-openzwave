@@ -267,6 +267,7 @@ openzwave:
 
 openzwave.gzip:
 	wget https://codeload.github.com/OpenZWave/open-zwave/zip/master
+	mv master open-zwave-master.zip
 	unzip open-zwave-master.zip
 	mv open-zwave-master openzwave
 	
