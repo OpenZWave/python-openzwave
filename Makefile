@@ -41,7 +41,7 @@ endif
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps check
+.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps check venv-clean venv2 venv3
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -427,7 +427,7 @@ venv-tests: venv2-dev venv3-dev
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
-venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-pypi-autobuild-tests venv-bdist_wheel-autobuild-tests
+venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-pypi-autobuild-tests venv-bdist_wheel-whl-autobuild-tests venv-bdist_wheel-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
@@ -483,7 +483,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests created."
 
-venv-bdist_wheel-autobuild-tests: venv-bdist_wheel-whl-autobuild-tests venv-clean venv2 venv3
+venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
