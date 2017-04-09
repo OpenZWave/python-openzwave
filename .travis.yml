@@ -7,12 +7,9 @@ python:
   - "2.7"
   - "3.4"
 install:
-#  - env
-#  - make pip
+  - env
   - make update
-  - cd openzwave && make && cd ..
-  - make venv2
-  - make venv3
+  - make buildso
 # command to run tests
 script:
   - make venv-autobuild-tests

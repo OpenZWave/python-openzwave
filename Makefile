@@ -210,6 +210,7 @@ docs: clean-docs
 	cp docs/INSTALL_MAC.rst .
 	cp docs/INSTALL_WIN.rst .
 	cp docs/_build/text/COPYRIGHT.txt .
+	cp docs/_build/text/LICENSE.txt .
 	cp docs/_build/text/CHANGELOG.txt .
 	cp docs/_build/text/DEVEL.txt .
 	cp docs/_build/text/EXAMPLES.txt .
@@ -326,11 +327,34 @@ tgz: clean-archive $(ARCHDIR) docs
 	-mkdir -p $(DISTDIR)
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
-	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)
+	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)/
 	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
+
+embed_openzave_master:clean-archive
+	-mkdir -p $(ARCHBASE)/open-zwave-master/python-openzwave/src-lib/libopenzwave
+	cp -Rf openzwave/* $(ARCHBASE)/open-zwave-master/
+	cp -f openzwave/cpp/src/vers.cpp $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp
+	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHBASE)/open-zwave-master/python-openzwave/src-lib/libopenzwave/
+	-find $(ARCHBASE)/open-zwave-master -name \*.pyc -delete
+	-find $(ARCHBASE)/open-zwave-master -name zwcfg_\*.xml -delete
+	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.log -delete
+	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.txt -delete
+	-find $(ARCHBASE)/open-zwave-master -name ozwsh.log -delete
+	-find $(ARCHBASE)/open-zwave-master -name errors.log -delete
+	-find $(ARCHBASE)/open-zwave-master -name zwscene.xml -delete
+	-find $(ARCHBASE)/open-zwave-master -name zwbutton.xml -delete
+	-find $(ARCHBASE)/open-zwave-master -name pyozw.db -delete
+	-cd $(ARCHBASE)/open-zwave-master && $(MAKE) clean
+	-rm -Rf $(ARCHBASE)/open-zwave-master/.git
+	cp -f $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp $(ARCHBASE)/open-zwave-master/cpp/src/vers.cpp
+	-mkdir -p $(DISTDIR)
+	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/open-zwave-master-${python_openzwave_version}.zip open-zwave-master
+	mv $(DISTDIR)/open-zwave-master-${python_openzwave_version}.zip $(ARCHIVES)/
+	@echo
+	@echo "embed_openzave_master for version ${python_openzwave_version} created"
 
 push: develop
 	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
@@ -348,7 +372,7 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: commit tgz tag commit
+new-version: commit tgz embed_openzave_master tag commit
 	git push
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
@@ -367,22 +391,84 @@ venv2:
 	venv2/bin/pip install cython
 	venv2/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
-	$(MAKE) PYTHON_EXEC=venv2/bin/python install
 	
 venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/pip install cython
 	venv3/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
-	$(MAKE) PYTHON_EXEC=venv3/bin/python install
 
-venv-tests: venv2 venv3
-	$(MAKE) PYTHON_EXEC=venv2/bin/python install >/dev/null
-	$(MAKE) PYTHON_EXEC=venv3/bin/python install >/dev/null
+venv2-dev: venv2
+	venv2/bin/python setup-lib.py install --dev
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	
+venv3-dev: venv3
+	venv3/bin/python setup-lib.py install --dev
+	venv3/bin/python setup-api.py install
+	venv3/bin/python setup-manager.py install
+
+venv2-shared: venv2
+	venv2/bin/python setup-lib.py install --shared
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	
+venv3-shared: venv3
+	venv3/bin/python setup-lib.py install --shared
+	venv3/bin/python setup-api.py install
+	venv3/bin/python setup-manager.py install
+
+venv-clean:
+	@echo "Clean files in venvs"
+	-rm -rf venv2
+	-rm -rf venv3
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+
+venv-tests: venv2-dev venv3-dev
 	@echo "Files installed in venv"
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
-venv-autobuild-tests: venv2 venv3
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-clean venv-git-autobuild-tests venv-clean venv-embed-autobuild-tests
+
+venv-git-autobuild-tests: venv2 venv3
+	venv2/bin/python setup-lib.py install --git
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	venv3/bin/python setup-lib.py install --git
+	venv3/bin/python setup-api.py install
+	venv3/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+
+venv-embed-autobuild-tests: venv2 venv3
+	venv2/bin/python setup-lib.py install --embed
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	venv3/bin/python setup-lib.py install --embed
+	venv3/bin/python setup-api.py install
+	venv3/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+
+venv-dev-autobuild-tests: venv2-dev venv3-dev
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+
+venv-shared-autobuild-tests: venv2-shared venv3-shared
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+
+buildso: openzwave/.lib/
+	cd openzwave && sudo $(MAKE) install    
+
+uninstallso:
+	sudo rm -f /usr/local/lib/x86_64-linux-gnu/pkgconfig/libopenzwave.pc
+	sudo rm -f /usr/local/lib64/libopenzwave.so.1.4
+	sudo rm -f /usr/local/lib64/libopenzwave.so
+	sudo rm -Rf /usr/local/include/openzwave
+	sudo rm -Rf /usr/local/etc/openzwave
+	sudo rm -Rf /usr/local/share/doc/openzwave*
+	
+pkgconfig.py:
+	wget https://raw.githubusercontent.com/matze/pkgconfig/master/pkgconfig/pkgconfig.py

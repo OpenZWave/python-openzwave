@@ -90,6 +90,12 @@ class TestInit(TestLib):
         self.assertEqual(1, options.getOptionAsInt("SaveLogLevel"))
         self.assertTrue(options.destroy())
 
+    def test_050_version(self):
+        time.sleep(1.0)
+        from pyozw_version import pyozw_version
+        manager = libopenzwave.PyManager()
+        self.assertEqual("python-openzwave version %s" % pyozw_version, manager.getPythonLibraryVersion())
+
 class TestOptions(TestLib):
 
     def test_010_options_string(self):

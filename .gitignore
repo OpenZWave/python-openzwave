@@ -27,7 +27,7 @@ examples/zwscene.xml
 examples/zwbutton.xml
 examples/pyozw.sqlite
 install.files
-src-lib/libopenzwave.so
+src-lib/libopenzwave*.so
 src-lib/libopenzwave.egg-info/
 src-lib/libopenzwave/libopenzwave.cpp
 src-api/openzwave.egg-info/
@@ -50,3 +50,8 @@ pyozw.sqlite
 venv2/
 venv3/
 .pybuild/
+.pypirc
+open-zwave-master/
+openzwave-git/
+openzwave-embed/
+

@@ -40,6 +40,7 @@ class ManagerTest(TestManager):
 
     def test_000_import(self):
         from pyozwman.ozwsh_main import MainWindow
+        from pyozwman.ozwsh_widgets import NodeTree
 
 if __name__ == '__main__':
     sys.argv.append('-v')
