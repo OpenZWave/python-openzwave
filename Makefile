@@ -459,13 +459,25 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-pypi-autobuild-tests."
 	@echo
 	@echo
-	venv2/bin/python setup.py install --embed
-	venv3/bin/python setup.py install --embed
+	venv2/bin/python setup.py install --git
+	venv3/bin/python setup.py install --git
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	@echo
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
+
+venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
+	@echo
+	@echo
+	venv2/bin/python setup.py bdist_wheel --git
+	venv3/bin/python setup.py bdist_wheel --git
+	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-bdist_wheel-autobuild-tests done."
 
 venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	@echo "Launch tests for venv-dev-autobuild-tests."
