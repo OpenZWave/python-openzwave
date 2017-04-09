@@ -467,12 +467,22 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
 
-venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
-	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
+venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
+	@echo "Create tests whl for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
 	venv2/bin/python setup.py bdist_wheel --git
 	venv3/bin/python setup.py bdist_wheel --git
+	@echo
+	@echo
+	@echo "Tests for venv-bdist_wheel-autobuild-tests created."
+
+venv-bdist_wheel-autobuild-tests: venv-bdist_wheel-whl-autobuild-tests venv-clean venv2 venv3
+	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
+	@echo
+	@echo
+	venv2/bin/pip install dist/python_openzwave-0.4.0-cp27-cp27mu-linux_x86_64.whl
+	venv3/bin/pip install dist/python_openzwave-0.4.0-cp35-cp35m-linux_x86_64.whl
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	@echo

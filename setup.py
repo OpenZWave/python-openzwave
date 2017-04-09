@@ -38,11 +38,6 @@ import setuptools
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from distutils import log
-from distutils.command.install import install as _install
-from distutils.command.build import build as _build
-from distutils.command.clean import clean as _clean
-from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
-from setuptools.command.develop import develop as _develop
 import time
 from platform import system as platform_system
 import glob

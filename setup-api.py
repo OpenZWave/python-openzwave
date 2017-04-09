@@ -26,11 +26,7 @@ import glob
 import os
 import sys
 from pyozw_version import pyozw_version
-
-if sys.hexversion >= 0x3000000:
-    dispatch_package = 'pydispatcher >= 2.0.5'
-else:
-    dispatch_package = 'Louie >= 1.1'
+from pyozw_setup import install_requires
 
 DEBIAN_PACKAGE = False
 filtered_args = []
@@ -81,7 +77,5 @@ setup(
   #The following line install documentation in share/python-openzwave
   #data_files = data_files,
   #recommend : "pysqlite >= 2.6",
-  install_requires=[ dispatch_package,
-                     'libopenzwave == %s' % pyozw_version,
-                    ]
+  install_requires=install_requires()+[ 'libopenzwave == %s' % pyozw_version ]
 )

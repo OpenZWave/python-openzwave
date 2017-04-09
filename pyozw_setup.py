@@ -43,6 +43,7 @@ from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 from setuptools.command.develop import develop as _develop
+from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
 import time
 from platform import system as platform_system
 import glob
@@ -56,9 +57,9 @@ SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
 def install_requires ():
     pkgs = ['six']
     if (sys.version_info > (3, 0)):
-         pass
+         pkgs.append('pydispatcher >= 2.0.5')
     else:
-         pkgs.append('Louie')
+         pkgs.append('Louie >= 1.1')
     return pkgs
 
 def get_default_exts ():
@@ -536,6 +537,9 @@ class build_openzwave(setuptools.Command):
 
 class build(_build):
     sub_commands = _build.sub_commands + [('build_openzwave', None)]
+
+class bdist_wheel(_bdist_wheel):
+    sub_commands = _bdist_wheel.sub_commands + [('build_openzwave', None)]
 
 class clean(_clean):
     def run(self):
