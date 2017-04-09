@@ -424,6 +424,9 @@ venv-tests: venv2-dev venv3-dev
 venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-embed-autobuild-tests venv-pypi-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-git-autobuild-tests."
+	@echo
+	@echo
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
@@ -432,8 +435,14 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-manager.py install
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-git-autobuild-tests done."
 
 venv-embed-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-embed-autobuild-tests."
+	@echo
+	@echo
 	venv2/bin/python setup-lib.py install --embed
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
@@ -442,20 +451,41 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-manager.py install
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-embed-autobuild-tests done."
 
 venv-pypi-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-pypi-autobuild-tests."
+	@echo
+	@echo
 	venv2/bin/python setup.py install --embed
 	venv3/bin/python setup.py install --embed
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-pypi-autobuild-tests done."
 
 venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
+	@echo "Launch tests for venv-dev-autobuild-tests."
+	@echo
+	@echo
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-dev-autobuild-tests done."
 
 venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
+	@echo "Launch tests for venv-shared-autobuild-tests."
+	@echo
+	@echo
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-shared-autobuild-tests done."
 
 buildso: openzwave/.lib/
 	cd openzwave && sudo $(MAKE) install    
