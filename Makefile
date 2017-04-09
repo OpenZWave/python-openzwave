@@ -421,7 +421,7 @@ venv-tests: venv2-dev venv3-dev
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
-venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-clean venv-git-autobuild-tests venv-clean venv-embed-autobuild-tests
+venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-embed-autobuild-tests venv-pypi-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup-lib.py install --git
@@ -443,6 +443,12 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
+venv-pypi-autobuild-tests: venv-clean venv2 venv3
+	venv2/bin/python setup.py install --embed
+	venv3/bin/python setup.py install --embed
+	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+
 venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
@@ -462,5 +468,6 @@ uninstallso:
 	sudo rm -Rf /usr/local/etc/openzwave
 	sudo rm -Rf /usr/local/share/doc/openzwave*
 	
-pkgconfig.py:
+pyozw_pkgconfig.py:
 	wget https://raw.githubusercontent.com/matze/pkgconfig/master/pkgconfig/pkgconfig.py
+	mv pkgconfig.py pyozw_pkgconfig.py

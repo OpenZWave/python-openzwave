@@ -57,29 +57,50 @@ from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, insta
 print(current_template)
 print(current_template.ctx)
 
+
 setup(
-  name = 'libopenzwave',
+  name = 'python_openzwave',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   version = pyozw_version,
   zip_safe = False,
   url='https://github.com/OpenZWave/python-openzwave',
-  cmdclass = {'build_ext': current_template.build_ext,
+  cmdclass = {
+        'build_ext': current_template.build_ext,
         'bdist_egg': bdist_egg,
         'build': build,
         'build_openzwave': build_openzwave,
         'clean': clean,
         'develop': develop,
-        'install': install},
+        'install': install
+        },
   ext_modules = [
         Extension(**current_template.ctx)
     ],
   #ext_modules = cythonize(ext_modules),
-  package_dir = {'' : 'src-lib'},
+  package_dir = {'libopenzwave' : 'src-lib', 'openzwave' : 'src-api/openzwave'},
   #The following line install config drectory in share/python-openzwave
   #~ data_files = data_files,
-  packages = find_packages('src-lib', exclude=["scripts"]),
-  install_requires=[
-                     'six',
-                    ],
+  packages = find_packages('src-lib', exclude=["scripts"]) + find_packages('src-api', exclude=["scripts"]),
+  install_requires = [ 'six' ],
+  description = 'python_openzwave is a python wrapper for the openzwave c++ library.',
+  long_description = 'A fullAPI to map the ZWave network in Python objects. Look at examples at : https://github.com/OpenZWave/python-openzwave',
+  download_url = 'https://github.com/OpenZWave/python-openzwave/archive/v{0}.zip'.format(pyozw_version),
+  keywords = ['openzwave', 'zwave'],
+  classifiers = [
+    "Topic :: Home Automation",
+    "Topic :: System :: Hardware",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+    "Operating System :: MacOS :: MacOS X",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: POSIX :: BSD",
+    "Programming Language :: C++",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    ],
+
 )

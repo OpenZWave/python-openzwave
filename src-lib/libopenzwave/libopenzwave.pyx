@@ -72,22 +72,26 @@ logger = logging.getLogger('libopenzwave')
 logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
-__version__ = "0.3.3"
+
+cdef extern from 'pyversion.h':
+    string PY_LIB_VERSION_STRING
+
+__version__ = PY_LIB_VERSION_STRING
 libopenzwave_location = 'not_installed'
 libopenzwave_file = 'not_installed'
 try:
     _dist = get_distribution('libopenzwave')
 except DistributionNotFound:
-    __version__ = 'Not installed'
+    pass
 else:
-    __version__ = _dist.version
     libopenzwave_location = _dist.location
 if libopenzwave_location == 'not_installed' :
    try:
         _dist = get_distribution('libopenzwave')
-        __version__ = _dist.version
         libopenzwave_file = _dist.__file__
    except AttributeError:
+        libopenzwave_file = 'not_installed'
+   except DistributionNotFound:
         libopenzwave_file = 'not_installed'
 
 cdef string str_to_cppstr(str s):
