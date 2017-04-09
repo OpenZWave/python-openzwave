@@ -423,7 +423,7 @@ venv-tests: venv2-dev venv3-dev
 
 venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-clean venv-git-autobuild-tests venv-clean venv-embed-autobuild-tests
 
-venv-git-autobuild-tests: venv2 venv3
+venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
@@ -433,7 +433,7 @@ venv-git-autobuild-tests: venv2 venv3
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
-venv-embed-autobuild-tests: venv2 venv3
+venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup-lib.py install --embed
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
@@ -443,11 +443,11 @@ venv-embed-autobuild-tests: venv2 venv3
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
-venv-dev-autobuild-tests: venv2-dev venv3-dev
+venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
-venv-shared-autobuild-tests: venv2-shared venv3-shared
+venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
