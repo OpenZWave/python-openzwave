@@ -10,6 +10,7 @@ dependencies:
         - sudo apt-get update
         - sudo make venv-deps
         - make update
+        - sudo make buildso
         - cd openzwave && make && cd ..
         - make venv2
         - make venv3
