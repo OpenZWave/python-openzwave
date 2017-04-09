@@ -53,6 +53,14 @@ LOCAL_OPENZWAVE = 'openzwave'
 
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
 
+def install_requires ():
+    pkgs = ['six']
+    if (sys.version_info > (3, 0)):
+         pass
+    else:
+         pkgs.append('Louie')
+    return pkgs
+
 def get_default_exts ():
     exts = { "name": "libopenzwave",
          "sources": [ ],
