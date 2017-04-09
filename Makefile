@@ -421,7 +421,7 @@ venv-tests: venv2-dev venv3-dev
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
-venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-embed-autobuild-tests venv-pypi-autobuild-tests
+venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-pypi-autobuild-tests venv-bdist_wheel-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
