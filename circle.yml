@@ -9,11 +9,9 @@ dependencies:
     pre:
         - sudo apt-get update
         - sudo make venv-deps
+        - sudo make cython-deps
         - make openzwave.gzip
         - sudo make buildso
-        - cd openzwave && make && cd ..
-        - make venv2
-        - make venv3
 test:
     override:
         - make venv-autobuild-tests

@@ -487,7 +487,9 @@ venv-bdist_wheel-autobuild-tests: venv-bdist_wheel-whl-autobuild-tests venv-clea
 	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
+	venv2/bin/pip install cython
 	venv2/bin/pip install dist/python_openzwave-0.4.0-cp27-cp27mu-linux_x86_64.whl
+	venv3/bin/pip install cython
 	venv3/bin/pip install dist/python_openzwave-0.4.0-cp35-cp35m-linux_x86_64.whl
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
