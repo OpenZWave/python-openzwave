@@ -41,7 +41,7 @@ endif
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps merge-python3 check
+.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps check
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -175,14 +175,6 @@ pip-deps:
 	#${PIP_EXEC} install setuptools
 	#The following line crashes with a core dump
 	#${PIP_EXEC} install "Cython==0.22"
-
-merge-python3:
-	git checkout python3
-	git merge -m "Auto-merge from master" master
-	git push
-	git checkout master
-	@echo
-	@echo "Commits for branch python3 pushed on github."
 
 clean-docs:
 	cd docs && $(MAKE) clean
@@ -362,9 +354,9 @@ push: develop
 	@echo
 	@echo "Commits for branch master pushed on github."
 
-commit: push merge-python3
+commit: push
 	@echo
-	@echo "Commits for branches master/python3 pushed on github."
+	@echo "Commits for branches master pushed on github."
 
 tag:
 	git tag v${python_openzwave_version}
