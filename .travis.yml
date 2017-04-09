@@ -8,7 +8,7 @@ python:
   - "3.4"
 install:
   - env
-  - make update
+  - make openzwave.gzip
   - make buildso
 # command to run tests
 script:
