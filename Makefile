@@ -78,6 +78,9 @@ clean: clean-docs clean-archive
 	-rm debian/*.debhelper.log
 	-rm debian/*.substvars
 	-rm -rf .tests_user_path/
+	-rm -rf openzwave-git
+	-rm -rf openzwave-embed
+	-rm -rf open-zwave-master
 
 uninstall:
 	-rm -rf $(BUILDDIR)

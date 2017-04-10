@@ -30,32 +30,19 @@ Build process :
     --pybind : use pybind alternative (not tested)
     --auto (default) : try static, shared and cython, fails if it can't
 """
-from os import name as os_name
-import os, sys
-import re
-import shutil
-import setuptools
+
 from setuptools import setup, find_packages
 from distutils.extension import Extension
-from distutils import log
-from distutils.command.install import install as _install
-from distutils.command.build import build as _build
-from distutils.command.clean import clean as _clean
-from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
-from setuptools.command.develop import develop as _develop
-import time
-from platform import system as platform_system
-import glob
-
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
-from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires
+from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
 from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, install
 
 print(current_template)
 print(current_template.ctx)
+print(install_requires())
 
 setup(
   name = 'libopenzwave',
@@ -79,5 +66,5 @@ setup(
   #The following line install config drectory in share/python-openzwave
   #~ data_files = data_files,
   packages = find_packages('src-lib', exclude=["scripts"]),
-  install_requires=install_requires(),
+  install_requires = install_requires(),
 )

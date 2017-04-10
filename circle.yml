@@ -5,12 +5,10 @@
 # For circle.yml explanation, see: https://circleci.com/docs/manually
 # Python specific configuration, see: https://circleci.com/docs/language-python
 #####
-dependencies:
-    pre:
-        - sudo apt-get update
-        - sudo make ci-deps
-        - make openzwave.gzip
-        - sudo make buildso
+machine:
+  python:
+    version: 2.7.5
+    version: 3.5.3
 dependencies:
     override:
         - sudo apt-get update

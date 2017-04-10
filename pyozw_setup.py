@@ -179,7 +179,7 @@ class Template(object):
             self._ctx = self.get_context()
         return self._ctx
     
-    def requires(self):
+    def install_requires(self):
         return ['cython']
         
     def build(self):
@@ -311,6 +311,12 @@ class Template(object):
 
     def clean_all(self):
         return self.clean()
+
+    def install_minimal_dependencies(self):
+        import pip
+        for pyreq in install_requires():
+            print("Install minimal dependencies {0} ... be patient".format(pyreq))
+            pip.main(['install', pyreq])
         
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
         #Get openzwave
@@ -412,7 +418,7 @@ class EmbedTemplate(Template):
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
 
-    def requires(self):
+    def install_requires(self):
         return []
 
     def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-%s.zip'.format(pyozw_version), force=False):
@@ -486,13 +492,14 @@ def parse_template(sysargv):
 
 current_template = parse_template(sys.argv)
 
-def install_requires ():
+def install_requires():
     pkgs = ['six']
-    pkgs += current_template.requires()
     if (sys.version_info > (3, 0)):
          pkgs.append('pydispatcher >= 2.0.5')
     else:
          pkgs.append('Louie >= 1.1')
+    pkgs += current_template.install_requires()
+    #~ print('Found install_requires {0}'.format(pkgs))
     return pkgs
 
 def get_dirs(base):
@@ -517,7 +524,6 @@ class bdist_egg(_bdist_egg):
         self.run_command('build_openzwave')
         _bdist_egg.run(self)
 
-
 class build_openzwave(setuptools.Command):
     description = 'download an build openzwave'
     
@@ -539,6 +545,7 @@ class build_openzwave(setuptools.Command):
                 self.openzwave_dir = os.path.join(build.build_lib, current_template.openzwave)
     
     def run(self):
+        current_template.install_minimal_dependencies()
         current_template.get_openzwave()
         current_template.build()
 

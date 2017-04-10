@@ -30,27 +30,18 @@ Build process :
     --pybind : use pybind alternative (not tested)
     --auto (default) : try static, shared and cython, fails if it can't
 """
-from os import name as os_name
-import os, sys
-import re
-import shutil
-import setuptools
 from setuptools import setup, find_packages
 from distutils.extension import Extension
-from distutils import log
-import time
-from platform import system as platform_system
-import glob
-
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
-from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires
+from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
 from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, install
 
 print(current_template)
 print(current_template.ctx)
+print(install_requires())
 
 
 setup(
@@ -81,21 +72,21 @@ setup(
   description = 'python_openzwave is a python wrapper for the openzwave c++ library.',
   long_description = 'A full API to map the ZWave network in Python objects. Look at examples at : https://github.com/OpenZWave/python-openzwave',
   download_url = 'https://github.com/OpenZWave/python-openzwave/archive/v{0}.zip'.format(pyozw_version),
-  keywords = ['openzwave', 'zwave'],
+  keywords = [ 'openzwave', 'zwave' ],
   classifiers = [
-    "Topic :: Home Automation",
+#    "Topic :: Home Automation",
     "Topic :: System :: Hardware",
     "Topic :: System :: Hardware :: Hardware Drivers",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
     "Operating System :: POSIX :: BSD",
-    "Programming Language :: C++",
-    "Programming Language :: Cython",
+#    "Programming Language :: C++",
+#    "Programming Language :: Cython",
+#    "Programming Language :: Python",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+#    "Programming Language :: Python :: 2",
+#    "Programming Language :: Python :: 3",
+#    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     ],
-
 )
