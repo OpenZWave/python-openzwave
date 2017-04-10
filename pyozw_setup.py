@@ -54,14 +54,6 @@ LOCAL_OPENZWAVE = 'openzwave'
 
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def install_requires ():
-    pkgs = ['six']
-    if (sys.version_info > (3, 0)):
-         pkgs.append('pydispatcher >= 2.0.5')
-    else:
-         pkgs.append('Louie >= 1.1')
-    return pkgs
-
 def get_default_exts ():
     exts = { "name": "libopenzwave",
          "sources": [ ],
@@ -186,6 +178,9 @@ class Template(object):
         if self._ctx is None:
             self._ctx = self.get_context()
         return self._ctx
+    
+    def requires(self):
+        return ['cython']
         
     def build(self):
         #Build openzwave
@@ -417,6 +412,9 @@ class EmbedTemplate(Template):
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
 
+    def requires(self):
+        return []
+
     def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-%s.zip'.format(pyozw_version), force=False):
         return Template.get_openzwave(self, url, force)
 
@@ -487,6 +485,15 @@ def parse_template(sysargv):
         return SharedTemplate()
 
 current_template = parse_template(sys.argv)
+
+def install_requires ():
+    pkgs = ['six']
+    pkgs += current_template.requires()
+    if (sys.version_info > (3, 0)):
+         pkgs.append('pydispatcher >= 2.0.5')
+    else:
+         pkgs.append('Louie >= 1.1')
+    return pkgs
 
 def get_dirs(base):
     return [x for x in glob.iglob(os.path.join( base, '*')) if os.path.isdir(x) ]    
@@ -562,3 +569,4 @@ class install(_install):
         build_openzwave.develop = True
         self.run_command('build_openzwave')
         _install.run(self)
+

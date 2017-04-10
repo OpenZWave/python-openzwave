@@ -150,8 +150,8 @@ ifeq (${python_version_major},3)
 endif
 
 ci-deps:
-	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-virtualenv cython
-	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools cython3
+	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-virtualenv
+	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
 	apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
 
 common-deps:
@@ -359,6 +359,20 @@ embed_openzave_master:clean-archive
 	@echo
 	@echo "embed_openzave_master for version ${python_openzwave_version} created"
 
+pypi_package:clean-archive
+	-mkdir -p $(ARCHBASE)/python_openzwave/
+	cp -Rf src_lib/* $(ARCHBASE)/python_openzwave/
+	cp -Rf src_api/* $(ARCHBASE)/python_openzwave/
+	cp -f setup.py $(ARCHBASE)/python_openzwave/
+	cp -f setup.py $(ARCHBASE)/python_openzwave/
+	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
+	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
+	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
+	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/python_openzwave-${python_openzwave_version}.zip python_openzwave
+	mv $(DISTDIR)/python_openzwave-${python_openzwave_version}.zip $(ARCHIVES)/
+	@echo
+	@echo "pypi_package for version ${python_openzwave_version} created"
+
 push: develop
 	-git commit -m "Auto-commit for docs" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-git push
@@ -391,13 +405,11 @@ venv-deps: common-deps
 
 venv2:
 	virtualenv --python=python2 venv2
-	venv2/bin/pip install cython
 	venv2/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	
 venv3:
 	virtualenv --python=python3 venv3
-	venv3/bin/pip install cython
 	venv3/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
