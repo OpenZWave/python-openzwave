@@ -414,21 +414,25 @@ venv3:
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
 venv2-dev: venv2
+	venv2/bin/pip install cython
 	venv2/bin/python setup-lib.py install --dev
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-dev: venv3
+	venv3/bin/pip install cython
 	venv3/bin/python setup-lib.py install --dev
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
 
 venv2-shared: venv2
+	venv2/bin/pip install cython
 	venv2/bin/python setup-lib.py install --shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-shared: venv3
+	venv3/bin/pip install cython
 	venv3/bin/python setup-lib.py install --shared
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -450,9 +454,11 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
 	@echo
 	@echo
+	venv2/bin/pip install cython
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
+	venv3/bin/pip install cython
 	venv3/bin/python setup-lib.py install --git
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -482,7 +488,9 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-pypi-autobuild-tests."
 	@echo
 	@echo
+	venv2/bin/pip install cython
 	venv2/bin/python setup.py install --git
+	venv3/bin/pip install cython
 	venv3/bin/python setup.py install --git
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
@@ -494,7 +502,9 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo "Create tests whl for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
+	venv2/bin/pip install cython
 	venv2/bin/python setup.py bdist_wheel --git
+	venv3/bin/pip install cython
 	venv3/bin/python setup.py bdist_wheel --git
 	@echo
 	@echo

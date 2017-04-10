@@ -346,10 +346,10 @@ class Template(object):
 class DevTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave='openzwave')
-        from Cython.Distutils import build_ext
-        self.build_ext = build_ext
 
     def get_context(self):
+        from Cython.Distutils import build_ext
+        self.build_ext = build_ext
         opzw_dir = LOCAL_OPENZWAVE
         if LOCAL_OPENZWAVE is None:
             return None
@@ -370,11 +370,11 @@ class DevTemplate(Template):
 class GitTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'))
-        from Cython.Distutils import build_ext
-        self.build_ext = build_ext
 
     def get_context(self):
         ctx = cython_context()
+        from Cython.Distutils import build_ext
+        self.build_ext = build_ext
         if ctx is None:
             print("Can't find cython")
             return None
@@ -404,10 +404,10 @@ class GitTemplate(Template):
 class EmbedTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'))
-        from distutils.command.build_ext import build_ext
-        self.build_ext = build_ext
 
     def get_context(self):
+        from distutils.command.build_ext import build_ext
+        self.build_ext = build_ext
         ctx = cpp_context()
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
@@ -447,11 +447,11 @@ class EmbedTemplate(Template):
 class SharedTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave=openzwave)
-        from Cython.Distutils import build_ext 
-        self.build_ext = build_ext
 
     def get_context(self):
         ctx = cython_context()
+        from Cython.Distutils import build_ext 
+        self.build_ext = build_ext
         if ctx is None:
             print("Can't find cython")
             return None
