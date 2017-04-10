@@ -337,8 +337,6 @@ tgz: clean-archive $(ARCHDIR) docs
 	tar cvzf $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz -C $(ARCHBASE) ${ARCHNAME}
 	rm -Rf $(ARCHBASE)
 	mv $(DISTDIR)/python-openzwave-${python_openzwave_version}.tgz $(ARCHIVES)/
-	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
-	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
@@ -368,6 +366,7 @@ embed_openzave_master:clean-archive
 pypi_package:clean-archive
 	-rm -Rf $(ARCHBASE)/python_openzwave/
 	-mkdir -p $(ARCHBASE)/python_openzwave/
+	cp -Rf src-python_openzwave $(ARCHBASE)/python_openzwave/
 	cp -Rf src-lib $(ARCHBASE)/python_openzwave/
 	cp -Rf src-api $(ARCHBASE)/python_openzwave/
 	cp -f setup.py $(ARCHBASE)/python_openzwave/
@@ -397,7 +396,13 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: commit tgz embed_openzave_master tag commit
+new-version: commit tgz embed_openzave_master pypi_package tag commit
+	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
+	git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
+	git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
+	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
+	git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
+	git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
 	git push
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
@@ -470,8 +475,8 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-lib.py install --git
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
 	@echo "Tests for venv-git-autobuild-tests done."
@@ -500,8 +505,8 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup.py install --git
 	venv3/bin/pip install cython wheel
 	venv3/bin/python setup.py install --git
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	@echo
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
@@ -538,8 +543,8 @@ venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	@echo "Launch tests for venv-dev-autobuild-tests."
 	@echo
 	@echo
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
 	@echo "Tests for venv-dev-autobuild-tests done."
@@ -548,8 +553,8 @@ venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 	@echo "Launch tests for venv-shared-autobuild-tests."
 	@echo
 	@echo
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
 	@echo "Tests for venv-shared-autobuild-tests done."

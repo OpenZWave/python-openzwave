@@ -614,6 +614,8 @@ def configPath():
         if dirn is not None  and os.path.isfile(os.path.join(dirn,'device_classes.xml')):
             #At first, check in /etc/openzwave
             return dirn
+        elif os.path.isfile(os.path.join("openzwave/config",'device_classes.xml')):
+            return os.path.abspath('openzwave/config')
         #For historical reasons.
         elif os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
             return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
