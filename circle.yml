@@ -10,9 +10,10 @@ dependencies:
         - sudo apt-get update
         - sudo make venv-deps
         - make openzwave.gzip
-        - sudo make buildso
-install:
-    override:
+
+dependencies:
+  override:
+    - sudo make buildso
         - 
 test:
     override:
