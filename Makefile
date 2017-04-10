@@ -38,6 +38,9 @@ ifeq (${python_version_major},3)
 	PIP_EXEC=pip3
 endif
 
+WHL_PYTHON2 := $(shell ls dist/*.whl|grep ${python_openzwave_version}|grep [0-9]-cp2)
+WHL_PYTHON3 := $(shell ls dist/*.whl|grep ${python_openzwave_version}|grep [0-9]-cp3)
+ 
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
@@ -518,9 +521,9 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 	venv2/bin/pip install cython
-	venv2/bin/pip install dist/python_openzwave-0.4.0-cp27-cp27mu-linux_x86_64.whl
+	venv2/bin/pip install ${WHL_PYTHON2}
 	venv3/bin/pip install cython
-	venv3/bin/pip install dist/python_openzwave-0.4.0-cp35-cp35m-linux_x86_64.whl
+	venv3/bin/pip install ${WHL_PYTHON3}
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	@echo
