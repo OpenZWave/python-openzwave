@@ -382,7 +382,7 @@ deb:
 	dpkg-buildpackage
 
 venv-deps: common-deps
-	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python3-virtualenv
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip  python-pip-whl 
 
 venv2:
 	virtualenv --python=python2 venv2
