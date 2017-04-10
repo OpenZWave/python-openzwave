@@ -11,8 +11,6 @@ dependencies:
         - sudo make ci-deps
         - make openzwave.gzip
         - sudo make buildso
-    override:
-        -
 test:
     override:
         - make venv-autobuild-tests
