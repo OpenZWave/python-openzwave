@@ -40,9 +40,6 @@ from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, Share
 from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, install
 
 print(current_template)
-print(current_template.ctx)
-print(install_requires())
-
 
 setup(
   name = 'python_openzwave',
@@ -90,3 +87,6 @@ setup(
 #    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     ],
 )
+
+print(current_template.ctx)
+print(install_requires())

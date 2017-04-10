@@ -178,7 +178,12 @@ class Template(object):
         if self._ctx is None:
             self._ctx = self.get_context()
         return self._ctx
-    
+
+    @property
+    def build_ext(self):
+        from Cython.Distutils import build_ext as _build_ext
+        return _build_ext
+   
     def install_requires(self):
         return ['cython']
         
@@ -354,8 +359,6 @@ class DevTemplate(Template):
         Template.__init__(self, openzwave='openzwave')
 
     def get_context(self):
-        from Cython.Distutils import build_ext
-        self.build_ext = build_ext
         opzw_dir = LOCAL_OPENZWAVE
         if LOCAL_OPENZWAVE is None:
             return None
@@ -379,8 +382,6 @@ class GitTemplate(Template):
 
     def get_context(self):
         ctx = cython_context()
-        from Cython.Distutils import build_ext
-        self.build_ext = build_ext
         if ctx is None:
             print("Can't find cython")
             return None
@@ -411,9 +412,12 @@ class EmbedTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'))
 
+    @property
+    def build_ext(self):
+        from distutils.command.build_ext import build_ext as _build_ext
+        return _build_ext
+
     def get_context(self):
-        from distutils.command.build_ext import build_ext
-        self.build_ext = build_ext
         ctx = cpp_context()
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
@@ -456,8 +460,6 @@ class SharedTemplate(Template):
 
     def get_context(self):
         ctx = cython_context()
-        from Cython.Distutils import build_ext 
-        self.build_ext = build_ext
         if ctx is None:
             print("Can't find cython")
             return None
@@ -550,10 +552,12 @@ class build_openzwave(setuptools.Command):
         current_template.build()
 
 class build(_build):
-    sub_commands = _build.sub_commands + [('build_openzwave', None)]
+    sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
 class bdist_wheel(_bdist_wheel):
-    sub_commands = _bdist_wheel.sub_commands + [('build_openzwave', None)]
+    def run(self):
+        self.run_command('build_openzwave')
+        _bdist_wheel.run(self)
 
 class clean(_clean):
     def run(self):
