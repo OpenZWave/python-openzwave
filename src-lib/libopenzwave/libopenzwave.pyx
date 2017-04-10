@@ -596,23 +596,40 @@ def configPath():
     :rtype: str
 
     '''
-    if os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.isdir(os.path.join("/etc","openzwave")):
-        return os.path.join("/etc","openzwave")
-    elif os.path.isdir(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.isdir(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
-    elif os.path.isdir(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
-        return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
-    else:
-        if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
-        if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
-            return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
-        if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
-            return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
+    if os.path.isfile(os.path.join("/etc/openzwave/",'device_classes.xml')):
+        #At first, check in /etc/openzwave
+        return "/etc/openzwave/"
+    elif os.path.isfile(os.path.join("/usr/local/etc/openzwave/",'device_classes.xml')):
+        #Next, check in /usr/local/etc/openzwave
+        return "/usr/local/etc/openzwave/"
+    else :
+        #Check in python_openzwave.resources
+        dirn = None
+        try:
+            from pkg_resources import resource_filename
+            dirn = resource_filename('python_openzwave.ozw_config', '__init__.py')
+            dirn = os.path.dirname(dirn)
+        except ImportError:
+            dirn = None
+        if dirn is not None  and os.path.isfile(os.path.join(dirn,'device_classes.xml')):
+            #At first, check in /etc/openzwave
+            return dirn
+        #For historical reasons.
+        elif os.path.isdir(os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr",PY_OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.isdir(os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr/local",PY_OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.isdir(os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr",OZWAVE_CONFIG_DIRECTORY)
+        elif os.path.isdir(os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)):
+            return os.path.join("/usr/local",OZWAVE_CONFIG_DIRECTORY)
+        else:
+            if os.path.isdir(os.path.join(os.path.dirname(libopenzwave_file),PY_OZWAVE_CONFIG_DIRECTORY)):
+                return os.path.join(os.path.dirname(libopenzwave_file), PY_OZWAVE_CONFIG_DIRECTORY)
+            if os.path.isdir(os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)):
+                return os.path.join(os.getcwd(),CWD_CONFIG_DIRECTORY)
+            if os.path.isdir(os.path.join(libopenzwave_location,PY_OZWAVE_CONFIG_DIRECTORY)):
+                return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
     return None
 
 cdef class PyOptions:

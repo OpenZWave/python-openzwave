@@ -366,14 +366,16 @@ embed_openzave_master:clean-archive
 	@echo "embed_openzave_master for version ${python_openzwave_version} created"
 
 pypi_package:clean-archive
+	-rm -Rf $(ARCHBASE)/python_openzwave/
 	-mkdir -p $(ARCHBASE)/python_openzwave/
-	cp -Rf src_lib/* $(ARCHBASE)/python_openzwave/
-	cp -Rf src_api/* $(ARCHBASE)/python_openzwave/
+	cp -Rf src-lib $(ARCHBASE)/python_openzwave/
+	cp -Rf src-api $(ARCHBASE)/python_openzwave/
 	cp -f setup.py $(ARCHBASE)/python_openzwave/
 	cp -f setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
+	-mkdir -p $(DISTDIR)
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/python_openzwave-${python_openzwave_version}.zip python_openzwave
 	mv $(DISTDIR)/python_openzwave-${python_openzwave_version}.zip $(ARCHIVES)/
 	@echo
@@ -420,25 +422,25 @@ venv3:
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
 venv2-dev: venv2
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --dev
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-dev: venv3
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --dev
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
 
 venv2-shared: venv2
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-shared: venv3
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --shared
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -460,11 +462,11 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
 	@echo
 	@echo
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --git
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -494,9 +496,9 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-pypi-autobuild-tests."
 	@echo
 	@echo
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/python setup.py install --git
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/python setup.py install --git
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
@@ -508,9 +510,9 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo "Create tests whl for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/python setup.py bdist_wheel --git
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/python setup.py bdist_wheel --git
 	@echo
 	@echo
@@ -520,12 +522,14 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython wheel
 	venv2/bin/pip install ${WHL_PYTHON2}
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython wheel
 	venv3/bin/pip install ${WHL_PYTHON3}
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests done."

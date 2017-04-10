@@ -41,6 +41,8 @@ from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, Share
 from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, install
 
 print(current_template)
+print(current_template.ctx)
+print(install_requires())
 
 setup(
   name = 'libopenzwave',
@@ -67,5 +69,3 @@ setup(
   install_requires = install_requires(),
 )
 
-print(current_template.ctx)
-print(install_requires())

@@ -184,6 +184,10 @@ class Template(object):
         from Cython.Distutils import build_ext as _build_ext
         return _build_ext
    
+    @property
+    def copy_openzwave_config(self):
+        return True
+
     def install_requires(self):
         return ['cython']
         
@@ -469,6 +473,10 @@ class SharedTemplate(Template):
     def build(self):
         return True
 
+    @property
+    def copy_openzwave_config(self):
+        return False
+
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
         return True
 
@@ -551,12 +559,42 @@ class build_openzwave(setuptools.Command):
         current_template.get_openzwave()
         current_template.build()
 
+class openzwave_config(setuptools.Command):
+    description = 'Install config files from openzwave'
+    
+    user_options = [
+        ('install-dir=', None,
+         'the installation directory where openzwave configuration should be stored'),
+    ]
+    
+    def initialize_options(self):
+        self.install_dir = None
+    
+    def finalize_options(self):
+        if self.install_dir is None:
+            install = self.distribution.get_command_obj('install')
+            install.ensure_finalized()
+            self.install_dir = install.install_lib
+    
+    def run(self):
+        if self.install_dir is None:
+            print("Can't install ozw_config to None")
+            return
+        if not current_template.copy_openzwave_config:
+            print("Don't install ozw_config for template {0}".format(current_template))
+            return
+        dest = os.path.join(self.install_dir, 'python_openzwave', "ozw_config")
+        if not os.path.isdir(dest):
+            os.makedirs(dest)
+        self.copy_tree(os.path.join(current_template.openzwave,'config'), dest)
+        
 class build(_build):
     sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
 class bdist_wheel(_bdist_wheel):
     def run(self):
         self.run_command('build_openzwave')
+        self.run_command('openzwave_config')
         _bdist_wheel.run(self)
 
 class clean(_clean):
@@ -579,5 +617,6 @@ class install(_install):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
         self.run_command('build_openzwave')
+        self.run_command('openzwave_config')
         _install.run(self)
 
