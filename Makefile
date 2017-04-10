@@ -391,7 +391,7 @@ venv-deps: common-deps
 
 venv2:
 	virtualenv --python=python2 venv2
-	venv2/bin/pip install cython == 0.25.1
+	venv2/bin/pip install cython==0.25.1
 	venv2/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	
