@@ -397,7 +397,7 @@ venv2:
 	
 venv3:
 	virtualenv --python=python3 venv3
-	venv3/bin/pip install cython
+	venv3/bin/pip install cython==0.25.1
 	venv3/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
