@@ -12,7 +12,11 @@ install:
   - make buildso
 # command to run tests
 script:
-  - make venv-autobuild-tests
+  - make venv-git-autobuild-tests
+  - make venv-shared-autobuild-tests
+  - make venv-pypi-autobuild-tests 
+  - make venv-bdist_wheel-whl-autobuild-tests 
+  - make venv-bdist_wheel-autobuild-tests
 # package dependencies
 before_install:
   #- env
