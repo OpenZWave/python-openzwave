@@ -382,11 +382,11 @@ deb:
 	dpkg-buildpackage
 
 venv-deps: common-deps
-	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip  python-pip-whl 
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip 
 
 venv2:
 	virtualenv --python=python2 venv2
-	venv2/bin/pip install cython
+	venv2/bin/pip install cython == 0.25.1
 	venv2/bin/pip install nose
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	
