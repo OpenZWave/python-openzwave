@@ -461,7 +461,13 @@ venv-tests: venv2-dev venv3-dev
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
-venv-autobuild-tests: venv-clean venv-dev-autobuild-tests venv-clean venv-shared-autobuild-tests venv-git-autobuild-tests venv-pypi-autobuild-tests venv-bdist_wheel-whl-autobuild-tests venv-bdist_wheel-autobuild-tests
+venv-autobuild-tests:
+	$(MAKE) venv-dev-autobuild-tests
+	$(MAKE) venv-shared-autobuild-tests 
+	$(MAKE) venv-git-autobuild-tests 
+	$(MAKE) venv-pypi-autobuild-tests 
+	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
+	$(MAKE) venv-bdist_wheel-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
@@ -477,6 +483,26 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	@echo
+	@echo
+	@echo "Tests for venv-git-autobuild-tests done."
+
+venv-git_shared-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-git_shared-autobuild-tests."
+	@echo
+	@echo
+	venv2/bin/pip install cython wheel
+	venv2/bin/python setup-lib.py install --git_shared
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	venv3/bin/pip install cython wheel
+	venv3/bin/python setup-lib.py install --git_shared
+	venv3/bin/python setup-api.py install
+	venv3/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	@echo
 	@echo
 	@echo "Tests for venv-git-autobuild-tests done."

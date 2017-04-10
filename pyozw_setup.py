@@ -188,12 +188,15 @@ class Template(object):
     def copy_openzwave_config(self):
         return True
 
+    @property
+    def install_openzwave_so(self):
+        return False
+
     def install_requires(self):
         return ['cython']
         
     def build(self):
-        #Build openzwave
-        if os.path.isfile(self.ctx['extra_objects'][0]):
+        if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
             return True
         print("Build openzwave ... be patient ...")
         from subprocess import Popen, PIPE
@@ -237,6 +240,65 @@ class Template(object):
                 
         elif sys.platform[:5] == "linux":
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+        else:
+            # Unknown systemm
+            raise RuntimeError("Can't detect plateform")
+
+        Thread(target=stream_watcher, name='stdout-watcher',
+                args=('STDOUT', proc.stdout)).start()
+        Thread(target=stream_watcher, name='stderr-watcher',
+                args=('STDERR', proc.stderr)).start()
+
+        printer = Thread(target=printer, name='printer')
+        printer.start()
+        while printer.is_alive():
+            time.sleep(1)
+        printer.join()
+        return True
+
+    def install_so(self):
+        print("Install openzwave so ... be patient ...")
+        from subprocess import Popen, PIPE
+        from threading import Thread
+        try:
+            from Queue import Queue, Empty
+        except ImportError:
+            from queue import Queue, Empty
+
+        io_q = Queue()
+
+        def stream_watcher(identifier, stream):
+
+            for line in stream:
+                io_q.put((identifier, line))
+
+            if not stream.closed:
+                stream.close()
+
+        def printer():
+            while True:
+                try:
+                    # Block for 1 second.
+                    item = io_q.get(True, 1)
+                except Empty:
+                    # No output in either streams for a second. Are we done?
+                    if proc.poll() is not None:
+                        break
+                else:
+                    identifier, line = item
+                    print(identifier + ':', line)
+
+        if sys.platform == "win32":
+            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform == "darwin":
+            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform == "freebsd":
+            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform[:5] == "linux":
+            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
         else:
             # Unknown systemm
             raise RuntimeError("Can't detect plateform")
@@ -412,6 +474,34 @@ class GitTemplate(Template):
                 pass
         return ret
 
+class GitSharedTemplate(GitTemplate):
+    
+    def get_context(self):
+        ctx = cython_context()
+        if ctx is None:
+            print("Can't find cython")
+            return None
+        ctx = system_context(ctx, openzwave=self.openzwave, static=False)
+        return ctx
+
+    @property
+    def install_openzwave_so(self):
+        return True
+
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
+        return Template.get_openzwave(self, url, force)
+
+    def clean_all(self):
+        ret = GitTemplate.clean(self)
+        #We should remove headers, so modules and configuration files
+        for path in ['/usr/local/etc/openzwave', '/usr/local/include/openzwave', '/usr/local/share/doc/openzwave']:
+            try:
+                print('Try to remove {0}'.format('/usr/local/etc/openzwave'))
+                shutil.rmtree(os.path.abspath(self.openzwave))
+            except Exception:
+                pass
+        return ret
+
 class EmbedTemplate(Template):
     def __init__(self, openzwave=None):
         Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'))
@@ -489,6 +579,10 @@ def parse_template(sysargv):
         index = sysargv.index('--git')
         sysargv.pop(index)
         return GitTemplate()
+    elif '--git_shared' in sysargv:
+        index = sysargv.index('--git_shared')
+        sysargv.pop(index)
+        return GitSharedTemplate()
     elif '--embed' in sysargv:
         index = sysargv.index('--embed')
         sysargv.pop(index)
@@ -558,6 +652,8 @@ class build_openzwave(setuptools.Command):
         current_template.install_minimal_dependencies()
         current_template.get_openzwave()
         current_template.build()
+        if current_template.install_openzwave_so:
+            current_template.install_so()
 
 class openzwave_config(setuptools.Command):
     description = 'Install config files from openzwave'
