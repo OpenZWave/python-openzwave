@@ -1,7 +1,8 @@
 language: cpp
 dist: trusty
 sudo: required
-cache:
+env:
+- PYOZW_DOCKER=1
   - apt
 python:
   - "2.7"

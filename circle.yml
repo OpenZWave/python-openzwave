@@ -10,7 +10,8 @@ machine:
     version: 2.7.6
     version: 3.5.3
     version: pypy-2.3.1
-    
+  environment:
+    PYOZW_DOCKER: 1    
 dependencies:
     override:
         - sudo apt-get update
