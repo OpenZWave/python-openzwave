@@ -169,9 +169,10 @@ def system_context(ctx, openzwave=None, static=False):
 
 class Template(object):
     
-    def __init__(self, openzwave=None):
+    def __init__(self, openzwave=None, cleanopzw=False):
         self.openzwave = openzwave
         self._ctx = None
+        self.cleanopzw = cleanopzw
    
     @property
     def ctx(self):
@@ -197,8 +198,9 @@ class Template(object):
         
     def build(self):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
+            log.info("Use cached build of openzwave")
             return True
-        print("Build openzwave ... be patient ...")
+        log.info("Build openzwave ... be patient ...")
         from subprocess import Popen, PIPE
         from threading import Thread
         try:
@@ -227,7 +229,10 @@ class Template(object):
                         break
                 else:
                     identifier, line = item
-                    print(identifier + ':', line)
+                    log.debug(identifier + ':', line)
+                    if identifier == 'STDERR':
+                        sys.stderr.write('{0}\n'.format(line))
+                        log.error('{0}\n'.format(line))
 
         if sys.platform == "win32":
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -257,7 +262,7 @@ class Template(object):
         return True
 
     def install_so(self):
-        print("Install openzwave so ... be patient ...")
+        log.info("Install openzwave so ... be patient ...")
         from subprocess import Popen, PIPE
         from threading import Thread
         try:
@@ -286,7 +291,10 @@ class Template(object):
                         break
                 else:
                     identifier, line = item
-                    print(identifier + ':', line)
+                    log.debug(identifier + ':', line)
+                    if identifier == 'STDERR':
+                        sys.stderr.write('{0}\n'.format(line))
+                        log.error('{0}\n'.format(line))
 
         if sys.platform == "win32":
             proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -322,7 +330,7 @@ class Template(object):
                 return True
         except TypeError:
             return True
-        print("Clean openzwave ... be patient ...")
+        log.info("Clean openzwave ... be patient ...")
         from subprocess import Popen, PIPE
         from threading import Thread
         try:
@@ -351,7 +359,10 @@ class Template(object):
                         break
                 else:
                     identifier, line = item
-                    print(identifier + ':', line)
+                    log.debug(identifier + ':', line)
+                    if identifier == 'STDERR':
+                        sys.stderr.write('{0}\n'.format(line))
+                        log.error('{0}\n'.format(line))
 
         if sys.platform == "win32":
             proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -402,23 +413,26 @@ class Template(object):
     def install_minimal_dependencies(self):
         import pip
         for pyreq in install_requires():
-            print("Install minimal dependencies {0} ... be patient".format(pyreq))
+            print("Install minimal dependencies {0}".format(pyreq))
             pip.main(['install', pyreq])
         
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
         """download an archive to a specific location"""
         dest,tail = os.path.split(self.openzwave)
         dest_file = os.path.join(dest, 'open-zwave-master.zip')
         if os.path.exists(self.openzwave):
-            if not force:
-                print("already have directory %s" % self.openzwave)
+            if not self.cleanopzw:
+                log.info("Already have directory %s. Use it. Use --cleanopzw to clean it.", self.openzwave)
                 return self.openzwave
             else:
-                print("already have directory %s but remove it" % self.openzwave)
-                os.remove(self.openzwave)
-                os.remove(dest_file)
-        print("fetching {0} into {1} for wersion {2}".format(url, dest_file, pyozw_version))
+                log.info("Already have directory %s but remove and clean it as asked", self.openzwave)
+                self.clean_all()
+                try:
+                    os.remove(dest_file)
+                except Exception:
+                    pass
+        log.info("fetching {0} into {1} for wersion {2}".format(url, dest_file, pyozw_version))
         if not os.path.exists(dest):
             os.makedirs(dest)
         try:
@@ -437,55 +451,57 @@ class Template(object):
         return self.openzwave
         
 class DevTemplate(Template):
-    def __init__(self, openzwave=None):
-        Template.__init__(self, openzwave='openzwave')
+    def __init__(self, openzwave=None, cleanopzw=False):
+        Template.__init__(self, openzwave='openzwave', cleanopzw=cleanopzw)
 
     def get_context(self):
         opzw_dir = LOCAL_OPENZWAVE
         if LOCAL_OPENZWAVE is None:
             return None
         if not os.path.isdir(opzw_dir):
-            print("Can't find {0}".format(opzw_dir))
+            log.error("Can't find {0}".format(opzw_dir))
             return None
         self.openzwave = opzw_dir
         ctx = cython_context()
         if ctx is None:
-            print("Can't find cython")
+            log.error("Can't find cython")
             return None
         ctx = system_context(ctx, openzwave=opzw_dir, static=True)
         return ctx
 
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         return True
 
 class GitTemplate(Template):
-    def __init__(self, openzwave=None):
-        Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'))
+    def __init__(self, openzwave=None, cleanopzw=False):
+        Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'), cleanopzw=cleanopzw)
 
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            print("Can't find cython")
+            log.error("Can't find cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
 
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
-        return Template.get_openzwave(self, url, force)
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
+        return Template.get_openzwave(self, url)
 
     def clean_all(self):
         ret = self.clean()
         dest,tail = os.path.split(os.path.abspath(self.openzwave))
         if tail == "openzwave-git":
             try:
-                print('Try to remove {0}'.format(self.openzwave))
-                shutil.rmtree(os.path.abspath(self.openzwave))
+                log.info('Try to remove {0}'.format(self.openzwave))
+                if os.path.isdir(os.path.abspath(self.openzwave)):
+                    shutil.rmtree(os.path.abspath(self.openzwave))
             except Exception:
                 pass
         elif tail == 'open-zwave-master':
             try:
-                print('Try to remove {0}'.format(dest))
-                shutil.rmtree(os.path.abspath(dest))
+                log.info('Try to remove {0}'.format(dest))
+                if os.path.isdir(os.path.abspath(dest)):
+                    shutil.rmtree(os.path.abspath(dest))
             except Exception:
                 pass
         return ret
@@ -495,7 +511,7 @@ class GitSharedTemplate(GitTemplate):
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            print("Can't find cython")
+            log.error("Can't find cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
         return ctx
@@ -504,23 +520,23 @@ class GitSharedTemplate(GitTemplate):
     def install_openzwave_so(self):
         return True
 
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
-        return Template.get_openzwave(self, url, force)
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
+        return Template.get_openzwave(self, url)
 
     def clean_all(self):
         ret = GitTemplate.clean(self)
         #We should remove headers, so modules and configuration files
         for path in ['/usr/local/etc/openzwave', '/usr/local/include/openzwave', '/usr/local/share/doc/openzwave']:
             try:
-                print('Try to remove {0}'.format('/usr/local/etc/openzwave'))
+                log.info('Try to remove {0}'.format('/usr/local/etc/openzwave'))
                 shutil.rmtree(os.path.abspath(self.openzwave))
             except Exception:
                 pass
         return ret
 
 class EmbedTemplate(Template):
-    def __init__(self, openzwave=None):
-        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'))
+    def __init__(self, openzwave=None, cleanopzw=False):
+        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), cleanopzw=cleanopzw)
 
     @property
     def build_ext(self):
@@ -535,13 +551,13 @@ class EmbedTemplate(Template):
     def install_requires(self):
         return []
 
-    def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-%s.zip'.format(pyozw_version), force=False):
-        return Template.get_openzwave(self, url, force)
+    def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-%s.zip'.format(pyozw_version)):
+        return Template.get_openzwave(self, url)
 
     def clean(self):
         ret = Template.clean(self)
         try:
-            print('Try to copy {0}'.format(os.path.join(self.openzwave,'python-openzwave','openzwave.vers.cpp')))
+            log.info('Try to copy {0}'.format(os.path.join(self.openzwave,'python-openzwave','openzwave.vers.cpp')))
             shutil.copyfile(os.path.join(self.openzwave,'python-openzwave','openzwave.vers.cpp'), os.path.join(self.openzwave,'cpp','src','vers.cpp'))
         except Exception:
             pass
@@ -552,26 +568,26 @@ class EmbedTemplate(Template):
         dest,tail = os.path.split(os.path.abspath(self.openzwave))
         if tail == "openzwave-embed":
             try:
-                print('Try to remove {0}'.format(self.openzwave))
+                log.info('Try to remove {0}'.format(self.openzwave))
                 shutil.rmtree(os.path.abspath(self.openzwave))
             except Exception:
                 pass
         elif tail == 'open-zwave-master':
             try:
-                print('Try to remove {0}'.format(dest))
+                log.info('Try to remove {0}'.format(dest))
                 shutil.rmtree(os.path.abspath(dest))
             except Exception:
                 pass
         return ret
         
 class SharedTemplate(Template):
-    def __init__(self, openzwave=None):
-        Template.__init__(self, openzwave=openzwave)
+    def __init__(self, openzwave=None, cleanopzw=False):
+        Template.__init__(self, openzwave=openzwave, cleanopzw=cleanopzw)
 
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            print("Can't find cython")
+            log.error("Can't find cython")
             return None
         ctx = system_context(ctx, static=False)
         return ctx
@@ -583,33 +599,37 @@ class SharedTemplate(Template):
     def copy_openzwave_config(self):
         return False
 
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master', force=False):
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         return True
 
 def parse_template(sysargv):
+    tmpl = SharedTemplate()
     if '--dev' in sysargv:
         index = sysargv.index('--dev')
         sysargv.pop(index)
-        return DevTemplate()
+        tmpl =  DevTemplate()
     elif '--git' in sysargv:
         index = sysargv.index('--git')
         sysargv.pop(index)
-        return GitTemplate()
+        tmpl =  GitTemplate()
     elif '--git_shared' in sysargv:
         index = sysargv.index('--git_shared')
         sysargv.pop(index)
-        return GitSharedTemplate()
+        tmpl =  GitSharedTemplate()
     elif '--embed' in sysargv:
         index = sysargv.index('--embed')
         sysargv.pop(index)
-        return EmbedTemplate()
+        tmpl =  EmbedTemplate()
     elif '--shared' in sysargv:
         index = sysargv.index('--shared')
         sysargv.pop(index)
-        return SharedTemplate()
-    else:
-        return SharedTemplate()
-
+        tmpl =  SharedTemplate()
+    if '--cleanopzw' in sysargv:
+        index = sysargv.index('--cleanopzw')
+        sysargv.pop(index)
+        tmpl.cleanopzw = True
+    return tmpl
+    
 current_template = parse_template(sys.argv)
 
 def install_requires():
@@ -690,10 +710,10 @@ class openzwave_config(setuptools.Command):
     
     def run(self):
         if self.install_dir is None:
-            print("Can't install ozw_config to None")
+            log.warning("Can't install ozw_config to None")
             return
         if not current_template.copy_openzwave_config:
-            print("Don't install ozw_config for template {0}".format(current_template))
+            log.info("Don't install ozw_config for template {0}".format(current_template))
             return
         dest = os.path.join(self.install_dir, 'python_openzwave', "ozw_config")
         if not os.path.isdir(dest):
@@ -701,7 +721,7 @@ class openzwave_config(setuptools.Command):
         self.copy_tree(os.path.join(current_template.openzwave,'config'), dest)
         
 class build(_build):
-    sub_commands = _build.sub_commands + [('build_openzwave', None)]
+    sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
 class bdist_wheel(_bdist_wheel):
     def run(self):
@@ -729,6 +749,6 @@ class install(_install):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
         self.run_command('build_openzwave')
-        #~ self.run_command('openzwave_config')
+        self.run_command('openzwave_config')
         _install.run(self)
 

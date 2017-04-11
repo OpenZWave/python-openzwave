@@ -278,7 +278,7 @@ build: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build
 
 src-lib/libopenzwave/libopenzwave.cpp: openzwave/.lib/
-	${PYTHON_EXEC} setup-lib.py build
+	${PYTHON_EXEC} setup-lib.py build --dev
 
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
@@ -353,15 +353,15 @@ embed_openzave_master:clean-archive src-lib/libopenzwave/libopenzwave.cpp
 	cp -Rf openzwave/* $(ARCHBASE)/open-zwave-master/
 	cp -f openzwave/cpp/src/vers.cpp $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp
 	cp -f src-lib/libopenzwave/libopenzwave.cpp $(ARCHBASE)/open-zwave-master/python-openzwave/src-lib/libopenzwave/
-	-find $(ARCHBASE)/open-zwave-master -name \*.pyc -delete
-	-find $(ARCHBASE)/open-zwave-master -name zwcfg_\*.xml -delete
-	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.log -delete
-	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.txt -delete
-	-find $(ARCHBASE)/open-zwave-master -name ozwsh.log -delete
-	-find $(ARCHBASE)/open-zwave-master -name errors.log -delete
-	-find $(ARCHBASE)/open-zwave-master -name zwscene.xml -delete
-	-find $(ARCHBASE)/open-zwave-master -name zwbutton.xml -delete
-	-find $(ARCHBASE)/open-zwave-master -name pyozw.db -delete
+	-find $(ARCHBASE)/open-zwave-master -name \*.pyc -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name zwcfg_\*.xml -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.log -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name OZW_Log.txt -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name ozwsh.log -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name errors.log -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name zwscene.xml -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name zwbutton.xml -delete 2>/dev/null || true
+	-find $(ARCHBASE)/open-zwave-master -name pyozw.db -delete 2>/dev/null || true
 	-cd $(ARCHBASE)/open-zwave-master && $(MAKE) clean
 	-rm -Rf $(ARCHBASE)/open-zwave-master/.git
 	-rm -f $(ARCHBASE)/open-zwave-master/open-zwave-master.zip
@@ -385,10 +385,10 @@ pypi_package:clean-archive
 	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
-	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete
-	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete
-	-find $(ARCHBASE)/python_openzwave/ -type d -name \*.egg-info -exec rm -rf '{}' \;
-	-mkdir -p $(DISTDIR)
+	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete 2>/dev/null || true
+	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete 2>/dev/null || true
+	-find $(ARCHBASE)/python_openzwave/ -type d -name \*.egg-info -exec rm -rf '{}' \; 2>/dev/null || true
+	-mkdir -p $(DISTDIR) || true
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/python_openzwave-${python_openzwave_version}.zip python_openzwave
 	mv $(DISTDIR)/python_openzwave-${python_openzwave_version}.zip $(ARCHIVES)/
 	@echo
@@ -486,15 +486,17 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+endif	
 	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --git
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
-	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
@@ -504,16 +506,18 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git_shared-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --git_shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+endif	
 	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --git_shared
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
-	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	@echo
@@ -524,13 +528,15 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-embed-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/python setup-lib.py install --embed
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
+	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+endif	
 	venv3/bin/python setup-lib.py install --embed
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
@@ -544,11 +550,23 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3 pypi_package
 	-rm -Rf tmp/pypi_test/
 	-mkdir -p tmp/pypi_test/
 	cd tmp/pypi_test/ && unzip ../../$(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
+endif	
 	venv3/bin/pip install cython wheel
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
+	cp tmp/pypi_test/python_openzwave/dist/*.whl dist/
 	$(MAKE) venv-bdist_wheel-autobuild-tests
+
+ifneq ($(PYOZW_DOCKER),1)
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --cleanopzw --git
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py clean --all --git
+	find venv2/lib/ -iname device_classes.xml -type f -print|cat
+endif	
+	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --cleanopzw --git
+	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py clean --all --git
+	find venv3/lib/ -iname device_classes.xml -type f -print|cat
 	@echo
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
@@ -558,8 +576,10 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 	-rm -f dist/*.whl
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
 	venv2/bin/python setup.py bdist_wheel --git
+endif	
 	venv3/bin/pip install cython wheel
 	venv3/bin/python setup.py bdist_wheel --git
 	@echo
@@ -570,18 +590,16 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
 	venv2/bin/pip install ${WHL_PYTHON2}
-	venv3/bin/pip install cython wheel
-	venv3/bin/pip install ${WHL_PYTHON3}
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+endif	
+	venv3/bin/pip install cython wheel
+	venv3/bin/pip install ${WHL_PYTHON3}
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
-	venv2/bin/python setup.py clean --git --all
-#~ 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
-	venv3/bin/python setup.py clean --git --all
-#~ 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests done."
@@ -590,7 +608,9 @@ venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	@echo "Launch tests for venv-dev-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+endif	
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
@@ -600,7 +620,9 @@ venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 	@echo "Launch tests for venv-shared-autobuild-tests."
 	@echo
 	@echo
+ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+endif	
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	@echo
 	@echo
