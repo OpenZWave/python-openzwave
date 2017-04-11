@@ -38,8 +38,8 @@ ifeq (${python_version_major},3)
 	PIP_EXEC=pip3
 endif
 
-WHL_PYTHON2 := $(shell ls dist/*.whl|grep ${python_openzwave_version}|grep [0-9]-cp2)
-WHL_PYTHON3 := $(shell ls dist/*.whl|grep ${python_openzwave_version}|grep [0-9]-cp3)
+WHL_PYTHON2 := $(shell ls dist/*.whl 2>null|grep ${python_openzwave_version}|grep [0-9]-cp2)
+WHL_PYTHON3 := $(shell ls dist/*.whl 2>null|grep ${python_openzwave_version}|grep [0-9]-cp3)
  
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
@@ -85,6 +85,7 @@ clean: clean-docs clean-archive
 	-rm -rf openzwave-git
 	-rm -rf openzwave-embed
 	-rm -rf open-zwave-master
+	-rm -rf dist
 
 uninstall:
 	-rm -rf $(BUILDDIR)
@@ -486,6 +487,7 @@ venv-autobuild-tests:
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 	$(MAKE) venv-pypi-autobuild-tests 
 	$(MAKE) venv-pypitest-autobuild-tests 
+	$(MAKE) venv-pypilive-autobuild-tests
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
@@ -513,19 +515,41 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
 	venv2/bin/pip install cython wheel
-	venv2/bin/pip install Louie>=1.1
+	venv2/bin/pip install 'Louie>=1.1'
 	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/pip uninstall python_openzwave -y
 endif	
 	venv3/bin/pip install cython wheel
-	venv3/bin/pip install PyDispatcher>=2.0.5
+	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+	venv3/bin/pip uninstall python_openzwave -y
 	@echo
 	@echo "Tests for venv-pypitest-autobuild-tests done."
+
+venv-pypilive-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-pypilive-autobuild-tests."
+	@echo
+	@echo
+ifneq ($(PYOZW_DOCKER),1)
+	venv2/bin/pip install cython wheel
+	venv2/bin/pip install --egg python_openzwave --install-option="--git"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/pip uninstall python_openzwave -y
+endif	
+	venv3/bin/pip install cython wheel
+	venv3/bin/pip install --egg python_openzwave --install-option="--git"
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv3/bin/pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+	venv3/bin/pip uninstall python_openzwave -y
+	@echo
+	@echo "Tests for venv-pypilive-autobuild-tests done."
 
 venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git_shared-autobuild-tests."
