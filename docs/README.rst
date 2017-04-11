@@ -19,6 +19,51 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * a suite of tests
  * many examples
 
+python-openzwave 0.4.0 is coming !!!
+=================================
+ 
+ - New installation process via pip :
+ 
+ - Make your virtualenv and activate it : 
+ 
+    .. code-block:: bash
+
+        virtualenv --python=python3 venv3
+        source venv3/bin/activate
+
+ - in (venv3)       
+ 
+    .. code-block:: bash
+    
+        pip install cython
+        pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
+
+- To use fresh code from openzwave github :
+
+    .. code-block:: bash
+    
+        pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+
+- If you have build and install openzwave your self, use the dynamic linking :
+
+    .. code-block:: bash
+    
+        pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--shared"
+
+- On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
+It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
+
+    .. code-block:: bash
+    
+        pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--embed"
+
+You can update to the last version of python_openzwave using :
+        
+    .. code-block:: bash
+    
+        pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+    
+
 python-openzwave 0.3.0 is out !!!
 =================================
 

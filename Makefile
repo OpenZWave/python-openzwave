@@ -376,15 +376,17 @@ embed_openzave_master:clean-archive src-lib/libopenzwave/libopenzwave.cpp
 
 pypi_package:clean-archive
 	-rm -Rf $(ARCHBASE)/python_openzwave/
+	${PYTHON_EXEC} setup.py egg_info
 	-mkdir -p $(ARCHBASE)/python_openzwave/
 	cp -Rf src-python_openzwave $(ARCHBASE)/python_openzwave/
 	cp -Rf src-lib $(ARCHBASE)/python_openzwave/
 	cp -Rf src-api $(ARCHBASE)/python_openzwave/
-	cp -f setup.py $(ARCHBASE)/python_openzwave/
+	cp -f setup.cfg $(ARCHBASE)/python_openzwave/
 	cp -f setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
+	cp -f python_openzwave.egg-info/PKG-INFO $(ARCHBASE)/python_openzwave/	
 	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete 2>/dev/null || true
 	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete 2>/dev/null || true
 	-find $(ARCHBASE)/python_openzwave/ -type d -name \*.egg-info -exec rm -rf '{}' \; 2>/dev/null || true
@@ -410,12 +412,14 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: commit embed_openzave_master pypi_package tag commit
+new-version: docs commit embed_openzave_master pypi_package tag commit
+	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 	git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
 	git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 	git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
 	git push
+	twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypitest
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
@@ -481,6 +485,7 @@ venv-autobuild-tests:
 	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 	$(MAKE) venv-pypi-autobuild-tests 
+	$(MAKE) venv-pypitest-autobuild-tests 
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
@@ -501,6 +506,26 @@ endif
 	@echo
 	@echo
 	@echo "Tests for venv-git-autobuild-tests done."
+
+venv-pypitest-autobuild-tests: venv-clean venv2 venv3
+	@echo "Launch tests for venv-pypitest-autobuild-tests."
+	@echo
+	@echo
+ifneq ($(PYOZW_DOCKER),1)
+	venv2/bin/pip install cython wheel
+	venv2/bin/pip install Louie>=1.1
+	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+endif	
+	venv3/bin/pip install cython wheel
+	venv3/bin/pip install PyDispatcher>=2.0.5
+	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+	@echo
+	@echo "Tests for venv-pypitest-autobuild-tests done."
 
 venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git_shared-autobuild-tests."

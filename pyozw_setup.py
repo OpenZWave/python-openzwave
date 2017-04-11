@@ -413,8 +413,11 @@ class Template(object):
     def install_minimal_dependencies(self):
         import pip
         for pyreq in install_requires():
-            print("Install minimal dependencies {0}".format(pyreq))
-            pip.main(['install', pyreq])
+            try:
+                log.info("Install minimal dependencies {0}".format(pyreq))
+                pip.main(['install', pyreq])
+            except Exception:
+                log.error("Fail to install minimal dependencies {0}".format(pyreq))
         
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
@@ -628,6 +631,9 @@ def parse_template(sysargv):
         index = sysargv.index('--cleanopzw')
         sysargv.pop(index)
         tmpl.cleanopzw = True
+    if '--single-version-externally-managed' in sysargv:
+        log.info("--single-version-externally-managed parameter detected. Remove it")
+        #Quick and dirty patch for : error: option --single-version-externally-managed not recognized
     return tmpl
     
 current_template = parse_template(sys.argv)
@@ -635,9 +641,9 @@ current_template = parse_template(sys.argv)
 def install_requires():
     pkgs = ['six']
     if (sys.version_info > (3, 0)):
-         pkgs.append('pydispatcher >= 2.0.5')
+         pkgs.append('PyDispatcher>=2.0.5')
     else:
-         pkgs.append('Louie >= 1.1')
+         pkgs.append('Louie>=1.1')
     pkgs += current_template.install_requires()
     #~ print('Found install_requires {0}'.format(pkgs))
     return pkgs

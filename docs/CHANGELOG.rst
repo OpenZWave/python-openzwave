@@ -4,6 +4,10 @@
 Changelog
 =========
 
+python-openzwave 0.4.0:
+
+ * New installation process via pip
+ 
 python-openzwave 0.3.3:
 
  * Openzwave update
