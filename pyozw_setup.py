@@ -701,12 +701,12 @@ class openzwave_config(setuptools.Command):
         self.copy_tree(os.path.join(current_template.openzwave,'config'), dest)
         
 class build(_build):
-    sub_commands = [('build_openzwave', None)] + _build.sub_commands
+    sub_commands = _build.sub_commands + [('build_openzwave', None)]
 
 class bdist_wheel(_bdist_wheel):
     def run(self):
         self.run_command('build_openzwave')
-        self.run_command('openzwave_config')
+        #~ self.run_command('openzwave_config')
         _bdist_wheel.run(self)
 
 class clean(_clean):
@@ -729,6 +729,6 @@ class install(_install):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
         self.run_command('build_openzwave')
-        self.run_command('openzwave_config')
+        #~ self.run_command('openzwave_config')
         _install.run(self)
 

@@ -69,6 +69,7 @@ clean: clean-docs clean-archive
 	${PYTHON_EXEC} setup-api.py clean --all --build-base $(BUILDDIR)/api
 	${PYTHON_EXEC} setup-manager.py clean --all --build-base $(BUILDDIR)/manager
 	${PYTHON_EXEC} setup-web.py clean --all --build-base $(BUILDDIR)/web
+	${PYTHON_EXEC} setup.py clean --all --build-base $(BUILDDIR)/python_openzwave
 	-rm lib/libopenzwave.cpp
 	-rm src-lib/libopenzwave/libopenzwave.cpp
 	-rm -rf debian/python-openzwave-api/
@@ -94,10 +95,12 @@ uninstall:
 	-yes | ${PIP_EXEC} uninstall openzwave
 	-yes | ${PIP_EXEC} uninstall pyozwman
 	-yes | ${PIP_EXEC} uninstall pyozwweb
+	-yes | ${PIP_EXEC} uninstall python_openzwave
 	${PYTHON_EXEC} setup-lib.py develop --uninstall
 	${PYTHON_EXEC} setup-api.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
 	${PYTHON_EXEC} setup-web.py develop --uninstall
+	${PYTHON_EXEC} setup.py develop --uninstall
 	-rm -f libopenzwave.so
 	-rm -f src-lib/libopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
@@ -105,6 +108,7 @@ uninstall:
 	-rm -Rf src-api/python_openzwave_api.egg-info/
 	-rm -Rf src-api/openzwave.egg-info/
 	-rm -Rf src-manager/pyozwman.egg-info/
+	-rm -Rf python_openzwave.egg-info/
 	-rm -Rf src-lib/python_openzwave_lib.egg-info/
 	-rm -Rf src-lib/libopenzwave.egg-info/
 	-rm -Rf src-web/pyozwweb.egg-info/
@@ -273,6 +277,9 @@ update: openzwave
 build: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build
 
+src-lib/libopenzwave/libopenzwave.cpp: openzwave/.lib/
+	${PYTHON_EXEC} setup-lib.py build
+
 openzwave:
 	git clone git://github.com/OpenZWave/open-zwave.git openzwave
 
@@ -340,7 +347,8 @@ tgz: clean-archive $(ARCHDIR) docs
 	@echo
 	@echo "Archive for version ${python_openzwave_version} created"
 
-embed_openzave_master:clean-archive
+embed_openzave_master:clean-archive src-lib/libopenzwave/libopenzwave.cpp
+	-rm -Rf $(ARCHBASE)/open-zwave-master
 	-mkdir -p $(ARCHBASE)/open-zwave-master/python-openzwave/src-lib/libopenzwave
 	cp -Rf openzwave/* $(ARCHBASE)/open-zwave-master/
 	cp -f openzwave/cpp/src/vers.cpp $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp
@@ -356,6 +364,9 @@ embed_openzave_master:clean-archive
 	-find $(ARCHBASE)/open-zwave-master -name pyozw.db -delete
 	-cd $(ARCHBASE)/open-zwave-master && $(MAKE) clean
 	-rm -Rf $(ARCHBASE)/open-zwave-master/.git
+	-rm -f $(ARCHBASE)/open-zwave-master/open-zwave-master.zip
+	-rm -Rf $(ARCHBASE)/open-zwave-master/docs
+	-rm -Rf $(ARCHBASE)/open-zwave-master/dotnet
 	cp -f $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp $(ARCHBASE)/open-zwave-master/cpp/src/vers.cpp
 	-mkdir -p $(DISTDIR)
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/open-zwave-master-${python_openzwave_version}.zip open-zwave-master
@@ -374,6 +385,9 @@ pypi_package:clean-archive
 	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
+	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete
+	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete
+	-find $(ARCHBASE)/python_openzwave/ -type d -name \*.egg-info -exec rm -rf '{}' \;
 	-mkdir -p $(DISTDIR)
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/python_openzwave-${python_openzwave_version}.zip python_openzwave
 	mv $(DISTDIR)/python_openzwave-${python_openzwave_version}.zip $(ARCHIVES)/
@@ -396,11 +410,9 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: commit tgz embed_openzave_master pypi_package tag commit
-	git add $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
+new-version: commit embed_openzave_master pypi_package tag commit
 	git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 	git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
-	git commit -m "Add new archive" $(ARCHIVES)/python-openzwave-${python_openzwave_version}.tgz
 	git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 	git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
 	git push
@@ -419,11 +431,13 @@ venv-deps: common-deps
 venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/pip install nose
+	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	
 venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/pip install nose
+	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
 venv2-dev: venv2
@@ -463,11 +477,10 @@ venv-tests: venv2-dev venv3-dev
 
 venv-autobuild-tests:
 	$(MAKE) venv-dev-autobuild-tests
-	$(MAKE) venv-shared-autobuild-tests 
 	$(MAKE) venv-git-autobuild-tests 
-	$(MAKE) venv-pypi-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-autobuild-tests
+	$(MAKE) venv-pypi-autobuild-tests 
 
 venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-git-autobuild-tests."
@@ -523,16 +536,19 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo "Tests for venv-embed-autobuild-tests done."
 
-venv-pypi-autobuild-tests: venv-clean venv2 venv3
+venv-pypi-autobuild-tests: venv-clean venv2 venv3 pypi_package
 	@echo "Launch tests for venv-pypi-autobuild-tests."
 	@echo
 	@echo
+	-rm -f dist/*.whl
+	-rm -Rf tmp/pypi_test/
+	-mkdir -p tmp/pypi_test/
+	cd tmp/pypi_test/ && unzip ../../$(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 	venv2/bin/pip install cython wheel
-	venv2/bin/python setup.py install --git
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
 	venv3/bin/pip install cython wheel
-	venv3/bin/python setup.py install --git
-	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
+	$(MAKE) venv-bdist_wheel-autobuild-tests
 	@echo
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
@@ -541,6 +557,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo "Create tests whl for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
+	-rm -f dist/*.whl
 	venv2/bin/pip install cython wheel
 	venv2/bin/python setup.py bdist_wheel --git
 	venv3/bin/pip install cython wheel
@@ -562,9 +579,9 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	venv2/bin/python setup.py clean --git --all
-	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
+#~ 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
 	venv3/bin/python setup.py clean --git --all
-	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
+#~ 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests done."
