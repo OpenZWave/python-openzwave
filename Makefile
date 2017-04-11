@@ -561,6 +561,10 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+	venv2/bin/python setup.py clean --git --all
+	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
+	venv3/bin/python setup.py clean --git --all
+	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests done."

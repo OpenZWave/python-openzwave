@@ -381,6 +381,22 @@ class Template(object):
         return True
 
     def clean_all(self):
+        try:
+            from pkg_resources import resource_filename
+            dirn = resource_filename('python_openzwave.ozw_config', '__init__.py')
+            dirn = os.path.dirname(dirn)
+        except ImportError:
+            dirn = None
+        if dirn is None or (dirn is not None and not os.path.isfile(os.path.join(dirn,'device_classes.xml'))):
+            #At first, check in /etc/openzwave
+            return self.clean()
+        import shutil
+        for f in os.listdir(dirn):
+            if f not in ['__init__.py', '__init__.pyc']:
+                if os.path.isfile(os.path.join(dirn, f)):
+                    os.remove(os.path.join(dirn, f))
+                elif os.path.isdir(os.path.join(dirn, f)):
+                    shutil.rmtree(os.path.join(dirn, f))
         return self.clean()
 
     def install_minimal_dependencies(self):
