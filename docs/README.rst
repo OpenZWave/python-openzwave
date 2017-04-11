@@ -33,37 +33,55 @@ python-openzwave 0.4.0 is coming !!!
         virtualenv --python=python3 venv3
         source venv3/bin/activate
 
- - in (venv3)       
+ - There is a bug in the package dependencies, on some systems it fails. You need to install them manualy :
+ 
+  - on python 2.7 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six
+        (venvX) pip install 'Louie>=1.1'
+
+  - on python 3 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six
+        (venvX) pip install 'PyDispatcher>=2.0.5'
+   
+ - Install the git flavor,(venvX)       
  
     .. code-block:: bash
     
-        pip install cython wheel
-        pip install ---egg python_openzwave --install-option="--git"
+        (venvX) pip install ---egg python_openzwave --install-option="--git"
 
     To use fresh code from openzwave github :
 
     .. code-block:: bash
     
-        pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
 
 - If you have build and install openzwave your self, use the dynamic linking :
 
     .. code-block:: bash
     
-        pip install -egg python_openzwave --force --install-option="--shared"
+        (venvX) pip install -egg python_openzwave --force --install-option="--shared"
 
 - On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
 It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
 
     .. code-block:: bash
-    
-        pip install --egg python_openzwave --force --install-option="--embed"
+        (venvX) pip install wheel six
+        (venvX) pip install 'Louie>=1.1'    
+        (venvX) pip install --egg python_openzwave --force --install-option="--embed"
 
     You can update to the last version of python_openzwave using :
         
     .. code-block:: bash
     
-        pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+        (venvX) pip install wheel six
+        (venvX) pip install 'PyDispatcher>=2.0.5'
+        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
     
 
 Support for windows, macosx, ... is not tested. Feel free to report bug and patches. We can easely support these plateforms.
