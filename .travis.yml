@@ -11,6 +11,7 @@ install:
   - env
   - make openzwave.gzip
   - make buildso
+  - pip install --upgrade pip
 # command to run tests
 script:
   - make venv-git-autobuild-tests
