@@ -38,8 +38,8 @@ ifeq (${python_version_major},3)
 	PIP_EXEC=pip3
 endif
 
-WHL_PYTHON2 := $(shell ls dist/*.whl 2>null|grep ${python_openzwave_version}|grep [0-9]-cp2)
-WHL_PYTHON3 := $(shell ls dist/*.whl 2>null|grep ${python_openzwave_version}|grep [0-9]-cp3)
+WHL_PYTHON2 := $(shell ls dist/*.whl 2>/dev/null|grep ${python_openzwave_version}|grep [0-9]-cp2)
+WHL_PYTHON3 := $(shell ls dist/*.whl 2>/dev/null|grep ${python_openzwave_version}|grep [0-9]-cp3)
  
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
