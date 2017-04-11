@@ -7,6 +7,10 @@ Changelog
 python-openzwave 0.4.0:
 
  * New installation process via pip
+ * Update your install_requires : both libopenzwave and openzwave are merged in python_openzwave package on pypi. Don't need to update your imports in code.
+ * Remove old versions of libopenzwave and openzwave if you update your installation with new pip installation process
+ * You can use the old installation process (via github), it's the one I use to develop
+ * Installation via archive method is no longer suppored (no release for 0.4.0). Use pip instead with --embed option.
  
 python-openzwave 0.3.3:
 

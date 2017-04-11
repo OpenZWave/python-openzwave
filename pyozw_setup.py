@@ -84,7 +84,8 @@ def cpp_context():
         return None
     exts = get_default_exts()
     exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
-    exts['sources'] = ["src-lib/libopenzwave/libopenzwave.pyx"]
+    exts['sources'] = ["openzwave-embed/open-zwave-master/python-openzwave/src-lib/libopenzwave/libopenzwave.cpp"]
+    exts["include_dirs"] += [ "src-lib/libopenzwave/" ]
     return exts
 
 def pybind_context():
@@ -435,7 +436,7 @@ class Template(object):
                     os.remove(dest_file)
                 except Exception:
                     pass
-        log.info("fetching {0} into {1} for wersion {2}".format(url, dest_file, pyozw_version))
+        log.info("fetching {0} into {1} for version {2}".format(url, dest_file, pyozw_version))
         if not os.path.exists(dest):
             os.makedirs(dest)
         try:
@@ -554,7 +555,7 @@ class EmbedTemplate(Template):
     def install_requires(self):
         return []
 
-    def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-%s.zip'.format(pyozw_version)):
+    def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-{0}.zip'.format(pyozw_version)):
         return Template.get_openzwave(self, url)
 
     def clean(self):
@@ -631,9 +632,6 @@ def parse_template(sysargv):
         index = sysargv.index('--cleanopzw')
         sysargv.pop(index)
         tmpl.cleanopzw = True
-    if '--single-version-externally-managed' in sysargv:
-        log.info("--single-version-externally-managed parameter detected. Remove it")
-        #Quick and dirty patch for : error: option --single-version-externally-managed not recognized
     return tmpl
     
 current_template = parse_template(sys.argv)
