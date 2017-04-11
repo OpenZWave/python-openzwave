@@ -431,40 +431,40 @@ deb:
 	dpkg-buildpackage
 
 venv-deps: common-deps
-	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip 
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip python-wheel-common python3-wheel python-wheel
 
 venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/pip install nose
+	venv2/bin/pip install cython wheel six
+	venv2/bin/pip install 'Louie>=1.1'
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	
 venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/pip install nose
+	venv3/bin/pip install cython wheel six
+	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
 venv2-dev: venv2
-	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --dev
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-dev: venv3
-	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --dev
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
 
 venv2-shared: venv2
-	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	
 venv3-shared: venv3
-	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --shared
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -494,13 +494,11 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --git
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 endif	
-	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --git
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -514,16 +512,12 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel six
-	venv2/bin/pip install 'Louie>=1.1'
 	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
 endif	
-	venv3/bin/pip install cython wheel six
-	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
@@ -536,16 +530,12 @@ venv-pypilive-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel six
-	venv2/bin/pip install 'Louie>=1.1'
 	venv2/bin/pip install --egg python_openzwave --install-option="--git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv2/bin/pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
 endif	
-	venv3/bin/pip install cython wheel six
-	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	venv3/bin/pip install --egg python_openzwave --install-option="--git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv3/bin/pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
@@ -558,14 +548,12 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel
 	venv2/bin/python setup-lib.py install --git_shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 endif	
-	venv3/bin/pip install cython wheel
 	venv3/bin/python setup-lib.py install --git_shared
 	venv3/bin/python setup-api.py install
 	venv3/bin/python setup-manager.py install
@@ -580,9 +568,11 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
+	venv2/bin/pip uninstall cython
 	venv2/bin/python setup.py install --embed
 	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 endif	
+	venv2/bin/pip uninstall cython
 	venv3/bin/python setup.py install --embed
 	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	@echo
@@ -598,10 +588,8 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3 pypi_package
 	-mkdir -p tmp/pypi_test/
 	cd tmp/pypi_test/ && unzip ../../$(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
 endif	
-	venv3/bin/pip install cython wheel
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
 	cp tmp/pypi_test/python_openzwave/dist/*.whl dist/
 	$(MAKE) venv-bdist_wheel-autobuild-tests
@@ -624,10 +612,8 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	-rm -f dist/*.whl
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel
 	venv2/bin/python setup.py bdist_wheel --git
 endif	
-	venv3/bin/pip install cython wheel
 	venv3/bin/python setup.py bdist_wheel --git
 	@echo
 	@echo
@@ -638,12 +624,10 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 ifneq ($(PYOZW_DOCKER),1)
-	venv2/bin/pip install cython wheel
 	venv2/bin/pip install ${WHL_PYTHON2}
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 endif	
-	venv3/bin/pip install cython wheel
 	venv3/bin/pip install ${WHL_PYTHON3}
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
