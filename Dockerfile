@@ -1,4 +1,4 @@
-FROM debian:wheezy
+FROM debian:jessie
 MAINTAINER bibi21000 <bibi21000@gmail.com>
 ENV PYOZW_DOCKER 1
 ADD . /home/docker-py2
