@@ -22,5 +22,5 @@ script:
 before_install:
   #- env
   #- sudo -E env
-  - sudo apt-get update -y -qq && sudo apt-get dist-upgrade -y
+  - sudo apt-get update -y -qq
   - sudo -E make venv-deps
