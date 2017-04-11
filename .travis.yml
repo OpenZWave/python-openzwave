@@ -1,8 +1,7 @@
 language: cpp
 dist: trusty
 sudo: required
-env:
-- PYOZW_DOCKER=1
+cache:
   - apt
 python:
   - "2.7"
@@ -14,11 +13,7 @@ install:
   - pip install --upgrade pip
 # command to run tests
 script:
-  - make venv-git-autobuild-tests
-  - make venv-shared-autobuild-tests
-  - make venv-pypi-autobuild-tests 
-  - make venv-bdist_wheel-whl-autobuild-tests 
-  - make venv-bdist_wheel-autobuild-tests
+  - make venv-continuous-autobuild-tests
 # package dependencies
 before_install:
   #- env

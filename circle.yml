@@ -10,8 +10,6 @@ machine:
     version: 2.7.6
     version: 3.5.3
     version: pypy-2.3.1
-  environment:
-    PYOZW_DOCKER: 1    
 dependencies:
     override:
         - sudo apt-get update
@@ -21,8 +19,4 @@ dependencies:
         - echo "Don't need to install setup.py"
 test:
     override:
-        - make venv-git-autobuild-tests
-        - make venv-shared-autobuild-tests
-        - make venv-pypi-autobuild-tests 
-        - make venv-bdist_wheel-whl-autobuild-tests 
-        - make venv-bdist_wheel-autobuild-tests
+        - make venv-continuous-autobuild-tests

@@ -507,6 +507,18 @@ endif
 	@echo
 	@echo "Tests for venv-git-autobuild-tests done."
 
+venv-continuous-autobuild-tests:
+	@echo "Launch tests for venv-git-autobuild-tests."
+	@echo
+	@echo
+	-$(MAKE) venv-dev-autobuild-tests
+	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
+	-$(MAKE) venv-bdist_wheel-autobuild-tests
+	-$(MAKE) venv-pypi-autobuild-tests 
+	@echo
+	@echo
+	@echo "Tests for venv-git-autobuild-tests done."
+
 venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	@echo "Launch tests for venv-pypitest-autobuild-tests."
 	@echo
