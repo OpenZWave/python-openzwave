@@ -122,11 +122,6 @@ uninstall:
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
 
-check: .git
-
-.git:
-	@echo "Invalid git repository" && exit 1
-
 developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
 	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
@@ -601,6 +596,7 @@ ifneq ($(PYOZW_DOCKER),1)
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
 endif	
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --git
+	-mkdir -p dist	
 	cp tmp/pypi_test/python_openzwave/dist/*.whl dist/
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 
