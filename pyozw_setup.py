@@ -607,7 +607,7 @@ class SharedTemplate(Template):
         return True
 
 def parse_template(sysargv):
-    tmpl = SharedTemplate()
+    tmpl = EmbedTemplate()
     if '--dev' in sysargv:
         index = sysargv.index('--dev')
         sysargv.pop(index)
