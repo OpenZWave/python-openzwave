@@ -218,7 +218,7 @@ docs: clean-docs
 	cp docs/INSTALL_MAC.rst .
 	cp docs/INSTALL_WIN.rst .
 	cp docs/_build/text/COPYRIGHT.txt .
-	cp docs/_build/text/LICENSE.txt .
+	cp docs/_build/text/COPYRIGHT.txt LICENSE.txt
 	cp docs/_build/text/CHANGELOG.txt .
 	cp docs/_build/text/DEVEL.txt .
 	cp docs/_build/text/EXAMPLES.txt .
@@ -228,7 +228,7 @@ docs: clean-docs
 	@echo "Documentation finished."
 
 install-lib: build
-	${PYTHON_EXEC} setup-lib.py install
+	${PYTHON_EXEC} setup-lib.py install --git
 	@echo
 	@echo "Installation of lib finished."
 
@@ -248,7 +248,7 @@ install: install-manager
 	@echo "Installation for users finished."
 
 develop:
-	${PYTHON_EXEC} setup-lib.py develop
+	${PYTHON_EXEC} setup-lib.py develop --dev
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
 	${PYTHON_EXEC} setup-web.py develop
@@ -413,7 +413,7 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: develop docs commit embed_openzave_master pypi_package tag commit
+new-version: uninstall clean develop docs commit embed_openzave_master pypi_package tag commit
 	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git push
 	-git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git push
