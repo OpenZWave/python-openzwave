@@ -97,11 +97,11 @@ uninstall:
 	-yes | ${PIP_EXEC} uninstall pyozwman
 	-yes | ${PIP_EXEC} uninstall pyozwweb
 	-yes | ${PIP_EXEC} uninstall python_openzwave
-	${PYTHON_EXEC} setup-lib.py develop --uninstall
+	${PYTHON_EXEC} setup-lib.py develop --uninstall --dev
 	${PYTHON_EXEC} setup-api.py develop --uninstall
 	${PYTHON_EXEC} setup-manager.py develop --uninstall
 	${PYTHON_EXEC} setup-web.py develop --uninstall
-	${PYTHON_EXEC} setup.py develop --uninstall
+	${PYTHON_EXEC} setup.py develop --uninstall --dev
 	-rm -f libopenzwave.so
 	-rm -f src-lib/libopenzwave.so
 	-rm -f libopenzwave/liopenzwave.so
@@ -242,11 +242,12 @@ install: install-manager
 	@echo
 	@echo "Installation for users finished."
 
-develop:
+develop: src-lib/libopenzwave/libopenzwave.cpp
 	${PYTHON_EXEC} setup-lib.py develop --dev
 	${PYTHON_EXEC} setup-api.py develop
 	${PYTHON_EXEC} setup-manager.py develop
 	${PYTHON_EXEC} setup-web.py develop
+	${PYTHON_EXEC} setup.py develop
 	@echo
 	@echo "Installation for developpers of python-openzwave finished."
 
