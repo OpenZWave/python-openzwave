@@ -507,7 +507,7 @@ venv2-dev: venv2 src-lib/libopenzwave/libopenzwave.cpp
 venv3-dev: venv3 src-lib/libopenzwave/libopenzwave.cpp
 	venv3/bin/python setup-lib.py install --dev
 	venv3/bin/python setup-api.py install
-#~ 	venv3/bin/python setup-manager.py install
+#~  	venv3/bin/python setup-manager.py install
 
 venv2-shared: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup-lib.py install --shared
@@ -802,9 +802,11 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	-rm -f libopenzwave.so
+	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip uninstall -y cython
 	venv2/bin/python setup.py install --embed
-	-venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -814,10 +816,13 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	-rm -f libopenzwave.so
+	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip uninstall -y cython
 	venv3/bin/python setup.py install --embed
-	-venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
+	-rm -f libopenzwave.so
 	@echo
 	@echo
 	@echo "Tests for venv-embed-autobuild-tests done."
@@ -983,7 +988,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo ==========================================================================================
 	@echo
 
-venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev 
+venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwave.cpp
 	@echo ==========================================================================================
 	@echo
 	@echo
@@ -999,7 +1004,11 @@ venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	-rm -f libopenzwave.so
+	venv2/bin/python setup-lib.py install --dev
+	venv2/bin/python setup-api.py install
+	venv2/bin/python setup-manager.py install
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1009,8 +1018,13 @@ venv-dev-autobuild-tests: venv-clean venv2-dev venv3-dev
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	-rm -f libopenzwave.so
+	venv3/bin/python setup-lib.py install --dev
+	venv3/bin/python setup-api.py install
+#~ 	venv3/bin/python setup-manager.py install
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	
+	-rm -f libopenzwave.so
 	@echo
 	@echo
 	@echo "Tests for venv-dev-autobuild-tests done."

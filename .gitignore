@@ -55,3 +55,8 @@ open-zwave-master/
 openzwave-git/
 openzwave-embed/
 tmp/
+dist/
+docs/html/
+docs/joomla/
+libopenzwave.so
+
