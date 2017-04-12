@@ -415,12 +415,10 @@ tag:
 
 new-version: docs commit embed_openzave_master pypi_package tag commit
 	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
-	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
-	-git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
-	-git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
-	-git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip
-	-git push
-	#twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypitest
+	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git push
+	-git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git push
+	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypitest
+	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypi
 	@echo
 	@echo "New version ${python_openzwave_version} created and published"
 
