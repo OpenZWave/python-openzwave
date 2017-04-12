@@ -63,7 +63,7 @@ def get_default_exts ():
          "extra_objects": [ ],
          "extra_compile_args": [ ],
          "extra_link_args": [ ],
-         "language": "c++"
+         "language": "c++",
        }
     return exts
 
@@ -743,9 +743,11 @@ class clean(_clean):
 
 class develop(_develop):
     def run(self):
-        build_openzwave = self.distribution.get_command_obj('build_openzwave')
-        build_openzwave.develop = True
-        self.run_command('build_openzwave')
+        #In case of --uninstall, it will build openzwave to remove it ... stupid.
+        #In develop mode, build is donr by the makefile
+        #~ build_openzwave = self.distribution.get_command_obj('build_openzwave')
+        #~ build_openzwave.develop = True
+        #~ self.run_command('build_openzwave')
         _develop.run(self)
 
 class install(_install):

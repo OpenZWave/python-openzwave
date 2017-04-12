@@ -49,6 +49,7 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   version = pyozw_version,
+  scripts=['src-lib/scripts/pyozw_check'],
   zip_safe = False,
   url='https://github.com/OpenZWave/python-openzwave',
   cmdclass = {'build_ext': current_template.build_ext,

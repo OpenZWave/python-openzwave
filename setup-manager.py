@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!env python
 # -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
@@ -25,27 +25,17 @@ from setuptools import setup, find_packages
 import glob
 import os
 import sys
-from pyozw_version import pyozw_version
-
-DEBIAN_PACKAGE = False
-filtered_args = []
-
-for arg in sys.argv:
-    if arg == "--debian-package":
-        DEBIAN_PACKAGE = True
-    else:
-        filtered_args.append(arg)
-sys.argv = filtered_args
+import pyozw_version 
 
 setup(
   name = 'pyozwman',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='https://github.com/OpenZWave/python-openzwave',
-  version = pyozw_version,
+  version = pyozw_version.pyozw_version,
   zip_safe = False,
-  scripts=['src-manager/scripts/ozwsh'],
+  scripts=['src-manager/scripts/pyozw_shell'],
   package_dir = {'' : 'src-manager' },
   packages = find_packages('src-manager', exclude=["scripts"]),
-  install_requires=[ "urwid >= 1.1.1", 'openzwave == %s' % pyozw_version ]
+  install_requires=pyozw_version.install_requires() + [ "urwid>=1.1.1"],
 )

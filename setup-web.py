@@ -25,29 +25,18 @@ from setuptools import setup, find_packages
 import glob
 import os
 import sys
-from pyozw_version import pyozw_version
-
-DEBIAN_PACKAGE = False
-filtered_args = []
-
-for arg in sys.argv:
-    if arg == "--debian-package":
-        DEBIAN_PACKAGE = True
-    else:
-        filtered_args.append(arg)
-sys.argv = filtered_args
+import pyozw_version
 
 setup(
   name = 'pyozwweb',
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   url='https://github.com/OpenZWave/python-openzwave',
-  version = pyozw_version,
+  version = pyozw_version.pyozw_version,
   zip_safe = False,
   package_dir = {'' : 'src-web' },
   packages = find_packages('src-web', exclude=["scripts", "libraries"]),
-  install_requires = [
-                     'openzwave == %s' % pyozw_version,
+  install_requires = pyozw_version.install_requires() + [
                      'Flask == 0.10.1',
                      'Flask-WTF == 0.9.5',
                      'Babel >= 1.0',

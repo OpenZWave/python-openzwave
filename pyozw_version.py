@@ -21,11 +21,24 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-pyozw_version = '0.4.0.7'
+pyozw_version = '0.4.0.8'
 if "-" in pyozw_version:
     pyozw_version_short = pyozw_version.split("-")
 else:
     pyozw_version_short = pyozw_version
+
+def install_requires():
+    try:
+        import python_openzwave
+        return ['python_openzwave==%s' % pyozw_version]
+    except ImportError:
+        pass
+    try:
+        import libopenzwave
+        return ['openzwave==%s' % pyozw_version]
+    except ImportError:
+        pass
+    return ['python_openzwave == %s' % pyozw_version]
 
 if __name__ == '__main__':
     import sys
