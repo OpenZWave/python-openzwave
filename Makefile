@@ -596,8 +596,8 @@ venv-continuous-autobuild-tests:
 	@echo
 	@echo
 
-	-$(MAKE) venv-dev-autobuild-tests
 	-$(MAKE) venv-shared-autobuild-tests
+	-$(MAKE) venv-git-autobuild-tests
 	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	-$(MAKE) venv-bdist_wheel-autobuild-tests
 	-$(MAKE) venv-pypi-autobuild-tests 
