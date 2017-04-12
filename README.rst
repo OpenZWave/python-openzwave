@@ -6,6 +6,18 @@
     :target: https://circleci.com/gh/OpenZWave/python-openzwave
     :alt: Circle status
 
+.. image:: https://img.shields.io/pypi/dm/python_openzwave.svg
+    :target: https://pypi.python.org/pypi/python_openzwave
+    :alt: Pypi downloads
+
+.. image:: https://img.shields.io/pypi/format/python_openzwave.svg
+    :target: https://pypi.python.org/pypi/python_openzwave
+    :alt: Pypi format
+    
+.. image:: https://img.shields.io/pypi/status/python_openzwave.svg
+    :target: https://pypi.python.org/pypi/python_openzwave
+    :alt: Pypi status
+    
 ================
 python-openzwave
 ================
@@ -18,6 +30,75 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * a full-event webapp example : flask + socket.io + jquery
  * a suite of tests
  * many examples
+
+python-openzwave 0.4.0 is coming !!!
+====================================
+ 
+ - 0.4.0.x versions are for testers only. Don't use it in a production environement
+ 
+ - New installation process via pip
+ 
+ - Make your virtualenv and activate it : 
+ 
+    .. code-block:: bash
+
+        virtualenv --python=python3 venv3
+        source venv3/bin/activate
+
+ - There is a bug in the package dependencies, on some systems it fails. You need to install them manualy :
+ 
+  - on python 2.7 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six
+        (venvX) pip install 'Louie>=1.1'
+
+  - on python 3 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six
+        (venvX) pip install 'PyDispatcher>=2.0.5'
+   
+ - Install the git flavor,(venvX)       
+ 
+    .. code-block:: bash
+    
+        (venvX) pip install ---egg python_openzwave --install-option="--git"
+
+    To use fresh code from openzwave github :
+
+    .. code-block:: bash
+    
+        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+
+- If you have build and install openzwave your self, use the dynamic linking :
+
+    .. code-block:: bash
+    
+        (venvX) pip install -egg python_openzwave --force --install-option="--shared"
+
+- On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
+It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
+
+    .. code-block:: bash
+        (venvX) pip install wheel six
+        (venvX) pip install 'Louie>=1.1'    
+        (venvX) pip install --egg python_openzwave --force --install-option="--embed"
+
+    You can update to the last version of python_openzwave using :
+        
+    .. code-block:: bash
+    
+        (venvX) pip install wheel six
+        (venvX) pip install 'PyDispatcher>=2.0.5'
+        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+    
+
+Support for windows, macosx, ... is not tested. Feel free to report bug and patches. We can easely support these plateforms.
+
+Old installation process is deprecated and reserved for python-openzwave-developers and alternatives machines.
 
 python-openzwave 0.3.0 is out !!!
 =================================
