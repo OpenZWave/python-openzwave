@@ -195,7 +195,7 @@ class Template(object):
         return False
 
     def install_requires(self):
-        return ['cython']
+        return ['Cython']
         
     def build(self):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
@@ -468,7 +468,7 @@ class DevTemplate(Template):
         self.openzwave = opzw_dir
         ctx = cython_context()
         if ctx is None:
-            log.error("Can't find cython")
+            log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, openzwave=opzw_dir, static=True)
         return ctx
@@ -483,7 +483,7 @@ class GitTemplate(Template):
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            log.error("Can't find cython")
+            log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=True)
         return ctx
@@ -515,7 +515,7 @@ class GitSharedTemplate(GitTemplate):
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            log.error("Can't find cython")
+            log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
         return ctx
@@ -591,7 +591,7 @@ class SharedTemplate(Template):
     def get_context(self):
         ctx = cython_context()
         if ctx is None:
-            log.error("Can't find cython")
+            log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, static=False)
         return ctx

@@ -21,6 +21,8 @@ ifndef NOSE_EXEC
 NOSE_EXEC=$(shell which nosetests)
 endif
 
+PIPCACHE=.pipcache
+
 ifdef VIRTUAL_ENV
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${VIRTUAL_ENV}/bin/${PYTHON_EXEC} --version 2>&1)))
 else
@@ -155,9 +157,9 @@ ifeq (${python_version_major},2)
 	apt-get install --force-yes -y cython
 endif
 ifeq (${python_version_major},3)
-	 apt-get install --force-yes -y cython3
+	apt-get install --force-yes -y cython3
 endif
-
+	
 ci-deps:
 	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-virtualenv
 	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
@@ -166,7 +168,7 @@ ci-deps:
 common-deps:
 	@echo Installing dependencies for python : ${python_version_full}
 ifeq (${python_version_major},2)
-	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-louie
+	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools
 endif
 ifeq (${python_version_major},3)
 	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
@@ -174,21 +176,21 @@ endif
 	apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
 
 tests-deps:
-	${PIP_EXEC} install nose-html
-	${PIP_EXEC} install nose-progressive
-	${PIP_EXEC} install coverage
-	${PIP_EXEC} install nose
-	${PIP_EXEC} install pylint
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) nose-html
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) nose-progressive
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) coverage
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) nose
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) pylint
 
 doc-deps:
 	-apt-get install --force-yes -y python-sphinx
-	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+	${PIP_EXEC} install --cache-dir $(PIPCACHE) sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 pip-deps:
-	#${PIP_EXEC} install docutils
-	#${PIP_EXEC} install setuptools
+	#${PIP_EXEC} install --cache-dir $(PIPCACHE) docutils
+	#${PIP_EXEC} install --cache-dir $(PIPCACHE) setuptools
 	#The following line crashes with a core dump
-	#${PIP_EXEC} install "Cython==0.22"
+	#${PIP_EXEC} install --cache-dir $(PIPCACHE) "Cython==0.22"
 
 clean-docs:
 	cd docs && $(MAKE) clean
@@ -447,7 +449,9 @@ deb:
 	dpkg-buildpackage
 
 venv-deps: common-deps
-	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip python-wheel-common python3-wheel python-wheel
+	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
+	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
+	apt-get install --force-yes -y pkg-config wget unzip
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -459,9 +463,9 @@ venv2:
 	@echo
 
 	virtualenv --python=python2 venv2
-	venv2/bin/pip install nose
-	venv2/bin/pip install cython wheel six
-	venv2/bin/pip install 'Louie>=1.1'
+	venv2/bin/pip install --cache-dir $(PIPCACHE) nose
+	venv2/bin/pip install --cache-dir $(PIPCACHE) Cython wheel six
+	venv2/bin/pip install --cache-dir $(PIPCACHE) 'Louie>=1.1'
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
@@ -484,9 +488,9 @@ venv3:
 	@echo
 
 	virtualenv --python=python3 venv3
-	venv3/bin/pip install nose
-	venv3/bin/pip install cython wheel six
-	venv3/bin/pip install 'PyDispatcher>=2.0.5'
+	venv3/bin/pip install --cache-dir $(PIPCACHE) nose
+	venv3/bin/pip install --cache-dir $(PIPCACHE) Cython wheel six
+	venv3/bin/pip install --cache-dir $(PIPCACHE) 'PyDispatcher>=2.0.5'
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
@@ -662,10 +666,10 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
+	venv2/bin/pip install --cache-dir $(PIPCACHE) "urwid>=1.1.1"
+	venv2/bin/pip install --cache-dir $(PIPCACHE) -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
+	venv2/bin/pip install --cache-dir $(PIPCACHE) -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/python  venv2/bin/pyozw_check
 	venv2/bin/python  venv2/bin/pyozw_shell --help
@@ -679,7 +683,7 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip install --cache-dir $(PIPCACHE) "urwid>=1.1.1"
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --install-option="--git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install -i https://testpypi.python.org/pypi --egg python_openzwave --force --install-option="--git --cleanopzw"
@@ -804,7 +808,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave.so
 	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip uninstall -y cython
+	venv2/bin/pip uninstall -y Cython
 	venv2/bin/python setup.py install --embed
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
@@ -818,7 +822,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave.so
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip uninstall -y cython
+	venv3/bin/pip uninstall -y Cython
 	venv3/bin/python setup.py install --embed
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 
@@ -956,7 +960,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	venv2/bin/pip install "urwid>=1.1.1"
+	venv2/bin/pip install --cache-dir $(PIPCACHE) "urwid>=1.1.1"
 	venv2/bin/pip install ${WHL_PYTHON2}
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
@@ -972,7 +976,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip install --cache-dir $(PIPCACHE) "urwid>=1.1.1"
 	venv3/bin/pip install ${WHL_PYTHON3}
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave

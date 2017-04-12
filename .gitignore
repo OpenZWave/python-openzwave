@@ -59,4 +59,4 @@ dist/
 docs/html/
 docs/joomla/
 libopenzwave.so
-
+.pipcache
