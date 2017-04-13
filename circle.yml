@@ -15,7 +15,6 @@ dependencies:
         - sudo apt-get update
         - sudo make ci-deps
         - make openzwave.gzip
-        - sudo make buildso
         - echo "Don't need to install setup.py"
 test:
     override:

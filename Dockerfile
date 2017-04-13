@@ -6,5 +6,4 @@ WORKDIR /home/docker-py2
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y  make sudo && make ci-deps && make venv-deps
 RUN env
 RUN make openzwave.gzip
-RUN make buildso
 RUN make venv-continuous-autobuild-tests 

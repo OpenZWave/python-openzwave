@@ -599,10 +599,10 @@ venv-continuous-autobuild-tests:
 	@echo
 	@echo
 
-	-$(MAKE) venv-git-autobuild-tests
-	-$(MAKE) venv-git_shared-autobuild-tests
 	-$(MAKE) venv-embed-autobuild-tests
 	-$(MAKE) venv-embed_shared-autobuild-tests
+	-$(MAKE) venv-git-autobuild-tests
+	-$(MAKE) venv-git_shared-autobuild-tests
 	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	-$(MAKE) venv-bdist_wheel-autobuild-tests
 	-$(MAKE) venv-pypi-autobuild-tests 
