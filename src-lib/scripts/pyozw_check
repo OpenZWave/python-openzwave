@@ -48,6 +48,9 @@ def imports(args):
         print("Try to get openzwave version")
         print(manager.getOzwLibraryVersion())
         print("Try to import libopenzwave.PyLogLevels")
+        from libopenzwave import PyLogLevels
+        print("Try to get default config path")
+        print(libopenzwave.configPath())
         print("Try to destroy manager")
         manager.destroy()
         print("Try to destroy options")

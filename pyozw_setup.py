@@ -43,7 +43,11 @@ from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 from setuptools.command.develop import develop as _develop
-from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+try:
+    from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+except ImportError:
+    log.warn("ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel")
+    
 import time
 from platform import system as platform_system
 import glob
@@ -761,11 +765,16 @@ class openzwave_config(setuptools.Command):
 class build(_build):
     sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
-class bdist_wheel(_bdist_wheel):
-    def run(self):
-        self.run_command('build_openzwave')
-        #~ self.run_command('openzwave_config')
-        _bdist_wheel.run(self)
+try:
+    class bdist_wheel(_bdist_wheel):
+        def run(self):
+            self.run_command('build_openzwave')
+            #~ self.run_command('openzwave_config')
+            _bdist_wheel.run(self)
+except NameError:
+    log.warn("ImportError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead")
+    class bdist_wheel(bdist_egg):
+        pass
 
 class clean(_clean):
     def run(self):

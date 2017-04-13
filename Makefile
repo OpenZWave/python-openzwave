@@ -1067,6 +1067,7 @@ venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwa
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/python  venv2/bin/pyozw_check	
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1081,6 +1082,7 @@ venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwa
 	venv3/bin/python setup-api.py install
 #~ 	venv3/bin/python setup-manager.py install
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
+	venv3/bin/python  venv3/bin/pyozw_check	
 	
 	-rm -f libopenzwave.so
 	@echo

@@ -439,7 +439,6 @@ cdef addValueId(ValueID v, n):
         return
     logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
-    #values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
     item = new pair[uint64_t, ValueID](v.GetId(), v)
     values_map.insert(deref(item))
     del item
@@ -494,18 +493,18 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         try:
             n['groupIdx'] = notification.GetGroupIdx()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_Group")
     elif notification.GetType() == Type_NodeEvent:
         try:
             n['event'] = notification.GetEvent()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_NodeEvent")
             raise
     elif notification.GetType() == Type_Notification:
         try:
             n['notificationCode'] = notification.GetNotification()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_Notification")
             raise
     elif notification.GetType() == Type_ControllerCommand:
         try:
@@ -519,45 +518,45 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
             n['controllerError'] = PyControllerError[error]
             n['controllerErrorDoc'] = PyControllerError[error].doc
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_ControllerCommand")
             raise
     elif notification.GetType() in (Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff):
         try:
             n['buttonId'] = notification.GetButtonId()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_CreateButton, Type_DeleteButton, Type_ButtonOn, Type_ButtonOff")
             raise
     elif notification.GetType() == Type_DriverRemoved:
         try:
             logger.debug("Notification : Type_DriverRemoved received : clean all valueids")
             values_map.empty()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_DriverRemoved")
             raise
     elif notification.GetType() == Type_DriverReset:
         try:
             logger.debug("Notification : Type_DriverReset received : clean all valueids")
             values_map.empty()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_DriverReset")
             raise
     elif notification.GetType() == Type_SceneEvent:
         try:
             n['sceneId'] = notification.GetSceneId()
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_SceneEvent")
             raise
     elif notification.GetType() in (Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed):
         try:
             addValueId(notification.GetValueID(), n)
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_ValueAdded, Type_ValueChanged, Type_ValueRefreshed")
             raise
     elif notification.GetType() == Type_ValueRemoved:
         try:
             n['valueId'] = {'id' : notification.GetValueID().GetId()}
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_ValueRemoved")
             raise
     #elif notification.GetType() in (Type_PollingEnabled, Type_PollingDisabled):
     #    #Maybe we should enable/disable this
@@ -568,7 +567,7 @@ cdef void notif_callback(const_notification _notification, void* _context) with 
         try:
             delValueId(notification.GetValueID(), n)
         except:
-            logger.exception("notif_callback exception")
+            logger.exception("notif_callback exception Type_ValueRemoved delete")
             raise
     logger.debug("notif_callback : end")
 
