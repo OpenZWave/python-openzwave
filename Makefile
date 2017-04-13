@@ -449,7 +449,7 @@ deb:
 venv-deps: common-deps cython-deps
 	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
 	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
-	apt-get install --force-yes -y pkg-config wget unzip
+	apt-get install --force-yes -y pkg-config wget unzip zip
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
