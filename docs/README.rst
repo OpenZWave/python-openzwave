@@ -81,19 +81,24 @@ python-openzwave 0.4.0 is coming !!!
 
 - On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
   It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
-
+  
+  For python2
+  
     .. code-block:: bash
-        (venvX) pip install wheel six
-        (venvX) pip install 'Louie>=1.1'    
+        (venvX) pip install wheel six 'Louie>=1.1'
+        (venvX) pip install --egg python_openzwave --force --install-option="--embed"
+
+  For python3
+  
+    .. code-block:: bash
+        (venvX) pip install wheel six 'PyDispatcher>=2.0.5'  
         (venvX) pip install --egg python_openzwave --force --install-option="--embed"
 
     You can update to the last version of python_openzwave using :
         
     .. code-block:: bash
     
-        (venvX) pip install wheel six
-        (venvX) pip install 'PyDispatcher>=2.0.5'
-        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+        (venvX) pip install --egg python_openzwave --force --install-option="--embed --cleanopzw"
 
 - At last, you can launch pyozw_check
 
