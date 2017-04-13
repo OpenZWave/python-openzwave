@@ -28,6 +28,8 @@ import time
 import argparse
 
 network_state = None
+home_id = None
+args = None
 
 def imports(args):
     if args.output == 'txt':
@@ -35,38 +37,65 @@ def imports(args):
         print("Import libs")
         print("Try to import libopenzwave")
         import libopenzwave
-        print("Try to get python_openzwave version")
+        print("Try to import libopenzwave.PyLogLevels")
         from libopenzwave import PyLogLevels
         print("Try to get options")
         options = libopenzwave.PyOptions(user_path=".", cmd_line="--logging false")
         options.lock()
-        time.sleep(1.0)
+        time.sleep(0.5)
         print("Try to get manager")
         manager = libopenzwave.PyManager()
         manager.create()
+        print("Try to get python_openzwave version")
         print(manager.getPythonLibraryVersionNumber())
         print("Try to get openzwave version")
         print(manager.getOzwLibraryVersion())
-        print("Try to import libopenzwave.PyLogLevels")
-        from libopenzwave import PyLogLevels
         print("Try to get default config path")
         print(libopenzwave.configPath())
         print("Try to destroy manager")
         manager.destroy()
         print("Try to destroy options")
         options.destroy()
-        time.sleep(1.0)
+        time.sleep(0.5)
         print("Try to import openzwave (API)")
         import openzwave
+        
+    elif args.output == 'raw':
+        import libopenzwave
+        from libopenzwave import PyLogLevels
+        options = libopenzwave.PyOptions(user_path=".", cmd_line="--logging false")
+        options.lock()
+        time.sleep(0.5)
+        manager = libopenzwave.PyManager()
+        manager.create()
+        print("{0}|{1}|{2}".format(
+                manager.getOzwLibraryVersion(),
+                manager.getPythonLibraryVersionNumber(),
+                libopenzwave.configPath()
+                ))
+        manager.destroy()
+        options.destroy()
+        time.sleep(0.5)
+        import openzwave
 
-def zwcallback(args):
+def zwcallback(zwargs):
     import libopenzwave
-    print('zwcallback with args=[%s]' % args)
-    notify_type = args['notificationType']
+    global args
+    if args.output == 'txt':
+        print('--------------------------------- zwcallback with args=[%s]' % zwargs)
+    notify_type = zwargs['notificationType']
+    global network_state
     network_state = notify_type
-    print("Received {0} : {1}".format(notify_type,libopenzwave[notify_type]))
+    if notify_type == "DriverReady":
+        global home_id
+        home_id = zwargs['homeId']
+    
+    #~ print("Received {0} : {1}".format(notify_type,libopenzwave.PyNotifications[notify_type].doc))
+    if args.output == 'txt':
+        print("Received {0}".format(notify_type))
 
 def init_device(args):
+    global home_id
     if args.output == 'txt':
         print("-------------------------------------------------------------------------------")
         print("Intialize device {0}".format(args.device))
@@ -85,23 +114,51 @@ def init_device(args):
         print("Wait for notifications ({0}s)".format(args.timeout))
         next_print = args.timeout/10
         delta = 0.1
-        for i in xrange(0, int(args.timeout/delta)):
+        for i in range(0, int(args.timeout/delta)):
             time.sleep(delta)
             next_print -= delta
             if next_print < 0:
                 next_print = args.timeout/10
                 print('.')
-        time.sleep(1.0)
         print("Try to remove driver")
         manager.removeDriver(args.device)
-        time.sleep(2.0)
+        time.sleep(3.0)
         print("Try to remove watcher")
         manager.removeWatcher(zwcallback)
         print("Try to destroy manager")
         manager.destroy()
+        time.sleep(0.2)
         print("Try to destroy options")
         options.destroy()
         time.sleep(1.0)
+        print("Retrieve HomeID")
+        print("{0:08x}".format(home_id))
+    elif args.output == 'raw':
+        import libopenzwave
+        options = libopenzwave.PyOptions(user_path=".", cmd_line="--logging false")
+        options.lock()
+        time.sleep(1.0)
+        manager = libopenzwave.PyManager()
+        manager.create()
+        manager.addWatcher(zwcallback)
+        time.sleep(1.0)
+        manager.addDriver(args.device)
+        next_print = args.timeout/10
+        delta = 0.1
+        for i in range(0, int(args.timeout/delta)):
+            time.sleep(delta)
+        print("{0}|{1}|{2}|{3:08x}".format(
+                manager.getOzwLibraryVersion(),
+                manager.getPythonLibraryVersionNumber(),
+                libopenzwave.configPath(),
+                home_id,
+                ))
+        manager.removeDriver(args.device)
+        time.sleep(0.5)
+        manager.removeWatcher(zwcallback)
+        manager.destroy()
+        time.sleep(0.2)
+        options.destroy()
         
 def pyozw_parser():
     parser = argparse.ArgumentParser(description='Run python_openzwave basics checks.')
@@ -114,11 +171,12 @@ def pyozw_parser():
 
 def main():
     parser = pyozw_parser()
+    global args
     args = parser.parse_args()
-    if args.imports:
-        imports(args)
     if args.init_device:
         init_device(args)
+    elif args.imports:
+        imports(args)
 if __name__ == '__main__':
     main()
 

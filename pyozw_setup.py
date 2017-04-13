@@ -38,7 +38,7 @@ import setuptools
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from distutils import log
-from distutils.command.install import install as _install
+from setuptools.command.install import install as _install
 from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
 from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
@@ -772,7 +772,7 @@ try:
             #~ self.run_command('openzwave_config')
             _bdist_wheel.run(self)
 except NameError:
-    log.warn("ImportError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead")
+    log.warn("NameError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead")
     class bdist_wheel(bdist_egg):
         pass
 
