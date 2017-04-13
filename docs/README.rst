@@ -80,7 +80,7 @@ python-openzwave 0.4.0 is coming !!!
         (venvX) pip install -egg python_openzwave --force --install-option="--shared"
 
 - On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
-It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
+  It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
 
     .. code-block:: bash
         (venvX) pip install wheel six
