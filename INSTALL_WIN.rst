@@ -5,6 +5,10 @@ Installing python-openzwave on Windows
 ======================================
 
 
+This HOW-TO is for 0.4.X.
+
+It should be possible to make it pip friendly. Need a command line to build openzwave c++ lib.
+
 How To Build python-openzwave on Windows with VS2015
 ====================================================
 
@@ -25,7 +29,7 @@ Get sources
     cd openzwave
     git checkout Dev
     cd ..
-    git checkout python3
+    git checkout
 
 
 Build open-zwave
@@ -38,43 +42,14 @@ When asked, accept the project upgrade to VS2015
 Build Win32|Release
 
 
-Build python-openzwave lib
---------------------------
+Build python_openzwave
+----------------------
 
-Patch libopenzwave.pyx
-
-Cause: ValueID has no default constructor and cython needs one for allocating objects on the stack
-
-Fix: Allocate object on the the heap as a workaround
-
-Open test/python-openzwave/src-lib/libopenzwave/libopenzwave.pyx
-
-Go to line 437 and change:
+From a Command Prompt, install it :
 
 .. code-block:: bash
 
-    values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
+    python setup install --dev
 
-To:
+Reference for 0.3.X : https://github.com/OpenZWave/python-openzwave/issues/53
 
-.. code-block:: bash
-
-    newPair = new pair[uint64_t, ValueID](v.GetId(), v)
-    values_map.insert(deref(newPair))
-    del newPair
-
-From a Command Prompt, build it :
-
-.. code-block:: bash
-
-    python setup-lib.py build
-    python setup-api.py build
-
-And install it (in a virtualenv if needed) :
-
-.. code-block:: bash
-
-    python setup-lib.py install
-    python setup-api.py install
-
-Reference : https://github.com/OpenZWave/python-openzwave/issues/53

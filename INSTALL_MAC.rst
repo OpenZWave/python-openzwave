@@ -4,6 +4,4 @@
 Installing python-openzwave on MacOs
 ====================================
 
-To be done
-
-Looking for volunteers
+Look at README for 0.4.X installation.

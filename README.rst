@@ -65,13 +65,13 @@ python-openzwave 0.4.0 is coming !!!
  
     .. code-block:: bash
     
-        (venvX) pip install ---egg python_openzwave --install-option="--git"
+        (venvX) pip install python_openzwave --install-option="--git"
 
     To use fresh code from openzwave github :
 
     .. code-block:: bash
     
-        (venvX) pip install --egg python_openzwave --force --install-option="--git --cleanopzw"
+        (venvX) pip install python_openzwave --force --install-option="--git --cleanopzw"
 
 - If you have build and install openzwave your self, use the dynamic linking :
 
@@ -86,19 +86,19 @@ python-openzwave 0.4.0 is coming !!!
   
     .. code-block:: bash
         (venvX) pip install wheel six 'Louie>=1.1'
-        (venvX) pip install --egg python_openzwave --force --install-option="--embed"
+        (venvX) pip install python_openzwave --force --install-option="--embed"
 
   For python3
   
     .. code-block:: bash
         (venvX) pip install wheel six 'PyDispatcher>=2.0.5'  
-        (venvX) pip install --egg python_openzwave --force --install-option="--embed"
+        (venvX) pip install python_openzwave --force --install-option="--embed"
 
     You can update to the last version of python_openzwave using :
         
     .. code-block:: bash
     
-        (venvX) pip install --egg python_openzwave --force --install-option="--embed --cleanopzw"
+        (venvX) pip install python_openzwave --force --install-option="--embed --cleanopzw"
 
 - At last, you can launch pyozw_check
 

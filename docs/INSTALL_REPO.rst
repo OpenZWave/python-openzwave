@@ -4,6 +4,8 @@
 Installing python-openzwave from repository
 ===========================================
 
+This method is deprecated for 0.4.X. Use pip with --git flavor. Look at README.
+
 
 Install the needed tools
 ========================

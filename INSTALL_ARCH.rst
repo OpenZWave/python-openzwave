@@ -4,6 +4,8 @@
 Installing python-openzwave from archive
 ========================================
 
+This method is deprecated for 0.4.X. Use pip with --embed flavor. Look at README.
+
 This is the simplest (and the fastest) way to install python-openzwave. It comes with openzwave source files and is already cythonized.
 
 This is surely the best solution to install python-openzwave on a raspberry pi.
