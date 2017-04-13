@@ -10,7 +10,7 @@ install:
   - env
   - make openzwave.gzip
   - make buildso
-  - pip install --upgrade pip
+  #- pip install --upgrade pip
 # command to run tests
 script:
   - make venv-continuous-autobuild-tests
@@ -19,4 +19,5 @@ before_install:
   #- env
   #- sudo -E env
   - sudo apt-get update -y -qq
+  - sudo -E make ci-deps
   - sudo -E make venv-deps

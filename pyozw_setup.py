@@ -453,6 +453,15 @@ class Template(object):
         zip_ref.extractall(dest)
         zip_ref.close()
         return self.openzwave
+
+    def clean_openzwave_so(self):
+        for path in ['/usr/local/etc/openzwave', '/usr/local/include/openzwave', '/usr/local/share/doc/openzwave']:
+            try:
+                log.info('Try to remove {0}'.format('/usr/local/etc/openzwave'))
+                shutil.rmtree(os.path.abspath(self.openzwave))
+            except Exception:
+                pass
+        return True
         
 class DevTemplate(Template):
     def __init__(self, openzwave=None, cleanopzw=False):
@@ -521,22 +530,19 @@ class GitSharedTemplate(GitTemplate):
         return ctx
 
     @property
+    def copy_openzwave_config(self):
+        return False
+
+    @property
     def install_openzwave_so(self):
         return True
 
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         return Template.get_openzwave(self, url)
 
-    def clean_all(self):
-        ret = GitTemplate.clean(self)
-        #We should remove headers, so modules and configuration files
-        for path in ['/usr/local/etc/openzwave', '/usr/local/include/openzwave', '/usr/local/share/doc/openzwave']:
-            try:
-                log.info('Try to remove {0}'.format('/usr/local/etc/openzwave'))
-                shutil.rmtree(os.path.abspath(self.openzwave))
-            except Exception:
-                pass
-        return ret
+    def clean(self):
+        self.clean_openzwave_so()
+        return GitTemplate.clean(self)
 
 class EmbedTemplate(Template):
     def __init__(self, openzwave=None, cleanopzw=False):
@@ -584,6 +590,30 @@ class EmbedTemplate(Template):
                 pass
         return ret
         
+class EmbedSharedTemplate(EmbedTemplate):
+    def __init__(self, openzwave=None, cleanopzw=False):
+        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), cleanopzw=cleanopzw)
+
+    def get_context(self):
+        ctx = cpp_context()
+        ctx = system_context(ctx, openzwave=self.openzwave, static=False)
+        return ctx
+
+    def clean(self):
+        self.clean_openzwave_so()
+        return EmbedTemplate.clean(self)
+
+    @property
+    def copy_openzwave_config(self):
+        return False
+
+    @property
+    def install_openzwave_so(self):
+        return True
+
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
+        return Template.get_openzwave(self, url)        
+        
 class SharedTemplate(Template):
     def __init__(self, openzwave=None, cleanopzw=False):
         Template.__init__(self, openzwave=openzwave, cleanopzw=cleanopzw)
@@ -624,6 +654,10 @@ def parse_template(sysargv):
         index = sysargv.index('--embed')
         sysargv.pop(index)
         tmpl =  EmbedTemplate()
+    elif '--embed_shared' in sysargv:
+        index = sysargv.index('--embed_shared')
+        sysargv.pop(index)
+        tmpl =  EmbedSharedTemplate()
     elif '--shared' in sysargv:
         index = sysargv.index('--shared')
         sysargv.pop(index)

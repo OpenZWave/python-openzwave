@@ -421,11 +421,14 @@ tag:
 	@echo
 	@echo "Tag pushed on github."
 
-new-version: uninstall clean update develop
+validate-pr: uninstall clean update develop
 	$(MAKE) venv-dev-autobuild-tests
 	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 	$(MAKE) venv-pypi-autobuild-tests 
+#~ 	$(MAKE) venv-tests
+
+new-version: validate-pr
 	-$(MAKE) docs
 	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst LICENSE.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-$(MAKE) commit
@@ -446,10 +449,12 @@ debch:
 deb:
 	dpkg-buildpackage
 
-venv-deps: common-deps cython-deps
+venv-deps: common-deps
 	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
-	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
+#~ 	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
 	apt-get install --force-yes -y pkg-config wget unzip zip
+	pip install Cython
+	pip install wheel
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -594,8 +599,10 @@ venv-continuous-autobuild-tests:
 	@echo
 	@echo
 
-	-$(MAKE) venv-shared-autobuild-tests
 	-$(MAKE) venv-git-autobuild-tests
+	-$(MAKE) venv-git_shared-autobuild-tests
+	-$(MAKE) venv-embed-autobuild-tests
+	-$(MAKE) venv-embed_shared-autobuild-tests
 	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	-$(MAKE) venv-bdist_wheel-autobuild-tests
 	-$(MAKE) venv-pypi-autobuild-tests 
@@ -809,6 +816,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/pip uninstall -y Cython
 	venv2/bin/python setup.py install --embed
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	test -f venv2/lib/python*/site-packages/libopenzwave*.so
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -823,6 +831,54 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/pip uninstall -y Cython
 	venv3/bin/python setup.py install --embed
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	test -f venv3/lib/python*/site-packages/libopenzwave*.so
+
+	-rm -f libopenzwave.so
+	@echo
+	@echo
+	@echo "Tests for venv-embed-autobuild-tests done."
+	@echo
+	@echo
+	@echo ==========================================================================================
+	@echo
+
+venv-embed_shared-autobuild-tests: venv-clean venv2 venv3
+	@echo ==========================================================================================
+	@echo
+	@echo
+	@echo "Launch tests for venv-embed_shared-autobuild-tests."
+	@echo
+	@echo
+
+	@echo
+	@echo ////////////////////////////////////////////////////////////////////////////////////////////
+	@echo
+	@echo Tests for python2
+	@echo
+	@echo ////////////////////////////////////////////////////////////////////////////////////////////
+	@echo
+
+	-rm -f libopenzwave.so
+	venv2/bin/pip install "urwid>=1.1.1"
+	venv2/bin/pip uninstall -y Cython
+	venv2/bin/python setup.py install --embed_shared
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	test -f venv2/lib/python*/site-packages/libopenzwave*.so
+
+	@echo
+	@echo ////////////////////////////////////////////////////////////////////////////////////////////
+	@echo
+	@echo Tests for python3
+	@echo
+	@echo ////////////////////////////////////////////////////////////////////////////////////////////
+	@echo
+
+	-rm -f libopenzwave.so
+	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip uninstall -y Cython
+	venv3/bin/python setup.py install --embed_shared
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	test -f venv3/lib/python*/site-packages/libopenzwave*.so
 
 	-rm -f libopenzwave.so
 	@echo
