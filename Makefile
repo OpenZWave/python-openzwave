@@ -569,14 +569,14 @@ venv-autobuild-tests: clean
 	@echo
 	@echo
 
-	$(MAKE) venv-dev-autobuild-tests
-	$(MAKE) venv-git-autobuild-tests 
+	$(MAKE) venv-pypitest-autobuild-tests 
+	$(MAKE) venv-pypilive-autobuild-tests
 	$(MAKE) venv-embed-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 	$(MAKE) venv-pypi-autobuild-tests 
-	$(MAKE) venv-pypitest-autobuild-tests 
-	$(MAKE) venv-pypilive-autobuild-tests
+	$(MAKE) venv-dev-autobuild-tests
+	$(MAKE) venv-git-autobuild-tests 
 
 	@echo
 	@echo
