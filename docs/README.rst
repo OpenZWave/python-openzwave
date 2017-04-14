@@ -65,19 +65,19 @@ python-openzwave 0.4.0 is coming !!!
  
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --install-option="--git"
+        (venvX) pip install python_openzwave --install-option="--flavor git"
 
     To use fresh code from openzwave github :
 
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --force --install-option="--git --cleanopzw"
+        (venvX) pip install python_openzwave --install-option="--flavor git"
 
 - If you have build and install openzwave your self, use the dynamic linking :
 
     .. code-block:: bash
     
-        (venvX) pip install -egg python_openzwave --force --install-option="--shared"
+        (venvX) pip install -egg python_openzwave --install-option="--flavor shared"
 
 - On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
   It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
@@ -86,20 +86,22 @@ python-openzwave 0.4.0 is coming !!!
   
     .. code-block:: bash
         (venvX) pip install wheel six 'Louie>=1.1'
-        (venvX) pip install python_openzwave --force --install-option="--embed"
+        (venvX) pip install python_openzwave --install-option="--flavor embed"
 
   For python3
   
     .. code-block:: bash
         (venvX) pip install wheel six 'PyDispatcher>=2.0.5'  
-        (venvX) pip install python_openzwave --force --install-option="--embed"
+        (venvX) pip install python_openzwave --install-option="--flavor embed"
 
-    You can update to the last version of python_openzwave using :
+- You can update to the last version of python_openzwave/openzwave using :
         
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --force --install-option="--embed --cleanopzw"
-
+        (venvX) pip install python_openzwave --force --install-option="--flavor git --cleanopzw"
+        
+    --cleanopzw will erase old config and build, download fresh sources and build again.
+    
 - At last, you can launch pyozw_check
 
     .. code-block:: bash

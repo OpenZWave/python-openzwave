@@ -4,7 +4,7 @@
 Changelog
 =========
 
-python-openzwave 0.4.0:
+python-openzwave 0.4.0.x:
 
  * New installation process via pip
  * Update your install_requires : both libopenzwave and openzwave are merged in python_openzwave package on pypi. Don't need to update your imports in code.
@@ -12,6 +12,9 @@ python-openzwave 0.4.0:
  * You can use the old installation process (via github), it's the one I use to develop
  * Installation via archive method is no longer suppored (no release for 0.4.0). Use pip instead with --embed option.
  * Default mode is embed now. 
+ * Update config path discovery : check for 'device_classes.xml' in /etc/openzwave/, /usr/local/etc/openzwave/ and 
+   finally in ozw_config in python_openzwave module.
+ * Add flavor : different ways of building and installing openzwave / python_openzwave
  
 python-openzwave 0.3.3:
 

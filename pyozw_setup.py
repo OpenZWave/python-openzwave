@@ -174,10 +174,12 @@ def system_context(ctx, openzwave=None, static=False):
 
 class Template(object):
     
-    def __init__(self, openzwave=None, cleanopzw=False):
+    def __init__(self, openzwave=None, cleanopzw=False, sysargv=None, flavor=None):
         self.openzwave = openzwave
         self._ctx = None
         self.cleanopzw = cleanopzw
+        self.flavor = flavor
+        self.sysargv = sysargv
    
     @property
     def ctx(self):
@@ -468,8 +470,9 @@ class Template(object):
         return True
         
 class DevTemplate(Template):
-    def __init__(self, openzwave=None, cleanopzw=False):
-        Template.__init__(self, openzwave='openzwave', cleanopzw=cleanopzw)
+    
+    def __init__(self, **args):
+        Template.__init__(self, **args)
 
     def get_context(self):
         opzw_dir = LOCAL_OPENZWAVE
@@ -490,8 +493,9 @@ class DevTemplate(Template):
         return True
 
 class GitTemplate(Template):
-    def __init__(self, openzwave=None, cleanopzw=False):
-        Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'), cleanopzw=cleanopzw)
+    
+    def __init__(self, **args):
+        Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'), **args)
 
     def get_context(self):
         ctx = cython_context()
@@ -530,7 +534,7 @@ class GitSharedTemplate(GitTemplate):
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, openzwave=self.openzwave, static=False)
+        ctx = system_context(ctx, openzwave=self.openzwave, static=False, **args)
         return ctx
 
     @property
@@ -549,8 +553,9 @@ class GitSharedTemplate(GitTemplate):
         return GitTemplate.clean(self)
 
 class EmbedTemplate(Template):
-    def __init__(self, openzwave=None, cleanopzw=False):
-        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), cleanopzw=cleanopzw)
+    
+    def __init__(self, **args):
+        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), **args)
 
     @property
     def build_ext(self):
@@ -595,8 +600,6 @@ class EmbedTemplate(Template):
         return ret
         
 class EmbedSharedTemplate(EmbedTemplate):
-    def __init__(self, openzwave=None, cleanopzw=False):
-        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), cleanopzw=cleanopzw)
 
     def get_context(self):
         ctx = cpp_context()
@@ -619,8 +622,8 @@ class EmbedSharedTemplate(EmbedTemplate):
         return Template.get_openzwave(self, url)        
         
 class SharedTemplate(Template):
-    def __init__(self, openzwave=None, cleanopzw=False):
-        Template.__init__(self, openzwave=openzwave, cleanopzw=cleanopzw)
+    def __init__(self,  **args):
+        Template.__init__(self, **args)
 
     def get_context(self):
         ctx = cython_context()
@@ -640,32 +643,33 @@ class SharedTemplate(Template):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         return True
 
+flavors = {
+
+}
 def parse_template(sysargv):
-    tmpl = EmbedTemplate()
-    if '--dev' in sysargv:
-        index = sysargv.index('--dev')
+    flavor = None
+    if '--flavor' in sysargv:
+        index = sysargv.index('--flavor')
         sysargv.pop(index)
-        tmpl =  DevTemplate()
-    elif '--git' in sysargv:
-        index = sysargv.index('--git')
-        sysargv.pop(index)
-        tmpl =  GitTemplate()
-    elif '--git_shared' in sysargv:
-        index = sysargv.index('--git_shared')
-        sysargv.pop(index)
-        tmpl =  GitSharedTemplate()
-    elif '--embed' in sysargv:
-        index = sysargv.index('--embed')
-        sysargv.pop(index)
-        tmpl =  EmbedTemplate()
-    elif '--embed_shared' in sysargv:
-        index = sysargv.index('--embed_shared')
-        sysargv.pop(index)
-        tmpl =  EmbedSharedTemplate()
-    elif '--shared' in sysargv:
-        index = sysargv.index('--shared')
-        sysargv.pop(index)
-        tmpl =  SharedTemplate()
+        flavor = sysargv.pop(index)
+    tmpl = None
+    if flavor == 'dev':
+        tmpl =  DevTemplate(sysargv=sysargv)
+    elif flavor == 'git':
+        tmpl =  GitTemplate(sysargv=sysargv)
+    elif flavor == '--git_shared':
+        tmpl =  GitSharedTemplate(sysargv=sysargv)
+    elif flavor == '--embed':
+        tmpl =  EmbedTemplate(sysargv=sysargv)
+    elif flavor == 'embed_shared':
+        tmpl =  EmbedSharedTemplate(sysargv=sysargv)
+    elif flavor == 'shared':
+        tmpl =  SharedTemplate(sysargv=sysargv)
+    if tmpl is None:
+        #Default template
+        flavor = 'embed'
+        tmpl = EmbedTemplate(sysargv=sysargv)
+    tmpl.flavor = flavor
     if '--cleanopzw' in sysargv:
         index = sysargv.index('--cleanopzw')
         sysargv.pop(index)
