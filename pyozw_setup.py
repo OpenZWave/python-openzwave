@@ -30,8 +30,9 @@ Build process :
     --pybind : use pybind alternative (not tested)
     --auto (default) : try static, shared and cython, fails if it can't
 """
-from os import name as os_name
+import time
 import os, sys
+from os import name as os_name
 import re
 import shutil
 import setuptools
@@ -46,9 +47,7 @@ from setuptools.command.develop import develop as _develop
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
 except ImportError:
-    log.warn("ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel")
-    
-import time
+    log.warn("ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel")   
 from platform import system as platform_system
 import glob
 
@@ -715,10 +714,13 @@ class build_openzwave(setuptools.Command):
     user_options = [
         ('openzwave-dir=', None,
          'the source directory where openzwave sources should be stored'),
+        ('flavor=', None,
+         'the flavor of python_openzwave to install'),
     ]
     
     def initialize_options(self):
         self.openzwave_dir = None
+        self.flavor = None
     
     def finalize_options(self):
         if self.openzwave_dir is None:
@@ -728,7 +730,8 @@ class build_openzwave(setuptools.Command):
                 build = self.distribution.get_command_obj('build')
                 build.ensure_finalized()
                 self.openzwave_dir = os.path.join(build.build_lib, current_template.openzwave)
-    
+        self.flavor = current_template.flavor
+        
     def run(self):
         current_template.install_minimal_dependencies()
         current_template.get_openzwave()

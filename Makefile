@@ -1018,6 +1018,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	venv2/bin/python setup.py install --flavor git
 	venv2/bin/python setup.py bdist_wheel --flavor git
 
 	@echo
@@ -1028,6 +1029,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	venv3/bin/python setup.py install --flavor git
 	venv3/bin/python setup.py bdist_wheel --flavor git
 	
 	@echo
@@ -1038,7 +1040,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo ==========================================================================================
 	@echo
 
-venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
+venv-bdist_wheel-autobuild-tests: venv-clean
 	@echo ==========================================================================================
 	@echo
 	@echo
@@ -1053,14 +1055,21 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
+	
+	-rm -Rf venv2
+	virtualenv --python=python2 venv2
+	chmod 755 venv2/bin/activate
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+	-rm -f libopenzwave*.so
 
+	venv2/bin/pip install "Cython"
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install "${WHL_PYTHON2}"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
 	venv2/bin/pip uninstall -y ${WHL_PYTHON2}
-	test ! -f venv2/lib/python*/site-packages/libopenzwave*.so
+	#test ! -f venv2/lib/python*/site-packages/libopenzwave*.so
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1070,13 +1079,20 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	-rm -Rf venv3
+	virtualenv --python=python3 venv3
+	chmod 755 venv3/bin/activate
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+	-rm -f libopenzwave*.so
+
+	venv3/bin/pip install "Cython"
 	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip install "${WHL_PYTHON3}"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
 	venv3/bin/pip uninstall -y ${WHL_PYTHON3}
-	test ! -f venv3/lib/python*/site-packages/libopenzwave*.so
+	#test ! -f venv3/lib/python*/site-packages/libopenzwave*.so
 	
 	@echo
 	@echo
