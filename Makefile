@@ -398,7 +398,8 @@ pypi_package:clean-archive
 	-find $(ARCHBASE)/python_openzwave/ -name zwscene.xml -delete
 	-find $(ARCHBASE)/python_openzwave/ -name zwbutton.xml -delete
 	-find $(ARCHBASE)/python_openzwave/ -name pyozw.db -delete
-	-mkdir -p $(DISTDIR) || true
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+	-mkdir -p $(DISTDIR) || src-lib/
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/python_openzwave-${python_openzwave_version}.zip python_openzwave
 	mv $(DISTDIR)/python_openzwave-${python_openzwave_version}.zip $(ARCHIVES)/
 	@echo
