@@ -45,7 +45,14 @@ python-openzwave 0.4.0 is coming !!!
         virtualenv --python=python3 venv3
         source venv3/bin/activate
 
- - There is a bug in the package dependencies, on some systems it fails. You need to install them manualy :
+ - Install the default (embed) flavor,(venvX)       
+ 
+    .. code-block:: bash
+    
+        (venvX) pip install python_openzwave
+    
+ - The previous command install python_openzwave statitically linked to sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
+   You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :
  
   - on python 2.7 :
   
@@ -60,39 +67,25 @@ python-openzwave 0.4.0 is coming !!!
   
         (venvX) pip install cython wheel six
         (venvX) pip install 'PyDispatcher>=2.0.5'
+
+ - Choose your flavor :
+ 
+    - embed : the default one. Download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives and
+      build them. Python_openzwave is statically build using a cythonized version of libopenzwave. No need to install cython.
+    - shared : if you have install openzwave as module manually, you can link python_openzwave to it.
+    - git : download sources from openzwave github and link statically to it.
+    - embed_shared (experimental) : download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives, build and install as module on the system. 
+      Python_openzwave use it. Need root access to install openzwave libs.
+    - git_shared (experimental) : download sources from openzwave github, build and install them as module on the system.
+      Python_openzwave use it. Need root access to install openzwave libs.
+    - dev : for python_openzwave developpers
+
    
- - Install the git flavor,(venvX)       
+ - Install it 
  
     .. code-block:: bash
     
         (venvX) pip install python_openzwave --install-option="--flavor git"
-
-    To use fresh code from openzwave github :
-
-    .. code-block:: bash
-    
-        (venvX) pip install python_openzwave --install-option="--flavor git"
-
-- If you have build and install openzwave your self, use the dynamic linking :
-
-    .. code-block:: bash
-    
-        (venvX) pip install -egg python_openzwave --install-option="--flavor shared"
-
-- On tiny many machines, you can use the embed method. It will download a small archive of openzwave from python-openzwave github. 
-  It also contains a cythonised version of libopenzwave, so it don't need cython anymore :
-  
-  For python2
-  
-    .. code-block:: bash
-        (venvX) pip install wheel six 'Louie>=1.1'
-        (venvX) pip install python_openzwave --install-option="--flavor embed"
-
-  For python3
-  
-    .. code-block:: bash
-        (venvX) pip install wheel six 'PyDispatcher>=2.0.5'  
-        (venvX) pip install python_openzwave --install-option="--flavor embed"
 
 - You can update to the last version of python_openzwave/openzwave using :
         
