@@ -672,6 +672,9 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
+	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave python_openzwave --install-option="--flavor embed"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/pip install "Cython"
 	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor git --cleanopzw"
@@ -690,6 +693,9 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave*.so
 	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor embed"
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/pip install "Cython"
 	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor git --cleanopzw"
@@ -727,6 +733,9 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
+	venv2/bin/pip install python_openzwave --install-option="--flavor embed"
+	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/pip install "Cython"
 	venv2/bin/pip install python_openzwave --install-option="--flavor git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install python_openzwave --force --install-option="--flavor git --cleanopzw"
@@ -746,6 +755,9 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	-rm -f libop1enzwave*.so
 	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip install python_openzwave --install-option="--flavor embed"
+	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/pip install "Cython"
 	venv3/bin/pip install python_openzwave --install-option="--flavor git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install python_openzwave --force --install-option="--flavor git --cleanopzw"
@@ -900,17 +912,26 @@ venv-embed_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo ==========================================================================================
 	@echo
 
-venv-pypi-autobuild-tests: venv-clean venv2 venv3 pypi_package
+venv-pypi-autobuild-tests: venv-clean pypi_package
 	@echo ==========================================================================================
 	@echo
 	@echo
 	@echo "Launch tests for venv-pypi-autobuild-tests."
 	@echo
 	@echo
+
 	-rm -f dist/*.whl
 	-rm -Rf tmp/pypi_test/
 	-mkdir -p tmp/pypi_test/
 	cd tmp/pypi_test/ && unzip ../../$(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip
+
+	virtualenv --python=python2 venv2
+	chmod 755 venv2/bin/activate
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+	-rm -f libopenzwave*.so
+	venv2/bin/pip install "urwid>=1.1.1"
+	venv2/bin/pip install "Cython"
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor git
 	
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -920,6 +941,12 @@ venv-pypi-autobuild-tests: venv-clean venv2 venv3 pypi_package
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
+	virtualenv --python=python3 venv3
+	chmod 755 venv3/bin/activate
+	-rm -f src-lib/libopenzwave/libopenzwave.cpp
+	-rm -f libop1enzwave*.so
+	venv3/bin/pip install "urwid>=1.1.1"
+	venv3/bin/pip install "Cython"
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor git
 
 	@echo
