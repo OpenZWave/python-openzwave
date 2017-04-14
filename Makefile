@@ -736,7 +736,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install "nose"
-	venv2/bin/pip install python_openzwave
+	venv2/bin/pip install --force python_openzwave
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install "Cython"
 	venv2/bin/pip install python_openzwave --install-option="--flavor git"
@@ -760,7 +760,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f libop1enzwave*.so
 	venv3/bin/pip install "nose"
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip install python_openzwave
+	venv3/bin/pip install --force  python_openzwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install "Cython"
 	venv3/bin/pip install python_openzwave --install-option="--flavor git"
@@ -842,6 +842,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo
 
 	-rm -f libopenzwave*.so
+	venv2/bin/pip uninstall -y wheel
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip uninstall -y Cython
 	venv2/bin/python setup.py install --flavor embed
@@ -857,6 +858,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	@echo
 
 	-rm -f libopenzwave*.so
+	venv3/bin/pip uninstall -y wheel
 	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip uninstall -y Cython
 	venv3/bin/python setup.py install --flavor embed
@@ -936,6 +938,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	-rm -f libopenzwave*.so
+	venv2/bin/pip install "wheel"
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install "Cython"
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install
@@ -953,6 +956,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 	-rm -f libop1enzwave*.so
+	venv3/bin/pip install "wheel"
 	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip install "Cython"
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install
