@@ -110,7 +110,7 @@ def pybind_context():
 
 def system_context(ctx, openzwave=None, static=False):
     #System specific section
-    os.environ["CC"] = "g++" 
+    os.environ["CC"] = "gcc" 
     os.environ["CXX"] = "g++"
     if static:
         ctx['include_dirs'] += [ 
