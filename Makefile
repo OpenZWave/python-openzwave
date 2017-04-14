@@ -424,7 +424,6 @@ validate-pr: uninstall clean update develop
 	$(MAKE) venv-dev-autobuild-tests
 	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
 	$(MAKE) venv-bdist_wheel-autobuild-tests
-	$(MAKE) venv-pypi-autobuild-tests 
 #~ 	$(MAKE) venv-tests
 
 new-version: validate-pr
