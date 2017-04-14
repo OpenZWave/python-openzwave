@@ -434,6 +434,7 @@ new-version: validate-pr
 	-$(MAKE) pypi_package 
 	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git push
 	-git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git push
+	-git checkout $(ARCHIVES)/*
 	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypitest
 	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypi
 	-$(MAKE) tag
