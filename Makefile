@@ -290,7 +290,7 @@ openzwave.gzip:
 	mv open-zwave-master openzwave
 	
 openzwave/.lib/: openzwave
-	cd openzwave && $(MAKE)
+	cd openzwave && $(MAKE) -j 4
 
 clean-archive:
 	-rm -rf $(ARCHBASE)
