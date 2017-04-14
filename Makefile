@@ -931,6 +931,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install "Cython"
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --flavor git
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor git
 	
 	@echo
@@ -947,6 +948,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	-rm -f libop1enzwave*.so
 	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip install "Cython"
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --flavor git
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor git
 
 	@echo

@@ -643,9 +643,6 @@ class SharedTemplate(Template):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         return True
 
-flavors = {
-
-}
 def parse_template(sysargv):
     flavor = None
     if '--flavor' in sysargv:
@@ -707,6 +704,8 @@ def data_files_config(target, source, pattern):
 
 class bdist_egg(_bdist_egg):
     def run(self):
+        build_openzwave = self.distribution.get_command_obj('build_openzwave')
+        build_openzwave.develop = True
         self.run_command('build_openzwave')
         _bdist_egg.run(self)
 
@@ -772,8 +771,9 @@ class build(_build):
 try:
     class bdist_wheel(_bdist_wheel):
         def run(self):
+            build_openzwave = self.distribution.get_command_obj('build_openzwave')
+            build_openzwave.develop = True
             self.run_command('build_openzwave')
-            #~ self.run_command('openzwave_config')
             _bdist_wheel.run(self)
 except NameError:
     log.warn("NameError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead")
