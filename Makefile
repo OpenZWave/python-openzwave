@@ -364,8 +364,8 @@ embed_openzave_master:clean-archive src-lib/libopenzwave/libopenzwave.cpp
 	-cd $(ARCHBASE)/open-zwave-master && $(MAKE) clean
 	-rm -Rf $(ARCHBASE)/open-zwave-master/.git
 	-rm -f $(ARCHBASE)/open-zwave-master/open-zwave-master.zip
-	-rm -Rf $(ARCHBASE)/open-zwave-master/docs
-	-rm -Rf $(ARCHBASE)/open-zwave-master/dotnet
+	-rm -Rf $(ARCHBASE)/open-zwave-master/docs/*
+	-rm -Rf $(ARCHBASE)/open-zwave-master/dotnet/*
 	cp -f $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp $(ARCHBASE)/open-zwave-master/cpp/src/vers.cpp
 	-mkdir -p $(DISTDIR)
 	cd $(ARCHBASE) && zip -r ../$(DISTDIR)/open-zwave-master-${python_openzwave_version}.zip open-zwave-master
@@ -1026,7 +1026,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo
 
 	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip install ${WHL_PYTHON2}
+	venv2/bin/pip install "${WHL_PYTHON2}"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
@@ -1042,7 +1042,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean venv2 venv3
 	@echo
 
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip install ${WHL_PYTHON3}
+	venv3/bin/pip install "${WHL_PYTHON3}"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
