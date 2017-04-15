@@ -91,7 +91,7 @@ python-openzwave 0.4.0 is coming !!!
         
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --force --install-option="--flavor git --cleanopzw"
+        (venvX) pip install python_openzwave --force --upgrade --install-option="--flavor git --cleanopzw"
         
     --cleanopzw will erase old config and build, download fresh sources and build again.
     
