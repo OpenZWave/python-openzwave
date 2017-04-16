@@ -563,7 +563,7 @@ class GitSharedTemplate(GitTemplate):
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, openzwave=self.openzwave, static=False, **args)
+        ctx = system_context(ctx, openzwave=self.openzwave, static=False)
         return ctx
 
     @property

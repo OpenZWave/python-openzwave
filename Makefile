@@ -673,12 +673,12 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave
+	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install "Cython"
-	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor=git"
+	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git"
+	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --force --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/python  venv2/bin/pyozw_check
 	venv2/bin/python  venv2/bin/pyozw_shell --help
@@ -694,12 +694,12 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave*.so
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave
+	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install "Cython"
-	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor=git"
+	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git"
+	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --force --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/python  venv3/bin/pyozw_check
 	venv3/bin/python  venv3/bin/pyozw_shell --help
@@ -1210,15 +1210,15 @@ venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 	@echo
 
 buildso: openzwave/.lib/
-	cd openzwave && sudo $(MAKE) install    
+	cd openzwave && $(MAKE) install    
 
 uninstallso:
-	sudo rm -f /usr/local/lib/x86_64-linux-gnu/pkgconfig/libopenzwave.pc
-	sudo rm -f /usr/local/lib64/libopenzwave.so.1.4
-	sudo rm -f /usr/local/lib64/libopenzwave.so
-	sudo rm -Rf /usr/local/include/openzwave
-	sudo rm -Rf /usr/local/etc/openzwave
-	sudo rm -Rf /usr/local/share/doc/openzwave*
+	rm -f /usr/local/lib/x86_64-linux-gnu/pkgconfig/libopenzwave.pc
+	rm -f /usr/local/lib64/libopenzwave.so.1.4
+	rm -f /usr/local/lib64/libopenzwave.so
+	rm -Rf /usr/local/include/openzwave
+	rm -Rf /usr/local/etc/openzwave
+	rm -Rf /usr/local/share/doc/openzwave*
 	
 pyozw_pkgconfig.py:
 	wget https://raw.githubusercontent.com/matze/pkgconfig/master/pkgconfig/pkgconfig.py
