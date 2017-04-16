@@ -827,19 +827,20 @@ class clean(_clean):
 class develop(_develop):
     description = 'De velop python_openzwave'
     
-    user_options = _install.user_options + [
+    user_options = _develop.user_options + [
         ('flavor=', None, 'the flavor of python_openzwave to install'),
     ]
     
     def initialize_options(self):
         self.flavor = None
-        return _install.initialize_options(self)
+        return _develop.initialize_options(self)
     
     def finalize_options(self):
         if self.flavor is None:
             self.flavor = current_template.flavor
         print('flavor', self.flavor)
-        return _install.finalize_options(self)
+        return _develop.finalize_options(self)
+        
     def run(self):
         #In case of --uninstall, it will build openzwave to remove it ... stupid.
         #In develop mode, build is donr by the makefile
