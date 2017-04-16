@@ -38,6 +38,12 @@ python-openzwave 0.4.0 is coming !!!
  
  - New installation process via pip
  
+ - First, you need some build tools and libs. On ubuntu, you should use :
+
+     .. code-block:: bash
+
+        sudo apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
+
  - Make your virtualenv and activate it : 
  
     .. code-block:: bash
@@ -45,7 +51,7 @@ python-openzwave 0.4.0 is coming !!!
         virtualenv --python=python3 venv3
         source venv3/bin/activate
 
- - Install the default (embed) flavor,(venvX)       
+ - Install the default (embed) flavor :       
  
     .. code-block:: bash
     
@@ -91,12 +97,20 @@ python-openzwave 0.4.0 is coming !!!
         
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --force --install-option="--flavor git --cleanopzw"
+        (venvX) pip install python_openzwave --force --upgrade --install-option="--flavor git --cleanopzw"
         
     --cleanopzw will erase old config and build, download fresh sources and build again.
     
 - At last, you can launch pyozw_check
 
+    If no usb stick is connected to the machine, launch :
+
+    .. code-block:: bash
+
+        (venvX) pyozw_check
+
+    If you've one, use it for advanced checks : 
+    
     .. code-block:: bash
 
         (venvX) pyozw_check -i -d /dev/ttyUSB0
