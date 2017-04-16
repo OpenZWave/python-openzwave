@@ -736,12 +736,13 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install "nose"
-	venv2/bin/pip install --force python_openzwave
+	venv2/bin/pip install -vv python_openzwave
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install Cython wheel
-	venv2/bin/pip install python_openzwave --upgrade --install-option="--flavor=git"
+#~ 	venv2/bin/pip install Cython wheel
+	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install python_openzwave --upgrade --force --install-option="--flavor=git --cleanopzw"
+	venv2/bin/pip uninstall python_openzwave -y
+	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git --cleanopzw"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
 
@@ -760,12 +761,13 @@ venv-pypilive-autobuild-tests: venv-clean
 	-rm -f libop1enzwave*.so
 	venv3/bin/pip install "nose"
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip install --force  python_openzwave
+	venv3/bin/pip install -vv python_openzwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv3/bin/pip install Cython wheel
-	venv3/bin/pip install python_openzwave --upgrade --install-option="--flavor=git"
+#~ 	venv3/bin/pip install Cython wheel
+	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv3/bin/pip install python_openzwave --upgrade --force --install-option="--flavor=git --cleanopzw"
+	venv3/bin/pip uninstall python_openzwave -y
+	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git --cleanopzw"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip uninstall python_openzwave -y
 
