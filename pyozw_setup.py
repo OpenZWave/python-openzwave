@@ -432,8 +432,8 @@ class Template(object):
         print("Found pkg-config : {0}".format(exe))
         if exe is not None:
             import pyozw_pkgconfig
-            for lib in self.ctx['libraries'] + ['libudev', 'yaml-0.1', 'libopenzwave', 'python', 'python2', 'python3']:
-                print("Found librairy {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
+            for lib in self.ctx['libraries'] + ['yaml-0.1', 'libopenzwave', 'python', 'python2', 'python3']:
+                print("Found library {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
             print("Found librairy {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
         
     def install_minimal_dependencies(self):
