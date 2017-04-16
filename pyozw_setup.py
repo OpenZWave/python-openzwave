@@ -191,7 +191,7 @@ class Template(object):
 
     @property
     def build_ext(self):
-        if len(sys.argv) > 1 and (sys.argv[1] == 'install' or sys.argv[1] == 'develop'):
+        if 'install' in sys.argv or 'develop' in sys.argv:
             current_template.check_minimal_config()
             current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
@@ -426,30 +426,33 @@ class Template(object):
         return self.clean()
 
     def check_minimal_config(self):
-        print("Found g++ : {0}".format(find_executable("g++")))
-        print("Found gcc : {0}".format(find_executable("gcc")))
+        log.info("Found g++ : {0}".format(find_executable("g++")))
+        log.info("Found gcc : {0}".format(find_executable("gcc")))
         exe = find_executable("pkg-config")
-        print("Found pkg-config : {0}".format(exe))
+        log.info("Found pkg-config : {0}".format(exe))
         if exe is not None:
             import pyozw_pkgconfig
             for lib in self.ctx['libraries'] + ['yaml-0.1', 'libopenzwave', 'python', 'python2', 'python3']:
-                print("Found library {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
-            print("Found librairy {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
+                log.info("Found library {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
         
     def install_minimal_dependencies(self):
         if len(self.build_requires()) == 0:
             return
         import pip
-        packages = pip.utils.get_installed_distributions()
-        for pyreq in self.build_requires():
-            if pyreq not in packages:
-                try:
-                    log.info("Install minimal dependencies {0}".format(pyreq))
-                    pip.main(['install', pyreq])
-                except Exception:
-                    log.error("Fail to install minimal dependencies {0}".format(pyreq))
-            else:
-                log.info("Minimal dependencies already installed {0}".format(pyreq))
+        try:
+            log.info("Get installed packages")
+            packages = pip.utils.get_installed_distributions()
+            for pyreq in self.build_requires():
+                if pyreq not in packages:
+                    try:
+                        log.info("Install minimal dependencies {0}".format(pyreq))
+                        pip.main(['install', pyreq])
+                    except Exception:
+                        log.warn("Fail to install minimal dependencies {0}".format(pyreq))
+                else:
+                    log.info("Minimal dependencies already installed {0}".format(pyreq))
+        except Exception:
+            log.warn("Can't get package list from pip.")
         
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
@@ -584,7 +587,7 @@ class EmbedTemplate(Template):
 
     @property
     def build_ext(self):
-        if len(sys.argv) > 1 and (sys.argv[1] == 'install' or sys.argv[1] == 'develop'):
+        if 'install' in sys.argv or 'develop' in sys.argv:
             current_template.check_minimal_config()
             current_template.install_minimal_dependencies()
         from distutils.command.build_ext import build_ext as _build_ext
@@ -713,7 +716,6 @@ def install_requires():
     else:
          pkgs.append('Louie>=1.1')
     pkgs += current_template.install_requires()
-    #~ print('Found install_requires {0}'.format(pkgs))
     return pkgs
 
 def get_dirs(base):
