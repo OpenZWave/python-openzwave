@@ -678,23 +678,31 @@ class SharedTemplate(Template):
         return True
 
 def parse_template(sysargv):
-    flavor = None
-    if '--flavor' in sysargv:
-        index = sysargv.index('--flavor')
-        sysargv.pop(index)
-        flavor = sysargv.pop(index)
     tmpl = None
-    if flavor == 'dev':
-        tmpl =  DevTemplate(sysargv=sysargv)
-    elif flavor == 'git':
-        tmpl =  GitTemplate(sysargv=sysargv)
-    elif flavor == '--git_shared':
+    flavor = None
+    if '--flavor=dev' in sysargv:
+        index = sysargv.index('--flavor=dev')
+        flavor = sysargv.pop(index)
+        tmpl =  DevTemplate(sysargv=sysargv)  
+    elif '--flavor=git' in sysargv:
+        index = sysargv.index('--flavor=git')
+        flavor = sysargv.pop(index)
+        tmpl =  GitTemplate(sysargv=sysargv)  
+    elif '--flavor=git_shared' in sysargv:
+        index = sysargv.index('--flavor=git_shared')
+        flavor = sysargv.pop(index)
         tmpl =  GitSharedTemplate(sysargv=sysargv)
-    elif flavor == '--embed':
+    elif '--flavor=embed' in sysargv:
+        index = sysargv.index('--flavor=embed')
+        flavor = sysargv.pop(index)
         tmpl =  EmbedTemplate(sysargv=sysargv)
-    elif flavor == 'embed_shared':
+    elif '--flavor=embed_shared' in sysargv:
+        index = sysargv.index('--flavor=embed_shared')
+        flavor = sysargv.pop(index)
         tmpl =  EmbedSharedTemplate(sysargv=sysargv)
-    elif flavor == 'shared':
+    elif '--flavor=shared' in sysargv:
+        index = sysargv.index('--flavor=shared')
+        flavor = sysargv.pop(index)
         tmpl =  SharedTemplate(sysargv=sysargv)
     if tmpl is None:
         #Default template
