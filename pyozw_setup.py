@@ -595,6 +595,9 @@ class GitSharedTemplate(GitTemplate):
             log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
+        extra = '/usr/local/include/openzwave//'
+        for ssubstitute in ['/', '/value_classes/', '/platform/', '/linux/']:
+            ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
         return ctx
 
     @property
@@ -670,6 +673,9 @@ class EmbedSharedTemplate(EmbedTemplate):
     def get_context(self):
         ctx = cpp_context()
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
+        extra = '/usr/local/include/openzwave//'
+        for ssubstitute in ['/', '/value_classes/', '/platform/', '/linux/']:
+            ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
         return ctx
 
     def clean(self):
