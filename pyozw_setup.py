@@ -848,7 +848,7 @@ class develop(_develop):
     def finalize_options(self):
         if self.flavor is None:
             self.flavor = current_template.flavor
-        log.infog('flavor {0}'.format(self.flavor))
+        log.info('flavor {0}'.format(self.flavor))
         return _develop.finalize_options(self)
         
     def run(self):
@@ -873,7 +873,7 @@ class install(_install):
     def finalize_options(self):
         if self.flavor is None:
             self.flavor = current_template.flavor
-        log.infog('flavor {0}'.format(self.flavor))
+        log.info('flavor {0}'.format(self.flavor))
         return _install.finalize_options(self)
         
     def run(self):
