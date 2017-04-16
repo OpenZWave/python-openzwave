@@ -38,6 +38,7 @@ import shutil
 import setuptools
 from setuptools import setup, find_packages
 from distutils.extension import Extension
+from distutils.spawn import find_executable
 from distutils import log
 from setuptools.command.install import install as _install
 from distutils.command.build import build as _build
@@ -190,6 +191,9 @@ class Template(object):
 
     @property
     def build_ext(self):
+        if len(sys.argv) > 1 and (sys.argv[1] == 'install' or sys.argv[1] == 'develop'):
+            current_template.check_minimal_config()
+            current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
         return _build_ext
    
@@ -202,6 +206,9 @@ class Template(object):
         return False
 
     def install_requires(self):
+        return ['Cython']
+        
+    def build_requires(self):
         return ['Cython']
         
     def build(self):
@@ -418,14 +425,31 @@ class Template(object):
                     shutil.rmtree(os.path.join(dirn, f))
         return self.clean()
 
+    def check_minimal_config(self):
+        print("Found g++ : {0}".format(find_executable("g++")))
+        print("Found gcc : {0}".format(find_executable("gcc")))
+        exe = find_executable("pkg-config")
+        print("Found pkg-config : {0}".format(exe))
+        if exe is not None:
+            import pyozw_pkgconfig
+            for lib in self.ctx['libraries'] + ['libudev', 'yaml-0.1', 'libopenzwave', 'python', 'python2', 'python3']:
+                print("Found librairy {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
+            print("Found librairy {0} : {1}".format(lib, pyozw_pkgconfig.exists(lib)))
+        
     def install_minimal_dependencies(self):
+        if len(self.build_requires()) == 0:
+            return
         import pip
-        for pyreq in install_requires():
-            try:
-                log.info("Install minimal dependencies {0}".format(pyreq))
-                pip.main(['install', pyreq])
-            except Exception:
-                log.error("Fail to install minimal dependencies {0}".format(pyreq))
+        packages = pip.utils.get_installed_distributions()
+        for pyreq in self.build_requires():
+            if pyreq not in packages:
+                try:
+                    log.info("Install minimal dependencies {0}".format(pyreq))
+                    pip.main(['install', pyreq])
+                except Exception:
+                    log.error("Fail to install minimal dependencies {0}".format(pyreq))
+            else:
+                log.info("Minimal dependencies already installed {0}".format(pyreq))
         
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
@@ -560,6 +584,9 @@ class EmbedTemplate(Template):
 
     @property
     def build_ext(self):
+        if len(sys.argv) > 1 and (sys.argv[1] == 'install' or sys.argv[1] == 'develop'):
+            current_template.check_minimal_config()
+            current_template.install_minimal_dependencies()
         from distutils.command.build_ext import build_ext as _build_ext
         return _build_ext
 
@@ -569,6 +596,9 @@ class EmbedTemplate(Template):
         return ctx
 
     def install_requires(self):
+        return []
+
+    def build_requires(self):
         return []
 
     def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-{0}.zip'.format(pyozw_version)):
@@ -735,7 +765,6 @@ class build_openzwave(setuptools.Command):
         self.flavor = current_template.flavor
         
     def run(self):
-        current_template.install_minimal_dependencies()
         current_template.get_openzwave()
         current_template.build()
         if current_template.install_openzwave_so:
@@ -809,4 +838,3 @@ class install(_install):
         self.run_command('build_openzwave')
         self.run_command('openzwave_config')
         _install.run(self)
-

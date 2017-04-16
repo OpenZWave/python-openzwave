@@ -38,6 +38,12 @@ python-openzwave 0.4.0 is coming !!!
  
  - New installation process via pip
  
+ - First, you need some build tools and libs. On ubuntu, you should use :
+
+     .. code-block:: bash
+
+        sudo apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
+
  - Make your virtualenv and activate it : 
  
     .. code-block:: bash

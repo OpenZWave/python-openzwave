@@ -673,7 +673,7 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 
 	-rm -f libopenzwave*.so
 	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave python_openzwave
+	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install "Cython"
 	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor git"
@@ -1075,9 +1075,10 @@ venv-bdist_wheel-autobuild-tests: venv-clean
 
 	venv2/bin/pip install "wheel"
 	venv2/bin/pip install "nose"
-	venv2/bin/pip install "Cython"
+#~ 	venv2/bin/pip install "Cython"
 	venv2/bin/pip install "urwid>=1.1.1"
-	venv2/bin/pip install "${WHL_PYTHON2}"
+	
+	venv2/bin/pip install dist/python_openzwave-${python_openzwave_version}-cp2*
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
@@ -1100,9 +1101,9 @@ venv-bdist_wheel-autobuild-tests: venv-clean
 
 	venv2/bin/pip install "wheel"
 	venv3/bin/pip install "nose"
-	venv3/bin/pip install "Cython"
+#~ 	venv3/bin/pip install "Cython"
 	venv3/bin/pip install "urwid>=1.1.1"
-	venv3/bin/pip install "${WHL_PYTHON3}"
+	venv3/bin/pip install dist/python_openzwave-${python_openzwave_version}-cp3*
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
