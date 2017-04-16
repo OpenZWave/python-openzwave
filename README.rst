@@ -87,21 +87,22 @@ python-openzwave 0.4.0 is coming !!!
     - dev : for python_openzwave developpers
 
    
- - Install it 
+ - Install it :
  
     .. code-block:: bash
     
         (venvX) pip install python_openzwave --install-option="--flavor=git"
 
-- You can update to the last version of python_openzwave/openzwave using :
+- You can update to the last version of openzwave using the git flavor :
         
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --force --upgrade --install-option="--flavor=git --cleanopzw"
+        (venvX) pip uninstall -y python_openzwave
+        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git --cleanopzw"
         
     --cleanopzw will erase old config and build, download fresh sources and build again.
     
-- At last, you can launch pyozw_check
+- At last, you can launch pyozw_check:
 
     If no usb stick is connected to the machine, launch :
 
