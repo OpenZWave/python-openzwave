@@ -21,7 +21,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-pyozw_version = '0.4.0.19'
+pyozw_version = '0.4.0.20'
 if "-" in pyozw_version:
     pyozw_version_short = pyozw_version.split("-")
 else:
@@ -38,7 +38,7 @@ def install_requires():
         return ['openzwave==%s' % pyozw_version]
     except ImportError:
         pass
-    return ['python_openzwave == %s' % pyozw_version]
+    return ['python_openzwave==%s' % pyozw_version]
 
 if __name__ == '__main__':
     import sys
