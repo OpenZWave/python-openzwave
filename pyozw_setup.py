@@ -129,7 +129,7 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/', '/windows/']:
+            for ssubstitute in ['/', '/value_classes/', '/platform/']:
                 ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
 
     elif sys.platform == "darwin":
@@ -143,7 +143,7 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/', '/mac/']:
+            for ssubstitute in ['/', '/value_classes/', '/platform/']:
                 ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
             
     elif sys.platform == "freebsd":
@@ -155,7 +155,7 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/', '/linux/']:
+            for ssubstitute in ['/', '/value_classes/', '/platform/']:
                 ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
  
     elif sys.platform[:5] == "linux":
@@ -167,7 +167,7 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/', '/linux/']:
+            for ssubstitute in ['/', '/value_classes/', '/platform/']:
                 ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
     else:
         # Unknown systemm
@@ -595,7 +595,7 @@ class GitSharedTemplate(GitTemplate):
             log.error("Can't find Cython")
             return None
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
-        extra = '/usr/local/include/openzwave//'
+        extra = '-I/usr/local/include/openzwave//'
         for ssubstitute in ['/', '/value_classes/', '/platform/']:
             ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
         return ctx
@@ -673,7 +673,7 @@ class EmbedSharedTemplate(EmbedTemplate):
     def get_context(self):
         ctx = cpp_context()
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
-        extra = '/usr/local/include/openzwave/'
+        extra = '-I/usr/local/include/openzwave//'
         for ssubstitute in ['/', '/value_classes/', '/platform/']:
             ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
         return ctx
