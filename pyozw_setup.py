@@ -332,11 +332,11 @@ class Template(object):
         Thread(target=stream_watcher, name='stderr-watcher',
                 args=('STDERR', proc.stderr)).start()
 
-        printer = Thread(target=printer, name='printer')
-        printer.start()
-        while printer.is_alive():
+        tprinter = Thread(target=printer, name='printer')
+        tprinter.start()
+        while tprinter.is_alive():
             time.sleep(1)
-        printer.join()
+        tprinter.join()
         try:
             import pyozw_pkgconfig
             lib = pyozw_pkgconfig.libs_only_l('libopenzwave')
@@ -361,11 +361,11 @@ class Template(object):
             Thread(target=stream_watcher, name='stderr-watcher',
                     args=('STDERR', proc.stderr)).start()
 
-            printer = Thread(target=printer, name='printer')
-            printer.start()
-            while printer.is_alive():
+            tprinter = Thread(target=printer, name='printer')
+            tprinter.start()
+            while tprinter.is_alive():
                 time.sleep(1)
-            printer.join()
+            tprinter.join()
         except Exception:
             log.info("Can't launch ldconfig")
         return True
