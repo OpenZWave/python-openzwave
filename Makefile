@@ -787,6 +787,10 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	@echo
 	@echo
 
+	$(MAKE) uninstall
+	$(MAKE) uninstallso
+	-pkg-config --libs libopenzwave
+	
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
@@ -799,9 +803,10 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+	find /usr/local/etc/openzwave -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
 	venv2/bin/python  venv2/bin/pyozw_check
+	pkg-config --libs libopenzwave
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -815,9 +820,10 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-api.py install
 #~ 	venv3/bin/python setup-manager.py install
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	find venv3/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
+	find /usr/local/etc/openzwave -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
 	venv3/bin/python  venv3/bin/pyozw_check
+	pkg-config --libs libopenzwave
 
 	@echo
 	@echo
