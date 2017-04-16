@@ -111,8 +111,9 @@ def pybind_context():
 
 def system_context(ctx, openzwave=None, static=False):
     #System specific section
-    os.environ["CC"] = "gcc" 
-    os.environ["CXX"] = "g++"
+    #~ os.environ["CC"] = "gcc" 
+    #~ os.environ["CXX"] = "g++"
+    #~ os.environ["PKG_CONFIG_PATH"] = "PKG_CONFIG_PATH:/usr/local/lib/x86_64-linux-gnu/pkgconfig/"
     if static:
         ctx['include_dirs'] += [ 
             "{0}/cpp/src".format(openzwave), 
@@ -311,18 +312,17 @@ class Template(object):
                     if identifier == 'STDERR':
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
-
         if sys.platform == "win32":
-            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform == "darwin":
-            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform == "freebsd":
-            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform[:5] == "linux":
-            proc = Popen(['make', 'install'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
         else:
             # Unknown systemm
             raise RuntimeError("Can't detect plateform")
@@ -337,6 +337,37 @@ class Template(object):
         while printer.is_alive():
             time.sleep(1)
         printer.join()
+        try:
+            import pyozw_pkgconfig
+            lib = pyozw_pkgconfig.libs_only_l('libopenzwave')
+            ldpath = lib[2:]
+            if sys.platform == "win32":
+                proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                    
+            elif sys.platform == "darwin":
+                proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                    
+            elif sys.platform == "freebsd":
+                proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                    
+            elif sys.platform[:5] == "linux":
+                proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            else:
+                # Unknown systemm
+                raise RuntimeError("Can't detect plateform")
+
+            Thread(target=stream_watcher, name='stdout-watcher',
+                    args=('STDOUT', proc.stdout)).start()
+            Thread(target=stream_watcher, name='stderr-watcher',
+                    args=('STDERR', proc.stderr)).start()
+
+            printer = Thread(target=printer, name='printer')
+            printer.start()
+            while printer.is_alive():
+                time.sleep(1)
+            printer.join()
+        except Exception:
+            log.info("Can't launch ldconfig")
         return True
 
     def clean(self):

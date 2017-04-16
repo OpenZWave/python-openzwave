@@ -109,6 +109,10 @@ def libs(package):
     """Return the LDFLAGS string returned by pkg-config."""
     return _query(package, '--libs')
 
+def libs_only_l(package):
+    """Return the LDFLAGS string returned by pkg-config."""
+    return _query(package, '--libs-only-L')
+
 
 def installed(package, version):
     """
