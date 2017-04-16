@@ -473,7 +473,10 @@ class Template(object):
         import pip
         try:
             log.info("Get installed packages")
-            packages = pip.utils.get_installed_distributions()
+            try:
+                packages = pip.utils.get_installed_distributions()
+            except Exception:
+                packages = []
             for pyreq in self.build_requires():
                 if pyreq not in packages:
                     try:
