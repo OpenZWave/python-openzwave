@@ -678,7 +678,7 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/pip install "Cython"
 	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git --cleanopzw"
+	venv2/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/python  venv2/bin/pyozw_check
 	venv2/bin/python  venv2/bin/pyozw_shell --help
@@ -699,7 +699,7 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/pip install "Cython"
 	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git --cleanopzw"
+	venv3/bin/pip install -i https://testpypi.python.org/pypi python_openzwave --force --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/python  venv3/bin/pyozw_check
 	venv3/bin/python  venv3/bin/pyozw_shell --help
@@ -742,7 +742,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
-	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git --cleanopzw"
+	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
 
@@ -767,7 +767,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip uninstall python_openzwave -y
-	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git --cleanopzw"
+	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip uninstall python_openzwave -y
 
@@ -987,7 +987,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --cleanopzw --flavor=git
+	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --flavor=git
 	. venv2/bin/activate && python  venv2/bin/pyozw_check
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py clean --all --flavor=git
 	find venv2/lib/ -iname device_classes.xml -type f -print|cat
@@ -1000,7 +1000,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 
-	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --cleanopzw --flavor=git
+	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install --force --flavor=git
 	. venv3/bin/activate && python venv3/bin/pyozw_check
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py clean --all --flavor=git
 	find venv3/lib/ -iname device_classes.xml -type f -print|cat
