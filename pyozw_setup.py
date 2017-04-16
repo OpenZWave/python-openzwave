@@ -186,13 +186,14 @@ class Template(object):
     @property
     def ctx(self):
         if self._ctx is None:
+            if 'install' in sys.argv or 'develop' in sys.argv or 'bdist_egg' in sys.argv:
+                current_template.install_minimal_dependencies()
             self._ctx = self.get_context()
         return self._ctx
 
     @property
     def build_ext(self):
-        if 'install' in sys.argv or 'develop' in sys.argv:
-            current_template.check_minimal_config()
+        if 'install' in sys.argv or 'develop' in sys.argv or 'bdist_egg' in sys.argv:
             current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
         return _build_ext
@@ -775,6 +776,7 @@ class build_openzwave(setuptools.Command):
         self.flavor = current_template.flavor
         
     def run(self):
+        current_template.check_minimal_config()
         current_template.get_openzwave()
         current_template.build()
         if current_template.install_openzwave_so:
