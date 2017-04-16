@@ -1141,6 +1141,8 @@ venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwa
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/python  venv2/bin/pyozw_check	
 
+	venv2/bin/python2 -u -c "import setuptools, tokenize;__file__='setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/install-record.txt --single-version-externally-managed --compile --install-headers venv2/include/site/python2.7/python-openzwave "--flavor git"
+
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo

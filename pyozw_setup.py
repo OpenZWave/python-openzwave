@@ -834,6 +834,22 @@ class develop(_develop):
         _develop.run(self)
 
 class install(_install):
+    description = 'download and build openzwave'
+    
+    user_options = _install.user_options + [
+        ('flavor=', None, 'the flavor of python_openzwave to install'),
+    ]
+    
+    def initialize_options(self):
+        self.flavor = None
+        return _install.initialize_options(self)
+    
+    def finalize_options(self):
+        if self.flavor is None:
+            self.flavor = current_template.flavor
+        print('flavor', self.flavor)
+        return _install.finalize_options(self)
+        
     def run(self):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
