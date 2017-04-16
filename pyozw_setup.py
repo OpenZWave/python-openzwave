@@ -597,7 +597,9 @@ class GitSharedTemplate(GitTemplate):
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
         extra = '-I/usr/local/include/openzwave//'
         for ssubstitute in ['/', '/value_classes/', '/platform/']:
-            ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            incl = extra.replace('//', ssubstitute)
+            if not incl in ctx['extra_compile_args']:
+                ctx['extra_compile_args'] += [ incl ]
         return ctx
 
     @property
@@ -675,7 +677,9 @@ class EmbedSharedTemplate(EmbedTemplate):
         ctx = system_context(ctx, openzwave=self.openzwave, static=False)
         extra = '-I/usr/local/include/openzwave//'
         for ssubstitute in ['/', '/value_classes/', '/platform/']:
-            ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            incl = extra.replace('//', ssubstitute)
+            if not incl in ctx['extra_compile_args']:
+                ctx['extra_compile_args'] += [ incl ]
         return ctx
 
     def clean(self):
