@@ -98,9 +98,8 @@ python-openzwave 0.4.0 is coming !!!
     .. code-block:: bash
     
         (venvX) pip uninstall -y python_openzwave
-        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git --cleanopzw"
+        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git"
         
-    --cleanopzw will erase old config and build, download fresh sources and build again.
     
 - At last, you can launch pyozw_check:
 
