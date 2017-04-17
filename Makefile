@@ -430,6 +430,7 @@ validate-pr: uninstall clean update develop
 new-version: validate-pr
 	-$(MAKE) docs
 	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst LICENSE.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
+	-git checkout $(ARCHIVES)/
 	git commit -m "Update pyozw_version to ${python_openzwave_version}" pyozw_version.py
 	-$(MAKE) embed_openzave_master 
 	-$(MAKE) pypi_package 
@@ -1225,7 +1226,8 @@ uninstallso:
 	rm -Rf /usr/local/include/openzwave
 	rm -Rf /usr/local/etc/openzwave
 	rm -Rf /usr/local/share/doc/openzwave*
-	
+	find /usr/local/lib/pkgconfig/ -iname libopenzwave.pc -delete
+
 pyozw_pkgconfig.py:
 	wget https://raw.githubusercontent.com/matze/pkgconfig/master/pkgconfig/pkgconfig.py
 	mv pkgconfig.py pyozw_pkgconfig.py

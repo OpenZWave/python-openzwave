@@ -337,10 +337,10 @@ class Template(object):
         while tprinter.is_alive():
             time.sleep(1)
         tprinter.join()
+        log.info("ldconfig openzwave so ... be patient ...")
         try:
             import pyozw_pkgconfig
-            lib = pyozw_pkgconfig.libs_only_l('libopenzwave')
-            ldpath = lib[2:]
+            ldpath = pyozw_pkgconfig.libs_only_l('libopenzwave')[2:]
             if sys.platform == "win32":
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                     
@@ -368,6 +368,9 @@ class Template(object):
             tprinter.join()
         except Exception:
             log.info("Can't launch ldconfig")
+        time.sleep(2.5)
+        log.info("Openzwave so installed and loaded")
+        tprinter = None
         return True
 
     def clean(self):
@@ -431,11 +434,11 @@ class Template(object):
         Thread(target=stream_watcher, name='stderr-watcher',
                 args=('STDERR', proc.stderr)).start()
 
-        printer = Thread(target=printer, name='printer')
-        printer.start()
-        while printer.is_alive():
+        tprinter = Thread(target=printer, name='printer')
+        tprinter.start()
+        while tprinter.is_alive():
             time.sleep(1)
-        printer.join()
+        tprinter.join()
         return True
 
     def clean_all(self):
@@ -613,9 +616,6 @@ class GitSharedTemplate(GitTemplate):
     def install_openzwave_so(self):
         return True
 
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
-        return Template.get_openzwave(self, url)
-
     def clean(self):
         self.clean_openzwave_so()
         return GitTemplate.clean(self)
@@ -696,9 +696,6 @@ class EmbedSharedTemplate(EmbedTemplate):
     @property
     def install_openzwave_so(self):
         return True
-
-    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
-        return Template.get_openzwave(self, url)        
         
 class SharedTemplate(Template):
     def __init__(self,  **args):
