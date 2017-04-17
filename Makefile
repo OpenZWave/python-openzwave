@@ -365,6 +365,7 @@ embed_openzave_master:clean-archive src-lib/libopenzwave/libopenzwave.cpp
 	-rm -Rf $(ARCHBASE)/open-zwave-master/.git
 	-rm -f $(ARCHBASE)/open-zwave-master/open-zwave-master.zip
 	-rm -Rf $(ARCHBASE)/open-zwave-master/docs/*
+	-cp -f openzwave/docs/default.htm $(ARCHBASE)/open-zwave-master/docs/*
 	-rm -Rf $(ARCHBASE)/open-zwave-master/dotnet/*
 	cp -f $(ARCHBASE)/open-zwave-master/python-openzwave/openzwave.vers.cpp $(ARCHBASE)/open-zwave-master/cpp/src/vers.cpp
 	-mkdir -p $(DISTDIR)
