@@ -31,6 +31,8 @@ python_openzwave 0.4.0.x:
 
    * Add flavor : different ways of building and installing
      openzwave / python_openzwave.
+   
+   * Add infos to getPythonLibraryVersionNumber
 
 python-openzwave 0.3.3:
 

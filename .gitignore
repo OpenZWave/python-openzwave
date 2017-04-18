@@ -40,11 +40,15 @@ debian/files
 debian/*.debhelper
 debian/*.debhelper.log
 debian/*.substvars
+debian/python-openzwave/
 debian/python-openzwave-api/
 debian/python-openzwave-doc/
 debian/python-openzwave-lib/
 debian/python-openzwave-manager/
 debian/python-openzwave-web/
+debian/debhelper-build-stamp
+debian/python3-openzwave/
+pybind
 lib.txt
 pyozw.sqlite
 venv2/

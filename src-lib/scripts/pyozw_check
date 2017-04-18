@@ -48,6 +48,8 @@ def imports(args):
         manager.create()
         print("Try to get python_openzwave version")
         print(manager.getPythonLibraryVersionNumber())
+        print("Try to get python_openzwave full version")
+        print(manager.getPythonLibraryVersion())
         print("Try to get openzwave version")
         print(manager.getOzwLibraryVersion())
         print("Try to get default config path")
@@ -68,9 +70,10 @@ def imports(args):
         time.sleep(0.5)
         manager = libopenzwave.PyManager()
         manager.create()
-        print("{0}|{1}|{2}".format(
+        print("{0}|{1}|{2}{3}".format(
                 manager.getOzwLibraryVersion(),
                 manager.getPythonLibraryVersionNumber(),
+                manager.getPythonLibraryVersion(),
                 libopenzwave.configPath()
                 ))
         manager.destroy()
@@ -107,6 +110,14 @@ def init_device(args):
         print("Try to get manager")
         manager = libopenzwave.PyManager()
         manager.create()
+        print("Try to get python_openzwave version")
+        print(manager.getPythonLibraryVersionNumber())
+        print("Try to get python_openzwave full version")
+        print(manager.getPythonLibraryVersion())
+        print("Try to get openzwave version")
+        print(manager.getOzwLibraryVersion())
+        print("Try to get default config path")
+        print(libopenzwave.configPath())
         print("Try to add watcher")
         manager.addWatcher(zwcallback)
         time.sleep(1.0)
@@ -147,9 +158,10 @@ def init_device(args):
         delta = 0.1
         for i in range(0, int(args.timeout/delta)):
             time.sleep(delta)
-        print("{0}|{1}|{2}|{3:08x}".format(
+        print("{0}|{1}|{2}|{3}|{4:08x}".format(
                 manager.getOzwLibraryVersion(),
                 manager.getPythonLibraryVersionNumber(),
+                manager.getPythonLibraryVersion(),
                 libopenzwave.configPath(),
                 home_id,
                 ))

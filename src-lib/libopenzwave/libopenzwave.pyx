@@ -75,6 +75,9 @@ from pkg_resources import get_distribution, DistributionNotFound
 
 cdef extern from 'pyversion.h':
     string PY_LIB_VERSION_STRING
+    string PY_LIB_FLAVOR_STRING
+    string PY_LIB_DATE_STRING
+    string PY_LIB_TIME_STRING
 
 __version__ = PY_LIB_VERSION_STRING
 libopenzwave_location = 'not_installed'
@@ -1364,7 +1367,7 @@ Get the version of the python library.
 :see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_, getOzwLibraryLongVersion
 
         '''
-        return "python-openzwave version %s" % PYLIBRARY
+        return "python-openzwave version %s (%s / %s - %s)" % (PYLIBRARY, PY_LIB_FLAVOR_STRING, PY_LIB_DATE_STRING, PY_LIB_TIME_STRING)
 
     def getPythonLibraryVersionNumber(self):
         """

@@ -3,10 +3,11 @@ Section: python
 Priority: optional
 Maintainer: Sébastien GALLET <sgallet@gmail.com>
 Build-Depends: debhelper (>= 9), dh-python,
- python-all (>=2.6.6-3~), python-setuptools,
- python3-all (>=3.2), python3-setuptools,
- cython, cython3, build-essential
-#libopenzwave1.4-dev
+ python-all (>=2.6.6-3~), python-setuptools, python-pip,
+ python3-all (>=3.2), python3-setuptools, python3-pip,
+ cython, cython3, build-essential,
+ python-docutils, python-sphinx
+ libopenzwave1.4-dev | libopenzwave1.3-dev
 Standards-Version: 3.9.5
 X-Python-Version: >= 2.7
 X-Python3-Version: >= 3.2
@@ -14,8 +15,20 @@ XS-Python-Version: >= 2.7
 XS-Python3-Version: >= 3.2
 Homepage: https://github.com/OpenZWave/python-openzwave
 
+
 Package: python-openzwave
 Architecture: any
 Depends: ${misc:Depends}, ${python:Depends}
 Description: python-openzwave is a python wrapper for the openzwave project.
  The wrapper allows you to control a z-wave network from python.
+ .
+ This package installs the library for Python 2.
+
+
+Package: python3-openzwave
+Architecture: any
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: python-openzwave is a python wrapper for the openzwave project.
+ The wrapper allows you to control a z-wave network from python.
+ .
+ This package installs the library for Python 3.

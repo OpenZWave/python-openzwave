@@ -94,7 +94,8 @@ class TestInit(TestLib):
         time.sleep(1.0)
         from pyozw_version import pyozw_version
         manager = libopenzwave.PyManager()
-        self.assertEqual("python-openzwave version %s" % pyozw_version, manager.getPythonLibraryVersion())
+        version = manager.getPythonLibraryVersion()
+        self.assertEqual(version.find("None"), -1)
 
 class TestOptions(TestLib):
 

@@ -129,8 +129,9 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
 
     elif sys.platform == "darwin":
         ctx['extra_link_args'] += [ "-framework", "CoreFoundation", "-framework", "IOKit" ]
@@ -143,8 +144,9 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
             
     elif sys.platform == "freebsd":
         if static:
@@ -155,8 +157,9 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
  
     elif sys.platform[:5] == "linux":
         if static:
@@ -167,8 +170,9 @@ def system_context(ctx, openzwave=None, static=False):
             import pyozw_pkgconfig
             ctx['libraries'] += [ "openzwave" ]
             extra = pyozw_pkgconfig.cflags('libopenzwave')
-            for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
     else:
         # Unknown systemm
         raise RuntimeError("Can't detect plateform")
@@ -190,6 +194,7 @@ class Template(object):
             if 'install' in sys.argv or 'develop' in sys.argv or 'bdist_egg' in sys.argv:
                 current_template.install_minimal_dependencies()
             self._ctx = self.get_context()
+            self.finalize_context(self._ctx)
         return self._ctx
 
     @property
@@ -207,6 +212,13 @@ class Template(object):
     def install_openzwave_so(self):
         return False
 
+    def finalize_context(self, ctx):
+        if self.flavor:
+            ctx['define_macros'] += [('PY_LIB_FLAVOR', self.flavor.replace('--flavor=',''))]
+        else:
+            ctx['define_macros'] += [('PY_LIB_FLAVOR', self.flavor)]
+        return ctx
+        
     def install_requires(self):
         return ['Cython']
         
@@ -264,7 +276,7 @@ class Template(object):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
         else:
             # Unknown systemm
-            raise RuntimeError("Can't detect plateform")
+            raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
         Thread(target=stream_watcher, name='stdout-watcher',
                 args=('STDOUT', proc.stdout)).start()
@@ -325,7 +337,7 @@ class Template(object):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
         else:
             # Unknown systemm
-            raise RuntimeError("Can't detect plateform")
+            raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
         Thread(target=stream_watcher, name='stdout-watcher',
                 args=('STDOUT', proc.stdout)).start()
@@ -354,7 +366,7 @@ class Template(object):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
             else:
                 # Unknown systemm
-                raise RuntimeError("Can't detect plateform")
+                raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
             Thread(target=stream_watcher, name='stdout-watcher',
                     args=('STDOUT', proc.stdout)).start()
@@ -427,7 +439,7 @@ class Template(object):
             proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
         else:
             # Unknown systemm
-            raise RuntimeError("Can't detect plateform")
+            raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
         Thread(target=stream_watcher, name='stdout-watcher',
                 args=('STDOUT', proc.stdout)).start()
@@ -647,8 +659,10 @@ class EmbedTemplate(Template):
         return []
 
     def get_openzwave(self, url='https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/open-zwave-master-{0}.zip'.format(pyozw_version)):
-        return Template.get_openzwave(self, url)
-
+        ret =  Template.get_openzwave(self, url)
+        shutil.copyfile(os.path.join(self.openzwave,'python-openzwave','openzwave.vers.cpp'), os.path.join(self.openzwave,'cpp','src','vers.cpp'))
+        return ret
+        
     def clean(self):
         ret = Template.clean(self)
         try:
@@ -795,7 +809,7 @@ class bdist_egg(_bdist_egg):
         build_openzwave.develop = True
         self.run_command('build_openzwave')
         _bdist_egg.run(self)
-
+        
 class build_openzwave(setuptools.Command):
     description = 'download an build openzwave'
     
