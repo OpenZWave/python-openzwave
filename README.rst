@@ -120,8 +120,17 @@ python-openzwave 0.4.0 is coming !!!
         -------------------------------------------------------------------------------
         Import libs
         Try to import libopenzwave
+        Try to import libopenzwave.PyLogLevels
         Try to get options
-        Try to destroy options
+        Try to get manager
+        Try to get python_openzwave version
+        0.4.0.27
+        Try to get python_openzwave full version
+        python-openzwave version 0.4.0.27 (dev / Apr 18 2017 - 23:22:26)
+        Try to get openzwave version
+        1.4.2501
+        Try to get default config path
+        /etc/openzwave/
         Try to import openzwave (API)
         -------------------------------------------------------------------------------
         Intialize device /dev/ttyUSB0
