@@ -16,7 +16,9 @@ python_openzwave 0.4.0.x:
  * Update config path discovery : check for 'device_classes.xml' in /etc/openzwave/, /usr/local/etc/openzwave/ and 
    finally in ozw_config in python_openzwave module.
  * Add flavor : different ways of building and installing openzwave / python_openzwave.
- 
+ * Add infos on flavor / build date to getPythonLibraryVersion
+ * Improve installation on micro machines : embed_shared build and install openzwave/python_openzwave in 8 minutes on a raspberry pi 3
+1
 python-openzwave 0.3.3:
 
  * Openzwave update
