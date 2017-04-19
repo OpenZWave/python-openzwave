@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 9), dh-python,
  python-all (>=2.6.6-3~), python-setuptools, python-pip,
  python3-all (>=3.2), python3-setuptools, python3-pip,
  cython, cython3, build-essential,
- python-docutils, python-sphinx
+ python-docutils, python-sphinx,
  libopenzwave1.4-dev | libopenzwave1.3-dev
 Standards-Version: 3.9.5
 X-Python-Version: >= 2.7

@@ -181,10 +181,10 @@ def system_context(ctx, openzwave=None, static=False):
 
 class Template(object):
     
-    def __init__(self, openzwave=None, cleanopzw=False, sysargv=None, flavor=None):
+    def __init__(self, openzwave=None, cleanozw=False, sysargv=None, flavor=None):
         self.openzwave = openzwave
         self._ctx = None
-        self.cleanopzw = cleanopzw
+        self.cleanozw = cleanozw
         self.flavor = flavor
         self.sysargv = sysargv
    
@@ -213,6 +213,7 @@ class Template(object):
         return False
 
     def finalize_context(self, ctx):
+        self.clean_cython()
         if self.flavor:
             ctx['define_macros'] += [('PY_LIB_FLAVOR', self.flavor.replace('--flavor=',''))]
         else:
@@ -508,10 +509,10 @@ class Template(object):
         #Get openzwave
         """download an archive to a specific location"""
         dest,tail = os.path.split(self.openzwave)
-        dest_file = os.path.join(dest, 'open-zwave-master.zip')
+        dest_file = os.path.join(dest, 'open-zwave.zip')
         if os.path.exists(self.openzwave):
-            if not self.cleanopzw:
-                log.info("Already have directory %s. Use it. Use --cleanopzw to clean it.", self.openzwave)
+            if not self.cleanozw:
+                log.info("Already have directory %s. Use it. Use --cleanozw to clean it.", self.openzwave)
                 return self.openzwave
             else:
                 log.info("Already have directory %s but remove and clean it as asked", self.openzwave)
@@ -546,6 +547,12 @@ class Template(object):
             except Exception:
                 pass
         return True
+        
+    def clean_cython(self):
+        try:
+            os.remove('src-lib/libopenzwave/libopenzwave.cpp')
+        except Exception:
+            pass
         
 class DevTemplate(Template):
     
@@ -633,6 +640,20 @@ class GitSharedTemplate(GitTemplate):
     def clean(self):
         self.clean_openzwave_so()
         return GitTemplate.clean(self)
+
+class OzwdevTemplate(GitTemplate):
+    
+    def __init__(self, **args):
+        Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-Dev'), **args)
+    
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
+        return Template.get_openzwave(self, url)
+
+
+class OzwdevSharedTemplate(GitSharedTemplate):
+    
+    def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
+        return Template.get_openzwave(self, url)
 
 class EmbedTemplate(Template):
     
@@ -752,6 +773,14 @@ def parse_template(sysargv):
         index = sysargv.index('--flavor=git_shared')
         flavor = sysargv.pop(index)
         tmpl =  GitSharedTemplate(sysargv=sysargv)
+    elif '--flavor=ozwdev' in sysargv:
+        index = sysargv.index('--flavor=ozwdev')
+        flavor = sysargv.pop(index)
+        tmpl =  OzwdevTemplate(sysargv=sysargv)  
+    elif '--flavor=ozwdev_shared' in sysargv:
+        index = sysargv.index('--flavor=ozwdev_shared')
+        flavor = sysargv.pop(index)
+        tmpl =  OzwdevSharedTemplate(sysargv=sysargv)
     elif '--flavor=embed' in sysargv:
         index = sysargv.index('--flavor=embed')
         flavor = sysargv.pop(index)
@@ -769,10 +798,10 @@ def parse_template(sysargv):
         flavor = 'embed'
         tmpl = EmbedTemplate(sysargv=sysargv)
     tmpl.flavor = flavor
-    if '--cleanopzw' in sysargv:
-        index = sysargv.index('--cleanopzw')
+    if '--cleanozw' in sysargv:
+        index = sysargv.index('--cleanozw')
         sysargv.pop(index)
-        tmpl.cleanopzw = True
+        tmpl.cleanozw = True
     return tmpl
     
 current_template = parse_template(sys.argv)

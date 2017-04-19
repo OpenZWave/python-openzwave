@@ -5,6 +5,12 @@ export PYBUILD_NAME = openzwave
 
 export PYBUILD_INSTALL_ARGS=--flavor=shared
 
+export PYBUILD_DESTDIR_python2=debian/python-openzwave/
+export PYBUILD_DESTDIR_python2-dbg=debian/python-openzwave-dbg/
+export PYBUILD_DESTDIR_python3=debian/python3-openzwavefoo/
+export PYBUILD_DESTDIR_python3-dbg=debian/python3-openzwave-dbg/
+export PYBUILD_DESTDIR_pypy=debian/pypy-openzwave/
+
 override_dh_auto_clean:
 	make clean
 	-rm -rf venv*
