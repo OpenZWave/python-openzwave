@@ -70,7 +70,7 @@ def imports(args):
         time.sleep(0.5)
         manager = libopenzwave.PyManager()
         manager.create()
-        print("{0}|{1}|{2}{3}".format(
+        print("{0}|{1}|{2}|{3}".format(
                 manager.getOzwLibraryVersion(),
                 manager.getPythonLibraryVersionNumber(),
                 manager.getPythonLibraryVersion(),
