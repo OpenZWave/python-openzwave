@@ -84,6 +84,7 @@ python-openzwave 0.4.0 is coming !!!
       Python_openzwave use it. Need root access to install openzwave libs.
     - git_shared (experimental) : download sources from openzwave github, build and install them as module on the system.
       Python_openzwave use it. Need root access to install openzwave libs.
+    - ozwdev and ozwdev_shared : use the dev branch of openzwave on github.
     - dev : for python_openzwave developpers
 
    
