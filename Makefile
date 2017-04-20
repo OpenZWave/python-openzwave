@@ -782,11 +782,11 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 #~ 	venv2/bin/pip install Cython wheel
 	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
-	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(git /'
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip uninstall python_openzwave -y
 	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(git /'
 	venv2/bin/pip uninstall python_openzwave -y
 
 	@echo
@@ -809,11 +809,11 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 #~ 	venv3/bin/pip install Cython wheel
 	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
-	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(git_shared /'
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip uninstall python_openzwave -y
 	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(git_shared /'
 	venv3/bin/pip uninstall python_openzwave -y
 
 	-rm -f libopenzwave*.so
