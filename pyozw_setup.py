@@ -114,12 +114,13 @@ def system_context(ctx, openzwave=None, static=False):
     #~ os.environ["CC"] = "gcc" 
     #~ os.environ["CXX"] = "g++"
     #~ os.environ["PKG_CONFIG_PATH"] = "PKG_CONFIG_PATH:/usr/local/lib/x86_64-linux-gnu/pkgconfig/"
+    log.info("Found platform {0}".format(sys.platform))
     if static:
         ctx['include_dirs'] += [ 
             "{0}/cpp/src".format(openzwave), 
             "{0}/cpp/src/value_classes".format(openzwave), 
             "{0}/cpp/src/platform".format(openzwave) ]
-    if sys.platform == "win32":
+    if sys.platform.startswith("win"):
         ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
 
         if static:
@@ -133,7 +134,20 @@ def system_context(ctx, openzwave=None, static=False):
                 for ssubstitute in ['/', '/value_classes/', '/platform/']:
                     ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
 
-    elif sys.platform == "darwin":
+    elif sys.platform.startswith("cygwin"):
+        if static:
+            ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
+            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
+        else:
+            import pyozw_pkgconfig
+            ctx['libraries'] += [ "openzwave" ]
+            extra = pyozw_pkgconfig.cflags('libopenzwave')
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
+    elif sys.platform.startswith("darwin") :
         ctx['extra_link_args'] += [ "-framework", "CoreFoundation", "-framework", "IOKit" ]
         ctx['extra_compile_args'] += [ "-stdlib=libc++", "-mmacosx-version-min=10.7" ]
 
@@ -148,7 +162,7 @@ def system_context(ctx, openzwave=None, static=False):
                 for ssubstitute in ['/', '/value_classes/', '/platform/']:
                     ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
             
-    elif sys.platform == "freebsd":
+    elif sys.platform.startswith("freebsd"):
         if static:
             ctx['libraries'] += [ "usb", "stdc++",'resolv' ]
             ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
@@ -161,7 +175,7 @@ def system_context(ctx, openzwave=None, static=False):
                 for ssubstitute in ['/', '/value_classes/', '/platform/']:
                     ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
  
-    elif sys.platform[:5] == "linux":
+    elif sys.platform.startswith("sunos"):
         if static:
             ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
             ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
@@ -173,9 +187,23 @@ def system_context(ctx, openzwave=None, static=False):
             if extra != '':
                 for ssubstitute in ['/', '/value_classes/', '/platform/']:
                     ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
+    elif sys.platform.startswith("linux"):
+        if static:
+            ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
+            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
+        else:
+            import pyozw_pkgconfig
+            ctx['libraries'] += [ "openzwave" ]
+            extra = pyozw_pkgconfig.cflags('libopenzwave')
+            if extra != '':
+                for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
     else:
         # Unknown systemm
-        raise RuntimeError("Can't detect plateform")
+        raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
     return ctx
 
@@ -264,17 +292,24 @@ class Template(object):
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
 
-        if sys.platform == "win32":
+        if sys.platform.startswith("win"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "darwin":
+        elif sys.platform.startswith("cygwin"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "freebsd":
+        elif sys.platform.startswith("darwin"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform[:5] == "linux":
+        elif sys.platform.startswith("freebsd"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform.startswith("sunos"):
+            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+        elif sys.platform.startswith("linux"):
+            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
         else:
             # Unknown systemm
             raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
@@ -284,11 +319,11 @@ class Template(object):
         Thread(target=stream_watcher, name='stderr-watcher',
                 args=('STDERR', proc.stderr)).start()
 
-        printer = Thread(target=printer, name='printer')
-        printer.start()
-        while printer.is_alive():
+        tprinter = Thread(target=printer, name='printer')
+        tprinter.start()
+        while tprinter.is_alive():
             time.sleep(1)
-        printer.join()
+        tprinter.join()
         return True
 
     def install_so(self):
@@ -325,17 +360,24 @@ class Template(object):
                     if identifier == 'STDERR':
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
-        if sys.platform == "win32":
+        if sys.platform.startswith("win"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "darwin":
+        elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "freebsd":
+        elif sys.platform.startswith("darwin"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform[:5] == "linux":
+        elif sys.platform.startswith("freebsd"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform.startswith("sunos"):
+            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+        elif sys.platform.startswith("linux"):
+            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
         else:
             # Unknown systemm
             raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
@@ -354,17 +396,24 @@ class Template(object):
         try:
             import pyozw_pkgconfig
             ldpath = pyozw_pkgconfig.libs_only_l('libopenzwave')[2:]
-            if sys.platform == "win32":
+            if sys.platform.startswith("win"):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                     
-            elif sys.platform == "darwin":
+            elif sys.platform.startswith("cygwin"):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                     
-            elif sys.platform == "freebsd":
+            elif sys.platform.startswith("darwin"):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                     
-            elif sys.platform[:5] == "linux":
+            elif sys.platform.startswith("freebsd"):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                    
+            elif sys.platform.startswith("sunos"):
+                proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+            elif sys.platform.startswith("linux"):
+                proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
             else:
                 # Unknown systemm
                 raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
@@ -427,17 +476,24 @@ class Template(object):
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
 
-        if sys.platform == "win32":
+        if sys.platform.startswith("win"):
             proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "darwin":
+        elif sys.platform.startswith("cygwin"):
             proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
-        elif sys.platform == "freebsd clean":
+        elif sys.platform.startswith("darwin"):
+            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform.startswith("freebsd"):
+            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+                
+        elif sys.platform.startswith("sunos"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
-                
-        elif sys.platform[:5] == "linux":
-            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
+        elif sys.platform.startswith("linux"):
+            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+
         else:
             # Unknown systemm
             raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
@@ -941,7 +997,7 @@ class develop(_develop):
         
     def run(self):
         #In case of --uninstall, it will build openzwave to remove it ... stupid.
-        #In develop mode, build is donr by the makefile
+        #In develop mode, build is done by the makefile
         #~ build_openzwave = self.distribution.get_command_obj('build_openzwave')
         #~ build_openzwave.develop = True
         #~ self.run_command('build_openzwave')
