@@ -42,7 +42,7 @@ python-openzwave 0.4.0 is coming !!!
 
      .. code-block:: bash
 
-        sudo apt-get install --force-yes -y build-essential libudev-dev g++ libyaml-dev
+        sudo apt-get install --force-yes -y make libudev-dev g++ libyaml-dev
 
  - Make your virtualenv and activate it : 
  
