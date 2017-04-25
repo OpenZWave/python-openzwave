@@ -164,7 +164,7 @@ def system_context(ctx, openzwave=None, static=False):
             
     elif sys.platform.startswith("freebsd"):
         if static:
-            ctx['libraries'] += [ "usb", "stdc++",'resolv' ]
+            ctx['libraries'] += [ "usb", "stdc++" ]
             ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
             ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
         else:
@@ -302,7 +302,7 @@ class Template(object):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("freebsd"):
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen('gmake', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("sunos"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -370,7 +370,7 @@ class Template(object):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("freebsd"):
-            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'gmake', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("sunos"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -486,7 +486,7 @@ class Template(object):
             proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("freebsd"):
-            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen('gmake clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("sunos"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
