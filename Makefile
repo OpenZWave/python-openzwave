@@ -714,7 +714,9 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/pip install "urwid>=1.1.1"
 	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(embed /'
 	venv2/bin/pip install "Cython"
+	venv2/bin/pip uninstall python_openzwave -y
 	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --install-option="--flavor=git"
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv2/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --force --install-option="--flavor=git"
@@ -736,7 +738,9 @@ venv-pypitest-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/pip install "urwid>=1.1.1"
 	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
+	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(embed /'
 	venv3/bin/pip install "Cython"
+	venv3/bin/pip uninstall python_openzwave -y
 	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --install-option="--flavor=git"
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	venv3/bin/pip install -i https://testpypi.python.org/pypi -vvv python_openzwave --force --install-option="--flavor=git"
