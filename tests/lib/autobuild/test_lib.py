@@ -97,6 +97,13 @@ class TestInit(TestLib):
         version = manager.getPythonLibraryVersion()
         self.assertEqual(version.find("None"), -1)
 
+    def test_060_options_lock(self):
+        options = libopenzwave.PyOptions(user_path=self.userpath)
+        self.assertTrue(options.lock())
+        self.assertTrue(options.areLocked())
+        self.assertTrue(os.path.isfile(os.path.join(self.userpath,'options.xml')))
+        self.assertTrue(options.destroy())
+
 class TestOptions(TestLib):
 
     def test_010_options_string(self):

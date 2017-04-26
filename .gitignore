@@ -64,3 +64,4 @@ docs/html/
 docs/joomla/
 libopenzwave*.so
 .pipcache
+options.xml

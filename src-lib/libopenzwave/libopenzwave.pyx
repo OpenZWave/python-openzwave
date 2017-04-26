@@ -58,6 +58,7 @@ import os
 import sys
 import warnings
 import six
+from shutil import copyfile
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -737,6 +738,11 @@ cdef class PyOptions:
         :see: areLocked_
 
         """
+        if not os.path.isfile(os.path.join(self._user_path,'options.xml')):
+            if os.path.isfile(os.path.join(self._config_path,'options.xml')):
+                copyfile(os.path.join(self._config_path,'options.xml'), os.path.join(self._user_path,'options.xml'))
+            else:
+                logger.warning("Can't find options.xml in %s"%self._config_path)
         return self.options.Lock()
 
     def areLocked(self):
