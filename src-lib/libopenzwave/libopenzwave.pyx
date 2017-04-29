@@ -327,6 +327,7 @@ PyOptionList = {
     'NotifyOnDriverUnload' : {'doc' : "Should we send the Node/Value Notifications on Driver Unloading - Read comments in Driver::~Driver() method about possible race conditions.", 'type' : "Bool"},
     'SecurityStrategy' : {'doc' : "Should we encrypt CC's that are available via both clear text and Security CC?.", 'type' : "String", 'value' : 'SUPPORTED'},
     'CustomSecuredCC' : {'doc' : "What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.", 'type' : "String", 'value' : '0x62,0x4c,0x63'},
+    'EnforceSecureReception' : {'doc' : "If we recieve a clear text message for a CC that is Secured, should we drop the message", 'type' : "Bool"},
 }
 
 PyStatDriver = {
@@ -1060,7 +1061,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
         0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
         0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
-        0x60: 'COMMAND_CLASS_MULTI_CHANNEL_V2',
+        0x60: 'COMMAND_CLASS_MULTI_INSTANCE/CHANNEL',
         0x61: 'COMMAND_CLASS_DISPLAY',
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
         0x63: 'COMMAND_CLASS_USER_CODE',

@@ -3,7 +3,7 @@
 =========
 Changelog
 =========
-
+ 
 python_openzwave 0.4.0.x:
 
  * New installation process via pip
@@ -18,7 +18,10 @@ python_openzwave 0.4.0.x:
  * Add flavor : different ways of building and installing openzwave / python_openzwave.
  * Add infos on flavor / build date to getPythonLibraryVersion
  * Improve installation on micro machines : embed_shared build and install openzwave/python_openzwave in 8 minutes on a raspberry pi 3
-1
+ * Add ozwdev and ozwdev_shared flavors : use openzwave dev branch instead of master
+ * Rename to COMMAND_CLASS_MULTI_CHANNEL_V2 to COMMAND_CLASS_MULTI_INSTANCE/CHANNEL
+ * Add tests for c++ library sync
+
 python-openzwave 0.3.3:
 
  * Openzwave update
