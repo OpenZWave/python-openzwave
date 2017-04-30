@@ -3361,6 +3361,24 @@ getValueType_, getValueInstance_, getValueIndex_
         '''
         return getValueFromType(self.manager,id)
 
+    def getValueAsRaw(self, id):
+        '''
+.. _getValueAsRaw:
+
+Gets a value as raw.
+
+:param id: The ID of a value.
+:type id: int
+:return: The value
+:rtype: str
+:see: isValueSet_, getValue_, getValueAsBool_, getValueAsByte_, \
+getValueListSelectionStr_ , getValueListSelectionNum_, \
+getValueAsFloat_, getValueAsShort_, getValueAsInt_, getValueListItems_, \
+getValueType_, getValueInstance_, getValueIndex_
+
+        '''
+        return getValueFromType(self.manager,id)
+
     def getValueListSelectionStr(self,  id):
         '''
 .. _getValueListSelectionStr:

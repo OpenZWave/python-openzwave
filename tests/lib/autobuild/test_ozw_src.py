@@ -202,6 +202,56 @@ class TestOzwSrc(TestLib):
                 self.assertTrue(j in libopenzwave.PyLogLevels)
                 self.assertEqual(libopenzwave.PyLogLevels[j]['value'], i)
 
+    def test_130_manager_functions(self):
+        PRIVATES = ['SetDriverReady', 'NotifyWatchers']
+        RENAMES = [('SoftReset', ['SoftResetController']), 
+                    ('GetValueListSelection', ['GetValueListSelectionStr','GetValueListSelectionNum']),
+                    ('SetValueListSelection', ['SetValue']),
+                    ('AddSceneValueListSelection', ['AddSceneValue','AddSceneValue']),
+                    ('SceneGetValueAsBool', ['SceneGetValues']),
+                    ('SceneGetValueAsByte', ['SceneGetValues']),
+                    ('SceneGetValueAsFloat', ['SceneGetValues']),
+                    ('SceneGetValueAsInt', ['SceneGetValues']),
+                    ('SceneGetValueAsShort', ['SceneGetValues']),
+                    ('SceneGetValueAsString', ['SceneGetValues']),
+                    ('SceneGetValueListSelection', ['SceneGetValues']),
+                    ('SetSceneValueListSelection', ['setSceneValue']),
+                ]
+        with open(os.path.join (OZWDIR, 'cpp', 'src', 'Manager.h'), 'r') as f:
+            lines = ''.join(f.readlines())
+            #~ print(lines)
+            code = re.search(r"namespace OpenZWave(.*)\} // namespace OpenZWave", lines, re.MULTILINE|re.DOTALL).group(1)
+            #~ print(code)
+            funcvoids = re.findall(r"void (\w*)\( ", code, re.MULTILINE)
+            print(funcvoids)
+            funcbools = re.findall(r"bool (\w*)\( ", code, re.MULTILINE)
+            print(funcbools)
+            funcuint8s = re.findall(r"uint8 (\w*)\( ", code, re.MULTILINE)
+            print(funcuint8s)
+            funcstrings = re.findall(r"string (\w*)\( ", code, re.MULTILINE)
+            print(funcstrings)
+            funcint32s = re.findall(r"int32 (\w*)\( ", code, re.MULTILINE)
+            print(funcint32s)
+            funcuint32s = re.findall(r"uint32 (\w*)\( ", code, re.MULTILINE)
+            print(funcuint32s)
+            funcuint16s = re.findall(r"uint16 (\w*)\( ", code, re.MULTILINE)
+            print(funcuint16s)
+            funcs = funcvoids + funcbools + funcuint8s + funcstrings + funcint32s + funcuint32s + funcuint16s
+            funcs2 = funcs[:]
+            for f in funcs2:
+                if f in PRIVATES:
+                    funcs.remove(f)
+                for g in RENAMES:
+                    #~ print g
+                    if g[0] == f:
+                        funcs.remove(g[0])
+                        funcs += g[1]
+            print(funcs)
+            for i in funcs:
+                py = i[0].lower() + i[1:]
+                print("Check %s (%s)"%(i, py))
+                self.assertTrue(hasattr(libopenzwave.PyManager,py))
+
 if __name__ == '__main__':
     sys.argv.append('-v')
     unittest.main()
