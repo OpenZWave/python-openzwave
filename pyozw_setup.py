@@ -209,11 +209,12 @@ def system_context(ctx, openzwave=None, static=False):
 
 class Template(object):
     
-    def __init__(self, openzwave=None, cleanozw=False, sysargv=None, flavor=None):
+    def __init__(self, openzwave=None, cleanozw=False, sysargv=None, flavor="embed", backend="cython"):
         self.openzwave = openzwave
         self._ctx = None
         self.cleanozw = cleanozw
         self.flavor = flavor
+        self.backend = backend
         self.sysargv = sysargv
    
     @property
@@ -245,7 +246,11 @@ class Template(object):
         if self.flavor:
             ctx['define_macros'] += [('PY_LIB_FLAVOR', self.flavor.replace('--flavor=',''))]
         else:
-            ctx['define_macros'] += [('PY_LIB_FLAVOR', self.flavor)]
+            ctx['define_macros'] += [('PY_LIB_FLAVOR', "embed")]
+        if self.backend:
+            ctx['define_macros'] += [('PY_LIB_BACKEND', self.backend)]
+        else:
+            ctx['define_macros'] += [('PY_LIB_BACKEND', "cython")]
         return ctx
         
     def install_requires(self):
