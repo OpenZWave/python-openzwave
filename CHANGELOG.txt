@@ -38,7 +38,15 @@ python_openzwave 0.4.0.x:
      install openzwave/python_openzwave in 8 minutes on a raspberry pi
      3
 
-1 python-openzwave 0.3.3:
+   * Add ozwdev and ozwdev_shared flavors : use openzwave dev branch
+     instead of master
+
+   * Rename to COMMAND_CLASS_MULTI_CHANNEL_V2 to
+     COMMAND_CLASS_MULTI_INSTANCE/CHANNEL
+
+   * Add tests for c++ library sync
+
+python-openzwave 0.3.3:
 
    * Openzwave update
 
