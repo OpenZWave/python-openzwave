@@ -29,6 +29,7 @@ __author__ = 'bibi21000'
 
 import sys, os, optparse, re, shutil, datetime
 import logging
+import urwid
 from pyozwman.ozwsh_main import MainWindow
 from libopenzwave import configPath
 import signal
