@@ -378,10 +378,10 @@ class Template(object):
             proc = Popen([ 'gmake', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("sunos"):
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         else:
             # Unknown systemm
@@ -401,6 +401,7 @@ class Template(object):
         try:
             import pyozw_pkgconfig
             ldpath = pyozw_pkgconfig.libs_only_l('libopenzwave')[2:]
+            log.info("ldconfig openzwave in {0} so ... be patient ...".format(ldpath))
             if sys.platform.startswith("win"):
                 proc = Popen([ 'ldconfig', ldpath ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                     
@@ -482,22 +483,22 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("cygwin"):
-            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("darwin"):
-            proc = Popen('make clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("freebsd"):
-            proc = Popen('gmake clean', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'gmake', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
                 
         elif sys.platform.startswith("sunos"):
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         else:
             # Unknown systemm
