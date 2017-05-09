@@ -13,7 +13,7 @@ services:
 
 before_install:
   - docker pull ${DOCKER_BASE}
-  - cat Dockerfile|sed -e 's/ubuntu:latest/${DOCKER_BASE}/'|docker build -
+  - cat Dockerfile|sed -e "s/ubuntu:latest/${DOCKER_BASE}/"|docker build -
   
 script:
   - make venv-dev-autobuild-tests
