@@ -12,6 +12,9 @@ services:
 
 before_install:
   - docker pull ${DOCKER_BASE}
+  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#"|docker build -
   
 script:
-  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#"|docker build -
+  - make venv-dev-autobuild-tests
+  - make venv-pypi-autobuild-tests
+  - make venv-pypilive-autobuild-tests
