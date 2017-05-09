@@ -9,3 +9,6 @@ RUN apt-get update && \
 RUN ls
 RUN make docker-deps
 RUN make openzwave.gzip
+run make venv-dev-autobuild-tests
+run make venv-pypi-autobuild-tests
+run make venv-pypilive-autobuild-tests

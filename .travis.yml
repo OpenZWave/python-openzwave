@@ -6,16 +6,12 @@ env:
   matrix:
     - DOCKER_BASE=ubuntu:latest
     - DOCKER_BASE=debian:latest
-    - DOCKER_BASE=sedden/rpi-raspbian-qemu:jessie
 
 services:
   - docker
 
 before_install:
   - docker pull ${DOCKER_BASE}
-  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#"|docker build -
   
 script:
-  - make venv-dev-autobuild-tests
-  - make venv-pypi-autobuild-tests
-  - make venv-pypilive-autobuild-tests
+  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#"|docker build -
