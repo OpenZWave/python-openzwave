@@ -6,6 +6,6 @@ WORKDIR /home/docker
 RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y make sudo
-RUN make ls
+RUN ls
 RUN make docker-deps
 RUN make openzwave.gzip
