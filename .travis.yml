@@ -12,9 +12,6 @@ services:
 
 before_install:
   - docker pull ${DOCKER_BASE}
-  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#" >dynamic.dockerfile && docker build -f dynamic.dockerfile .
   
 script:
-  - make venv-dev-autobuild-tests
-  - make venv-pypi-autobuild-tests
-  - make venv-pypilive-autobuild-tests
+  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#" >dynamic.dockerfile && docker build -f dynamic.dockerfile .
