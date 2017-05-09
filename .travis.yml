@@ -12,8 +12,6 @@ services:
 
 before_install:
   - docker pull ${DOCKER_BASE}
-
-script:
   - docker build --build-arg DOCKER_BASE=${DOCKER_BASE} .
   
 script:
