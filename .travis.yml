@@ -1,22 +1,22 @@
 language: cpp
-dist: trusty
+
 sudo: required
-cache:
-  - apt
-python:
-  - "2.7"
-  - "3.4"
-install:
-  - env
-  - make openzwave.gzip
-  #- pip install --upgrade pip
-# command to run tests
-script:
-  - make venv-continuous-autobuild-tests
-# package dependencies
+
+env:
+  matrix:
+    - DOCKER_BASE=ubuntu:latest
+    - DOCKER_BASE=debian:latest
+
+services:
+  - docker
+
 before_install:
-  #- env
-  #- sudo -E env
-  - sudo apt-get update -y -qq
-  - sudo -E make ci-deps
-  - sudo -E make venv-deps
+  - docker pull ${DOCKER_BASE}
+
+script:
+  - docker build --build-arg DOCKER_BASE=${DOCKER_BASE} .
+  
+script:
+  - make venv-dev-autobuild-tests
+  - make venv-pypi-autobuild-tests
+  - make venv-pypilive-autobuild-tests
