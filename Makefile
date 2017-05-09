@@ -501,9 +501,11 @@ venv-deps: common-deps
 
 docker-deps: common-deps
 	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
-	apt-get install --force-yes -y python-wheel python3-wheel python-pip-whl cython cython3
+	apt-get install --force-yes -y python-wheel python3-wheel python-pip-whl
 	apt-get install --force-yes -y pkg-config wget unzip zip
 	apt-get install --force-yes -y g++ libudev-dev libyaml-dev
+	pip install cython
+	pip3 install cython
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
