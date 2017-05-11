@@ -6,6 +6,7 @@ env:
   matrix:
     - DOCKER_BASE=ubuntu:latest
     - DOCKER_BASE=debian:latest
+    - DOCKER_BASE=resin/rpi-raspbian
 
 services:
   - docker

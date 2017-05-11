@@ -11,5 +11,5 @@ WORKDIR /home/pyozw/
 RUN make docker-deps
 RUN make openzwave.gzip
 RUN make venv-dev-autobuild-tests
-RUN make venv-pypi-autobuild-tests
+#RUN make venv-pypi-autobuild-tests
 RUN make venv-pypilive-autobuild-tests
