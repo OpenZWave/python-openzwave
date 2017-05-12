@@ -6,8 +6,6 @@ env:
   matrix:
     - DOCKER_BASE=ubuntu:latest
     - DOCKER_BASE=debian:latest
-#    - DOCKER_BASE=ubuntu:trusty
-    - DOCKER_BASE=debian:wheezy
 
 services:
   - docker
