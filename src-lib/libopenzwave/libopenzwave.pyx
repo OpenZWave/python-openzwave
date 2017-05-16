@@ -320,7 +320,7 @@ PyOptionList = {
     'IntervalBetweenPolls' : {'doc' : "If false, try to execute the entire poll list within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls.", 'type' : "Bool"},
     'SuppressValueRefresh' : {'doc' : "If true, notifications for refreshed (but unchanged) values will not be sent.", 'type' : "Bool"},
     'PerformReturnRoutes' : {'doc' : "If true, return routes will be updated.", 'type' : "Bool"},
-    'NetworkKey' : {'doc' : ".", 'type' : "String"},
+    'NetworkKey' : {'doc' : "Key used to negotiate and communicate with devices that support Security Command Class", 'type' : "String"},
     'RefreshAllUserCodes' : {'doc' : "If true, during startup, we refresh all the UserCodes the device reports it supports. If False, we stop after we get the first 'Available' slot (Some devices have 250+ usercode slots! - That makes our Session Stage Very Long ).", 'type' : "Bool"},
     'RetryTimeout' : {'doc' : "How long do we wait to timeout messages sent.", 'type' : "Int"},
     'EnableSIS' : {'doc' : "Automatically become a SUC if there is no SUC on the network.", 'type' : "Bool"},
