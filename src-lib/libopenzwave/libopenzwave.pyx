@@ -646,13 +646,13 @@ cdef class PyOptions:
     Manage options manager
     """
 
-    cdef str _config_path
-    cdef str _user_path
-    cdef str _cmd_line
+    cdef readonly str _config_path
+    cdef readonly str _user_path
+    cdef readonly str _cmd_line
 
     cdef Options *options
 
-    def __init__(self, config_path=None, user_path=".", cmd_line=""):
+    def __init__(self, config_path=None, user_path=None, cmd_line=None):
         """
         Create an option object and check that parameters are valid.
 
