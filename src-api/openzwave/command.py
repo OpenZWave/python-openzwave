@@ -952,3 +952,17 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             self.values[value_id].data = value
             return True
         return False
+
+    def get_doorlock_logs(self):
+        """
+        The command 0x4c (COMMAND_CLASS_DOOR_LOCK_LOGGING) of this node.
+        Retrieves the value consisting of log records.
+        Filter rules are :
+            command_class = 0x4c
+            genre = "User"
+            type = "String"
+            readonly = True
+        :return: The dict of log records with value_id as key
+        :rtype: dict()
+        """
+        return self.get_values(class_id=0x4c, type='String', genre='User', readonly=True)
