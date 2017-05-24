@@ -29,7 +29,7 @@ from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
 from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
 from openzwave.command import ZWaveNodeSensor, ZWaveNodeThermostat
-from openzwave.command import ZWaveNodeSecurity
+from openzwave.command import ZWaveNodeSecurity, ZWaveNodeDoorLock
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -46,7 +46,7 @@ logger.addHandler(NullHandler())
 class ZWaveNode(ZWaveObject,
                 ZWaveNodeBasic, ZWaveNodeSwitch,
                 ZWaveNodeSensor, ZWaveNodeThermostat,
-                ZWaveNodeSecurity):
+                ZWaveNodeSecurity, ZWaveNodeDoorLock):
     """
     Represents a single Node within the Z-Wave Network.
 
