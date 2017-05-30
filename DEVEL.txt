@@ -1,4 +1,3 @@
-
 Developers information
 **********************
 
@@ -13,7 +12,7 @@ Get the sources
 You can install all the dependances to develop for python-openzwave
 using the command :
 
-   sudo make developper-deps
+   sudo make developer-deps
 
 You must now install python-openzwave in develop mode
 

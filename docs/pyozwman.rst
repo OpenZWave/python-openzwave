@@ -35,6 +35,6 @@ command cd. All available commands are displayed on every screens.
 You can use the tab keys to switch between the view panel and the edit panel
 and the up and down ones to view all informations.
 
-For the developpers : this a good example on how to use the api.
+For the developers : this provides a good example on how to use the api.
 Update are sent to uwird widget using louie notifications. ZWave data
 updates are done in the set, add, delete, remove, ... methods.

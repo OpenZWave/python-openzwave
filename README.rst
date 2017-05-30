@@ -85,7 +85,7 @@ python-openzwave 0.4.0 is coming !!!
     - git_shared (experimental) : download sources from openzwave github, build and install them as module on the system.
       Python_openzwave use it. Need root access to install openzwave libs.
     - ozwdev and ozwdev_shared : use the dev branch of openzwave on github.
-    - dev : for python_openzwave developpers
+    - dev : for python_openzwave developers
 
    
  - Install it :
@@ -167,7 +167,7 @@ python-openzwave 0.4.0 is coming !!!
  - The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 
  - libopenzwave and openzwave python modules are packaged in the python_openzwave. 
-   So developpers needs to update their install_requires (it works fine with pyozw_manager). 
+   So developers needs to update their install_requires (it works fine with pyozw_manager). 
    They can use the following code to update softly :
 
     .. code-block:: python
