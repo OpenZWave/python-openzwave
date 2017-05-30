@@ -44,18 +44,18 @@ WHL_PYTHON3 := $(shell ls dist/*.whl 2>/dev/null|grep ${python_openzwave_version
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
-.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developper-deps python-deps autobuild-deps arch-deps common-deps cython-deps check venv-clean venv2 venv3
+.PHONY: help clean all update develop install install-api uninstall clean-docs docs autobuild-tests tests pylint commit developer-deps python-deps autobuild-deps arch-deps common-deps cython-deps check venv-clean venv2 venv3
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  build           : build python-openzwave and openzwave"
-	@echo "  develop         : install python-openzwave for developpers"
+	@echo "  develop         : install python-openzwave for developers"
 	@echo "  install         : install python-openzwave for users"
 	@echo "  install-api     : install python-openzwave (API only) for users"
 	@echo "  uninstall       : uninstall python-openzwave"
-	@echo "  developper-deps : install dependencies for developpers"
+	@echo "  developer-deps  : install dependencies for developers"
 	@echo "  deps            : install dependencies for users"
-	@echo "  docs       	 : make documentation"
+	@echo "  docs            : make documentation"
 	@echo "  tests           : launch tests"
 	@echo "  commit          : publish python-openzwave updates on GitHub"
 	@echo "  clean           : clean the development directory"
@@ -125,9 +125,9 @@ uninstall:
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
 
-developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
+developer-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
-	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
+	@echo "Dependencies for developers of python-openzwave installed (python ${python_version_full})"
 
 repo-deps: common-deps cython-deps tests-deps pip-deps
 	@echo
@@ -252,7 +252,7 @@ develop: src-lib/libopenzwave/libopenzwave.cpp
 	${PYTHON_EXEC} setup-web.py develop
 	${PYTHON_EXEC} setup.py develop --flavor=dev
 	@echo
-	@echo "Installation for developpers of python-openzwave finished."
+	@echo "Installation for developers of python-openzwave finished."
 
 tests:
 	#export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP

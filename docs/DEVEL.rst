@@ -17,7 +17,7 @@ You can install all the dependances to develop for python-openzwave using the co
 
 .. code-block:: bash
 
-    sudo make developper-deps
+    sudo make developer-deps
 
 You must now install python-openzwave in develop mode
 

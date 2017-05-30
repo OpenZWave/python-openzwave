@@ -109,9 +109,9 @@ uninstall:
 	-rm -Rf /usr/local/share/python-openzwave
 	-rm -Rf /usr/local/share/openzwave
 
-developper-deps: common-deps cython-deps tests-deps pip-deps doc-deps
+developer-deps: common-deps cython-deps tests-deps pip-deps doc-deps
 	@echo
-	@echo "Dependencies for developpers of python-openzwave installed (python ${python_version_full})"
+	@echo "Dependencies for developers of python-openzwave installed (python ${python_version_full})"
 
 autobuild-deps: common-deps cython-deps tests-deps pip-deps
 	apt-get install --force-yes -y git
