@@ -556,7 +556,7 @@ class ZWaveValue(ZWaveObject):
 
         """
         if 'all' in extras:
-                extras = ['kvals']
+                extras = ['kvals', 'data_items']
         ret={}
         ret['label'] = self.label
         ret['value_id'] = self.value_id
@@ -564,6 +564,8 @@ class ZWaveValue(ZWaveObject):
         ret['units'] = self.units
         ret['genre'] = self.genre
         ret['data'] = self.data
+        if 'data_items' in extras:
+            ret['data_items'] = self.data_items
         if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():

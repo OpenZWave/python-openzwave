@@ -65,3 +65,4 @@ docs/joomla/
 libopenzwave*.so
 .pipcache
 options.xml
+dynamic.dockerfile

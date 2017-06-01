@@ -357,6 +357,39 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         else:
             return False
 
+    def get_configs(self, readonly='All', writeonly='All'):
+        """
+        The command 0x70 (COMMAND_CLASS_CONFIGURATION) of this node.
+        Retrieve the list of configuration parameters.
+
+        Filter rules are :
+            command_class = 0x70
+            genre = "Config"
+            readonly = "All" (default) or as passed in arg
+
+        :param readonly: whether to retrieve readonly configs
+        :param writeonly: whether to retrieve writeonly configs
+        :return: The list of configuration parameters
+        :rtype: dict()
+        """
+        return self.get_values(class_id=0x70, genre='Config', readonly=readonly, writeonly=writeonly)
+
+    def set_config(self, value_id, value):
+        """
+        The command 0x70 (COMMAND_CLASS_CONFIGURATION) of this node.
+        Set config to value (using value value_id)
+
+        :param value_id: The value to retrieve state
+        :type value_id: int
+        :param value: Appropriate value for given config
+        :type value: any
+        """
+        if value_id in self.get_configs(readonly=False):
+            self.values[value_id].data = value
+            return True
+        return False
+
+
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     """
     Represents an interface to switches and dimmers Commands
