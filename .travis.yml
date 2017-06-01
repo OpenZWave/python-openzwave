@@ -14,4 +14,4 @@ before_install:
   - docker pull ${DOCKER_BASE}
   
 script:
-  - cat Dockerfile|sed -e "s#ubuntu:latest#${DOCKER_BASE}#" >dynamic.dockerfile && docker build -f dynamic.dockerfile .
+  - sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -f dynamic.dockerfile .
