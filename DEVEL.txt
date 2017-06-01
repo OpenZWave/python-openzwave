@@ -47,12 +47,12 @@ First, install the dependances :
 
    sudo make tests-deps
 
-To launch all the tests suite (about 140 tests), use the followind
+To launch all the tests suite (about 140 tests), use the following
 command :
 
    make tests
 
-To launch on ly some tests :
+To launch only some tests :
 
    nosetests --verbosity=2 tests/api/test_controller_command.py
 
