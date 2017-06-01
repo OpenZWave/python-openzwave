@@ -52,13 +52,13 @@ First, install the dependances :
 
     sudo make tests-deps
 
-To launch all the tests suite (about 140 tests), use the followind command :
+To launch all the tests suite (about 140 tests), use the following command :
 
 .. code-block:: bash
 
     make tests
 
-To launch on ly some tests :
+To launch particular tests :
 
 .. code-block:: bash
 

@@ -52,7 +52,7 @@ command :
 
    make tests
 
-To launch only some tests :
+To launch particular tests :
 
    nosetests --verbosity=2 tests/api/test_controller_command.py
 
