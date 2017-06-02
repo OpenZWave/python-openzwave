@@ -623,7 +623,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
 
         :param value_id: The value to retrieve state
         :type value_id: String
-        :param value: The level : a RGBW value 
+        :param value: The level : a RGBW value
         :type value: int
 
         """
@@ -946,7 +946,8 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
     def set_doorlock(self, value_id, value):
         """
         The command 0x62 (COMMAND_CLASS_DOOR_LOCK) of this node.
-        Sets doorlock to value (using value_id)
+        Sets doorlock to value (using value_id).
+
         :param value_id: The value to retrieve state from
         :type value_id: int
         :param value: True or False
@@ -975,7 +976,8 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
     def set_usercode(self, value_id, value):
         """
         The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
-        Sets usercode to value (using value_id)
+        Sets usercode to value (using value_id).
+
         :param value_id: The value to retrieve state from
         :type value_id: int
         :param value: User Code as string
