@@ -980,8 +980,10 @@ class ZWaveController(ZWaveObject):
                    })
 
     def request_controller_status(self):
-        """Generate a notification with the current status of the controller.
+        """
+        Generate a notification with the current status of the controller.
         You can check the lock in your code using something like this:
+
             if controllerState in network.controller.STATES_UNLOCKED:
                 hide_cancel_button()
                 show_command_buttons()
