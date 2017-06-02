@@ -439,7 +439,9 @@ class ZWaveNode(ZWaveObject,
         :param writeonly: Is this value writeonly
         :type writeonly: 'All' or True or False
         :param value_index: Index of value within all the values
-        :type index: int
+        :type value_index: int
+        :param label: Label of the value as set by openzwave
+        :type label: str
         :rtype: set() of Values
 
         """
