@@ -558,7 +558,7 @@ class ZWaveValue(ZWaveObject):
         attrs = []
         if 'all' in extras:
             extras = ['kvals']
-            attrs = ['data_items', 'command_class', 'is_read_only', 'is_write_only', 'type']
+            attrs = ['data_items', 'command_class', 'is_read_only', 'is_write_only', 'type', 'index']
         ret={}
         ret['label'] = self.label
         ret['value_id'] = self.value_id
