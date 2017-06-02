@@ -419,8 +419,8 @@ class ZWaveNode(ZWaveObject,
         #print class_id
         return self.get_values(class_id=class_id)
 
-    def get_values(self, class_id='All', genre='All', \
-        type='All', readonly='All', writeonly='All'):
+    def get_values(self, class_id='All', genre='All', type='All', \
+        readonly='All', writeonly='All', value_index='All', label='All'):
         """
         Retrieve the set of values. You can optionnaly filter for a command class,
         a genre and/or a type. You can also filter readonly and writeonly params.
@@ -438,6 +438,8 @@ class ZWaveNode(ZWaveObject,
         :type readonly: 'All' or True or False
         :param writeonly: Is this value writeonly
         :type writeonly: 'All' or True or False
+        :param value_index: Index of value within all the values
+        :type index: int
         :rtype: set() of Values
 
         """
@@ -448,7 +450,9 @@ class ZWaveNode(ZWaveObject,
               (genre == 'All' or self.values[value].genre == genre) and \
               (type == 'All' or self.values[value].type == type) and \
               (readonly == 'All' or self.values[value].is_read_only == readonly) and \
-              (writeonly == 'All' or self.values[value].is_write_only == writeonly):
+              (writeonly == 'All' or self.values[value].is_write_only == writeonly) and \
+              (value_index == 'All' or self.values[value].index == value_index) and \
+              (label == 'All' or self.values[value].label == label):
                 ret[value] = self.values[value]
         return ret
 
