@@ -555,6 +555,7 @@ class ZWaveValue(ZWaveObject):
         :rtype: dict()
 
         """
+        attrs = []
         if 'all' in extras:
             extras = ['kvals']
             attrs = ['data_items', 'command_class', 'is_read_only', 'is_write_only', 'type']
