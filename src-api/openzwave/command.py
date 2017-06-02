@@ -968,6 +968,7 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
         :type index: int
         :return: The user code at given index on this node
         :rtype: ZWaveValue
+
         """
         usercode = self.get_usercodes(index)
         if len(usercode) == 0:
@@ -1002,6 +1003,24 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             self.values[value_id].data = value
             return True
         return False
+
+    def set_usercode_at_index(self, index, value):
+        """
+        The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
+        Sets usercode to value (using index of value)
+
+        :param index: The index of value to retrieve state from
+        :type index: int
+        :param value: User Code as string
+        :type value: str
+
+        """
+        usercode = self.get_usercode(index)
+        if usercode:
+            usercode.data = value
+            return True
+        return False
+
 
     def get_doorlock_logs(self):
         """
