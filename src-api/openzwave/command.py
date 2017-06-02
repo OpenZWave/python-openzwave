@@ -939,6 +939,7 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             type = "Bool"
             readonly = False
             writeonly = False
+
         :return: The list of door locks on this node
         :rtype: dict()
 
@@ -972,6 +973,7 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             type = "Raw"
             readonly = False
             writeonly = False
+
         :return: The list of user codes on this node
         :rtype: dict()
 
@@ -1004,6 +1006,7 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             genre = "User"
             type = "String"
             readonly = True
+
         :return: The dict of log records with value_id as key
         :rtype: dict()
 
