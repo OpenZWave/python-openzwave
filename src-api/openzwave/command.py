@@ -390,6 +390,23 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
         return False
 
 
+    def get_config(self, value_id=None):
+        """
+        The command 0x70 (COMMAND_CLASS_CONFIGURATION) of this node.
+        Set config to value (using value value_id)
+
+        :param value_id: The value to retrieve value. If None, retrieve the first value
+        :type value_id: int
+        :return: The level of this battery
+        :rtype: int
+        """
+        if value_id is None:
+            for val in self.get_configs():
+                return self.values[val].data
+        elif value_id in self.get_configs():
+            return self.values[value_id].data
+        return None
+
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     """
     Represents an interface to switches and dimmers Commands
