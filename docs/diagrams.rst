@@ -8,7 +8,7 @@ Full startup process
 ====================
 
 .. blockdiag::
-    :maxwidth: 600
+    :width: 600
 
     blockdiag StartupProcess {
       orientation = portrait;

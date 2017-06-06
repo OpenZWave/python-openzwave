@@ -1,3 +1,5 @@
+:orphan:
+
 .. image:: https://travis-ci.org/OpenZWave/python-openzwave.svg?branch=master
     :target: https://travis-ci.org/OpenZWave/python-openzwave
     :alt: Travis status

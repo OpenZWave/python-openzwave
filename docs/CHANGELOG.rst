@@ -21,7 +21,11 @@ python_openzwave 0.4.0.x:
  * Add ozwdev and ozwdev_shared flavors : use openzwave dev branch instead of master
  * Rename to COMMAND_CLASS_MULTI_CHANNEL_V2 to COMMAND_CLASS_MULTI_INSTANCE/CHANNEL
  * Add tests for c++ library sync
-
+ * Add door locks helpers
+ * Add helpers for config parameters
+ * Add data_items to value's dict
+ 
+ 
 python-openzwave 0.3.3:
 
  * Openzwave update

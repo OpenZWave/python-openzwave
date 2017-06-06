@@ -73,9 +73,13 @@ class TestNodes(TestApi):
     def test_200_nodes_to_dict(self):
         for node in self.active_nodes:
             try :
-                nodes = self.active_nodes[node].to_dict()
-                self.assertEqual(type(nodes), type(dict()))
-                res = json.dumps(nodes)
+                noded = self.active_nodes[node].to_dict()
+                self.assertEqual(type(noded), type(dict()))
+                self.assertTrue('values' in noded)
+                self.assertTrue('groups' in noded)
+                self.assertTrue('neighbors' in noded)
+                self.assertTrue('capabilities' in noded)
+                res = json.dumps(noded)
             except TypeError:
                 res = None
             self.assertNotEqual(res, None)
@@ -93,6 +97,7 @@ class TestNodes(TestApi):
         for node in self.active_nodes:
             try :
                 groups = self.active_nodes[node].groups_to_dict()
+                self.assertTrue(type(groups), type(dict()))
                 self.assertEqual(type(groups), type(dict()))
                 res = json.dumps(groups)
             except TypeError:

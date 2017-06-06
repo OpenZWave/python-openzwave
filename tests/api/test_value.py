@@ -62,7 +62,14 @@ class TestValue(TestApi):
         for node in self.active_nodes:
             for value in self.active_nodes[node].values:
                 val = self.active_nodes[node].values[value].to_dict()
+                print(val)
                 self.assertEqual(type(val), type(dict()))
+                self.assertTrue('data_item' in val)
+                self.assertTrue('command_class' in val)
+                self.assertTrue('is_read_only' in val)
+                self.assertTrue('is_write_only' in val)
+                self.assertTrue('type' in val)
+                self.assertTrue('index' in val)
                 try :
                     res = json.dumps(val)
                 except TypeError:
