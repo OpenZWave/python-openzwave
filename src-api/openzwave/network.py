@@ -312,7 +312,7 @@ class ZWaveNetwork(ZWaveObject):
         self.log = log
         self._options = options
         ZWaveObject.__init__(self, None, self)
-        self._controller = ZWaveController(1, self, options)
+        self._controller = ZWaveController(self, 1, options)
         self._manager = libopenzwave.PyManager()
         self._manager.create()
         self._state = self.STATE_STOPPED
