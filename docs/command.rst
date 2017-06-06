@@ -7,5 +7,5 @@ The commands to use with nodes.
     :maxdepth: 2
 
 .. automodule:: openzwave.command
-    :members: ZWaveNodeBasic, ZWaveNodeSwitch, ZWaveNodeSensor
+    :members: ZWaveNodeBasic, ZWaveNodeSwitch, ZWaveNodeSensor, ZWaveNodeDoorLock
 
