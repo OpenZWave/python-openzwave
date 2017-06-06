@@ -555,8 +555,10 @@ class ZWaveValue(ZWaveObject):
         :rtype: dict()
 
         """
+        attrs = []
         if 'all' in extras:
-                extras = ['kvals', 'data_items']
+            extras = ['kvals']
+            attrs = ['data_items', 'command_class', 'is_read_only', 'is_write_only', 'type', 'index']
         ret={}
         ret['label'] = self.label
         ret['value_id'] = self.value_id
@@ -564,8 +566,9 @@ class ZWaveValue(ZWaveObject):
         ret['units'] = self.units
         ret['genre'] = self.genre
         ret['data'] = self.data
-        if 'data_items' in extras:
-            ret['data_items'] = self.data_items
+
+        for k in attrs:
+            ret[k] = getattr(self, k)
         if 'kvals' in extras and self.network.dbcon is not None:
             vals = self.kvals
             for key in vals.keys():

@@ -640,7 +640,7 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
 
         :param value_id: The value to retrieve state
         :type value_id: String
-        :param value: The level : a RGBW value 
+        :param value: The level : a RGBW value
         :type value: int
 
         """
@@ -950,24 +950,29 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
         The command 0x62 (COMMAND_CLASS_DOOR_LOCK) of this node.
         Retrieves the list of values to consider as doorlocks.
         Filter rules are :
+
             command_class = 0x62
             genre = "User"
             type = "Bool"
             readonly = False
             writeonly = False
+
         :return: The list of door locks on this node
         :rtype: dict()
+
         """
         return self.get_values(class_id=0x62, genre='User', type='Bool', readonly=False, writeonly=False)
 
     def set_doorlock(self, value_id, value):
         """
         The command 0x62 (COMMAND_CLASS_DOOR_LOCK) of this node.
-        Sets doorlock to value (using value_id)
+        Sets doorlock to value (using value_id).
+
         :param value_id: The value to retrieve state from
         :type value_id: int
         :param value: True or False
         :type value: bool
+
         """
         if value_id in self.get_doorlocks():
             self.values[value_id].data = value
@@ -979,24 +984,29 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
         The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
         Retrieves the list of value to consider as usercodes.
         Filter rules are :
+
             command_class = 0x63
             genre = "User"
             type = "Raw"
             readonly = False
             writeonly = False
+
         :return: The list of user codes on this node
         :rtype: dict()
+
         """
         return self.get_values(class_id=0x63, type='Raw', genre='User', readonly=False, writeonly=False)
 
     def set_usercode(self, value_id, value):
         """
         The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
-        Sets usercode to value (using value_id)
+        Sets usercode to value (using value_id).
+
         :param value_id: The value to retrieve state from
         :type value_id: int
         :param value: User Code as string
         :type value: str
+
         """
         if value_id in self.get_usercodes():
             self.values[value_id].data = value
@@ -1008,11 +1018,14 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
         The command 0x4c (COMMAND_CLASS_DOOR_LOCK_LOGGING) of this node.
         Retrieves the value consisting of log records.
         Filter rules are :
+
             command_class = 0x4c
             genre = "User"
             type = "String"
             readonly = True
+
         :return: The dict of log records with value_id as key
         :rtype: dict()
+
         """
         return self.get_values(class_id=0x4c, type='String', genre='User', readonly=True)

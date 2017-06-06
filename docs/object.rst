@@ -8,4 +8,4 @@ The low level object. Implements cache mechanism.
 
 .. automodule:: openzwave.object
     :members: ZWaveObject, ZWaveNodeInterface, ZWaveException, ZWaveTypeException,
-        ZWaveCacheException, ZWaveCommandClassException, NullLoggingHandler
+        ZWaveCacheException, ZWaveCommandClassException
