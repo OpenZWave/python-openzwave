@@ -678,7 +678,7 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         if self.network.state < self.network.STATE_AWAKED:
-            logger.warning(u'Network state must a minimum set to awake')
+            logger.warning(u'Network must be awake')
             return False
         self.manager.healNetwork(self.home_id, upNodeRoute)
         return True
