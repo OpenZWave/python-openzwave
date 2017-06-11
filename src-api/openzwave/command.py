@@ -979,7 +979,25 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             return True
         return False
 
-    def get_usercodes(self):
+    def get_usercode(self, index):
+        """
+        Retrieve particular usercode value by index.
+        Certain values such as user codes have index start from 0
+        to max number of usercode supported and is useful for getting
+        usercodes by the index.
+
+        :param index: The index of usercode value
+        :type index: int
+        :return: The user code at given index on this node
+        :rtype: ZWaveValue
+
+        """
+        usercode = self.get_usercodes(index)
+        if len(usercode) == 0:
+            return None
+        return list(usercode.values())[0]
+
+    def get_usercodes(self, index='All'):
         """
         The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
         Retrieves the list of value to consider as usercodes.
@@ -995,7 +1013,7 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
         :rtype: dict()
 
         """
-        return self.get_values(class_id=0x63, type='Raw', genre='User', readonly=False, writeonly=False)
+        return self.get_values(class_id=0x63, type='Raw', genre='User', readonly=False, writeonly=False, index=index)
 
     def set_usercode(self, value_id, value):
         """
@@ -1012,6 +1030,24 @@ class ZWaveNodeDoorLock(ZWaveNodeInterface):
             self.values[value_id].data = value
             return True
         return False
+
+    def set_usercode_at_index(self, index, value):
+        """
+        The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
+        Sets usercode to value (using index of value)
+
+        :param index: The index of value to retrieve state from
+        :type index: int
+        :param value: User Code as string
+        :type value: str
+
+        """
+        usercode = self.get_usercode(index)
+        if usercode:
+            usercode.data = value
+            return True
+        return False
+
 
     def get_doorlock_logs(self):
         """
