@@ -1,5 +1,9 @@
 :orphan:
 
+.. image:: http://python-openzwave.readthedocs.io/en/latest/?badge=latest
+    :target: http://python-openzwave.readthedocs.io/
+    :alt: Documentation status
+
 .. image:: https://travis-ci.org/OpenZWave/python-openzwave.svg?branch=master
     :target: https://travis-ci.org/OpenZWave/python-openzwave
     :alt: Travis status
