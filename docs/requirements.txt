@@ -1,0 +1,4 @@
+sphinxcontrib-blockdiag
+sphinxcontrib.nwdiag
+sphinxcontrib.actdiag
+sphinxcontrib.seqdiag
