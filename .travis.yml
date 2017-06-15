@@ -25,7 +25,7 @@ script:
 - if [[ "${DOCS}" == "true" ]]; then
     set -e;
     make venv3;
-    source venv3/bin/active;
+    source venv3/bin/activate;
     make install-api doc-deps;
     cd docs;
     make html;
