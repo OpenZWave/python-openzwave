@@ -31,5 +31,5 @@ script:
     cd docs;
     make html;
     cd ..;
-    doctr deploy --built-docs docs/html .;
+    doctr deploy --no-require-master --built-docs docs/_build/html .;
   fi
