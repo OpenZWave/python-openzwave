@@ -1,5 +1,3 @@
-:orphan:
-
 .. image:: https://travis-ci.org/OpenZWave/python-openzwave.svg?branch=master
     :target: https://travis-ci.org/OpenZWave/python-openzwave
     :alt: Travis status
@@ -32,6 +30,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * a full-event webapp example : flask + socket.io + jquery
  * a suite of tests
  * many examples
+ * `Full documentation <https://python-openzwave.github.io>`_
 
 python-openzwave 0.4.0 is coming !!!
 ====================================
