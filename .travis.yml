@@ -31,5 +31,7 @@ script:
     cd docs;
     make html;
     cd ..;
+    export GIT_AUTHOR_NAME=$(git --no-pager show -s --format='%an' HEAD);
+    export GIT_AUTHOR_EMAIL=$(git --no-pager show -s --format='%ae' HEAD);
     doctr deploy --no-require-master --built-docs docs/_build/html .;
   fi
