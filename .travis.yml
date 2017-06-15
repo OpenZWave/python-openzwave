@@ -1,17 +1,32 @@
 language: cpp
-
 sudo: required
-
+python:
+- '3.5'
 env:
   matrix:
-    - DOCKER_BASE=ubuntu:latest
-    - DOCKER_BASE=debian:latest
-
+  - DOCKER_BASE=ubuntu:latest
+  - DOCKER_BASE=debian:latest
+  - DOCS="true"
+  global:
+    secure: m/dMxOCy8utHk5M+kGxz9HRDGJAu3QmPDefnFC8IzqJ0EcbslYw76xWIb43qoIQRJr3j+50AwOaaPA4XIOuzC+LL7qOgwBKpbxsNAynokIKy8//8nNdKHSXOowLkDy9vMMqCw1O+BIododuYBa0ce2CmIFGi/G3TWnfuSGRr1wlosYbV+jfER1BFiRe9YBpBfByIpvsCoT6FNfOOaAJ/cEcwt9H2rtSM14Rl21VfiK3QQxqP3H6qclhmpNBjmmlcMjv1AdeeJPbPpwPN/XadgH7VVqVEAx+prJ/3X0Mq8Ltt4NH9zyGhRsHQt5Lm3AYIHj3+b3ZgumytUkH4+942rz+UlLnFLhf5wyRw7VlP+RiXxh1q4MUAe+KuU+ZHc6+OA1H3AFAqgXBSpCiZXi7z6sps7ERbv6AVHBTvirrew1d/Mu4tevoYNteMgYPBt9e7acvGGn1rDy2jBkEE0semQXWtEgXrBm7jrDCKHUtxj1W+kwRdwSiPyXqipDUHkt7w6fkZfGsZVayRZHM+NPC3EFOE9XtNN+yHqGEI4E3Nd0eAfX/eIGkw4r1Mq5nyQ1JlGOFuedlY5zc8Y03Dty3j3prqurDzQSfGr19pV3hBCHt58QwY16yE8ASEEHJjfu7R9FevNeIN1HiXNYyya2/RkFb+WC9g6FjKFxJWfpvUw1s=
 services:
-  - docker
-
+- docker
 before_install:
-  - docker pull ${DOCKER_BASE}
-  
+- if [[ "${DOCKER_BASE}x" != "x" ]]; then
+    docker pull ${DOCKER_BASE}
+  fi
+- if [[ "${DOCS}" == "true" ]]; then
+    sudo apt-get install -y python3-pip python3-virtualenv
+  fi
 script:
-  - sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .
+- if [[ "${DOCKER_BASE}x" != "x" ]]; then
+    sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .
+  fi
+- if [[ "${DOCS}" == "true" ]]; then
+    set -e
+    make install
+    cd docs
+    make html
+    cd ..
+    doctr deploy --built-docs docs/html
+  fi
