@@ -15,6 +15,9 @@ before_install:
 - if [[ "${DOCKER_BASE}x" != "x" ]]; then
     docker pull ${DOCKER_BASE};
   fi
+- if [[ "${DOCS}" == "true" ]]; then
+    sudo apt install -y libudev-dev;
+  fi
 script:
 - if [[ "${DOCKER_BASE}x" != "x" ]]; then
     sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .;
