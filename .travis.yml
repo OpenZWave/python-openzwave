@@ -13,20 +13,20 @@ services:
 - docker
 before_install:
 - if [[ "${DOCKER_BASE}x" != "x" ]]; then
-    docker pull ${DOCKER_BASE}
+    docker pull ${DOCKER_BASE};
   fi
 - if [[ "${DOCS}" == "true" ]]; then
-    sudo apt-get install -y python3-pip python3-virtualenv
+    sudo apt-get install -y python3-pip python3-virtualenv;
   fi
 script:
 - if [[ "${DOCKER_BASE}x" != "x" ]]; then
-    sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .
+    sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .;
   fi
 - if [[ "${DOCS}" == "true" ]]; then
-    set -e
-    make install
-    cd docs
-    make html
-    cd ..
-    doctr deploy --built-docs docs/html
+    set -e;
+    make install;
+    cd docs;
+    make html;
+    cd ..;
+    doctr deploy --built-docs docs/html;
   fi
