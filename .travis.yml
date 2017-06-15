@@ -24,7 +24,7 @@ script:
   fi
 - if [[ "${DOCS}" == "true" ]]; then
     set -e;
-    make install;
+    make install-api;
     cd docs;
     make html;
     cd ..;
