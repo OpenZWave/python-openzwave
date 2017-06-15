@@ -26,6 +26,7 @@ script:
     set -e;
     make venv3;
     source venv3/bin/activate;
+    pip install doctr;
     make install-api doc-deps;
     cd docs;
     make html;
