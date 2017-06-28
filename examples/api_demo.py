@@ -208,9 +208,9 @@ for node in network.nodes:
         print("  label/help : {}/{}".format (network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : {}".format (network.nodes[node].values[val].id_on_network))
         print("  level: {}".format (network.nodes[node].get_dimmer_level(val)))
-print "------------------------------------------------------------"
-print "Retrieve RGB Bulbs on the network"
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Retrieve RGB Bulbs on the network")
+print("------------------------------------------------------------")
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_rgbbulbs() :
@@ -218,9 +218,9 @@ for node in network.nodes:
         print("  label/help : {}/{}".format(network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : {}".format(network.nodes[node].values[val].id_on_network))
         print("  level: {}".format(network.nodes[node].get_dimmer_level(val)))
-print "------------------------------------------------------------"
-print "Retrieve sensors on the network"
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Retrieve sensors on the network")
+print("------------------------------------------------------------")
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_sensors() :
@@ -228,9 +228,9 @@ for node in network.nodes:
         print("  label/help : {}/{}".format(network.nodes[node].values[val].label,network.nodes[node].values[val].help))
         print("  id on the network : {}".format(network.nodes[node].values[val].id_on_network))
         print("  value: {} {}".format(network.nodes[node].get_sensor_value(val), network.nodes[node].values[val].units))
-print "------------------------------------------------------------"
-print "Retrieve thermostats on the network"
-print "------------------------------------------------------------"
+print("------------------------------------------------------------")
+print("Retrieve thermostats on the network")
+print("------------------------------------------------------------")
 values = {}
 for node in network.nodes:
     for val in network.nodes[node].get_thermostats() :
