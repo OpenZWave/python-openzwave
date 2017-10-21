@@ -65,12 +65,12 @@ def callback(args):
         if 'valueId' in args:
             v = args['valueId']
             print('valueID: {}'.format(v['id']))
-            if v.has_key('groupIndex') and v['groupIndex'] != 0xff: print('GroupIndex: {}'.format(v['groupIndex']))
-            if v.has_key('event') and v['event'] != 0xff: print('Event: {}'.format(v['event']))
-            if v.has_key('value'): print('Value: {}'.format(str(v['value'])))
-            if v.has_key('label'): print('Label: {}'.format(v['label']))
-            if v.has_key('units'): print('Units: {}'.format(v['units']))
-            if v.has_key('readOnly'): print('ReadOnly: {}'.format(v['readOnly']))
+            if 'groupIndex' in v and v['groupIndex'] != 0xff: print('GroupIndex: {}'.format(v['groupIndex']))
+            if 'event' in v and v['event'] != 0xff: print('Event: {}'.format(v['event']))
+            if 'value' in v: print('Value: {}'.format(str(v['value'])))
+            if 'label' in v: print('Label: {}'.format(v['label']))
+            if 'units' in v: print('Units: {}'.format(v['units']))
+            if 'readOnly' in v: print('ReadOnly: {}'.format(v['readOnly']))
     print('-------------------------------------------------\n')
 
 print("Add watcher")
