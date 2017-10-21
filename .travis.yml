@@ -1,17 +1,37 @@
 language: cpp
-
 sudo: required
-
+python:
+- '3.5'
 env:
   matrix:
-    - DOCKER_BASE=ubuntu:latest
-    - DOCKER_BASE=debian:latest
-
+  - DOCKER_BASE=ubuntu:latest
+  - DOCKER_BASE=debian:latest
+  - DOCS="true"
+  global:
+    - secure: "ZSZRTtbNDT6nCuLp3HSMexxEzN01wqFjBkSkx9fGeUfXWeWiGNGc3Gsqd1U+SGXRYSqcmF7czr2WF+r1Mtz+/dbH8pYT6c5mQg4unJyljVFwPmv846Rg6IIRfn4sV3gr4FAN2fRi2Sm50uat9ZOJ+27o5+PmpZ5/LOdGHJ7pUVyimrkejn3cfOGAU7s6lnkUs5wjIfLBHs3NKAbSp2eu8YgxduwrvZOaY9VOx5uUjKLeY6fBtIzJGKI1b5Ef1JkumGDuWJBe14CpYj7cYSMexmd2Gsrn4RzLfNcH9dss4SW8uEcV4K7LxLJ1kXCGSr8Pq0l4ei/ibvh/05RgQap7uQ02Y5J7SDhUjfO0HqoazvosqTMWlWNTUoR3OFOwuV2MqjcVqWr/2DA7rXWx6ZhWjKmb7X8R30fa49D+HaRCs+de/zpeeUqTSQaTRPpC72hG56ToxbHo2/nDQoPEXZrcqrDni7fdNi8IwicA6fowZE3+LQ5zY0u2nixt8Kp9U29QG079xA7CBwWiC8jq1+Cc05qPpPT0iaTlZd9XPFVZEvtEWRPGNC/YINIJpfprQ1tnaANNGCCUpPDrdzld+yEI8KTC1uCICjmi9hyQWBgkpw9U3Q+PlBqOVdXYPCn7gnmFRkZMLimOqtSAjd0hDPAyZ83k5kGoR/ZBxzwZ3f3Nkfc="
 services:
-  - docker
-
+- docker
 before_install:
-  - docker pull ${DOCKER_BASE}
-  
+- if [[ "${DOCKER_BASE}x" != "x" ]]; then
+    docker pull ${DOCKER_BASE};
+  fi
+- if [[ "${DOCS}" == "true" ]]; then
+    sudo apt install -y libudev-dev;
+  fi
 script:
-  - sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .
+- if [[ "${DOCKER_BASE}x" != "x" ]]; then
+    sed -e "s#ubuntu:latest#${DOCKER_BASE}#" Dockerfile > dynamic.dockerfile && docker build -t python-openzwave -f dynamic.dockerfile .;
+  fi
+- if [[ "${DOCS}" == "true" ]]; then
+    set -e;
+    make venv3;
+    source venv3/bin/activate;
+    pip install doctr;
+    make install-api doc-deps;
+    cd docs;
+    make html;
+    cd ..;
+    export GIT_AUTHOR_NAME=$(git --no-pager show -s --format='%an' HEAD);
+    export GIT_AUTHOR_EMAIL=$(git --no-pager show -s --format='%ae' HEAD);
+    doctr deploy --built-docs docs/_build/html .;
+  fi
