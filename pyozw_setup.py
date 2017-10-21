@@ -54,7 +54,7 @@ import glob
 
 from pyozw_version import pyozw_version
 
-LOCAL_OPENZWAVE = 'openzwave'
+LOCAL_OPENZWAVE = os.getenv('LOCAL_OPENZWAVE', 'openzwave')
 
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
 
