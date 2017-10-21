@@ -48,7 +48,7 @@ class ZWaveOption(libopenzwave.PyOptions):
     Represents a Zwave option used to start the manager.
 
     """
-    def __init__(self, device=None, config_path=None, user_path=".", cmd_line=""):
+    def __init__(self, device=None, config_path=None, user_path=None, cmd_line=None):
         """
         Create an option object and check that parameters are valid.
 
@@ -80,8 +80,6 @@ class ZWaveOption(libopenzwave.PyOptions):
                 import sys, traceback
                 raise ZWaveException(u"Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
         libopenzwave.PyOptions.__init__(self, config_path=config_path, user_path=user_path, cmd_line=cmd_line)
-        self._user_path = user_path
-        self._config_path = config_path
 
     def set_log_file(self, logfile):
         """
