@@ -407,6 +407,23 @@ class ZWaveNodeBasic(ZWaveNodeInterface):
             return self.values[value_id].data
         return None
 
+    def can_set_indicator(self):
+        """
+        Check if node contain the command class 0x87 (COMMAND_CLASS_INDICATOR).
+
+        Filter rules are :
+
+            command_class = 0x87
+
+        :return: True if the node can set the indicator
+        :rtype: bool
+        """
+        res = self.get_values(class_id=0x87)
+        if res is not None and len(res) > 0:
+            return True
+        else:
+            return False
+
 class ZWaveNodeSwitch(ZWaveNodeInterface):
     """
     Represents an interface to switches and dimmers Commands
