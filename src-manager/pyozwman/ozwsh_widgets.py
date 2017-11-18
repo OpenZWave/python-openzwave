@@ -478,7 +478,7 @@ class GroupsTree(OldestTree):
             self.window.status_bar.update(status="Invalid index or node ID %s/%s" % (param, value))
             return False
         if param in self.window.network.nodes[self.node_id].groups:
-            if value in self.window.network.nodes[self.node_id].groups :
+            if value in self.window.network.nodes[self.node_id].groups[param].associations :
                 self.window.network.nodes[self.node_id].groups[param].remove_association(value)
                 self.window.status_bar.update(status='Group %s updated' % param)
                 return True
