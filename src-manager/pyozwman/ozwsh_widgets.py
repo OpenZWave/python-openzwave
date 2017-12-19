@@ -428,9 +428,11 @@ class GroupsTree(OldestTree):
             self.lines.append(urwid.Text(    "      %s:%s" % (groups[group].index,groups[group].label), align='left'))
             self.size += 1
             for assoc in groups[group].associations:
-                self.lines.append(AssociationItem(assoc, \
-                    self.window.network.nodes[assoc].name
-                    ))
+		if assoc in self.window.network.nodes:
+                    aname = self.window.network.nodes[assoc].name
+                else:
+                    aname = "[%d missing]" % (assoc)
+                self.lines.append(AssociationItem(assoc, aname))
                 self.size += 1
         self._modified()
 
@@ -478,7 +480,7 @@ class GroupsTree(OldestTree):
             self.window.status_bar.update(status="Invalid index or node ID %s/%s" % (param, value))
             return False
         if param in self.window.network.nodes[self.node_id].groups:
-            if value in self.window.network.nodes[self.node_id].groups :
+            if value in self.window.network.nodes[self.node_id].groups[param].associations :
                 self.window.network.nodes[self.node_id].groups[param].remove_association(value)
                 self.window.status_bar.update(status='Group %s updated' % param)
                 return True
