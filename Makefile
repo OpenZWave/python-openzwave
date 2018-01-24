@@ -197,18 +197,18 @@ clean-docs:
 	-rm -Rf docs/pdf
 
 docs: clean-docs
-	-mkdir -p docs/html/nosetests
-	-mkdir -p docs/html/coverage
-	-mkdir -p docs/html/pylint
-	-mkdir -p docs/joomla/nosetests
-	-mkdir -p docs/joomla/coverage
-	-mkdir -p docs/joomla/pylint
+	#-mkdir -p docs/html/nosetests
+	#-mkdir -p docs/html/coverage
+	#-mkdir -p docs/html/pylint
+	#-mkdir -p docs/joomla/nosetests
+	#-mkdir -p docs/joomla/coverage
+	#-mkdir -p docs/joomla/pylint
 	#${NOSE_EXEC} $(NOSEOPTS) $(NOSECOVER) tests/
 	#${NOSE_EXEC} $(NOSEOPTS) tests/
-	-cp docs/html/nosetests/* docs/joomla/nosetests
-	-cp docs/html/coverage/* docs/joomla/coverage
+	#-cp docs/html/nosetests/* docs/joomla/nosetests
+	#-cp docs/html/coverage/* docs/joomla/coverage
 	#-$(PYLINT) --output-format=html $(PYLINTOPTS) src-lib/libopenzwave/ src-api/openzwave/ src-manager/pyozwman/ src-web/pyozwweb/>docs/html/pylint/report.html
-	-cp docs/html/pylint/* docs/joomla/pylint/
+	#-cp docs/html/pylint/* docs/joomla/pylint/
 	cd docs && $(MAKE) docs
 	cp docs/README.rst README.rst
 	cp docs/INSTALL_REPO.rst .
@@ -220,8 +220,8 @@ docs: clean-docs
 	cp docs/_build/text/CHANGELOG.txt .
 	cp docs/_build/text/DEVEL.txt .
 	cp docs/_build/text/EXAMPLES.txt .
-	cp -Rf docs/_build/html/* docs/html/
-	cp -Rf docs/_build/joomla/* docs/joomla/
+	#cp -Rf docs/_build/html/* docs/html/
+	#cp -Rf docs/_build/joomla/* docs/joomla/
 	@echo
 	@echo "Documentation finished."
 

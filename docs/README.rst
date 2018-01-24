@@ -17,7 +17,11 @@
 .. image:: https://img.shields.io/pypi/status/python_openzwave.svg
     :target: https://pypi.python.org/pypi/python_openzwave
     :alt: Pypi status
-    
+
+.. image:: https://img.shields.io/badge/Documentation-ok-brightgreen.svg?style=flat
+   :target: http://openzwave.github.io/python-openzwave/index.html
+   :alt: Documentation
+
 ================
 python-openzwave
 ================
@@ -30,7 +34,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * a full-event webapp example : flask + socket.io + jquery
  * a suite of tests
  * many examples
- * `Full documentation <https://python-openzwave.github.io>`_
+ * `Full documentation <http://openzwave.github.io/python-openzwave/>`_
 
 python-openzwave 0.4.0 is coming !!!
 ====================================

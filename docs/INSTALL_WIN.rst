@@ -53,3 +53,6 @@ From a Command Prompt, install it :
 
 Reference for 0.3.X : https://github.com/OpenZWave/python-openzwave/issues/53
 
+Cygwin
+------
+python3
