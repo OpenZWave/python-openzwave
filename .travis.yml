@@ -1,4 +1,4 @@
-language: cpp
+language: python
 sudo: required
 python:
 - '3.5'
