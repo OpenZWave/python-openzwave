@@ -515,6 +515,7 @@ venv2:
 	@echo
 
 	virtualenv --python=python2 venv2
+	venv2/bin/python --version
 	venv2/bin/pip install nose
 	venv2/bin/pip install Cython wheel six
 	venv2/bin/pip install 'Louie>=1.1'
@@ -536,6 +537,7 @@ venv3:
 	@echo
 
 	virtualenv --python=python3 venv3
+	venv3/bin/python --version
 	venv3/bin/pip install nose
 	venv3/bin/pip install Cython wheel six
 	venv3/bin/pip install 'PyDispatcher>=2.0.5'
