@@ -41,7 +41,13 @@ from openzwave.controller import ZWaveController
 from openzwave.network import ZWaveNetwork
 from openzwave.option import ZWaveOption
 import time
-from louie import dispatcher, All
+import six
+if six.PY3:
+    from pydispatch import dispatcher
+    import _thread as thread
+else:
+    from louie import dispatcher
+    import thread
 
 device="/dev/ttyUSB0"
 log="None"
