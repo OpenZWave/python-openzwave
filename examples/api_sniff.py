@@ -44,10 +44,8 @@ import time
 import six
 if six.PY3:
     from pydispatch import dispatcher
-    import _thread as thread
 else:
     from louie import dispatcher
-    import thread
 
 device="/dev/ttyUSB0"
 log="Debug"

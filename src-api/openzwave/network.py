@@ -30,10 +30,8 @@ import sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
-    import _thread as thread
 else:
     from louie import dispatcher
-    import thread
 import threading
 import libopenzwave
 import openzwave
