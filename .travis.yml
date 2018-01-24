@@ -24,14 +24,11 @@ script:
   fi
 - if [[ "${DOCS}" == "true" ]]; then
     set -e;
-    make venv3;
-    source venv3/bin/activate;
-    pip3 install doctr;
-    make install-api doc-deps;
+    make doc-deps;
+    make install-api;
     cd docs;
     make html;
     cd ..;
-    export GIT_AUTHOR_NAME=$(git --no-pager show -s --format='%an' HEAD);
-    export GIT_AUTHOR_EMAIL=$(git --no-pager show -s --format='%ae' HEAD);
+    pip3 install doctr;
     doctr deploy --built-docs docs/_build/html .;
   fi
