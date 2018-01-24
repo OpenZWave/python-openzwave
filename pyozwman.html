@@ -1,0 +1,124 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PyOzwMan documentation &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.0.35',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pyozwman-documentation">
+<h1>PyOzwMan documentation<a class="headerlink" href="#pyozwman-documentation" title="Permalink to this headline">¶</a></h1>
+<p>A shell manager for your ZWave network</p>
+<p>It use urwid and louie python extensions.
+If needed, type the following command to install them :</p>
+<p>Start ozwsh with :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>ozwsh --device<span class="o">=</span>/dev/yourzwavestick
+</pre></div>
+</div>
+<p>Use the –help option to get all available options :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>ozwsh --help
+</pre></div>
+</div>
+<p>With PyOzwMan, you can :</p>
+<blockquote>
+<div><ul class="simple">
+<li>Reset controller (hard and soft) and add/remove device/controller</li>
+<li>Change node informations (name, location, … )</li>
+<li>view and change values informations</li>
+<li>view and change group informations</li>
+<li>view and change config parameters</li>
+<li>view and change gassociations</li>
+<li>Full management of scenes, switches, dimmers and sensors</li>
+</ul>
+</div></blockquote>
+<p>It’s a shell like manager. You can visit your zwave network using the
+command cd. All available commands are displayed on every screens.
+You can use the tab keys to switch between the view panel and the edit panel
+and the up and down ones to view all informations.</p>
+<p>For the developers : this provides a good example on how to use the api.
+Update are sent to uwird widget using louie notifications. ZWave data
+updates are done in the set, add, delete, remove, … methods.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pyozwman.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2014,2015, bibi21000.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

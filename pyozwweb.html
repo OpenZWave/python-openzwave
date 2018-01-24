@@ -1,0 +1,138 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>PyOzwWeb documentation &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.0.35',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pyozwweb-documentation">
+<h1>PyOzwWeb documentation<a class="headerlink" href="#pyozwweb-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-it-s">
+<h2>What it’s<a class="headerlink" href="#what-it-s" title="Permalink to this headline">¶</a></h2>
+<p>This will be the next release of the manager in the future. It’s also a good solution for a full event webapp (jquery + socketio)</p>
+</div>
+<div class="section" id="launching-it">
+<h2>Launching it<a class="headerlink" href="#launching-it" title="Permalink to this headline">¶</a></h2>
+<p>Go to the right directory :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> src-web/pyozwweb
+</pre></div>
+</div>
+<p>Update the config :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>vim app.conf
+
+<span class="o">[</span>zwave<span class="o">]</span>
+<span class="nv">device</span> <span class="o">=</span> /dev/ttyUSB0
+</pre></div>
+</div>
+<p>You can fine tune logging in logging.conf and run the app :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>./run.py
+</pre></div>
+</div>
+<p>And connect to <a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a> using your favorite browser.</p>
+<p>You can also change the ip/port to allow remote connections :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">[</span>server<span class="o">]</span>
+<span class="nv">host</span> <span class="o">=</span> <span class="m">0</span>.0.0.0
+<span class="nv">port</span> <span class="o">=</span> <span class="m">8080</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="source">
+<h2>Source<a class="headerlink" href="#source" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyOzwWeb documentation</a><ul>
+<li><a class="reference internal" href="#what-it-s">What it’s</a></li>
+<li><a class="reference internal" href="#launching-it">Launching it</a></li>
+<li><a class="reference internal" href="#source">Source</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pyozwweb.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2014,2015, bibi21000.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

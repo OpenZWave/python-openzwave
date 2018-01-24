@@ -1,0 +1,1174 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Node documentation &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.0.35',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Command documentation" href="command.html" />
+    <link rel="prev" title="Option documentation" href="option.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="command.html" title="Command documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="option.html" title="Option documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="openzwave.html" accesskey="U">API documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="node-documentation">
+<h1>Node documentation<a class="headerlink" href="#node-documentation" title="Permalink to this headline">¶</a></h1>
+<p>The node.</p>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-openzwave.node"></span><span class="target" id="module-openzwave.node"></span><dl class="docutils">
+<dt>This file is part of <strong>python-openzwave</strong> project <a class="reference external" href="https://github.com/OpenZWave/python-openzwave">https://github.com/OpenZWave/python-openzwave</a>.</dt>
+<dd><table class="first last docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">platform:</th><td class="field-body">Unix, Windows, MacOS X</td>
+</tr>
+<tr class="field-even field"><th class="field-name">sinopsis:</th><td class="field-body">openzwave API</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<p>License : GPL(v3)</p>
+<p><strong>python-openzwave</strong> is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p><strong>python-openzwave</strong> is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with python-openzwave. If not, see <a class="reference external" href="http://www.gnu.org/licenses">http://www.gnu.org/licenses</a>.</p>
+<dl class="class">
+<dt id="openzwave.node.ZWaveNode">
+<em class="property">class </em><code class="descclassname">openzwave.node.</code><code class="descname">ZWaveNode</code><span class="sig-paren">(</span><em>node_id</em>, <em>network</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single Node within the Z-Wave Network.</p>
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.add_value">
+<code class="descname">add_value</code><span class="sig-paren">(</span><em>value_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.add_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a value to the node</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value_id</strong> (<em>int</em>) – The id of the value to add</li>
+<li><strong>command_class</strong> (<em>str</em>) – The command_class of the value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.assign_return_route">
+<code class="descname">assign_return_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.assign_return_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the to update its update its Return Route to the Controller</p>
+<p>This command will ask a Node to update its Return Route to the Controller</p>
+<p>Results of the AssignReturnRoute Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.basic">
+<code class="descname">basic</code><a class="headerlink" href="#openzwave.node.ZWaveNode.basic" title="Permalink to this definition">¶</a></dt>
+<dd><p>The basic type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.capabilities">
+<code class="descname">capabilities</code><a class="headerlink" href="#openzwave.node.ZWaveNode.capabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>The capabilities of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.change_value">
+<code class="descname">change_value</code><span class="sig-paren">(</span><em>value_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.change_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change a value of the node.
+Not implemented</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) – The id of the value to change</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.command_classes">
+<code class="descname">command_classes</code><a class="headerlink" href="#openzwave.node.ZWaveNode.command_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>The commandClasses of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.command_classes_as_string">
+<code class="descname">command_classes_as_string</code><a class="headerlink" href="#openzwave.node.ZWaveNode.command_classes_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the command classes of the node as string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.create_button">
+<code class="descname">create_button</code><span class="sig-paren">(</span><em>buttonid</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.create_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>buttonid</strong> (<em>int</em>) – the ID of the Button to query.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.delete_button">
+<code class="descname">delete_button</code><span class="sig-paren">(</span><em>buttonid</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.delete_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a handheld button id.</p>
+<p>Only intended for Bridge Firmware Controllers.</p>
+<p>Results of the CreateButton Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>buttonid</strong> (<em>int</em>) – the ID of the Button to query.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.device_type">
+<code class="descname">device_type</code><a class="headerlink" href="#openzwave.node.ZWaveNode.device_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The device_type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.generic">
+<code class="descname">generic</code><a class="headerlink" href="#openzwave.node.ZWaveNode.generic" title="Permalink to this definition">¶</a></dt>
+<dd><p>The generic type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_command_class_as_string">
+<code class="descname">get_command_class_as_string</code><span class="sig-paren">(</span><em>class_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_command_class_as_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the command class representation as string.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_id</strong> (<em>hexadecimal code</em>) – the COMMAND_CLASS to get string representation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_command_class_genres">
+<code class="descname">get_command_class_genres</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_command_class_genres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of genres of command classes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_max_associations">
+<code class="descname">get_max_associations</code><span class="sig-paren">(</span><em>groupidx</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_max_associations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the maximum number of associations for a group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>groupidx</strong> (<em>int</em>) – The group to query</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_values">
+<code class="descname">get_values</code><span class="sig-paren">(</span><em>class_id='All'</em>, <em>genre='All'</em>, <em>type='All'</em>, <em>readonly='All'</em>, <em>writeonly='All'</em>, <em>index='All'</em>, <em>label='All'</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the set of values. You can optionnaly filter for a command class,
+a genre and/or a type. You can also filter readonly and writeonly params.</p>
+<p>This method always filter the values.
+If you wan’t to get all the node’s values, use self.values instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>class_id</strong> (<em>hexadecimal code</em><em> or </em><em>string</em>) – the COMMAND_CLASS to get values</li>
+<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
+<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
+<li><strong>readonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value readonly</li>
+<li><strong>writeonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value writeonly</li>
+<li><strong>index</strong> (<em>int</em>) – Index of value within all the values</li>
+<li><strong>label</strong> (<em>str</em>) – Label of the value as set by openzwave</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">set() of Values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_values_by_command_classes">
+<code class="descname">get_values_by_command_classes</code><span class="sig-paren">(</span><em>genre='All'</em>, <em>type='All'</em>, <em>readonly='All'</em>, <em>writeonly='All'</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values_by_command_classes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve values in a dict() of dicts(). The dict is indexed on the COMMAND_CLASS.
+This allows to browse values grouped by the COMMAND_CLASS.You can optionnaly filter for a command class,
+a genre and/or a type. You can also filter readonly and writeonly params.</p>
+<p>This method always filter the values.
+If you wan’t to get all the node’s values, use the property self.values instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
+<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
+<li><strong>readonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value readonly</li>
+<li><strong>writeonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value writeonly</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict(command_class : dict(valueids))</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_values_for_command_class">
+<code class="descname">get_values_for_command_class</code><span class="sig-paren">(</span><em>class_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values_for_command_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the set of values for a command class.
+Deprecated
+For backward compatibility only.
+Use get_values instead</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>class_id</strong> (<em>hexadecimal code</em><em> or </em><em>string</em>) – the COMMAND_CLASS to get values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">set() of classId</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.groups">
+<code class="descname">groups</code><a class="headerlink" href="#openzwave.node.ZWaveNode.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the association groups reported by this node</p>
+<p>In Z-Wave, groups are numbered starting from one.  For example, if a call to
+GetNumGroups returns 4, the _groupIdx value to use in calls to GetAssociations
+AddAssociation and RemoveAssociation will be a number between 1 and 4.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.groups_to_dict">
+<code class="descname">groups_to_dict</code><span class="sig-paren">(</span><em>extras=['all']</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.groups_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict representation of the groups.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[</em><em>]</em>) – The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.has_command_class">
+<code class="descname">has_command_class</code><span class="sig-paren">(</span><em>class_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.has_command_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that this node use this commandClass.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>classId</strong> (<em>hexadecimal code</em>) – the COMMAND_CLASS to check</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.heal">
+<code class="descname">heal</code><span class="sig-paren">(</span><em>upNodeRoute=False</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.heal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Heal network node by requesting the node rediscover their neighbors.
+Sends a ControllerCommand_RequestNodeNeighborUpdate to the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>upNodeRoute</strong> (<em>bool</em>) – Optional Whether to perform return routes initialization. (default = false).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True is the ControllerCommand is sent. False otherwise</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_awake">
+<code class="descname">is_awake</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_awake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a awake.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_beaming_device">
+<code class="descname">is_beaming_device</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_beaming_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a beaming device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_failed">
+<code class="descname">is_failed</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_failed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node is presume failed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_frequent_listening_device">
+<code class="descname">is_frequent_listening_device</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_frequent_listening_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a frequent listening device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_info_received">
+<code class="descname">is_info_received</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_info_received" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node information has been received. Returns True if the node information has been received yet</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_listening_device">
+<code class="descname">is_listening_device</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_listening_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a listening device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_locked">
+<code class="descname">is_locked</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_ready">
+<code class="descname">is_ready</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get whether the node is ready to operate (QueryStage Completed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_routing_device">
+<code class="descname">is_routing_device</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_routing_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a routing device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_security_device">
+<code class="descname">is_security_device</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_security_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a security device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_sleeping">
+<code class="descname">is_sleeping</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_sleeping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node sleeping.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.is_zwave_plus">
+<code class="descname">is_zwave_plus</code><a class="headerlink" href="#openzwave.node.ZWaveNode.is_zwave_plus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a zwave plus one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.location">
+<code class="descname">location</code><a class="headerlink" href="#openzwave.node.ZWaveNode.location" title="Permalink to this definition">¶</a></dt>
+<dd><p>The location of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.manufacturer_id">
+<code class="descname">manufacturer_id</code><a class="headerlink" href="#openzwave.node.ZWaveNode.manufacturer_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manufacturer id of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.manufacturer_name">
+<code class="descname">manufacturer_name</code><a class="headerlink" href="#openzwave.node.ZWaveNode.manufacturer_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The manufacturer name of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.max_baud_rate">
+<code class="descname">max_baud_rate</code><a class="headerlink" href="#openzwave.node.ZWaveNode.max_baud_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the maximum baud rate of a node</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.name">
+<code class="descname">name</code><a class="headerlink" href="#openzwave.node.ZWaveNode.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.neighbor_update">
+<code class="descname">neighbor_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.neighbor_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask a Node to update its Neighbor Tables</p>
+<p>This command will ask a Node to update its Neighbor Tables.</p>
+<p>Results of the RequestNodeNeighborUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.neighbors">
+<code class="descname">neighbors</code><a class="headerlink" href="#openzwave.node.ZWaveNode.neighbors" title="Permalink to this definition">¶</a></dt>
+<dd><p>The neighbors of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">set()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.network_update">
+<code class="descname">network_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.network_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the controller with network information from the SUC/SIS.</p>
+<p>Results of the RequestNetworkUpdate Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.node_id">
+<code class="descname">node_id</code><a class="headerlink" href="#openzwave.node.ZWaveNode.node_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.num_groups">
+<code class="descname">num_groups</code><a class="headerlink" href="#openzwave.node.ZWaveNode.num_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the number of association groups reported by this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.product_id">
+<code class="descname">product_id</code><a class="headerlink" href="#openzwave.node.ZWaveNode.product_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product Id of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.product_name">
+<code class="descname">product_name</code><a class="headerlink" href="#openzwave.node.ZWaveNode.product_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product name of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.product_type">
+<code class="descname">product_type</code><a class="headerlink" href="#openzwave.node.ZWaveNode.product_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The product type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.query_stage">
+<code class="descname">query_stage</code><a class="headerlink" href="#openzwave.node.ZWaveNode.query_stage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Is this node a awake.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.refresh_info">
+<code class="descname">refresh_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.refresh_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger the fetching of fixed data about a node.</p>
+<p>Causes the nodes data to be obtained from the Z-Wave network in the same way
+as if it had just been added.  This method would normally be called
+automatically by OpenZWave, but if you know that a node has been changed,
+calling this method will force a refresh of the data held by the library.  This
+can be especially useful for devices that were asleep when the application was
+first run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.refresh_value">
+<code class="descname">refresh_value</code><span class="sig-paren">(</span><em>value_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.refresh_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh a value of the node.
+Not implemented</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) – The id of the value to change</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.remove_value">
+<code class="descname">remove_value</code><span class="sig-paren">(</span><em>value_id</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.remove_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change a value of the node. Todo</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value_id</strong> (<em>int</em>) – The id of the value to change</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the operation</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.request_all_config_params">
+<code class="descname">request_all_config_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.request_all_config_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request the values of all known configurable parameters from a device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.request_config_param">
+<code class="descname">request_config_param</code><span class="sig-paren">(</span><em>param</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.request_config_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request the value of a configurable parameter from a device.</p>
+<p>Some devices have various parameters that can be configured to control the
+device behaviour.  These are not reported by the device over the Z-Wave network
+but can usually be found in the devices user manual.  This method requests
+the value of a parameter from the device, and then returns immediately,
+without waiting for a response.  If the parameter index is valid for this
+device, and the device is awake, the value will eventually be reported via a
+ValueChanged notification callback.  The ValueID reported in the callback will
+have an index set the same as _param and a command class set to the same value
+as returned by a call to Configuration::StaticGetCommandClassId.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param</strong> – The param of the node.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.request_state">
+<code class="descname">request_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.request_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trigger the fetching of just the dynamic value data for a node.
+Causes the node’s values to be requested from the Z-Wave network. This is the
+same as the query state starting from the dynamic state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.role">
+<code class="descname">role</code><a class="headerlink" href="#openzwave.node.ZWaveNode.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>The role of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.security">
+<code class="descname">security</code><a class="headerlink" href="#openzwave.node.ZWaveNode.security" title="Permalink to this definition">¶</a></dt>
+<dd><p>The security type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The security type of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.send_information">
+<code class="descname">send_information</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.send_information" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a NIF frame from the Controller to a Node.
+This command send a NIF frame from the Controller to a Node</p>
+<p>Results of the SendNodeInformation Command will be send as a Notification with the Notification type as
+Notification::Type_ControllerCommand</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the request was sent successfully.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.set_config_param">
+<code class="descname">set_config_param</code><span class="sig-paren">(</span><em>param</em>, <em>value</em>, <em>size=2</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.set_config_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value of a configurable parameter in a device.</p>
+<p>Some devices have various parameters that can be configured to control the
+device behaviour.  These are not reported by the device over the Z-Wave network
+but can usually be found in the devices user manual.  This method returns
+immediately, without waiting for confirmation from the device that the change
+has been made.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>param</strong> – The param of the node.</li>
+<li><strong>value</strong> – The value of the param.</li>
+<li><strong>size</strong> (<em>int</em>) – Is an optional number of bytes to be sent for the parameter value. Defaults to 2.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.set_field">
+<code class="descname">set_field</code><span class="sig-paren">(</span><em>field</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.set_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper to set a writable field : name, location, product_name, …</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>field</strong> (<em>str</em>) – The field to set : name, location, product_name, manufacturer_name</li>
+<li><strong>value</strong> (<em>str</em>) – The value to set</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.specific">
+<code class="descname">specific</code><a class="headerlink" href="#openzwave.node.ZWaveNode.specific" title="Permalink to this definition">¶</a></dt>
+<dd><p>The specific type of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The specific type of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.test">
+<code class="descname">test</code><span class="sig-paren">(</span><em>count=1</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send a number of test messages to node and record results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>count</strong> (<em>int</em>) – The number of test messages to send.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.to_dict">
+<code class="descname">to_dict</code><span class="sig-paren">(</span><em>extras=['all']</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict representation of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[</em><em>]</em>) – The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.type">
+<code class="descname">type</code><a class="headerlink" href="#openzwave.node.ZWaveNode.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a human-readable label describing the node
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openzwave.node.ZWaveNode.values_to_dict">
+<code class="descname">values_to_dict</code><span class="sig-paren">(</span><em>extras=['all']</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.values_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dict representation of the values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>extras</strong> (<em>[</em><em>]</em>) – The extra inforamtions to add</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A dict</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.version">
+<code class="descname">version</code><a class="headerlink" href="#openzwave.node.ZWaveNode.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version of the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The version of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="option.html"
+                        title="previous chapter">Option documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="command.html"
+                        title="next chapter">Command documentation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/node.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="command.html" title="Command documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="option.html" title="Option documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="openzwave.html" >API documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2014,2015, bibi21000.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

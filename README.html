@@ -1,0 +1,382 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>python-openzwave &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.4.0.35',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <a class="reference external image-reference" href="https://travis-ci.org/OpenZWave/python-openzwave"><img alt="Travis status" src="https://travis-ci.org/OpenZWave/python-openzwave.svg?branch=master" /></a>
+<a class="reference external image-reference" href="https://circleci.com/gh/OpenZWave/python-openzwave"><img alt="Circle status" src="https://circleci.com/gh/OpenZWave/python-openzwave.png?style=shield" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/python_openzwave"><img alt="Pypi downloads" src="https://img.shields.io/pypi/dm/python_openzwave.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/python_openzwave"><img alt="Pypi format" src="https://img.shields.io/pypi/format/python_openzwave.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.python.org/pypi/python_openzwave"><img alt="Pypi status" src="https://img.shields.io/pypi/status/python_openzwave.svg" /></a>
+<div class="section" id="python-openzwave">
+<h1>python-openzwave<a class="headerlink" href="#python-openzwave" title="Permalink to this headline">¶</a></h1>
+<p>python-openzwave is a python wrapper for the openzwave c++ library : <a class="reference external" href="https://github.com/OpenZWave/open-zwave">https://github.com/OpenZWave/open-zwave</a></p>
+<blockquote>
+<div><ul class="simple">
+<li>full manager implementation with options</li>
+<li>an API to map the ZWave network in Python objects</li>
+<li>a command line manager to manage / debug your ZWave network</li>
+<li>a full-event webapp example : flask + socket.io + jquery</li>
+<li>a suite of tests</li>
+<li>many examples</li>
+<li><a class="reference external" href="https://python-openzwave.github.io">Full documentation</a></li>
+</ul>
+</div></blockquote>
+<div class="section" id="python-openzwave-0-4-0-is-coming">
+<h2>python-openzwave 0.4.0 is coming !!!<a class="headerlink" href="#python-openzwave-0-4-0-is-coming" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p class="first">0.4.0.x versions are for testers only. Don’t use it in a production environement !!!</p>
+</li>
+<li><p class="first">New installation process via pip</p>
+</li>
+<li><p class="first">First, you need some build tools and libs. On ubuntu, you should use :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-get install --force-yes -y make libudev-dev g++ libyaml-dev
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Make your virtualenv and activate it :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span>virtualenv --python<span class="o">=</span>python3 venv3
+<span class="nb">source</span> venv3/bin/activate
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Install the default (embed) flavor :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">The previous command install python_openzwave statitically linked to sources downloaded from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>.
+You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :</p>
+</li>
+</ul>
+<blockquote>
+<div><ul>
+<li><p class="first">on python 2.7 :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
+<span class="o">(</span>venvX<span class="o">)</span> pip install <span class="s1">&#39;Louie&gt;=1.1&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">on python 3 :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
+<span class="o">(</span>venvX<span class="o">)</span> pip install <span class="s1">&#39;PyDispatcher&gt;=2.0.5&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p class="first">Choose your flavor :</p>
+<blockquote>
+<div><ul class="simple">
+<li>embed : the default one. Download sources from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a> and
+build them. Python_openzwave is statically build using a cythonized version of libopenzwave. No need to install cython.</li>
+<li>shared : if you have install openzwave as module manually, you can link python_openzwave to it.</li>
+<li>git : download sources from openzwave github and link statically to it.</li>
+<li>embed_shared (experimental) : download sources from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>, build and install as module on the system.
+Python_openzwave use it. Need root access to install openzwave libs.</li>
+<li>git_shared (experimental) : download sources from openzwave github, build and install them as module on the system.
+Python_openzwave use it. Need root access to install openzwave libs.</li>
+<li>ozwdev and ozwdev_shared : use the dev branch of openzwave on github.</li>
+<li>dev : for python_openzwave developers. Look for openzwave sources in a local folder specified by the LOCAL_OPENZWAVE environment variable (defaults to ‘openzwave’).</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Install it :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave --install-option<span class="o">=</span><span class="s2">&quot;--flavor=git&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">You can update to the last version of openzwave using the git flavor :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip uninstall -y python_openzwave
+<span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave --no-cache-dir --install-option<span class="o">=</span><span class="s2">&quot;--flavor=git&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">At last, you can launch pyozw_check:</p>
+<p>If no usb stick is connected to the machine, launch :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pyozw_check
+</pre></div>
+</div>
+</div></blockquote>
+<p>If you’ve one, use it for advanced checks :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pyozw_check -i -d /dev/ttyUSB0
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>-------------------------------------------------------------------------------
+Import libs
+Try to import libopenzwave
+Try to import libopenzwave.PyLogLevels
+Try to get options
+Try to get manager
+Try to get python_openzwave version
+<span class="m">0</span>.4.0.27
+Try to get python_openzwave full version
+python-openzwave version <span class="m">0</span>.4.0.27 <span class="o">(</span>dev / Apr <span class="m">18</span> <span class="m">2017</span> - <span class="m">23</span>:22:26<span class="o">)</span>
+Try to get openzwave version
+<span class="m">1</span>.4.2501
+Try to get default config path
+/etc/openzwave/
+Try to import openzwave <span class="o">(</span>API<span class="o">)</span>
+-------------------------------------------------------------------------------
+Intialize device /dev/ttyUSB0
+Try to get options
+Try to get manager
+<span class="m">2017</span>-04-12 <span class="m">16</span>:41:29.329 Always, OpenZwave Version <span class="m">1</span>.4.2497 Starting Up
+Try to add watcher
+...
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, ***************************************************************************
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, *********************  Cumulative Network Statistics  *********************
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, *** General
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Driver run time: . .  . <span class="m">0</span> days, <span class="m">0</span> hours, <span class="m">1</span> minutes
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Frames processed: . . . . . . . . . . . . . . . . . . . . <span class="m">27</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Total messages successfully received: . . . . . . . . . . <span class="m">27</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Total Messages successfully sent: . . . . . . . . . . . . <span class="m">19</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, ACKs received from controller:  . . . . . . . . . . . . . <span class="m">19</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, *** Errors
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Unsolicited messages received <span class="k">while</span> waiting <span class="k">for</span> ACK:  . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Reads aborted due to timeouts:  . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Bad checksum errors:  . . . . . . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, CANs received from controller:  . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, NAKs received from controller:  . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Out of frame data flow errors:  . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Messages retransmitted: . . . . . . . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, Messages dropped and not delivered: . . . . . . . . . . . <span class="m">0</span>
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:05.880 Always, ***************************************************************************
+<span class="m">2017</span>-04-12 <span class="m">16</span>:44:07.887 Info, mgr,     Driver <span class="k">for</span> controller /dev/ttyUSB0 removed
+Try to remove watcher
+Try to destroy manager
+Try to destroy options
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">The old manager is now available via the pyozw_shell command. You need to install module “urwid&gt;=1.1.1” with pip before using it.</p>
+</li>
+<li><p class="first">libopenzwave and openzwave python modules are packaged in the python_openzwave.
+So developers needs to update their install_requires (it works fine with pyozw_manager).
+They can use the following code to update softly :</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">pyozw_version</span><span class="o">=</span><span class="s1">&#39;0.4.1&#39;</span>
+
+<span class="k">def</span> <span class="nf">install_requires</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">python_openzwave</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;python_openzwave==</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pyozw_version</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">libopenzwave</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;openzwave==</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pyozw_version</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;python_openzwave == </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">pyozw_version</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">If you already have an 0.3.x version installed, you should update your installation as usual. Don’t install it with pip as it can break your installation (maybe not if you don’t remove old modules)</p>
+</li>
+<li><p class="first">Support for windows, macosx, … is not tested. Feel free to report bug and patches. We can try to support these plateforms. Don’t have Windows at home so I can’t help. Same for mac.</p>
+</li>
+<li><p class="first">Old installation process is deprecated and reserved for python-openzwave-developers and alternatives machines.</p>
+</li>
+<li><p class="first">Please report your successful installations here : <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/issues/73">https://github.com/OpenZWave/python-openzwave/issues/73</a></p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="python-openzwave-0-3-0-is-out">
+<h2>python-openzwave 0.3.0 is out !!!<a class="headerlink" href="#python-openzwave-0-3-0-is-out" title="Permalink to this headline">¶</a></h2>
+<p>Look at CHANGELOG to see new features and release notes.</p>
+<p>Look at INSTALL_REPO to test it now.</p>
+<p>Look at INSTALL_ARCH to install from archive : no need to install cython anymore.</p>
+</div>
+<div class="section" id="support">
+<h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
+<p>You can ask for support on the google group : <a class="reference external" href="http://groups.google.com/d/forum/python-openzwave-discuss">http://groups.google.com/d/forum/python-openzwave-discuss</a>.</p>
+<p>Please don’t ask for support in github issues or by email.</p>
+</div>
+<div class="section" id="pull-requests">
+<h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
+<p>Please read DEVEL documentation before submitting pull request.
+A lot of project tasks are done automatically or with makefile, so they must be done in a certain place or in a special order.</p>
+</div>
+<div class="section" id="migrating-from-python-openzwave-0-2-x-to-0-3-0">
+<h2>Migrating from python-openzwave 0.2.X to 0.3.0<a class="headerlink" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0" title="Permalink to this headline">¶</a></h2>
+<p>I need to update source tree of python-openzwave and modules’s names because of a bug in setuptools
+: <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a> .
+Sorry for that.</p>
+<p>Update your sources:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git pull
+</pre></div>
+</div>
+<p>Before building python-openzwave 0.3.0, you must uninstall the old version :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make uninstall
+</pre></div>
+</div>
+<p>About cython : I’ve made many tests using cython installed via pip : (0.20, 0.21 and 0.22).
+Compilation is ok but a segfault appears when launching the tests. Please remove it.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo pip uninstall Cython
+</pre></div>
+</div>
+<p>You also need to make some minor updates in you code, look at CHANGELOG</p>
+<p>If you have problems, please submit an issue with :</p>
+<blockquote>
+<div><ul class="simple">
+<li>cython -V</li>
+<li>the content of the directory /usr/local/lib/python2.7/dist-packages/ (for python2.7)</li>
+<li>the content of /usr/local/lib/python2.7/dist-packages/easy-install.pth (for python 2.7)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ubuntu-64bits-and-the-others">
+<h2>Ubuntu 64bits … and the others<a class="headerlink" href="#ubuntu-64bits-and-the-others" title="Permalink to this headline">¶</a></h2>
+<p>If you’re using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
+you certainly have the segfault problem.</p>
+<p>Ubuntu 12.04 and 14.04 seems to be affected by this bug. Ubuntu 15.10 and Debian Jessie not.</p>
+<p>It appears with the last update of python :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python
+Python <span class="m">2</span>.7.6 <span class="o">(</span>default, Jun <span class="m">22</span> <span class="m">2015</span>, <span class="m">17</span>:58:13<span class="o">)</span>
+<span class="o">[</span>GCC <span class="m">4</span>.8.2<span class="o">]</span> on linux2
+Type <span class="s2">&quot;help&quot;</span>, <span class="s2">&quot;copyright&quot;</span>, <span class="s2">&quot;credits&quot;</span> or <span class="s2">&quot;license&quot;</span> <span class="k">for</span> more information.
+</pre></div>
+</div>
+<p>I’ve open a discussion on cython-users here : <a class="reference external" href="https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk">https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk</a></p>
+<p>The only way I found to avoid this is to rebuild and reinstall the old release of python :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>wget https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.dsc https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6.orig.tar.gz https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.diff.gz
+
+dpkg-source -x python2.7_2.7.6-8.dsc
+
+sudo apt-get build-dep python2.7
+
+<span class="nb">cd</span> python2.7-2.7.6
+
+dpkg-buildpackage
+</pre></div>
+</div>
+<p>Wait, wait and await again :)</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ..
+
+sudo dpkg -i *.deb
+</pre></div>
+</div>
+<p>To prevent future updates of python, you could mark its packages. For example, if you use apt to update your distribution, use the following command :</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples
+</pre></div>
+</div>
+<p>Some users have reported that building python-openzwave using the archive (INSTALL_ARCH) can also do the trick. Let me know if it works for you.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">python-openzwave</a><ul>
+<li><a class="reference internal" href="#python-openzwave-0-4-0-is-coming">python-openzwave 0.4.0 is coming !!!</a></li>
+<li><a class="reference internal" href="#python-openzwave-0-3-0-is-out">python-openzwave 0.3.0 is out !!!</a></li>
+<li><a class="reference internal" href="#support">Support</a></li>
+<li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
+<li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>
+<li><a class="reference internal" href="#ubuntu-64bits-and-the-others">Ubuntu 64bits … and the others</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/README.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2012,2013,2014,2015, bibi21000.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>
