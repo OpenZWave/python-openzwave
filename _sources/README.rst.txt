@@ -6,18 +6,10 @@
     :target: https://circleci.com/gh/OpenZWave/python-openzwave
     :alt: Circle status
 
-.. image:: https://img.shields.io/pypi/dm/python_openzwave.svg
-    :target: https://pypi.python.org/pypi/python_openzwave
-    :alt: Pypi downloads
-
 .. image:: https://img.shields.io/pypi/format/python_openzwave.svg
     :target: https://pypi.python.org/pypi/python_openzwave
     :alt: Pypi format
     
-.. image:: https://img.shields.io/pypi/status/python_openzwave.svg
-    :target: https://pypi.python.org/pypi/python_openzwave
-    :alt: Pypi status
-
 .. image:: https://img.shields.io/badge/Documentation-ok-brightgreen.svg?style=flat
    :target: http://openzwave.github.io/python-openzwave/index.html
    :alt: Documentation
