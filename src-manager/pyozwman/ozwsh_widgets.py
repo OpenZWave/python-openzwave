@@ -428,7 +428,7 @@ class GroupsTree(OldestTree):
             self.lines.append(urwid.Text(    "      %s:%s" % (groups[group].index,groups[group].label), align='left'))
             self.size += 1
             for assoc in groups[group].associations:
-		if assoc in self.window.network.nodes:
+                if assoc in self.window.network.nodes:
                     aname = self.window.network.nodes[assoc].name
                 else:
                     aname = "[%d missing]" % (assoc)
