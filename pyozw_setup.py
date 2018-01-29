@@ -576,10 +576,10 @@ class Template(object):
         dest_file = os.path.join(dest, 'open-zwave.zip')
         if os.path.exists(self.openzwave):
             if not self.cleanozw:
-                log.info("Already have directory %s. Use it. Use --cleanozw to clean it.", self.openzwave)
+                #~ log.info("Already have directory %s. Use it. Use --cleanozw to clean it.", self.openzwave)
                 return self.openzwave
             else:
-                log.info("Already have directory %s but remove and clean it as asked", self.openzwave)
+                #~ log.info("Already have directory %s but remove and clean it as asked", self.openzwave)
                 self.clean_all()
                 try:
                     os.remove(dest_file)
@@ -858,9 +858,20 @@ def parse_template(sysargv):
         flavor = sysargv.pop(index)
         tmpl =  SharedTemplate(sysargv=sysargv)
     if tmpl is None:
-        #Default template
         flavor = 'embed'
-        tmpl = EmbedTemplate(sysargv=sysargv)
+        try:
+            import pyozw_pkgconfig
+            if pyozw_pkgconfig.exists('libopenzwave'):
+                flavor = 'shared'
+        except:
+            log.exception("Can't use precompiled openzwave library")
+        #Default template
+        if flavor == 'embed':
+            log.info("Use embeded package of openzwave")
+            tmpl = EmbedTemplate(sysargv=sysargv)
+        elif flavor == 'shared':
+            log.info("Use precompiled library openzwave")
+            tmpl =  SharedTemplate(sysargv=sysargv)
     tmpl.flavor = flavor
     if '--cleanozw' in sysargv:
         index = sysargv.index('--cleanozw')
@@ -930,6 +941,7 @@ class build_openzwave(setuptools.Command):
     def run(self):
         current_template.check_minimal_config()
         current_template.get_openzwave()
+        current_template.clean()
         current_template.build()
         if current_template.install_openzwave_so:
             current_template.install_so()
@@ -959,6 +971,13 @@ class openzwave_config(setuptools.Command):
             log.info("Don't install ozw_config for template {0}".format(current_template))
             return
         dest = os.path.join(self.install_dir, 'python_openzwave', "ozw_config")
+        if os.path.isdir(dest):
+            #Try to remove old config
+            try:
+                import shutil
+                shutil.rmtree(dest)
+            except Exception:
+                log.exception("Can't remove old config directory")
         if not os.path.isdir(dest):
             os.makedirs(dest)
         self.copy_tree(os.path.join(current_template.openzwave,'config'), dest)

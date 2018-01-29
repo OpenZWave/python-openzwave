@@ -35,8 +35,23 @@ import time
 import unittest
 import threading
 import logging
-import json as mjson
+import json
+#~ import bson
 import six
+
+class SetEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return list(obj)
+        return json.JSONEncoder.default(self, obj)
+
+def json_dumps(data_as_object):
+    #~ return json.dumps(data_as_object, default=json_util.default)
+    return json.dumps(data_as_object, cls=SetEncoder)
+
+def json_loads(data_as_string):
+    #~ return json.loads(data_as_string, object_hook=json_util.object_hook)
+    return json.loads(data_as_string)
 
 from nose.plugins.skip import SkipTest
 

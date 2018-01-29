@@ -1366,6 +1366,19 @@ Get the version of the Z-Wave API library used by a controller.
         cdef string c_string = self.manager.GetLibraryVersion(homeid)
         return cstr_to_str(c_string.c_str())
 
+    def getPythonLibraryFlavor(self):
+        '''
+.. _getPythonLibraryFlavor:
+
+Get the flavor of the python library.
+
+:return: A string containing the python library flavor. For example, "embed".
+:rtype: str
+:see: getLibraryTypeName_, getLibraryVersion_, getOzwLibraryVersion_, getOzwLibraryLongVersion
+
+        '''
+        return "%s" % (PY_LIB_FLAVOR_STRING)
+
     def getPythonLibraryVersion(self):
         '''
 .. _getPythonLibraryVersion:

@@ -53,8 +53,7 @@ from openzwave.option import ZWaveOption
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
-from tests.common import TestPyZWave
-import json
+from tests.common import TestPyZWave, json_dumps, json_loads
 
 class TestValue(TestApi):
 
@@ -64,16 +63,13 @@ class TestValue(TestApi):
                 val = self.active_nodes[node].values[value].to_dict()
                 print(val)
                 self.assertEqual(type(val), type(dict()))
-                self.assertTrue('data_item' in val)
+                self.assertTrue('data_items' in val)
                 self.assertTrue('command_class' in val)
                 self.assertTrue('is_read_only' in val)
                 self.assertTrue('is_write_only' in val)
                 self.assertTrue('type' in val)
                 self.assertTrue('index' in val)
-                try :
-                    res = json.dumps(val)
-                except TypeError:
-                    res = None
+                res = json_dumps(val)
                 self.assertNotEqual(res, None)
 
     def test_210_values_check_data(self):

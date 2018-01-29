@@ -552,14 +552,14 @@ venv3:
 	@echo
 
 venv2-dev: venv2 src-lib/libopenzwave/libopenzwave.cpp
-	venv2/bin/python setup-lib.py install --flavor=dev
-	venv2/bin/python setup-api.py install
-	venv2/bin/python setup-manager.py install
+	venv2/bin/python setup-lib.py develop --flavor=dev
+	venv2/bin/python setup-api.py develop
+	venv2/bin/python setup-manager.py develop
 	
 venv3-dev: venv3 src-lib/libopenzwave/libopenzwave.cpp
-	venv3/bin/python setup-lib.py install --flavor=dev
-	venv3/bin/python setup-api.py install
-#~  	venv3/bin/python setup-manager.py install
+	venv3/bin/python setup-lib.py develop --flavor=dev
+	venv3/bin/python setup-api.py develop
+	venv3/bin/python setup-manager.py develop
 
 venv2-shared: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup-lib.py install --flavor=shared
@@ -577,7 +577,9 @@ venv-clean:
 	-rm -rf venv3
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
 
-venv-tests: venv2-dev venv3-dev
+venv-tests: venv2-tests venv3-tests
+
+venv2-tests: venv2-dev
 	@echo ==========================================================================================
 	@echo
 	@echo
@@ -593,7 +595,16 @@ venv-tests: venv2-dev venv3-dev
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
+
+	@echo
+	@echo
+	@echo "Tests for venv2 done."
+	@echo
+	@echo
+	@echo ==========================================================================================
+	@echo
 	
+venv3-tests: venv3-dev
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
@@ -605,7 +616,7 @@ venv-tests: venv2-dev venv3-dev
 
 	@echo
 	@echo
-	@echo "Tests for venv-autobuild-autobuild-tests done."
+	@echo "Tests for venv3 done."
 	@echo
 	@echo
 	@echo ==========================================================================================

@@ -29,7 +29,6 @@ __email__ = 'bibi21000@gmail.com'
 import sys, os
 import time
 import logging
-import json as mjson
 
 from flask import Flask
 

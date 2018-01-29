@@ -34,7 +34,6 @@ import datetime
 import random
 import socket
 import re
-import json
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -52,7 +51,7 @@ from openzwave.option import ZWaveOption
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
-from tests.common import TestPyZWave
+from tests.common import TestPyZWave, json_dumps, json_loads
 
 class TestNodes(TestApi):
 
@@ -79,7 +78,7 @@ class TestNodes(TestApi):
                 self.assertTrue('groups' in noded)
                 self.assertTrue('neighbors' in noded)
                 self.assertTrue('capabilities' in noded)
-                res = json.dumps(noded)
+                res = json_dumps(noded)
             except TypeError:
                 res = None
             self.assertNotEqual(res, None)
@@ -88,7 +87,7 @@ class TestNodes(TestApi):
         try :
             nodes = self.network.controller.to_dict()
             self.assertEqual(type(nodes), type(dict()))
-            res = json.dumps(nodes)
+            res = json_dumps(nodes)
         except TypeError:
             res = None
         self.assertNotEqual(res, None)
@@ -99,7 +98,7 @@ class TestNodes(TestApi):
                 groups = self.active_nodes[node].groups_to_dict()
                 self.assertTrue(type(groups), type(dict()))
                 self.assertEqual(type(groups), type(dict()))
-                res = json.dumps(groups)
+                res = json_dumps(groups)
             except TypeError:
                 res = None
             self.assertNotEqual(res, None)

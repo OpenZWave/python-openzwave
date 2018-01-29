@@ -24,15 +24,22 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import sys
+import os, sys
 import six
 if six.PY3:
     from pydispatch import dispatcher
+    from urllib.request import urlopen
 else:
     from louie import dispatcher
+    from urllib2 import urlopen
+import zipfile
+import tempfile
+import threading
+import shutil
+import time
+
 from openzwave.object import ZWaveObject, deprecated
 from libopenzwave import PyStatDriver, PyControllerState
-import threading
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -327,6 +334,17 @@ class ZWaveController(ZWaveObject):
         return self._network.manager.getLibraryVersion(self._network.home_id)
 
     @property
+    def python_library_flavor(self):
+        """
+        The flavor of the python library.
+
+        :return: The python library flavor
+        :rtype: str
+
+        """
+        return self._network.manager.getPythonLibraryFlavor()
+
+    @property
     def python_library_version(self):
         """
         The version of the python library.
@@ -336,6 +354,23 @@ class ZWaveController(ZWaveObject):
 
         """
         return self._network.manager.getPythonLibraryVersionNumber()
+
+    @property
+    def python_library_config_version(self):
+        """
+        The version of the config for python library.
+
+        :return: The python library config version
+        :rtype: str
+
+        """
+        tversion = "Original %s" % self.library_version
+        fversion = os.path.join(self.library_config_path, 'pyozw_config.version')
+        if os.path.isfile(fversion):
+            with open(fversion, 'r') as f: 
+                val = f.read()
+            tversion = "Git %s" % val
+        return tversion
 
     @property
     def ozw_library_version(self):
@@ -1315,4 +1350,27 @@ class ZWaveController(ZWaveObject):
                 **{'state': state, 'message': message, 'network': self._network, 'controller': self})
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
+
+    def update_ozw_config(self):
+        """
+        Update the openzwave config from github.
+        Not available for shared flavor as we don't want to update the config of the precompiled config.
+
+        """
+        if self.python_library_flavor in ['shared']:
+            logger.warning(u"Can't update_ozw_config for this flavor (%s)."%self.python_library_flavor)
+            return
+        logger.info(u'Update_ozw_config from github.')
+        dest = tempfile.mkdtemp()
+        dest_file = os.path.join(dest, 'open-zwave.zip')
+        req = urlopen('https://codeload.github.com/OpenZWave/open-zwave/zip/master')
+        with open(dest_file, 'wb') as f:
+            f.write(req.read())
+        zip_ref = zipfile.ZipFile(dest_file, 'r')
+        zip_ref.extractall(dest)
+        zip_ref.close()
+        os.system("cp -rf %s %s"%(os.path.join(dest, 'open-zwave-master', 'config'), self.library_config_path))
+        with open(os.path.join(self.library_config_path, 'pyozw_config.version'), 'w') as f: 
+            f.write(time.strftime("%Y-%m-%d %H:%M")) 
+        shutil.rmtree(dest)
 

@@ -32,7 +32,6 @@ __email__ = 'bibi21000@gmail.com'
 import sys
 import time
 import logging
-import json as mjson
 
 from tests.web.common import FlaskTestBase
 

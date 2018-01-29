@@ -30,7 +30,6 @@ import time
 import unittest
 import threading
 import logging
-import json as mjson
 import shutil
 from nose.plugins.skip import SkipTest
 

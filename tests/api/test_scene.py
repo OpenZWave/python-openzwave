@@ -50,8 +50,7 @@ from openzwave.option import ZWaveOption
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
-from tests.common import TestPyZWave
-import json
+from tests.common import TestPyZWave, json_dumps, json_loads
 
 class TestScene(TestApi):
     count = 0
@@ -83,7 +82,7 @@ class TestScene(TestApi):
     def test_010_scenes_to_dict(self):
         dscenes = self.network.scenes_to_dict()
         self.assertEqual(type(dscenes), type(dict()))
-        res = json.dumps(dscenes)
+        res = json_dumps(dscenes)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
@@ -93,7 +92,7 @@ class TestScene(TestApi):
             try :
                 scene = scenes[scene].to_dict()
                 self.assertEqual(type(scene), type(dict()))
-                res = json.dumps(scene)
+                res = json_dumps(scene)
             except TypeError:
                 res = None
             self.assertNotEqual(res, None)

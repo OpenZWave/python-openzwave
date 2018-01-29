@@ -30,7 +30,6 @@ import time
 import unittest
 import threading
 import logging
-import json as mjson
 import shutil
 from nose.plugins.skip import SkipTest
 import libopenzwave
@@ -51,7 +50,7 @@ else:
     from louie import dispatcher
 
 from tests.common import SLEEP
-from tests.common import TestPyZWave
+from tests.common import TestPyZWave, json_dumps, json_loads
 
 class TestApi(TestPyZWave):
     """
@@ -68,7 +67,6 @@ class TestApi(TestPyZWave):
         self.options.set_save_log_level(self.ozwlog)
         self.options.set_logging(True)
         self.options.lock()
-        dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
         self.network = ZWaveNetwork(self.options)
         self.node_result = None
         self.ctrl_command_result = None
@@ -86,6 +84,7 @@ class TestApi(TestPyZWave):
         self.network = None
 
     def setUp(self):
+        dispatcher.connect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
         self.node_result = None
         self.ctrl_command_result = None
         self.ctrl_command_signal = None
@@ -97,6 +96,9 @@ class TestApi(TestPyZWave):
             if self.network.nodes[node].is_info_received:
                 self.active_nodes[node] = self.network.nodes[node]
         print('active nodes : %s' % self.active_nodes)
+
+    def tearDown(self):
+        dispatcher.disconnect(self.node_update, ZWaveNetwork.SIGNAL_NODE)
 
     def wait_for_queue(self):
         for i in range(0,60):

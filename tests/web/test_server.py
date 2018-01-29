@@ -32,7 +32,6 @@ __email__ = 'bibi21000@gmail.com'
 import sys
 import time
 import logging
-import json as mjson
 
 from flask.ext.socketio import SocketIO, emit, join_room, leave_room, close_room, disconnect
 from flask.ext.socketio.test_client import SocketIOTestClient

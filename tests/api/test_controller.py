@@ -59,6 +59,7 @@ class TestController(TestApi):
         self.assertTrue(isinstance(self.network.controller.name, string_types))
         self.assertTrue(isinstance(self.network.controller.ozw_library_version, string_types))
         self.assertTrue(isinstance(self.network.controller.python_library_version, string_types))
+        self.assertTrue(isinstance(self.network.controller.python_library_flavor, string_types))
         self.assertTrue(isinstance(self.network.controller.library_description, string_types))
 
     def test_020_controller_capabilities(self):
@@ -70,6 +71,17 @@ class TestController(TestApi):
 
     def test_040_controller_stats(self):
         self.assertEqual(type(self.network.controller.stats), type(dict()))
+
+    def test_050_controller_update_ozw_config(self):
+        #Remove old config version
+        try:
+            os.remove(os.path.join(self.network.controller.library_config_path, 'pyozw_config.version'))
+        except:
+            pass
+        self.assertTrue(self.network.controller.python_library_config_version.startswith('Original'))
+        if not ( self.network.controller.python_library_flavor in ['shared']):
+            self.network.controller.update_ozw_config()
+            self.assertTrue(self.network.controller.python_library_config_version.startswith('Git'))
 
     def test_110_controller_soft_reset(self):
         time.sleep(5)

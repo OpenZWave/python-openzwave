@@ -33,6 +33,7 @@ if six.PY3:
 else:
     from louie import dispatcher
 import threading
+
 import libopenzwave
 import openzwave
 from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
@@ -41,7 +42,6 @@ from openzwave.node import ZWaveNode
 from openzwave.option import ZWaveOption
 from openzwave.scene import ZWaveScene
 from openzwave.singleton import Singleton
-import json
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -302,8 +302,8 @@ class ZWaveNetwork(ZWaveObject):
         :type log:
         :param autostart: should we start the network.
         :type autostart: bool
-        :param autostart: Enable kvals (use pysqlite)
-        :type autostart: bool
+        :param kvals: Enable kvals (use pysqlite)
+        :type kvals: bool
 
         """
         logger.debug("Create network object.")

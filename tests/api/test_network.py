@@ -34,7 +34,6 @@ import datetime
 import random
 import socket
 import re
-import json
 import six
 if six.PY3:
     from pydispatch import dispatcher
@@ -52,7 +51,7 @@ from openzwave.option import ZWaveOption
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
-from tests.common import TestPyZWave
+from tests.common import TestPyZWave, json_dumps, json_loads
 
 class TestNetwork(TestApi):
 
@@ -82,14 +81,14 @@ class TestNetwork(TestApi):
     def test_200_network_to_dict(self):
         dnetwork = self.network.to_dict()
         self.assertEqual(type(dnetwork), type(dict()))
-        res = json.dumps(dnetwork)
+        res = json_dumps(dnetwork)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
     def test_220_network_nodes_to_dict(self):
         dnodes = self.network.nodes_to_dict()
         self.assertEqual(type(dnodes), type(dict()))
-        res = json.dumps(dnodes)
+        res = json_dumps(dnodes)
         self.assertNotEqual(res, None)
         self.assertTrue(len(res)>0)
 
