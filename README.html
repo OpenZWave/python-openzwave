@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>python-openzwave &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <title>python-openzwave &#8212; python-openzwave 0.4.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.0.35',
+        VERSION:     '0.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -34,7 +34,7 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.1 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -58,15 +58,12 @@
 <li>a full-event webapp example : flask + socket.io + jquery</li>
 <li>a suite of tests</li>
 <li>many examples</li>
-<li><a class="reference external" href="http://openzwave.github.io/python-openzwave/">Full documentation</a></li>
+<li><a class="reference external" href="http://openzwave.github.io/python-openzwave/index.html">Full documentation</a></li>
 </ul>
 </div></blockquote>
-<div class="section" id="python-openzwave-0-4-0-is-coming">
-<h2>python-openzwave 0.4.0 is coming !!!<a class="headerlink" href="#python-openzwave-0-4-0-is-coming" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><ul>
-<li><p class="first">0.4.0.x versions are for testers only. Don’t use it in a production environement !!!</p>
-</li>
+<div class="section" id="python-openzwave-0-4-1-is-here">
+<h2>python-openzwave 0.4.1 is here !!!<a class="headerlink" href="#python-openzwave-0-4-1-is-here" title="Permalink to this headline">¶</a></h2>
+<ul>
 <li><p class="first">New installation process via pip</p>
 </li>
 <li><p class="first">First, you need some build tools and libs. On ubuntu, you should use :</p>
@@ -84,30 +81,37 @@
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Install the default (embed) flavor :</p>
+<li><p class="first">Install the default flavor. It will try  :</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">The previous command install python_openzwave statitically linked to sources downloaded from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>.
-You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :</p>
+<li><dl class="first docutils">
+<dt>The previous command install python_openzwave statitically linked to sources downloaded from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>.</dt>
+<dd><p class="first last">You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :</p>
+</dd>
+</dl>
 </li>
 </ul>
 <blockquote>
 <div><ul>
 <li><p class="first">on python 2.7 :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
 <span class="o">(</span>venvX<span class="o">)</span> pip install <span class="s1">&#39;Louie&gt;=1.1&#39;</span>
 </pre></div>
 </div>
+</div></blockquote>
 </li>
 <li><p class="first">on python 3 :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six
 <span class="o">(</span>venvX<span class="o">)</span> pip install <span class="s1">&#39;PyDispatcher&gt;=2.0.5&#39;</span>
 </pre></div>
 </div>
+</div></blockquote>
 </li>
 </ul>
 </div></blockquote>
@@ -119,9 +123,9 @@ You can change this using flavors. There is a bug in the package dependencies an
 build them. Python_openzwave is statically build using a cythonized version of libopenzwave. No need to install cython.</li>
 <li>shared : if you have install openzwave as module manually, you can link python_openzwave to it.</li>
 <li>git : download sources from openzwave github and link statically to it.</li>
-<li>embed_shared (experimental) : download sources from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>, build and install as module on the system.
+<li>embed_shared : download sources from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>, build and install as module on the system.
 Python_openzwave use it. Need root access to install openzwave libs.</li>
-<li>git_shared (experimental) : download sources from openzwave github, build and install them as module on the system.
+<li>git_shared : download sources from openzwave github, build and install them as module on the system.
 Python_openzwave use it. Need root access to install openzwave libs.</li>
 <li>ozwdev and ozwdev_shared : use the dev branch of openzwave on github.</li>
 <li>dev : for python_openzwave developers. Look for openzwave sources in a local folder specified by the LOCAL_OPENZWAVE environment variable (defaults to ‘openzwave’).</li>
@@ -144,7 +148,8 @@ Python_openzwave use it. Need root access to install openzwave libs.</li>
 </div></blockquote>
 </li>
 <li><p class="first">At last, you can launch pyozw_check:</p>
-<p>If no usb stick is connected to the machine, launch :</p>
+<blockquote>
+<div><p>If no usb stick is connected to the machine, launch :</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pyozw_check
 </pre></div>
@@ -202,7 +207,11 @@ Try to destroy options
 </pre></div>
 </div>
 </div></blockquote>
+</div></blockquote>
 </li>
+</ul>
+<blockquote>
+<div><ul>
 <li><p class="first">The old manager is now available via the pyozw_shell command. You need to install module “urwid&gt;=1.1.1” with pip before using it.</p>
 </li>
 <li><p class="first">libopenzwave and openzwave python modules are packaged in the python_openzwave.
@@ -238,12 +247,6 @@ They can use the following code to update softly :</p>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="python-openzwave-0-3-0-is-out">
-<h2>python-openzwave 0.3.0 is out !!!<a class="headerlink" href="#python-openzwave-0-3-0-is-out" title="Permalink to this headline">¶</a></h2>
-<p>Look at CHANGELOG to see new features and release notes.</p>
-<p>Look at INSTALL_REPO to test it now.</p>
-<p>Look at INSTALL_ARCH to install from archive : no need to install cython anymore.</p>
-</div>
 <div class="section" id="support">
 <h2>Support<a class="headerlink" href="#support" title="Permalink to this headline">¶</a></h2>
 <p>You can ask for support on the google group : <a class="reference external" href="http://groups.google.com/d/forum/python-openzwave-discuss">http://groups.google.com/d/forum/python-openzwave-discuss</a>.</p>
@@ -253,71 +256,6 @@ They can use the following code to update softly :</p>
 <h2>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
 <p>Please read DEVEL documentation before submitting pull request.
 A lot of project tasks are done automatically or with makefile, so they must be done in a certain place or in a special order.</p>
-</div>
-<div class="section" id="migrating-from-python-openzwave-0-2-x-to-0-3-0">
-<h2>Migrating from python-openzwave 0.2.X to 0.3.0<a class="headerlink" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0" title="Permalink to this headline">¶</a></h2>
-<p>I need to update source tree of python-openzwave and modules’s names because of a bug in setuptools
-: <a class="reference external" href="https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src">https://bitbucket.org/pypa/setuptools/issue/230/develop-mode-does-not-respect-src</a> .
-Sorry for that.</p>
-<p>Update your sources:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>git pull
-</pre></div>
-</div>
-<p>Before building python-openzwave 0.3.0, you must uninstall the old version :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make uninstall
-</pre></div>
-</div>
-<p>About cython : I’ve made many tests using cython installed via pip : (0.20, 0.21 and 0.22).
-Compilation is ok but a segfault appears when launching the tests. Please remove it.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo pip uninstall Cython
-</pre></div>
-</div>
-<p>You also need to make some minor updates in you code, look at CHANGELOG</p>
-<p>If you have problems, please submit an issue with :</p>
-<blockquote>
-<div><ul class="simple">
-<li>cython -V</li>
-<li>the content of the directory /usr/local/lib/python2.7/dist-packages/ (for python2.7)</li>
-<li>the content of /usr/local/lib/python2.7/dist-packages/easy-install.pth (for python 2.7)</li>
-</ul>
-</div></blockquote>
-</div>
-<div class="section" id="ubuntu-64bits-and-the-others">
-<h2>Ubuntu 64bits … and the others<a class="headerlink" href="#ubuntu-64bits-and-the-others" title="Permalink to this headline">¶</a></h2>
-<p>If you’re using Ubuntu 64 bits (and mayde others) and keep your distribution up to date,
-you certainly have the segfault problem.</p>
-<p>Ubuntu 12.04 and 14.04 seems to be affected by this bug. Ubuntu 15.10 and Debian Jessie not.</p>
-<p>It appears with the last update of python :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>$ python
-Python <span class="m">2</span>.7.6 <span class="o">(</span>default, Jun <span class="m">22</span> <span class="m">2015</span>, <span class="m">17</span>:58:13<span class="o">)</span>
-<span class="o">[</span>GCC <span class="m">4</span>.8.2<span class="o">]</span> on linux2
-Type <span class="s2">&quot;help&quot;</span>, <span class="s2">&quot;copyright&quot;</span>, <span class="s2">&quot;credits&quot;</span> or <span class="s2">&quot;license&quot;</span> <span class="k">for</span> more information.
-</pre></div>
-</div>
-<p>I’ve open a discussion on cython-users here : <a class="reference external" href="https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk">https://groups.google.com/forum/#!topic/cython-users/mRsviGuCFOk</a></p>
-<p>The only way I found to avoid this is to rebuild and reinstall the old release of python :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>wget https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.dsc https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6.orig.tar.gz https://launchpad.net/ubuntu/+archive/primary/+files/python2.7_2.7.6-8.diff.gz
-
-dpkg-source -x python2.7_2.7.6-8.dsc
-
-sudo apt-get build-dep python2.7
-
-<span class="nb">cd</span> python2.7-2.7.6
-
-dpkg-buildpackage
-</pre></div>
-</div>
-<p>Wait, wait and await again :)</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> ..
-
-sudo dpkg -i *.deb
-</pre></div>
-</div>
-<p>To prevent future updates of python, you could mark its packages. For example, if you use apt to update your distribution, use the following command :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo apt-mark hold idle-python2.7 libpython2.7-minimal python2.7-dbg python2.7-minimal libpython2.7 libpython2.7-stdlib python2.7-dev libpython2.7-dbg  libpython2.7-testsuite python2.7-doc libpython2.7-dev python2.7 python2.7-examples
-</pre></div>
-</div>
-<p>Some users have reported that building python-openzwave using the archive (INSTALL_ARCH) can also do the trick. Let me know if it works for you.</p>
 </div>
 </div>
 
@@ -330,12 +268,9 @@ sudo dpkg -i *.deb
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">python-openzwave</a><ul>
-<li><a class="reference internal" href="#python-openzwave-0-4-0-is-coming">python-openzwave 0.4.0 is coming !!!</a></li>
-<li><a class="reference internal" href="#python-openzwave-0-3-0-is-out">python-openzwave 0.3.0 is out !!!</a></li>
+<li><a class="reference internal" href="#python-openzwave-0-4-1-is-here">python-openzwave 0.4.1 is here !!!</a></li>
 <li><a class="reference internal" href="#support">Support</a></li>
 <li><a class="reference internal" href="#pull-requests">Pull requests</a></li>
-<li><a class="reference internal" href="#migrating-from-python-openzwave-0-2-x-to-0-3-0">Migrating from python-openzwave 0.2.X to 0.3.0</a></li>
-<li><a class="reference internal" href="#ubuntu-64bits-and-the-others">Ubuntu 64bits … and the others</a></li>
 </ul>
 </li>
 </ul>
@@ -370,7 +305,7 @@ sudo dpkg -i *.deb
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.1 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

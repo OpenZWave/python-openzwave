@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Controller documentation &#8212; python-openzwave 0.4.0.35 documentation</title>
+    <title>Controller documentation &#8212; python-openzwave 0.4.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.4.0.35',
+        VERSION:     '0.4.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,7 @@
         <li class="right" >
           <a href="network.html" title="Network documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="openzwave.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>  
@@ -926,6 +926,38 @@ Listen to notifications and use request_controller_status to retrieve the status
 </dd></dl>
 
 <dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.python_library_config_version">
+<code class="descname">python_library_config_version</code><a class="headerlink" href="#openzwave.controller.ZWaveController.python_library_config_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The version of the config for python library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The python library config version</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openzwave.controller.ZWaveController.python_library_flavor">
+<code class="descname">python_library_flavor</code><a class="headerlink" href="#openzwave.controller.ZWaveController.python_library_flavor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The flavor of the python library.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The python library flavor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="openzwave.controller.ZWaveController.python_library_version">
 <code class="descname">python_library_version</code><a class="headerlink" href="#openzwave.controller.ZWaveController.python_library_version" title="Permalink to this definition">¶</a></dt>
 <dd><p>The version of the python library.</p>
@@ -1231,6 +1263,13 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.controller.ZWaveController.update_ozw_config">
+<code class="descname">update_ozw_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.update_ozw_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the openzwave config from github.
+Not available for shared flavor as we don’t want to update the config of the precompiled config.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.controller.ZWaveController.zwcallback">
 <code class="descname">zwcallback</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.zwcallback" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Callback Handler used when sendig commands to the controller.
@@ -1298,7 +1337,7 @@ Dispatch a louie message.</p>
         <li class="right" >
           <a href="network.html" title="Network documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.0.35 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.1 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="openzwave.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>
