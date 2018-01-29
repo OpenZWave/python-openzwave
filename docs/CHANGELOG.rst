@@ -6,6 +6,7 @@ Changelog
  
 python_openzwave 0.4.1.x:
  * Update the default flavor : try to use a precompiled library. If can't find one, use the embeded package.
+ * Add method to controller to get new config from github.
  
 
 python_openzwave 0.4.0.x:
