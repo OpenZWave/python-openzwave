@@ -46,14 +46,16 @@ python-openzwave 0.4.1 is here !!!
         virtualenv --python=python3 venv3
         source venv3/bin/activate
 
-- Install the default flavor. It will try  :       
+- Install the default flavor  :       
  
     .. code-block:: bash
     
         (venvX) pip install python_openzwave
     
-- The previous command install python_openzwave statitically linked to sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
-   You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :
+- The previous command try to install python_openzwave with the flavor 'shared'. 
+  If it can't find a precompiled library of openzwave, it will use the flavor 'embed' with sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
+  You can change this using flavor option. 
+  There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :
  
  - on python 2.7 :
   
@@ -96,7 +98,7 @@ python-openzwave 0.4.1 is here !!!
         (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git"
         
     
-- At last, you can launch pyozw_check:
+- At last, you can launch pyozw_check to test your installation :
 
    If no usb stick is connected to the machine, launch :
 
