@@ -461,9 +461,9 @@ new-version: validate-pr
 	-$(MAKE) docs
 	-git commit -m "Auto-commit for new-version" README.rst INSTALL_REPO.rst INSTALL_MAC.rst INSTALL_WIN.rst INSTALL_ARCH.rst LICENSE.txt COPYRIGHT.txt DEVEL.txt EXAMPLES.txt CHANGELOG.txt docs/
 	-git checkout $(ARCHIVES)/
-	git commit -m "Update pyozw_version to ${python_openzwave_version}" pyozw_version.py
+	-git commit -m "Update pyozw_version to ${python_openzwave_version}" pyozw_version.py
 	$(MAKE) debch
-	git commit -m "Update debian version to ${python_openzwave_version}" debian/
+	-git commit -m "Update debian version to ${python_openzwave_version}" debian/
 	-$(MAKE) embed_openzave_master 
 	-$(MAKE) pypi_package 
 	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git push
