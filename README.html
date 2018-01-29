@@ -81,18 +81,17 @@
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Install the default flavor. It will try  :</p>
+<li><p class="first">Install the default flavor  :</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave
 </pre></div>
 </div>
 </div></blockquote>
 </li>
-<li><dl class="first docutils">
-<dt>The previous command install python_openzwave statitically linked to sources downloaded from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>.</dt>
-<dd><p class="first last">You can change this using flavors. There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :</p>
-</dd>
-</dl>
+<li><p class="first">The previous command try to install python_openzwave with the flavor ‘shared’.
+If it can’t find a precompiled library of openzwave, it will use the flavor ‘embed’ with sources downloaded from <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/tree/master/archives">https://github.com/OpenZWave/python-openzwave/tree/master/archives</a>.
+You can change this using flavor option.
+There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :</p>
 </li>
 </ul>
 <blockquote>
@@ -147,7 +146,7 @@ Python_openzwave use it. Need root access to install openzwave libs.</li>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">At last, you can launch pyozw_check:</p>
+<li><p class="first">At last, you can launch pyozw_check to test your installation :</p>
 <blockquote>
 <div><p>If no usb stick is connected to the machine, launch :</p>
 <blockquote>
