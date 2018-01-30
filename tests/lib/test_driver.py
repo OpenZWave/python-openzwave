@@ -34,7 +34,7 @@ import datetime
 import random
 import socket
 import libopenzwave
-from common import TestLib
+from .common import TestLib
 import re
 from tests.common import pyozw_version
 from six import string_types
@@ -55,9 +55,6 @@ class TestDriver(TestLib):
             user_path=self.userpath, cmd_line="--logging false")
         self.options.lock()
         
-    def tearDown(self):
-        self.stop_lib()
-
     def test_100_start(self):
         time.sleep(1.0)
         self.manager = libopenzwave.PyManager()

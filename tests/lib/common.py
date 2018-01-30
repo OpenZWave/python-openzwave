@@ -114,7 +114,6 @@ class TestLib(TestPyZWave):
         super(TestPyZWave, self).tearDownClass()
 
     def start_lib(self):
-
         if self.options is None:
             self.options = libopenzwave.PyOptions(config_path="openzwave/config", \
                 user_path=self.userpath, cmd_line="--logging false")
@@ -141,15 +140,19 @@ class TestLib(TestPyZWave):
     @classmethod
     def stop_lib(self):
         if self.manager is not None:
+            print("Remove driver")
             self.manager.removeDriver(self.device)
-            time.sleep(1.0)
+            time.sleep(2.0)
+            print("Remove watcher")
             self.manager.removeWatcher(self.zwcallback)
-            time.sleep(1.0)
+            time.sleep(2.0)
+            print("Destroy manager")
             self.manager.destroy()
             time.sleep(1.0)
             self.manager = None
         if self.options is not None:
             self.options.destroy()
+            print("Destroy options")
             time.sleep(1.0)
         self.options = None
         self.homeid = None
@@ -237,11 +240,12 @@ class TestLib(TestPyZWave):
             print('Error in manager callback : %s' % traceback.format_exception(*sys.exc_info()))
 
     def wait_for_ready(self):
-        for i in range(0,15):
+        for i in range(0,20):
             if self.ready == True:
                 break
             else:
                 time.sleep(1.0)
+        print("Network ready : %s"%self.ready)
                 
     def wait_for_queue(self):
         for i in range(0,60):
