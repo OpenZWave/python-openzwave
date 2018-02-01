@@ -864,7 +864,7 @@ def parse_template(sysargv):
             if pyozw_pkgconfig.exists('libopenzwave'):
                 flavor = 'shared'
         except:
-            log.exception("Can't use precompiled openzwave library")
+            pass
         #Default template
         if flavor == 'embed':
             log.info("Use embeded package of openzwave")
@@ -877,6 +877,8 @@ def parse_template(sysargv):
         index = sysargv.index('--cleanozw')
         sysargv.pop(index)
         tmpl.cleanozw = True
+    log.info('sysargv', sysargv)
+    print('sysargv', sysargv)
     return tmpl
     
 current_template = parse_template(sys.argv)
@@ -889,6 +891,9 @@ def install_requires():
          pkgs.append('Louie>=1.1')
     pkgs += current_template.install_requires()
     return pkgs
+
+def build_requires():
+    return current_template.build_requires()
 
 def get_dirs(base):
     return [x for x in glob.iglob(os.path.join( base, '*')) if os.path.isdir(x) ]    

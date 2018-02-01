@@ -34,7 +34,7 @@ from setuptools import setup, find_packages
 from distutils.extension import Extension
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
-from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires
+from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires, build_requires
 from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
 from pyozw_setup import bdist_egg, build_openzwave, openzwave_config, build, clean, develop, install
@@ -58,7 +58,7 @@ setup(
         'openzwave_config': openzwave_config,
         'clean': clean,
         'develop': develop,
-        'install': install
+        'install': install,
         },
   scripts=['src-lib/scripts/pyozw_check', 'src-manager/scripts/pyozw_shell'],
   ext_modules = [
