@@ -1310,7 +1310,7 @@ uninstallso:
 	rm -Rf /usr/local/include/openzwave
 	rm -Rf /usr/local/etc/openzwave
 	rm -Rf /usr/local/share/doc/openzwave*
-	find /usr/local/lib/pkgconfig/ -iname libopenzwave.pc -delete
+	-find /usr/local/lib/pkgconfig/ -iname libopenzwave.pc -delete
 
 pyozw_pkgconfig.py:
 	wget https://raw.githubusercontent.com/matze/pkgconfig/master/pkgconfig/pkgconfig.py
