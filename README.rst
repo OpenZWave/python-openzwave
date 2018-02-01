@@ -28,7 +28,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
  * `Full documentation <http://openzwave.github.io/python-openzwave/index.html>`_
 
-python-openzwave 0.4.1 is here !!!
+python-openzwave 0.4.2 is here !!!
 ==================================
  
 - New installation process via pip
@@ -88,14 +88,14 @@ python-openzwave 0.4.1 is here !!!
  
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --install-option="--flavor=git"
+        (venvX) pip install python_openzwave --install-option="--flavor=git" --no-deps
 
 - You can update to the last version of openzwave using the git flavor :
        
     .. code-block:: bash
     
         (venvX) pip uninstall -y python_openzwave
-        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git"
+        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git" --no-deps
         
     
 - At last, you can launch pyozw_check to test your installation :
