@@ -10,7 +10,7 @@ WORKDIR /home/pyozw/
 RUN make docker-deps
 RUN make openzwave.gzip
 RUN make venv-dev-autobuild-tests
-#RUN make venv-pypi-autobuild-tests
+RUN make venv-pypi-autobuild-tests
 RUN make venv-pypilive-autobuild-tests
 RUN apt-get install --force-yes -y pkg-config
 RUN venv-git_shared-autobuild-tests
