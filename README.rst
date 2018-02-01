@@ -28,7 +28,7 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
  * `Full documentation <http://openzwave.github.io/python-openzwave/index.html>`_
 
-python-openzwave 0.4.2 is here !!!
+python-openzwave 0.4.x is here !!!
 ==================================
  
 - New installation process via pip
