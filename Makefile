@@ -472,6 +472,7 @@ new-version: validate-pr
 	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypitest
 	-twine upload archives/python_openzwave-${python_openzwave_version}.zip -r pypi
 	-$(MAKE) tag
+	sleep 60
 	$(MAKE) venv-pypitest-autobuild-tests
 	$(MAKE) venv-pypilive-autobuild-tests
 

@@ -95,7 +95,7 @@ python-openzwave 0.4.x is here !!!
     .. code-block:: bash
     
         (venvX) pip uninstall -y python_openzwave
-        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git" --no-deps
+        (venvX) pip install python_openzwave --no-cache-dir --no-deps --install-option="--flavor=git"
         
     
 - At last, you can launch pyozw_check to test your installation :
@@ -159,6 +159,50 @@ python-openzwave 0.4.x is here !!!
         Try to destroy manager
         Try to destroy options
     
+   You can list the nodes on your network using : 
+    
+    .. code-block:: bash
+
+        (venvX) pyozw_check -l -d /dev/ttyUSB0 -t 60
+
+    .. code-block:: bash
+
+        -------------------------------------------------------------------------------
+        Define options for device /dev/ttyUSB0
+        Start network
+        Wait for network (30s)
+        Network is ready
+        -------------------------------------------------------------------------------
+        Controller capabilities : {'primaryController', 'staticUpdateController'}
+        Controller node capabilities : {'listening', 'primaryController', 'staticUpdateController', 'beaming'}
+        Nodes in network : 4
+        Driver statistics : {'noack': 6, 'routedbusy': 0, 'readCnt': 115, 'ACKWaiting': 0, 'badChecksum': 0, 'broadcastReadCnt': 0, 'NAKCnt': 0, 'broadcastWriteCnt': 9, 'dropped': 0, 'CANCnt': 0, 'callbacks': 0, 'OOFCnt': 0, 'readAborts': 0, 'badroutes': 0, 'SOFCnt': 115, 'netbusy': 0, 'writeCnt': 49, 'nondelivery': 0, 'ACKCnt': 49, 'retries': 0}
+        ------------------------------------------------------------
+        1 - Name :  ( Location :  )
+         1 - Ready : True / Awake : True / Failed : False
+         1 - Manufacturer : Aeotec  ( id : 0x0086 )
+         1 - Product : DSA02203 Z-Stick S2 ( id  : 0x0001 / type : 0x0002 )
+         1 - Version : 3 / Secured : False / Zwave+ : False
+         1 - Command classes : {'COMMAND_CLASS_NO_OPERATION', 'COMMAND_CLASS_BASIC'}
+         1 - Capabilities : {'staticUpdateController', 'listening', 'primaryController', 'beaming'}
+         1 - Neigbors : {4} / Power level : None
+         1 - Is sleeping : False / Can wake-up : False / Battery level : None
+
+        ...
+        
+        ------------------------------------------------------------
+        4 - Name :  ( Location :  )
+         4 - Ready : True / Awake : True / Failed : False
+         4 - Manufacturer : GreenWave  ( id : 0x0099 )
+         4 - Product : PowerNode 6 port ( id  : 0x0004 / type : 0x0003 )
+         4 - Version : 4 / Secured : False / Zwave+ : False
+         4 - Command classes : {'COMMAND_CLASS_BASIC', 'COMMAND_CLASS_CONFIGURATION', 'COMMAND_CLASS_SWITCH_BINARY', 'COMMAND_CLASS_VERSION', 'COMMAND_CLASS_CRC_16_ENCAP', 'COMMAND_CLASS_MANUFACTURER_SPECIFIC', 'COMMAND_CLASS_ASSOCIATION', 'COMMAND_CLASS_MULTI_INSTANCE/CHANNEL', 'COMMAND_CLASS_METER', 'COMMAND_CLASS_PROTECTION', 'COMMAND_CLASS_NO_OPERATION', 'COMMAND_CLASS_SWITCH_ALL'}
+         4 - Capabilities : {'listening', 'routing', 'beaming'}
+         4 - Neigbors : {1} / Power level : None
+         4 - Is sleeping : False / Can wake-up : False / Battery level : None
+         
+         ...
+         
 
  - The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 

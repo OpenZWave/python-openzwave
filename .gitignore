@@ -50,6 +50,7 @@ debian/debhelper-build-stamp
 debian/python3-openzwave/
 pybind
 lib.txt
+log.txt
 pyozw.sqlite
 venv2/
 venv3/
