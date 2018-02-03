@@ -1,6 +1,12 @@
 Changelog
 *********
 
+python_openzwave 0.4.3.x:
+   * Add new options to pyozw_check to list nodes on network.
+
+python_openzwave 0.4.2.x:
+   * Fix bug in default flavor.
+
 python_openzwave 0.4.1.x:
    * Update the default flavor : try to use a precompiled library.
      If can't find one, use the embeded package.
