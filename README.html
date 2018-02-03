@@ -141,7 +141,7 @@ Python_openzwave use it. Need root access to install openzwave libs.</li>
 <li><p class="first">You can update to the last version of openzwave using the git flavor :</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip uninstall -y python_openzwave
-<span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave --no-cache-dir --install-option<span class="o">=</span><span class="s2">&quot;--flavor=git&quot;</span> --no-deps
+<span class="o">(</span>venvX<span class="o">)</span> pip install python_openzwave --no-cache-dir --no-deps --install-option<span class="o">=</span><span class="s2">&quot;--flavor=git&quot;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -203,6 +203,49 @@ Try to add watcher
 Try to remove watcher
 Try to destroy manager
 Try to destroy options
+</pre></div>
+</div>
+</div></blockquote>
+<p>You can list the nodes on your network using :</p>
+<blockquote>
+<div><div class="highlight-bash"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pyozw_check -l -d /dev/ttyUSB0 -t <span class="m">60</span>
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>-------------------------------------------------------------------------------
+Define options <span class="k">for</span> device /dev/ttyUSB0
+Start network
+Wait <span class="k">for</span> network <span class="o">(</span>30s<span class="o">)</span>
+Network is ready
+-------------------------------------------------------------------------------
+Controller capabilities : <span class="o">{</span><span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;staticUpdateController&#39;</span><span class="o">}</span>
+Controller node capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;staticUpdateController&#39;</span>, <span class="s1">&#39;beaming&#39;</span><span class="o">}</span>
+Nodes in network : <span class="m">4</span>
+Driver statistics : <span class="o">{</span><span class="s1">&#39;noack&#39;</span>: <span class="m">6</span>, <span class="s1">&#39;routedbusy&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;readCnt&#39;</span>: <span class="m">115</span>, <span class="s1">&#39;ACKWaiting&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;badChecksum&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;broadcastReadCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;NAKCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;broadcastWriteCnt&#39;</span>: <span class="m">9</span>, <span class="s1">&#39;dropped&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;CANCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;callbacks&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;OOFCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;readAborts&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;badroutes&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;SOFCnt&#39;</span>: <span class="m">115</span>, <span class="s1">&#39;netbusy&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;writeCnt&#39;</span>: <span class="m">49</span>, <span class="s1">&#39;nondelivery&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;ACKCnt&#39;</span>: <span class="m">49</span>, <span class="s1">&#39;retries&#39;</span>: <span class="m">0</span><span class="o">}</span>
+------------------------------------------------------------
+<span class="m">1</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">1</span> - Ready : True / Awake : True / Failed : False
+ <span class="m">1</span> - Manufacturer : Aeotec  <span class="o">(</span> id : 0x0086 <span class="o">)</span>
+ <span class="m">1</span> - Product : DSA02203 Z-Stick S2 <span class="o">(</span> id  : 0x0001 / <span class="nb">type</span> : 0x0002 <span class="o">)</span>
+ <span class="m">1</span> - Version : <span class="m">3</span> / Secured : False / Zwave+ : False
+ <span class="m">1</span> - Command classes : <span class="o">{</span><span class="s1">&#39;COMMAND_CLASS_NO_OPERATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_BASIC&#39;</span><span class="o">}</span>
+ <span class="m">1</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;staticUpdateController&#39;</span>, <span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;beaming&#39;</span><span class="o">}</span>
+ <span class="m">1</span> - Neigbors : <span class="o">{</span><span class="m">4</span><span class="o">}</span> / Power level : None
+ <span class="m">1</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+
+...
+
+------------------------------------------------------------
+<span class="m">4</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">4</span> - Ready : True / Awake : True / Failed : False
+ <span class="m">4</span> - Manufacturer : GreenWave  <span class="o">(</span> id : 0x0099 <span class="o">)</span>
+ <span class="m">4</span> - Product : PowerNode <span class="m">6</span> port <span class="o">(</span> id  : 0x0004 / <span class="nb">type</span> : 0x0003 <span class="o">)</span>
+ <span class="m">4</span> - Version : <span class="m">4</span> / Secured : False / Zwave+ : False
+ <span class="m">4</span> - Command classes : <span class="o">{</span><span class="s1">&#39;COMMAND_CLASS_BASIC&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_CONFIGURATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_SWITCH_BINARY&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_VERSION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_CRC_16_ENCAP&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_MANUFACTURER_SPECIFIC&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_ASSOCIATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_MULTI_INSTANCE/CHANNEL&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_METER&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_PROTECTION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_NO_OPERATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_SWITCH_ALL&#39;</span><span class="o">}</span>
+ <span class="m">4</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;routing&#39;</span>, <span class="s1">&#39;beaming&#39;</span><span class="o">}</span>
+ <span class="m">4</span> - Neigbors : <span class="o">{</span><span class="m">1</span><span class="o">}</span> / Power level : None
+ <span class="m">4</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+
+ ...
 </pre></div>
 </div>
 </div></blockquote>
