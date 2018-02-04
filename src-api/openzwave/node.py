@@ -1060,7 +1060,7 @@ class ZWaveNode(ZWaveObject,
     @property
     def stats(self):
         """
-        Retrieve statistics from driver.
+        Retrieve statistics for node.
 
         Statistics:
 
@@ -1088,7 +1088,7 @@ class ZWaveNode(ZWaveObject,
 
     def get_stats_label(self, stat):
         """
-        Retrieve label of the statistic from driver.
+        Retrieve label of the statistic for node.
 
         :param stat: The code of the stat label to retrieve.
         :type stat:
