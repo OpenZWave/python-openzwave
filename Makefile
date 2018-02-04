@@ -182,7 +182,7 @@ tests-deps:
 
 doc-deps:
 	-apt-get install --force-yes -y python-sphinx
-	${PIP_EXEC} install sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
+	${PIP_EXEC} install cython sphinxcontrib-blockdiag sphinxcontrib-actdiag sphinxcontrib-nwdiag sphinxcontrib-seqdiag
 
 pip-deps:
 	#${PIP_EXEC} install docutils
@@ -225,7 +225,7 @@ docs: clean-docs
 	@echo
 	@echo "Documentation finished."
 
-install-lib: build
+install-lib:
 	${PYTHON_EXEC} setup-lib.py install --flavor=git
 	@echo
 	@echo "Installation of lib finished."
