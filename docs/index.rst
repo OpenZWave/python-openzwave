@@ -6,9 +6,11 @@ Contents:
 .. toctree::
     :maxdepth: 3
 
-    The new "pyx". It provides a low level to the ZWave network. <libopenzwave>
+    The Readme. <README>
+    The low level library ("pyx") to the ZWave network. <libopenzwave>
     And its data's definitions <data>
-    The new API. Map a ZWave Network in objects. <openzwave>
+    The API. Map a ZWave Network in python objects. <openzwave>
+    Updates from Changelog. <CHANGELOG>
 
 
 Indices and tables
