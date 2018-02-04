@@ -314,6 +314,24 @@ Notification::Type_ControllerCommand</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="openzwave.node.ZWaveNode.get_stats_label">
+<code class="descname">get_stats_label</code><span class="sig-paren">(</span><em>stat</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_stats_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve label of the statistic from driver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>stat</strong> – The code of the stat label to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The label or the stat.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="openzwave.node.ZWaveNode.get_values">
 <code class="descname">get_values</code><span class="sig-paren">(</span><em>class_id='All'</em>, <em>genre='All'</em>, <em>type='All'</em>, <em>readonly='All'</em>, <em>writeonly='All'</em>, <em>index='All'</em>, <em>label='All'</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Retrieve the set of values. You can optionnaly filter for a command class,
@@ -1037,6 +1055,42 @@ has been made.</p>
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="openzwave.node.ZWaveNode.stats">
+<code class="descname">stats</code><a class="headerlink" href="#openzwave.node.ZWaveNode.stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve statistics from driver.</p>
+<p>Statistics:</p>
+<blockquote>
+<div><ul class="simple">
+<li>sentCnt                               : Number of messages sent from this node.</li>
+<li>sentFailed                            : Number of sent messages failed</li>
+<li>retries                               : Number of message retries</li>
+<li>receivedCnt                           : Number of messages received from this node.</li>
+<li>receivedDups                          : Number of duplicated messages received;</li>
+<li>receivedUnsolicited                   : Number of messages received unsolicited</li>
+<li>lastRequestRTT                        : Last message request RTT</li>
+<li>lastResponseRTT                       : Last message response RTT</li>
+<li>sentTS                                : Last message sent time</li>
+<li>receivedTS                            : Last message received time</li>
+<li>averageRequestRTT                     : Average Request round trip time.</li>
+<li>averageResponseRTT                    : Average Response round trip time.</li>
+<li>quality                               : Node quality measure</li>
+<li>lastReceivedMessage[254]              : Place to hold last received message</li>
+<li>errors                               : Count errors for dead node detection</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Statistics of the node</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict()</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.test">
 <code class="descname">test</code><span class="sig-paren">(</span><em>count=1</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.test" title="Permalink to this definition">¶</a></dt>
@@ -1168,7 +1222,7 @@ has been made.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
     </div>
   </body>
 </html>
