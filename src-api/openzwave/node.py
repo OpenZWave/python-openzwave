@@ -24,6 +24,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import sys
+from libopenzwave import PyStatNode
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
@@ -249,6 +250,8 @@ class ZWaveNode(ZWaveObject,
             caps.add('security')
         if self.is_beaming_device:
             caps.add('beaming')
+        if self.is_zwave_plus:
+            caps.add('zwave_plus')
         if self.node_id == self._network.controller.node_id:
             for cap in self._network.controller.capabilities:
                 caps.add(cap)
@@ -1053,3 +1056,45 @@ class ZWaveNode(ZWaveObject,
         :rtype: str
         """
         return self._network.manager.getNodeType(self.home_id, self.object_id)
+
+    @property
+    def stats(self):
+        """
+        Retrieve statistics from driver.
+
+        Statistics:
+
+                        * sentCnt				: Number of messages sent from this node.
+			* sentFailed				: Number of sent messages failed
+			* retries				: Number of message retries
+			* receivedCnt				: Number of messages received from this node.
+			* receivedDups				: Number of duplicated messages received;
+			* receivedUnsolicited			: Number of messages received unsolicited
+			* lastRequestRTT			: Last message request RTT
+			* lastResponseRTT			: Last message response RTT
+			* sentTS				: Last message sent time
+			* receivedTS				: Last message received time
+			* averageRequestRTT			: Average Request round trip time.
+			* averageResponseRTT			: Average Response round trip time.
+                        * quality				: Node quality measure
+			* lastReceivedMessage[254]		: Place to hold last received message
+			* errors                               : Count errors for dead node detection
+
+        :return: Statistics of the node
+        :rtype: dict()
+
+        """
+        return self._network.manager.getNodeStatistics(self.home_id, self.object_id)
+
+    def get_stats_label(self, stat):
+        """
+        Retrieve label of the statistic from driver.
+
+        :param stat: The code of the stat label to retrieve.
+        :type stat:
+        :return: The label or the stat.
+        :rtype: str
+
+        """
+        #print "stat = %s" % stat
+        return PyStatNode[stat]

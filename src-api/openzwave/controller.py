@@ -1085,6 +1085,7 @@ class ZWaveController(ZWaveObject):
         ret["zw_description"] = self.library_description
         ret["oz_version"] = self.ozw_library_version
         ret["py_version"] = self.python_library_version
+        ret["py_config_version"] = self.python_library_config_version
         return ret
 
     @deprecated

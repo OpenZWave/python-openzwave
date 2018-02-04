@@ -4,11 +4,16 @@
 Changelog
 =========
  
-python_openzwave 0.4.3.x:
+python_openzwave 0.4.5.x:
+ * Fix bug in node statistics and add test.
+ * Update Makefile to build flavor dev
+ * Update pyozw_check.
+
+python_openzwave 0.4.4.x:
  * Add new options to pyozw_check to list nodes on network.
 
 
-python_openzwave 0.4.2.x:
+python_openzwave 0.4.3.x:
  * Fix bug in default flavor.
  
 

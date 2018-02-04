@@ -60,14 +60,19 @@ class TestNode(TestApi):
         node_id = max(self.network.nodes.keys())
         self.assertEqual(type(self.network.nodes[node_id].capabilities), type(set()))
 
+    def test_030_node_statistics(self):
+        node_id = max(self.network.nodes.keys())
+        self.assertEqual(type(self.network.nodes[node_id].stats), type(dict()))
+
     def test_310_node(self):
         node_id = max(self.network.nodes.keys())
         self.assertTrue(isinstance(self.network.nodes[node_id].node_id, integer_types))
         self.assertTrue(self.network.nodes[node_id].node_id > 0)
 
     def test_330_node_neighbors(self):
-        node_id = max(self.network.nodes.keys())
-        self.assertEqual(type(self.network.nodes[node_id].neighbors), type(set()))
+        #~ node_id = max(self.network.nodes.keys())
+        for node_id in self.active_nodes:
+            self.assertEqual(type(self.network.nodes[node_id].neighbors), type(set()))
 
     def test_340_node_baud_rate(self):
         node_id = max(self.network.nodes.keys())

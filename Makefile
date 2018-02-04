@@ -275,7 +275,7 @@ update: openzwave
 	cd openzwave && git pull
 
 build: openzwave/.lib/
-	${PYTHON_EXEC} setup-lib.py build
+	${PYTHON_EXEC} setup-lib.py build --flavor=dev
 
 src-lib/libopenzwave/libopenzwave.cpp: openzwave/.lib/
 	${PYTHON_EXEC} setup-lib.py build --flavor=dev

@@ -18,8 +18,6 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from libc.stdint cimport uint32_t, int32_t, int16_t, uint8_t, int8_t
-from libcpp.vector cimport vector
-#from libcpp.string cimport string
 from mylibc cimport string
 
 cdef extern from "Node.h" namespace "OpenZWave::Node":
@@ -46,15 +44,15 @@ cdef extern from "Node.h" namespace "OpenZWave::Node":
         uint32_t m_receivedCnt                       # Number of messages received from this node.
         uint32_t m_receivedDups                      # Number of duplicated messages received;
         uint32_t m_receivedUnsolicited              # Number of messages received unsolicited
+        uint32_t m_lastRequestRTT                  # Last message request RTT
+        uint32_t m_lastResponseRTT                      # Last message response RTT
         string m_sentTS                                 # Last message sent time
         string m_receivedTS                            # Last message received time
-        uint32_t m_lastRequestRTT                  # Last message request RTT
         uint32_t m_averageRequestRTT             # Average Request Round Trip Time (ms).
-        uint32_t m_lastResponseRTT                 # Last message response RTT
         uint32_t m_averageResponseRTT           #Average Reponse round trip time.
         uint8_t m_quality                                # Node quality measure
         uint8_t m_lastReceivedMessage[254]      # Place to hold last received message
-        vector[CommandClassData] m_ccData     # List of statistic on each command_class
+        uint8_t m_errors                                  # Count errors for dead node detection
 
 ctypedef NodeData NodeData_t
 

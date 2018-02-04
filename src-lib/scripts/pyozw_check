@@ -51,6 +51,8 @@ def imports(args):
         print("Try to get python_openzwave full version")
         print(manager.getPythonLibraryVersion())
         print("Try to get openzwave version")
+        print(manager.getPythonLibraryVersion())
+        print("Try to get openzwave version")
         print(manager.getOzwLibraryVersion())
         print("Try to get default config path")
         print(libopenzwave.configPath())
@@ -196,24 +198,37 @@ def list_nodes(args):
     print("Start network")
     network = ZWaveNetwork(options, log=None)
 
-    print("Wait for network ({0}s)".format(args.timeout))
+    print("Wait for network awake ({0}s)".format(args.timeout))
     delta = 0.5
+    for i in range(0, int(args.timeout/delta)):
+        time.sleep(delta)
+        if network.state >= network.STATE_AWAKED:
+            break
+
+    print("-------------------------------------------------------------------------------")
+    print("Network is awaked. Talk to controller.")
+    print("Get python_openzwave version : {}".format(network.controller.python_library_version))
+    print("Get python_openzwave config version : {}".format(network.controller.python_library_config_version))
+    print("Get python_openzwave flavor : {}".format(network.controller.python_library_flavor))
+    print("Get openzwave version : {}".format(network.controller.ozw_library_version))
+    print("Get config path : {}".format(network.controller.library_config_path))
+    print("Controller capabilities : {}".format(network.controller.capabilities))
+    print("Controller node capabilities : {}".format(network.controller.node.capabilities))
+    print("Nodes in network : {}".format(network.nodes_count))
+
+    print("-------------------------------------------------------------------------------")
+    print("Wait for network ready ({0}s)".format(args.timeout))
     for i in range(0, int(args.timeout/delta)):
         time.sleep(delta)
         if network.state == network.STATE_READY:
             break
+    print("-------------------------------------------------------------------------------")
     if network.state == network.STATE_READY:
-        print("Network is ready")
+        print("Network is ready. Get nodes")
     elif network.state == network.STATE_AWAKED:
         print("Network is awake. Some sleeping devices may miss. You can increase timeout to get them. But will continue.")
     else:
-        print("Network is started. You MUST increase timeout. But will continue.")
-
-    print("-------------------------------------------------------------------------------")
-    print("Controller capabilities : {}".format(network.controller.capabilities))
-    print("Controller node capabilities : {}".format(network.controller.node.capabilities))
-    print("Nodes in network : {}".format(network.nodes_count))
-    print("Driver statistics : {}".format(network.controller.stats))
+        print("Network is still starting. You MUST increase timeout. But will continue.")
 
     for node in network.nodes:
 
@@ -221,13 +236,19 @@ def list_nodes(args):
         print("{} - Name : {} ( Location : {} )".format(network.nodes[node].node_id, network.nodes[node].name, network.nodes[node].location))
         print(" {} - Ready : {} / Awake : {} / Failed : {}".format(network.nodes[node].node_id, network.nodes[node].is_ready, network.nodes[node].is_awake, network.nodes[node].is_failed))
         print(" {} - Manufacturer : {}  ( id : {} )".format(network.nodes[node].node_id, network.nodes[node].manufacturer_name, network.nodes[node].manufacturer_id))
-        print(" {} - Product : {} ( id  : {} / type : {} )".format(network.nodes[node].node_id, network.nodes[node].product_name, network.nodes[node].product_id, network.nodes[node].product_type))
-        print(" {} - Version : {} / Secured : {} / Zwave+ : {}".format(network.nodes[node].node_id, network.nodes[node].version, network.nodes[node].is_security_device, network.nodes[node].is_zwave_plus))
+        print(" {} - Product : {} ( id  : {} / type : {} / Version : {})".format(network.nodes[node].node_id, network.nodes[node].product_name, network.nodes[node].product_id, network.nodes[node].product_type, network.nodes[node].version))
         print(" {} - Command classes : {}".format(network.nodes[node].node_id, network.nodes[node].command_classes_as_string))
         print(" {} - Capabilities : {}".format(network.nodes[node].node_id, network.nodes[node].capabilities))
-        print(" {} - Neigbors : {} / Power level : {}".format(network.nodes[node].node_id, network.nodes[node].neighbors, network.nodes[node].get_power_level()))
+        print(" {} - Neighbors : {} / Power level : {}".format(network.nodes[node].node_id, network.nodes[node].neighbors, network.nodes[node].get_power_level()))
         print(" {} - Is sleeping : {} / Can wake-up : {} / Battery level : {}".format(network.nodes[node].node_id, network.nodes[node].is_sleeping, network.nodes[node].can_wake_up(), network.nodes[node].get_battery_level()))
-                    
+
+    print("------------------------------------------------------------")
+    print("Driver statistics : {}".format(network.controller.stats))
+    print("------------------------------------------------------------")
+    print("Stop network")
+    network.stop()
+    print("Exit")
+                
 def pyozw_parser():
     parser = argparse.ArgumentParser(description='Run python_openzwave basics checks.')
     parser.add_argument('-o', '--output', action='store', help='The format (txt, raw, ...)', choices=['txt', 'raw'], default='txt')

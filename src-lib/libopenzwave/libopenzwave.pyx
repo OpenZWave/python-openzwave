@@ -354,6 +354,24 @@ PyStatDriver = {
     'broadcastWriteCnt' : "Number of broadcasts sent",
     }
 
+PyStatNode = {
+    'sentCnt' : "Number of messages sent from this node",
+    'sentFailed' : "Number of sent messages failed",
+    'retries' : "Number of message retries",
+    'receivedCnt' : "Number of messages received from this node",
+    'receivedDups' : "Number of duplicated messages received",
+    'receivedUnsolicited' : "Number of messages received unsolicited",
+    'lastRequestRTT' : "Last message request RTT",
+    'lastResponseRTT' : "Last message response RTT",
+    'sentTS' : "Last message sent time",
+    'receivedTS' : "Last message received time",
+    'averageRequestRTT' : "Average Request round trip time",
+    'averageResponseRTT' : "Average Response round trip time",
+    'quality' : "Node quality measure",
+    'lastReceivedMessage' : "Place to hold last received message",
+    'errors' : "Count errors for dead node detection",
+    }
+
 PyLogLevels = {
     'Invalid' : {'doc':'Invalid Log Status', 'value':0},
     'None' : {'doc':'Disable all logging', 'value':1},
@@ -1810,10 +1828,6 @@ Statistics:
         * averageResponseRTT           #Average Reponse round trip time.
         * quality                                # Node quality measure
         * lastReceivedMessage[254]   # Place to hold last received message
-        * ccData                                # List of statistic
-              * commandClassId               # Num of commandClass id.
-              * sentCnt                             # Number of messages sent from this CommandClass.
-              * receivedCnt                       # Number of messages received from this CommandClass.
 
 :param homeId: The Home ID of the Z-Wave controller.
 :type homeId: int
@@ -1846,16 +1860,6 @@ Statistics:
         ret['lastReceivedMessage'] = []
         for i in range( 0, 254) :
             ret['lastReceivedMessage'] .append(data.m_lastReceivedMessage[i])
-        listccdata =[]
-        while not data.m_ccData.empty() :
-            ccd = {}
-            temp = data.m_ccData.back()
-            ccd['commandClassId'] = temp.m_commandClassId
-            ccd['sentCnt'] = temp.m_sentCnt
-            ccd['receivedCnt']  = temp.m_receivedCnt
-            listccdata.append(ccd)
-            data.m_ccData.pop_back();
-        ret['ccData'] = listccdata
         return ret
 
     def requestNodeDynamic(self, homeid, nodeid):
