@@ -23,8 +23,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API documentation" href="openzwave.html" />
-    <link rel="prev" title="libopenzwave module" href="libopenzwave.html" /> 
+    <link rel="next" title="Changelog" href="CHANGELOG.html" />
+    <link rel="prev" title="Object documentation" href="object.html" /> 
   </head>
   <body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -37,12 +37,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="openzwave.html" title="API documentation"
+          <a href="CHANGELOG.html" title="Changelog"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="libopenzwave.html" title="libopenzwave module"
+          <a href="object.html" title="Object documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="openzwave.html" accesskey="U">API documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -126,10 +127,74 @@ list(iterable) -&gt; new list initialized from iterable’s items</p>
 </dd></dl>
 
 <dl class="data">
+<dt id="libopenzwave.PyControllerError">
+<code class="descclassname">libopenzwave.</code><code class="descname">PyControllerError</code><em class="property"> = ['None', 'ButtonNotFound', 'NodeNotFound', 'NotBridge', 'NotSUC', 'NotSecondary', 'NotPrimary', 'IsPrimary', 'NotFound', 'Busy', 'Failed', 'Disabled', 'Overflow']</em><a class="headerlink" href="#libopenzwave.PyControllerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>list() -&gt; new empty list
+list(iterable) -&gt; new list initialized from iterable’s items</p>
+</dd></dl>
+
+<dl class="data">
 <dt id="libopenzwave.PyControllerState">
 <code class="descclassname">libopenzwave.</code><code class="descname">PyControllerState</code><em class="property"> = ['Normal', 'Starting', 'Cancel', 'Error', 'Waiting', 'Sleeping', 'InProgress', 'Completed', 'Failed', 'NodeOK', 'NodeFailed']</em><a class="headerlink" href="#libopenzwave.PyControllerState" title="Permalink to this definition">¶</a></dt>
 <dd><p>list() -&gt; new empty list
 list(iterable) -&gt; new list initialized from iterable’s items</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="libopenzwave.PyOptionList">
+<code class="descclassname">libopenzwave.</code><code class="descname">PyOptionList</code><em class="property"> = {'AppendLogFile': {'type': 'Bool', 'doc': 'Append new session logs to existing log file (false = overwrite).'}, 'Associate': {'type': 'Bool', 'doc': 'Enable automatic association of the controller with group one of every device.'}, 'AssumeAwake': {'type': 'Bool', 'doc': 'Assume Devices that Support the Wakeup CC are awake when we first query them ...'}, 'ConfigPath': {'type': 'String', 'doc': 'Path to the OpenZWave config folder.'}, 'ConsoleOutput': {'type': 'Bool', 'doc': 'Display log information on console (as well as save to disk).'}, 'CustomSecuredCC': {'type': 'String', 'doc': 'What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.', 'value': '0x62,0x4c,0x63'}, 'DriverMaxAttempts': {'type': 'Int', 'doc': '.'}, 'DumpTriggerLevel': {'type': 'Int', 'doc': 'Default is to never dump RAM-stored log messages.'}, 'EnableSIS': {'type': 'Bool', 'doc': 'Automatically become a SUC if there is no SUC on the network.'}, 'EnforceSecureReception': {'type': 'Bool', 'doc': 'If we recieve a clear text message for a CC that is Secured, should we drop the message'}, 'Exclude': {'type': 'String', 'doc': 'Remove support for the listed command classes.'}, 'Include': {'type': 'String', 'doc': 'Only handle the specified command classes. The Exclude option is ignored if anything is listed here.'}, 'Interface': {'type': 'String', 'doc': 'Identify the serial port to be accessed (TODO: change the code so more than one serial port can be specified and HID).'}, 'IntervalBetweenPolls': {'type': 'Bool', 'doc': 'If false, try to execute the entire poll list within the PollInterval time frame. If true, wait for PollInterval milliseconds between polls.'}, 'LogFileName': {'type': 'String', 'doc': 'Name of the log file (can be changed via Log::SetLogFileName).'}, 'Logging': {'type': 'Bool', 'doc': 'Enable logging of library activity.'}, 'NetworkKey': {'type': 'String', 'doc': 'Key used to negotiate and communicate with devices that support Security Command Class'}, 'NotifyOnDriverUnload': {'type': 'Bool', 'doc': 'Should we send the Node/Value Notifications on Driver Unloading - Read comments in Driver::~Driver() method about possible race conditions.'}, 'NotifyTransactions': {'type': 'Bool', 'doc': 'Notifications when transaction complete is reported.'}, 'PerformReturnRoutes': {'type': 'Bool', 'doc': 'If true, return routes will be updated.'}, 'PollInterval': {'type': 'Int', 'doc': '30 seconds (can easily poll 30 values in this time; ~120 values is the effective limit for 30 seconds).'}, 'QueueLogLevel': {'type': 'Int', 'doc': 'Save (in RAM) log messages equal to or above LogLevel_Debug.'}, 'RefreshAllUserCodes': {'type': 'Bool', 'doc': &quot;If true, during startup, we refresh all the UserCodes the device reports it supports. If False, we stop after we get the first 'Available' slot (Some devices have 250+ usercode slots! - That makes our Session Stage Very Long ).&quot;}, 'RetryTimeout': {'type': 'Int', 'doc': 'How long do we wait to timeout messages sent.'}, 'SaveConfiguration': {'type': 'Bool', 'doc': 'Save the XML configuration upon driver close.'}, 'SaveLogLevel': {'type': 'Int', 'doc': 'Save (to file) log messages equal to or above LogLevel_Detail.'}, 'SecurityStrategy': {'type': 'String', 'doc': &quot;Should we encrypt CC's that are available via both clear text and Security CC?.&quot;, 'value': 'SUPPORTED'}, 'SuppressValueRefresh': {'type': 'Bool', 'doc': 'If true, notifications for refreshed (but unchanged) values will not be sent.'}, 'UserPath': {'type': 'String', 'doc': &quot;Path to the user's data folder.&quot;}}</em><a class="headerlink" href="#libopenzwave.PyOptionList" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object’s</p>
+<blockquote>
+<div>(key, value) pairs</div></blockquote>
+<dl class="docutils">
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt>
+<dd><p class="first">d = {}
+for k, v in iterable:</p>
+<blockquote class="last">
+<div>d[k] = v</div></blockquote>
+</dd>
+<dt>dict(<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt>
+<dd>in the keyword argument list.  For example:  dict(one=1, two=2)</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="libopenzwave.PyStatDriver">
+<code class="descclassname">libopenzwave.</code><code class="descname">PyStatDriver</code><em class="property"> = {'ACKCnt': 'Number of ACK bytes received', 'ACKWaiting': 'Number of unsolicited messages while waiting for an ACK', 'CANCnt': 'Number of CAN bytes received', 'NAKCnt': 'Number of NAK bytes received', 'OOFCnt': 'Number of bytes out of framing', 'SOFCnt': 'Number of SOF bytes received', 'badChecksum': 'Number of bad checksums', 'badroutes': 'Number of failed messages due to bad route response', 'broadcastReadCnt': 'Number of broadcasts read', 'broadcastWriteCnt': 'Number of broadcasts sent', 'callbacks': 'Number of unexpected callbacks', 'dropped': 'Number of messages dropped &amp; not delivered', 'netbusy': 'Number of network busy/failure messages', 'noack': 'Number of no ACK returned errors', 'nondelivery': 'Number of messages not delivered to network', 'readAborts': 'Number of times read were aborted due to timeouts', 'readCnt': 'Number of messages successfully read', 'retries': 'Number of messages retransmitted', 'routedbusy': 'Number of messages received with routed busy status', 'writeCnt': 'Number of messages successfully sent'}</em><a class="headerlink" href="#libopenzwave.PyStatDriver" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object’s</p>
+<blockquote>
+<div>(key, value) pairs</div></blockquote>
+<dl class="docutils">
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt>
+<dd><p class="first">d = {}
+for k, v in iterable:</p>
+<blockquote class="last">
+<div>d[k] = v</div></blockquote>
+</dd>
+<dt>dict(<a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt>
+<dd>in the keyword argument list.  For example:  dict(one=1, two=2)</dd>
+</dl>
+</dd></dl>
+
+<dl class="data">
+<dt id="libopenzwave.PyStatNode">
+<code class="descclassname">libopenzwave.</code><code class="descname">PyStatNode</code><em class="property"> = {'averageRequestRTT': 'Average Request round trip time', 'averageResponseRTT': 'Average Response round trip time', 'errors': 'Count errors for dead node detection', 'lastReceivedMessage': 'Place to hold last received message', 'lastRequestRTT': 'Last message request RTT', 'lastResponseRTT': 'Last message response RTT', 'quality': 'Node quality measure', 'receivedCnt': 'Number of messages received from this node', 'receivedDups': 'Number of duplicated messages received', 'receivedTS': 'Last message received time', 'receivedUnsolicited': 'Number of messages received unsolicited', 'retries': 'Number of message retries', 'sentCnt': 'Number of messages sent from this node', 'sentFailed': 'Number of sent messages failed', 'sentTS': 'Last message sent time'}</em><a class="headerlink" href="#libopenzwave.PyStatNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict() -&gt; new empty dictionary
+dict(mapping) -&gt; new dictionary initialized from a mapping object’s</p>
+<blockquote>
+<div>(key, value) pairs</div></blockquote>
+<dl class="docutils">
+<dt>dict(iterable) -&gt; new dictionary initialized as if via:</dt>
+<dd><p class="first">d = {}
+for k, v in iterable:</p>
+<blockquote class="last">
+<div>d[k] = v</div></blockquote>
+</dd>
+<dt>dict(<a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs) -&gt; new dictionary initialized with the name=value pairs</dt>
+<dd>in the keyword argument list.  For example:  dict(one=1, two=2)</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -141,11 +206,11 @@ list(iterable) -&gt; new list initialized from iterable’s items</p>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="libopenzwave.html"
-                        title="previous chapter">libopenzwave module</a></p>
+  <p class="topless"><a href="object.html"
+                        title="previous chapter">Object documentation</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="openzwave.html"
-                        title="next chapter">API documentation</a></p>
+  <p class="topless"><a href="CHANGELOG.html"
+                        title="next chapter">Changelog</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -177,12 +242,13 @@ list(iterable) -&gt; new list initialized from iterable’s items</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="openzwave.html" title="API documentation"
+          <a href="CHANGELOG.html" title="Changelog"
              >next</a> |</li>
         <li class="right" >
-          <a href="libopenzwave.html" title="libopenzwave module"
+          <a href="object.html" title="Object documentation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.4 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">python-openzwave 0.4.4 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="openzwave.html" >API documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

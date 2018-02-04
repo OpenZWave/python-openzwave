@@ -316,7 +316,7 @@ Notification::Type_ControllerCommand</p>
 <dl class="method">
 <dt id="openzwave.node.ZWaveNode.get_stats_label">
 <code class="descname">get_stats_label</code><span class="sig-paren">(</span><em>stat</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.node.ZWaveNode.get_stats_label" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve label of the statistic from driver.</p>
+<dd><p>Retrieve label of the statistic for node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -344,8 +344,8 @@ If you wan’t to get all the node’s values, use self.values instead.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>class_id</strong> (<em>hexadecimal code</em><em> or </em><em>string</em>) – the COMMAND_CLASS to get values</li>
-<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
-<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
+<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="libopenzwave.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
+<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="libopenzwave.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
 <li><strong>readonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value readonly</li>
 <li><strong>writeonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value writeonly</li>
 <li><strong>index</strong> (<em>int</em>) – Index of value within all the values</li>
@@ -373,8 +373,8 @@ If you wan’t to get all the node’s values, use the property self.values inst
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
-<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="data.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
+<li><strong>genre</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="libopenzwave.html#libopenzwave.PyGenres" title="libopenzwave.PyGenres"><em>PyGenres</em></a>) – the genre of value</li>
+<li><strong>type</strong> (<em>'All'</em><em> or </em><a class="reference internal" href="libopenzwave.html#libopenzwave.PyValueTypes" title="libopenzwave.PyValueTypes"><em>PyValueTypes</em></a>) – the type of value</li>
 <li><strong>readonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value readonly</li>
 <li><strong>writeonly</strong> (<em>'All'</em><em> or </em><em>True</em><em> or </em><em>False</em>) – Is this value writeonly</li>
 </ul>
@@ -1058,7 +1058,7 @@ has been made.</p>
 <dl class="attribute">
 <dt id="openzwave.node.ZWaveNode.stats">
 <code class="descname">stats</code><a class="headerlink" href="#openzwave.node.ZWaveNode.stats" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve statistics from driver.</p>
+<dd><p>Retrieve statistics for node.</p>
 <p>Statistics:</p>
 <blockquote>
 <div><ul class="simple">

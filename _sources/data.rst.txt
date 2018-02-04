@@ -12,4 +12,8 @@ The common data structures and defitions.
 .. autodata:: PyValueTypes
 .. autodata:: PyLogLevels
 .. autodata:: PyControllerCommand
+.. autodata:: PyControllerError
 .. autodata:: PyControllerState
+.. autodata:: PyOptionList
+.. autodata:: PyStatDriver
+.. autodata:: PyStatNode
