@@ -4,6 +4,7 @@
 Developers information
 ======================
 
+
 How to develop for python-openzwave
 ===================================
 
@@ -21,7 +22,7 @@ You can install all the dependances to develop for python-openzwave using the co
 
     sudo make developer-deps
 
-You must now install python-openzwave in develop mode. Depending on which python versin you prefer, use :
+You must now install python-openzwave in develop mode. Depending on which python version you prefer, use :
 
 .. code-block:: bash
 
@@ -33,7 +34,7 @@ or
 
     make venv2-dev
 
-Keep in mind that your update must be python 2 / python 3 compatible.
+Keep in mind that your updates must be python 2 / python 3 compatible.
 
 Develop, test, debug, test, ... :)
 
@@ -51,6 +52,7 @@ At last but not least, submit your request with the result of tests in the comme
 
 If you don't follow the previous steps, your PR will be refused or letting in pending state until I've got time to test it.
 
+
 Documentation
 =============
 
@@ -62,5 +64,5 @@ First, install the dependances :
 
 Documentation is managed with sphinx.
 
-Don't utpdate txt and rst files (README, INSTALL, ...) in the root directory, update the RST sources in docs.
+Don't update txt and rst files (README, INSTALL, ...) in the root directory, update the RST sources in docs.
 
