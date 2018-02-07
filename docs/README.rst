@@ -88,7 +88,7 @@ python-openzwave 0.4.x is here !!!
  
     .. code-block:: bash
     
-        (venvX) pip install python_openzwave --install-option="--flavor=git" --no-deps
+        (venvX) pip install python_openzwave  --no-deps --install-option="--flavor=git"
 
 - You can update to the last version of openzwave using the git flavor :
        
