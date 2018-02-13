@@ -26,7 +26,7 @@ import os
 import fnmatch
 import platform
  
-def _find_ms_tools( debug=False ):
+def find_ms_tools( debug=False ):
     def find_all_build_tools(name, paths):
         result = []
         for path in paths:
@@ -93,11 +93,12 @@ def _find_ms_tools( debug=False ):
         raise RuntimeError("Can't find MSBuild (arch %s) in %s to build projects in %s"%(arch, vs_path, projects))
     return arch, project, msbuild[0], build_path
 
-from subprocess import Popen, PIPE
+if __name__ == '__main__':
+    from subprocess import Popen, PIPE
 
-arch, project, msbuild, build_path = _find_ms_tools(debug=True)
+    arch, project, msbuild, build_path = find_ms_tools(debug=True)
 
-proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%arch ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
-proc.wait()
+    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%arch ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
+    proc.wait()
 
-print('Library built in is in %s using compiler %s for arch %s' % (build_path, msbuild, arch))
+    print('Library built in is in %s using compiler %s for arch %s' % (build_path, msbuild, arch))
