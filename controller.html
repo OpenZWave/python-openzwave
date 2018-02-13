@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Controller documentation &#8212; python-openzwave 0.4.4 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.4.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -25,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Option documentation" href="option.html" />
     <link rel="prev" title="Network documentation" href="network.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -185,7 +176,7 @@ Notification::Type_ControllerCommand</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_add_device">
-<code class="descname">begin_command_add_device</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_add_device</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_add_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new device to the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -206,7 +197,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_assign_return_route">
-<code class="descname">begin_command_assign_return_route</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_assign_return_route</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_assign_return_route" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign a network return route from a node to another one.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -230,7 +221,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_create_button">
-<code class="descname">begin_command_create_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_create_button</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a handheld button id</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -254,7 +245,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_create_new_primary">
-<code class="descname">begin_command_create_new_primary</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_create_new_primary</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_create_new_primary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new controller to the Z-Wave network. Used when old primary fails. Requires SUC.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -270,7 +261,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_delete_all_return_routes">
-<code class="descname">begin_command_delete_all_return_routes</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_delete_all_return_routes</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_all_return_routes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all network return routes from a device.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -288,7 +279,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_delete_button">
-<code class="descname">begin_command_delete_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_delete_button</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_delete_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete a handheld button id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -312,7 +303,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_has_node_failed">
-<code class="descname">begin_command_has_node_failed</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_has_node_failed" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_has_node_failed</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_has_node_failed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether a node is in the controller’s failed nodes list.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -330,7 +321,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_receive_configuration">
-<code class="descname">begin_command_receive_configuration</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_receive_configuration" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_receive_configuration</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_receive_configuration" title="Permalink to this definition">¶</a></dt>
 <dd><ul class="simple">
 <li></li>
 </ul>
@@ -348,7 +339,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_device">
-<code class="descname">begin_command_remove_device</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_remove_device</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_device" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a device from the Z-Wave network.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -369,7 +360,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_remove_failed_node">
-<code class="descname">begin_command_remove_failed_node</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_failed_node" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_remove_failed_node</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_remove_failed_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move a node to the controller’s list of failed nodes.  The node must
 actually have failed or have been disabled since the command
 will fail if it responds.  A node must be in the controller’s
@@ -390,7 +381,7 @@ failed nodes list for ControllerCommand_ReplaceFailedNode to work.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_replace_failed_node">
-<code class="descname">begin_command_replace_failed_node</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replace_failed_node" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_replace_failed_node</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replace_failed_node" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replace a failed device with another. If the node is not in
 the controller’s failed nodes list, or the node responds, this command will fail.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -409,7 +400,7 @@ the controller’s failed nodes list, or the node responds, this command will fa
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_replication_send">
-<code class="descname">begin_command_replication_send</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replication_send" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_replication_send</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_replication_send" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send information from primary to secondary.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -429,7 +420,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_network_update">
-<code class="descname">begin_command_request_network_update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_request_network_update</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_network_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the controller with network information from the SUC/SIS.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -445,7 +436,7 @@ operate at normal power levels instead.  Defaults to false.</td>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update">
-<code class="descname">begin_command_request_node_neigbhor_update</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_request_node_neigbhor_update</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_request_node_neigbhor_update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a node to rebuild its neighbors list.
 This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -464,7 +455,7 @@ This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_send_node_information">
-<code class="descname">begin_command_send_node_information</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_send_node_information" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_send_node_information</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_send_node_information" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a node information frame.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -482,7 +473,7 @@ This method also does ControllerCommand_RequestNodeNeighbors afterwards.</p>
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.begin_command_transfer_primary_role">
-<code class="descname">begin_command_transfer_primary_role</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
+<code class="descname">begin_command_transfer_primary_role</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.begin_command_transfer_primary_role" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a different controller the primary.
 The existing primary will become a secondary controller.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -666,7 +657,7 @@ Resets a controller and erases its network configuration settings.
 The controller becomes a primary controller ready to add devices to a new network.</p>
 <p>This command fires a lot of louie signals.
 Louie’s clients must disconnect from nodes and values signals</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_RESETTED</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="p">})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_RESETTED</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_network</span><span class="p">})</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1271,7 +1262,7 @@ Not available for shared flavor as we don’t want to update the config of the p
 
 <dl class="method">
 <dt id="openzwave.controller.ZWaveController.zwcallback">
-<code class="descname">zwcallback</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.zwcallback" title="Permalink to this definition">¶</a></dt>
+<code class="descname">zwcallback</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#openzwave.controller.ZWaveController.zwcallback" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Callback Handler used when sendig commands to the controller.
 Dispatch a louie message.</p>
 <p>To do : add node in signal when necessary</p>
@@ -1310,12 +1301,14 @@ Dispatch a louie message.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -1343,7 +1336,7 @@ Dispatch a louie message.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.
     </div>
   </body>
 </html>

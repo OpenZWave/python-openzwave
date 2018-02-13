@@ -4,27 +4,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Installing python-openzwave on Windows &#8212; python-openzwave 0.4.4 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.4.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -47,13 +38,44 @@
 <h1>Installing python-openzwave on Windows<a class="headerlink" href="#installing-python-openzwave-on-windows" title="Permalink to this headline">¶</a></h1>
 <p>This HOW-TO is for 0.4.X.</p>
 <p>It should be possible to make it pip friendly. Need a command line to build openzwave c++ lib.</p>
-<div class="section" id="how-to-build-python-openzwave-on-windows-with-vs2015">
-<h2>How To Build python-openzwave on Windows with VS2015<a class="headerlink" href="#how-to-build-python-openzwave-on-windows-with-vs2015" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="install-microsoft-tools">
+<h2>Install Microsoft tools<a class="headerlink" href="#install-microsoft-tools" title="Permalink to this headline">¶</a></h2>
+<p>This package use MSBuild.exe to build openzwave code.
+You can find it in Visual Studio 2017 or Visual Studio 2015.
+It’s also possible to get them as a separate package.</p>
+<p>Only release 14.0 and 15.0 are tested.</p>
+</div>
+<div class="section" id="install-other-tools">
+<h2>Install other tools<a class="headerlink" href="#install-other-tools" title="Permalink to this headline">¶</a></h2>
+<p>You need git to clone the repository and python.</p>
+<p>Install python’s eggs :</p>
+<blockquote>
+<div><ul>
+<li><p class="first">for python 2.7 :</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six Louie
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">for python 3 :</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six PyDispatcher
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>To be continued …</p>
+</div>
+<div class="section" id="how-to-build-python-openzwave-on-windows-with-vs2015-deprecated">
+<h2>How To Build python-openzwave on Windows with VS2015 (deprecated)<a class="headerlink" href="#how-to-build-python-openzwave-on-windows-with-vs2015-deprecated" title="Permalink to this headline">¶</a></h2>
 <p>Assuming Python 3.5 is set in PATH
 Assuming your python environment has pip, cython, setuptools</p>
 <div class="section" id="get-sources">
 <h3>Get sources<a class="headerlink" href="#get-sources" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/openzwave/python-openzwave.git
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/openzwave/python-openzwave.git
 
 <span class="nb">cd</span> python-openzwave
 git clone git://github.com/OpenZWave/open-zwave.git openzwave
@@ -74,7 +96,7 @@ git checkout
 <div class="section" id="build-python-openzwave">
 <h3>Build python_openzwave<a class="headerlink" href="#build-python-openzwave" title="Permalink to this headline">¶</a></h3>
 <p>From a Command Prompt, install it :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>python setup install --dev
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup install --dev
 </pre></div>
 </div>
 <p>Reference for 0.3.X : <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/issues/53">https://github.com/OpenZWave/python-openzwave/issues/53</a></p>
@@ -95,7 +117,9 @@ git checkout
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installing python-openzwave on Windows</a><ul>
-<li><a class="reference internal" href="#how-to-build-python-openzwave-on-windows-with-vs2015">How To Build python-openzwave on Windows with VS2015</a><ul>
+<li><a class="reference internal" href="#install-microsoft-tools">Install Microsoft tools</a></li>
+<li><a class="reference internal" href="#install-other-tools">Install other tools</a></li>
+<li><a class="reference internal" href="#how-to-build-python-openzwave-on-windows-with-vs2015-deprecated">How To Build python-openzwave on Windows with VS2015 (deprecated)</a><ul>
 <li><a class="reference internal" href="#get-sources">Get sources</a></li>
 <li><a class="reference internal" href="#build-open-zwave">Build open-zwave</a></li>
 <li><a class="reference internal" href="#build-python-openzwave">Build python_openzwave</a></li>
@@ -115,12 +139,14 @@ git checkout
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -141,7 +167,7 @@ git checkout
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.
     </div>
   </body>
 </html>

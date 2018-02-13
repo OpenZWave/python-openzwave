@@ -7,7 +7,7 @@
 ./INSTALL_REPO.html
 ./INSTALL_WIN.html
 ./README.html
-./_images/blockdiag-2153219085eea08a9485d7e7a9fde75b075db30f.png
+./_images/blockdiag-ea3657498e4005ae80a44a3bcb6cb08e6c38d184.png
 ./_index_api.html
 ./_index_lib.html
 ./_index_txt.html
@@ -48,6 +48,7 @@
 ./_static/comment.png
 ./_static/default.css
 ./_static/doctools.js
+./_static/documentation_options.js
 ./_static/down-pressed.png
 ./_static/down.png
 ./_static/file.png

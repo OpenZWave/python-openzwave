@@ -4,27 +4,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>python-openzwave hello_world &#8212; python-openzwave 0.4.4 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.4.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -57,15 +48,15 @@ generates a notification you must catch with a callback function.</p>
 <p>Some words about python-louie : it’s a simple mechanism where a dispatcher
 send a signal on a channel, and clients connect to him.</p>
 <p>Here is the way a sender dispatch a signal :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nodeId&#39;</span><span class="p">]]})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="s1">&#39;network&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;node&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;nodeId&#39;</span><span class="p">]]})</span>
 </pre></div>
 </div>
 <p>Here is the way a client connect to a channel :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_node_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_node_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The first argument is a call back function :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Louie signal : Node update : </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">node</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -75,7 +66,7 @@ The callback must set its parameter names as the same as the sender.</p>
 <div class="section" id="hello-from-zwave">
 <h2>Hello from ZWave<a class="headerlink" href="#hello-from-zwave" title="Permalink to this headline">¶</a></h2>
 <p>The import clauses :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openzwave</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">openzwave</span>
 <span class="kn">from</span> <span class="nn">openzwave.node</span> <span class="kn">import</span> <span class="n">ZWaveNode</span>
 <span class="kn">from</span> <span class="nn">openzwave.value</span> <span class="kn">import</span> <span class="n">ZWaveValue</span>
 <span class="kn">from</span> <span class="nn">openzwave.scene</span> <span class="kn">import</span> <span class="n">ZWaveScene</span>
@@ -87,7 +78,7 @@ The callback must set its parameter names as the same as the sender.</p>
 </pre></div>
 </div>
 <p>First thing to do is to defined some options for the manager :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">ZWaveOption</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;../openzwave/config&quot;</span><span class="p">,</span> <span class="n">user_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">cmd_line</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">ZWaveOption</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">config_path</span><span class="o">=</span><span class="s2">&quot;../openzwave/config&quot;</span><span class="p">,</span> <span class="n">user_path</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">cmd_line</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 <span class="n">options</span><span class="o">.</span><span class="n">set_log_file</span><span class="p">(</span><span class="s2">&quot;OZW_Log.log&quot;</span><span class="p">)</span>
 <span class="n">options</span><span class="o">.</span><span class="n">set_append_log_file</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
 <span class="n">options</span><span class="o">.</span><span class="n">set_console_output</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
@@ -98,11 +89,11 @@ The callback must set its parameter names as the same as the sender.</p>
 </div>
 <p>We also defined a network object, we will populate it later.</p>
 <p>To use this options, you must lock them. No further modification could be done on them.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">options</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span><span class="o">.</span><span class="n">lock</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>We can now create the network :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">ZWaveNetwork</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">autostart</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span> <span class="o">=</span> <span class="n">ZWaveNetwork</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">autostart</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -110,19 +101,19 @@ The callback must set its parameter names as the same as the sender.</p>
 <h2>The signals listeners<a class="headerlink" href="#the-signals-listeners" title="Permalink to this headline">¶</a></h2>
 <p>We will now create some connection to the louie dispatcher. We will then to 3
 main signals, they will notify us about the state of the network :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_started</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_STARTED</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_started</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_STARTED</span><span class="p">)</span>
 <span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_failed</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_FAILED</span><span class="p">)</span>
 <span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_network_ready</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NETWORK_READY</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To do that we use 3 callback functions :</p>
 <p>When the driver is ready, we simply print some options on the screen :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_started</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_started</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello from network : I&#39;m started : homeid </span><span class="si">%0.8x</span><span class="s2"> - </span><span class="si">%d</span><span class="s2"> nodes were found.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">home_id</span><span class="p">,</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes_count</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>When the driver fails, we reports the error to screen :</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_failed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_failed</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello from network : can&#39;t load :(.&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -130,7 +121,7 @@ main signals, they will notify us about the state of the network :</p>
 You can now use the network object pass in parameter to query nodes. To do that we connect
 to some louie signals. It also sleep during 5 minutes. After that, the scripts
 will continue and the network will be stopped.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_ready</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_network_ready</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello from network : I&#39;m ready : </span><span class="si">%d</span><span class="s2"> nodes were found.&quot;</span> <span class="o">%</span> <span class="n">network</span><span class="o">.</span><span class="n">nodes_count</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello from network : my controller is : </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="p">)</span>
     <span class="n">dispatcher</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">louie_node_update</span><span class="p">,</span> <span class="n">ZWaveNetwork</span><span class="o">.</span><span class="n">SIGNAL_NODE</span><span class="p">)</span>
@@ -138,12 +129,12 @@ will continue and the network will be stopped.</p>
 </pre></div>
 </div>
 <p>When a node is updated, added, removed, …</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_node_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Hello from node : </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">node</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>When a value is updated, added, removed, …</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_value_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">louie_value_update</span><span class="p">(</span><span class="n">network</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Hello from value : </span><span class="si">%s</span><span class="s1">.&#39;</span> <span class="o">%</span> <span class="n">value</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -151,12 +142,12 @@ will continue and the network will be stopped.</p>
 <div class="section" id="the-start-code">
 <h2>The start code<a class="headerlink" href="#the-start-code" title="Permalink to this headline">¶</a></h2>
 <p>We start the network</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>And we wait for the network. You MUST NOT use the network objects before
 network is ready.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">state</span><span class="o">&gt;=</span><span class="n">network</span><span class="o">.</span><span class="n">STATE_READY</span><span class="p">:</span>
         <span class="k">print</span> <span class="s2">&quot;***** Network is ready&quot;</span>
         <span class="k">break</span>
@@ -167,12 +158,12 @@ network is ready.</p>
 </pre></div>
 </div>
 <p>We now change the name of the controller. You will have a notification.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Hello name&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Hello name&quot;</span>
 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Same when changing the location.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;Hello location&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="s2">&quot;Hello location&quot;</span>
 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">120.0</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -180,7 +171,7 @@ network is ready.</p>
 see the value notifications on the screen. If you have switch or dimmers,
 activate them manually, …</p>
 <p>Now stop the network and release objects.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">network</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>That’s all :)</p>
@@ -215,12 +206,14 @@ activate them manually, …</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -241,7 +234,7 @@ activate them manually, …</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.
     </div>
   </body>
 </html>

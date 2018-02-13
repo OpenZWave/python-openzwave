@@ -8,6 +8,10 @@ python_openzwave 0.4.5.x:
  * Fix bug in node statistics and add test.
  * Update Makefile to build flavor dev
  * Update pyozw_check.
+ * Update default flavor : check cython is here before choosing shared
+ * First try to support Windows in pip
+ * Fix controller.update_ozw_config when directory isn't writable
+ 
 
 python_openzwave 0.4.4.x:
  * Add new options to pyozw_check to list nodes on network.

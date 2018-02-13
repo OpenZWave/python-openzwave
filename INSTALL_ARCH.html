@@ -4,27 +4,18 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Installing python-openzwave from archive &#8212; python-openzwave 0.4.4 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.4.4',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -51,15 +42,15 @@
 <div class="section" id="get-archive-of-python-openzwave">
 <h2>Get archive of python-openzwave<a class="headerlink" href="#get-archive-of-python-openzwave" title="Permalink to this headline">¶</a></h2>
 <p>You are now ready to download sources of python-openzwave here :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>https://github.com/OpenZWave/python-openzwave/tree/master/archives
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>https://github.com/OpenZWave/python-openzwave/tree/master/archives
 </pre></div>
 </div>
 <p>This archive contains sources of python-openzwave and openzwave.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>tar xvzf python-openzwave-X.Y.Z.tar.gz
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tar xvzf python-openzwave-X.Y.Z.tar.gz
 </pre></div>
 </div>
 <p>This command will extract all the needed sources. And change to the right directory.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> python-openzwave-X.Y.Z
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> python-openzwave-X.Y.Z
 </pre></div>
 </div>
 </div>
@@ -68,19 +59,19 @@
 <p>You must install git and other tools to get sources of python-openzwave and
 openzwave and build them. Look at the documentation of your Linux distribution to do that.</p>
 <p>On a debian like distribution :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make deps
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo make deps
 </pre></div>
 </div>
 </div>
 <div class="section" id="build-process">
 <h2>Build process<a class="headerlink" href="#build-process" title="Permalink to this headline">¶</a></h2>
 <p>Now, you can compile sources :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>make build
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make build
 </pre></div>
 </div>
 <p>If you have already built python-openzwave or if the build failed
 you can use the clean target and build again :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make clean
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo make clean
 make build
 </pre></div>
 </div>
@@ -89,11 +80,11 @@ make build
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>You can now install the packages using the following command :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make install
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo make install
 </pre></div>
 </div>
 <p>You can remove python-openzwave using :</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>sudo make uninstall
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo make uninstall
 </pre></div>
 </div>
 </div>
@@ -130,12 +121,14 @@ make build
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -156,7 +149,7 @@ make build
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2012,2013,2014,2015, bibi21000.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.7.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.0.
     </div>
   </body>
 </html>
