@@ -255,8 +255,8 @@ develop: src-lib/libopenzwave/libopenzwave.cpp
 	@echo "Installation for developers of python-openzwave finished."
 
 tests:
-	#export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/ --with-progressive; unset NOSESKIP
-	export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/lib tests/api tests/manager ; unset NOSESKIP
+	export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/; unset NOSESKIP
+#~ 	export NOSESKIP=False && ${NOSE_EXEC} $(NOSEOPTS) tests/lib tests/api tests/manager ; unset NOSESKIP
 	@echo
 	@echo "Tests for ZWave network finished."
 
