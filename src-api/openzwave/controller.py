@@ -1352,6 +1352,53 @@ class ZWaveController(ZWaveObject):
         dispatcher.send(self.SIGNAL_CONTROLLER, \
             **{'state': state, 'message': message, 'network': self._network, 'controller': self})
 
+
+    def update_ozw_config(self):
+        """
+        Update the openzwave config from github.
+        Not available for shared flavor as we don't want to update the config of the precompiled config.
+
+        """
+        if self.python_library_flavor in ['shared']:
+            logger.warning(u"Can't update_ozw_config for this flavor (%s)."%self.python_library_flavor)
+            return
+        logger.info(u'Update_ozw_config from github.')
+        dest = tempfile.mkdtemp()
+        dest_file = os.path.join(dest, 'open-zwave.zip')
+        try:
+            req = urlopen('https://codeload.github.com/OpenZWave/open-zwave/zip/master')
+            with open(dest_file, 'wb') as f:
+                f.write(req.read())
+            zip_ref = zipfile.ZipFile(dest_file, 'r')
+            zip_ref.extractall(dest)
+            zip_ref.close()
+        except Exception:
+            logger.exception("Can't get zip from github. Cancelling")
+            try:
+                shutil.rmtree(dest)
+            except Exception:
+                pass
+                
+        if os.path.isdir(self.library_config_path):
+            #Try to remove old config
+            try:
+                shutil.rmtree(self.library_config_path)
+            except Exception:
+                logger.exception("Can't remove old config directory")
+
+        try:
+            shutil.copy_tree(os.path.join(dest, 'open-zwave-master', 'config'), self.library_config_path)
+        except Exception:
+            logger.exception("Can't copy to %s", self.library_config_path)
+
+        try:
+            with open(os.path.join(self.library_config_path, 'pyozw_config.version'), 'w') as f: 
+                f.write(time.strftime("%Y-%m-%d %H:%M")) 
+        except Exception:
+            logger.exception("Can't update %s", os.path.join(self.library_config_path, 'pyozw_config.version'))
+        shutil.rmtree(dest)
+
+
     def update_ozw_config(self):
         """
         Update the openzwave config from github.
@@ -1373,5 +1420,4 @@ class ZWaveController(ZWaveObject):
         os.system("cp -rf %s %s"%(os.path.join(dest, 'open-zwave-master', 'config'), self.library_config_path))
         with open(os.path.join(self.library_config_path, 'pyozw_config.version'), 'w') as f: 
             f.write(time.strftime("%Y-%m-%d %H:%M")) 
-        shutil.rmtree(dest)
 
