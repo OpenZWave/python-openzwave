@@ -9,8 +9,39 @@ This HOW-TO is for 0.4.X.
 
 It should be possible to make it pip friendly. Need a command line to build openzwave c++ lib.
 
-How To Build python-openzwave on Windows with VS2015
-====================================================
+Install Microsoft tools
+=======================
+
+This package use MSBuild.exe to build openzwave code.
+You can find it in Visual Studio 2017 or Visual Studio 2015.
+It's also possible to get them as a separate package.
+
+Only release 14.0 and 15.0 are tested.
+
+Install other tools
+===================
+
+You need git to clone the repository and python.
+
+Install python's eggs :
+
+ - for python 2.7 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six Louie
+
+ - for python 3 :
+  
+    .. code-block:: bash
+  
+        (venvX) pip install cython wheel six PyDispatcher
+
+
+To be continued ...
+
+How To Build python-openzwave on Windows with VS2015 (deprecated)
+=================================================================
 
 Assuming Python 3.5 is set in PATH
 Assuming your python environment has pip, cython, setuptools
