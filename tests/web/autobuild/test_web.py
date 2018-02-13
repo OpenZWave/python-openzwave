@@ -33,14 +33,14 @@ import sys
 import time
 import logging
 
-from tests.web.common import FlaskTestBase
+#~ from tests.web.common import FlaskTestBase
 
-class FlaskTest(FlaskTestBase):
+#~ class FlaskTest(FlaskTestBase):
 
-    def test_000_import_listener(self):
-        self.skipPython3()
-        from pyozwweb.app.listener import ListenerThread, start_listener, stop_listener
-        from pyozwweb.app import run_app, create_app
+    #~ def test_000_import_listener(self):
+        #~ self.skipPython3()
+        #~ from pyozwweb.app.listener import ListenerThread, start_listener, stop_listener
+        #~ from pyozwweb.app import run_app, create_app
 
 if __name__ == '__main__':
     sys.argv.append('-v')
