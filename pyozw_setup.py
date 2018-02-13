@@ -305,7 +305,7 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ self.win_msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%self.win_arch ], cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.win_project))
+            proc = Popen([ self.win_msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%self.win_arch ], stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.win_project))
                
         elif sys.platform.startswith("cygwin"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
