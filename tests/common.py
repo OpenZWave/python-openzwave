@@ -90,6 +90,7 @@ class TestPyZWave(unittest.TestCase):
         except:
             pass
 
+    @classmethod
     def skipTest(self, message):
         """Skip a test
         """
