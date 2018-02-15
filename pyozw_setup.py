@@ -59,155 +59,6 @@ LOCAL_OPENZWAVE = os.getenv('LOCAL_OPENZWAVE', 'openzwave')
 
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
 
-def get_default_exts ():
-    exts = { "name": "libopenzwave",
-         "sources": [ ],
-         "include_dirs": [ ],
-         "define_macros": [ ( 'PY_LIB_VERSION', pyozw_version ) ],
-         "libraries": [ ],
-         "extra_objects": [ ],
-         "extra_compile_args": [ ],
-         "extra_link_args": [ ],
-         "language": "c++",
-       }
-    return exts
-
-def cython_context():
-    try:
-        from Cython.Distutils import build_ext
-    except ImportError:
-        return None
-    exts = get_default_exts()
-    exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
-    exts['sources'] = ["src-lib/libopenzwave/libopenzwave.pyx"]
-    return exts
-
-def cpp_context():
-    try:
-        from distutils.command.build_ext import build_ext
-    except ImportError:
-        return None
-    exts = get_default_exts()
-    exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
-    exts['sources'] = ["openzwave-embed/open-zwave-master/python-openzwave/src-lib/libopenzwave/libopenzwave.cpp"]
-    exts["include_dirs"] += [ "src-lib/libopenzwave/" ]
-    return exts
-
-def pybind_context():
-    exts = get_default_exts()
-    exts["sources"] = [ "src-lib/libopenzwave/LibZWaveException.cpp",
-                      "src-lib/libopenzwave/Driver.cpp",
-                      "src-lib/libopenzwave/Group.cpp",
-                      "src-lib/libopenzwave/Log.cpp",
-                      "src-lib/libopenzwave/Options.cpp",
-                      "src-lib/libopenzwave/Manager.cpp",
-                      "src-lib/libopenzwave/Notification.cpp",
-                      "src-lib/libopenzwave/Node.cpp",
-                      "src-lib/libopenzwave/Values.cpp",
-                      "src-lib/libopenzwave/libopenzwave.cpp"
-                    ]
-    exts["include_dirs"] = [ "pybind11/include" ]
-    exts['extra_compile_args'] += [ "-fvisibility=hidden" ]
-    return exts
-
-def system_context(ctx, openzwave=None, static=False, win_build_path=None):
-    #System specific section
-    #~ os.environ["CC"] = "gcc" 
-    #~ os.environ["CXX"] = "g++"
-    #~ os.environ["PKG_CONFIG_PATH"] = "PKG_CONFIG_PATH:/usr/local/lib/x86_64-linux-gnu/pkgconfig/"
-    log.info("Found platform {0}".format(sys.platform))
-    if static:
-        ctx['include_dirs'] += [ 
-            "{0}/cpp/src".format(openzwave), 
-            "{0}/cpp/src/value_classes".format(openzwave), 
-            "{0}/cpp/src/platform".format(openzwave) ]
-
-    if sys.platform.startswith("win"):
-        ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
-
-        if static:
-            ctx['extra_objects'] = [ "{0}/OpenZWave.lib".format(win_build_path) ]
-            #~ ctx['include_dirs'] += [ "{0}/cpp/build/windows".format(openzwave) ]
-        else:
-            ctx['libraries'] += [ "OpenZWave" ]
-            ctx['extra_compile_args'] += [ 
-                "{0}/cpp/src".format(openzwave), 
-                "{0}/cpp/src/value_classes".format(openzwave), 
-                "{0}/cpp/src/platform".format(openzwave) ]
-
-    elif sys.platform.startswith("cygwin"):
-        if static:
-            ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
-            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
-            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
-        else:
-            import pyozw_pkgconfig
-            ctx['libraries'] += [ "openzwave" ]
-            extra = pyozw_pkgconfig.cflags('libopenzwave')
-            if extra != '':
-                for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
-
-    elif sys.platform.startswith("darwin") :
-        ctx['extra_link_args'] += [ "-framework", "CoreFoundation", "-framework", "IOKit" ]
-        ctx['extra_compile_args'] += [ "-stdlib=libc++", "-mmacosx-version-min=10.7" ]
-
-        if static:
-            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
-            ctx['include_dirs'] += [ "{0}/cpp/build/mac".format(openzwave) ]
-        else:
-            import pyozw_pkgconfig
-            ctx['libraries'] += [ "openzwave" ]
-            extra = pyozw_pkgconfig.cflags('libopenzwave')
-            if extra != '':
-                for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
-            
-    elif sys.platform.startswith("freebsd"):
-        if static:
-            ctx['libraries'] += [ "usb", "stdc++" ]
-            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
-            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
-        else:
-            import pyozw_pkgconfig
-            ctx['libraries'] += [ "openzwave" ]
-            extra = pyozw_pkgconfig.cflags('libopenzwave')
-            if extra != '':
-                for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
- 
-    elif sys.platform.startswith("sunos"):
-        if static:
-            ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
-            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
-            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
-        else:
-            import pyozw_pkgconfig
-            ctx['libraries'] += [ "openzwave" ]
-            extra = pyozw_pkgconfig.cflags('libopenzwave')
-            if extra != '':
-                for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
-
-    elif sys.platform.startswith("linux"):
-        if static:
-            ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
-            ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(openzwave) ]
-            ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(openzwave) ]
-        else:
-            import pyozw_pkgconfig
-            ctx['libraries'] += [ "openzwave" ]
-            extra = pyozw_pkgconfig.cflags('libopenzwave')
-            if extra != '':
-                for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                    ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
-
-    else:
-        # Unknown systemm
-        raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
-
-    return ctx
-
 class Template(object):
     
     def __init__(self, openzwave=None, cleanozw=False, sysargv=None, flavor="embed", backend="cython"):
@@ -221,8 +72,164 @@ class Template(object):
         self.win_msbuild = None
         self.win_project = None
         self.win_buildpath = None
+        self.win_conf = None
+
+    def get_default_exts (self):
+        exts = { "name": "libopenzwave",
+             "sources": [ ],
+             "include_dirs": [ ],
+             "define_macros": [ ( 'PY_LIB_VERSION', pyozw_version ) ],
+             "libraries": [ ],
+             "extra_objects": [ ],
+             "extra_compile_args": [ ],
+             "extra_link_args": [ ],
+             "language": "c++",
+           }
+        return exts
+
+    def cython_context(self):
+        try:
+            from Cython.Distutils import build_ext
+        except ImportError:
+            return None
+        exts = self.get_default_exts()
+        exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
+        exts['sources'] = ["src-lib/libopenzwave/libopenzwave.pyx"]
+        return exts
+
+    def cpp_context(self):
+        try:
+            from distutils.command.build_ext import build_ext
+        except ImportError:
+            return None
+        exts = self.get_default_exts()
+        exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
+        exts['sources'] = ["openzwave-embed/open-zwave-master/python-openzwave/src-lib/libopenzwave/libopenzwave.cpp"]
+        exts["include_dirs"] += [ "src-lib/libopenzwave/" ]
+        return exts
+
+    def pybind_context(self):
+        exts = self.get_default_exts()
+        exts["sources"] = [ "src-lib/libopenzwave/LibZWaveException.cpp",
+                          "src-lib/libopenzwave/Driver.cpp",
+                          "src-lib/libopenzwave/Group.cpp",
+                          "src-lib/libopenzwave/Log.cpp",
+                          "src-lib/libopenzwave/Options.cpp",
+                          "src-lib/libopenzwave/Manager.cpp",
+                          "src-lib/libopenzwave/Notification.cpp",
+                          "src-lib/libopenzwave/Node.cpp",
+                          "src-lib/libopenzwave/Values.cpp",
+                          "src-lib/libopenzwave/libopenzwave.cpp"
+                        ]
+        exts["include_dirs"] = [ "pybind11/include" ]
+        exts['extra_compile_args'] += [ "-fvisibility=hidden" ]
+        return exts
+
+    def system_context(self, ctx, static=False):
+        #System specific section
+        #~ os.environ["CC"] = "gcc" 
+        #~ os.environ["CXX"] = "g++"
+        #~ os.environ["PKG_CONFIG_PATH"] = "PKG_CONFIG_PATH:/usr/local/lib/x86_64-linux-gnu/pkgconfig/"
+        log.info("Found platform {0}".format(sys.platform))
+        if static:
+            ctx['include_dirs'] += [ 
+                "{0}/cpp/src".format(self.openzwave), 
+                "{0}/cpp/src/value_classes".format(self.openzwave), 
+                "{0}/cpp/src/platform".format(self.openzwave) ]
+
         if sys.platform.startswith("win"):
-            self.win_arch, self.win_project, self.win_msbuild, self.win_buildpath = find_ms_tools(debug=False)
+            ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
+
+            if static:
+                self.win_conf = 'Release'
+                self.win_arch, self.win_project, self.win_msbuild, self.win_buildpath = find_ms_tools(debug=False, conf=self.win_conf)
+                ctx['extra_objects'] = [ "{0}/OpenZWave.lib".format(self.win_buildpath) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/windows".format(self.openzwave),
+                                         "src-lib/libopenzwave",
+                                         "{0}".format(self.win_buildpath),
+                                        ]
+            else:
+                self.win_conf = 'ReleaseDLL'
+                self.win_arch, self.win_project, self.win_msbuild, self.win_buildpath = find_ms_tools(debug=False, conf=self.win_conf)
+                ctx['libraries'] += [ "OpenZWave" ]
+                ctx['extra_compile_args'] += [ 
+                    "{0}/cpp/src".format(self.openzwave), 
+                    "{0}/cpp/src/value_classes".format(self.openzwave), 
+                    "{0}/cpp/src/platform".format(self.openzwave) ]
+
+
+        elif sys.platform.startswith("cygwin"):
+            if static:
+                ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
+        elif sys.platform.startswith("darwin") :
+            ctx['extra_link_args'] += [ "-framework", "CoreFoundation", "-framework", "IOKit" ]
+            ctx['extra_compile_args'] += [ "-stdlib=libc++", "-mmacosx-version-min=10.7" ]
+
+            if static:
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/mac".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                
+        elif sys.platform.startswith("freebsd"):
+            if static:
+                ctx['libraries'] += [ "usb", "stdc++" ]
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+     
+        elif sys.platform.startswith("sunos"):
+            if static:
+                ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
+        elif sys.platform.startswith("linux"):
+            if static:
+                ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+                ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
+                ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
+            else:
+                import pyozw_pkgconfig
+                ctx['libraries'] += [ "openzwave" ]
+                extra = pyozw_pkgconfig.cflags('libopenzwave')
+                if extra != '':
+                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
+                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+
+        else:
+            # Unknown systemm
+            raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
+
+        return ctx
        
     @property
     def ctx(self):
@@ -305,7 +312,8 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ self.win_msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%self.win_arch ], stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.win_project))
+            proc = Popen([ self.win_msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration={0}'.format(self.win_conf), '/p:Platform={0}'.format(self.win_arch) ], 
+                         stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.win_project))
                
         elif sys.platform.startswith("cygwin"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -404,10 +412,10 @@ class Template(object):
         while tprinter.is_alive():
             time.sleep(1)
         tprinter.join()
-        log.info("ldconfig openzwave so ... be patient ...")
 
         if sys.platform.startswith("win"):
-            proc = Popen([ 'regsvr32', 'filename.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            log.info("Register dll ... be patient ...")
+            proc = Popen([ 'regsvr32', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("cygwin"):
             import pyozw_pkgconfig
@@ -500,8 +508,8 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
             proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
             
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -655,11 +663,11 @@ class DevTemplate(Template):
             log.error("Can't find {0}".format(opzw_dir))
             return None
         self.openzwave = opzw_dir
-        ctx = cython_context()
+        ctx = self.cython_context()
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, openzwave=opzw_dir, static=True, win_build_path=self.win_buildpath)
+        ctx = self.system_context(ctx, static=True)
         return ctx
 
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
@@ -671,11 +679,11 @@ class GitTemplate(Template):
         Template.__init__(self, openzwave=os.path.join("openzwave-git", 'open-zwave-master'), **args)
 
     def get_context(self):
-        ctx = cython_context()
+        ctx = self.cython_context()
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, openzwave=self.openzwave, static=True, win_build_path=self.win_buildpath)
+        ctx = self.system_context(ctx, static=True)
         return ctx
 
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
@@ -703,11 +711,11 @@ class GitTemplate(Template):
 class GitSharedTemplate(GitTemplate):
     
     def get_context(self):
-        ctx = cython_context()
+        ctx = self.cython_context()
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, openzwave=self.openzwave, static=False, win_build_path=self.win_buildpath)
+        ctx = self.system_context(ctx, static=False)
         while '' in ctx['extra_compile_args']:
             ctx['extra_compile_args'].remove('')
         extra = '-I/usr/local/include/openzwave//'
@@ -757,8 +765,8 @@ class EmbedTemplate(Template):
         return _build_ext
 
     def get_context(self):
-        ctx = cpp_context()
-        ctx = system_context(ctx, openzwave=self.openzwave, static=True, win_build_path=self.win_buildpath)
+        ctx = self.cpp_context()
+        ctx = self.system_context(ctx, static=True)
         return ctx
 
     def install_requires(self):
@@ -801,8 +809,8 @@ class EmbedTemplate(Template):
 class EmbedSharedTemplate(EmbedTemplate):
 
     def get_context(self):
-        ctx = cpp_context()
-        ctx = system_context(ctx, openzwave=self.openzwave, static=False, win_build_path=self.win_buildpath)
+        ctx = self.cpp_context()
+        ctx = self.system_context(ctx, static=False)
         while '' in ctx['extra_compile_args']:
             ctx['extra_compile_args'].remove('')
         extra = '-I/usr/local/include/openzwave//'
@@ -829,11 +837,11 @@ class SharedTemplate(Template):
         Template.__init__(self, **args)
 
     def get_context(self):
-        ctx = cython_context()
+        ctx = self.cython_context()
         if ctx is None:
             log.error("Can't find Cython")
             return None
-        ctx = system_context(ctx, static=False, win_build_path=self.win_buildpath)
+        ctx = self.system_context(ctx, static=False)
         return ctx
 
     def build(self):
@@ -1040,7 +1048,7 @@ class clean(_clean):
         _clean.run(self)      
 
 class develop(_develop):
-    description = 'De velop python_openzwave'
+    description = 'Develop python_openzwave'
     
     user_options = _develop.user_options + [
         ('flavor=', None, 'the flavor of python_openzwave to install'),

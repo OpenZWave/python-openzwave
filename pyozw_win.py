@@ -26,7 +26,7 @@ import os
 import fnmatch
 import platform
  
-def find_ms_tools( debug=False ):
+def find_ms_tools( debug=False, conf='Release' ):
     def find_all_build_tools(name, paths):
         result = []
         for path in paths:
@@ -78,10 +78,10 @@ def find_ms_tools( debug=False ):
     #~ print(msbuild)
     if arch == 'x64':
         msbuild2 = [name for name in msbuild if 'amd64' in name]
-        build_path = 'openzwave/cpp/build/windows/%s/x64/ReleaseDLL/'%project
+        build_path = 'openzwave/cpp/build/windows/%s/x64/%s/'%(project, conf)
     if arch == 'Win32':
         msbuild2 = [name for name in msbuild if not 'amd64' in name]
-        build_path = 'openzwave/cpp/build/windows/%s/ReleaseDLL/'%project
+        build_path = 'openzwave/cpp/build/windows/%s/%s/'%(project, conf)
     #~ print(projects)
     #~ print(msbuild)
     #~ print(arch)
@@ -96,9 +96,10 @@ def find_ms_tools( debug=False ):
 if __name__ == '__main__':
     from subprocess import Popen, PIPE
 
-    arch, project, msbuild, build_path = find_ms_tools(debug=True)
+    conf = 'Release'
+    arch, project, msbuild, build_path = find_ms_tools(debug=True, conf=conf)
 
-    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=ReleaseDLL', '/p:Platform=%s'%arch ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
+    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=%s', '/p:Platform=%s'%(conf,arch) ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
     proc.wait()
 
     print('Library built in is in %s using compiler %s for arch %s' % (build_path, msbuild, arch))

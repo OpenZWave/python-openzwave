@@ -271,6 +271,7 @@ def main():
         list_nodes(args)
     elif args.imports:
         imports(args)
+        
 if __name__ == '__main__':
     main()
 
