@@ -562,6 +562,12 @@ venv3-dev: venv3 src-lib/libopenzwave/libopenzwave.cpp
 	venv3/bin/python setup-api.py develop
 	venv3/bin/python setup-manager.py develop
 
+venv2-install: venv2 src-lib/libopenzwave/libopenzwave.cpp
+	venv2/bin/python setup.py install --flavor=dev
+	
+venv3-install: venv3 src-lib/libopenzwave/libopenzwave.cpp
+	venv3/bin/python setup.py install --flavor=dev
+
 venv2-shared: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup-lib.py install --flavor=shared
 	venv2/bin/python setup-api.py install
