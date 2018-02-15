@@ -56,8 +56,14 @@ class TestInit(TestLib):
             shutil.rmtree(self.userpath)
         except:
             pass
-        os.makedirs(self.userpath)
-        os.makedirs(fake_config_dir)
+        try:
+                os.makedirs(self.userpath)
+        except:
+            pass
+        try:
+                os.makedirs(fake_config_dir)
+        except:
+            pass
         os.chmod(fake_config_dir, stat.S_IREAD|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH)
         with self.assertRaises(libopenzwave.LibZWaveException):
             options = libopenzwave.PyOptions(config_path=fake_config_dir, user_path=None, cmd_line=None)
@@ -66,8 +72,14 @@ class TestInit(TestLib):
             shutil.rmtree(self.userpath)
         except:
             pass
-        os.makedirs(self.userpath)
-        os.makedirs(fake_config_dir)
+        try:
+                os.makedirs(self.userpath)
+        except:
+            pass
+        try:
+                os.makedirs(fake_config_dir)
+        except:
+            pass
         os.chmod(fake_config_dir, stat.S_IREAD|stat.S_IRUSR|stat.S_IRGRP|stat.S_IROTH|stat.S_IWRITE|stat.S_IWUSR|stat.S_IWGRP|stat.S_IWOTH)
         with self.assertRaises(libopenzwave.LibZWaveException):
             options = libopenzwave.PyOptions(config_path=fake_config_dir, user_path=None, cmd_line=None)
