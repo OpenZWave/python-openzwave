@@ -36,7 +36,6 @@ from distutils.extension import Extension
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires
-from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
 from pyozw_setup import bdist_egg, build_openzwave, openzwave_config, build, clean, develop, install
 
@@ -49,7 +48,7 @@ setup(
   author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
   author_email='bibi21000@gmail.com',
   version = pyozw_version,
-  scripts=['src-lib/scripts/pyozw_check'],
+  #~ scripts=['src-lib/scripts/pyozw_check'],
   zip_safe = False,
   url='https://github.com/OpenZWave/python-openzwave',
   cmdclass = {'build_ext': current_template.build_ext,
@@ -67,7 +66,7 @@ setup(
   package_dir = {'' : 'src-lib'},
   #The following line install config drectory in share/python-openzwave
   #~ data_files = data_files,
-  packages = find_packages('src-lib', exclude=["scripts"]),
+  packages = find_packages('src-lib'),
   install_requires = install_requires(),
 )
 

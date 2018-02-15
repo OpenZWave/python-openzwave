@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.
-    :platform: Unix, Windows, MacOS X
+    :platform: Unix, Windows, MacOS X, BSD
 
 .. moduleauthor:: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
 
@@ -35,7 +35,6 @@ from distutils.extension import Extension
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires, build_requires
-from pyozw_setup import get_default_exts, cython_context, cpp_context, pybind_context, system_context, cython_context
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
 from pyozw_setup import bdist_egg, build_openzwave, openzwave_config, build, clean, develop, install
 
@@ -60,7 +59,9 @@ setup(
         'develop': develop,
         'install': install,
         },
-  scripts=['src-lib/scripts/pyozw_check', 'src-manager/scripts/pyozw_shell'],
+  #~ scripts=['src-lib/scripts/pyozw_check', 'src-manager/scripts/pyozw_shell'],
+  entry_points={'console_scripts':['pyozw_check=python_openzwave.scripts.pyozw_check:main',
+                                   'pyozw_shell=python_openzwave.scripts.pyozw_shell:main']  },
   ext_modules = [
         Extension(**current_template.ctx)
     ],
@@ -85,6 +86,7 @@ setup(
     "Topic :: Home Automation",
     "Topic :: System :: Hardware",
     "Topic :: System :: Hardware :: Hardware Drivers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "Operating System :: MacOS :: MacOS X",
     "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",

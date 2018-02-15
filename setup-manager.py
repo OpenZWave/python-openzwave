@@ -34,8 +34,8 @@ setup(
   url='https://github.com/OpenZWave/python-openzwave',
   version = pyozw_version.pyozw_version,
   zip_safe = False,
-  scripts=['src-manager/scripts/pyozw_shell'],
+  #~ scripts=['src-manager/scripts/pyozw_shell'],
   package_dir = {'' : 'src-manager' },
-  packages = find_packages('src-manager', exclude=["scripts"]),
+  packages = find_packages('src-manager'),
   install_requires=pyozw_version.install_requires() + [ "urwid>=1.1.1"],
 )
