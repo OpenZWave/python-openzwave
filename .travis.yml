@@ -6,7 +6,7 @@ env:
   matrix:
   - DOCKER_BASE=ubuntu:latest
   - DOCKER_BASE=debian:latest
-  - DOCKER_BASE=resin/rpi-raspbian:latest
+  #~ - DOCKER_BASE=resin/rpi-raspbian:latest
   - DOCS="true"
   global:
     - secure: "LdXdleVnh5s6HRPWLh3LcYo+s2IpvxwjFOQSJdMM1/svpstBu+pqAy6y6ivn4u7RUgG1Hva+iImMmqoBw4MUl+CTvK1RTLsOFFa0z37XSdWJbHSA+SmH9Dith1iHjaHTnkMNRaJugfJoLm2RXsii4ksMZcncm0gQLChyH+kxzX+ytoz8ofKk6f8zKqa+8YYhTlsV+BtnaEJOli22FKmLI8glOYiJpJj9UG8xQkwzNlIxR0PNZxvXnfVLeIw4sF9R3h6fkM/PZGbEfn1roZYDsdepl6SwumfmY+gOB74Ze7oObeJjmXA1HC8NSrsivIDB+gfAzKE01Jk2LyNZ+T2u7Zlqjf9pV0HhkYuBhc38BkpeBKkMKliJwuSIwEdsGWR71rC7VmegSbKp/I3Ev3oWy3h0k/J/W4SIxhN4mc8DAhaIC5TPdMHHTBSWyh494PEjX5zrinq4w6K7qjWpUB6rEUpHTHIE/F5f46QRTwFb5bhusIH8Hjo7GceEtYy1h8vGJ16GnAqvvrBJBU5QKCSfJicMiOUPELl3iD86vOdrJyYiiU+jALvgQH70D7KA9igIGRjmOdv71D09bEOVAYSNOaBsiCtyZqyx8kDMSETJ92VwhLO/aKazoGqlgiI8bEqSHA7Tjah6vyeTdnZeWRg7Fh2RM4W1T7lkXqzICNbUdW0="
