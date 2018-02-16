@@ -36,75 +36,171 @@
             
   <div class="section" id="installing-python-openzwave-on-windows">
 <h1>Installing python-openzwave on Windows<a class="headerlink" href="#installing-python-openzwave-on-windows" title="Permalink to this headline">¶</a></h1>
-<p>This HOW-TO is for 0.4.X.</p>
-<p>It should be possible to make it pip friendly. Need a command line to build openzwave c++ lib.</p>
 <div class="section" id="install-microsoft-tools">
 <h2>Install Microsoft tools<a class="headerlink" href="#install-microsoft-tools" title="Permalink to this headline">¶</a></h2>
-<p>This package use MSBuild.exe to build openzwave code.
-You can find it in Visual Studio 2017 or Visual Studio 2015.
-It’s also possible to get them as a separate package.</p>
-<p>Only release 14.0 and 15.0 are tested.</p>
+<p>This package use MSBuild.exe to build openzwave code.</p>
+<p>You can find it in Visual Studio 2017 or Visual Studio 2015.</p>
+<p>It’s also possible to get it as a separate package.</p>
+<p>Only release 14.0 and 15.0 of Microsft Build Tools are tested.</p>
 </div>
 <div class="section" id="install-other-tools">
 <h2>Install other tools<a class="headerlink" href="#install-other-tools" title="Permalink to this headline">¶</a></h2>
-<p>You need git to clone the repository and python.</p>
-<p>Install python’s eggs :</p>
+<p>You need git to clone the repository and python (32 bits or 64 bits). Add it to your PATH.</p>
+<p>Install dependencies :</p>
 <blockquote>
 <div><ul>
 <li><p class="first">for python 2.7 :</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six Louie
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install Cython six Louie
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 <li><p class="first">for python 3 :</p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install cython wheel six PyDispatcher
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span>venvX<span class="o">)</span> pip install Cython six PyDispatcher
 </pre></div>
 </div>
 </div></blockquote>
 </li>
 </ul>
 </div></blockquote>
-<p>To be continued …</p>
 </div>
-<div class="section" id="how-to-build-python-openzwave-on-windows-with-vs2015-deprecated">
-<h2>How To Build python-openzwave on Windows with VS2015 (deprecated)<a class="headerlink" href="#how-to-build-python-openzwave-on-windows-with-vs2015-deprecated" title="Permalink to this headline">¶</a></h2>
-<p>Assuming Python 3.5 is set in PATH
-Assuming your python environment has pip, cython, setuptools</p>
-<div class="section" id="get-sources">
-<h3>Get sources<a class="headerlink" href="#get-sources" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/openzwave/python-openzwave.git
-
-<span class="nb">cd</span> python-openzwave
-git clone git://github.com/OpenZWave/open-zwave.git openzwave
-
-<span class="nb">cd</span> openzwave
-git checkout Dev
-<span class="nb">cd</span> ..
-git checkout
+<div class="section" id="clone-repositories">
+<h2>clone repositories<a class="headerlink" href="#clone-repositories" title="Permalink to this headline">¶</a></h2>
+<p>Clone python-openzwave:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/OpenZWave/python-openzwave.git
 </pre></div>
 </div>
-</div>
-<div class="section" id="build-open-zwave">
-<h3>Build open-zwave<a class="headerlink" href="#build-open-zwave" title="Permalink to this headline">¶</a></h3>
-<p>Open openzwave/cpp/build/windows/vs2010/OpenZWave.sln in Visual Studio</p>
-<p>When asked, accept the project upgrade to VS2015</p>
-<p>Build Win32|Release</p>
-</div>
-<div class="section" id="build-python-openzwave">
-<h3>Build python_openzwave<a class="headerlink" href="#build-python-openzwave" title="Permalink to this headline">¶</a></h3>
-<p>From a Command Prompt, install it :</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup install --dev
+<p>And clone open-zwave inside python-openzwave :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> python-openzwave
+git clone https://github.com/OpenZWave/open-zwave.git openzwave
 </pre></div>
 </div>
-<p>Reference for 0.3.X : <a class="reference external" href="https://github.com/OpenZWave/python-openzwave/issues/53">https://github.com/OpenZWave/python-openzwave/issues/53</a></p>
+<p>It’s mandatory to clone the previous repository in a directory called openzwave (not open-zwave)</p>
 </div>
-<div class="section" id="cygwin">
-<h3>Cygwin<a class="headerlink" href="#cygwin" title="Permalink to this headline">¶</a></h3>
-<p>python3</p>
+<div class="section" id="visual-studio">
+<h2>Visual studio<a class="headerlink" href="#visual-studio" title="Permalink to this headline">¶</a></h2>
+<p>Copy vs2010 in a new directory vs2017 (or vs2015 depending of which Visual Studio you use) :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>xcopy openzwave<span class="se">\c</span>pp<span class="se">\b</span>uild<span class="se">\w</span>indows<span class="se">\v</span>s2010 openzwave<span class="se">\c</span>pp<span class="se">\b</span>uild<span class="se">\w</span>indows<span class="se">\v</span>s2017 /s /e /h
+</pre></div>
 </div>
+<p>Open the project (openzwavecppbuildwindowsvs2017OpenZWave.sln) in your Visual Studio.
+If you want to build for 64bits, add a new target for it. And finally close it.</p>
+</div>
+<div class="section" id="python-openzwave">
+<h2>Python-openzwave<a class="headerlink" href="#python-openzwave" title="Permalink to this headline">¶</a></h2>
+<p>Build and install python-openzwave :</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python setup.py install --flavor<span class="o">=</span>dev
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sysargv <span class="o">[</span><span class="s1">&#39;setup.py&#39;</span>, <span class="s1">&#39;install&#39;</span><span class="o">]</span>
+&lt;pyozw_setup.DevTemplate object at 0x03BAD690&gt;thon setup.py install --flavor<span class="o">=</span>dev
+Requirement already satisfied: Cython in c:<span class="se">\p</span>rogram files <span class="o">(</span>x86<span class="o">)</span><span class="se">\p</span>ython36-32<span class="se">\l</span>ib<span class="se">\s</span>ite-packages
+<span class="o">{</span><span class="s1">&#39;name&#39;</span>: <span class="s1">&#39;libopenzwave&#39;</span>, <span class="s1">&#39;sources&#39;</span>: <span class="o">[</span><span class="s1">&#39;src-lib/libopenzwave/libopenzwave.pyx&#39;</span><span class="o">]</span>, <span class="s1">&#39;include_dirs&#39;</span>: <span class="o">[</span><span class="s1">&#39;openzwave/cpp/src&#39;</span>, <span class="s1">&#39;openzwave</span>
+<span class="s1">/cpp/src/value_classes&#39;</span>, <span class="s1">&#39;openzwave/cpp/src/platform&#39;</span>, <span class="s1">&#39;openzwave/cpp/build/windows&#39;</span>, <span class="s1">&#39;src-lib/libopenzwave&#39;</span>, <span class="s1">&#39;openzwave/cpp/bu</span>
+<span class="s1">ild/windows/vs2017/Release/&#39;</span><span class="o">]</span>, <span class="s1">&#39;define_macros&#39;</span>: <span class="o">[(</span><span class="s1">&#39;PY_LIB_VERSION&#39;</span>, <span class="s1">&#39;0.4.4&#39;</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;PY_SSIZE_T_CLEAN&#39;</span>, <span class="m">1</span><span class="o">)</span>, <span class="o">(</span><span class="s1">&#39;PY_LIB_FLAVOR&#39;</span>, <span class="s1">&#39;dev&#39;</span><span class="o">)</span>
+, <span class="o">(</span><span class="s1">&#39;PY_LIB_BACKEND&#39;</span>, <span class="s1">&#39;cython&#39;</span><span class="o">)]</span>, <span class="s1">&#39;libraries&#39;</span>: <span class="o">[</span><span class="s1">&#39;setupapi&#39;</span>, <span class="s1">&#39;msvcrt&#39;</span>, <span class="s1">&#39;ws2_32&#39;</span>, <span class="s1">&#39;dnsapi&#39;</span><span class="o">]</span>, <span class="s1">&#39;extra_objects&#39;</span>: <span class="o">[</span><span class="s1">&#39;openzwave/cpp/buil</span>
+<span class="s1">d/windows/vs2017/Release//OpenZWave.lib&#39;</span><span class="o">]</span>, <span class="s1">&#39;extra_compile_args&#39;</span>: <span class="o">[]</span>, <span class="s1">&#39;extra_link_args&#39;</span>: <span class="o">[]</span>, <span class="s1">&#39;language&#39;</span>: <span class="s1">&#39;c++&#39;</span><span class="o">}</span>
+<span class="o">[</span><span class="s1">&#39;six&#39;</span>, <span class="s1">&#39;PyDispatcher&gt;=2.0.5&#39;</span>, <span class="s1">&#39;Cython&#39;</span><span class="o">]</span>
+Requirement already satisfied: Cython in c:<span class="se">\p</span>rogram files <span class="o">(</span>x86<span class="o">)</span><span class="se">\p</span>ython36-32<span class="se">\l</span>ib<span class="se">\s</span>ite-packages
+running install
+flavor --flavor<span class="o">=</span>dev                      c:<span class="se">\p</span>rogram files <span class="o">(</span>x86<span class="o">)</span><span class="se">\p</span>ython36-32<span class="se">\l</span>ib<span class="se">\s</span>ite-packages
+running build_openzwave
+Found MSBuild.exe : c:/Program Files <span class="o">(</span>x86<span class="o">)</span>/Microsoft Visual Studio<span class="se">\2</span><span class="m">017</span><span class="se">\B</span>uildTools<span class="se">\M</span>SBuild<span class="se">\1</span><span class="m">5</span>.0<span class="se">\B</span>in<span class="se">\M</span>SBuild.exe
+Found arch : Win32 wave
+Found Visual Studio project : vs2017 <span class="o">(</span>x86<span class="o">)</span>/Microsoft Visual Studio<span class="se">\2</span><span class="m">017</span><span class="se">\B</span>uildTools<span class="se">\M</span>SBuild<span class="se">\1</span><span class="m">5</span>.0<span class="se">\B</span>in<span class="se">\M</span>SBuild.exe
+Found build path : openzwave/cpp/build/windows/vs2017/Release/
+...
+...
+byte-compiling C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\P</span>ython36-32<span class="se">\L</span>ib<span class="se">\s</span>ite-packages<span class="se">\p</span>ython_openzwave<span class="se">\s</span>cripts<span class="se">\_</span>_init__.py to __init__.cpython-36
+.pyc
+running install_egg_info
+running egg_info
+writing python_openzwave.egg-info<span class="se">\P</span>KG-INFO
+writing dependency_links to python_openzwave.egg-info<span class="se">\d</span>ependency_links.txt
+writing entry points to python_openzwave.egg-info<span class="se">\e</span>ntry_points.txt
+ <span class="o">================================================================</span>
+  .<span class="se">\s</span>cripts<span class="se">\a</span>llusers.bat
+  this script is executed <span class="k">for</span> all users
+  delete/rename it <span class="k">if</span> you dont need <span class="nv">it</span>
+ <span class="o">================================================================</span>
+Page de codes active�: <span class="m">437</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>And finally, test it :</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pyozw_check -l -d COM2 -t <span class="m">30</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-------------------------------------------------------------------------------
+Define options <span class="k">for</span> device COM2
+Start network
+Wait <span class="k">for</span> network awake <span class="o">(</span>30s<span class="o">)</span>
+-------------------------------------------------------------------------------
+Network is awaked. Talk to controller.
+Get python_openzwave version : <span class="m">0</span>.4.4
+Get python_openzwave config version : Original Z-Wave <span class="m">2</span>.78
+Get python_openzwave flavor : dev
+Get openzwave version : <span class="m">1</span>.4.2942
+Get config path : C:<span class="se">\P</span>rogram Files<span class="se">\P</span>ython36<span class="se">\l</span>ib<span class="se">\s</span>ite-packages<span class="se">\p</span>ython_openzwave<span class="se">\o</span>zw_config
+Controller capabilities : <span class="o">{</span><span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;staticUpdateController&#39;</span><span class="o">}</span>
+Controller node capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;beaming&#39;</span>, <span class="s1">&#39;staticUpdateController&#39;</span><span class="o">}</span>
+Nodes in network : <span class="m">4</span>
+-------------------------------------------------------------------------------
+Wait <span class="k">for</span> network ready <span class="o">(</span>30s<span class="o">)</span>
+-------------------------------------------------------------------------------
+Network is ready. Get nodes
+------------------------------------------------------------
+<span class="m">1</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">1</span> - Ready : True / Awake : True / Failed : False
+ <span class="m">1</span> - Manufacturer : Aeotec  <span class="o">(</span> id : 0x0086 <span class="o">)</span>
+ <span class="m">1</span> - Product : DSA02203 Z-Stick S2 <span class="o">(</span> id  : 0x0001 / <span class="nb">type</span> : 0x0002 / Version : <span class="m">3</span><span class="o">)</span>
+ <span class="m">1</span> - Command classes : set<span class="o">()</span>
+ <span class="m">1</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;primaryController&#39;</span>, <span class="s1">&#39;beaming&#39;</span>, <span class="s1">&#39;staticUpdateController&#39;</span><span class="o">}</span>
+ <span class="m">1</span> - Neighbors : <span class="o">{</span><span class="m">4</span><span class="o">}</span> / Power level : None
+ <span class="m">1</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+------------------------------------------------------------
+<span class="m">2</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">2</span> - Ready : True / Awake : True / Failed : False
+ <span class="m">2</span> - Manufacturer :   <span class="o">(</span> id : 0x0000 <span class="o">)</span>
+ <span class="m">2</span> - Product :  <span class="o">(</span> id  : 0x0000 / <span class="nb">type</span> : 0x0000 / Version : <span class="m">2</span><span class="o">)</span>
+ <span class="m">2</span> - Command classes : set<span class="o">()</span>
+ <span class="m">2</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;routing&#39;</span><span class="o">}</span>
+ <span class="m">2</span> - Neighbors : <span class="o">{</span><span class="m">3</span><span class="o">}</span> / Power level : None
+ <span class="m">2</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+------------------------------------------------------------
+<span class="m">3</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">3</span> - Ready : False / Awake : True / Failed : True
+ <span class="m">3</span> - Manufacturer :   <span class="o">(</span> id : 0x0000 <span class="o">)</span>
+ <span class="m">3</span> - Product :  <span class="o">(</span> id  : 0x0000 / <span class="nb">type</span> : 0x0000 / Version : <span class="m">3</span><span class="o">)</span>
+ <span class="m">3</span> - Command classes : set<span class="o">()</span>
+ <span class="m">3</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;routing&#39;</span>, <span class="s1">&#39;beaming&#39;</span><span class="o">}</span>
+ <span class="m">3</span> - Neighbors : set<span class="o">()</span> / Power level : None
+ <span class="m">3</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+------------------------------------------------------------
+<span class="m">4</span> - Name :  <span class="o">(</span> Location :  <span class="o">)</span>
+ <span class="m">4</span> - Ready : True / Awake : True / Failed : False
+ <span class="m">4</span> - Manufacturer : GreenWave  <span class="o">(</span> id : 0x0099 <span class="o">)</span>
+ <span class="m">4</span> - Product : PowerNode <span class="m">6</span> port <span class="o">(</span> id  : 0x0004 / <span class="nb">type</span> : 0x0003 / Version : <span class="m">4</span><span class="o">)</span>
+ <span class="m">4</span> - Command classes : <span class="o">{</span><span class="s1">&#39;COMMAND_CLASS_MANUFACTURER_SPECIFIC&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_ASSOCIATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_NO_OPERATION&#39;</span>, <span class="s1">&#39;COMM</span>
+<span class="s1">AND_CLASS_VERSION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_SWITCH_BINARY&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_MULTI_INSTANCE/CHANNEL&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_CRC_16_ENCAP&#39;</span>, <span class="s1">&#39;COMMA</span>
+<span class="s1">ND_CLASS_PROTECTION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_CONFIGURATION&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_BASIC&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_METER&#39;</span>, <span class="s1">&#39;COMMAND_CLASS_SWITCH_ALL&#39;</span><span class="o">}</span>
+ <span class="m">4</span> - Capabilities : <span class="o">{</span><span class="s1">&#39;listening&#39;</span>, <span class="s1">&#39;routing&#39;</span>, <span class="s1">&#39;beaming&#39;</span><span class="o">}</span>
+ <span class="m">4</span> - Neighbors : <span class="o">{</span><span class="m">1</span><span class="o">}</span> / Power level : None
+ <span class="m">4</span> - Is sleeping : False / Can wake-up : False / Battery level : None
+------------------------------------------------------------
+Driver statistics : <span class="o">{</span><span class="s1">&#39;SOFCnt&#39;</span>: <span class="m">49</span>, <span class="s1">&#39;ACKWaiting&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;readAborts&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;badChecksum&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;readCnt&#39;</span>: <span class="m">49</span>, <span class="s1">&#39;writeCnt&#39;</span>: <span class="m">46</span>, <span class="s1">&#39;CANCnt&#39;</span>:
+ <span class="m">0</span>, <span class="s1">&#39;NAKCnt&#39;</span>: <span class="m">1</span>, <span class="s1">&#39;ACKCnt&#39;</span>: <span class="m">30</span>, <span class="s1">&#39;OOFCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;dropped&#39;</span>: <span class="m">17</span>, <span class="s1">&#39;retries&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;callbacks&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;badroutes&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;noack&#39;</span>: <span class="m">4</span>, <span class="s1">&#39;netbusy&#39;</span>:
+ <span class="m">0</span>, <span class="s1">&#39;nondelivery&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;routedbusy&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;broadcastReadCnt&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;broadcastWriteCnt&#39;</span>: <span class="m">9</span><span class="o">}</span>
+------------------------------------------------------------
+Stop network
+Exit
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 </div>
 
@@ -119,13 +215,9 @@ git checkout
 <li><a class="reference internal" href="#">Installing python-openzwave on Windows</a><ul>
 <li><a class="reference internal" href="#install-microsoft-tools">Install Microsoft tools</a></li>
 <li><a class="reference internal" href="#install-other-tools">Install other tools</a></li>
-<li><a class="reference internal" href="#how-to-build-python-openzwave-on-windows-with-vs2015-deprecated">How To Build python-openzwave on Windows with VS2015 (deprecated)</a><ul>
-<li><a class="reference internal" href="#get-sources">Get sources</a></li>
-<li><a class="reference internal" href="#build-open-zwave">Build open-zwave</a></li>
-<li><a class="reference internal" href="#build-python-openzwave">Build python_openzwave</a></li>
-<li><a class="reference internal" href="#cygwin">Cygwin</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#clone-repositories">clone repositories</a></li>
+<li><a class="reference internal" href="#visual-studio">Visual studio</a></li>
+<li><a class="reference internal" href="#python-openzwave">Python-openzwave</a></li>
 </ul>
 </li>
 </ul>
