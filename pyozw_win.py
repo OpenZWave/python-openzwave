@@ -42,6 +42,7 @@ def find_ms_tools( debug=False, conf='Release' ):
             for filename in fnmatch.filter(dirs, pattern):
                 result.append(filename)
         return sorted(result, reverse=True)
+        
     project_dir = "openzwave/cpp/build/windows/"
     vs_path = ['c:/Program Files (x86)/MSBuild', 
                'c:/Program Files (x86)/Microsoft Visual Studio', 
@@ -71,7 +72,7 @@ def find_ms_tools( debug=False, conf='Release' ):
         elif project == 'vs2015':
             msbuild = [name for name in all_msbuild if '2015' in name or '\14.0' in name]
         elif project == 'vs2010':
-            msbuild = [name for name in all_msbuild if '2010' in name or '\4.0' in name]
+            msbuild = [name for name in all_msbuild if '2010' in name or '\4.0' in name or '\12.0' in name]
         if len(msbuild) > 0:
             break
     if debug:
