@@ -66,11 +66,11 @@ def find_ms_tools( debug=False, conf='Release' ):
     msbuild = []
     for project in projects:
         if project == 'vs2017':
-            msbuild = [name for name in all_msbuild if '2017' in name or '15.0' in name]
+            msbuild = [name for name in all_msbuild if '2017' in name or '\15.0' in name]
         elif project == 'vs2015':
-            msbuild = [name for name in all_msbuild if '2015' in name or '14.0' in name]
+            msbuild = [name for name in all_msbuild if '2015' in name or '\14.0' in name]
         elif project == 'vs2010':
-            msbuild = [name for name in all_msbuild if '2010' in name or '4.0' in name]
+            msbuild = [name for name in all_msbuild if '2010' in name or '\4.0' in name]
         if len(msbuild) > 0:
             break
     if debug:
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     conf = 'Release'
     arch, project, msbuild, build_path = find_ms_tools(debug=True, conf=conf)
 
-    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=%s', '/p:Platform=%s'%(conf,arch) ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
+    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=%s'%(conf), '/p:Platform=%s'%(arch) ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
     proc.wait()
 
     print('Library built in is in %s using compiler %s for arch %s' % (build_path, msbuild, arch))
