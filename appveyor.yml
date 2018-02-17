@@ -71,12 +71,13 @@ build_script:
 
 test_script:
   # Run the project tests
-  - "python setup.py nosetests"
+  - "nosetests --verbose tests/lib/autobuild tests/api/autobuild"
+  - "pyozw_check"
 
 after_test:
   # If tests are successful, create binary packages for the project.
   - "python setup.py bdist_wheel"
-  - "%CMD_IN_ENV% python setup.py bdist_wininst"
+  - "python setup.py bdist_wininst"
   - "%CMD_IN_ENV% python setup.py bdist_msi"
   - ps: "ls dist"
 
