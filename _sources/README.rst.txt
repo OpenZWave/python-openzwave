@@ -6,6 +6,10 @@
     :target: https://circleci.com/gh/OpenZWave/python-openzwave
     :alt: Circle status
 
+.. image:: https://ci.appveyor.com/api/projects/status/2ogl8tx7o3pqphc9?svg=true
+    :target: https://ci.appveyor.com/project/bibi21000/python-openzwave
+    :alt: Appveyor status
+
 .. image:: https://img.shields.io/pypi/format/python_openzwave.svg
     :target: https://pypi.python.org/pypi/python_openzwave
     :alt: Pypi format
