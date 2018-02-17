@@ -46,6 +46,7 @@ def find_ms_tools( debug=False, conf='Release' ):
     vs_path = ['c:/Program Files (x86)/MSBuild', 
                'c:/Program Files (x86)/Microsoft Visual Studio', 
                'c:/Program Files (x86)/Microsoft Visual Studio 14.0', 
+               'c:/Program Files (x86)/Microsoft Visual Studio 10.0', 
                ]
     if debug:
         print("Check for MSBuild.exe in %s" %vs_path)
