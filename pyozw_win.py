@@ -68,11 +68,11 @@ def find_ms_tools( debug=False, conf='Release' ):
     msbuild = []
     for project in projects:
         if project == 'vs2017':
-            msbuild = [name for name in all_msbuild if '2017' in name or '\15.0' in name]
+            msbuild = [name for name in all_msbuild if '2017' in name or '\\15.0' in name]
         elif project == 'vs2015':
-            msbuild = [name for name in all_msbuild if '2015' in name or '\14.0' in name]
+            msbuild = [name for name in all_msbuild if '2015' in name or '\\14.0' in name]
         elif project == 'vs2010':
-            msbuild = [name for name in all_msbuild if '2010' in name or '\4.0' in name or '\12.0' in name]
+            msbuild = [name for name in all_msbuild if '2010' in name or '\\4.0' in name or '\\12.0' in name]
         if len(msbuild) > 0:
             break
     if debug:
