@@ -157,14 +157,14 @@ def setup_build_environment():
                             continue
 
                         line = line.strip()
-                        k, v = line.split('=', 1)
-                        k = k.lower()
+                        k1, v1 = line.split('=', 1)
+                        k1 = k.lower()
 
                         if (
-                            k not in current_settings or
-                            current_settings[k] != v
+                            k1 not in current_settings or
+                            current_settings[k1] != v1
                         ):
-                            new_settings[k] = check_variable(v)
+                            new_settings[k1] = check_variable(v1)
 
             finally:
                 popen.stdout.close()
