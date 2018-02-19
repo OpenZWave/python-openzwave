@@ -21,8 +21,8 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 Build process :
-- ask user what to do (zmq way in pip) 
-- or parametrizes it 
+- ask user what to do (zmq way in pip)
+- or parametrizes it
     --dev : use local sources and cythonize way (for python-openzwave devs, ...)
     --embed : use local sources and cpp file (for third parties packagers, ...)
     --git : download openzwave from git (for geeks)
@@ -30,8 +30,13 @@ Build process :
     --pybind : use pybind alternative (not tested)
     --auto (default) : try static, shared and cython, fails if it can't
 """
-from setuptools import setup, find_packages
-from distutils.extension import Extension
+import sys
+
+if sys.platform.startswith("win"):
+    import pyozw_win
+    pyozw_win.setup_build_environment()
+
+
 from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires, build_requires
@@ -41,7 +46,8 @@ from pyozw_setup import bdist_egg, build_openzwave, openzwave_config, build, cle
 print(current_template)
 print(current_template.ctx)
 print(install_requires())
-
+from setuptools import setup, find_packages
+from distutils.extension import Extension
 setup(
   name = 'python_openzwave',
   author='Sébastien GALLET aka bibi2100',
@@ -66,15 +72,15 @@ setup(
         Extension(**current_template.ctx)
     ],
   #ext_modules = cythonize(ext_modules),
-  package_dir = { 'libopenzwave' : 'src-lib', 
-        'python_openzwave' : 'src-python_openzwave/python_openzwave', 
-        'openzwave' : 'src-api/openzwave', 
+  package_dir = { 'libopenzwave' : 'src-lib',
+        'python_openzwave' : 'src-python_openzwave/python_openzwave',
+        'openzwave' : 'src-api/openzwave',
         'pyozwman' : 'src-manager/pyozwman'
         },
   #The following line install config drectory in share/python-openzwave
   #~ data_files = data_files,
-  packages = find_packages('src-lib', exclude=["scripts"]) + 
-        find_packages('src-api', exclude=["scripts"]) + 
+  packages = find_packages('src-lib', exclude=["scripts"]) +
+        find_packages('src-api', exclude=["scripts"]) +
         find_packages('src-manager', exclude=["scripts"]) +
         find_packages('src-python_openzwave', exclude=["scripts"]),
   install_requires = install_requires(),

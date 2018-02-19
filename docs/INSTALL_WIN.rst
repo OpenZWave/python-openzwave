@@ -4,20 +4,14 @@
 Installing python-openzwave on Windows
 ======================================
 
-
-Install Microsoft tools
+Install Microsoft Visual Studio
 =======================
 
-This package use MSBuild.exe to build openzwave code.
+This package uses Visual Studio to build openzwave code.
 
-You can find it in Visual Studio 2017 or Visual Studio 2015.
 
-It's also possible to get it as a separate package.
-
-Only release 14.0 and 15.0 of Microsft Build Tools are tested.
-
-Install other tools
-===================
+Install python libraries
+========================
 
 You need git to clone the repository and python (32 bits or 64 bits). Add it to your PATH.
 
@@ -45,29 +39,23 @@ Clone python-openzwave:
 
     git clone https://github.com/OpenZWave/python-openzwave.git
 
-And clone open-zwave inside python-openzwave :
 
-.. code-block:: bash
+Windows Kit/SDK
+===============
 
-    cd python-openzwave
-    git clone https://github.com/OpenZWave/open-zwave.git openzwave
+My reccomendation is
 
-It's mandatory to clone the previous repository in a directory called openzwave (not open-zwave)
+VS 2017 use the latest Windows 10 SDK
+VS 2015 use the latest Windows 8.1 SDK
 
-Visual studio
-=============
+and so on and so forth
 
-Copy vs2010 in a new directory vs2017 (or vs2015 depending of which Visual Studio you use) :
-
-.. code-block:: bash
-
-    xcopy openzwave\cpp\build\windows\vs2010 openzwave\cpp\build\windows\vs2017 /s /e /h
-
-Open the project (openzwave\cpp\build\windows\vs2017\OpenZWave.sln) in your Visual Studio.
-If you want to build for 64bits, add a new target for it. And finally close it.
 
 Python-openzwave
 ================
+
+The build system is automatic. 
+It will build openzwave as 32/64bit depending on what version of Python and Windows is running.
 
 Build and install python-openzwave :
 
@@ -77,38 +65,65 @@ Build and install python-openzwave :
 
     .. code-block:: bash
 
-        sysargv ['setup.py', 'install']
-        <pyozw_setup.DevTemplate object at 0x03BAD690>thon setup.py install --flavor=dev
-        Requirement already satisfied: Cython in c:\program files (x86)\python36-32\lib\site-packages
-        {'name': 'libopenzwave', 'sources': ['src-lib/libopenzwave/libopenzwave.pyx'], 'include_dirs': ['openzwave/cpp/src', 'openzwave
-        /cpp/src/value_classes', 'openzwave/cpp/src/platform', 'openzwave/cpp/build/windows', 'src-lib/libopenzwave', 'openzwave/cpp/bu
-        ild/windows/vs2017/Release/'], 'define_macros': [('PY_LIB_VERSION', '0.4.4'), ('PY_SSIZE_T_CLEAN', 1), ('PY_LIB_FLAVOR', 'dev')
-        , ('PY_LIB_BACKEND', 'cython')], 'libraries': ['setupapi', 'msvcrt', 'ws2_32', 'dnsapi'], 'extra_objects': ['openzwave/cpp/buil
-        d/windows/vs2017/Release//OpenZWave.lib'], 'extra_compile_args': [], 'extra_link_args': [], 'language': 'c++'}
-        ['six', 'PyDispatcher>=2.0.5', 'Cython']
-        Requirement already satisfied: Cython in c:\program files (x86)\python36-32\lib\site-packages
+                Windows build setup starting.
+        Locating vcvars32.bat....
+        Setting up Visual Studio build environment.
+        ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+        ('sysargv', ['setup.py', 'install'])
+        NameError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead
+        <pyozw_setup.DevTemplate object at 0x0342EFB0>
+        Requirement already satisfied: Cython in c:\python27clean\lib\site-packages
+        Locating devenv.com....
+        Downloading openzwave.........
+        Copying openzwave Visual Studio solution.
+        ...
+        ['six', 'Louie>=1.1', 'Cython']
+        Requirement already satisfied: Cython in c:\python27clean\lib\site-packages
         running install
-        flavor --flavor=dev                      c:\program files (x86)\python36-32\lib\site-packages
+        flavor --flavor=dev
         running build_openzwave
-        Found MSBuild.exe : c:/Program Files (x86)/Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe
-        Found arch : Win32 wave
-        Found Visual Studio project : vs2017 (x86)/Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe
-        Found build path : openzwave/cpp/build/windows/vs2017/Release/
+        Found devenv.exe : C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.com
+        Found arch : Win32
+        Found Visual Studio project : vs2017
+        Found build path : C:\Users\Administrator\Desktop\New folder (56)\python-openzwave-master\openzwave\cpp\build\windows\vs2017\Release
+        Upgrading openzwave project. be patient..............
+        
+        Cleaning openzwave project. be patient........
+        
+        Building openzwave project. be patient.....................................
+        
+        running openzwave_config
+        Install ozw_config for template <pyozw_setup.DevTemplate object at 0x0342EFB0>
         ...
+        running build
+        running build_py
+        running build_ext
+        cythoning src-lib/libopenzwave/libopenzwave.pyx to src-lib/libopenzwave\libopenzwave.cpp
+        building 'libopenzwave' extension
         ...
-        byte-compiling C:\Program Files (x86)\Python36-32\Lib\site-packages\python_openzwave\scripts\__init__.py to __init__.cpython-36
-        .pyc
+        Generating code
+        Finished generating code
+        running install_lib
+        copying build\lib.win32-2.7\libopenzwave.pyd -> c:\python27clean\Lib\site-packages
+        copying build\lib.win32-2.7\python_openzwave\ozw_config\__init__.py -> c:\python27clean\Lib\site-packages\python_openzwave\ozw_config
+        byte-compiling c:\python27clean\Lib\site-packages\python_openzwave\ozw_config\__init__.py to __init__.pyc
         running install_egg_info
         running egg_info
+        writing requirements to python_openzwave.egg-info\requires.txt
         writing python_openzwave.egg-info\PKG-INFO
+        writing top-level names to python_openzwave.egg-info\top_level.txt
         writing dependency_links to python_openzwave.egg-info\dependency_links.txt
         writing entry points to python_openzwave.egg-info\entry_points.txt
-         ================================================================
-          .\scripts\allusers.bat
-          this script is executed for all users
-          delete/rename it if you dont need it
-         ================================================================
-        Page de codes active�: 437
+        reading manifest file 'python_openzwave.egg-info\SOURCES.txt'
+        writing manifest file 'python_openzwave.egg-info\SOURCES.txt'
+        Copying python_openzwave.egg-info to c:\python27clean\Lib\site-packages\python_openzwave-0.4.4-py2.7.egg-info
+        running install_scripts
+        Installing pyozw_check-script.py script to c:\python27clean\Scripts
+        Installing pyozw_check.exe script to c:\python27clean\Scripts
+        Installing pyozw_check.exe.manifest script to c:\python27clean\Scripts
+        Installing pyozw_shell-script.py script to c:\python27clean\Scripts
+        Installing pyozw_shell.exe script to c:\python27clean\Scripts
+        Installing pyozw_shell.exe.manifest script to c:\python27clean\Scripts
 
 And finally, test it :
 

@@ -23,85 +23,547 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 
 import os
-import fnmatch
+import sys
 import platform
- 
-def find_ms_tools( debug=False, conf='Release' ):
-    def find_all_build_tools(name, paths):
-        result = []
-        for path in paths:
-            for root, dirs, files in os.walk(path):
-                if name in files:
-                    result.append(os.path.join(root, name))
-        return result
+import shutil
+import subprocess
+import threading
 
-    def find_all_vs_projects(path):
-        result = []
-        pattern = 'vs*'
+try:
+    import winreg as _winreg
+except ImportError:
+    import _winreg
+
+
+WIN64 = '64' in platform.machine()
+PYTHON64 = platform.architecture()[0] == '64bit' and WIN64
+
+RegOpenKeyEx = _winreg.OpenKeyEx
+RegEnumKey = _winreg.EnumKey
+RegEnumValue = _winreg.EnumValue
+RegError = _winreg.error
+
+current_settings = dict()
+
+
+def check_variable(var):
+    if os.pathsep in var:
+        values = []
+        var = var.lower()
+        for itm in var.split(os.pathsep):
+            if itm and itm not in values:
+                values += [itm]
+        var = os.pathsep.join(values)
+    return var
+
+
+for k, v in os.environ.items():
+    current_settings[k.lower()] = check_variable(v)
+
+
+if PYTHON64:
+    ARCH = "64"
+else:
+    ARCH = '32'
+
+_vc_vars = None
+
+def find_vcvars(vs_path):
+    global _vc_vars
+
+    if _vc_vars is None:
+        print("Windows build setup starting.")
+        vcvars = 'vcvars%s.bat' % ARCH
+
+        event = threading.Event()
+        def run():
+            global _vc_vars
+            for root, dirs, files in os.walk(vs_path):
+                for f in files:
+                    if f.lower() == vcvars:
+                        _vc_vars = os.path.join(root, vcvars)
+                        break
+                else:
+                    continue
+                break
+            event.set()
+
+        t = threading.Thread(target=run)
+        t.daemon = True
+        sys.stdout.write('Locating {0}...'.format(vcvars))
+        t.start()
+
+        while not event.isSet():
+            sys.stdout.write('.')
+            event.wait(1)
+        sys.stdout.write('\n')
+
+    return _vc_vars
+
+_vs_path = None
+
+if WIN64:
+    def get_vs_path():
+        global _vs_path
+        if _vs_path is None:
+            handle = RegOpenKeyEx(
+                _winreg.HKEY_LOCAL_MACHINE,
+                r'SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7'
+            )
+
+            max_ver = 0.0
+            _vs_path = ''
+            i = 0
+            while True:
+                try:
+                    name, value, _ = RegEnumValue(handle, i)
+                except RegError:
+                    break
+
+                try:
+                    name = float(name)
+                    if name > max_ver:
+                        max_ver = name
+                        _vs_path = value
+                except ValueError:
+                    pass
+
+                i += 1
+        return _vs_path
+else:
+    def get_vs_path():
+        return ''
+
+
+def setup_build_environment():
+    vs_path = get_vs_path()
+    new_settings = dict()
+
+
+    if vs_path:
+        vs_path = find_vcvars(os.path.join(vs_path, 'VC'))
+        if vs_path:
+            print("Setting up Visual Studio build environment.")
+            popen = subprocess.Popen(
+                '"%s" & set' % vs_path,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            try:
+                stdout, stderr = popen.communicate()
+                if popen.wait() == 0:
+                    stdout = stdout.decode("mbcs")
+
+                    for line in stdout.split("\n"):
+                        if '=' not in line:
+                            continue
+
+                        line = line.strip()
+                        k, v = line.split('=', 1)
+                        k = k.lower()
+
+                        if (
+                            k not in current_settings or
+                            current_settings[k] != v
+                        ):
+                            new_settings[k] = check_variable(v)
+
+            finally:
+                popen.stdout.close()
+                popen.stderr.close()
+
+            for key, value in new_settings.items():
+                os.environ[key] = value
+
+            os.environ['MSSDK'] = vs_path
+            os.environ['DISTUTILS_USE_SDK'] = '1'
+
+        else:
+            raise RuntimeError(
+                'vcvars32.bat or vcvars64.bat could not be located.'
+            )
+    else:
+        raise RuntimeError('Visual Studio could not be located.')
+
+
+def copy_files(src, dst):
+    try:
+        os.makedirs(dst)
+    except WindowsError:
+        pass
+
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        try:
+            if os.path.isdir(s):
+                shutil.copytree(s, d)
+            else:
+                shutil.copy2(s, d)
+        except WindowsError:
+            pass
+
+def find_file(file_name, path):
+    event = threading.Event()
+    res = ['']
+
+    def run():
         for root, dirs, files in os.walk(path):
-            for filename in fnmatch.filter(dirs, pattern):
-                result.append(filename)
-        return sorted(result, reverse=True)
-        
-    project_dir = "openzwave/cpp/build/windows/"
-    vs_path = ['c:/Program Files (x86)/MSBuild', 
-               'c:/Program Files (x86)/Microsoft Visual Studio', 
-               'c:/Program Files (x86)/Microsoft Visual Studio 14.0', 
-               'c:/Program Files (x86)/Microsoft Visual Studio 10.0', 
-               ]
-    if debug:
-        print("Check for MSBuild.exe in %s" %vs_path)
-    all_msbuild = find_all_build_tools("MSBuild.exe", vs_path)
-    if debug:
-        print("Found MSBuild.exe in %s" %all_msbuild)
-    projects = find_all_vs_projects(project_dir)
-    if debug:
-        print("Found projects in %s" %projects)
-    #~ projects = ["vs2015", "vs2010", "vs2008"]
-    arch = 'Win32'
-    python_arch,_ = platform.architecture()
-    if python_arch == "64bit":
+            if (
+                ((PYTHON64 and 'amd64' in root) or 'amd64' not in root) and
+                file_name in files
+            ):
+                res[0] = os.path.join(root, file_name)
+                break
+        event.set()
+
+    t = threading.Thread(target=run)
+    t.daemon = True
+    sys.stdout.write('Locating {0}...'.format(file_name))
+    t.start()
+
+    while not event.isSet():
+        sys.stdout.write('.')
+        event.wait(1)
+    sys.stdout.write('\n')
+
+    return res[0]
+
+
+def find_ms_tools(debug=False, conf='Release', template=None):
+    if PYTHON64:
         arch = "x64"
-    #~ arch = "x64"
-    if debug:
-        print("Found arch %s" %arch)
-    msbuild = []
-    for project in projects:
-        if project == 'vs2017':
-            msbuild = [name for name in all_msbuild if '2017' in name or '\\15.0' in name]
-        elif project == 'vs2015':
-            msbuild = [name for name in all_msbuild if '2015' in name or '\\14.0' in name]
-        elif project == 'vs2010':
-            msbuild = [name for name in all_msbuild if '2010' in name or '\\4.0' in name or '\\12.0' in name]
-        if len(msbuild) > 0:
-            break
-    if debug:
-        print("Found compilers %s for project %s" %(msbuild, project))
+    else:
+        arch = 'Win32'
+
+    project_dir = os.path.abspath(r'openzwave\cpp\build\windows')
+    source_dir = os.path.join(project_dir, 'vs2010')
+
+    program_files = os.path.expandvars('%PROGRAMFILES%')
+
+    if not program_files.endswith('(x86)'):
+        program_files += ' (x86)'
+
+    dev_env = find_file("devenv.com", get_vs_path())
+
+    if dev_env:
+        project_mapping = {
+            "15.0": "2017",
+            "14.0": "2015",
+            "12.0": "2013",
+            "11.0": "2012",
+            "10.0": "2010",
+            "9.0":  "2008"
+        }
+        for key, value in project_mapping.items():
+            if key in dev_env or value in dev_env:
+                project = 'vs' + value
+                break
+        else:
+            project = 'vs2010'
+
+        project_dir = os.path.join(project_dir, project)
+
+        if PYTHON64:
+            project_dir = os.path.join(project_dir, 'x64')
+
+        build_path = os.path.join(project_dir, conf)
+
+        if debug:
+            print("Found arch %s" % arch)
+            print("Found Visual Studios in %s" % get_vs_path())
+            print("Found compilers %s for project %s" % (dev_env, project))
+
+        if template:
+
+            event = threading.Event()
+
+            def run():
+                template.get_openzwave()
+                copy_files(
+                    os.path.join(template.openzwave, 'open-zwave-master'),
+                    template.openzwave
+                )
+                event.set()
+
+            t = threading.Thread(target=run)
+            t.daemon = True
+            sys.stdout.write('Downloading openzwave...')
+            t.start()
+
+            while not event.isSet():
+                event.wait(0.6)
+                sys.stdout.write('.')
+            sys.stdout.write('\n')
+
+        if (
+            ('2010' not in project_dir and '2008' not in project_dir) or
+            PYTHON64
+        ):
+            print('Copying openzwave Visual Studio solution.')
+            copy_files(source_dir, project_dir)
+
+        if PYTHON64:
+            print('Modifying openzwave Visual Studio solution.')
+
+            with open(os.path.join(project_dir, 'OpenZWave.vcxproj'), 'r') as f:
+                vcxproj = f.read()
+
+            with open(os.path.join(project_dir, 'OpenZWave.sln'), 'r') as f:
+                sln = f.read()
+
+            if IMPORT_GROUP_TEMPLATE not in vcxproj:
+                vcxproj.replace(
+                    IMPORT_GROUP_KEY,
+                    IMPORT_GROUP_TEMPLATE
+                )
+
+            if PROPERTY_GROUP_TEMPLATE not in vcxproj:
+                vcxproj.replace(
+                    PROPERTY_GROUP_KEY,
+                    PROPERTY_GROUP_TEMPLATE
+                )
+
+            if ITEM_DEFINITION_GROUP_TEMPLATE not in vcxproj:
+                vcxproj.replace(
+                    ITEM_DEFINITION_GROUP_KEY,
+                    ITEM_DEFINITION_GROUP_TEMPLATE
+                )
+
+
+            if GLOBAL_SELECTION_TEMPLATE not in sln:
+                sln.replace(
+                    GLOBAL_SELECTION_KEY,
+                    GLOBAL_SELECTION_TEMPLATE
+                )
+
+            with open(os.path.join(project_dir, 'OpenZWave.vcxproj'), 'w') as f:
+                f.write(vcxproj)
+
+            with open(os.path.join(project_dir, 'OpenZWave.sln'), 'w') as f:
+                f.write(sln)
+
+        project_dir = os.path.join(project_dir, 'OpenZWave.sln')
+
+        return arch, project, dev_env, build_path, project_dir
+
+    else:
+        raise RuntimeError('Unable to locate Visual Studio')
+
     #~ print(msbuild)
-    if arch == 'x64':
-        msbuild2 = [name for name in msbuild if 'amd64' in name]
-        build_path = 'openzwave/cpp/build/windows/%s/x64/%s/'%(project, conf)
-    if arch == 'Win32':
-        msbuild2 = [name for name in msbuild if not 'amd64' in name]
-        build_path = 'openzwave/cpp/build/windows/%s/%s/'%(project, conf)
     #~ print(projects)
     #~ print(msbuild)
     #~ print(arch)
-    if debug:
-        print("Found compilers %s for project %s and arch %s" %(msbuild, project, arch))
-    if debug:
-        print("Library will be built in %s" %(build_path))
-    if len(msbuild2) == 0:
-        raise RuntimeError("Can't find MSBuild (arch %s) in %s to build projects in %s"%(arch, vs_path, projects))
-    return arch, project, msbuild[0], build_path
 
-if __name__ == '__main__':
+
+if __name__ == '__main__' and sys.platform.startswith("win"):
     from subprocess import Popen, PIPE
 
-    conf = 'Release'
-    arch, project, msbuild, build_path = find_ms_tools(debug=True, conf=conf)
+    plat, pjct, ms_build, b_path, p_path = find_ms_tools(
+        debug=True,
+        conf='Release'
+    )
 
-    proc = Popen([ msbuild, 'OpenZWave.sln', '/t:Rebuild', '/p:Configuration=%s'%(conf), '/p:Platform=%s'%(arch) ], cwd='{0}'.format('openzwave/cpp/build/windows/%s'%project))
+    build_template = (
+        '"{msbuild}" '
+        '/t:Clean;Build '
+        '/p:Configuration={configuration} '
+        '/p:Platform={platform} '
+        '"{project_path}"'
+    )
+    build_command = build_template.format(
+        msbuild=ms_build,
+        project_path=p_path,
+        configuration='Release',
+        platform=plat
+    )
+    setup_build_environment()
+    proc = Popen(build_command)
     proc.wait()
 
-    print('Library built in is in %s using compiler %s for arch %s' % (build_path, msbuild, arch))
+    print(
+        'Library built in is in %s using compiler %s for arch %s' %
+        (b_path, ms_build, plat)
+    )
+
+TOOLS_VERSION_KEY = '''ToolsVersion="4.0"'''
+TOOLS_VERSION_TEMPLATE = '''ToolsVersion="{version}"'''
+
+IMPORT_GROUP_TEMPLATE = '''  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+'''
+
+IMPORT_GROUP_KEY = '''  <PropertyGroup Label="UserMacros" />'''
+
+PROPERTY_GROUP_TEMPLATE = ''' <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">$(ProjectName)d</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">$(ProjectName)</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">.dll</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">.dll</TargetExt>
+  </PropertyGroup>'''
+
+PROPERTY_GROUP_KEY = '''  </PropertyGroup>'''
+
+ITEM_DEFINITION_GROUP_TEMPLATE = '''<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\src;..\..\..\tinyxml;..\..\..\hidapi\hidapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\$(ProjectName).lib</OutputFile>
+      <AdditionalDependencies>setupapi.lib</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <PreBuildEvent>
+      <Command>del ..\winversion.cpp
+CALL "$(ProjectDir)\..\GIT-VS-VERSION-GEN.bat" "$(ProjectDir)\" "..\winversion.cpp"
+exit 0</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Export GIT Revision</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;OPENZWAVE_MAKEDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\..\src;..\..\..\tinyxml;..\..\..\hidapi\hidapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\$(ProjectName).dll</OutputFile>
+      <AdditionalDependencies>setupapi.lib</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <Link>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <AdditionalDependencies>Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>del ..\winversion.cpp
+CALL "$(ProjectDir)\..\GIT-VS-VERSION-GEN.bat" "$(ProjectDir)\" "..\winversion.cpp"
+exit 0</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Export GIT Revision</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;_LIB;OPENZWAVE_MAKEDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <AdditionalIncludeDirectories>..\..\..\src;..\..\..\tinyxml;..\..\..\hidapi\hidapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\$(ProjectName).lib</OutputFile>
+      <AdditionalDependencies>setupapi.lib</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>Setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent />
+    <PreBuildEvent>
+      <Message>Export GIT Revision</Message>
+      <Command>del ..\winversion.cpp
+CALL "$(ProjectDir)\..\GIT-VS-VERSION-GEN.bat" "$(ProjectDir)\" "..\winversion.cpp"
+exit 0</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\src;..\..\..\tinyxml;..\..\..\hidapi\hidapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)\$(ProjectName).lib</OutputFile>
+      <AdditionalDependencies>setupapi.lib</AdditionalDependencies>
+    </Lib>
+    <PreBuildEvent>
+      <Command>del ..\winversion.cpp
+CALL "$(ProjectDir)\..\GIT-VS-VERSION-GEN.bat" "$(ProjectDir)\" "..\winversion.cpp"
+exit 0</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Export GIT Revision</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>'''
+
+ITEM_DEFINITION_GROUP_KEY = '''  <ItemGroup>'''
+
+GLOBAL_SELECTION_TEMPLATE = '''
+		Debug|x64 = Debug|x64
+		DebugDLL|x64 = DebugDLL|x64
+		Release|x64 = Release|x64
+		ReleaseDLL|x64 = ReleaseDLL|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.ActiveCfg = Debug|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.Build.0 = Debug|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.Build.0 = DebugDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.ActiveCfg = Release|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.Build.0 = Release|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64'''
+
+
+GLOBAL_SELECTION_KEY = '''	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution'''
+
+
