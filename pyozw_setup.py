@@ -52,7 +52,6 @@ except ImportError:
     log.warn("ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel")
 from platform import system as platform_system
 import glob
-from pyozw_win import find_ms_tools
 from pyozw_version import pyozw_version
 from pyozw_popen import PIPE, Popen
 
@@ -145,6 +144,8 @@ class Template(object):
             ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
 
             def find_tools():
+                from pyozw_win import find_ms_tools
+
                 (
                     self.win_arch,
                     self.win_project,
