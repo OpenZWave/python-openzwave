@@ -59,7 +59,7 @@ from pyozw_popen import PIPE, Popen
 
 LOCAL_OPENZWAVE = os.getenv('LOCAL_OPENZWAVE', 'openzwave')
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
-UNIX_FLAVORS = ("cygwin", "darwin", "sunos", "linux", "freebsd")
+LINUX_FLAVORS = ("cygwin", "darwin", "sunos", "linux", "freebsd")
 
 
 class Template(object):
@@ -293,7 +293,6 @@ class Template(object):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
             log.info("Use cached build of openzwave")
             return True
-
 
         if sys.platform.startswith("win"):
             sys.stdout.write("Upgrading openzwave project. be patient...")

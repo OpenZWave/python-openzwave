@@ -67,7 +67,7 @@ install:
 
 build_script:
   # Build the compiled extension
-  # - python pyozw_win.py"
+  - python pyozw_win.py"
   - python setup.py build --flavor=dev"
 
 test_script:

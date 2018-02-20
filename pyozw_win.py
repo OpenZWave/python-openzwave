@@ -68,6 +68,7 @@ else:
 
 _vc_vars = None
 
+
 def find_vcvars(vs_path):
     global _vc_vars
 
@@ -76,6 +77,7 @@ def find_vcvars(vs_path):
         vcvars = 'vcvars%s.bat' % ARCH
 
         event = threading.Event()
+
         def run():
             global _vc_vars
             for root, dirs, files in os.walk(vs_path):
@@ -99,6 +101,7 @@ def find_vcvars(vs_path):
         sys.stdout.write('\n')
 
     return _vc_vars
+
 
 _vs_path = None
 
@@ -138,7 +141,6 @@ else:
 def setup_build_environment():
     vs_path = get_vs_path()
     new_settings = dict()
-
 
     if vs_path:
         vs_path = find_vcvars(os.path.join(vs_path, 'VC'))
@@ -200,6 +202,7 @@ def copy_files(src, dst):
                 shutil.copy2(s, d)
         except WindowsError:
             pass
+
 
 def find_file(file_name, path):
     event = threading.Event()
@@ -354,40 +357,10 @@ def find_ms_tools(debug=False, conf='Release', template=None):
     #~ print(arch)
 
 
-if __name__ == '__main__' and sys.platform.startswith("win"):
-    from subprocess import Popen, PIPE
+TOOLS_VERSION_KEY = r'''ToolsVersion="4.0"'''
+TOOLS_VERSION_TEMPLATE = r'''ToolsVersion="{version}"'''
 
-    plat, pjct, ms_build, b_path, p_path = find_ms_tools(
-        debug=True,
-        conf='Release'
-    )
-
-    build_template = (
-        '"{msbuild}" '
-        '/t:Clean;Build '
-        '/p:Configuration={configuration} '
-        '/p:Platform={platform} '
-        '"{project_path}"'
-    )
-    build_command = build_template.format(
-        msbuild=ms_build,
-        project_path=p_path,
-        configuration='Release',
-        platform=plat
-    )
-    setup_build_environment()
-    proc = Popen(build_command)
-    proc.wait()
-
-    print(
-        'Library built in is in %s using compiler %s for arch %s' %
-        (b_path, ms_build, plat)
-    )
-
-TOOLS_VERSION_KEY = '''ToolsVersion="4.0"'''
-TOOLS_VERSION_TEMPLATE = '''ToolsVersion="{version}"'''
-
-IMPORT_GROUP_TEMPLATE = '''  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+IMPORT_GROUP_TEMPLATE = r'''  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
@@ -402,9 +375,9 @@ IMPORT_GROUP_TEMPLATE = '''  <ImportGroup Condition="'$(Configuration)|$(Platfor
   <PropertyGroup Label="UserMacros" />
 '''
 
-IMPORT_GROUP_KEY = '''  <PropertyGroup Label="UserMacros" />'''
+IMPORT_GROUP_KEY = r'''  <PropertyGroup Label="UserMacros" />'''
 
-PROPERTY_GROUP_TEMPLATE = ''' <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
+PROPERTY_GROUP_TEMPLATE = r''' <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">$(Configuration)\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Configuration)\</IntDir>
@@ -427,9 +400,9 @@ PROPERTY_GROUP_TEMPLATE = ''' <IntDir Condition="'$(Configuration)|$(Platform)'=
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">.dll</TargetExt>
   </PropertyGroup>'''
 
-PROPERTY_GROUP_KEY = '''  </PropertyGroup>'''
+PROPERTY_GROUP_KEY = r'''  </PropertyGroup>'''
 
-ITEM_DEFINITION_GROUP_TEMPLATE = '''<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+ITEM_DEFINITION_GROUP_TEMPLATE = r'''<ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -544,9 +517,9 @@ exit 0</Command>
   </ItemDefinitionGroup>
   <ItemGroup>'''
 
-ITEM_DEFINITION_GROUP_KEY = '''  <ItemGroup>'''
+ITEM_DEFINITION_GROUP_KEY = r'''  <ItemGroup>'''
 
-GLOBAL_SELECTION_TEMPLATE = '''
+GLOBAL_SELECTION_TEMPLATE = r'''
 		Debug|x64 = Debug|x64
 		DebugDLL|x64 = DebugDLL|x64
 		Release|x64 = Release|x64
@@ -563,7 +536,71 @@ GLOBAL_SELECTION_TEMPLATE = '''
 		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64'''
 
 
-GLOBAL_SELECTION_KEY = '''	EndGlobalSection
+GLOBAL_SELECTION_KEY = r'''	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution'''
 
 
+if __name__ == '__main__' and sys.platform.startswith("win"):
+    setup_build_environment()
+
+    from pyozw_popen import Popen, PIPE
+
+    plat, pjct, d_env, b_path, p_path = find_ms_tools(
+        debug=True,
+        conf='Release'
+    )
+
+    upgrade_template = (
+        '"{dev_env}" '
+        '"{project_path}" '
+        '/Upgrade '
+    )
+    upgrade_command = upgrade_template.format(
+        dev_env=d_env,
+        project_path=p_path
+    )
+
+    Popen(upgrade_command, stdout=PIPE, stderr=PIPE)
+
+    sys.stdout.write("Cleaning openzwave project. be patient...")
+
+    clean_template = (
+        '"{dev_env}" '
+        '"{project_path}" '
+        '/UseEnv '
+        '/Clean '
+        '"{configuration}|{platform}"'
+    )
+
+    clean_command = clean_template.format(
+        dev_env=d_env,
+        project_path=p_path,
+        configuration=pjct,
+        platform=plat
+    )
+
+    Popen(clean_command, stdout=PIPE, stderr=PIPE)
+
+    sys.stdout.write("Building openzwave project. be patient...")
+
+    build_template = (
+        '"{dev_env}" '
+        '"{project_path}" '
+        '/UseEnv '
+        '/Build '
+        '"{configuration}|{platform}"'
+    )
+
+    build_command = build_template.format(
+        dev_env=d_env,
+        project_path=p_path,
+        configuration=pjct,
+        platform=plat
+    )
+
+    Popen(build_command, stdout=PIPE, stderr=PIPE)
+
+    print(
+        'Library built in is in %s using compiler %s for arch %s' %
+        (b_path, d_env, plat)
+    )
