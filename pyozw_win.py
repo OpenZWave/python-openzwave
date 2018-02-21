@@ -57,10 +57,6 @@ def check_variable(var):
     return var
 
 
-for k, v in os.environ.items():
-    current_settings[k.lower()] = check_variable(v)
-
-
 if PYTHON64:
     ARCH = "64"
 else:
@@ -73,7 +69,6 @@ def find_vcvars(vs_path):
     global _vc_vars
 
     if _vc_vars is None:
-        print("Windows build setup starting.")
         vcvars = 'vcvars%s.bat' % ARCH
 
         event = threading.Event()
@@ -99,6 +94,14 @@ def find_vcvars(vs_path):
             sys.stdout.write('.')
             event.wait(1)
         sys.stdout.write('\n')
+
+        if _vc_vars is not None:
+            print(
+                'Found {0} in directory {1}'.format(
+                    vcvars,
+                    os.path.split(_vc_vars)[0]
+                )
+            )
 
     return _vc_vars
 
@@ -146,11 +149,15 @@ def setup_build_environment():
         vs_path = find_vcvars(os.path.join(vs_path, 'VC'))
         if vs_path:
             print("Setting up Visual Studio build environment.")
+            for k, v in os.environ.items():
+                current_settings[k.lower()] = check_variable(v)
+
             popen = subprocess.Popen(
                 '"%s" & set' % vs_path,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             try:
                 stdout, stderr = popen.communicate()
+
                 if popen.wait() == 0:
                     stdout = stdout.decode("mbcs")
 
@@ -160,23 +167,28 @@ def setup_build_environment():
 
                         line = line.strip()
                         k1, v1 = line.split('=', 1)
-                        k1 = k.lower()
+                        k1 = k1.lower()
+
+                        v1 = check_variable(v1)
 
                         if (
                             k1 not in current_settings or
                             current_settings[k1] != v1
                         ):
-                            new_settings[k1] = check_variable(v1)
+                            new_settings[k1] = v1
 
             finally:
                 popen.stdout.close()
                 popen.stderr.close()
 
-            for key, value in new_settings.items():
-                os.environ[key] = value
+            new_settings['MSSDK'] = vs_path
+            new_settings['DISTUTILS_USE_SDK'] = '1'
 
-            os.environ['MSSDK'] = vs_path
-            os.environ['DISTUTILS_USE_SDK'] = '1'
+            for key, value in new_settings.items():
+                print(
+                    'Setting environment variable {0}: {1}'.format(key, value)
+                )
+                os.environ[key] = value
 
         else:
             raise RuntimeError(
@@ -237,8 +249,16 @@ def find_ms_tools(debug=False, conf='Release', template=None):
     else:
         arch = 'Win32'
 
-    project_dir = os.path.abspath(r'openzwave\cpp\build\windows')
-    source_dir = os.path.join(project_dir, 'vs2010')
+    if template is not None:
+
+        project_dir = os.path.abspath(
+            os.path.join(
+                template.openzwave,
+                r'cpp\build\windows\vs2010'
+            )
+        )
+    else:
+        project_dir = r'open-zwave-master\cpp\build\windows\vs2010'
 
     program_files = os.path.expandvars('%PROGRAMFILES%')
 
@@ -248,22 +268,14 @@ def find_ms_tools(debug=False, conf='Release', template=None):
     dev_env = find_file("devenv.com", get_vs_path())
 
     if dev_env:
-        project_mapping = {
-            "15.0": "2017",
-            "14.0": "2015",
-            "12.0": "2013",
-            "11.0": "2012",
-            "10.0": "2010",
-            "9.0":  "2008"
-        }
-        for key, value in project_mapping.items():
-            if key in dev_env or value in dev_env:
-                project = 'vs' + value
-                break
-        else:
-            project = 'vs2010'
-
-        project_dir = os.path.join(project_dir, project)
+        # project_mapping = {
+        #     "15.0": "2017",
+        #     "14.0": "2015",
+        #     "12.0": "2013",
+        #     "11.0": "2012",
+        #     "10.0": "2010",
+        #     "9.0":  "2008"
+        # }
 
         if PYTHON64:
             project_dir = os.path.join(project_dir, 'x64')
@@ -273,18 +285,13 @@ def find_ms_tools(debug=False, conf='Release', template=None):
         if debug:
             print("Found arch %s" % arch)
             print("Found Visual Studios in %s" % get_vs_path())
-            print("Found compilers %s for project %s" % (dev_env, project))
+            print("Found compilers %s" % dev_env)
 
         if template:
-
             event = threading.Event()
 
             def run():
                 template.get_openzwave()
-                copy_files(
-                    os.path.join(template.openzwave, 'open-zwave-master'),
-                    template.openzwave
-                )
                 event.set()
 
             t = threading.Thread(target=run)
@@ -297,14 +304,10 @@ def find_ms_tools(debug=False, conf='Release', template=None):
                 sys.stdout.write('.')
             sys.stdout.write('\n')
 
-        if (
-            ('2010' not in project_dir and '2008' not in project_dir) or
-            PYTHON64
-        ):
-            print('Copying openzwave Visual Studio solution.')
-            copy_files(source_dir, project_dir)
-
         if PYTHON64:
+            print('Copying openzwave Visual Studio solution.')
+            copy_files(os.path.split(project_dir)[0], project_dir)
+
             print('Modifying openzwave Visual Studio solution.')
 
             with open(os.path.join(project_dir, 'OpenZWave.vcxproj'), 'r') as f:
@@ -331,7 +334,6 @@ def find_ms_tools(debug=False, conf='Release', template=None):
                     ITEM_DEFINITION_GROUP_TEMPLATE
                 )
 
-
             if GLOBAL_SELECTION_TEMPLATE not in sln:
                 sln.replace(
                     GLOBAL_SELECTION_KEY,
@@ -346,7 +348,7 @@ def find_ms_tools(debug=False, conf='Release', template=None):
 
         project_dir = os.path.join(project_dir, 'OpenZWave.sln')
 
-        return arch, project, dev_env, build_path, project_dir
+        return arch, dev_env, build_path, project_dir
 
     else:
         raise RuntimeError('Unable to locate Visual Studio')
@@ -545,7 +547,7 @@ if __name__ == '__main__' and sys.platform.startswith("win"):
 
     from pyozw_popen import Popen, PIPE
 
-    plat, pjct, d_env, b_path, p_path = find_ms_tools(
+    plat, d_env, b_path, p_path = find_ms_tools(
         debug=True,
         conf='Release'
     )
@@ -575,7 +577,7 @@ if __name__ == '__main__' and sys.platform.startswith("win"):
     clean_command = clean_template.format(
         dev_env=d_env,
         project_path=p_path,
-        configuration=pjct,
+        configuration='Release',
         platform=plat
     )
 
@@ -594,7 +596,7 @@ if __name__ == '__main__' and sys.platform.startswith("win"):
     build_command = build_template.format(
         dev_env=d_env,
         project_path=p_path,
-        configuration=pjct,
+        configuration='Release',
         platform=plat
     )
 

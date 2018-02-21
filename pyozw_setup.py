@@ -72,7 +72,6 @@ class Template(object):
         self.sysargv = sysargv
         self.win_arch = None
         self.win_dev_env = None
-        self.win_project = None
         self.win_buildpath = None
         self.win_conf = None
         self.win_projectpath = None
@@ -148,7 +147,6 @@ class Template(object):
 
                 (
                     self.win_arch,
-                    self.win_project,
                     self.win_dev_env,
                     self.win_buildpath,
                     self.win_projectpath
@@ -297,7 +295,6 @@ class Template(object):
 
         if sys.platform.startswith("win"):
             sys.stdout.write("Upgrading openzwave project. be patient...")
-
             upgrade_template = (
                 '"{dev_env}" '
                 '"{project_path}" '
@@ -307,46 +304,42 @@ class Template(object):
                 dev_env=self.win_dev_env,
                 project_path=self.win_projectpath
             )
+            if Popen(upgrade_command, stdout=PIPE, stderr=PIPE):
 
-            Popen(upgrade_command, stdout=PIPE, stderr=PIPE)
+                sys.stdout.write("Cleaning openzwave project. be patient...")
+                clean_template = (
+                    '"{dev_env}" '
+                    '"{project_path}" '
+                    '/UseEnv '
+                    '/Clean '
+                    '"{configuration}|{platform}"'
+                )
+                clean_command = clean_template.format(
+                    dev_env=self.win_dev_env,
+                    project_path=self.win_projectpath,
+                    configuration=self.win_conf,
+                    platform=self.win_arch
+                )
+                Popen(clean_command, stdout=PIPE, stderr=PIPE)
 
-            sys.stdout.write("Cleaning openzwave project. be patient...")
+                sys.stdout.write("Building openzwave project. be patient...")
+                build_template = (
+                    '"{dev_env}" '
+                    '"{project_path}" '
+                    '/UseEnv '
+                    '/Build '
+                    '"{configuration}|{platform}"'
+                )
+                build_command = build_template.format(
+                    dev_env=self.win_dev_env,
+                    project_path=self.win_projectpath,
+                    configuration=self.win_conf,
+                    platform=self.win_arch
+                )
 
-            clean_template = (
-                '"{dev_env}" '
-                '"{project_path}" '
-                '/UseEnv '
-                '/Clean '
-                '"{configuration}|{platform}"'
-            )
-
-            clean_command = clean_template.format(
-                dev_env=self.win_dev_env,
-                project_path=self.win_projectpath,
-                configuration=self.win_conf,
-                platform=self.win_arch
-            )
-
-            Popen(clean_command, stdout=PIPE, stderr=PIPE)
-
-            sys.stdout.write("Building openzwave project. be patient...")
-
-            build_template = (
-                '"{dev_env}" '
-                '"{project_path}" '
-                '/UseEnv '
-                '/Build '
-                '"{configuration}|{platform}"'
-            )
-
-            build_command = build_template.format(
-                dev_env=self.win_dev_env,
-                project_path=self.win_projectpath,
-                configuration=self.win_conf,
-                platform=self.win_arch
-            )
-
-            return Popen(build_command, stdout=PIPE, stderr=PIPE)
+                return Popen(build_command, stdout=PIPE, stderr=PIPE)
+            else:
+                return False
 
         for allowed_os in LINUX_FLAVORS:
             if sys.platform.startswith(allowed_os):
@@ -500,7 +493,6 @@ class Template(object):
         if sys.platform.startswith("win"):
             log.info("Found devenv.exe : {0}".format(self.win_dev_env))
             log.info("Found arch : {0}".format(self.win_arch))
-            log.info("Found Visual Studio project : {0}".format(self.win_project))
             log.info("Found build path : {0}".format(self.win_buildpath))
         else:
             log.info("Found g++ : {0}".format(find_executable("g++")))
@@ -539,12 +531,7 @@ class Template(object):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
         """download an archive to a specific location"""
-        if sys.platform.startswith("win"):
-            dest = os.path.abspath(self.openzwave)
-        else:
-            dest,tail = os.path.split(self.openzwave)
-
-        dest_file = os.path.join(dest, 'open-zwave.zip')
+        dest, tail = os.path.split(self.openzwave)
         if os.path.exists(self.openzwave):
             if not self.cleanozw:
                 #~ log.info("Already have directory %s. Use it. Use --cleanozw to clean it.", self.openzwave)
@@ -552,13 +539,9 @@ class Template(object):
             else:
                 #~ log.info("Already have directory %s but remove and clean it as asked", self.openzwave)
                 self.clean_all()
-                try:
-                    os.remove(dest_file)
-                except Exception:
-                    pass
-        log.info("fetching {0} into {1} for version {2}".format(url, dest_file, pyozw_version))
-        if not os.path.exists(dest):
-            os.makedirs(dest)
+
+        log.info("fetching {0} for version {1}".format(url, pyozw_version))
+
         try:
             # py2
             from urllib2 import urlopen
@@ -566,12 +549,23 @@ class Template(object):
             # py3
             from urllib.request import urlopen
         req = urlopen(url)
-        with open(dest_file, 'wb') as f:
-            f.write(req.read())
+
+        from io import BytesIO
         import zipfile
+
+        dest_file = BytesIO(req.read())
+        dest_file.seek(0)
+
         zip_ref = zipfile.ZipFile(dest_file, 'r')
         zip_ref.extractall(dest)
         zip_ref.close()
+        dest_file.close()
+
+        if sys.platform.startswith("win"):
+            os.rename(
+                os.path.join(dest, zip_ref.namelist()[0]),
+                self.openzwave
+            )
         return self.openzwave
 
     def clean_openzwave_so(self):

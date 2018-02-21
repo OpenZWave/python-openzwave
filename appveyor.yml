@@ -63,11 +63,11 @@ install:
   # - "%CMD_IN_ENV% pip install Cython six"
   - "pip install Cython six"
 
-  - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
+  # - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
 build_script:
   # Build the compiled extension
-  - python pyozw_win.py"
+  # - python pyozw_win.py"
   - python setup.py build --flavor=dev"
 
 test_script:
