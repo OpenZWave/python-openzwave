@@ -32,6 +32,8 @@ home_id = None
 args = None
 
 def imports(args):
+    if args.timeout is None:
+        args.timeout = 2
     if args.output == 'txt':
         print("-------------------------------------------------------------------------------")
         print("Import libs")
@@ -101,6 +103,8 @@ def zwcallback(zwargs):
 
 def init_device(args):
     global home_id
+    if args.timeout is None:
+        args.timeout = 15
     if args.output == 'txt':
         print("-------------------------------------------------------------------------------")
         print("Intialize device {0}".format(args.device))
@@ -176,6 +180,8 @@ def init_device(args):
 
 def list_nodes(args):
     global home_id
+    if args.timeout is None
+        args.timeout = 60*60*4+1
     import openzwave
     from openzwave.node import ZWaveNode
     from openzwave.value import ZWaveValue
@@ -198,7 +204,6 @@ def list_nodes(args):
     print("Start network")
     network = ZWaveNetwork(options, log=None)
 
-    print("Wait for network awake ({0}s)".format(args.timeout))
     delta = 0.5
     for i in range(0, int(args.timeout/delta)):
         time.sleep(delta)
@@ -217,6 +222,8 @@ def list_nodes(args):
     print("Nodes in network : {}".format(network.nodes_count))
 
     print("-------------------------------------------------------------------------------")
+    if args.timeout > 1800:
+        print("You defined a really long timneout. Please use --help to change this feature.")
     print("Wait for network ready ({0}s)".format(args.timeout))
     for i in range(0, int(args.timeout/delta)):
         time.sleep(delta)
@@ -256,7 +263,7 @@ def pyozw_parser():
     parser.add_argument('-m', '--imports', action='store_true', help='Import all libs', default=True)
     parser.add_argument('-i', '--init_device', action='store_true', help='Intialize the device', default=False)
     parser.add_argument('-l', '--list_nodes', action='store_true', help='List the nodes on zwave network', default=False)
-    parser.add_argument('-t', '--timeout', action='store',type=int, help='The default timeout for zwave network sniffing', default=10)
+    parser.add_argument('-t', '--timeout', action='store',type=int, help='The default timeout for zwave network sniffing', default=None)
     parser.add_argument('--config_path', action='store', help='The config_path for openzwave', default=None)
     parser.add_argument('--user_path', action='store', help='The user_path for openzwave', default=".")
     return parser
