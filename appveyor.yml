@@ -79,12 +79,12 @@ install:
 build_script:
   # Build the compiled extension
   - python pyozw_win.py"
-  - python setup.py build --flavor=dev"
+  - python setup.py install --flavor=dev"
 
 test_script:
   # Run the project tests
-  - "nosetests --verbose tests/lib/autobuild tests/api/autobuild"
   - "pyozw_check"
+  - "nosetests --verbose tests/lib/autobuild tests/api/autobuild"
 
 after_test:
   # If tests are successful, create binary packages for the project.
