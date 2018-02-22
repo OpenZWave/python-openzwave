@@ -79,7 +79,7 @@ install:
   - "pip install Cython six"
   - "pip install nose"
 
-  - ps: Write-Host "PYTHON : " $env:PYTHON
+  - ps: Write-Host "PYTHON $env:PYTHON"
   
   - ps: if ($env:PYTHON -eq "2.7.x") { `
           pip install Louie } `
