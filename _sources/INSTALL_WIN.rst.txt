@@ -16,6 +16,9 @@ It's also possible to get it as a separate package.
 
 Only release 14.0 and 15.0 of Microsft Build Tools are tested.
 
+You nust use the C++ compiler used to build your version of python : https://wiki.python.org/moin/WindowsCompilers
+
+
 Install other tools
 ===================
 
