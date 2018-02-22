@@ -180,7 +180,7 @@ def init_device(args):
 
 def list_nodes(args):
     global home_id
-    if args.timeout is None
+    if args.timeout is None:
         args.timeout = 60*60*4+1
     import openzwave
     from openzwave.node import ZWaveNode
