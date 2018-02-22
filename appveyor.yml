@@ -77,6 +77,11 @@ install:
   # - "%CMD_IN_ENV% pip install Cython six"
   - "pip install Cython six"
   - "pip install nose"
+
+  - ps: if ($env:PYTHON -eq "2.7.x") { `
+          pip install Louie } `
+        else { `
+          pip install PyDispatcher }
   
   - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
