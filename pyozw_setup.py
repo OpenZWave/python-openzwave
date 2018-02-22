@@ -753,8 +753,8 @@ class OzwdevSharedTemplate(GitSharedTemplate):
 
 class EmbedTemplate(Template):
     
-    def __init__(self, **args):
-        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), **args)
+    def __init__(self, backend='cpp', **args):
+        Template.__init__(self, openzwave=os.path.join("openzwave-embed", 'open-zwave-master'), backend=backend, **args)
 
     @property
     def build_ext(self):
