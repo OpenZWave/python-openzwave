@@ -53,6 +53,10 @@ install:
   #~ - ECHO "Installed SDKs:"
   #~ - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
 
+  - ECHO "Installed prgrams:"
+  - ps: "ls \"C:/Program Files/""
+  - ps: "ls \"C:/Program Files (x86)/""
+
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
