@@ -466,7 +466,7 @@ class Template(object):
     def clean(self):
         #Build openzwave
         try:
-            if not os.path.isfile(self.openzwave):
+            if not os.path.isdir(self.openzwave):
                 return True
         except TypeError:
             return True
@@ -505,7 +505,7 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
             proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
 
         elif sys.platform.startswith("cygwin"):
@@ -603,9 +603,10 @@ class Template(object):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'):
         #Get openzwave
         """download an archive to a specific location"""
-        dest,tail = os.path.split(self.openzwave)
+        dest,tail = os.path.split(os.path.abspath(os.path.normpath(self.openzwave)))
+        
         dest_file = os.path.join(dest, 'open-zwave.zip')
-        if os.path.exists(self.openzwave):
+        if os.path.exists(os.path.abspath(os.path.normpath(self.openzwave))):
             if not self.cleanozw:
                 #~ log.info("Already have directory %s. Use it. Use --cleanozw to clean it.", self.openzwave)
                 return self.openzwave
@@ -690,19 +691,19 @@ class GitTemplate(Template):
 
     def clean_all(self):
         ret = self.clean()
-        dest,tail = os.path.split(os.path.abspath(self.openzwave))
+        dest,tail = os.path.split(os.path.abspath(os.path.normpath(self.openzwave)))
         if tail == "openzwave-git":
             try:
                 log.info('Try to remove {0}'.format(self.openzwave))
-                if os.path.isdir(os.path.abspath(self.openzwave)):
-                    shutil.rmtree(os.path.abspath(self.openzwave))
+                if os.path.isdir(os.path.abspath(os.path.normpath(self.openzwave))):
+                    shutil.rmtree(os.path.abspath(os.path.normpath(self.openzwave)))
             except Exception:
                 pass
         elif tail == 'open-zwave-master':
             try:
                 log.info('Try to remove {0}'.format(dest))
-                if os.path.isdir(os.path.abspath(dest)):
-                    shutil.rmtree(os.path.abspath(dest))
+                if os.path.isdir(os.path.abspath(os.path.normpath(dest))):
+                    shutil.rmtree(os.path.abspath(os.path.normpath(dest)))
             except Exception:
                 pass
         return ret
