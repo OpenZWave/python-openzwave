@@ -296,17 +296,17 @@ class Template(object):
             if self.os_options['vsproject_upgrade']:
                 log.info("Upgrade openzwave project ... be patient ...")
                 proc = Popen(get_vsproject_upgrade_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.os_options['vsproject']))
+                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
                 proc.wait()
             #~ if self.os_options['vsproject_prebuild']:
                 #~ log.info("Update configuration of openzwave project ... be patient ...")
                 #~ proc = Popen(get_vsproject_prebuild_command(self.os_options),
-                             #~ stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.os_options['vsproject']))
+                             #~ stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
                 #~ proc.wait()
 
             log.info("Build openzwave ... be patient ...")
             proc = Popen(get_vsproject_build_command(self.os_options),
-                         stdout=PIPE, stderr=PIPE, cwd='{0}/cpp/build/windows/{1}'.format(self.openzwave, self.os_options['vsproject']))
+                         stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -374,7 +374,7 @@ class Template(object):
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
         if sys.platform.startswith("win"):
-            proc = Popen([ 'copy', 'OpenZWave.dll' , '%SYSTEM32%\\' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.win_buildpath))
+            proc = Popen([ 'copy', 'OpenZWave.dll' , '%SYSTEM32%\\' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -408,7 +408,7 @@ class Template(object):
 
         if sys.platform.startswith("win"):
             log.info("Register dll ... be patient ...")
-            proc = Popen([ 'regsvr32', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'regsvr32', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
 
         elif sys.platform.startswith("cygwin"):
             import pyozw_pkgconfig
@@ -502,7 +502,7 @@ class Template(object):
 
         if sys.platform.startswith("win"):
             proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
-            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
