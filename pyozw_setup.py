@@ -257,7 +257,6 @@ class Template(object):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
             log.info("Use cached build of openzwave")
             return True
-        log.info("Build openzwave ... be patient ...")
         from subprocess import Popen, PIPE
         from threading import Thread
         try:
@@ -309,18 +308,23 @@ class Template(object):
                          stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
 
         elif sys.platform.startswith("cygwin"):
+            log.info("Build openzwave ... be patient ...")
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("darwin"):
+            log.info("Build openzwave ... be patient ...")
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("freebsd"):
+            log.info("Build openzwave ... be patient ...")
             proc = Popen('gmake', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("sunos"):
+            log.info("Build openzwave ... be patient ...")
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
+            log.info("Build openzwave ... be patient ...")
             proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         else:

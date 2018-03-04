@@ -355,10 +355,10 @@ def get_system_context( ctx, options, openzwave="openzwave", static=False, debug
     ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
 
     if static:
-        ctx['extra_objects'] = [ "{0}/OpenZWave.lib".format(options['vsproject_prebuild']) ]
+        ctx['extra_objects'] = [ "{0}/OpenZWave.lib".format(options['vsproject_build']) ]
         ctx['include_dirs'] += [ "{0}/cpp/build/windows".format(openzwave),
                                  "src-lib/libopenzwave",
-                                 "{0}".format(options['vsproject_prebuild']),
+                                 "{0}".format(options['vsproject_build']),
                                 ]
     else:
         ctx['libraries'] += [ "OpenZWave" ]
