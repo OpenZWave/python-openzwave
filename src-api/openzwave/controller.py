@@ -1387,7 +1387,7 @@ class ZWaveController(ZWaveObject):
                 logger.exception("Can't remove old config directory")
 
         try:
-            shutil.copy_tree(os.path.join(dest, 'open-zwave-master', 'config'), self.library_config_path)
+            shutil.copytree(os.path.join(dest, 'open-zwave-master', 'config'), self.library_config_path)
         except Exception:
             logger.exception("Can't copy to %s", self.library_config_path)
 
