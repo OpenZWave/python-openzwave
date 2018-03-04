@@ -56,6 +56,7 @@ install:
   - ECHO "Installed prgrams:"
   - ps: "ls \"C:/Program Files/\""
   - ps: "ls \"C:/Program Files (x86)/\""
+  - ps: "ls \"C:/Program Files (x86)/MSBuild/\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -103,7 +104,7 @@ test_script:
   - del C:\projects\python-openzwave\openzwave /s /q
   - ps: "ls \"C:/projects/python-openzwave/\""
   - ps: "ls \"C:/projects/python-openzwave/openzwave/\""
-  - python setup.py bdist_wheel
+  - python setup.py bdist_wheel --flavor=git
   #~ - "python setup.py bdist_wininst"
   #~ - "%CMD_IN_ENV% python setup.py bdist_msi"
   - ps: "ls dist"
