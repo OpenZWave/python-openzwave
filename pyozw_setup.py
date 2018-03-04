@@ -556,10 +556,12 @@ class Template(object):
 
     def check_minimal_config(self):
         if sys.platform.startswith("win"):
-            log.info("Found MSBuild.exe : {0}".format(self.win_msbuild))
-            log.info("Found arch : {0}".format(self.win_arch))
-            log.info("Found Visual Studio project : {0}".format(self.win_project))
-            log.info("Found build path : {0}".format(self.win_buildpath))
+            log.info("Found MSBuild.exe : {0}".format(self.os_options['msbuild']))
+            log.info("Found devenv.exe : {0}".format(self.os_options['devenv']))
+            log.info("Found arch : {0}".format(self.os_options['arch']))
+            log.info("Found build configuration : {0}".format(self.os_options['buildconf']))
+            log.info("Found Visual Studio project : {0}".format(self.os_options['vsproject']))
+            log.info("Found build path : {0}".format(self.os_options['vsproject_build']))
         else:
             log.info("Found g++ : {0}".format(find_executable("g++")))
             log.info("Found gcc : {0}".format(find_executable("gcc")))
