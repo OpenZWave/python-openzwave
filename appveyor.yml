@@ -57,6 +57,7 @@ install:
   - ps: "ls \"C:/Program Files/\""
   - ps: "ls \"C:/Program Files (x86)/\""
   - ps: "ls \"C:/Program Files (x86)/MSBuild/\""
+  - ps: "ls \"C:/Program Files (x86)/Windows Kits/\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
