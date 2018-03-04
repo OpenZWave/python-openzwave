@@ -102,6 +102,7 @@ test_script:
   # If tests are successful, create binary packages for the project.
   - del C:\projects\python-openzwave\openzwave /s /q
   - ps: "ls \"C:/projects/python-openzwave/\""
+  - ps: "ls \"C:/projects/python-openzwave/openzwave/\""
   - python setup.py bdist_wheel
   #~ - "python setup.py bdist_wininst"
   #~ - "%CMD_IN_ENV% python setup.py bdist_msi"

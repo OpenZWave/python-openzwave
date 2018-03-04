@@ -87,9 +87,10 @@ def find_msbuild_tools( options, debug=False ):
         options['msbuild'] =  msbuild2[0]
 
     elif win_config == VC10:
-        vs_path = ['c:\\Program Files (x86)\\MSBuild',
+        vs_path = [
                    'c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 14.0',
+                   'c:\\Program Files (x86)\\Microsoft Visual Studio 11.0',
+                   'c:\\Program Files (x86)\\MSBuild',
                    ]
         if debug:
             print("Check for MSBuild.exe in %s" %vs_path)
@@ -107,7 +108,9 @@ def find_msbuild_tools( options, debug=False ):
         options['msbuild'] =  msbuild2[0]
 
     elif win_config == VC9:
-        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
+        vs_path = [
+                   'c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
+                   'c:\\Program Files (x86)\\MSBuild',
                    ]
         if debug:
             print("Check for MSBuild.exe in %s" %vs_path)
@@ -144,9 +147,9 @@ def find_devenv_tools( options, debug=False ):
         options['devenv'] =  all_msbuild[0]
 
     elif win_config == VC10:
-        vs_path = ['c:\\Program Files (x86)\\MSBuild',
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 14.0',
+        vs_path = [
                    'c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
+                   'c:\\Program Files (x86)\\Microsoft Visual Studio 11.0',
                    ]
         if debug:
             print("Check for devenv.exe in %s" %vs_path)
@@ -158,7 +161,7 @@ def find_devenv_tools( options, debug=False ):
         options['devenv'] =  all_msbuild[0]
 
     elif win_config == VC9:
-        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
+        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
                    ]
         if debug:
             print("Check for devenv.exe in %s" %vs_path)
@@ -194,7 +197,7 @@ def get_vs_project( options, openzwave='openzwave', debug=False ):
         options['vsproject_upgrade'] = False
         options['vsproject_prebuild'] = True
     elif win_config == VC9:
-        options['vsproject'] = os.path.join(options['vsproject'],'cpp','build','windows','vs2008')
+        options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2008')
         options['vsproject_upgrade'] = False
         options['vsproject_prebuild'] = True
     if options['arch'] == "x64" :
