@@ -505,8 +505,8 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+            proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
