@@ -458,6 +458,17 @@ if __name__ == '__main__':
 
     print(options['vsproject'])
 
+    proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
+                    shell=True,
+                    stdout=PIPE, 
+                    stderr=PIPE, 
+                    cwd='{0}'.format(options['vsproject']))
+    for line in proc.stdout: 
+        print(line)
+    errcode = proc.returncode
+    for line in proc.stdout: 
+        print(line)
+
     proc = Popen(get_vsproject_upgrade_command( options, debug=True ),
                     shell=True,
                     stdout=PIPE, 
