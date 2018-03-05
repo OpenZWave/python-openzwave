@@ -458,7 +458,7 @@ if __name__ == '__main__':
 
     print(options['vsproject'])
 
-    os.system( get_vsproject_devenv_clean_command( options, debug=True ) )
+    os.system( ' '.join(get_vsproject_devenv_clean_command( options )) )
     #~ proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
                     #~ shell=True,
                     #~ stdout=PIPE, 
@@ -470,7 +470,7 @@ if __name__ == '__main__':
     #~ for line in proc.stdout: 
         #~ print(line)
 
-    os.system( get_vsproject_upgrade_command( options, debug=True ) )
+    os.system( ' '.join(get_vsproject_upgrade_command( options )) )
     #~ proc = Popen(get_vsproject_upgrade_command( options, debug=True ),
                     #~ shell=True,
                     #~ stdout=PIPE, 
@@ -487,7 +487,7 @@ if __name__ == '__main__':
 
     #~ proc = call(get_vsproject_devenv_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
     #~ proc = call(get_vsproject_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
-    os.system( get_vsproject_build_command( options, debug=True ) )
+    os.system( ' '.join(get_vsproject_build_command( options )) )
     #~ proc = Popen(get_vsproject_build_command( options, debug=True ),
                     #~ shell=True,
                     #~ stdout=PIPE, 
