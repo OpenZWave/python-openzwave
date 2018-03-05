@@ -470,7 +470,7 @@ class Template(object):
                 return True
         except TypeError:
             return True
-        log.info("Clean openzwave ... be patient ...")
+        log.info("Clean openzwave in %s ... be patient ..." % (self.openzwave) )
         from subprocess import Popen, PIPE
         from threading import Thread
         try:
@@ -540,6 +540,7 @@ class Template(object):
         return True
 
     def clean_all(self):
+        log.info("Clean-all openzwave ... be patient ...")
         try:
             from pkg_resources import resource_filename
             dirn = resource_filename('python_openzwave.ozw_config', '__init__.py')
