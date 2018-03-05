@@ -508,7 +508,7 @@ class Template(object):
             from pyozw_win import get_vsproject_devenv_clean_command
             if 'devenv' in self.os_options and self.os_options['devenv'] is not None:
                 log.info("Clean openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_clean_command(self.os_options),
+                proc = Popen(get_vsproject_devenv_clean_command(self.os_options),
                              stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
                 #~ proc.wait()
             #~ proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
