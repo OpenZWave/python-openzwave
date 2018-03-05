@@ -457,7 +457,7 @@ if __name__ == '__main__':
     get_system_context( ctx, options, openzwave="openzwave", static=True, debug=True )
 
     print(options['vsproject'])
-
+    print(' '.join(get_vsproject_devenv_clean_command( options )))
     os.system( ' '.join(get_vsproject_devenv_clean_command( options )) )
     #~ proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
                     #~ shell=True,
