@@ -292,16 +292,16 @@ class Template(object):
 
         if sys.platform.startswith("win"):
             from pyozw_win import get_vsproject_upgrade_command, get_vsproject_build_command, get_vsproject_prebuild_command
-            if self.os_options['vsproject_upgrade']:
+            if 'vsproject_upgrade' in self.os_options and self.os_options['vsproject_upgrade']:
                 log.info("Upgrade openzwave project ... be patient ...")
                 proc = Popen(get_vsproject_upgrade_command(self.os_options),
                              stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
                 proc.wait()
-            #~ if self.os_options['vsproject_prebuild']:
-                #~ log.info("Update configuration of openzwave project ... be patient ...")
-                #~ proc = Popen(get_vsproject_prebuild_command(self.os_options),
-                             #~ stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                #~ proc.wait()
+            if 'vsproject_prebuild' in self.os_options and self.os_options['vsproject_prebuild']:
+                log.info("Update configuration of openzwave project ... be patient ...")
+                proc = Popen(get_vsproject_prebuild_command(self.os_options),
+                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+                proc.wait()
 
             log.info("Build openzwave ... be patient ...")
             proc = Popen(get_vsproject_build_command(self.os_options),

@@ -161,16 +161,17 @@ def find_devenv_tools( options, debug=False ):
         options['devenv'] =  all_msbuild[0]
 
     elif win_config == VC9:
-        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
-                   ]
-        if debug:
-            print("Check for devenv.exe in %s" %vs_path)
-        all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        if debug:
-            print("Found devenv.exe in %s" %all_msbuild)
-        if len(all_msbuild) == 0:
-            raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
-        options['devenv'] =  all_msbuild[0]
+        #~ vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
+                   #~ ]
+        #~ if debug:
+            #~ print("Check for devenv.exe in %s" %vs_path)
+        #~ all_msbuild = find_all_build_tools("devenv.exe", vs_path)
+        #~ if debug:
+            #~ print("Found devenv.exe in %s" %all_msbuild)
+        #~ if len(all_msbuild) == 0:
+            #~ raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
+        #~ options['devenv'] =  all_msbuild[0]
+        options['devenv'] = None
     return 'devenv' in options
 
 def get_vs_project( options, openzwave='openzwave', debug=False ):
@@ -191,15 +192,15 @@ def get_vs_project( options, openzwave='openzwave', debug=False ):
             shutil.rmtree(options['vsproject'])
         shutil.copytree(os.path.join(openzwave,'cpp','build','windows','vs2010'), options['vsproject'])
         options['vsproject_upgrade'] = True
-        options['vsproject_prebuild'] = True
+        options['vsproject_prebuild'] = False
     elif win_config == VC10:
         options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2010')
         options['vsproject_upgrade'] = False
-        options['vsproject_prebuild'] = True
+        options['vsproject_prebuild'] = False
     elif win_config == VC9:
         options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2008')
         options['vsproject_upgrade'] = False
-        options['vsproject_prebuild'] = True
+        options['vsproject_prebuild'] = False
     if options['arch'] == "x64" :
         options['vsproject_build'] = os.path.join(options['vsproject'], options['arch'], options['buildconf'])
         update_vs_project( options, debug=debug )
@@ -335,6 +336,9 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
 
 def get_system_context( ctx, options, openzwave="openzwave", static=False, debug=False ):
 
+    if debug:
+        print("get_system_context for windows")
+
     if static:
         options['buildconf'] = 'Release'
     else:
@@ -354,6 +358,9 @@ def get_system_context( ctx, options, openzwave="openzwave", static=False, debug
         find_msbuild_tools( options, debug=debug )
     if 'vsproject' not in options:
         get_vs_project( options, openzwave=openzwave, debug=debug )
+
+    if debug:
+        print("Found options %s" %options)
 
     ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
 
