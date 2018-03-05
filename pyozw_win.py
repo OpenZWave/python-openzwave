@@ -435,7 +435,7 @@ def get_vsproject_devenv_clean_command( options, debug=False ):
             '/Clean',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
             )
-    return [ '"%s"'%options['devenv'],
+    return [ '\"%s\"'%options['devenv'],
             'OpenZWave.sln',
             '/Clean',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
