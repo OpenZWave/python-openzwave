@@ -505,8 +505,14 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
-            proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
+            from pyozw_win import get_vsproject_upgrade_command, get_vsproject_clean_command, get_vsproject_prebuild_command
+            if 'devenv' in self.os_options and self.os_options['devenv'] is not None:
+                log.info("Clean openzwave project ... be patient ...")
+                proc = Popen(get_vsproject_clean_command(self.os_options),
+                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+                #~ proc.wait()
+            #~ proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
+            #~ proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))

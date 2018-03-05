@@ -426,8 +426,24 @@ def get_vsproject_devenv_build_command( options, debug=False ):
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
             ]
 
+def get_vsproject_devenv_clean_command( options, debug=False ):
+    if debug:
+        print("get_vsproject_devenv_clean_command" )
+        print(
+        options['devenv'],
+            'OpenZWave.sln',
+            '/Clean',
+            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+            )
+    return [ options['devenv'],
+            'OpenZWave.sln',
+            '/Clean',
+            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+            ]
+
 if __name__ == '__main__':
     from subprocess import Popen, PIPE, call
+    print("Start pyozw_win")
     ctx = { "name": "libopenzwave",
              "sources": [ ],
              "include_dirs": [ ],
