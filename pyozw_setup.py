@@ -505,7 +505,7 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            from pyozw_win import get_vsproject_upgrade_command, get_vsproject_clean_command, get_vsproject_prebuild_command
+            from pyozw_win import get_vsproject_devenv_clean_command
             if 'devenv' in self.os_options and self.os_options['devenv'] is not None:
                 log.info("Clean openzwave project ... be patient ...")
                 proc = Popen(get_vsproject_clean_command(self.os_options),
