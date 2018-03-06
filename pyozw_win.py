@@ -404,7 +404,7 @@ def get_vsproject_build_command( options, debug=False ):
                 '/p:Configuration={0}'.format(options['buildconf']),
                 '/p:Platform={0}'.format(options['arch'])
             )
-    return [ options['msbuild'],
+    return [ '"%s"'%options['msbuild'],
             'OpenZWave.sln',
             '/t:Rebuild',
             '/p:Configuration={0}'.format(options['buildconf']),
@@ -458,45 +458,45 @@ if __name__ == '__main__':
 
     print(options['vsproject'])
     print(' '.join(get_vsproject_devenv_clean_command( options )))
-    os.system( ' '.join(get_vsproject_devenv_clean_command( options )) )
-    #~ proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
-                    #~ shell=True,
-                    #~ stdout=PIPE, 
-                    #~ stderr=PIPE, 
-                    #~ cwd='{0}'.format(options['vsproject']))
-    #~ for line in proc.stdout: 
-        #~ print(line)
-    #~ errcode = proc.returncode
-    #~ for line in proc.stdout: 
-        #~ print(line)
+    #~ os.system( ' '.join(get_vsproject_devenv_clean_command( options )) )
+    proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
+                    shell=True,
+                    stdout=PIPE, 
+                    stderr=PIPE, 
+                    cwd='{0}'.format(options['vsproject']))
+    for line in proc.stdout: 
+        print(line)
+    errcode = proc.returncode
+    for line in proc.stdout: 
+        print(line)
 
-    os.system( ' '.join(get_vsproject_upgrade_command( options )) )
-    #~ proc = Popen(get_vsproject_upgrade_command( options, debug=True ),
-                    #~ shell=True,
-                    #~ stdout=PIPE, 
-                    #~ stderr=PIPE, 
-                    #~ cwd='{0}'.format(options['vsproject']))
-    #~ for line in proc.stdout: 
-        #~ print(line)
-    #~ errcode = proc.returncode
-    #~ for line in proc.stdout: 
-        #~ print(line)
+    #~ os.system( ' '.join(get_vsproject_upgrade_command( options )) )
+    proc = Popen(get_vsproject_upgrade_command( options, debug=True ),
+                    shell=True,
+                    stdout=PIPE, 
+                    stderr=PIPE, 
+                    cwd='{0}'.format(options['vsproject']))
+    for line in proc.stdout: 
+        print(line)
+    errcode = proc.returncode
+    for line in proc.stdout: 
+        print(line)
 
     #~ proc = Popen(get_vsproject_prebuild_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
     #~ proc.wait()
 
     #~ proc = call(get_vsproject_devenv_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
     #~ proc = call(get_vsproject_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
-    os.system( ' '.join(get_vsproject_build_command( options )) )
-    #~ proc = Popen(get_vsproject_build_command( options, debug=True ),
-                    #~ shell=True,
-                    #~ stdout=PIPE, 
-                    #~ stderr=PIPE, 
-                    #~ cwd='{0}'.format(options['vsproject']))
-    #~ for line in proc.stdout: 
-        #~ print(line)
-    #~ errcode = proc.returncode
-    #~ for line in proc.stdout: 
-        #~ print(line)
+    #~ os.system( ' '.join(get_vsproject_build_command( options )) )
+    proc = Popen(get_vsproject_build_command( options, debug=True ),
+                    shell=True,
+                    stdout=PIPE, 
+                    stderr=PIPE, 
+                    cwd='{0}'.format(options['vsproject']))
+    for line in proc.stdout: 
+        print(line)
+    errcode = proc.returncode
+    for line in proc.stdout: 
+        print(line)
 
     print('Library built in %s using compiler %s for arch %s' % (options['vsproject_build'], options['msbuild'], options['arch']))

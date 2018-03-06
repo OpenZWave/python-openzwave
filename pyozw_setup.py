@@ -503,7 +503,7 @@ class Template(object):
                     if identifier == 'STDERR':
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
-
+        proc = None
         if sys.platform.startswith("win"):
             from pyozw_win import get_vsproject_devenv_clean_command
             if 'devenv' in self.os_options and self.os_options['devenv'] is not None:
@@ -533,16 +533,17 @@ class Template(object):
             # Unknown systemm
             raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
 
-        Thread(target=stream_watcher, name='stdout-watcher',
-                args=('STDOUT', proc.stdout)).start()
-        Thread(target=stream_watcher, name='stderr-watcher',
-                args=('STDERR', proc.stderr)).start()
+        if proc is not None:
+            Thread(target=stream_watcher, name='stdout-watcher',
+                    args=('STDOUT', proc.stdout)).start()
+            Thread(target=stream_watcher, name='stderr-watcher',
+                    args=('STDERR', proc.stderr)).start()
 
-        tprinter = Thread(target=printer, name='printer')
-        tprinter.start()
-        while tprinter.is_alive():
-            time.sleep(1)
-        tprinter.join()
+            tprinter = Thread(target=printer, name='printer')
+            tprinter.start()
+            while tprinter.is_alive():
+                time.sleep(1)
+            tprinter.join()
         return True
 
     def clean_all(self):
