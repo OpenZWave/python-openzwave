@@ -467,7 +467,7 @@ if __name__ == '__main__':
     for line in proc.stdout: 
         print(line)
     errcode = proc.returncode
-    for line in proc.stdout: 
+    for line in proc.stderr: 
         print(line)
 
     #~ os.system( ' '.join(get_vsproject_upgrade_command( options )) )
@@ -479,7 +479,7 @@ if __name__ == '__main__':
     for line in proc.stdout: 
         print(line)
     errcode = proc.returncode
-    for line in proc.stdout: 
+    for line in proc.stderr: 
         print(line)
 
     #~ proc = Popen(get_vsproject_prebuild_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
@@ -496,7 +496,7 @@ if __name__ == '__main__':
     for line in proc.stdout: 
         print(line)
     errcode = proc.returncode
-    for line in proc.stdout: 
+    for line in proc.stderr: 
         print(line)
 
     print('Library built in %s using compiler %s for arch %s' % (options['vsproject_build'], options['msbuild'], options['arch']))
