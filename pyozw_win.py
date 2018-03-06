@@ -380,7 +380,7 @@ def get_system_context( ctx, options, openzwave="openzwave", static=False, debug
 def get_vsproject_upgrade_command( options, debug=False ):
     if debug:
         print("get_vsproject_upgrade_command" )
-    return [ '"%s"'%options['devenv'],
+    return [ '%s'%options['devenv'],
             'OpenZWave.sln',
             '/upgrade',
             ]
@@ -398,13 +398,13 @@ def get_vsproject_build_command( options, debug=False ):
     if debug:
         print("get_vsproject_build_command" )
         print(
-                '"%s"'%options['msbuild'],
+                '%s'%options['msbuild'],
                 'OpenZWave.sln',
                 '/t:Rebuild',
                 '/p:Configuration={0}'.format(options['buildconf']),
                 '/p:Platform={0}'.format(options['arch'])
             )
-    return [ '"%s"'%options['msbuild'],
+    return [ '%s'%options['msbuild'],
             'OpenZWave.sln',
             '/t:Rebuild',
             '/p:Configuration={0}'.format(options['buildconf']),
@@ -420,7 +420,7 @@ def get_vsproject_devenv_build_command( options, debug=False ):
             '/Rebuild',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
             )
-    return [ '"%s"'%options['devenv'],
+    return [ '%s'%options['devenv'],
             'OpenZWave.sln',
             '/Rebuild',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
@@ -435,7 +435,7 @@ def get_vsproject_devenv_clean_command( options, debug=False ):
             '/Clean',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
             )
-    return [ '\"%s\"'%options['devenv'],
+    return [ '%s'%options['devenv'],
             'OpenZWave.sln',
             '/Clean',
             '"{0}|{1}"'.format(options['buildconf'],options['arch'])
