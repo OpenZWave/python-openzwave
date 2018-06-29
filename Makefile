@@ -157,7 +157,7 @@ endif
 ifeq (${python_version_major},3)
 	apt-get install --force-yes -y cython3
 endif
-	
+
 ci-deps:
 	apt-get install --force-yes -y python-pip python-dev python-docutils python-setuptools python-virtualenv
 	-apt-get install --force-yes -y python3-pip python3-docutils python3-dev python3-setuptools
