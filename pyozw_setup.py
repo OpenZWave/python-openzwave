@@ -148,8 +148,8 @@ class Template(object):
                 ctx['libraries'] += [ "openzwave" ]
                 extra = pyozw_pkgconfig.cflags('libopenzwave')
                 if extra != '':
-                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         elif sys.platform.startswith("darwin") :
             ctx['extra_link_args'] += [ "-framework", "CoreFoundation", "-framework", "IOKit" ]
@@ -163,8 +163,8 @@ class Template(object):
                 ctx['libraries'] += [ "openzwave" ]
                 extra = pyozw_pkgconfig.cflags('libopenzwave')
                 if extra != '':
-                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         elif sys.platform.startswith("freebsd"):
             if static:
@@ -176,8 +176,8 @@ class Template(object):
                 ctx['libraries'] += [ "openzwave" ]
                 extra = pyozw_pkgconfig.cflags('libopenzwave')
                 if extra != '':
-                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         elif sys.platform.startswith("sunos"):
             if static:
@@ -189,8 +189,8 @@ class Template(object):
                 ctx['libraries'] += [ "openzwave" ]
                 extra = pyozw_pkgconfig.cflags('libopenzwave')
                 if extra != '':
-                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         elif sys.platform.startswith("linux"):
             if static:
@@ -202,8 +202,8 @@ class Template(object):
                 ctx['libraries'] += [ "openzwave" ]
                 extra = pyozw_pkgconfig.cflags('libopenzwave')
                 if extra != '':
-                    for ssubstitute in ['/', '/value_classes/', '/platform/']:
-                        ctx['extra_compile_args'] += [ extra.replace('//', ssubstitute) ]
+                    for ssubstitute in ['', 'value_classes', 'platform']:
+                        ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         else:
             # Unknown systemm
