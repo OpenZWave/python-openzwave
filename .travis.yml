@@ -17,7 +17,8 @@ before_install:
     docker pull ${DOCKER_BASE};
   fi
 - if [[ "${DOCS}" == "true" ]]; then
-    sudo apt install -y libudev-dev;
+    sudo apt-get update;
+    sudo make common-deps;
   fi
 script:
 - if [[ "${DOCKER_BASE}x" != "x" ]]; then
