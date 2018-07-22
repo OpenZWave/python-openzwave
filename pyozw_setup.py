@@ -595,11 +595,13 @@ class Template(object):
             log.info("Found build configuration : {0}".format(self.os_options['buildconf']))
             log.info("Found Visual Studio project : {0}".format(self.os_options['vsproject']))
             log.info("Found build path : {0}".format(self.os_options['vsproject_build']))
+            log.info("Found cython : {0}".format(find_executable("cython")))
         else:
             log.info("Found g++ : {0}".format(find_executable("g++")))
             log.info("Found gcc : {0}".format(find_executable("gcc")))
             log.info("Found make : {0}".format(find_executable("make")))
             log.info("Found gmake : {0}".format(find_executable("gmake")))
+            log.info("Found cython : {0}".format(find_executable("cython")))
             exe = find_executable("pkg-config")
             log.info("Found pkg-config : {0}".format(exe))
             if exe is not None:
