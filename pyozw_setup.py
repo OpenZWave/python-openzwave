@@ -181,7 +181,7 @@ class Template(object):
 
         elif sys.platform.startswith("sunos"):
             if static:
-                ctx['libraries'] += [ "udev", "stdc++",'resolv' ]
+                ctx['libraries'] += [ "usb-1.0", "stdc++",'resolv' ]
                 ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
                 ctx['include_dirs'] += [ "{0}/cpp/build/linux".format(self.openzwave) ]
             else:
@@ -342,7 +342,7 @@ class Template(object):
 
         elif sys.platform.startswith("sunos"):
             log.info("Build openzwave ... be patient ...")
-            proc = Popen('make', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen('make', 'PREFIX=/opt/local', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
             log.info("Build openzwave ... be patient ...")
@@ -411,7 +411,7 @@ class Template(object):
             proc = Popen([ 'gmake', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("sunos"):
-            proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'PREFIX=/opt/local', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -545,7 +545,7 @@ class Template(object):
             proc = Popen([ 'gmake', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("sunos"):
-            proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            proc = Popen([ 'make', 'PREFIX=/opt/local', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
