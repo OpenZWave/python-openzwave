@@ -1342,7 +1342,7 @@ class ValuesTree(OldestTree):
     def set(self, param, value):
         values = self.window.network.nodes[self.node_id].values
         try:
-            param = long(param)
+            param = int(param)
         except:
             ok = False
             for val in values:
@@ -1375,7 +1375,7 @@ class ValuesTree(OldestTree):
     def poll(self, param, value):
         values = self.window.network.nodes[self.node_id].values
         try:
-            param = long(param)
+            param = int(param)
         except:
             ok = False
             for val in values:
@@ -1975,7 +1975,7 @@ class SceneTree(OldestTree):
     def delete(self, value):
         valueid = None
         try:
-            valueid = long(value)
+            valueid = int(value)
         except:
             ok = False
             try:
