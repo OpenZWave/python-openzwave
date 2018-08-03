@@ -44,7 +44,7 @@ class ZWaveGroup(ZWaveObject):
     Also used to retrieve information about the library, ...
     """
 
-    def __init__(self, group_index, network=None, node_id=None):
+    def __init__(self, group_index, network, node_id):
         """
         Initialize driver object
 

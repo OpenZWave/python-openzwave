@@ -589,18 +589,13 @@ venv-tests: venv2-tests venv3-tests
 venv2-tests: venv2-dev
 	@echo ==========================================================================================
 	@echo
-	@echo
-	@echo "Launch tests for venv-autobuild-autobuild-tests."
-	@echo
-	@echo
-
-	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
 	@echo Tests for python2
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
+
 	-$(MAKE) PYTHON_EXEC=venv2/bin/python NOSE_EXEC=venv2/bin/nosetests tests
 
 	@echo
@@ -619,6 +614,7 @@ venv3-tests: venv3-dev
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
+
 	-$(MAKE) PYTHON_EXEC=venv3/bin/python NOSE_EXEC=venv3/bin/nosetests tests
 
 	@echo

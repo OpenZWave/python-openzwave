@@ -42,7 +42,7 @@ class ZWaveScene(ZWaveObject):
     Represents a single scene within the Z-Wave Network
     """
 
-    def __init__(self, scene_id, network=None):
+    def __init__(self, scene_id, network):
         """
         Initialize zwave scene
 
