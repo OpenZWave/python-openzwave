@@ -431,14 +431,12 @@ def get_vsproject_devenv_clean_command( options, debug=False ):
         print("get_vsproject_devenv_clean_command" )
         print(
         options['devenv'],
-            'OpenZWave.sln',
-            '/Clean',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+            os.path.join(options['vsproject'], 'OpenZWave.sln'),
+            '/Clean'
             )
     return [ '%s'%options['devenv'],
-            'OpenZWave.sln',
-            '/Clean',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+	        os.path.join(options['vsproject'], 'OpenZWave.sln'),
+	        '/Clean'
             ]
 
 if __name__ == '__main__':
