@@ -262,7 +262,7 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
         dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
         newconfs.append(dupe) #insert the new node
     for new in newconfs:
-        root.append(new)
+        prjconfs.append(new)
 
     newconfs = []
     prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ImportGroup")
