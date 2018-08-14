@@ -136,7 +136,7 @@ class Template(object):
 
         if sys.platform.startswith("win"):
             from pyozw_win import get_system_context
-            get_system_context(ctx, self.os_options, openzwave=self.openzwave, static=static)
+            get_system_context(ctx, self.os_options, openzwave=os.path.abspath(self.openzwave), static=static)
 
         elif sys.platform.startswith("cygwin"):
             if static:
