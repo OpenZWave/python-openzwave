@@ -70,23 +70,23 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "pip install --disable-pip-version-check --user --upgrade pip"
+  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
 
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
-  - "pip install wheel"
-  - "pip install Cython six"
-  - "pip install nose"
+  - "python -m pip install wheel"
+  - "python -m pip install Cython six"
+  - "python -m pip install nose"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
   
   - ps: if ($env:PYTHON_VERSION -eq "2.7.x") { `
-          pip install Louie } `
+          python -m pip install Louie } `
         else { `
-          pip install PyDispatcher }
+          python -m pip install PyDispatcher }
   
   - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
