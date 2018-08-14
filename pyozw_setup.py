@@ -885,7 +885,6 @@ class SharedTemplate(Template):
         return True
 
 def parse_template(sysargv):
-    log.info("Found SETUP_DIR : {0}".format(SETUP_DIR))
     tmpl = None
     flavor = None
     if '--flavor=dev' in sysargv:
@@ -946,6 +945,8 @@ def parse_template(sysargv):
         tmpl.cleanozw = True
     log.info('sysargv', sysargv)
     print('sysargv', sysargv)
+    log.info("Found SETUP_DIR : {0}".format(SETUP_DIR))
+    print("Found SETUP_DIR : {0}".format(SETUP_DIR))
     return tmpl
 
 current_template = parse_template(sys.argv)
