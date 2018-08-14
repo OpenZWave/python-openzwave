@@ -262,7 +262,7 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
         dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
         newconfs.append(dupe) #insert the new node
     for new in newconfs:
-        root.append(new)
+        prjconfs.append(new)
 
     newconfs = []
     prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ImportGroup")
@@ -431,14 +431,12 @@ def get_vsproject_devenv_clean_command( options, debug=False ):
         print("get_vsproject_devenv_clean_command" )
         print(
         options['devenv'],
-            'OpenZWave.sln',
-            '/Clean',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+            os.path.join(options['vsproject'], 'OpenZWave.sln'),
+            '/Clean'
             )
     return [ '%s'%options['devenv'],
-            'OpenZWave.sln',
-            '/Clean',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
+	        os.path.join(options['vsproject'], 'OpenZWave.sln'),
+	        '/Clean'
             ]
 
 if __name__ == '__main__':
