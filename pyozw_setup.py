@@ -588,7 +588,6 @@ class Template(object):
         return self.clean()
 
     def check_minimal_config(self):
-        log.info("Found SETUP_DIR : {0}".format(SETUP_DIR))
         if sys.platform.startswith("win"):
             log.info("Found MSBuild.exe : {0}".format(self.os_options['msbuild']))
             log.info("Found devenv.exe : {0}".format(self.os_options['devenv']))
@@ -886,6 +885,7 @@ class SharedTemplate(Template):
         return True
 
 def parse_template(sysargv):
+    log.info("Found SETUP_DIR : {0}".format(SETUP_DIR))
     tmpl = None
     flavor = None
     if '--flavor=dev' in sysargv:
