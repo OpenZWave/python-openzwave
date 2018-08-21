@@ -262,7 +262,8 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
         dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
         newconfs.append(dupe) #insert the new node
     for new in newconfs:
-        prjconfs.append(new)
+        root.insert(3, new) # This is a hack, but I can't find a better way to do it without converting to lxml.
+    # PropertyGroup elements w/ Configuration label need to be together with existing before other elements that depend on these
 
     newconfs = []
     prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ImportGroup")
