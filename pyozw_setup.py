@@ -986,7 +986,7 @@ class bdist_egg(_bdist_egg):
         _bdist_egg.run(self)
 
 class build_openzwave(setuptools.Command):
-    description = 'download an build openzwave'
+    description = 'download and build openzwave'
 
     user_options = [
         ('openzwave-dir=', None,
