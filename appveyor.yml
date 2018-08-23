@@ -105,7 +105,7 @@ test_script:
   - del C:\projects\python-openzwave\openzwave /s /q
   - ps: "ls \"C:/projects/python-openzwave/\""
   - ps: "ls \"C:/projects/python-openzwave/openzwave/\""
-  - python setup.py bdist_wheel --flavor=git
+  - python setup.py bdist_wheel --flavor=dev
   #~ - "python setup.py bdist_wininst"
   #~ - "%CMD_IN_ENV% python setup.py bdist_msi"
   - ps: "ls dist"
