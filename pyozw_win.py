@@ -161,17 +161,16 @@ def find_devenv_tools( options, debug=False ):
         options['devenv'] =  all_msbuild[0]
 
     elif win_config == VC9:
-        #~ vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
-                   #~ ]
-        #~ if debug:
-            #~ print("Check for devenv.exe in %s" %vs_path)
-        #~ all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        #~ if debug:
-            #~ print("Found devenv.exe in %s" %all_msbuild)
-        #~ if len(all_msbuild) == 0:
-            #~ raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
-        #~ options['devenv'] =  all_msbuild[0]
-        options['devenv'] = None
+        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
+                   ]
+        if debug:
+            print("Check for devenv.exe in %s" %vs_path)
+        all_msbuild = find_all_build_tools("devenv.exe", vs_path)
+        if debug:
+            print("Found devenv.exe in %s" %all_msbuild)
+        if len(all_msbuild) == 0:
+            raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
+        options['devenv'] =  all_msbuild[0]
     return 'devenv' in options
 
 def get_vsproject_upgrade_command( options, debug=False ):
