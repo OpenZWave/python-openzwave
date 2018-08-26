@@ -1371,7 +1371,7 @@ class Protection(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_PROTECTION]
 
-    @proeprty
+    @property
     def protections(self):
         """
         Retrieve the list of values to consider as protection.

@@ -26,7 +26,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 import sys
 from libopenzwave import PyStatNode
 from openzwave import command_classes
-
+from openzwave import device_classes
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue

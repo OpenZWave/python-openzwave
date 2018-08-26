@@ -4,6 +4,7 @@
 *.o
 *.pyc
 *.log
+.idea
 /openzwave/
 build/
 dists/
