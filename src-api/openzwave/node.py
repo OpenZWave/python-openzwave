@@ -25,12 +25,11 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 import sys
 from libopenzwave import PyStatNode
+from openzwave import command_classes
+
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
-from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
-from openzwave.command import ZWaveNodeSensor, ZWaveNodeThermostat
-from openzwave.command import ZWaveNodeSecurity, ZWaveNodeDoorLock
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -44,10 +43,121 @@ except ImportError:
 logger = logging.getLogger('openzwave')
 logger.addHandler(NullHandler())
 
-class ZWaveNode(ZWaveObject,
-                ZWaveNodeBasic, ZWaveNodeSwitch,
-                ZWaveNodeSensor, ZWaveNodeThermostat,
-                ZWaveNodeSecurity, ZWaveNodeDoorLock):
+# the ZWaveNodeInterface class is the starting point of a node creation.
+# In the _handle_node_add method in the ZWaveNetwork class I replaced the
+# node object ZWaveNode with ZWaveNodeInterface.
+
+# the ZWaveNodeInterface class is a dummy class it is simply a shell to
+# redirect the call made to create the instance to ZWaveNodeInterfaceMeta
+# I have provided comments in the ZWaveNodeInterfaceMeta class that will walk
+# you through what is happening
+
+
+class ZWaveNodeInterfaceMeta(type):
+    # this class variable is used to hold the node instances. This metaclass is
+    # doubles as a singleton class. the key used to store the instances
+    # is a tuple containing the network instance and the object_id of the node
+    instances = {}
+
+    # this is what gets called when a new instance of ZWaveNodeInterface
+    # is needed. we either return a stored instance if an instance with the
+    # same network and id has been created already, or we dynamically build a
+    # Node class and store it's instance then return it
+
+    def __call__(cls, object_id, network=None, use_cache=True):
+
+        if (object_id, network) not in ZWaveNodeInterfaceMeta.instances:
+            # we need to set the bases of the node. ZWaveNode being the
+            # primary parent class.
+            bases = (ZWaveNode,)
+
+            # we then make a call to the network manager to get the
+            # command classes for the object_id that was passed.
+
+            for command_cls in network.manager.COMMAND_CLASS_DESC:
+                if network.manager.getNodeClassInformation(
+                    network.home_id,
+                    object_id,
+                    command_cls
+                ):
+
+                    # once we have the command class id's we pass the id's as
+                    # keys to a dictionary to the command_class module. The
+                    # module then returns the proper class representation
+                    # for that id. we take that class and add it to the bases
+
+                    # noinspection PyUnresolvedReferences
+                    command_cls = command_classes[command_cls]
+                    if command_cls not in bases:
+                        bases += (command_cls,)
+
+            # we need to supply a custom __init__ to our dynamically created
+            # class in order to properly start all of the parent classes
+
+            # noinspection PyShadowingBuiltins
+            def __init__(self, id, net):
+                ZWaveNode.__init__(
+                    self,
+                    id,
+                    net,
+                )
+
+                for cmd_cls in self.__bases__[1:]:
+                    cmd_cls.__init__(self)
+
+            # we use type to make the new class supplying it with the
+            # custom __init__ and the bases. the __init__ iterates through
+            # the bases and calls the constructor for each of them. at the
+            # time each base class is constructed if it is a command class it
+            # adds it's id to _cls_ids. this is done so we can use equality
+            # testing to identify if a node supports a specific command class.
+
+            # as an example. if we wanted to turn on a light switch
+            # if node == command_class.COMMAND_CLASS_BINARY_SWITCH:
+            #     node.state = True
+
+            # I found this to be a much better mechanism for testing node types
+            # then having to add a method to ZWaveNode to check.
+            # not to mention having ZWaveNode contain all the various
+            # properties and methods for all command classes can get a wee
+            # bit difficult to follow. So if a node is not a binary switch
+            # then it is not going to have the property state. it removes any
+            # checking that would need to be done inside of the
+            # property/method to ensure the node is the proper type
+
+            # this same equality testing also works on the values. It's a
+            # simple to use mechanism. the equality test is only performed
+            # against the command classes of a node/value if the object
+            # passed is an int, if testing 2 nodes it will check to see if the
+            # networks and object_ids match. because of the use of the
+            # singleton only a single node instance on a network can exist
+
+            node = type(
+                'ZWaveNode',
+                bases,
+                {"__init__": __init__, '__bases__': bases}
+            )
+            ZWaveNodeInterfaceMeta.instances[(object_id, network)] = (
+                node(object_id, network, use_cache)
+            )
+
+        return ZWaveNodeInterfaceMeta.instances[(object_id, network)]
+
+
+class ZWaveNodeInterface(object):
+    __metaclass__ = ZWaveNodeInterfaceMeta
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __getattr__(self, item):
+        if item in self.__dict__:
+            return self.__dict__[item]
+
+        raise AttributeError(item)
+
+
+class ZWaveNode(ZWaveObject):
     """
     Represents a single Node within the Z-Wave Network.
 
@@ -65,6 +175,9 @@ class ZWaveNode(ZWaveObject,
         :type network: ZWaveNetwork
 
         """
+        if not hasattr(self, '_cls_ids'):
+            self._cls_ids = []
+
         logger.debug("Create object node (node_id:%s)", node_id)
         ZWaveObject.__init__(self, node_id, network)
         #No cache management for values in nodes
@@ -117,8 +230,7 @@ class ZWaveNode(ZWaveObject,
         """
         self._network.manager.setNodeName(self.home_id, self.object_id, value)
 
-    @property
-    def location(self):
+    def __get_location(self):
         """
         The location of the node.
 
@@ -127,8 +239,7 @@ class ZWaveNode(ZWaveObject,
         """
         return self._network.manager.getNodeLocation(self.home_id, self.object_id)
 
-    @location.setter
-    def location(self, value):
+    def __set_location(self, value):
         """
         Set the location of the node.
 
@@ -137,6 +248,9 @@ class ZWaveNode(ZWaveObject,
 
         """
         self._network.manager.setNodeLocation(self.home_id, self.object_id, value)
+
+    room = property(fget=__get_location, fset=__set_location)
+    location = property(fget=__get_location, fset=__set_location)
 
     @property
     def product_name(self):
@@ -198,6 +312,11 @@ class ZWaveNode(ZWaveObject,
 
         """
         return self._network.manager.getNodeRoleString(self.home_id, self.object_id)
+
+    @property
+    def role_as_str(self):
+        role = self._network.manager.getNodeRole(self.home_id, self.object_id)
+        return zwave_device_classes.role_type_to_string(role)
 
     def to_dict(self, extras=['all']):
         """
@@ -590,7 +709,6 @@ class ZWaveNode(ZWaveObject,
         """
         self._network.manager.setNodeManufacturerName(self.home_id, self.object_id, value)
 
-    @property
     def generic(self):
         """
         The generic type of the node.
@@ -599,6 +717,15 @@ class ZWaveNode(ZWaveObject,
 
         """
         return self._network.manager.getNodeGeneric(self.home_id, self.object_id)
+
+    category = property(fget=generic)
+    generic = property(fget=generic)
+
+    def generic_as_str(self):
+        return device_classes.generic_type_to_string(self.generic)
+
+    category_as_str = property(fget=generic_as_str)
+    generic_as_str = property(fget=generic_as_str)
 
     @property
     def basic(self):
@@ -611,6 +738,9 @@ class ZWaveNode(ZWaveObject,
         return self._network.manager.getNodeBasic(self.home_id, self.object_id)
 
     @property
+    def basic_as_str(self):
+        return device_classes.basic_type_to_string(self.basic)
+
     def specific(self):
         """
         The specific type of the node.
@@ -620,6 +750,18 @@ class ZWaveNode(ZWaveObject,
 
         """
         return self._network.manager.getNodeSpecific(self.home_id, self.object_id)
+
+    sub_category = property(fget=specific)
+    specific = property(fget=specific)
+
+    def specific_as_str(self):
+        return device_classes.specific_type_to_string(
+            self.generic,
+            self.specific
+        )
+
+    sub_category_as_str = property(fget=specific_as_str)
+    specific_as_str = property(fget=specific_as_str)
 
     @property
     def security(self):
@@ -1056,6 +1198,10 @@ class ZWaveNode(ZWaveObject,
         :rtype: str
         """
         return self._network.manager.getNodeType(self.home_id, self.object_id)
+
+    @property
+    def type_as_str(self):
+        return device_classes.node_type_to_string(self.type)
 
     @property
     def stats(self):

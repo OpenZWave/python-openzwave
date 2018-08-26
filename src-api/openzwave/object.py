@@ -51,53 +51,45 @@ def deprecated(func):
     new_func.__dict__.update(func.__dict__)
     return new_func
 
+
+# i changed how the exceptions work. because of the identical nature of
+# everything except for the msg variable. we can simply set that at the class
+# level and it will override the one that is in  ZWaveException. it removes the
+# need for a bunch of duplicate code.
+
 class ZWaveException(Exception):
     """
-    Exception class for OpenZWave
+    Base Exception class for all OpenZWave Exceptions
     """
+    msg = u"Z-Wave Generic Exception"
+
     def __init__(self, value):
-        Exception.__init__(self)
-        self.msg = u"Zwave Generic Exception"
         self.value = value
 
     def __str__(self):
         return repr(self.msg+' : '+self.value)
+
 
 class ZWaveCacheException(ZWaveException):
     """
-    Exception class for OpenZWave
+    Exception class for Cache Exception
     """
-    def __init__(self, value):
-        ZWaveException.__init__(self)
-        self.msg = u"Zwave Cache Exception"
-        self.value = value
+    msg = u"Z-Wave Cache Exception"
 
-    def __str__(self):
-        return repr(self.msg+' : '+self.value)
 
 class ZWaveTypeException(ZWaveException):
     """
-    Exception class for OpenZWave
+    Exception class for Type Exception
     """
-    def __init__(self, value):
-        ZWaveException.__init__(self)
-        self.msg = u"Zwave Type Exception"
-        self.value = value
+    msg = u"Z-Wave Type Exception"
 
-    def __str__(self):
-        return repr(self.msg+' : '+self.value)
 
 class ZWaveCommandClassException(ZWaveException):
     """
-    Exception class for OpenZWave
+    Exception class for Command Class Exception
     """
-    def __init__(self, value):
-        ZWaveException.__init__(self)
-        self.msg = u"Zwave Command Class Exception"
-        self.value = value
+    msg = u"Z-Wave Command Class Exception"
 
-    def __str__(self):
-        return repr(self.msg+' : '+self.value)
 
 class ZWaveObject(object):
     """
@@ -124,6 +116,38 @@ class ZWaveObject(object):
             self._cached_properties = dict()
         else:
             self._cached_properties = None
+
+    # I added the command_class property as well as the __eq__ for equality
+    # testing against a command class. It provides a easy mechanism for the
+    # user to check a node/value for a specific command class.
+    # the command_class property was added because of the one that exists in a
+    # value instance. This allows for the exception to be raised which is
+    # caught when testing for a command_class
+    #
+    # There is more information on how this all works in the command_class.py
+    # docsting as well as in node.py.
+
+    @property
+    def command_class(self):
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        if isinstance(other, ZWaveObject):
+            return (
+                self._network == other.network and
+                self._object_id == other.object_id
+            )
+
+        if isinstance(other, int):
+            if hasattr(self, '_cls_ids'):
+                return other in self._cls_ids
+            try:
+                if self.command_class == other:
+                    return True
+            except NotImplementedError:
+                return False
+
+        return False
 
     @property
     def home_id(self):

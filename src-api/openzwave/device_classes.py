@@ -1,0 +1,942 @@
+# -*- coding: utf-8 -*-
+
+# Controller
+BASIC_TYPE_GENERIC_CONTROLLER = 0x01
+
+# Static Controller
+BASIC_TYPE_STATIC_CONTROLLER = 0x02
+
+# Slave
+BASIC_TYPE_SLAVE_CONTROLLER = 0x03
+
+# Routing Slave
+BASIC_TYPE_ROUTING_SLAVE_CONTROLLER = 0x04
+
+# Remote Controller
+GENERIC_TYPE_REMOTE_CONTROLLER = 0x01
+
+# Portable Remote Controller
+SPECIFIC_TYPE_PORTABLE_REMOTE_CONTROLLER = 0x01
+
+# Portable Scene Controller
+SPECIFIC_TYPE_PORTABLE_SCENE_CONTROLLER = 0x02
+
+# Portable Installer Tool
+SPECIFIC_TYPE_PORTABLE_INSTALLER_TOOL = 0x03
+
+# Remote Control AV
+SPECIFIC_TYPE_REMOTE_CONTROL_AV = 0x04
+
+# Remote Control Simple
+SPECIFIC_TYPE_REMOTE_CONTROL_SIMPLE = 0x06
+
+# Static Controller
+GENERIC_TYPE_STATIC_CONTROLLER = 0x02
+
+# Static PC Controller
+SPECIFIC_TYPE_STATIC_PC_CONTROLLER = 0x01
+
+# Static Scene Controller
+SPECIFIC_TYPE_STATIC_SCENE_CONTROLLER = 0x02
+
+# Static Installer Tool
+SPECIFIC_TYPE_STATIC_INSTALLER_TOOL = 0x03
+
+# Set Top Box
+SPECIFIC_TYPE_SET_TOP_BOX = 0x04
+
+# Sub System Controller
+SPECIFIC_TYPE_SUB_SYSTEM_CONTROLLER = 0x05
+
+# TV
+SPECIFIC_TYPE_TV = 0x06
+
+# Gateway
+SPECIFIC_TYPE_GATEWAY = 0x07
+
+# AV Control Point
+GENERIC_TYPE_AV_CONTROL_POINT = 0x03
+
+# Satellite Receiver
+SPECIFIC_TYPE_SATELLITE_RECEIVER = 0x04
+
+# Satellite Receiver V2
+SPECIFIC_TYPE_SATELLITE_RECEIVER_V2 = 0x11
+
+# Doorbell
+SPECIFIC_TYPE_DOORBELL = 0x12
+
+# Display
+GENERIC_TYPE_DISPLAY = 0x04
+
+# Simple Display
+SPECIFIC_TYPE_SIMPLE_DISPLAY = 0x01
+
+# Network Extender
+GENERIC_TYPE_NETWORK_EXTENDER = 0x05
+
+# Secure Extender
+SPECIFIC_TYPE_SECURE_EXTENDER = 0x01
+
+# Appliance
+GENERIC_TYPE_APPLIANCE = 0x06
+
+# General Appliance
+SPECIFIC_TYPE_GENERAL_APPLIANCE = 0x01
+
+# Kitchen Appliance
+SPECIFIC_TYPE_KITCHEN_APPLIANCE = 0x02
+
+# Laundry Appliance
+SPECIFIC_TYPE_LAUNDRY_APPLIANCE = 0x03
+
+# Notification Sensor
+GENERIC_TYPE_SENSOR_NOTIFICATION = 0x07
+
+# Notification Sensor
+SPECIFIC_TYPE_SENSOR_NOTIFICATION = 0x01
+
+# Thermostat
+GENERIC_TYPE_THERMOSTAT = 0x08
+
+# Heating Thermostat
+SPECIFIC_TYPE_HEATING_THERMOSTAT = 0x01
+
+# General Thermostat
+SPECIFIC_TYPE_GENERAL_THERMOSTAT = 0x02
+
+# Setback Schedule Thermostat
+SPECIFIC_TYPE_SETBACK_SCHEDULE_THERMOSTAT = 0x03
+
+# Setpoint Thermostat
+SPECIFIC_TYPE_SETPOINT_THERMOSTAT = 0x04
+
+# Setback Thermostat
+SPECIFIC_TYPE_SETBACK_THERMOSTAT = 0x05
+
+# General Thermostat V2
+SPECIFIC_TYPE_GENERAL_THERMOSTAT_V2 = 0x06
+
+# Window Covering
+GENERIC_TYPE_WINDOW_COVERING = 0x09
+
+# Simple Window Covering
+SPECIFIC_TYPE_SIMPLE_WINDOW_COVERING = 0x01
+
+# Repeater Slave
+GENERIC_TYPE_REPEATER_SLAVE = 0x0F
+
+# Basic Repeater Slave
+SPECIFIC_TYPE_BASIC_REPEATER_SLAVE = 0x01
+
+# Binary Switch
+GENERIC_TYPE_SWITCH_BINARY = 0x10
+
+# Binary Power Switch
+SPECIFIC_TYPE_POWER_SWITCH_BINARY = 0x01
+
+# Binary Scene Switch
+SPECIFIC_TYPE_SCENE_SWITCH_BINARY = 0x03
+
+# Power Strip
+SPECIFIC_TYPE_POWER_STRIP = 0x04
+
+# Siren
+SPECIFIC_TYPE_SIREN = 0x05
+
+# Valve Open Close
+SPECIFIC_TYPE_VALVE_OPEN_CLOSE = 0x06
+
+# Multilevel Switch
+GENERIC_TYPE_SWITCH_MULTILEVEL = 0x11
+
+# Multilevel Power Switch
+SPECIFIC_TYPE_POWER_SWITCH_MULTILEVEL = 0x01
+
+# Multiposition Motor
+SPECIFIC_TYPE_MULTIPOSITION_MOTOR = 0x03
+
+# Multilevel Scene Switch
+SPECIFIC_TYPE_SCENE_SWITCH_MULTILEVEL = 0x04
+
+# Motor Control Class A
+SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_A = 0x05
+
+# Motor Control Class B
+SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_B = 0x06
+
+# Motor Control Class C
+SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_C = 0x07
+
+# Remote Switch
+GENERIC_TYPE_SWITCH_REMOTE = 0x12
+
+# Binary Remote Switch
+SPECIFIC_TYPE_REMOTE_SWITCH_BINARY = 0x01
+
+# Multilevel Remote Switch
+SPECIFIC_TYPE_REMOTE_SWITCH_MULTILEVEL = 0x02
+
+# Binary Toggle Remote Switch
+SPECIFIC_TYPE_REMOTE_TOGGLE_SWITCH_BINARY = 0x03
+
+# Multilevel Toggle Remote Switch
+SPECIFIC_TYPE_REMOTE_TOGGLE_SWITCH_MULTILEVEL = 0x04
+
+# Toggle Switch
+GENERIC_TYPE_TOGGLE_SWITCH = 0x13
+
+# Binary Toggle Switch
+SPECIFIC_TYPE_TOGGLE_SWITCH_BINARY = 0x01
+
+# Multilevel Toggle Switch
+SPECIFIC_TYPE_TOGGLE_SWITCH_MULTILEVEL = 0x02
+
+# Z/IP Gateway
+GENERIC_TYPE_ZIP_GATEWAY = 0x14
+
+# Z/IP Tunneling Gateway
+SPECIFIC_TYPE_ZIP_TUNNELING_GATEWAY = 0x01
+
+# Z/IP Advanced Gateway
+SPECIFIC_TYPE_ZIP_ADVANCED_GATEWAY = 0x02
+
+# Z/IP Node
+GENERIC_TYPE_ZIP_NODE = 0x15
+
+# Z/IP Tunneling Node
+SPECIFIC_TYPE_ZIP_TUNNELING_NODE = 0x01
+
+# Z/IP Advanced Node
+SPECIFIC_TYPE_ZIP_ADVANCED_NODE = 0x02
+
+# Ventilation
+GENERIC_TYPE_VENTILATION = 0x16
+
+# Residential Heat Recovery Ventilation
+SPECIFIC_TYPE_RESIDENTIAL_HEAT_RECOVERY_VENTILATION = 0x01
+
+# Security Panel
+GENERIC_TYPE_SECURITY_PANEL = 0x17
+
+# Zoned Security Panel
+SPECIFIC_TYPE_ZONED_SECURITY_PANEL = 0x01
+
+# Wall Controller
+GENERIC_TYPE_WALL_CONTROLLER = 0x18
+
+# Basic Wall Controller
+SPECIFIC_TYPE_BASIC_WALL_CONTROLLER = 0x01
+
+# Binary Sensor
+GENERIC_TYPE_SENSOR_BINARY = 0x20
+
+# Routing Binary Sensor
+SPECIFIC_TYPE_ROUTING_SENSOR_BINARY = 0x01
+
+# Multilevel Sensor
+GENERIC_TYPE_SENSOR_MULTILEVEL = 0x21
+
+# Routing Multilevel Sensor
+SPECIFIC_TYPE_ROUTING_SENSOR_MULTILEVEL = 0x01
+
+# Chimney Fan
+SPECIFIC_TYPE_CHIMNEY_FAN = 0x02
+
+# Pulse Meter
+GENERIC_TYPE_PULSE_METER = 0x30
+
+# Meter
+GENERIC_TYPE_METER = 0x31
+
+# Simple Meter
+SPECIFIC_TYPE_SIMPLE_METER = 0x01
+
+# Advanced Energy Control
+SPECIFIC_TYPE_ADVANCED_ENERGY_CONTROL = 0x02
+
+# Whole Home Meter Simple
+SPECIFIC_TYPE_WHOLE_HOME_METER_SIMPLE = 0x03
+
+# Entry Control
+GENERIC_TYPE_ENTRY_CONTROL = 0x40
+
+# Door Lock
+SPECIFIC_TYPE_DOOR_LOCK = 0x01
+
+# Advanced Door Lock
+SPECIFIC_TYPE_ADVANCED_DOOR_LOCK = 0x02
+
+# Secure Keypad Door Lock
+SPECIFIC_TYPE_SECURE_KEYPAD_DOOR_LOCK = 0x03
+
+# Secure Keypad Door Lock DeadBolt
+SPECIFIC_TYPE_SECURE_KEYPAD_DEADBOLT_DOOR_LOCK = 0x04
+
+# Secure Door
+SPECIFIC_TYPE_SECURE_DOOR = 0x05
+
+# Secure Gate
+SPECIFIC_TYPE_SECURE_GATE = 0x06
+
+# Secure Barrier AddOn
+SPECIFIC_TYPE_SECURE_BARRIER_ADDON = 0x07
+
+# Secure Barrier Open Only
+SPECIFIC_TYPE_SECURE_BARRIER_OPEN_ONLY = 0x08
+
+# Secure Barrier Close Only
+SPECIFIC_TYPE_SECURE_BARRIER_CLOSE_ONLY = 0x09
+
+# Secure LockBox
+SPECIFIC_TYPE_SECURE_LOCKBOX = 0x0A
+
+# Semi Interoperable
+GENERIC_TYPE_SEMI_INTEROPERABLE = 0x50
+
+# Energy Production
+SPECIFIC_TYPE_ENERGY_PRODUCTION = 0x01
+
+# Alarm Sensor
+GENERIC_TYPE_SENSOR_ALARM = 0xA1
+
+# Basic Routing Alarm Sensor
+SPECIFIC_TYPE_ROUTING_SENSOR_BASIC_ALARM = 0x01
+
+# Routing Alarm Sensor
+SPECIFIC_TYPE_ROUTING_SENSOR_ALARM = 0x02
+
+# Basic Zensor Alarm Sensor
+SPECIFIC_TYPE_SENSOR_BASIC_ZENSOR_ALARM = 0x03
+
+# Zensor Alarm Sensor
+SPECIFIC_TYPE_SENSOR_ZENSOR_ALARM = 0x04
+
+# Advanced Zensor Alarm Sensor
+SPECIFIC_TYPE_SENSOR_ADVANCED_ZENSOR_ALARM = 0x05
+
+# Basic Routing Smoke Sensor
+SPECIFIC_TYPE_ROUTING_SENSOR_BASIC_SMOKE = 0x06
+
+# Routing Smoke Sensor
+SPECIFIC_TYPE_SENSOR_ROUTING_SMOKE = 0x07
+
+# Basic Zensor Smoke Sensor
+SPECIFIC_TYPE_SENSOR_BASIC_ZENSOR_SMOKE = 0x08
+
+# Zensor Smoke Sensor
+SPECIFIC_TYPE_SENSOR_ZENSOR_SMOKE = 0x09
+
+# Advanced Zensor Smoke Sensor
+SPECIFIC_TYPE_SENSOR_ADVANCED_ZENSOR_SMOKE = 0x0A
+
+# Alarm Sensor
+SPECIFIC_TYPE_SENSOR_ALARM = 0x0B
+
+# Non Interoperable
+GENERIC_TYPE_NON_INTEROPERABLE = 0xFF
+
+# Central Controller
+ROLE_TYPE_CENTRAL_CONTROLLER = 0x00
+
+# Sub Controller
+ROLE_TYPE_SUB_CONTROLLER = 0x01
+
+# Portable Controller
+ROLE_TYPE_PORTABLE_CONTROLLER = 0x02
+
+# Portable Reporting Controller
+ROLE_TYPE_PORTABLE_REPORTING_CONTROLLER = 0x03
+
+# Portable Slave
+ROLE_TYPE_PORTABLE_SLAVE = 0x04
+
+# Always On Slave
+ROLE_TYPE_ALWAYS_ON_SLAVE = 0x05
+
+# Reporting Sleeping Slave
+ROLE_TYPE_REPORTING_SLEEPING_SLAVE = 0x06
+
+# Listening Sleeping Slave
+ROLE_TYPE_LISTENING_SLEEPING_SLAVE = 0x07
+
+# Z-Wave+ node
+NODE_TYPE_ZWAVE_PLUS_NODE = 0x00
+
+# Z-Wave+ IP router
+NODE_TYPE_ZWAVE_PLUS_IP_ROUTER = 0x01
+
+# Z-Wave+ IP gateway
+NODE_TYPE_ZWAVE_PLUS_IP_GATEWAY = 0x02
+
+# Z-Wave+ IP client and IP node
+NODE_TYPE_ZWAVE_PLUS_IP_CLIENT_AND_IP_NODE = 0x03
+
+# Z-Wave+ IP client and Zwave node
+NODE_TYPE_ZWAVE_PLUS_IP_CLIENT_AND_ZWAVE_NODE = 0x04
+
+# Unknown Type
+DEVICE_TYPE_UNKNOWN_TYPE = 0x0000
+
+# Central Controller
+DEVICE_TYPE_CENTRAL_CONTROLLER = 0x0100
+
+# Display Simple
+DEVICE_TYPE_DISPLAY_SIMPLE = 0x0200
+
+# Door Lock Keypad
+DEVICE_TYPE_DOOR_LOCK_KEYPAD = 0x0300
+
+# Fan Switch
+DEVICE_TYPE_SWITCH_FAN = 0x0400
+
+# Gateway
+DEVICE_TYPE_GATEWAY = 0x0500
+
+# Light Dimmer Switch
+DEVICE_TYPE_SWITCH_MULTILEVEL = 0x0600
+
+# On/Off Power Switch
+DEVICE_TYPE_SWITCH_BINARY = 0x0700
+
+# Power Strip
+DEVICE_TYPE_POWER_STRIP = 0x0800
+
+# Remote Control AV
+DEVICE_TYPE_REMOTE_CONTROL_AV = 0x0900
+
+# Remote Control Multi Purpose
+DEVICE_TYPE_REMOTE_CONTROL_MULTI_PURPOSE = 0x0A00
+
+# Remote Control Simple
+DEVICE_TYPE_REMOTE_CONTROL_SIMPLE = 0x0B00
+
+# Key Fob
+DEVICE_TYPE_KEY_FOB = 0x0B01
+
+# Notification Sensor
+DEVICE_TYPE_SENSOR_NOTIFICATION = 0x0C00
+
+# Smoke Alarm Sensor
+DEVICE_TYPE_SENSOR_SMOKE_ALARM = 0x0C01
+
+# CO Alarm Sensor
+DEVICE_TYPE_SENSOR_CO_ALARM = 0x0C02
+
+# CO2 Alarm Sensor
+DEVICE_TYPE_SENSOR_CO2_ALARM = 0x0C03
+
+# Heat Alarm Sensor
+DEVICE_TYPE_SENSOR_HEAT_ALARM = 0x0C04
+
+# Water Alarm Sensor
+DEVICE_TYPE_SENSOR_WATER_ALARM = 0x0C05
+
+# Access Control Sensor
+DEVICE_TYPE_SENSOR_ACCESS_CONTROL = 0x0C06
+
+# Home Security Sensor
+DEVICE_TYPE_SENSOR_HOME_SECURITY = 0x0C07
+
+# Power Management Sensor
+DEVICE_TYPE_SENSOR_POWER_MANAGEMENT = 0x0C08
+
+# System Sensor
+DEVICE_TYPE_SENSOR_SYSTEM = 0x0C09
+
+# Emergency Alarm Sensor
+DEVICE_TYPE_SENSOR_EMERGENCY_ALARM = 0x0C0A
+
+# Clock Sensor
+DEVICE_TYPE_SENSOR_CLOCK = 0x0C0B
+
+# MultiDevice Sensor
+DEVICE_TYPE_SENSOR_MULTIDEVICE_1 = 0x0CFF
+
+# Multilevel Sensor
+DEVICE_TYPE_SENSOR_MULTILEVEL = 0x0D00
+
+# Air Temperature Sensor
+DEVICE_TYPE_SENSOR_AIR_TEMPERATURE = 0x0D01
+
+# General Purpose Sensor
+DEVICE_TYPE_SENSOR_GENERAL_PURPOSE = 0x0D02
+
+# Luminance Sensor
+DEVICE_TYPE_SENSOR_LUMINANCE = 0x0D03
+
+# Power Sensor
+DEVICE_TYPE_SENSOR_POWER = 0x0D04
+
+# Humidity Sensor
+DEVICE_TYPE_SENSOR_HUMIDITY = 0x0D05
+
+# Velocity Sensor
+DEVICE_TYPE_SENSOR_VELOCITY = 0x0D06
+
+# Direction Sensor
+DEVICE_TYPE_SENSOR_DIRECTION = 0x0D07
+
+# Atmospheric Pressure Sensor
+DEVICE_TYPE_SENSOR_ATMOSPHERIC_PRESSURE = 0x0D08
+
+# Barometric Pressure Sensor
+DEVICE_TYPE_SENSOR_BAROMETRIC_PRESSURE = 0x0D09
+
+# Solar Radiation Sensor
+DEVICE_TYPE_SENSOR_SOLAR_RADIATION = 0x0D0A
+
+# Dew Point Sensor
+DEVICE_TYPE_SENSOR_DEW_POINT = 0x0D0B
+
+# Rain Rate Sensor
+DEVICE_TYPE_SENSOR_RAIN_RATE = 0x0D0C
+
+# Tide Level Sensor
+DEVICE_TYPE_SENSOR_TIDE_LEVEL = 0x0D0D
+
+# Weight Sensor
+DEVICE_TYPE_SENSOR_WEIGHT = 0x0D0E
+
+# Voltage Sensor
+DEVICE_TYPE_SENSOR_VOLTAGE = 0x0D0F
+
+# Current Sensor
+DEVICE_TYPE_SENSOR_CURRENT = 0x0D10
+
+# CO2 Level Sensor
+DEVICE_TYPE_SENSOR_CO2_LEVEL = 0x0D11
+
+# Air Flow Sensor
+DEVICE_TYPE_SENSOR_AIR_FLOW = 0x0D12
+
+# Tank Capacity Sensor
+DEVICE_TYPE_SENSOR_TANK_CAPACITY = 0x0D13
+
+# Distance Sensor
+DEVICE_TYPE_SENSOR_DISTANCE = 0x0D14
+
+# Angle Postition Sensor
+DEVICE_TYPE_SENSOR_ANGLE_POSTITION = 0x0D15
+
+# Rotation Sensor
+DEVICE_TYPE_SENSOR_ROTATION = 0x0D16
+
+# Water Temperature Sensor
+DEVICE_TYPE_SENSOR_WATER_TEMPERATURE = 0x0D17
+
+# Soil Temperature Sensor
+DEVICE_TYPE_SENSOR_SOIL_TEMPERATURE = 0x0D18
+
+# Seismic Intensity Sensor
+DEVICE_TYPE_SENSOR_SEISMIC_INTENSITY = 0x0D19
+
+# Seismic Magnitude Sensor
+DEVICE_TYPE_SENSOR_SEISMIC_MAGNITUDE = 0x0D1A
+
+# Ultraviolet Sensor
+DEVICE_TYPE_SENSOR_ULTRAVIOLET = 0x0D1B
+
+# Electrical Resistivity Sensor
+DEVICE_TYPE_SENSOR_ELECTRICAL_RESISTIVITY = 0x0D1C
+
+# Electrical Conductivity Sensor
+DEVICE_TYPE_SENSOR_ELECTRICAL_CONDUCTIVITY = 0x0B1D
+
+# Loudness Sensor
+DEVICE_TYPE_SENSOR_LOUDNESS = 0x0B1E
+
+# Moisture Sensor
+DEVICE_TYPE_SENSOR_MOISTURE = 0x0B1F
+
+# Frequency Sensor
+DEVICE_TYPE_SENSOR_FREQUENCY = 0x0B20
+
+# Time Sensor
+DEVICE_TYPE_SENSOR_TIME = 0x0B21
+
+# Target Temperature Sensor
+DEVICE_TYPE_SENSOR_TARGET_TEMPERATURE = 0x0B22
+
+# MultiDevice Sensor
+DEVICE_TYPE_SENSOR_MULTIDEVICE_2 = 0x0BFF
+
+# Set Top Box
+DEVICE_TYPE_SET_TOP_BOX = 0x0E00
+
+# Siren
+DEVICE_TYPE_SIREN = 0x0F00
+
+# Sub Energy Meter
+DEVICE_TYPE_SUB_ENERGY_METER = 0x1000
+
+# Sub System Controller
+DEVICE_TYPE_SUB_SYSTEM_CONTROLLER = 0x1100
+
+# Thermostat HVAC
+DEVICE_TYPE_THERMOSTAT_HVAC = 0x1200
+
+# Thermostat Setback
+DEVICE_TYPE_THERMOSTAT_SETBACK = 0x1300
+
+# TV
+DEVICE_TYPE_TV = 0x1400
+
+# Valve open/close
+DEVICE_TYPE_VALVE_OPEN_CLOSE = 0x1500
+
+# Wall Controller
+DEVICE_TYPE_WALL_CONTROLLER = 0x1600
+
+# Whole Home Meter Simple
+DEVICE_TYPE_WHOLE_HOME_METER_SIMPLE = 0x1700
+
+# Window Covering No Position/Endpoint
+DEVICE_TYPE_WINDOW_COVERING_NO_POSITION_ENDPOINT = 0x1800
+
+# Window Covering Endpoint Aware
+DEVICE_TYPE_WINDOW_COVERING_ENDPOINT_AWARE = 0x1900
+
+# Window Covering Position/Endpoint Aware
+DEVICE_TYPE_WINDOW_COVERING_POSITION_ENDPOINT_AWARE = 0x1A00
+
+DEVICE = {
+    DEVICE_TYPE_UNKNOWN_TYPE: 'Unknown Type',
+    DEVICE_TYPE_CENTRAL_CONTROLLER: 'Central Controller',
+    DEVICE_TYPE_DISPLAY_SIMPLE: 'Display Simple',
+    DEVICE_TYPE_DOOR_LOCK_KEYPAD: 'Door Lock Keypad',
+    DEVICE_TYPE_SWITCH_FAN: 'Fan Switch',
+    DEVICE_TYPE_GATEWAY: 'Gateway',
+    DEVICE_TYPE_SWITCH_MULTILEVEL: 'Light Dimmer Switch',
+    DEVICE_TYPE_SWITCH_BINARY: 'On/Off Power Switch',
+    DEVICE_TYPE_POWER_STRIP: 'Power Strip',
+    DEVICE_TYPE_REMOTE_CONTROL_AV: 'Remote Control AV',
+    DEVICE_TYPE_REMOTE_CONTROL_MULTI_PURPOSE: 'Remote Control Multi Purpose',
+    DEVICE_TYPE_REMOTE_CONTROL_SIMPLE: 'Remote Control Simple',
+    DEVICE_TYPE_KEY_FOB: 'Key Fob',
+    DEVICE_TYPE_SENSOR_NOTIFICATION: 'Notification Sensor',
+    DEVICE_TYPE_SENSOR_SMOKE_ALARM: 'Smoke Alarm Sensor',
+    DEVICE_TYPE_SENSOR_CO_ALARM: 'CO Alarm Sensor',
+    DEVICE_TYPE_SENSOR_CO2_ALARM: 'CO2 Alarm Sensor',
+    DEVICE_TYPE_SENSOR_HEAT_ALARM: 'Heat Alarm Sensor',
+    DEVICE_TYPE_SENSOR_WATER_ALARM: 'Water Alarm Sensor',
+    DEVICE_TYPE_SENSOR_ACCESS_CONTROL: 'Access Control Sensor',
+    DEVICE_TYPE_SENSOR_HOME_SECURITY: 'Home Security Sensor',
+    DEVICE_TYPE_SENSOR_POWER_MANAGEMENT: 'Power Management Sensor',
+    DEVICE_TYPE_SENSOR_SYSTEM: 'System Sensor',
+    DEVICE_TYPE_SENSOR_EMERGENCY_ALARM: 'Emergency Alarm Sensor',
+    DEVICE_TYPE_SENSOR_CLOCK: 'Clock Sensor',
+    DEVICE_TYPE_SENSOR_MULTIDEVICE_1: 'MultiDevice Sensor',
+    DEVICE_TYPE_SENSOR_MULTILEVEL: 'Multilevel Sensor',
+    DEVICE_TYPE_SENSOR_AIR_TEMPERATURE: 'Air Temperature Sensor',
+    DEVICE_TYPE_SENSOR_GENERAL_PURPOSE: 'General Purpose Sensor',
+    DEVICE_TYPE_SENSOR_LUMINANCE: 'Luminance Sensor',
+    DEVICE_TYPE_SENSOR_POWER: 'Power Sensor',
+    DEVICE_TYPE_SENSOR_HUMIDITY: 'Humidity Sensor',
+    DEVICE_TYPE_SENSOR_VELOCITY: 'Velocity Sensor',
+    DEVICE_TYPE_SENSOR_DIRECTION: 'Direction Sensor',
+    DEVICE_TYPE_SENSOR_ATMOSPHERIC_PRESSURE: 'Atmospheric Pressure Sensor',
+    DEVICE_TYPE_SENSOR_BAROMETRIC_PRESSURE: 'Barometric Pressure Sensor',
+    DEVICE_TYPE_SENSOR_SOLAR_RADIATION: 'Solar Radiation Sensor',
+    DEVICE_TYPE_SENSOR_DEW_POINT: 'Dew Point Sensor',
+    DEVICE_TYPE_SENSOR_RAIN_RATE: 'Rain Rate Sensor',
+    DEVICE_TYPE_SENSOR_TIDE_LEVEL: 'Tide Level Sensor',
+    DEVICE_TYPE_SENSOR_WEIGHT: 'Weight Sensor',
+    DEVICE_TYPE_SENSOR_VOLTAGE: 'Voltage Sensor',
+    DEVICE_TYPE_SENSOR_CURRENT: 'Current Sensor',
+    DEVICE_TYPE_SENSOR_CO2_LEVEL: 'CO2 Level Sensor',
+    DEVICE_TYPE_SENSOR_AIR_FLOW: 'Air Flow Sensor',
+    DEVICE_TYPE_SENSOR_TANK_CAPACITY: 'Tank Capacity Sensor',
+    DEVICE_TYPE_SENSOR_DISTANCE: 'Distance Sensor',
+    DEVICE_TYPE_SENSOR_ANGLE_POSTITION: 'Angle Postition Sensor',
+    DEVICE_TYPE_SENSOR_ROTATION: 'Rotation Sensor',
+    DEVICE_TYPE_SENSOR_WATER_TEMPERATURE: 'Water Temperature Sensor',
+    DEVICE_TYPE_SENSOR_SOIL_TEMPERATURE: 'Soil Temperature Sensor',
+    DEVICE_TYPE_SENSOR_SEISMIC_INTENSITY: 'Seismic Intensity Sensor',
+    DEVICE_TYPE_SENSOR_SEISMIC_MAGNITUDE: 'Seismic Magnitude Sensor',
+    DEVICE_TYPE_SENSOR_ULTRAVIOLET: 'Ultraviolet Sensor',
+    DEVICE_TYPE_SENSOR_ELECTRICAL_RESISTIVITY: 'Electrical Resistivity Sensor',
+    DEVICE_TYPE_SENSOR_ELECTRICAL_CONDUCTIVITY: (
+        'Electrical Conductivity Sensor'
+    ),
+    DEVICE_TYPE_SENSOR_LOUDNESS: 'Loudness Sensor',
+    DEVICE_TYPE_SENSOR_MOISTURE: 'Moisture Sensor',
+    DEVICE_TYPE_SENSOR_FREQUENCY: 'Frequency Sensor',
+    DEVICE_TYPE_SENSOR_TIME: 'Time Sensor',
+    DEVICE_TYPE_SENSOR_TARGET_TEMPERATURE: 'Target Temperature Sensor',
+    DEVICE_TYPE_SENSOR_MULTIDEVICE_2: 'MultiDevice Sensor',
+    DEVICE_TYPE_SET_TOP_BOX: 'Set Top Box',
+    DEVICE_TYPE_SIREN: 'Siren',
+    DEVICE_TYPE_SUB_ENERGY_METER: 'Sub Energy Meter',
+    DEVICE_TYPE_SUB_SYSTEM_CONTROLLER: 'Sub System Controller',
+    DEVICE_TYPE_THERMOSTAT_HVAC: 'Thermostat HVAC',
+    DEVICE_TYPE_THERMOSTAT_SETBACK: 'Thermostat Setback',
+    DEVICE_TYPE_TV: 'TV',
+    DEVICE_TYPE_VALVE_OPEN_CLOSE: 'Valve open/close',
+    DEVICE_TYPE_WALL_CONTROLLER: 'Wall Controller',
+    DEVICE_TYPE_WHOLE_HOME_METER_SIMPLE: 'Whole Home Meter Simple',
+    DEVICE_TYPE_WINDOW_COVERING_NO_POSITION_ENDPOINT: (
+        'Window Covering No Position/Endpoint'
+    ),
+    DEVICE_TYPE_WINDOW_COVERING_ENDPOINT_AWARE: (
+        'Window Covering Endpoint Aware'
+    ),
+    DEVICE_TYPE_WINDOW_COVERING_POSITION_ENDPOINT_AWARE: (
+        'Window Covering Position/Endpoint Aware'
+    ),
+}
+
+
+SPECIFIC = {
+    GENERIC_TYPE_REMOTE_CONTROLLER: {
+        SPECIFIC_TYPE_PORTABLE_REMOTE_CONTROLLER: 'Portable Remote Controller',
+        SPECIFIC_TYPE_PORTABLE_SCENE_CONTROLLER: 'Portable Scene Controller',
+        SPECIFIC_TYPE_PORTABLE_INSTALLER_TOOL: 'Portable Installer Tool',
+        SPECIFIC_TYPE_REMOTE_CONTROL_AV: 'Remote Control AV',
+        SPECIFIC_TYPE_REMOTE_CONTROL_SIMPLE: 'Remote Control Simple'
+    },
+    GENERIC_TYPE_STATIC_CONTROLLER: {
+        SPECIFIC_TYPE_STATIC_PC_CONTROLLER: 'Static PC Controller',
+        SPECIFIC_TYPE_STATIC_SCENE_CONTROLLER: 'Static Scene Controller',
+        SPECIFIC_TYPE_STATIC_INSTALLER_TOOL: 'Static Installer Tool'
+    },
+    GENERIC_TYPE_AV_CONTROL_POINT: {
+        SPECIFIC_TYPE_SET_TOP_BOX: 'Set Top Box',
+        SPECIFIC_TYPE_SUB_SYSTEM_CONTROLLER: 'Sub System Controller',
+        SPECIFIC_TYPE_TV: 'TV',
+        SPECIFIC_TYPE_GATEWAY: 'Gateway',
+        SPECIFIC_TYPE_SATELLITE_RECEIVER: 'Satellite Receiver',
+        SPECIFIC_TYPE_SATELLITE_RECEIVER_V2: 'Satellite Receiver V2',
+        SPECIFIC_TYPE_DOORBELL: 'Doorbell'
+    },
+    GENERIC_TYPE_DISPLAY: {
+        SPECIFIC_TYPE_SIMPLE_DISPLAY: 'Simple Display'
+    },
+    GENERIC_TYPE_NETWORK_EXTENDER: {
+        SPECIFIC_TYPE_SECURE_EXTENDER: 'Secure Extender'
+    },
+    GENERIC_TYPE_APPLIANCE: {
+        SPECIFIC_TYPE_GENERAL_APPLIANCE: 'General Appliance',
+        SPECIFIC_TYPE_KITCHEN_APPLIANCE: 'Kitchen Appliance',
+        SPECIFIC_TYPE_LAUNDRY_APPLIANCE: 'Laundry Appliance'
+    },
+    GENERIC_TYPE_SENSOR_NOTIFICATION: {
+        SPECIFIC_TYPE_SENSOR_NOTIFICATION: 'Notification Sensor'
+    },
+    GENERIC_TYPE_THERMOSTAT: {
+        SPECIFIC_TYPE_HEATING_THERMOSTAT: 'Heating Thermostat',
+        SPECIFIC_TYPE_GENERAL_THERMOSTAT: 'General Thermostat',
+        SPECIFIC_TYPE_SETBACK_SCHEDULE_THERMOSTAT: (
+            'Setback Schedule Thermostat'
+        ),
+        SPECIFIC_TYPE_SETPOINT_THERMOSTAT: 'Setpoint Thermostat',
+        SPECIFIC_TYPE_SETBACK_THERMOSTAT: 'Setback Thermostat',
+        SPECIFIC_TYPE_GENERAL_THERMOSTAT_V2: 'General Thermostat V2'
+    },
+    GENERIC_TYPE_WINDOW_COVERING: {
+        SPECIFIC_TYPE_SIMPLE_WINDOW_COVERING: 'Simple Window Covering'
+    },
+    GENERIC_TYPE_REPEATER_SLAVE: {
+        SPECIFIC_TYPE_BASIC_REPEATER_SLAVE: 'Basic Repeater Slave'
+    },
+    GENERIC_TYPE_SWITCH_BINARY: {
+        SPECIFIC_TYPE_POWER_SWITCH_BINARY: 'Binary Power Switch',
+        SPECIFIC_TYPE_SCENE_SWITCH_BINARY: 'Binary Scene Switch',
+        SPECIFIC_TYPE_POWER_STRIP: 'Power Strip',
+        SPECIFIC_TYPE_SIREN: 'Siren',
+        SPECIFIC_TYPE_VALVE_OPEN_CLOSE: 'Valve Open Close'
+    },
+    GENERIC_TYPE_SWITCH_MULTILEVEL: {
+        SPECIFIC_TYPE_POWER_SWITCH_MULTILEVEL: 'Multilevel Power Switch',
+        SPECIFIC_TYPE_MULTIPOSITION_MOTOR: 'Multiposition Motor',
+        SPECIFIC_TYPE_SCENE_SWITCH_MULTILEVEL: 'Multilevel Scene Switch',
+        SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_A: 'Motor Control Class A',
+        SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_B: 'Motor Control Class B',
+        SPECIFIC_TYPE_MOTOR_CONTROL_CLASS_C: 'Motor Control Class C'
+    },
+    GENERIC_TYPE_SWITCH_REMOTE: {
+        SPECIFIC_TYPE_REMOTE_SWITCH_BINARY: 'Binary Remote Switch',
+        SPECIFIC_TYPE_REMOTE_SWITCH_MULTILEVEL: 'Multilevel Remote Switch',
+        SPECIFIC_TYPE_REMOTE_TOGGLE_SWITCH_BINARY: (
+            'Binary Toggle Remote Switch'
+        ),
+        SPECIFIC_TYPE_REMOTE_TOGGLE_SWITCH_MULTILEVEL: (
+            'Multilevel Toggle Remote Switch'
+        )
+    },
+    GENERIC_TYPE_TOGGLE_SWITCH: {
+        SPECIFIC_TYPE_TOGGLE_SWITCH_BINARY: 'Binary Toggle Switch',
+        SPECIFIC_TYPE_TOGGLE_SWITCH_MULTILEVEL: 'Multilevel Toggle Switch'
+    },
+    GENERIC_TYPE_ZIP_GATEWAY: {
+        SPECIFIC_TYPE_ZIP_TUNNELING_GATEWAY: 'Z/IP Tunneling Gateway',
+        SPECIFIC_TYPE_ZIP_ADVANCED_GATEWAY: 'Z/IP Advanced Gateway'
+    },
+    GENERIC_TYPE_ZIP_NODE: {
+        SPECIFIC_TYPE_ZIP_TUNNELING_NODE: 'Z/IP Tunneling Node',
+        SPECIFIC_TYPE_ZIP_ADVANCED_NODE: 'Z/IP Advanced Node'
+    },
+    GENERIC_TYPE_VENTILATION: {
+        SPECIFIC_TYPE_RESIDENTIAL_HEAT_RECOVERY_VENTILATION: (
+            'Residential Heat Recovery Ventilation'
+        ),
+    },
+    GENERIC_TYPE_SECURITY_PANEL: {
+        SPECIFIC_TYPE_ZONED_SECURITY_PANEL: 'Zoned Security Panel'
+    },
+    GENERIC_TYPE_WALL_CONTROLLER: {
+        SPECIFIC_TYPE_BASIC_WALL_CONTROLLER: 'Basic Wall Controller'
+    },
+    GENERIC_TYPE_SENSOR_BINARY: {
+        SPECIFIC_TYPE_ROUTING_SENSOR_BINARY: 'Routing Binary Sensor'
+    },
+    GENERIC_TYPE_SENSOR_MULTILEVEL: {
+        SPECIFIC_TYPE_ROUTING_SENSOR_MULTILEVEL: 'Routing Multilevel Sensor',
+        SPECIFIC_TYPE_CHIMNEY_FAN: 'Chimney Fan'
+    },
+    GENERIC_TYPE_PULSE_METER: {},
+    GENERIC_TYPE_METER: {
+        SPECIFIC_TYPE_SIMPLE_METER: 'Simple Meter',
+        SPECIFIC_TYPE_ADVANCED_ENERGY_CONTROL: 'Advanced Energy Control',
+        SPECIFIC_TYPE_WHOLE_HOME_METER_SIMPLE: 'Whole Home Meter Simple'
+    },
+    GENERIC_TYPE_ENTRY_CONTROL: {
+        SPECIFIC_TYPE_DOOR_LOCK: 'Door Lock',
+        SPECIFIC_TYPE_ADVANCED_DOOR_LOCK: 'Advanced Door Lock',
+        SPECIFIC_TYPE_SECURE_KEYPAD_DOOR_LOCK: 'Secure Keypad Door Lock',
+        SPECIFIC_TYPE_SECURE_KEYPAD_DEADBOLT_DOOR_LOCK: (
+            'Secure Keypad Door Lock DeadBolt'
+        ),
+        SPECIFIC_TYPE_SECURE_DOOR: 'Secure Door',
+        SPECIFIC_TYPE_SECURE_GATE: 'Secure Gate',
+        SPECIFIC_TYPE_SECURE_BARRIER_ADDON: 'Secure Barrier AddOn',
+        SPECIFIC_TYPE_SECURE_BARRIER_OPEN_ONLY: 'Secure Barrier Open Only',
+        SPECIFIC_TYPE_SECURE_BARRIER_CLOSE_ONLY: 'Secure Barrier Close Only',
+        SPECIFIC_TYPE_SECURE_LOCKBOX: 'Secure LockBox'
+    },
+    GENERIC_TYPE_SEMI_INTEROPERABLE: {
+        SPECIFIC_TYPE_ENERGY_PRODUCTION: 'Energy Production'
+    },
+    GENERIC_TYPE_SENSOR_ALARM: {
+        SPECIFIC_TYPE_ROUTING_SENSOR_BASIC_ALARM: 'Basic Routing Alarm Sensor',
+        SPECIFIC_TYPE_ROUTING_SENSOR_ALARM: 'Routing Alarm Sensor',
+        SPECIFIC_TYPE_SENSOR_BASIC_ZENSOR_ALARM: 'Basic Zensor Alarm Sensor',
+        SPECIFIC_TYPE_SENSOR_ZENSOR_ALARM: 'Zensor Alarm Sensor',
+        SPECIFIC_TYPE_SENSOR_ADVANCED_ZENSOR_ALARM: (
+            'Advanced Zensor Alarm Sensor'
+        ),
+        SPECIFIC_TYPE_ROUTING_SENSOR_BASIC_SMOKE: 'Basic Routing Smoke Sensor',
+        SPECIFIC_TYPE_SENSOR_ROUTING_SMOKE: 'Routing Smoke Sensor',
+        SPECIFIC_TYPE_SENSOR_BASIC_ZENSOR_SMOKE: 'Basic Zensor Smoke Sensor',
+        SPECIFIC_TYPE_SENSOR_ZENSOR_SMOKE: 'Zensor Smoke Sensor',
+        SPECIFIC_TYPE_SENSOR_ADVANCED_ZENSOR_SMOKE: (
+            'Advanced Zensor Smoke Sensor'
+        ),
+        SPECIFIC_TYPE_SENSOR_ALARM: 'Alarm Sensor'
+    },
+    GENERIC_TYPE_NON_INTEROPERABLE: {}
+}
+
+NODE = {
+    NODE_TYPE_ZWAVE_PLUS_NODE: 'Z-Wave+ node',
+    NODE_TYPE_ZWAVE_PLUS_IP_ROUTER: 'Z-Wave+ IP router',
+    NODE_TYPE_ZWAVE_PLUS_IP_GATEWAY: 'Z-Wave+ IP gateway',
+    NODE_TYPE_ZWAVE_PLUS_IP_CLIENT_AND_IP_NODE: (
+        'Z-Wave+ IP client and IP node'
+    ),
+    NODE_TYPE_ZWAVE_PLUS_IP_CLIENT_AND_ZWAVE_NODE: (
+        'Z-Wave+ IP client and Zwave node'
+    )
+
+}
+
+GENERIC = {
+    GENERIC_TYPE_REMOTE_CONTROLLER: 'Remote Controller',
+    GENERIC_TYPE_STATIC_CONTROLLER: 'Static Controller',
+    GENERIC_TYPE_AV_CONTROL_POINT: 'AV Control Point',
+    GENERIC_TYPE_DISPLAY: 'Display',
+    GENERIC_TYPE_NETWORK_EXTENDER: 'Network Extender',
+    GENERIC_TYPE_APPLIANCE: 'Appliance',
+    GENERIC_TYPE_SENSOR_NOTIFICATION: 'Notification Sensor',
+    GENERIC_TYPE_THERMOSTAT: 'Thermostat',
+    GENERIC_TYPE_WINDOW_COVERING: 'Window Covering',
+    GENERIC_TYPE_REPEATER_SLAVE: 'Repeater Slave',
+    GENERIC_TYPE_SWITCH_BINARY: 'Binary Switch',
+    GENERIC_TYPE_SWITCH_MULTILEVEL: 'Multilevel Switch',
+    GENERIC_TYPE_SWITCH_REMOTE: 'Remote Switch',
+    GENERIC_TYPE_TOGGLE_SWITCH: 'Toggle Switch',
+    GENERIC_TYPE_ZIP_GATEWAY: 'Z/IP Gateway',
+    GENERIC_TYPE_ZIP_NODE: 'Z/IP Node',
+    GENERIC_TYPE_VENTILATION: 'Ventilation',
+    GENERIC_TYPE_SECURITY_PANEL: 'Security Panel',
+    GENERIC_TYPE_WALL_CONTROLLER: 'Wall Controller',
+    GENERIC_TYPE_SENSOR_BINARY: 'Binary Sensor',
+    GENERIC_TYPE_SENSOR_MULTILEVEL: 'Multilevel Sensor',
+    GENERIC_TYPE_PULSE_METER: 'Pulse Meter',
+    GENERIC_TYPE_METER: 'Meter',
+    GENERIC_TYPE_ENTRY_CONTROL: 'Entry Control',
+    GENERIC_TYPE_SEMI_INTEROPERABLE: 'Semi Interoperable',
+    GENERIC_TYPE_SENSOR_ALARM: 'Alarm Sensor',
+    GENERIC_TYPE_NON_INTEROPERABLE: 'Non Interoperable',
+}
+
+ROLE = {
+    ROLE_TYPE_CENTRAL_CONTROLLER: 'Central Controller',
+    ROLE_TYPE_SUB_CONTROLLER: 'Sub Controller',
+    ROLE_TYPE_PORTABLE_CONTROLLER: 'Portable Controller',
+    ROLE_TYPE_PORTABLE_REPORTING_CONTROLLER: 'Portable Reporting Controller',
+    ROLE_TYPE_PORTABLE_SLAVE: 'Portable Slave',
+    ROLE_TYPE_ALWAYS_ON_SLAVE: 'Always On Slave',
+    ROLE_TYPE_REPORTING_SLEEPING_SLAVE: 'Reporting Sleeping Slave',
+    ROLE_TYPE_LISTENING_SLEEPING_SLAVE: 'Listening Sleeping Slave',
+}
+
+BASIC = {
+    BASIC_TYPE_GENERIC_CONTROLLER: 'Controller',
+    BASIC_TYPE_STATIC_CONTROLLER: 'Static Controller',
+    BASIC_TYPE_SLAVE_CONTROLLER: 'Slave',
+    BASIC_TYPE_ROUTING_SLAVE_CONTROLLER: 'Routing Slave',
+}
+
+
+def device_type_to_string(code):
+    try:
+        return DEVICE[code]
+    except KeyError:
+        return str(code)
+
+
+def specific_type_to_string(major, minor):
+    try:
+        return SPECIFIC[major][minor]
+    except KeyError:
+        return GENERIC[major]
+        # return str(major) + '-' + str(minor)
+
+
+def node_type_to_string(code):
+    try:
+        return NODE[code]
+    except KeyError:
+        return str(code)
+
+
+def generic_type_to_string(code):
+    try:
+        return GENERIC[code]
+    except KeyError:
+        return str(code)
+
+
+def role_type_to_string(code):
+    try:
+        return ROLE[code]
+    except KeyError:
+        return str(code)
+
+
+def basic_type_to_string(code):
+    try:
+        return BASIC[code]
+    except KeyError:
+        return str(code)

@@ -38,7 +38,7 @@ import libopenzwave
 import openzwave
 from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
 from openzwave.controller import ZWaveController
-from openzwave.node import ZWaveNode
+from openzwave.node import ZWaveNodeInterface
 from openzwave.option import ZWaveOption
 from openzwave.scene import ZWaveScene
 from openzwave.singleton import Singleton
@@ -1142,7 +1142,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         logger.debug(u'Z-Wave Notification NodeAdded : %s', args)
         try:
-            node = ZWaveNode(args['nodeId'], network=self)
+            node = ZWaveNodeInterface(args['nodeId'], network=self)
             self._semaphore_nodes.acquire()
             self.nodes[args['nodeId']] = node
             dispatcher.send(self.SIGNAL_NODE_ADDED, \
