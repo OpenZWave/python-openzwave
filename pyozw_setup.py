@@ -291,42 +291,25 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            from pyozw_win import get_vsproject_upgrade_command, get_vsproject_build_command, get_vsproject_prebuild_command
-            if 'vsproject_upgrade' in self.os_options and self.os_options['vsproject_upgrade']:
-                log.info("Upgrade openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_upgrade_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                Thread(target=stream_watcher, name='stdout-watcher',
-                        args=('STDOUT', proc.stdout)).start()
-                Thread(target=stream_watcher, name='stderr-watcher',
-                        args=('STDERR', proc.stderr)).start()
+            from pyozw_win import get_clean_command, get_build_command
 
-                tprinter = Thread(target=printer, name='printer')
-                tprinter.start()
-                while tprinter.is_alive():
-                    time.sleep(1)
-                tprinter.join()
-                #~ proc.wait()
+            cwd = self.os_options['solution_path']
+            clean_command = get_clean_command(**self.os_options)
+            build_command = get_build_command(**self.os_options)
 
-            if 'vsproject_prebuild' in self.os_options and self.os_options['vsproject_prebuild']:
-                log.info("Update configuration of openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_prebuild_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                Thread(target=stream_watcher, name='stdout-watcher',
-                        args=('STDOUT', proc.stdout)).start()
-                Thread(target=stream_watcher, name='stderr-watcher',
-                        args=('STDERR', proc.stderr)).start()
+            log.info("Cleaning openzwave project ... be patient ...")
+            proc = Popen(clean_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
+            Thread(target=stream_watcher, name='stdout-watcher', args=('STDOUT', proc.stdout)).start()
+            Thread(target=stream_watcher, name='stderr-watcher', args=('STDERR', proc.stderr)).start()
 
-                tprinter = Thread(target=printer, name='printer')
-                tprinter.start()
-                while tprinter.is_alive():
-                    time.sleep(1)
-                tprinter.join()
-                #~ proc.wait()
+            tprinter = Thread(target=printer, name='printer')
+            tprinter.start()
+            while tprinter.is_alive():
+                time.sleep(1)
+            tprinter.join()
 
             log.info("Build openzwave ... be patient ...")
-            proc = Popen(get_vsproject_build_command(self.os_options),
-                         stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+            proc = Popen(build_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
 
         elif sys.platform.startswith("cygwin"):
             log.info("Build openzwave ... be patient ...")

@@ -22,479 +22,706 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-import sys, os
-import fnmatch
+import sys
+import os
 import platform
+import shutil
+from pyozw_version import pyozw_version
 
-VC9 = 'VC9'
-VC10 = 'VC10'
-VC14 = 'VC14'
+try:
+    _winreg = __import__('_winreg')
+except ImportError:
+    _winreg = __import__('winreg')
 
-def get_win_config( debug=False ):
-    """Retrieve needed tools to build extension
-    Depend of python version
-    See https://wiki.python.org/moin/WindowsCompilers
-    """
-    if sys.version_info >= (2,6) and sys.version_info < (3,3):
-        return VC9
-    elif sys.version_info >= (3,3) and sys.version_info < (3,5):
-        return VC10
-    elif sys.version_info >= (3,5):
-        return VC14
 
-def find_all_build_tools(name, paths):
-    """Search for name recursively in paths
-    """
-    result = []
-    for path in paths:
-        for root, dirs, files in os.walk(path):
-            if name in files:
-                result.append(os.path.join(root, name))
-    return result
+WIN64 = '64' in platform.machine()
+PYTHON64 = platform.architecture()[0] == '64bit' and WIN64
+ARCH = 'x64' if PYTHON64 else 'x86'
 
-def find_msbuild_tools( options, debug=False ):
-    """Find MSBuild.exe
-    """
-    win_config = get_win_config(debug=debug)
-    if win_config == VC14:
-        if 'devenv' in options and '2015' in options['devenv']:
-            vs_path = [
-                       'c:\\Program Files (x86)\\MSBuild\\14.0',
-                       'c:\\Program Files (x86)\\Microsoft Visual Studio\\2015',
-                       'c:\\Program Files (x86)\\MSBuild\\15.0',
-                       'c:\\Program Files (x86)\\Microsoft Visual Studio\\2017',
-                       ]
-        else:
-            vs_path = [
-                       'c:\\Program Files (x86)\\MSBuild\\15.0',
-                       'c:\\Program Files (x86)\\Microsoft Visual Studio\\2017',
-                       'c:\\Program Files (x86)\\MSBuild\\14.0',
-                       'c:\\Program Files (x86)\\Microsoft Visual Studio\\2015',
-                       ]
-        if debug:
-            print("Check for MSBuild.exe in %s" %vs_path)
-        all_msbuild = find_all_build_tools("MSBuild.exe", vs_path)
-        if debug:
-            print("Found MSBuild.exe in %s" %all_msbuild)
-        if options['arch'] == 'x64':
-            msbuild2 = [name for name in all_msbuild if 'amd64' in name]
-        if options['arch'] == 'Win32':
-            msbuild2 = [name for name in all_msbuild if not 'amd64' in name]
-        if debug:
-            print("Found MSBuild.exe in %s" %msbuild2)
-        if len(msbuild2) == 0:
-            raise RuntimeError("Can't find MSBuild.exe for arch %s in %s looked in %s"%(options['arch'], all_msbuild, vs_path))
-        options['msbuild'] =  msbuild2[0]
+TOOLSETS = {
+    15.0: ['v141', '15.0'],  # vs2017
+    14.0: ['v140', '14.0'],  # vs2015
+    10.0: ['v100', '4.0'],  # vs2010
+    4.0:  ['v90', '4.0'],  # vs2008
+}
 
-    elif win_config == VC10:
-        vs_path = [
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 11.0',
-                   'c:\\Program Files (x86)\\MSBuild',
-                   ]
-        if debug:
-            print("Check for MSBuild.exe in %s" %vs_path)
-        all_msbuild = find_all_build_tools("MSBuild.exe", vs_path)
-        if debug:
-            print("Found MSBuild.exe in %s" %all_msbuild)
-        if options['arch'] == 'x64':
-            msbuild2 = [name for name in all_msbuild if 'amd64' in name]
-        if options['arch'] == 'Win32':
-            msbuild2 = [name for name in all_msbuild if not 'amd64' in name]
-        if debug:
-            print("Found MSBuild.exe in %s" %msbuild2)
-        if len(msbuild2) == 0:
-            raise RuntimeError("Can't find MSBuild.exe for arch %s in %s looked in %s"%(options['arch'], all_msbuild, vs_path))
-        options['msbuild'] =  msbuild2[0]
 
-    elif win_config == VC9:
-        vs_path = [
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
-                   'c:\\Program Files (x86)\\MSBuild',
-                   ]
-        if debug:
-            print("Check for MSBuild.exe in %s" %vs_path)
-        all_msbuild = find_all_build_tools("MSBuild.exe", vs_path)
-        if debug:
-            print("Found MSBuild.exe in %s" %all_msbuild)
-        if options['arch'] == 'x64':
-            msbuild2 = [name for name in all_msbuild if 'amd64' in name]
-        if options['arch'] == 'Win32':
-            msbuild2 = [name for name in all_msbuild if not 'amd64' in name]
-        if debug:
-            print("Found MSBuild.exe in %s" %msbuild2)
-        if len(msbuild2) == 0:
-            raise RuntimeError("Can't find MSBuild.exe for arch %s in %s looked in %s"%(options['arch'], all_msbuild, vs_path))
-        options['msbuild'] =  msbuild2[0]
-    return 'msbuild' in options
+def _get_reg_value(path, key):
+    d = _read_reg_values(path)
+    if key in d:
+        return d[key]
+    return ''
 
-def find_devenv_tools( options, debug=False ):
-    """Find devenv.exe
-    """
-    win_config = get_win_config(debug=debug)
-    if win_config == VC14:
-        vs_path = [
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio\\2015',
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio\\2017',
-                   ]
-        if debug:
-            print("Check for devenv in %s" %vs_path)
-        all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        if debug:
-            print("Found devenv in %s" %all_msbuild)
-        if len(all_msbuild) == 0:
-            raise RuntimeError("Can't find devenv in %s looked in %s"%(all_msbuild, vs_path))
-        options['devenv'] =  all_msbuild[0]
 
-    elif win_config == VC10:
-        vs_path = [
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 10.0',
-                   'c:\\Program Files (x86)\\Microsoft Visual Studio 11.0',
-                   ]
-        if debug:
-            print("Check for devenv.exe in %s" %vs_path)
-        all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        if debug:
-            print("Found devenv.exe in %s" %all_msbuild)
-        if len(all_msbuild) == 0:
-            raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
-        options['devenv'] =  all_msbuild[0]
+def _read_reg_keys(key):
+    try:
+        handle = _winreg.OpenKeyEx(
+            _winreg.HKEY_LOCAL_MACHINE,
+            'SOFTWARE\\Wow6432Node\\Microsoft\\' + key
+        )
+    except _winreg.error:
+        return []
+    res = []
 
-    elif win_config == VC9:
-        #~ vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
-                   #~ ]
-        #~ if debug:
-            #~ print("Check for devenv.exe in %s" %vs_path)
-        #~ all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        #~ if debug:
-            #~ print("Found devenv.exe in %s" %all_msbuild)
-        #~ if len(all_msbuild) == 0:
-            #~ raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
-        #~ options['devenv'] =  all_msbuild[0]
-        options['devenv'] = None
-    return 'devenv' in options
+    for i in range(_winreg.QueryInfoKey(handle)[0]):
+        res += [_winreg.EnumKey(handle, i)]
 
-def get_vs_project( options, openzwave='openzwave', debug=False ):
-    """Retrieve needed tools to build extension
-    Depend of python version
-    See https://wiki.python.org/moin/WindowsCompilers
-    """
-    win_config = get_win_config(debug=debug)
-    if win_config == VC14:
-        if '2015' in options['devenv']:
-            options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2015')
-        elif '2017' in options['devenv']:
-            options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2017')
-        if not ( 'vsproject' in options ):
-            raise RuntimeError("Can't find devenv.exe for VS2017 / VS2015")
-        import shutil
-        if os.path.isdir(options['vsproject']):
-            shutil.rmtree(options['vsproject'])
-        shutil.copytree(os.path.join(openzwave,'cpp','build','windows','vs2010'), options['vsproject'])
-        options['vsproject_upgrade'] = True
-        options['vsproject_prebuild'] = False
-    elif win_config == VC10:
-        options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2010')
-        options['vsproject_upgrade'] = False
-        options['vsproject_prebuild'] = False
-    elif win_config == VC9:
-        options['vsproject'] = os.path.join(openzwave,'cpp','build','windows','vs2008')
-        options['vsproject_upgrade'] = False
-        options['vsproject_prebuild'] = False
-    if options['arch'] == "x64" :
-        options['vsproject_build'] = os.path.join(options['vsproject'], options['arch'], options['buildconf'])
-        update_vs_project( options, debug=debug )
+    return res
+
+
+def _read_reg_values(key):
+    try:
+        handle = _winreg.OpenKeyEx(
+            _winreg.HKEY_LOCAL_MACHINE,
+            'SOFTWARE\\Wow6432Node\\Microsoft\\' + key
+        )
+    except _winreg.error:
+        return {}
+    res = {}
+    for i in range(_winreg.QueryInfoKey(handle)[1]):
+        name, value, _ = _winreg.EnumValue(handle, i)
+        res[_convert_mbcs(name)] = _convert_mbcs(value)
+
+    return res
+
+
+def _convert_mbcs(s):
+    dec = getattr(s, "decode", None)
+    if dec is not None:
+        try:
+            s = dec("mbcs")
+        except UnicodeError:
+            pass
+    return s
+
+
+def get_environment():
+    from setuptools.msvc import (
+        msvc9_query_vcvarsall,
+        EnvironmentInfo,
+        msvc14_get_vc_env
+    )
+
+    py_version = sys.version_info[:2]
+
+    if py_version >= (3, 5):
+        env = msvc14_get_vc_env(ARCH)
+        msbuild_version = 14.0
+        env_info = EnvironmentInfo(ARCH)
+        msbuild_path = _find_file(
+            'MSBuild.exe',
+            env_info.MSBuild[0]
+        )[0]
+
+        sdks = ('10.0', '8.1', '8.1A', '8.0', '8.0A')
+        solution_dest = 'vs2015'
+
+    elif (3, 5) > py_version >= (3, 3):
+        env = msvc9_query_vcvarsall(10.0, ARCH)
+        msbuild_version = 4.0
+        msbuild_path = _get_reg_value(
+            'MSBuild\\4.0',
+            'MSBuildOverrideTasksPath'
+        )
+
+        if msbuild_path:
+            msbuild_path = _find_file(
+                'MSBuild.exe',
+                msbuild_path
+            )[0]
+
+        sdks = ('7.1', '7.0A')
+        solution_dest = 'vs2010'
+
+    elif (3, 3) > py_version >= (2, 6):
+        env = msvc9_query_vcvarsall(9.0, ARCH)
+        msbuild_version = 4.0
+        msbuild_path = _get_reg_value(
+            'MSBuild\\4.0',
+            'MSBuildOverrideTasksPath'
+        )
+
+        if msbuild_path:
+            msbuild_path = _find_file(
+                'MSBuild.exe',
+                msbuild_path
+            )[0]
+
+        sdks = ('6.1', '6.1A', '6.0A')
+        solution_dest = 'vs2008'
+
     else:
-        options['vsproject_build'] = os.path.join(options['vsproject'], options['buildconf'])
-    return 'vsproject' in options
+        raise RuntimeError(
+            'This library does not support python versions < 2.6'
+        )
 
-def update_vs_project( options, openzwave="openzwave", debug=False, update_version=False ):
-    """Retrieve needed tools to build extension
-    Depend of python version
-    See https://wiki.python.org/moin/WindowsCompilers
-    """
+    for sdk in sdks:
+        sdk_version = _get_reg_value(
+            'Microsoft SDKs\\Windows\\v' + sdk,
+            'ProductVersion'
+        )
+        if sdk_version:
+            sdk_installation_folder = _get_reg_value(
+                'Microsoft SDKs\\Windows\\v' + sdk,
+                'InstallationFolder'
+            )
+            target_platform = sdk_version
+            os.environ['WindowsSdkDir'] = sdk_installation_folder
+            break
+    else:
+        raise RuntimeError('Unable to locate suitable SDK %s' % (sdks,))
+
+    platform_toolset, tools_version = TOOLSETS[msbuild_version]
+
+    return (
+        env,
+        msbuild_version,
+        msbuild_path,
+        sdk_installation_folder,
+        target_platform,
+        platform_toolset,
+        tools_version,
+        solution_dest
+    )
+
+
+def _find_file(file_name, path):
+    res = []
+
+    for root, dirs, files in os.walk(path):
+        if (
+            ((PYTHON64 and 'amd64' in root) or 'amd64' not in root) and
+            file_name in files
+        ):
+            res.append(os.path.join(root, file_name))
+    return res
+
+
+def setup_build_environment(openzwave, build_type):
+    (
+        env,
+        msbuild_version,
+        msbuild_path,
+        sdk_installation_folder,
+        target_platform,
+        platform_toolset,
+        tools_version,
+        solution_dest
+    ) = get_environment()
+
+    if 'DISTUTILS_USE_SDK' in os.environ:
+        if 'WINDOWSSDKVERBINPATH' in os.environ:
+            sdk_installation_folder = os.environ['WINDOWSSDKVERBINPATH']
+
+            if 'MSSDK' not in os.environ:
+                os.environ['MSSDK'] = sdk_installation_folder
+    else:
+        if 'WINDOWSSDKVERBINPATH' in env:
+            sdk_installation_folder = env['WINDOWSSDKVERBINPATH']
+
+        env['MSSDK'] = sdk_installation_folder
+        env['DISTUTILS_USE_SDK'] = '1'
+
+        for key, value in env.items():
+            os.environ[key] = value
+
+    if 'VS150COMNTOOLS' in os.environ and msbuild_version == 14.0:
+        platform_toolset = 'v141'
+        tools_version = '15.0'
+        msbuild_version = 15.0
+        solution_dest = 'vs2017'
+
+    if 'WINDOWSSDKLIBVERSION' in os.environ:
+        target_platform = (
+            os.environ['WINDOWSSDKLIBVERSION'].replace('\\', '')
+        )
+
+    if not msbuild_path:
+        raise RuntimeError(
+            'Unable to locate MSBuild or Visual Studio to compile OpenZWave'
+        )
+
+    project_base_path = os.path.abspath(
+        os.path.join(
+            openzwave,
+            'cpp',
+            'build',
+            'windows'
+        )
+    )
+
+    project_path = os.path.join(project_base_path, solution_dest)
+
+    if PYTHON64:
+        build_path = os.path.join(project_path, 'x64', build_type)
+    else:
+        build_path = os.path.join(project_path, build_type)
+
+    if not os.path.exists(project_path):
+        shutil.copytree(
+            os.path.join(project_base_path, 'vs2010'),
+            project_path
+        )
+
+    print('Updating VS solution please wait.')
+
+    if update_vs_project(
+        os.path.join(project_path, 'OpenZWave.vcxproj'),
+        tools_version,
+        platform_toolset,
+        target_platform
+    ):
+        with open(os.path.join(project_path, 'OpenZWave.sln'), 'r') as f:
+            sln = str(f.read()).replace('\r', '')
+
+        if GLOBAL_SELECTION_TEMPLATE not in sln:
+            sln = sln.replace(
+                GLOBAL_SELECTION_KEY,
+                GLOBAL_SELECTION_TEMPLATE
+            )
+
+        with open(os.path.join(project_path, 'OpenZWave.sln'), 'w') as f:
+            f.write(sln)
+
+    solution_path = os.path.join(project_path, 'OpenZWave.sln')
+
+    return (
+        solution_path,
+        build_path,
+        msbuild_path,
+        msbuild_version,
+        target_platform,
+        platform_toolset,
+        tools_version,
+        sdk_installation_folder
+    )
+
+
+def update_vs_project(path, tools_version, platform_toolset, target_platform):
     from xml.etree import ElementTree
-    import copy
 
-    ElementTree.register_namespace('', "http://schemas.microsoft.com/developer/msbuild/2003")
-    if update_version:
-        bversion="4.0"
-        toolset='v100'
-        if '2015' in options['devenv'] or ('14.0' in options['msbuild'] and not('Visual Studio' in options['msbuild']) ):
-            bversion="14.0"
-            toolset='v140'
-        elif '2017' in options['devenv'] or ('15.0' in options['msbuild'] and not('Visual Studio' in options['msbuild']) ):
-            bversion="15.0"
-            toolset='v141'
+    vcxproj_xmlns = 'http://schemas.microsoft.com/developer/msbuild/2003'
+    ElementTree.register_namespace('', vcxproj_xmlns)
 
-    tree = ElementTree.parse(os.path.join(options['vsproject'], 'OpenZWave.vcxproj'), parser=None)
-    root = tree.getroot()
+    with open(path, 'r') as f:
+        vcxproj = f.read()
 
-    if update_version:
-        root.set('ToolsVersion', bversion)
+    # the original xml file contains some characters that the xml parser
+    # does not like, these are non human readable characters and they do not
+    # need to exist. So we remove them.
+    for char in (187, 191, 239):
+        vcxproj = vcxproj.replace(chr(char), '')
 
-    for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ItemGroup"):
-        if 'Label' in p.attrib and p.attrib['Label'] == 'ProjectConfigurations':
-            prjconfs = p
+    root = ElementTree.fromstring(vcxproj)
 
-    newconfs = []
-    for p in prjconfs:
-        dupe = copy.deepcopy(p) #copy <c> node
-        dupe.set('Include', dupe.attrib['Include'].replace('Win32', 'x64'))
-        dupe.find('{http://schemas.microsoft.com/developer/msbuild/2003}Platform').text = 'x64'
-        newconfs.append(dupe) #insert the new node
-    for new in newconfs:
-        prjconfs.append(new)
+    vcxproj_xmlns = '{' + vcxproj_xmlns + '}'
 
-    newconfs = []
-    prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}PropertyGroup")
-                    if p.get('Label') == 'Configuration']
-    for p in prjconfs:
-        plat = p.find('{http://schemas.microsoft.com/developer/msbuild/2003}PlatformToolset')
-        if update_version:
-            if plat is not None:
-                plat.text = toolset
+    # there are only 3 things that need to get changed once the solution has
+    # been fully updated. the tools version, the platform teeolset
+    # and the windows target platform. if a cached version of openzwave is used
+    # there is no need to create a whole new solution. so what we do is we set
+    # an attribute in the root of the xml to inform us if the file has been
+    # upgraded already.
+
+    root.attrib['ToolsVersion'] = tools_version
+
+    for node in root.findall(vcxproj_xmlns + 'PropertyGroup'):
+        if (
+            'Label' in node.attrib and
+            node.attrib['Label'] == 'Configuration'
+        ):
+            for sub_node in node:
+                if (
+                    sub_node.tag.replace(vcxproj_xmlns, '') ==
+                    'PlatformToolset'
+                ):
+                    sub_node.text = platform_toolset
+                    break
             else:
-                newKid = ElementTree.Element('{http://schemas.microsoft.com/developer/msbuild/2003}PlatformToolset')
-                newKid.text = toolset
-                p.append(newKid)
-        dupe = copy.deepcopy(p) #copy <c> node
-        dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
-        newconfs.append(dupe) #insert the new node
-    for new in newconfs:
-        prjconfs.append(new)
+                sub_node = ElementTree.Element('PlatformToolset')
+                sub_node.text = platform_toolset
+                node.append(sub_node)
 
-    newconfs = []
-    prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ImportGroup")
-                    if p.get('Condition') is not None ]
-    for p in prjconfs:
-        dupe = copy.deepcopy(p) #copy <c> node
-        dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
-        newconfs.append(dupe) #insert the new node
-    for new in newconfs:
-        root.append(new)
+    for node in root.findall(vcxproj_xmlns + 'PropertyGroup'):
+        if 'Label' in node.attrib and node.attrib['Label'] == 'Globals':
+            for sub_node in node:
+                if (
+                    sub_node.tag.replace(vcxproj_xmlns, '') ==
+                    'WindowsTargetPlatformVersion'
+                ):
+                    sub_node.text = target_platform
+                    break
+            else:
+                sub_node = ElementTree.Element('WindowsTargetPlatformVersion')
+                sub_node.text = target_platform
+                node.append(sub_node)
 
-    newconfs = []
-    prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ItemDefinitionGroup")
-                    if p.get('Condition') is not None ]
-    for p in prjconfs:
-        dupe = copy.deepcopy(p) #copy <c> node
-        dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
-        newconfs.append(dupe) #insert the new node
-    for new in newconfs:
-        root.append(new)
+    # this function is the core of upgrading the solution. It burrows down
+    # into a node through each layer and makes a copy. this copy gets modified
+    # to become an x64 version. the copy gets returned and then added to the
+    # xml file
 
-    newconfs = []
-    prj = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}PropertyGroup")
-                    if len(p.findall("{http://schemas.microsoft.com/developer/msbuild/2003}_ProjectFileVersion"))>0 ]
-    prjconfs = [ p for p in prj[0] if p.get('Condition') is not None ]
-    for p in prjconfs:
-        dupe = copy.deepcopy(p) #copy <c> node
-        dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
-        newconfs.append(dupe) #insert the new node
-    for new in newconfs:
-        prj[0].append(new)
+    def iter_node(old_node):
+        new_node = ElementTree.Element(old_node.tag)
+        if old_node.text is not None:
+            new_node.text = old_node.text.replace('Win32', 'x64')
 
-    tree.write(os.path.join(options['vsproject'], 'OpenZWave.vcxproj'),xml_declaration=False)
+        for key, value in old_node.attrib.items():
+            new_node.attrib[key] = value.replace('Win32', 'x64')
+        for old_sub_node in old_node:
+            new_node.append(iter_node(old_sub_node))
+        return new_node
 
-    with open(os.path.join(options['vsproject'], 'OpenZWave.sln'), 'r') as f:
-        sln = f.read()
+    # here is the testing to se if the file has been updated before.
+    if 'PythonOpenZWave' not in root.attrib:
+        update = True
+        root.attrib['PythonOpenZWave'] = 'True'
+        i = 0
 
-    targets = [
-        ('Debug|Win32','Debug|x64'),
-        ('DebugDLL|Win32','DebugDLL|x64'),
-        ('Release|Win32','Release|x64'),
-        ('ReleaseDLL|Win32','ReleaseDLL|x64'),
-        ]
-    for target in targets:
-        sln = sln.replace(
-            '%s = %s'%(target[0], target[0]),
-            '%s = %s\n\t\t%s = %s'%(target[0], target[0], target[1], target[1])
-        )
-    targets = [
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|Win32.ActiveCfg = Debug|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.ActiveCfg = Debug|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|Win32.Build.0 = Debug|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.Build.0 = Debug|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|Win32.ActiveCfg = DebugDLL|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.ActiveCfg = DebugDLL|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|Win32.Build.0 = DebugDLL|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.Build.0 = DebugDLL|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|Win32.ActiveCfg = Release|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.ActiveCfg = Release|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|Win32.Build.0 = Release|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.Build.0 = Release|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|Win32.ActiveCfg = ReleaseDLL|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64'),
-        ('{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|Win32.Build.0 = ReleaseDLL|Win32', '{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64'),
-        ]
+        for node in root[:]:
+            tag = node.tag.replace(vcxproj_xmlns, '')
 
-    for target in targets:
-        sln = sln.replace(
-            '%s'%(target[0]),
-            '%s\n\t\t%s'%(target[0], target[1])
-        )
+            if (
+                tag == 'ItemGroup' and
+                'Label' in node.attrib and
+                node.attrib['Label'] == 'ProjectConfigurations'
+            ):
+                for sub_item in node[:]:
+                    node.append(iter_node(sub_item))
 
-    with open(os.path.join(options['vsproject'], 'OpenZWave.sln'), 'w') as f:
-        f.write(sln)
-    if debug:
-        print("OpenZWave project for visual studio updated" )
+            if (
+                tag == 'PropertyGroup' and
+                'Label' in node.attrib and
+                node.attrib['Label'] == 'Configuration'
+            ):
+                root.insert(i, iter_node(node))
+                i += 1
+
+            if (
+                tag == 'ImportGroup' and
+                'Label' in node.attrib and
+                node.attrib['Label'] == 'PropertySheets'
+            ):
+                root.insert(i, iter_node(node))
+                i += 1
+
+            if (
+                tag == 'PropertyGroup' and
+                not node.attrib.keys()
+            ):
+                j = 0
+                for sub_item in node[:]:
+                    if (
+                        sub_item.tag.replace(vcxproj_xmlns, '') !=
+                        '_ProjectFileVersion'
+                    ):
+                        node.insert(j, iter_node(sub_item))
+                    j += 1
+
+            if tag == 'ItemDefinitionGroup':
+                root.insert(i, iter_node(node))
+                i += 1
+            i += 1
+    else:
+        update = False
+
+    with open(path, 'w')as f:
+        f.write(xml_tostring(root, vcxproj_xmlns))
+
+    # we return if the file was updated or not. this is a flag that tells up
+    # if we need to update the sln file.
+    return update
 
 
-def get_system_context( ctx, options, openzwave="openzwave", static=False, debug=False ):
+# this is a custom xml writer. it recursively iterates through an
+# ElementTree object creating a formatted string that is as close as i can
+# get it to what Visual Studio creates. I did this for consistency as well
+# as ease of bug testing
+
+def xml_tostring(node, xmlns, indent=''):
+    tag = node.tag.replace(xmlns, '')
+    no_text = node.text is None or not node.text.strip()
+
+    if indent:
+        output = ''
+    else:
+        output = '<?xml version="1.0" encoding="utf-8"?>\n'
+        if xmlns:
+            node.attrib['xmlns'] = xmlns.replace('{', '').replace('}', '')
+
+    if no_text and not list(node) and not node.attrib.keys():
+        output += '{0}<{1} />\n'.format(indent, tag)
+    else:
+        output += '{0}<{1}'.format(indent, tag)
+
+        for key in sorted(node.attrib.keys()):
+            output += ' {0}="{1}"'.format(key, str(node.attrib[key]))
+
+        if not list(node) and no_text:
+            output += ' />\n'
+        elif not no_text and not list(node):
+            output += '>{0}</{1}>\n'.format(node.text, tag)
+        elif list(node) and no_text:
+            output += '>\n'
+            for item in node:
+                output += xml_tostring(item, xmlns, indent + '  ')
+            output += '{0}</{1}>\n'.format(indent, tag)
+        else:
+            output += '>\n  {0}{1}\n'.format(indent, node.text)
+            for item in node:
+                output += xml_tostring(item, xmlns, indent + '  ')
+            output += '{0}</{1}>\n'.format(indent, tag)
+    return output
+
+
+def get_clean_command(msbuild_path, solution_path, build_type, arch, **_):
+    clean_template = (
+        '"{msbuild_path}" '
+        '"{solution_path}" '
+        '/property:Configuration={build_type} '
+        '/property:Platform={arch} '
+        '/t:Clean '
+    )
+    clean_command = clean_template.format(
+        msbuild_path=msbuild_path,
+        solution_path=solution_path,
+        build_type=build_type,
+        arch=arch
+    )
+
+    return clean_command
+
+
+def get_build_command(msbuild_path, solution_path, build_type, arch, **_):
+    build_template = (
+        '"{msbuild_path}" '
+        '"{solution_path}" '
+        '/property:Configuration={build_type} '
+        '/property:Platform={arch} '
+        '/t:Build'
+    )
+
+    build_command = build_template.format(
+        msbuild_path=msbuild_path,
+        solution_path=solution_path,
+        build_type=build_type,
+        arch=arch
+    )
+
+    return build_command
+
+
+def get_system_context(
+    ctx,
+    options,
+    openzwave="openzwave",
+    static=False,
+    debug=False
+):
 
     if debug:
         print("get_system_context for windows")
 
-    if static:
-        options['buildconf'] = 'Release'
-    else:
-        options['buildconf'] = 'ReleaseDLL'
+    # one feature i added is building a debugging version, this is only going
+    # to happen if sys.executable ends with _d which identifies that the python
+    # interpreter is a debugging build.
 
-    if 'arch' not in options:
+    if static:
+        if os.path.splitext(sys.executable)[0].endswith('_d'):
+            options['build_type'] = 'Debug'
+            ctx['define_macros'] += [('_DEBUG', 1)]
+        else:
+            options['build_type'] = 'Release'
+    else:
+        if os.path.splitext(sys.executable)[0].endswith('_d'):
+            options['build_type'] = 'DebugDLL'
+            ctx['define_macros'] += [('_DEBUG', 1)]
+        else:
+            options['build_type'] = 'ReleaseDLL'
+
+    if PYTHON64:
+        options['arch'] = "x64"
+    else:
         options['arch'] = 'Win32'
-        python_arch,_ = platform.architecture()
-        if python_arch == "64bit":
-            options['arch'] = "x64"
+
+    (
+        solution_path,
+        build_path,
+        msbuild_path,
+        msbuild_version,
+        target_platform,
+        platform_toolset,
+        tools_version,
+        sdk_installation_folder
+    ) = setup_build_environment(openzwave, options['build_type'])
+
+    options['msbuild_path'] = msbuild_path
+    options['solution_path'] = solution_path
+    options['build_path'] = build_path
+    options['msbuild_version'] = msbuild_version
+    options['target_platform'] = target_platform
+    options['platform_toolset'] = platform_toolset
+    options['tools_version'] = tools_version
+    options['sdk_installation_folder'] = sdk_installation_folder
+
     if debug:
-        print("Found arch %s" %options['arch'])
+        print('Platform: %s' % target_platform)
+        print('Platform architecture %s' % ARCH)
+        print('Platform toolset: %s' % platform_toolset)
+        print('MSBuild path: %s' % msbuild_path)
+        print('MSBuild version: %0.1f' % msbuild_version)
+        print('MSBuild tools version: %s' % tools_version)
+        print('SDK installation path: %s' % sdk_installation_folder)
+        print("Found options %s" % options)
 
-    if 'devenv' not in options:
-        find_devenv_tools( options, debug=debug )
-    if 'msbuild' not in options:
-        find_msbuild_tools( options, debug=debug )
-    if 'vsproject' not in options:
-        get_vs_project( options, openzwave=openzwave, debug=debug )
+    cpp_path = os.path.join(openzwave, 'cpp')
 
-    if debug:
-        print("Found options %s" %options)
-
-    ctx['libraries'] += [ "setupapi", "msvcrt", "ws2_32", "dnsapi" ]
-
+    ctx['libraries'] += ["setupapi", "msvcrt", "ws2_32", "dnsapi"]
     if static:
-        ctx['extra_objects'] = [ "{0}/OpenZWave.lib".format(options['vsproject_build']) ]
-        ctx['include_dirs'] += [ "{0}/cpp/build/windows".format(openzwave),
-                                 "src-lib/libopenzwave",
-                                 "{0}".format(options['vsproject_build']),
-                                ]
+        ctx['extra_objects'] = [os.path.join(build_path, 'OpenZWave.lib')]
+
+        ctx['include_dirs'] += [
+            os.path.join(cpp_path, 'build', 'windows'),
+            "src-lib\\libopenzwave",
+            build_path,
+        ]
     else:
-        ctx['libraries'] += [ "OpenZWave" ]
+        src_path = os.path.join(cpp_path, 'src')
+
+        ctx['libraries'] += ["OpenZWave"]
         ctx['extra_compile_args'] += [
-            "{0}/cpp/src".format(openzwave),
-            "{0}/cpp/src/value_classes".format(openzwave),
-            "{0}/cpp/src/platform".format(openzwave) ]
+            src_path,
+            os.path.join(src_path, 'value_classes'),
+            os.path.join(src_path, 'platform')
+        ]
 
-def get_vsproject_upgrade_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_upgrade_command" )
-    return [ '%s'%options['devenv'],
-            'OpenZWave.sln',
-            '/upgrade',
-            ]
+    ctx['define_macros'] += [
+        ('CYTHON_FAST_PYCCALL', 1),
+        ('_MT', 1),
+        ('_DLL', 1)
+    ]
 
-def get_vsproject_prebuild_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_prebuild_command" )
-    return [ '"%s"'%options['devenv'],
-            '/updateconfiguration',
-            '/out',
-            'LogUpdateConfiguration.htm',
-            ]
 
-def get_vsproject_build_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_build_command" )
-        print(
-                '%s'%options['msbuild'],
-                'OpenZWave.sln',
-                '/t:Rebuild',
-                '/p:Configuration={0}'.format(options['buildconf']),
-                '/p:Platform={0}'.format(options['arch'])
-            )
-    return [ '%s'%options['msbuild'],
-            'OpenZWave.sln',
-            '/t:Rebuild',
-            '/p:Configuration={0}'.format(options['buildconf']),
-            '/p:Platform={0}'.format(options['arch'])
-            ]
 
-def get_vsproject_devenv_build_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_build_command" )
-        print(
-        options['devenv'],
-            'OpenZWave.sln',
-            '/Rebuild',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
-            )
-    return [ '%s'%options['devenv'],
-            'OpenZWave.sln',
-            '/Rebuild',
-            '"{0}|{1}"'.format(options['buildconf'],options['arch'])
-            ]
+GLOBAL_SELECTION_TEMPLATE = '''		Debug|x64 = Debug|x64
+		DebugDLL|x64 = DebugDLL|x64
+		Release|x64 = Release|x64
+		ReleaseDLL|x64 = ReleaseDLL|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.ActiveCfg = Debug|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Debug|x64.Build.0 = Debug|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.DebugDLL|x64.Build.0 = DebugDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.ActiveCfg = Release|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.Release|x64.Build.0 = Release|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
+		{497F9828-DEC2-4C80-B9E0-AD066CCB587C}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64'''
 
-def get_vsproject_devenv_clean_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_devenv_clean_command" )
-        print(
-        options['devenv'],
-            os.path.join(options['vsproject'], 'OpenZWave.sln'),
-            '/Clean'
-            )
-    return [ '%s'%options['devenv'],
-	        os.path.join(options['vsproject'], 'OpenZWave.sln'),
-	        '/Clean'
-            ]
+
+GLOBAL_SELECTION_KEY = '''	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution'''
+
+
+def get_openzwave(
+    url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'
+):
+    from io import BytesIO
+    from urllib2 import urlopen
+    import zipfile
+
+    BASE_PATH = os.path.dirname(__file__)
+
+    print('Downloading openzwave...')
+
+    req = urlopen(url)
+    dest_file = BytesIO(req.read())
+    dest_file.seek(0)
+
+    zip_ref = zipfile.ZipFile(dest_file, 'r')
+    zip_ref.extractall(BASE_PATH)
+    zip_ref.close()
+    dest_file.close()
+
+    os.rename(
+        os.path.join(BASE_PATH, zip_ref.namelist()[0]),
+        'openzwave'
+    )
+
 
 if __name__ == '__main__':
-    from subprocess import Popen, PIPE, call
+    from subprocess import Popen, PIPE
+    from distutils.extension import Extension
+    from setuptools import setup
+
     print("Start pyozw_win")
-    ctx = { "name": "libopenzwave",
-             "sources": [ ],
-             "include_dirs": [ ],
-             "libraries": [ ],
-             "extra_objects": [ ],
-             "extra_compile_args": [ ],
-             "extra_link_args": [ ],
-             "language": "c++",
-           }
+
+    ctx = dict(
+        name='libopenzwave',
+        sources=['src-lib/libopenzwave/libopenzwave.pyx'],
+        include_dirs=['src-lib\\libopenzwave'],
+        define_macros=[
+            ('PY_LIB_VERSION', pyozw_version),
+            ('PY_SSIZE_T_CLEAN', 1),
+            ('PY_LIB_FLAVOR', 'dev'),
+            ('PY_LIB_BACKEND', 'cython')
+        ],
+        libraries=[],
+        extra_objects=[],
+        extra_compile_args=[],
+        extra_link_args=[],
+        language='c++'
+    )
+
+    ozw_path = os.path.abspath('openzwave')
+
+    if not os.path.exists(ozw_path):
+        get_openzwave()
+
     options = dict()
-    get_system_context( ctx, options, openzwave="openzwave", static=True, debug=True )
+    get_system_context(
+        ctx,
+        options,
+        openzwave=ozw_path,
+        static=True,
+        debug=True
+    )
 
-    print(options['vsproject'])
-    print(' '.join(get_vsproject_devenv_clean_command( options )))
-    #~ os.system( ' '.join(get_vsproject_devenv_clean_command( options )) )
-    proc = Popen(get_vsproject_devenv_clean_command( options, debug=True ),
-                    shell=True,
-                    stdout=PIPE, 
-                    stderr=PIPE, 
-                    cwd='{0}'.format(options['vsproject']))
-    for line in proc.stdout: 
-        print(line)
-    errcode = proc.returncode
-    for line in proc.stderr: 
-        print(line)
+    clean = get_clean_command(**options)
+    build = get_build_command(**options)
 
-    #~ os.system( ' '.join(get_vsproject_upgrade_command( options )) )
-    proc = Popen(get_vsproject_upgrade_command( options, debug=True ),
-                    shell=True,
-                    stdout=PIPE, 
-                    stderr=PIPE, 
-                    cwd='{0}'.format(options['vsproject']))
-    for line in proc.stdout: 
-        print(line)
-    errcode = proc.returncode
-    for line in proc.stderr: 
-        print(line)
+    def run(command):
+        print('Running command:', command)
+        proc = Popen(
+            command,
+            shell=True,
+            stdout=PIPE,
+            stderr=PIPE,
+            cwd=options['solution_path']
+        )
 
-    #~ proc = Popen(get_vsproject_prebuild_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
-    #~ proc.wait()
+        for line in proc.stdout:
+            print(line)
 
-    #~ proc = call(get_vsproject_devenv_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
-    #~ proc = call(get_vsproject_build_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
-    #~ os.system( ' '.join(get_vsproject_build_command( options )) )
-    proc = Popen(get_vsproject_build_command( options, debug=True ),
-                    shell=True,
-                    stdout=PIPE, 
-                    stderr=PIPE, 
-                    cwd='{0}'.format(options['vsproject']))
-    for line in proc.stdout: 
-        print(line)
-    errcode = proc.returncode
-    for line in proc.stderr: 
-        print(line)
+        errcode = proc.returncode
+        print('errcode', errcode)
 
-    print('Library built in %s using compiler %s for arch %s' % (options['vsproject_build'], options['msbuild'], options['arch']))
+        for line in proc.stderr:
+            print(line)
+
+    run(clean)
+    run(build)
+
+    print(
+        'Library built in %s using compiler %s for arch %s' %
+        (options['build_path'], options['msbuild_path'], options['arch'])
+    )
+
+    setup(
+        version=pyozw_version,
+        project_name='libopenzwave',
+        name='libopenzwave',
+        description='libopenzwave',
+        verbose=1,
+        ext_modules=[Extension(**ctx)],
+    )
