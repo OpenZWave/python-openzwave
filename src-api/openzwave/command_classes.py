@@ -648,16 +648,75 @@ ZWAVEPLUS_INFO = COMMAND_CLASS_ZWAVEPLUS_INFO
 class CommandClassBase(object):
 
     def __init__(self):
-        if not hasattr(self, '_cls_ids'):
-            self._cls_ids = []
-        self.values = {}
+        self._cls_ids = getattr(self, '_cls_ids', [])
+        self.values = getattr(self, 'values', {})
+        self._network = getattr(self, '_network', None)
+
+    def get_values(self, *_, **__):
+        raise NotImplementedError
 
 
 class Alarm(CommandClassBase):
 
+    ALARM_TYPES = [
+        'General',
+        'Smoke',
+        'Carbon Monoxide',
+        'Carbon Dioxide',
+        'Heat',
+        'Flood',
+        'Access Control',
+        'Burglar',
+        'Power Management',
+        'System',
+        'Emergency',
+        'Clock',
+        'Appliance',
+        'HomeHealth'
+    ]
+
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_ALARM]
+
+    @property
+    def source(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_ALARM and
+                value.label == 'SourceNodeId'
+            ):
+                return self._network.nodes[value.data]
+
+    @property
+    def alarm_type(self):
+
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_ALARM and
+                value.label == 'Alarm Type'
+            ):
+                alarm_type = value.data
+                break
+        else:
+            return
+
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_ALARM and
+                value.label in self.ALARM_TYPES and
+                value.data == alarm_type
+            ):
+                return value.label
+
+    @property
+    def alarm_level(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_ALARM and
+                value.label == 'Alarm Level'
+            ):
+                return value.data
 
 
 class Antitheft(CommandClassBase):
@@ -802,11 +861,12 @@ class Battery(CommandClassBase):
         :return: The level of this battery
         :rtype: int
         """
+        battery_levels = self.battery_levels
         if value_id is None:
-            for val in self.get_battery_levels():
-                return self.values[val].data
-        elif value_id in self.get_battery_levels():
-            return self.values[value_id].data
+            for val in battery_levels:
+                return battery_levels[val].data
+        elif value_id in battery_levels:
+            return battery_levels[value_id].data
         return None
 
     @property
@@ -852,6 +912,70 @@ class Clock(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_CLOCK]
+
+    @property
+    def hour(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CLOCK and
+                value.label == 'Hour'
+            ):
+                return value.data
+
+    @hour.setter
+    def hour(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_CLOCK and
+                val.label == 'Hour'
+            ):
+                val.data = value
+
+    @property
+    def day(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CLOCK and
+                value.label == 'Day'
+            ):
+                return value.data
+
+    @day.setter
+    def day(self, value):
+        if value in self.DAYS:
+            for val in self.values.values():
+                if (
+                    val == COMMAND_CLASS_CLOCK and
+                    val.label == 'Day'
+                ):
+                    val.data = value
+
+    @property
+    def minute(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CLOCK and
+                value.label == 'Minute'
+            ):
+                return value.data
+
+    @minute.setter
+    def minute(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_CLOCK and
+                val.label == 'Minute'
+            ):
+                val.data = value
+
+    @property
+    def DAYS(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CLOCK and
+                value.label == 'Day'
+            ):
+                return value.data_items
 
 
 class Configuration(CommandClassBase):
@@ -917,6 +1041,64 @@ class ControllerReplication(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_CONTROLLER_REPLICATION]
+
+    @property
+    def replication_node_id(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                value.label == 'Node'
+            ):
+                return value.data
+
+    @replication_node_id.setter
+    def replication_node_id(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                val.label == 'Node'
+            ):
+                val.data = value
+
+    @property
+    def functions(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                value.label == 'Functions'
+            ):
+                return value.data
+
+    @functions.setter
+    def functions(self, value):
+        if value in self.FUNCTIONS:
+            for val in self.values.values():
+                if (
+                    val == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                    val.label == 'Functions'
+                ):
+                    val.data = value
+
+    @property
+    def FUNCTIONS(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                value.label == 'Functions'
+            ):
+                return value.data_items
+        return []
+
+    def replicate(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_CONTROLLER_REPLICATION and
+                value.label == 'Replicate'
+            ):
+                event = threading.Event()
+                value.data = True
+                event.wait(0.1)
+                value.data = False
 
 
 class Crc16Encap(CommandClassBase):
@@ -1278,11 +1460,12 @@ class Powerlevel(CommandClassBase):
         :return: The power level
         :rtype: int
         """
+        power_levels = self.power_levels
         if value_id is None:
-            for val in self.get_power_levels():
-                return self.values[val].data
-        elif value_id in self.get_power_levels():
-            return self.values[value_id].data
+            for val in power_levels:
+                return power_levels[val].data
+        elif value_id in power_levels:
+            return power_levels[value_id].data
         return None
 
     @property
@@ -1405,8 +1588,9 @@ class Protection(CommandClassBase):
         :type value: str
 
         """
-        if value_id in self.protections:
-            self.values[value_id].data = value
+        protections = self.protections
+        if value_id in protections:
+            protections[value_id].data = value
             return True
         return False
 
@@ -1421,9 +1605,9 @@ class Protection(CommandClassBase):
         :rtype: str
 
         """
-        if value_id in self.get_protections():
-            return self.values[value_id].data
-        return None
+        protections = self.protections
+        if value_id in protections:
+            return protections[value_id].data
 
     def get_protection_items(self, value_id):
         """
@@ -1436,9 +1620,9 @@ class Protection(CommandClassBase):
         :rtype: set()
 
         """
-        if value_id in self.get_protections():
-            return self.values[value_id].data_items
-        return None
+        protections = self.protections
+        if value_id in protections:
+            return protections[value_id].data_items
 
 
 class RateTblConfig(CommandClassBase):
@@ -1524,6 +1708,13 @@ class Security(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SECURITY]
 
+    @property
+    def is_secure(self):
+        for value in self.values.values():
+            if value.label == 'Secured' and value == COMMAND_CLASS_SECURITY:
+                return value.data
+        return False
+
 
 class Security2(CommandClassBase):
 
@@ -1540,10 +1731,40 @@ class SecurityScheme0Mark(CommandClassBase):
 
 
 class SensorAlarm(CommandClassBase):
+    SENSOR_TYPES = [
+        'General',
+        'Smoke',
+        'Carbon Monoxide',
+        'Carbon Dioxide',
+        'Heat',
+        'Flood'
+    ]
 
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SENSOR_ALARM]
+
+    @property
+    def sensor_types(self):
+        res = []
+        for value in self.values.values():
+            if (
+                value.label in self.SENSOR_TYPES and
+                value == COMMAND_CLASS_SENSOR_ALARM
+            ):
+                res += [value.label]
+        return res
+
+    @property
+    def states(self):
+        res = {}
+        for value in self.values.values():
+            if (
+                value.label in self.SENSOR_TYPES and
+                value == COMMAND_CLASS_SENSOR_ALARM
+            ):
+                res[value.label] = value.data
+        return res
 
 
 class SensorBinary(CommandClassBase):
@@ -1551,6 +1772,15 @@ class SensorBinary(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SENSOR_BINARY]
+
+    @property
+    def state(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SENSOR_BINARY and
+                value.label == 'Sensor'
+            ):
+                return value.data
 
 
 class SensorConfiguration(CommandClassBase):
@@ -1612,7 +1842,7 @@ class SwitchAll(CommandClassBase):
         :type value: str
 
         """
-        if value_id in self.get_switches_all():
+        if value_id in self.values:
             self.values[value_id].data = value
             return True
         return False
@@ -1628,12 +1858,12 @@ class SwitchAll(CommandClassBase):
         :rtype: bool
 
         """
-        if value_id in self.get_switches_all():
+        if value_id in self.values:
             instance = self.values[value_id].instance
-            for switch in self.get_switches():
+            for switch in self.values:
                 if self.values[switch].instance == instance:
                     return self.values[switch].data
-            for dimmer in self.get_dimmers():
+            for dimmer in self.values:
                 if self.values[dimmer].instance == instance:
                     if self.values[dimmer].data == 0:
                         return False
@@ -1652,7 +1882,7 @@ class SwitchAll(CommandClassBase):
         :rtype: str
 
         """
-        if value_id in self.get_switches_all():
+        if value_id in self.values:
             return self.values[value_id].data
         return None
 
@@ -1667,7 +1897,7 @@ class SwitchAll(CommandClassBase):
         :rtype: set()
 
         """
-        if value_id in self.get_switches_all():
+        if value_id in self.values:
             return self.values[value_id].data_items
         return None
 
@@ -1699,23 +1929,226 @@ class SwitchBinary(CommandClassBase):
 
 
 class SwitchColor(CommandClassBase):
+    COLORIDX_WARMWHITE = 0
+    COLORIDX_COLDWHITE = 1
+    COLORIDX_RED = 2
+    COLORIDX_GREEN = 3
+    COLORIDX_BLUE = 4
+    COLORIDX_AMBER = 5
+    COLORIDX_CYAN = 6
+    COLORIDX_PURPLE = 7
+    COLORIDX_INDEXCOLOR = 8
 
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SWITCH_COLOR]
 
     @property
-    def color(self):
+    def warm_white(self):
         for value in self.values.values():
-            if value == COMMAND_CLASS_SWITCH_COLOR:
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_WARMWHITE
+            ):
                 return value.data
 
-    @color.setter
-    def color(self, value):
+    @warm_white.setter
+    def warm_white(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
         for val in self.values.values():
-            if val == COMMAND_CLASS_SWITCH_COLOR:
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_WARMWHITE
+            ):
                 val.data = value
-                break
+
+    @property
+    def cold_white(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_COLDWHITE
+            ):
+                return value.data
+
+    @cold_white.setter
+    def cold_white(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_COLDWHITE
+            ):
+                val.data = value
+
+    @property
+    def red(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_RED
+            ):
+                return value.data
+
+    @red.setter
+    def red(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_RED
+            ):
+                val.data = value
+
+    @property
+    def green(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_GREEN
+            ):
+                return value.data
+
+    @green.setter
+    def green(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_GREEN
+            ):
+                val.data = value
+
+    @property
+    def blue(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_BLUE
+            ):
+                return value.data
+
+    @blue.setter
+    def blue(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_BLUE
+            ):
+                val.data = value
+
+    @property
+    def amber(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_AMBER
+            ):
+                return value.data
+
+    @amber.setter
+    def amber(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_AMBER
+            ):
+                val.data = value
+
+    @property
+    def cyan(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_CYAN
+            ):
+                return value.data
+
+    @cyan.setter
+    def cyan(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_CYAN
+            ):
+                val.data = value
+
+    @property
+    def purple(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_PURPLE
+            ):
+                return value.data
+
+    @purple.setter
+    def purple(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_PURPLE
+            ):
+                val.data = value
+
+    @property
+    def index_color(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_SWITCH_COLOR and
+                value.index == self.COLORIDX_INDEXCOLOR
+            ):
+                return value.data
+
+    @index_color.setter
+    def index_color(self, value):
+        if value < 0x00:
+            value = 0x00
+        elif value > 0xFF:
+            value = 0xFF
+
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_INDEXCOLOR
+            ):
+                val.data = value
 
 
 class SwitchMultilevel(CommandClassBase):
@@ -1953,7 +2386,7 @@ class ThermostatFanState(CommandClassBase):
 
 
 class ThermostatMode(CommandClassBase):
-    OPERATING_MODES = [
+    MODES = [
         'Off',
         'Heat',
         'Cool',
@@ -1985,7 +2418,7 @@ class ThermostatMode(CommandClassBase):
 
     @operating_mode.setter
     def operating_mode(self, value):
-        if value in self.OPERATING_MODES:
+        if value in self.MODES:
             for val in self.values.values():
                 if (
                     val == COMMAND_CLASS_THERMOSTAT_MODE
@@ -2022,6 +2455,132 @@ class ThermostatSetpoint(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_SETPOINT]
+
+    @property
+    def away_heating(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Away Heating'
+            ):
+                return value.data
+
+    @away_heating.setter
+    def away_heating(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Away Heating'
+            ):
+                val.data = value
+
+    @property
+    def cooling_econ(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Cooling Econ'
+            ):
+                return value.data
+
+    @cooling_econ.setter
+    def cooling_econ(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Cooling Econ'
+            ):
+                val.data = value
+
+    @property
+    def heating_econ(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Heating Econ'
+            ):
+                return value.data
+
+    @heating_econ.setter
+    def heating_econ(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Heating Econ'
+            ):
+                val.data = value
+
+    @property
+    def auto_changeover(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Auto Changeover'
+            ):
+                return value.data
+
+    @auto_changeover.setter
+    def auto_changeover(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Auto Changeover'
+            ):
+                val.data = value
+
+    @property
+    def moist_air(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Moist Air'
+            ):
+                return value.data
+
+    @moist_air.setter
+    def moist_air(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Moist Air'
+            ):
+                val.data = value
+
+    @property
+    def dry_air(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Dry Air'
+            ):
+                return value.data
+
+    @dry_air.setter
+    def dry_air(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Dry Air'
+            ):
+                val.data = value
+
+    @property
+    def furnace(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                value.label == 'Furnace'
+            ):
+                return value.data
+
+    @furnace.setter
+    def furnace(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Furnace'
+            ):
+                val.data = value
 
     @property
     def heat(self):
@@ -2073,6 +2632,36 @@ class TimeParameters(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_TIME_PARAMETERS]
 
+    @property
+    def date(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_TIME_PARAMETERS and
+                value.label == 'Date'
+            ):
+                return value.data
+
+    @property
+    def time(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_TIME_PARAMETERS and
+                value.label == 'Time'
+            ):
+                return value.data
+
+    def set_date_time(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_TIME_PARAMETERS and
+                value.label == 'Set Date/Time'
+            ):
+                event = threading.Event()
+                value.data = True
+                event.wait(0.1)
+                value.data = False
+                break
+
 
 class TransportService(CommandClassBase):
 
@@ -2109,7 +2698,6 @@ class UserCode(CommandClassBase):
             genre='User',
             readonly=False,
             writeonly=False,
-            index=index
         )
 
     def get_code(self, index):
@@ -2172,12 +2760,111 @@ class Version(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_VERSION]
 
+    @property
+    def library_version(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_VERSION and
+                value.label == 'Library Version'
+            ):
+                return value.data
+
+    @property
+    def protocol_version(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_VERSION and
+                value.label == 'Protocol Version'
+            ):
+                return value.data
+
+    @property
+    def application_version(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_VERSION and
+                value.label == 'Application Version'
+            ):
+                return value.data
+
 
 class WakeUp(CommandClassBase):
 
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_WAKE_UP]
+
+    @property
+    def wakeup_interval_min(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_WAKE_UP and
+                value.label == 'Minimum Wake-up Interval'
+            ):
+                return value.data
+
+    @wakeup_interval_min.setter
+    def wakeup_interval_min(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_WAKE_UP and
+                val.label == 'Minimum Wake-up Interval'
+            ):
+                val.data = value
+
+    @property
+    def wakeup_interval_max(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_WAKE_UP and
+                value.label == 'Maximum Wake-up Interval'
+            ):
+                return value.data
+
+    @wakeup_interval_max.setter
+    def wakeup_interval_max(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_WAKE_UP and
+                val.label == 'Maximum Wake-up Interval'
+            ):
+                val.data = value
+
+    @property
+    def wakeup_interval_default(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_WAKE_UP and
+                value.label == 'Default Wake-up Interval'
+            ):
+                return value.data
+
+    @wakeup_interval_default.setter
+    def wakeup_interval_default(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_WAKE_UP and
+                val.label == 'Default Wake-up Interval'
+            ):
+                val.data = value
+
+    @property
+    def wakeup_interval_step(self):
+        for value in self.values.values():
+            if (
+                value == COMMAND_CLASS_WAKE_UP and
+                value.label == 'Wake-up Interval Step'
+            ):
+                return value.data
+
+    @wakeup_interval_step.setter
+    def wakeup_interval_step(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_WAKE_UP and
+                val.label == 'Wake-up Interval Step'
+            ):
+                val.data = value
 
 
 class WindowCovering(CommandClassBase):
