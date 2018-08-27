@@ -34,6 +34,11 @@ except ImportError:
     _winreg = __import__('winreg')
 
 
+from subprocess import Popen, PIPE
+
+
+VS2017_VCVARSALL = r'"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"'
+
 WIN64 = '64' in platform.machine()
 PYTHON64 = platform.architecture()[0] == '64bit' and WIN64
 ARCH = 'x64' if PYTHON64 else 'x86'
@@ -44,6 +49,27 @@ TOOLSETS = {
     10.0: ['v100', '4.0'],  # vs2010
     4.0:  ['v90', '4.0'],  # vs2008
 }
+
+
+proc = Popen(
+    VS2017_VCVARSALL + ' x64 && set',
+    shell=True,
+    stdout=PIPE,
+    stderr=PIPE
+)
+
+test_env = {}
+for line in proc.stdout:
+    if '=' in line:
+        key, value = line.split('=', 1)
+        test_env[key.strip()] = value.strip()
+
+
+for key, value in test_env.items()[:]:
+    if os.environ.get(key, None) != value:
+        os.environ[key] = value
+
+os.environ['DISTUTILS_USE_SDK'] = '1'
 
 
 def _get_reg_value(path, key):
@@ -210,11 +236,23 @@ def setup_build_environment(openzwave, build_type):
     ) = get_environment()
 
     if 'DISTUTILS_USE_SDK' in os.environ:
-        if 'WINDOWSSDKVERBINPATH' in os.environ:
-            sdk_installation_folder = os.environ['WINDOWSSDKVERBINPATH']
+        target_platform = os.environ['WindowsSDKVersion']
 
-            if 'MSSDK' not in os.environ:
-                os.environ['MSSDK'] = sdk_installation_folder
+        if 'VS150COMNTOOLS' in os.environ:
+            msbuild_version = 15.0
+            solution_dest = 'vs2017'
+
+        elif 'VS140COMNTOOLS' in os.environ:
+            msbuild_version = 14.0
+            solution_dest = 'vs2015'
+        else:
+            raise RuntimeError
+
+        msbuild_path = _find_file(os.environ['VCINSTALLDIR'], 'msbuild.exe')
+        platform_toolset, tools_version = TOOLSETS[msbuild_version]
+        sdk_installation_folder = os.environ['WindowsSdkVerBinPath']
+        os.environ['MSSDK'] = sdk_installation_folder
+
     else:
         if 'WINDOWSSDKVERBINPATH' in env:
             sdk_installation_folder = env['WINDOWSSDKVERBINPATH']
