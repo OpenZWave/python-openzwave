@@ -3073,12 +3073,15 @@ class CommandClasses(dict):
             '__original_module__': mod
         }
         self.__dict__ = mod.__dict__
-        dict.__init__(self, **kwargs)
+        dict.__init__(self)
+        
+        for key, value in kwargs.items():
+            self[key] = value
+
         sys.modules[__name__] = self
 
     def __missing__(self, key):
-        value = EmptyCommandClass
-        self.__setitem__(key, value)
+        self[key] = value = EmptyCommandClass
         return value
 
 
