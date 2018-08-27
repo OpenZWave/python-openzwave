@@ -161,18 +161,30 @@ def find_devenv_tools( options, debug=False ):
         options['devenv'] =  all_msbuild[0]
 
     elif win_config == VC9:
-        #~ vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
-                   #~ ]
-        #~ if debug:
-            #~ print("Check for devenv.exe in %s" %vs_path)
-        #~ all_msbuild = find_all_build_tools("devenv.exe", vs_path)
-        #~ if debug:
-            #~ print("Found devenv.exe in %s" %all_msbuild)
-        #~ if len(all_msbuild) == 0:
-            #~ raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
-        #~ options['devenv'] =  all_msbuild[0]
-        options['devenv'] = None
+        vs_path = ['c:\\Program Files (x86)\\Microsoft Visual Studio 9.0',
+                   ]
+        if debug:
+            print("Check for devenv.exe in %s" %vs_path)
+        all_msbuild = find_all_build_tools("devenv.exe", vs_path)
+        if debug:
+            print("Found devenv.exe in %s" %all_msbuild)
+        if len(all_msbuild) == 0:
+            raise RuntimeError("Can't find devenv.exe in %s looked in %s"%( all_msbuild, vs_path ))
+        options['devenv'] =  all_msbuild[0]
     return 'devenv' in options
+
+def get_vsproject_upgrade_command( options, debug=False ):
+    if debug:
+        print("get_vsproject_upgrade_command" )
+        print(
+                '%s'%options['devenv'],
+                'OpenZWave.sln',
+                '/upgrade'
+             )
+    return [ '%s'%options['devenv'],
+            'OpenZWave.sln',
+            '/upgrade',
+            ]
 
 def get_vs_project( options, openzwave='openzwave', debug=False ):
     """Retrieve needed tools to build extension
@@ -203,12 +215,11 @@ def get_vs_project( options, openzwave='openzwave', debug=False ):
         options['vsproject_prebuild'] = False
     if options['arch'] == "x64" :
         options['vsproject_build'] = os.path.join(options['vsproject'], options['arch'], options['buildconf'])
-        update_vs_project( options, debug=debug )
     else:
         options['vsproject_build'] = os.path.join(options['vsproject'], options['buildconf'])
     return 'vsproject' in options
 
-def update_vs_project( options, openzwave="openzwave", debug=False, update_version=False ):
+def add_vs_project_x64_configs( options, openzwave="openzwave", debug=False ):
     """Retrieve needed tools to build extension
     Depend of python version
     See https://wiki.python.org/moin/WindowsCompilers
@@ -216,22 +227,12 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
     from xml.etree import ElementTree
     import copy
 
+    print("Adding openzwave project x64 configurations...")
+
     ElementTree.register_namespace('', "http://schemas.microsoft.com/developer/msbuild/2003")
-    if update_version:
-        bversion="4.0"
-        toolset='v100'
-        if '2015' in options['devenv'] or ('14.0' in options['msbuild'] and not('Visual Studio' in options['msbuild']) ):
-            bversion="14.0"
-            toolset='v140'
-        elif '2017' in options['devenv'] or ('15.0' in options['msbuild'] and not('Visual Studio' in options['msbuild']) ):
-            bversion="15.0"
-            toolset='v141'
 
     tree = ElementTree.parse(os.path.join(options['vsproject'], 'OpenZWave.vcxproj'), parser=None)
     root = tree.getroot()
-
-    if update_version:
-        root.set('ToolsVersion', bversion)
 
     for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ItemGroup"):
         if 'Label' in p.attrib and p.attrib['Label'] == 'ProjectConfigurations':
@@ -250,19 +251,12 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
     prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}PropertyGroup")
                     if p.get('Label') == 'Configuration']
     for p in prjconfs:
-        plat = p.find('{http://schemas.microsoft.com/developer/msbuild/2003}PlatformToolset')
-        if update_version:
-            if plat is not None:
-                plat.text = toolset
-            else:
-                newKid = ElementTree.Element('{http://schemas.microsoft.com/developer/msbuild/2003}PlatformToolset')
-                newKid.text = toolset
-                p.append(newKid)
         dupe = copy.deepcopy(p) #copy <c> node
         dupe.set('Condition', dupe.attrib['Condition'].replace('Win32', 'x64'))
         newconfs.append(dupe) #insert the new node
     for new in newconfs:
-        prjconfs.append(new)
+        root.insert(3, new) # This is a hack, but I can't find a better way to do it without converting to lxml.
+    # PropertyGroup elements w/ Configuration label need to be together with existing before other elements that depend on these
 
     newconfs = []
     prjconfs = [ p for p in root.findall("{http://schemas.microsoft.com/developer/msbuild/2003}ImportGroup")
@@ -333,7 +327,6 @@ def update_vs_project( options, openzwave="openzwave", debug=False, update_versi
     if debug:
         print("OpenZWave project for visual studio updated" )
 
-
 def get_system_context( ctx, options, openzwave="openzwave", static=False, debug=False ):
 
     if debug:
@@ -376,14 +369,6 @@ def get_system_context( ctx, options, openzwave="openzwave", static=False, debug
             "{0}/cpp/src".format(openzwave),
             "{0}/cpp/src/value_classes".format(openzwave),
             "{0}/cpp/src/platform".format(openzwave) ]
-
-def get_vsproject_upgrade_command( options, debug=False ):
-    if debug:
-        print("get_vsproject_upgrade_command" )
-    return [ '%s'%options['devenv'],
-            'OpenZWave.sln',
-            '/upgrade',
-            ]
 
 def get_vsproject_prebuild_command( options, debug=False ):
     if debug:
@@ -479,6 +464,8 @@ if __name__ == '__main__':
     errcode = proc.returncode
     for line in proc.stderr: 
         print(line)
+
+    add_vs_project_x64_configs( options )
 
     #~ proc = Popen(get_vsproject_prebuild_command( options, debug=True  ), cwd='{0}'.format(options['vsproject']))
     #~ proc.wait()

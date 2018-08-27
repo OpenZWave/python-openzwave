@@ -291,15 +291,12 @@ class Template(object):
                         log.error('{0}\n'.format(line))
 
         if sys.platform.startswith("win"):
-            from pyozw_win import get_vsproject_upgrade_command, get_vsproject_build_command, get_vsproject_prebuild_command
+            from pyozw_win import get_vsproject_upgrade_command, add_vs_project_x64_configs, get_vsproject_build_command, get_vsproject_prebuild_command
             if 'vsproject_upgrade' in self.os_options and self.os_options['vsproject_upgrade']:
                 log.info("Upgrade openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_upgrade_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                Thread(target=stream_watcher, name='stdout-watcher',
-                        args=('STDOUT', proc.stdout)).start()
-                Thread(target=stream_watcher, name='stderr-watcher',
-                        args=('STDERR', proc.stderr)).start()
+                proc = Popen(get_vsproject_upgrade_command(self.os_options), stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+                Thread(target=stream_watcher, name='stdout-watcher', args=('STDOUT', proc.stdout)).start()
+                Thread(target=stream_watcher, name='stderr-watcher', args=('STDERR', proc.stderr)).start()
 
                 tprinter = Thread(target=printer, name='printer')
                 tprinter.start()
@@ -307,6 +304,8 @@ class Template(object):
                     time.sleep(1)
                 tprinter.join()
                 #~ proc.wait()
+
+                add_vs_project_x64_configs(self.os_options)
 
             if 'vsproject_prebuild' in self.os_options and self.os_options['vsproject_prebuild']:
                 log.info("Update configuration of openzwave project ... be patient ...")
@@ -775,7 +774,6 @@ class OzwdevTemplate(GitTemplate):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
         return Template.get_openzwave(self, url)
 
-
 class OzwdevSharedTemplate(GitSharedTemplate):
 
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
@@ -988,7 +986,7 @@ class bdist_egg(_bdist_egg):
         _bdist_egg.run(self)
 
 class build_openzwave(setuptools.Command):
-    description = 'download an build openzwave'
+    description = 'download and build openzwave'
 
     user_options = [
         ('openzwave-dir=', None,
