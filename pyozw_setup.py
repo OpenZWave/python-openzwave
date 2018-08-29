@@ -271,9 +271,6 @@ class Template(object):
 
         io_q = Queue()
 
-        from pyozw_progressbar import ProgressBar
-        progress_bar = ProgressBar()
-
         def stream_watcher(identifier, stream):
             # fixes subprocess output lag issue when using python 2.x
 
@@ -288,7 +285,6 @@ class Template(object):
 
             if not stream.closed:
                 stream.close()
-                progress_bar.close()
 
         def printer():
             while True:
@@ -308,14 +304,19 @@ class Template(object):
                     elif sys.platform.startswith("win"):
                         progress_bar.write(line)
 
+            if sys.platform.startswith("win"):
+                progress_bar.close()
+
         if sys.platform.startswith("win"):
+            from pyozw_progressbar import ProgressBar
             from pyozw_win import get_clean_command, get_build_command
 
             cwd = os.path.split(self.os_options['solution_path'])[0]
             build_command = get_build_command(**self.os_options)
 
             log.info("Build openzwave ... be patient ...")
-            print(build_command)
+
+            progress_bar = ProgressBar()
             proc = Popen(build_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
 
         elif sys.platform.startswith("cygwin"):
@@ -353,6 +354,7 @@ class Template(object):
         while tprinter.is_alive():
             time.sleep(1)
         tprinter.join()
+
         return True
 
     def install_so(self):
