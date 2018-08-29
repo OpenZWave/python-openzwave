@@ -36,12 +36,18 @@ except ImportError:
 
 from subprocess import Popen, PIPE
 
-
+# this is simply to show that you can build using only VS2017 as a requirement.
 VS2017_VCVARSALL = r'"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvarsall.bat"'
 
 WIN64 = '64' in platform.machine()
 PYTHON64 = platform.architecture()[0] == '64bit' and WIN64
 ARCH = 'x64' if PYTHON64 else 'x86'
+
+
+try:
+    PY3 = not unicode
+except NameError:
+    PY3 = True
 
 TOOLSETS = {
     15.0: ['v141', '15.0'],  # vs2017
@@ -51,25 +57,32 @@ TOOLSETS = {
 }
 
 
-proc = Popen(
-    VS2017_VCVARSALL + ' x64 && set',
-    shell=True,
-    stdout=PIPE,
-    stderr=PIPE
-)
+def setup_build_env_2017():
+    proc = Popen(
+        VS2017_VCVARSALL + ' ' + ARCH + ' && set',
+        shell=True,
+        stdout=PIPE,
+        stderr=PIPE
+    )
 
-test_env = {}
-for line in proc.stdout:
-    if '=' in line:
-        key, value = line.split('=', 1)
-        test_env[key.strip()] = value.strip()
+    test_env = {}
+    for line in proc.stdout:
+        if PY3:
+            line = line.decode("utf-8")
+
+        if '=' in line:
+            key, value = line.split('=', 1)
+            test_env[key.strip()] = value.strip()
+
+    for key, value in list(test_env.items()):
+        if str(os.environ.get(key, None)) != value:
+            os.environ[key] = value
+
+    os.environ['DISTUTILS_USE_SDK'] = '1'
 
 
-for key, value in test_env.items()[:]:
-    if os.environ.get(key, None) != value:
-        os.environ[key] = value
-
-os.environ['DISTUTILS_USE_SDK'] = '1'
+# comment this line to run normally.
+setup_build_env_2017()
 
 
 def _get_reg_value(path, key):
@@ -224,19 +237,8 @@ def _find_file(file_name, path):
 
 
 def setup_build_environment(openzwave, build_type):
-    (
-        env,
-        msbuild_version,
-        msbuild_path,
-        sdk_installation_folder,
-        target_platform,
-        platform_toolset,
-        tools_version,
-        solution_dest
-    ) = get_environment()
-
     if 'DISTUTILS_USE_SDK' in os.environ:
-        target_platform = os.environ['WindowsSDKVersion']
+        target_platform = os.environ['WINDOWSSDKVERSION'].replace('\\', '')
 
         if 'VS150COMNTOOLS' in os.environ:
             msbuild_version = 15.0
@@ -248,12 +250,23 @@ def setup_build_environment(openzwave, build_type):
         else:
             raise RuntimeError
 
-        msbuild_path = _find_file(os.environ['VCINSTALLDIR'], 'msbuild.exe')
+        msbuild_path = _find_file('MSBuild.exe', os.environ['VSINSTALLDIR'])[0]
         platform_toolset, tools_version = TOOLSETS[msbuild_version]
-        sdk_installation_folder = os.environ['WindowsSdkVerBinPath']
+        sdk_installation_folder = os.environ['WINDOWSSDKVERBINPATH']
         os.environ['MSSDK'] = sdk_installation_folder
 
     else:
+        (
+            env,
+            msbuild_version,
+            msbuild_path,
+            sdk_installation_folder,
+            target_platform,
+            platform_toolset,
+            tools_version,
+            solution_dest
+        ) = get_environment()
+
         if 'WINDOWSSDKVERBINPATH' in env:
             sdk_installation_folder = env['WINDOWSSDKVERBINPATH']
 
@@ -263,20 +276,20 @@ def setup_build_environment(openzwave, build_type):
         for key, value in env.items():
             os.environ[key] = value
 
-    if 'VS150COMNTOOLS' in os.environ and msbuild_version == 14.0:
-        platform_toolset = 'v141'
-        tools_version = '15.0'
-        msbuild_version = 15.0
-        solution_dest = 'vs2017'
+        if 'VS150COMNTOOLS' in os.environ and msbuild_version == 14.0:
+            platform_toolset = 'v141'
+            tools_version = '15.0'
+            msbuild_version = 15.0
+            solution_dest = 'vs2017'
 
-    if 'WINDOWSSDKLIBVERSION' in os.environ:
-        target_platform = (
-            os.environ['WINDOWSSDKLIBVERSION'].replace('\\', '')
-        )
+        if 'WINDOWSSDKLIBVERSION' in os.environ:
+            target_platform = (
+                os.environ['WINDOWSSDKLIBVERSION'].replace('\\', '')
+            )
 
     if not msbuild_path:
         raise RuntimeError(
-            'Unable to locate MSBuild or Visual Studio to compile OpenZWave'
+            'Unable to locate MSBuild to compile OpenZWave'
         )
 
     project_base_path = os.path.abspath(
@@ -512,6 +525,9 @@ def xml_tostring(node, xmlns, indent=''):
     return output
 
 
+# because we no longer use devenv in favor of msbuild there are only 2 commands
+# needed.
+# one for clean and the other to build
 def get_clean_command(msbuild_path, solution_path, build_type, arch, **_):
     clean_template = (
         '"{msbuild_path}" '
@@ -568,14 +584,18 @@ def get_system_context(
         if os.path.splitext(sys.executable)[0].endswith('_d'):
             options['build_type'] = 'Debug'
             ctx['define_macros'] += [('_DEBUG', 1)]
+            ctx['libraries'] += ["setupapi", "msvcrtd", "ws2_32", "dnsapi"]
         else:
             options['build_type'] = 'Release'
+            ctx['libraries'] += ["setupapi", "msvcrt", "ws2_32", "dnsapi"]
     else:
         if os.path.splitext(sys.executable)[0].endswith('_d'):
             options['build_type'] = 'DebugDLL'
             ctx['define_macros'] += [('_DEBUG', 1)]
+            ctx['libraries'] += ["setupapi", "msvcrtd", "ws2_32", "dnsapi"]
         else:
             options['build_type'] = 'ReleaseDLL'
+            ctx['libraries'] += ["setupapi", "msvcrt", "ws2_32", "dnsapi"]
 
     if PYTHON64:
         options['arch'] = "x64"
@@ -613,24 +633,25 @@ def get_system_context(
         print("Found options %s" % options)
 
     cpp_path = os.path.join(openzwave, 'cpp')
+    src_path = os.path.join(cpp_path, 'src')
 
-    ctx['libraries'] += ["setupapi", "msvcrt", "ws2_32", "dnsapi"]
     if static:
         ctx['extra_objects'] = [os.path.join(build_path, 'OpenZWave.lib')]
 
         ctx['include_dirs'] += [
+            src_path,
+            os.path.join(src_path, 'value_classes'),
+            os.path.join(src_path, 'platform'),
             os.path.join(cpp_path, 'build', 'windows'),
-            "src-lib\\libopenzwave",
             build_path,
         ]
     else:
-        src_path = os.path.join(cpp_path, 'src')
-
         ctx['libraries'] += ["OpenZWave"]
+
         ctx['extra_compile_args'] += [
             src_path,
             os.path.join(src_path, 'value_classes'),
-            os.path.join(src_path, 'platform')
+            os.path.join(src_path, 'platform'),
         ]
 
     ctx['define_macros'] += [
@@ -661,14 +682,18 @@ GLOBAL_SELECTION_KEY = '''	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution'''
 
 
-def get_openzwave(
-    url='https://codeload.github.com/OpenZWave/open-zwave/zip/master'
-):
+def get_openzwave(opzw_dir):
+    url = 'https://codeload.github.com/OpenZWave/open-zwave/zip/master'
+
     from io import BytesIO
-    from urllib2 import urlopen
+    try:
+        from urllib2 import urlopen
+    except ImportError:
+        from urllib.request import urlopen
+
     import zipfile
 
-    BASE_PATH = os.path.dirname(__file__)
+    base_path = os.path.dirname(__file__)
 
     print('Downloading openzwave...')
 
@@ -677,26 +702,26 @@ def get_openzwave(
     dest_file.seek(0)
 
     zip_ref = zipfile.ZipFile(dest_file, 'r')
-    zip_ref.extractall(BASE_PATH)
+    zip_ref.extractall(base_path)
     zip_ref.close()
     dest_file.close()
 
     os.rename(
-        os.path.join(BASE_PATH, zip_ref.namelist()[0]),
-        'openzwave'
+        os.path.join(base_path, zip_ref.namelist()[0]),
+        opzw_dir
     )
 
 
 if __name__ == '__main__':
     from subprocess import Popen, PIPE
-    from distutils.extension import Extension
     from setuptools import setup
+    from distutils.extension import Extension
 
     print("Start pyozw_win")
 
     ctx = dict(
         name='libopenzwave',
-        sources=['src-lib/libopenzwave/libopenzwave.pyx'],
+        sources=['src-lib\\libopenzwave\\libopenzwave.pyx'],
         include_dirs=['src-lib\\libopenzwave'],
         define_macros=[
             ('PY_LIB_VERSION', pyozw_version),
@@ -714,7 +739,7 @@ if __name__ == '__main__':
     ozw_path = os.path.abspath('openzwave')
 
     if not os.path.exists(ozw_path):
-        get_openzwave()
+        get_openzwave('openzwave')
 
     options = dict()
     get_system_context(
@@ -735,20 +760,31 @@ if __name__ == '__main__':
             shell=True,
             stdout=PIPE,
             stderr=PIPE,
-            cwd=options['solution_path']
+            cwd=os.path.split(options['solution_path'])[0],
         )
 
-        for line in proc.stdout:
-            print(line)
+        if PY3:
+            dummy_return = b''
+        else:
+            dummy_return = ''
+
+        for line in iter(proc.stdout.readline, dummy_return):
+            if line and PY3:
+                sys.stdout.write(line.decode("utf-8"))
+            elif line:
+                sys.stdout.write(line)
 
         errcode = proc.returncode
-        print('errcode', errcode)
+        print('\n\nerrcode', errcode, '\n\n')
 
-        for line in proc.stderr:
-            print(line)
+        for line in iter(proc.stderr.readline, dummy_return):
+            if line and PY3:
+                sys.stdout.write(line.decode("utf-8"))
+            elif line:
+                sys.stdout.write(line)
 
-    run(clean)
-    run(build)
+    # run(clean)
+    # run(build)
 
     print(
         'Library built in %s using compiler %s for arch %s' %
@@ -756,8 +792,8 @@ if __name__ == '__main__':
     )
 
     setup(
+        script_args=['build_ext'],
         version=pyozw_version,
-        project_name='libopenzwave',
         name='libopenzwave',
         description='libopenzwave',
         verbose=1,
