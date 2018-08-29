@@ -314,6 +314,7 @@ class Template(object):
             cwd = os.path.split(self.os_options['solution_path'])[0]
             build_command = get_build_command(**self.os_options)
 
+
             log.info("Build openzwave ... be patient ...")
             print(build_command)
             proc = Popen(build_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
@@ -777,7 +778,6 @@ class OzwdevTemplate(GitTemplate):
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
         return Template.get_openzwave(self, url)
 
-
 class OzwdevSharedTemplate(GitSharedTemplate):
 
     def get_openzwave(self, url='https://codeload.github.com/OpenZWave/open-zwave/zip/Dev'):
@@ -990,7 +990,7 @@ class bdist_egg(_bdist_egg):
         _bdist_egg.run(self)
 
 class build_openzwave(setuptools.Command):
-    description = 'download an build openzwave'
+    description = 'download and build openzwave'
 
     user_options = [
         ('openzwave-dir=', None,

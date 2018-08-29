@@ -573,6 +573,7 @@ def get_system_context(
     debug=False
 ):
 
+
     if debug:
         print("get_system_context for windows")
 
@@ -661,7 +662,6 @@ def get_system_context(
     ]
 
 
-
 GLOBAL_SELECTION_TEMPLATE = '''		Debug|x64 = Debug|x64
 		DebugDLL|x64 = DebugDLL|x64
 		Release|x64 = Release|x64
@@ -742,6 +742,7 @@ if __name__ == '__main__':
         get_openzwave('openzwave')
 
     options = dict()
+
     get_system_context(
         ctx,
         options,
