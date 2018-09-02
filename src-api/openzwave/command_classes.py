@@ -426,7 +426,7 @@ COMMAND_CLASS_ZIP_PORTAL = 0x61
 # Z-Wave Plus Info Command Class - Active
 # Management
 # This Command Class MUST always be in the NIF if supported
-COMMAND_CLASS_ZWAVEPLUS_INFO = 0x5E
+COMMAND_CLASS_ZWAVE_PLUS_INFO = 0x5E
 
 # ----------- DEPRECIATED ----------
 
@@ -642,7 +642,7 @@ ZIP_GATEWAY = COMMAND_CLASS_ZIP_GATEWAY
 ZIP_NAMING = COMMAND_CLASS_ZIP_NAMING
 ZIP_ND = COMMAND_CLASS_ZIP_ND
 ZIP_PORTAL = COMMAND_CLASS_ZIP_PORTAL
-ZWAVEPLUS_INFO = COMMAND_CLASS_ZWAVEPLUS_INFO
+ZWAVE_PLUS_INFO = COMMAND_CLASS_ZWAVE_PLUS_INFO
 
 
 class CommandClassBase(object):
@@ -1998,6 +1998,8 @@ class SwitchColor(CommandClassBase):
             ):
                 return value.data
 
+        return self._cmy_to_rgb(*self.cmy)[0]
+
     @red.setter
     def red(self, value):
         if value < 0x00:
@@ -2011,6 +2013,10 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_RED
             ):
                 val.data = value
+                break
+        else:
+            _, g, b = self._cmy_to_rgb(*self.cmy)
+            self.cmy = self._rgb_to_cmy(value, g, b)
 
     @property
     def green(self):
@@ -2020,6 +2026,8 @@ class SwitchColor(CommandClassBase):
                 value.index == self.COLORIDX_GREEN
             ):
                 return value.data
+
+        return self._cmy_to_rgb(*self.cmy)[1]
 
     @green.setter
     def green(self, value):
@@ -2034,6 +2042,10 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_GREEN
             ):
                 val.data = value
+                break
+        else:
+            r, _, b = self._cmy_to_rgb(*self.cmy)
+            self.cmy = self._rgb_to_cmy(r, value, b)
 
     @property
     def blue(self):
@@ -2043,6 +2055,8 @@ class SwitchColor(CommandClassBase):
                 value.index == self.COLORIDX_BLUE
             ):
                 return value.data
+
+        return self._cmy_to_rgb(*self.cmy)[2]
 
     @blue.setter
     def blue(self, value):
@@ -2057,9 +2071,13 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_BLUE
             ):
                 val.data = value
+                break
+        else:
+            r, g, _ = self._cmy_to_rgb(*self.cmy)
+            self.cmy = self._rgb_to_cmy(r, g, value)
 
     @property
-    def amber(self):
+    def yellow(self):
         for value in self.values.values():
             if (
                 value == COMMAND_CLASS_SWITCH_COLOR and
@@ -2067,8 +2085,10 @@ class SwitchColor(CommandClassBase):
             ):
                 return value.data
 
-    @amber.setter
-    def amber(self, value):
+        return self._rgb_to_cmy(*self.rgb)[2]
+
+    @yellow.setter
+    def yellow(self, value):
         if value < 0x00:
             value = 0x00
         elif value > 0xFF:
@@ -2080,6 +2100,10 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_AMBER
             ):
                 val.data = value
+                break
+        else:
+            c, m, _ = self._rgb_to_cmy(*self.rgb)
+            self.rgb = self._cmy_to_rgb(c, m, value)
 
     @property
     def cyan(self):
@@ -2089,6 +2113,8 @@ class SwitchColor(CommandClassBase):
                 value.index == self.COLORIDX_CYAN
             ):
                 return value.data
+
+        return self._rgb_to_cmy(*self.rgb)[0]
 
     @cyan.setter
     def cyan(self, value):
@@ -2103,9 +2129,13 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_CYAN
             ):
                 val.data = value
+                break
+        else:
+            _, m, y = self._rgb_to_cmy(*self.rgb)
+            self.rgb = self._cmy_to_rgb(value, m, y)
 
     @property
-    def purple(self):
+    def magenta(self):
         for value in self.values.values():
             if (
                 value == COMMAND_CLASS_SWITCH_COLOR and
@@ -2113,8 +2143,10 @@ class SwitchColor(CommandClassBase):
             ):
                 return value.data
 
-    @purple.setter
-    def purple(self, value):
+        return self._rgb_to_cmy(*self.rgb)[1]
+
+    @magenta.setter
+    def magenta(self, value):
         if value < 0x00:
             value = 0x00
         elif value > 0xFF:
@@ -2126,6 +2158,10 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_PURPLE
             ):
                 val.data = value
+                break
+        else:
+            c, _, y = self._rgb_to_cmy(*self.rgb)
+            self.rgb = self._cmy_to_rgb(c, value, y)
 
     @property
     def index_color(self):
@@ -2149,6 +2185,106 @@ class SwitchColor(CommandClassBase):
                 val.index == self.COLORIDX_INDEXCOLOR
             ):
                 val.data = value
+
+    @property
+    def rgb(self):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_RED
+            ):
+                return self.red, self.green, self.blue
+
+        return self._cmy_to_rgb(*self.cmy)
+
+    @rgb.setter
+    def rgb(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_RED
+            ):
+                self.red, self.green, self.blue = value
+                break
+        else:
+            self.cmy = self._rgb_to_cmy(*value)
+
+    @property
+    def cmy(self):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_PURPLE
+            ):
+                return self.cyan, self.magenta, self.yellow
+
+        return self._rgb_to_cmy(*self.rgb)
+
+    @cmy.setter
+    def cmy(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_SWITCH_COLOR and
+                val.index == self.COLORIDX_PURPLE
+            ):
+                self.cyan, self.magenta, self.yellow = value
+                break
+        else:
+            self.rgb = self._cmy_to_rgb(*value)
+
+    @property
+    def html(self):
+        return '#%02x%02x%02x' % self.rgb
+
+    @html.setter
+    def html(self, value):
+        value = value.lstrip('#')
+        self.rgb = tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+
+    @property
+    def hsv(self):
+        import colorsys
+
+        r, g, b = self.rgb
+        return colorsys.rgb_to_hsv(r / 255.0, g / 255.0, b / 255.0)
+
+    @hsv.setter
+    def hsv(self, value):
+        import colorsys
+
+        self.rgb = tuple(
+            int(round(i * 255.0)) for i in colorsys.hsv_to_rgb(*value)
+        )
+
+    @staticmethod
+    def _rgb_to_cmy(r, g, b):
+        if (r, g, b) == (0, 0, 0):
+            return r, g, b
+
+        c = 1.0 - r / 255.0
+        m = 1.0 - g / 255.0
+        y = 1.0 - b / 255.0
+
+        k = min(c, m, y)
+        c = ((c - k) / (1.0 - k)) * 255.0
+        m = ((m - k) / (1.0 - k)) * 255.0
+        y = ((y - k) / (1.0 - k)) * 255.0
+
+        return int(round(c)), int(round(m)), int(round(y))
+
+    @staticmethod
+    def _cmy_to_rgb(c, m, y):
+
+        r = 255.0 * (1.0 - c / 255.0)
+        g = 255.0 * (1.0 - m / 255.0)
+        b = 255.0 * (1.0 - y / 255.0)
+
+        k = max(r, g, b)
+        r *= 1.0 - k / 255.0
+        g *= 1.0 - k / 255.0
+        b *= 1.0 - k / 255.0
+
+        return int(round(r)), int(round(g)), int(round(b))
 
 
 class SwitchMultilevel(CommandClassBase):
@@ -2916,7 +3052,7 @@ class ZIPPortal(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_ZIP_PORTAL]
 
 
-class ZwaveplusInfo(CommandClassBase):
+class ZwavePlusInfo(CommandClassBase):
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -3066,7 +3202,7 @@ class CommandClasses(dict):
             COMMAND_CLASS_ZIP_NAMING: ZIPNaming,
             COMMAND_CLASS_ZIP_ND: ZIPND,
             COMMAND_CLASS_ZIP_PORTAL: ZIPPortal,
-            COMMAND_CLASS_ZWAVEPLUS_INFO: ZwaveplusInfo,
+            COMMAND_CLASS_ZWAVE_PLUS_INFO: ZwavePlusInfo,
             NETWORK_MANAGEMENT_INSTALLATION_MAINTENANCE: (
                 NetworkManagementInstallationMaintenance
             ),
@@ -3074,7 +3210,7 @@ class CommandClasses(dict):
         }
         self.__dict__ = mod.__dict__
         dict.__init__(self)
-        
+
         for key, value in kwargs.items():
             self[key] = value
 
