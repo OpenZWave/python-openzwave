@@ -54,6 +54,11 @@ import glob
 
 from pyozw_version import pyozw_version
 
+try:
+    PY3 = not unicode
+except NameError:
+    PY3 = True
+
 LOCAL_OPENZWAVE = os.getenv('LOCAL_OPENZWAVE', 'openzwave')
 
 SETUP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -267,9 +272,16 @@ class Template(object):
         io_q = Queue()
 
         def stream_watcher(identifier, stream):
+            # fixes subprocess output lag issue when using python 2.x
 
-            for line in stream:
-                io_q.put((identifier, line))
+            if PY3:
+                dummy_return = b''
+            else:
+                dummy_return = ''
+
+            for line in iter(stream.readline, dummy_return):
+                if line:
+                    io_q.put((identifier, line))
 
             if not stream.closed:
                 stream.close()
@@ -289,43 +301,24 @@ class Template(object):
                     if identifier == 'STDERR':
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
+                    elif sys.platform.startswith("win"):
+                        progress_bar.write(line)
+
+            if sys.platform.startswith("win"):
+                progress_bar.close()
 
         if sys.platform.startswith("win"):
-            from pyozw_win import get_vsproject_upgrade_command, add_vs_project_x64_configs, get_vsproject_build_command, get_vsproject_prebuild_command
-            if 'vsproject_upgrade' in self.os_options and self.os_options['vsproject_upgrade']:
-                log.info("Upgrade openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_upgrade_command(self.os_options), stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                Thread(target=stream_watcher, name='stdout-watcher', args=('STDOUT', proc.stdout)).start()
-                Thread(target=stream_watcher, name='stderr-watcher', args=('STDERR', proc.stderr)).start()
+            from pyozw_progressbar import ProgressBar
+            from pyozw_win import get_clean_command, get_build_command
 
-                tprinter = Thread(target=printer, name='printer')
-                tprinter.start()
-                while tprinter.is_alive():
-                    time.sleep(1)
-                tprinter.join()
-                #~ proc.wait()
+            cwd = os.path.split(self.os_options['solution_path'])[0]
+            build_command = get_build_command(**self.os_options)
 
-                add_vs_project_x64_configs(self.os_options)
-
-            if 'vsproject_prebuild' in self.os_options and self.os_options['vsproject_prebuild']:
-                log.info("Update configuration of openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_prebuild_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
-                Thread(target=stream_watcher, name='stdout-watcher',
-                        args=('STDOUT', proc.stdout)).start()
-                Thread(target=stream_watcher, name='stderr-watcher',
-                        args=('STDERR', proc.stderr)).start()
-
-                tprinter = Thread(target=printer, name='printer')
-                tprinter.start()
-                while tprinter.is_alive():
-                    time.sleep(1)
-                tprinter.join()
-                #~ proc.wait()
 
             log.info("Build openzwave ... be patient ...")
-            proc = Popen(get_vsproject_build_command(self.os_options),
-                         stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+
+            progress_bar = ProgressBar()
+            proc = Popen(build_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
 
         elif sys.platform.startswith("cygwin"):
             log.info("Build openzwave ... be patient ...")
@@ -341,7 +334,8 @@ class Template(object):
 
         elif sys.platform.startswith("sunos"):
             log.info("Build openzwave ... be patient ...")
-            proc = Popen('make', 'PREFIX=/opt/local', stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
+            # fixed command issues to Popen
+            proc = Popen(['make', 'PREFIX=/opt/local'], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
 
         elif sys.platform.startswith("linux"):
             log.info("Build openzwave ... be patient ...")
@@ -361,6 +355,7 @@ class Template(object):
         while tprinter.is_alive():
             time.sleep(1)
         tprinter.join()
+
         return True
 
     def install_so(self):
@@ -525,11 +520,15 @@ class Template(object):
                         log.error('{0}\n'.format(line))
         proc = None
         if sys.platform.startswith("win"):
-            from pyozw_win import get_vsproject_devenv_clean_command
-            if 'devenv' in self.os_options and self.os_options['devenv'] is not None:
-                log.info("Clean openzwave project ... be patient ...")
-                proc = Popen(get_vsproject_devenv_clean_command(self.os_options),
-                             stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject']))
+            from pyozw_win import get_clean_command
+            clean_command = get_clean_command(**self.os_options)
+            log.info("Clean openzwave project ... be patient ...")
+            proc = Popen(
+                clean_command,
+                stdout=PIPE,
+                stderr=PIPE,
+                cwd=os.path.split(self.os_options['solution_path'])[0]
+            )
                 #~ proc.wait()
             #~ proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
             #~ proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
@@ -588,12 +587,11 @@ class Template(object):
 
     def check_minimal_config(self):
         if sys.platform.startswith("win"):
-            log.info("Found MSBuild.exe : {0}".format(self.os_options['msbuild']))
-            log.info("Found devenv.exe : {0}".format(self.os_options['devenv']))
+            log.info("Found MSBuild.exe : {0}".format(self.os_options['msbuild_path']))
             log.info("Found arch : {0}".format(self.os_options['arch']))
-            log.info("Found build configuration : {0}".format(self.os_options['buildconf']))
-            log.info("Found Visual Studio project : {0}".format(self.os_options['vsproject']))
-            log.info("Found build path : {0}".format(self.os_options['vsproject_build']))
+            log.info("Found build configuration : {0}".format(self.os_options['build_type']))
+            log.info("Found Visual Studio project : {0}".format(self.os_options['solution_path']))
+            log.info("Found build path : {0}".format(self.os_options['build_path']))
             log.info("Found cython : {0}".format(find_executable("cython")))
         else:
             log.info("Found g++ : {0}".format(find_executable("g++")))
@@ -687,10 +685,18 @@ class DevTemplate(Template):
     def get_context(self):
         opzw_dir = LOCAL_OPENZWAVE
         if LOCAL_OPENZWAVE is None:
-            return None
+            if sys.platform.startswith("win"):
+                from pyozw_win import get_openzwave
+                get_openzwave('openzwave')
+            else:
+                return None
+
         if not os.path.isdir(opzw_dir):
-            log.error("Can't find {0}".format(opzw_dir))
-            return None
+            if sys.platform.startswith("win"):
+                from pyozw_win import get_openzwave
+                get_openzwave(opzw_dir)
+            else:
+                return None
         self.openzwave = opzw_dir
         ctx = self.cython_context()
         if ctx is None:
