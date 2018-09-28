@@ -65,7 +65,7 @@ class TestPyZWave(unittest.TestCase):
     """
     device = "/dev/ttyUSB0"
     ozwlog = "Debug"
-    ozwout = False
+    ozwout = True
     pylog = logging.DEBUG
     userpath = ".tests_user_path"
 

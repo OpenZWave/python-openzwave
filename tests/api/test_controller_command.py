@@ -64,9 +64,10 @@ class TestControllerCommand(TestApi):
         super(TestControllerCommand, self).tearDownClass()
 
     def setUp(self):
-        self.wait_for_network_state(self.network.STATE_READY, 1)
-        self.wait_for_queue()
-        self.ctrl_state_result = None
+        # ~ self.wait_for_network_state(self.network.STATE_READY, 1)
+        # ~ self.wait_for_queue()
+        # ~ self.ctrl_state_result = None
+        TestApi.setUp(self)
         dispatcher.connect(self.ctrl_message, ZWaveNetwork.SIGNAL_CONTROLLER_COMMAND)
         dispatcher.connect(self.ctrl_waiting, ZWaveNetwork.SIGNAL_CONTROLLER_WAITING)
         time.sleep(2.0)
@@ -106,9 +107,10 @@ class TestControllerCommand(TestApi):
 
     def test_010_command_send_node_information_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
-            node_id = max(self.network.nodes.keys())
+            # ~ node_id = max(self.network.nodes.keys())
+            # ~ node_id = self.active_nodes.keys()[1]
             ret = self.network.controller.send_node_information(node_id)
             self.assertTrue(ret)
             current = None
@@ -120,7 +122,9 @@ class TestControllerCommand(TestApi):
                     break
                 else:
                     time.sleep(1.0)
+            print(self.ctrl_command_signal)
             self.assertEqual(current, self.network.controller.STATE_COMPLETED)
+            self.assertEqual(self.ctrl_command_signal['node_id'], node_id)
 
     def test_015_command_send_node_information_controller(self):
         self.ctrl_state_result = None
@@ -140,7 +144,8 @@ class TestControllerCommand(TestApi):
     def test_020_command_request_node_neighbor_update_nodes(self):
         self.wipTest()
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             ret = self.network.controller.request_node_neighbor_update(node_id)
             self.assertTrue(ret)
@@ -173,7 +178,7 @@ class TestControllerCommand(TestApi):
 
     def test_030_command_request_network_update_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.request_network_update(node_id)
@@ -206,7 +211,7 @@ class TestControllerCommand(TestApi):
 
     def test_040_command_delete_all_return_routes_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.delete_all_return_routes(node_id)
@@ -239,7 +244,7 @@ class TestControllerCommand(TestApi):
 
     def test_050_command_assign_return_route_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.assign_return_route(node_id)
@@ -272,7 +277,7 @@ class TestControllerCommand(TestApi):
 
     def test_060_command_has_node_failed_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.has_node_failed(node_id)
@@ -287,10 +292,11 @@ class TestControllerCommand(TestApi):
                 else:
                     time.sleep(1.0)
             self.assertEqual(current, self.network.controller.STATE_NODEOK)
+            self.assertEqual(self.ctrl_command_signal['node_id'], node_id)
 
     def test_070_command_remove_failed_node_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.remove_failed_node(node_id)
@@ -308,7 +314,7 @@ class TestControllerCommand(TestApi):
 
     def test_080_command_replace_failed_node_nodes(self):
         self.ctrl_state_result = None
-        node_ids = [ k for k in self.network.nodes.keys() if k != self.network.controller.node_id ]
+        node_ids = [ k for k in self.active_nodes.keys() if k != self.network.controller.node_id ]
         for node_id in node_ids:
             node_id = max(self.network.nodes.keys())
             ret = self.network.controller.replace_failed_node(node_id)

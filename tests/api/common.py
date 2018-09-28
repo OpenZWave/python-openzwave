@@ -89,7 +89,7 @@ class TestApi(TestPyZWave):
         self.ctrl_command_result = None
         self.ctrl_command_signal = None
         self.wait_for_network_state(self.network.STATE_AWAKED, 1)
-        time.sleep(1.0)
+        time.sleep(2.0)
         self.wait_for_queue()
         self.active_nodes = {}
         for node in self.network.nodes:
