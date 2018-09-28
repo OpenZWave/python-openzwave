@@ -1,6 +1,11 @@
 Changelog
 *********
 
+python_openzwave 0.4.9.x:
+   * Improve support Windows in pip
+
+   * Update tests
+
 python_openzwave 0.4.6.x:
    * First try to support Windows in pip
 

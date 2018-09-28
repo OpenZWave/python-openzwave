@@ -8,9 +8,15 @@ Installing python-openzwave on Windows
 Install Microsoft tools
 =======================
 
-This package requires Visual Studio 2017 or Visual Studio 2015.
+This package use MSBuild.exe to build openzwave code.
 
-You must use the C++ compiler used to build your version of python : https://wiki.python.org/moin/WindowsCompilers
+You can find it in Visual Studio 2017 or Visual Studio 2015.
+
+It's also possible to get it as a separate package.
+
+Only release 14.0 and 15.0 of Microsft Build Tools are tested.
+
+You nust use the C++ compiler used to build your version of python : https://wiki.python.org/moin/WindowsCompilers
 
 
 Install other tools
