@@ -6,6 +6,7 @@ Changelog
  
 python_openzwave 0.4.12.x:
  * Improve support Windows
+ * COMMAND_CLASS_ZWAVE_PLUS_INFO renamed to COMMAND_CLASS_ZWAVEPLUS_INFO
 
 
 python_openzwave 0.4.11.x:
