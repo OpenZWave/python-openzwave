@@ -1079,7 +1079,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
         0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
         0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
-        0x5E: 'COMMAND_CLASS_ZWAVE_PLUS_INFO',
+        0x5E: 'COMMAND_CLASS_ZWAVEPLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_INSTANCE/CHANNEL',
         0x61: 'COMMAND_CLASS_DISPLAY',
         0x62: 'COMMAND_CLASS_DOOR_LOCK',
