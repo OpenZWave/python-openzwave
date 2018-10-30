@@ -4,9 +4,24 @@
 Changelog
 =========
  
+python_openzwave 0.4.12.x:
+ * Improve support Windows
+
+
+python_openzwave 0.4.11.x:
+ * Update embeded package
+
+
+python_openzwave 0.4.10.x:
+ * Improve support Windows in pip
+ * Improve tests Windows
+ * Update contructors for scenes and groups
+
+ 
 python_openzwave 0.4.9.x:
  * Improve support Windows in pip
  * Update tests
+
 
 python_openzwave 0.4.6.x:
  * First try to support Windows in pip
