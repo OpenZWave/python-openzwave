@@ -2,12 +2,13 @@
 ./COPYRIGHT.html
 ./DEVEL.html
 ./EXAMPLES.html
+./INSTALL.html
 ./INSTALL_ARCH.html
 ./INSTALL_MAC.html
 ./INSTALL_REPO.html
 ./INSTALL_WIN.html
 ./README.html
-./_images/blockdiag-1ae6c07aaec1a5f2198a3bf66f079d0fafdd5e3d.png
+./_images/blockdiag-51ff0bbdabebc66284e575ab79daa32e26e01306.png
 ./_index_api.html
 ./_index_lib.html
 ./_index_txt.html
@@ -15,6 +16,7 @@
 ./_sources/COPYRIGHT.rst.txt
 ./_sources/DEVEL.rst.txt
 ./_sources/EXAMPLES.rst.txt
+./_sources/INSTALL.rst.txt
 ./_sources/INSTALL_ARCH.rst.txt
 ./_sources/INSTALL_MAC.rst.txt
 ./_sources/INSTALL_REPO.rst.txt
