@@ -835,7 +835,7 @@ class ZWaveNodeThermostat(ZWaveNodeInterface):
         """
         logger.debug(u"set_thermostat_heating value:%s", value)
         for v in self.get_thermostats():
-            if self.values[v].command_class == 0x43 and self.values[v].label == 'Heating 1':
+            if self.values[v].command_class == 0x43 and self.values[v].label in ('Heating 1', 'Heating'):
                 self.values[v].data = value
                 return True
         return False
@@ -852,7 +852,7 @@ class ZWaveNodeThermostat(ZWaveNodeInterface):
         """
         logger.debug(u"set_thermostat_cooling value:%s", value)
         for v in self.get_thermostats():
-            if self.values[v].command_class == 0x43 and self.values[v].label == 'Cooling 1':
+            if self.values[v].command_class == 0x43 and self.values[v].label in ('Cooling 1', 'Cooling'):
                 self.values[v].data = value
                 return True
         return False
