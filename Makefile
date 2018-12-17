@@ -497,7 +497,7 @@ venv-deps: common-deps
 	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
 #~ 	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
 	apt-get install --force-yes -y pkg-config wget unzip zip
-	pip install Cython
+	pip install Cython==0.28.6
 	pip install wheel
 
 docker-deps: common-deps
@@ -505,8 +505,8 @@ docker-deps: common-deps
 	apt-get install --force-yes -y python3-pip python-pip python-wheel python3-wheel python-pip-whl
 	apt-get install --force-yes -y wget unzip zip
 	apt-get install --force-yes -y g++ libudev-dev libyaml-dev
-	pip install cython
-	pip3 install cython
+	pip install Cython==0.28.6
+	pip3 install Cython==0.28.6
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -518,7 +518,7 @@ venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/python --version
 	venv2/bin/pip install nose
-	venv2/bin/pip install Cython wheel six
+	venv2/bin/pip install Cython==0.28.6 wheel six
 	venv2/bin/pip install 'Louie>=1.1'
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
@@ -540,7 +540,7 @@ venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/python --version
 	venv3/bin/pip install nose
-	venv3/bin/pip install Cython wheel six
+	venv3/bin/pip install Cython==0.28.6 wheel six
 	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
@@ -809,7 +809,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv2/bin/python venv2/bin/pyozw_check -o raw
 	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(embed-'
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/pip install Cython
+	venv2/bin/pip install Cython==0.28.6
 #~ 	venv2/bin/pip install wheel
 	venv2/bin/pip uninstall python_openzwave -y
 	venv2/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
@@ -842,7 +842,7 @@ venv-pypilive-autobuild-tests: venv-clean
 	venv3/bin/python venv3/bin/pyozw_check -o raw
 	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(embed-'
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv3/bin/pip install Cython
+	venv3/bin/pip install Cython==0.28.6
 #~ 	venv3/bin/pip install wheel
 	venv3/bin/pip uninstall python_openzwave -y
 	venv3/bin/pip install -vv python_openzwave --upgrade --install-option="--flavor=git"
