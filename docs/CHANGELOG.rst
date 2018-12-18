@@ -4,9 +4,14 @@
 Changelog
 =========
  
+python_openzwave 0.4.14.x:
+ * Use Cython 0.28.6
+
 python_openzwave 0.4.12.x:
  * Improve support Windows
  * COMMAND_CLASS_ZWAVE_PLUS_INFO renamed to COMMAND_CLASS_ZWAVEPLUS_INFO
+ * Update thermostat
+ * Update embeded package
 
 
 python_openzwave 0.4.11.x:
