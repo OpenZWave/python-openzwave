@@ -4,8 +4,18 @@
 Changelog
 =========
  
+python_openzwave 0.4.16.x:
+ * Fix appveyor build for windows
+
+
+python_openzwave 0.4.15.x:
+ * Update embeded package
+
+
 python_openzwave 0.4.14.x:
  * Use Cython 0.28.6
+ * Update embeded package
+
 
 python_openzwave 0.4.12.x:
  * Improve support Windows
