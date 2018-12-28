@@ -119,17 +119,8 @@ artifacts:
     name: windowswheels
 
 deploy_script:
-  - echo "Uploading wheels"
-  # populate pypirc file for twine
-  - echo [distutils]                                  > %USERPROFILE%\\.pypirc
-  - echo index-servers =                             >> %USERPROFILE%\\.pypirc
-  - echo     pypi                                    >> %USERPROFILE%\\.pypirc
-  - echo [pypi]                                      >> %USERPROFILE%\\.pypirc
-  - echo repository=https://test.pypi.org/legacy/    >> %USERPROFILE%\\.pypirc
-  - echo username=%PYPI_USER%                        >> %USERPROFILE%\\.pypirc
-  - echo password=%PYPI_PASSWORD%                    >> %USERPROFILE%\\.pypirc
   # upload to pypi for Windows
-  - set PATH=%BK_PATH%
+  - echo "Uploading wheels"
   - set HOME=%USERPROFILE%
-  - twine upload --repository pypi --skip-existing dist/*.whl
+  - twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%
   - echo "Finished Artifact Deployment"
