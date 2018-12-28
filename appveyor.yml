@@ -115,8 +115,8 @@ test_script:
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
-  - name: windowswheels
+  - path: dist/*
+    name: windowswheels
 
 deploy_script:
   - echo "Uploading wheels"
