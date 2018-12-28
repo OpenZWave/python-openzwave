@@ -1,4 +1,9 @@
 environment:
+  PYPI_USER:
+    secure: kgeLyy1J3zuxy0HgMOWs+g==
+  PYPI_PASSWORD:
+    secure: nEA5O3KbmGk3KIsdy0MBSQ==
+
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
@@ -80,6 +85,7 @@ install:
   - "python -m pip install wheel"
   - "python -m pip install Cython six"
   - "python -m pip install nose"
+  - "python -m pip install twine"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
@@ -109,8 +115,21 @@ test_script:
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - path: dist/*
+  - name: windowswheels
 
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#
+deploy_script:
+  - echo "Uploading wheels"
+  # populate pypirc file for twine
+  - echo [distutils]                                  > %USERPROFILE%\\.pypirc
+  - echo index-servers =                             >> %USERPROFILE%\\.pypirc
+  - echo     pypi                                    >> %USERPROFILE%\\.pypirc
+  - echo [pypi]                                      >> %USERPROFILE%\\.pypirc
+  - echo repository=https://test.pypi.org/legacy/    >> %USERPROFILE%\\.pypirc
+  - echo username=%PYPI_USER%                        >> %USERPROFILE%\\.pypirc
+  - echo password=%PYPI_PASSWORD%                    >> %USERPROFILE%\\.pypirc
+  # upload to pypi for Windows
+  - set PATH=%BK_PATH%
+  - set HOME=%USERPROFILE%
+  - twine upload --skip-existing dist/*.whl
+  - echo "Finished Artifact Deployment"
