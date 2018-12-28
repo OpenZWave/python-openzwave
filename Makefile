@@ -387,6 +387,8 @@ pypi_package:clean-archive
 	cp -f pyozw_pkgconfig.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_setup.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
+	cp -f pyozw_win.py $(ARCHBASE)/python_openzwave/
+	cp -f pyozw_progressbar.py $(ARCHBASE)/python_openzwave/
 	cp -f python_openzwave.egg-info/PKG-INFO $(ARCHBASE)/python_openzwave/	
 	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete 2>/dev/null || true
 	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete 2>/dev/null || true
