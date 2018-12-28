@@ -131,5 +131,5 @@ deploy_script:
   # upload to pypi for Windows
   - set PATH=%BK_PATH%
   - set HOME=%USERPROFILE%
-  - twine upload --skip-existing dist/*.whl
+  - twine upload --repository pypi --skip-existing dist/*.whl
   - echo "Finished Artifact Deployment"
