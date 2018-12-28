@@ -172,6 +172,7 @@ class Template(object):
                         ctx['extra_compile_args'] += [ os.path.normpath(os.path.join(extra, ssubstitute)) ]
 
         elif sys.platform.startswith("freebsd"):
+            os.environ["CPPFLAGS"] = "-Wno-unused-private-field"
             if static:
                 ctx['libraries'] += [ "usb", "stdc++" ]
                 ctx['extra_objects'] = [ "{0}/libopenzwave.a".format(self.openzwave) ]
