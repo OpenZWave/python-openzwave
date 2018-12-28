@@ -1,8 +1,8 @@
 environment:
   PYPI_USER:
-    secure: kgeLyy1J3zuxy0HgMOWs+g==
+    secure: yna6KiH2GE3Ka1G5a3TlUQ==
   PYPI_PASSWORD:
-    secure: nEA5O3KbmGk3KIsdy0MBSQ==
+    secure: UpISOsYyHdCzurReV6FcTA==
 
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
