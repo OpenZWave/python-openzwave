@@ -8,7 +8,7 @@
 ./INSTALL_REPO.html
 ./INSTALL_WIN.html
 ./README.html
-./_images/blockdiag-421b23753964972d48016ad1b1ba383deda018b0.png
+./_images/blockdiag-5bba569ced48e97aa60fa129fc886844ec98b622.png
 ./_index_api.html
 ./_index_lib.html
 ./_index_txt.html
@@ -57,6 +57,7 @@
 ./_static/graphviz.css
 ./_static/jquery-3.2.1.js
 ./_static/jquery.js
+./_static/language_data.js
 ./_static/minus.png
 ./_static/plus.png
 ./_static/pygments.css
