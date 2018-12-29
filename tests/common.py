@@ -25,12 +25,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-#The common sleep dealy to wait for network
-#We wait 1*SLEEP for network.STATE_AWAKED
-#After that we wait 1*SLEEP for network.STATE_READY
-SLEEP = 45
-
-import sys, os
+import os
+import shutil
+import sys
 import time
 import unittest
 import threading
@@ -38,6 +35,11 @@ import logging
 import json
 #~ import bson
 import six
+
+#The common sleep dealy to wait for network
+#We wait 1*SLEEP for network.STATE_AWAKED
+#After that we wait 1*SLEEP for network.STATE_READY
+SLEEP = 45
 
 class SetEncoder(json.JSONEncoder):
     def default(self, obj):

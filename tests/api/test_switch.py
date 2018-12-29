@@ -26,7 +26,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
-import os, shutil
+import os
+import shutil
+import sys
 import time
 import unittest
 from pprint import pprint
