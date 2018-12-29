@@ -62,7 +62,8 @@ class TestCommand(TestApi):
         for node in self.active_nodes:
             for val in self.active_nodes[node].get_battery_levels() :
                 ran = True
-                self.assertTrue(isinstance(self.active_nodes[node].get_battery_level(val), integer_types))
+                self.assertTrue(isinstance(self.active_nodes[node].get_battery_level(val),
+                                           six.integer_types))
         if ran == False :
             self.skipTest("No battery found")
 
