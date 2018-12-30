@@ -137,7 +137,7 @@ artifacts:
 deploy_script:
   # upload to pypi for Windows
   - ps: |
-       if ($APPVEYOR_REPO_TAG -eq "true")
+       if (%APPVEYOR_REPO_TAG%)
        {
            echo "Uploading wheels"
            set HOME=%USERPROFILE%
