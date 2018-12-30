@@ -136,7 +136,11 @@ artifacts:
 
 deploy_script:
   # upload to pypi for Windows
-  - echo "Uploading wheels"
-  - set HOME=%USERPROFILE%
-  - twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%
-  - echo "Finished Artifact Deployment"
+  - ps: |
+       if ("%APPVEYOR_REPO_TAG%" == "true")
+       {
+           echo "Uploading wheels"
+           set HOME=%USERPROFILE%
+           twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%
+           echo "Finished Artifact Deployment"
+       }
