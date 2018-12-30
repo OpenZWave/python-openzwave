@@ -42,6 +42,16 @@ environment:
       PYTHON_VERSION: "3.4.x"
       PYTHON_ARCH: "64"
 
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7.x"
+      PYTHON_ARCH: "32"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python37-x64"
+      PYTHON_VERSION: "3.7.x"
+      PYTHON_ARCH: "64"
+
 install:
   # If there is a newer build queued for the same PR, cancel this one.
   # The AppVeyor 'rollout builds' option is supposed to serve the same
@@ -106,7 +116,7 @@ test_script:
   - "pyozw_check"
   - "nosetests --verbose tests/lib/autobuild tests/api/autobuild"
 
-#~ after_test:
+after_test:
   # If tests are successful, create binary packages for the project.
   - python setup.py bdist_wheel --flavor=dev
   #~ - "python setup.py bdist_wininst"
