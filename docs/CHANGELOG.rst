@@ -4,6 +4,10 @@
 Changelog
 =========
  
+python_openzwave 0.4.17.x:
+ * Add wheels for Windows
+
+
 python_openzwave 0.4.16.x:
  * Fix appveyor build for windows
 
