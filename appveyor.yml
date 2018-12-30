@@ -1,4 +1,9 @@
 environment:
+  PYPI_USER:
+    secure: yna6KiH2GE3Ka1G5a3TlUQ==
+  PYPI_PASSWORD:
+    secure: UpISOsYyHdCzurReV6FcTA==
+
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
@@ -80,6 +85,7 @@ install:
   - "python -m pip install wheel"
   - "python -m pip install Cython six"
   - "python -m pip install nose"
+  - "python -m pip install twine"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
@@ -109,8 +115,12 @@ test_script:
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
+  - path: dist/*
+    name: windowswheels
 
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#
+deploy_script:
+  # upload to pypi for Windows
+  - echo "Uploading wheels"
+  - set HOME=%USERPROFILE%
+  - twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%
+  - echo "Finished Artifact Deployment"
