@@ -1,4 +1,4 @@
-python-openzwave (0.4.17) UNRELEASED; urgency=medium
+python-openzwave (0.4.18) UNRELEASED; urgency=medium
 
   * Try to fix
   * Automatic release from upstream. Look at CHANGELOG.txt
@@ -25,8 +25,9 @@ python-openzwave (0.4.17) UNRELEASED; urgency=medium
   * Automatic release from upstream. Look at CHANGELOG.txt
   * Automatic release from upstream. Look at CHANGELOG.txt
   * Automatic release from upstream. Look at CHANGELOG.txt
+  * Automatic release from upstream. Look at CHANGELOG.txt
 
- -- bibi21000 <bibi21000t@gmail.com>  Sun, 30 Dec 2018 14:20:32 +0100
+ -- bibi21000 <bibi21000t@gmail.com>  Mon, 31 Dec 2018 01:45:21 +0100
 
 python-openzwave (0.3.0b8) UNRELEASED; urgency=medium
 
