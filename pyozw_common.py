@@ -329,7 +329,7 @@ class build_clib(distutils.command.build_clib.build_clib):
     # and distutils.dir_util.mkpath defaults to a verbose level of 1 which
     # which prints out each and every directory it makes. This congests the
     # output unnecessarily.
-    def mkpath(self, name, mode=0777):
+    def mkpath(self, name, mode=0o777):
         distutils.dir_util.mkpath(
             name,
             mode,
