@@ -610,18 +610,25 @@ class Template(object):
     def install_minimal_dependencies(self):
         if len(self.build_requires()) == 0:
             return
-        import pip
+
+        try:
+            from pip import main
+            from pip.utils import get_installed_distributions
+        except ImportError:
+            from pip._internal import main
+            from pip._internal.utils.misc import get_installed_distributions
+
         try:
             log.info("Get installed packages")
             try:
-                packages = pip.utils.get_installed_distributions()
+                packages = get_installed_distributions()
             except Exception:
                 packages = []
             for pyreq in self.build_requires():
                 if pyreq not in packages:
                     try:
                         log.info("Install minimal dependencies {0}".format(pyreq))
-                        pip.main(['install', pyreq])
+                        main(['install', pyreq])
                     except Exception:
                         log.warn("Fail to install minimal dependencies {0}".format(pyreq))
                 else:
@@ -1021,10 +1028,14 @@ class build_openzwave(setuptools.Command):
     def run(self):
         current_template.check_minimal_config()
         current_template.get_openzwave()
-        current_template.clean()
 
         if sys.platform.startswith('win'):
+            if 'bdist_wheel' not in sys.argv:
+                current_template.clean()
+
             self.run_command('build_clib')
+        else:
+            current_template.clean()
 
         current_template.build()
         if current_template.install_openzwave_so:

@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
+
 from __future__ import print_function
 import os
 import sys
@@ -69,7 +70,7 @@ def build_dll_main(openzwave):
         f.write(DLL_MAIN)
 
 
-# if you did decice to have distutils handle the building of openzwave you
+# if you did device to have distutils handle the building of openzwave you
 # will need to generate a list of the source files this the function to do that
 # you pass it the location of the source files and also a list of
 # directories/files that you want to ignore (ie: for windows we want to
@@ -386,6 +387,8 @@ class build_clib(distutils.command.build_clib.build_clib):
                         else:
                             sys.stdout.write(line + '\n')
 
+                        sys.stdout.flush()
+
                 for line in iter(p.stderr.readline, dummy_return):
                     line = line.strip()
                     if line:
@@ -394,9 +397,13 @@ class build_clib(distutils.command.build_clib.build_clib):
                         else:
                             sys.stderr.write(line + '\n')
 
+                        sys.stderr.flush()
+
         if not p.stdout.closed:
             p.stdout.close()
 
         if not p.stderr.closed:
             p.stderr.close()
 
+        sys.stdout.flush()
+        sys.stderr.flush()

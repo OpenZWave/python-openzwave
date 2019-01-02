@@ -101,13 +101,9 @@ class Extension(pyozw_common.Extension):
             '/Oy',
             # Generates intrinsic functions.
             '/Oi',
-            # Forces writes to the program database (PDB) file to be
-            # serialized through MSPDBSRV.EXE.
-            '/FS',
             # Specify floating-point behavior.
             '/fp:precise',
             # Specifies standard behavior
-            '/Zc:inline',
             '/Zc:wchar_t',
             # Specifies standard behavior
             '/Zc:forScope',
@@ -118,7 +114,22 @@ class Extension(pyozw_common.Extension):
             '/wd4996',
             '/wd4244',
             '/wd4005',
+            '/wd4800',
+            '/wd4351',
+            '/wd4273'
         ]
+
+        if environment.visual_c.version > 10.0:
+            # these compiler flags are not valid on
+            # Visual C++ version 10.0 and older
+
+            extra_compile_args += [
+                # Forces writes to the program database (PDB) file to be
+                # serialized through MSPDBSRV.EXE.
+                '/FS',
+                # Specifies standard behavior
+                '/Zc:inline'
+            ]
 
         if pyozw_common.DEBUG_BUILD:
             define_macros += [('_DEBUG', 1)]
@@ -174,7 +185,7 @@ class Library(pyozw_common.Library):
 
     def __init__(self, openzwave):
 
-        build_path = os.path.join(openzwave, 'build')
+        build_path = self.build_path = os.path.join(openzwave, 'build')
 
         build_version_file(openzwave)
         pyozw_common.build_dll_main(openzwave)
@@ -218,16 +229,10 @@ class Library(pyozw_common.Library):
             '/Oy',
             # Generates intrinsic functions.
             '/Oi',
-            # Forces writes to the program database (PDB) file to be
-            # serialized through MSPDBSRV.EXE.
-            '/FS',
-
             # Renames program database file.
             '/Fd"{0}\\lib_build\\OpenZWave.pdb"'.format(build_path),
             # Specify floating-point behavior.
             '/fp:precise',
-            # Specifies standard behavior
-            '/Zc:inline',
             # Specifies standard behavior
             '/Zc:wchar_t',
             # Specifies standard behavior
@@ -241,8 +246,21 @@ class Library(pyozw_common.Library):
             '/wd4101',
             '/wd4267',
             '/wd4996',
-
+            '/wd4351'
         ]
+
+        if environment.visual_c.version > 10.0:
+            # these compiler flags are not valid on
+            # Visual C++ version 10.0 and older
+
+            extra_compile_args += [
+                # Forces writes to the program database (PDB) file to be
+                # serialized through MSPDBSRV.EXE.
+                '/FS',
+                # Specifies standard behavior
+                '/Zc:inline'
+            ]
+
         # not used but here for completeness.
         extra_link_args = [
             '/IGNORE:4098',
@@ -273,6 +291,11 @@ class Library(pyozw_common.Library):
         pass
 
     def build(self, command_class):
+        if os.path.exists(
+            os.path.join(self.build_path + '\\lib_build', 'OpenZWave.lib')
+        ):
+            return
+
         objects = []
         thread_event = threading.Event()
 
