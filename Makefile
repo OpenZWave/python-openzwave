@@ -40,7 +40,7 @@ endif
 
 WHL_PYTHON2 := $(shell ls dist/*.whl 2>/dev/null|grep ${python_openzwave_version}|grep [0-9]-cp2)
 WHL_PYTHON3 := $(shell ls dist/*.whl 2>/dev/null|grep ${python_openzwave_version}|grep [0-9]-cp3)
- 
+
 ARCHNAME     = python-openzwave-${python_openzwave_version}
 ARCHDIR      = ${ARCHBASE}/${ARCHNAME}
 
@@ -288,7 +288,7 @@ openzwave.gzip:
 	mv master open-zwave-master.zip
 	unzip open-zwave-master.zip
 	mv open-zwave-master openzwave
-	
+
 openzwave/.lib/: openzwave
 	cd openzwave && $(MAKE) -j 4
 
@@ -389,7 +389,7 @@ pypi_package:clean-archive
 	cp -f pyozw_version.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_win.py $(ARCHBASE)/python_openzwave/
 	cp -f pyozw_progressbar.py $(ARCHBASE)/python_openzwave/
-	cp -f python_openzwave.egg-info/PKG-INFO $(ARCHBASE)/python_openzwave/	
+	cp -f python_openzwave.egg-info/PKG-INFO $(ARCHBASE)/python_openzwave/
 	-find $(ARCHBASE)/python_openzwave/ -name \*.pyc -delete 2>/dev/null || true
 	-find $(ARCHBASE)/python_openzwave/ -name \*.so -delete 2>/dev/null || true
 	-find $(ARCHBASE)/python_openzwave/ -type d -name \*.egg-info -exec rm -rf '{}' \; 2>/dev/null || true
@@ -435,7 +435,7 @@ validate-pr: uninstall clean update develop
 	@echo
 
 	$(MAKE) venv-dev-autobuild-tests
-	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
+	$(MAKE) venv-bdist_wheel-whl-autobuild-tests
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 #~ 	$(MAKE) venv-tests
 
@@ -466,8 +466,8 @@ new-version: validate-pr
 	-git commit -m "Update pyozw_version to ${python_openzwave_version}" pyozw_version.py
 	$(MAKE) debch
 	-git commit -m "Update debian version to ${python_openzwave_version}" debian/
-	-$(MAKE) embed_openzave_master 
-	-$(MAKE) pypi_package 
+	-$(MAKE) embed_openzave_master
+	-$(MAKE) pypi_package
 	-git add $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git commit -m "Add new pypi package" $(ARCHIVES)/python_openzwave-${python_openzwave_version}.zip && git push
 	-git add $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git commit -m "Add new embed package" $(ARCHIVES)/open-zwave-master-${python_openzwave_version}.zip && git push
 	-git checkout $(ARCHIVES)/*
@@ -499,7 +499,7 @@ venv-deps: common-deps
 	apt-get install --force-yes -y python-all python-dev python3-all python3-dev python-virtualenv python-pip
 #~ 	apt-get install --force-yes -y python-wheel-common python3-wheel python-wheel python-pip-whl
 	apt-get install --force-yes -y pkg-config wget unzip zip
-	pip install Cython==0.28.6
+	pip install Cython
 	pip install wheel
 
 docker-deps: common-deps
@@ -507,8 +507,8 @@ docker-deps: common-deps
 	apt-get install --force-yes -y python3-pip python-pip python-wheel python3-wheel python-pip-whl
 	apt-get install --force-yes -y wget unzip zip
 	apt-get install --force-yes -y g++ libudev-dev libyaml-dev
-	pip install Cython==0.28.6
-	pip3 install Cython==0.28.6
+	pip install Cython
+	pip3 install Cython
 
 venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -520,7 +520,7 @@ venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/python --version
 	venv2/bin/pip install nose
-	venv2/bin/pip install Cython==0.28.6 wheel six
+	venv2/bin/pip install Cython wheel six
 	venv2/bin/pip install 'Louie>=1.1'
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
@@ -531,7 +531,7 @@ venv2:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
-	
+
 venv3:
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -542,7 +542,7 @@ venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/python --version
 	venv3/bin/pip install nose
-	venv3/bin/pip install Cython==0.28.6 wheel six
+	venv3/bin/pip install Cython wheel six
 	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
@@ -558,7 +558,7 @@ venv2-dev: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup-lib.py develop --flavor=dev
 	venv2/bin/python setup-api.py develop
 	venv2/bin/python setup-manager.py develop
-	
+
 venv3-dev: venv3 src-lib/libopenzwave/libopenzwave.cpp
 	venv3/bin/python setup-lib.py develop --flavor=dev
 	venv3/bin/python setup-api.py develop
@@ -566,7 +566,7 @@ venv3-dev: venv3 src-lib/libopenzwave/libopenzwave.cpp
 
 venv2-install: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup.py install --flavor=dev
-	
+
 venv3-install: venv3 src-lib/libopenzwave/libopenzwave.cpp
 	venv3/bin/python setup.py install --flavor=dev
 
@@ -574,7 +574,7 @@ venv2-shared: venv2 src-lib/libopenzwave/libopenzwave.cpp
 	venv2/bin/python setup-lib.py install --flavor=shared
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
-	
+
 venv3-shared: venv3 src-lib/libopenzwave/libopenzwave.cpp
 	venv3/bin/python setup-lib.py install --flavor=shared
 	venv3/bin/python setup-api.py install
@@ -607,7 +607,7 @@ venv2-tests: venv2-dev
 	@echo
 	@echo ==========================================================================================
 	@echo
-	
+
 venv3-tests: venv3-dev
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -635,14 +635,14 @@ venv-autobuild-tests: clean
 	@echo
 	@echo
 
-	$(MAKE) venv-pypitest-autobuild-tests 
+	$(MAKE) venv-pypitest-autobuild-tests
 	$(MAKE) venv-pypilive-autobuild-tests
-	$(MAKE) venv-embed-autobuild-tests 
-	$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
+	$(MAKE) venv-embed-autobuild-tests
+	$(MAKE) venv-bdist_wheel-whl-autobuild-tests
 	$(MAKE) venv-bdist_wheel-autobuild-tests
-	$(MAKE) venv-pypi-autobuild-tests 
+	$(MAKE) venv-pypi-autobuild-tests
 	$(MAKE) venv-dev-autobuild-tests
-	$(MAKE) venv-git-autobuild-tests 
+	$(MAKE) venv-git-autobuild-tests
 
 	@echo
 	@echo
@@ -664,9 +664,9 @@ venv-continuous-autobuild-tests:
 	-$(MAKE) venv-embed_shared-autobuild-tests
 	-$(MAKE) venv-git-autobuild-tests
 	-$(MAKE) venv-git_shared-autobuild-tests
-	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests 
+	-$(MAKE) venv-bdist_wheel-whl-autobuild-tests
 	-$(MAKE) venv-bdist_wheel-autobuild-tests
-	-$(MAKE) venv-pypi-autobuild-tests 
+	-$(MAKE) venv-pypi-autobuild-tests
 
 	@echo
 	@echo
@@ -709,7 +709,7 @@ venv-git-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup-lib.py install --flavor=git
 	venv3/bin/python setup-api.py install
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	venv3/bin/python  venv3/bin/pyozw_check	
+	venv3/bin/python  venv3/bin/pyozw_check
 	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(git-'
 
 	@echo
@@ -877,7 +877,7 @@ venv-git_shared-autobuild-tests: venv-clean venv2 venv3
 	$(MAKE) uninstall
 	$(MAKE) uninstallso
 	-pkg-config --libs libopenzwave
-	
+
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
@@ -945,7 +945,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup.py install --flavor=embed
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
-	venv2/bin/python  venv2/bin/pyozw_check	
+	venv2/bin/python  venv2/bin/pyozw_check
 	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(embed-'
 
 	@echo
@@ -963,7 +963,7 @@ venv-embed-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup.py install --flavor=embed
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
-	venv3/bin/python  venv3/bin/pyozw_check	
+	venv3/bin/python  venv3/bin/pyozw_check
 	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(embed-'
 
 	-rm -f libopenzwave*.so
@@ -997,7 +997,7 @@ venv-embed_shared-autobuild-tests: venv-clean venv2 venv3
 	venv2/bin/python setup.py install --flavor=embed_shared
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	test -f venv2/lib/python*/site-packages/libopenzwave*.so
-	venv2/bin/python  venv2/bin/pyozw_check	
+	venv2/bin/python  venv2/bin/pyozw_check
 	venv2/bin/python venv2/bin/pyozw_check -o raw|grep '(embed_shared-'
 
 	@echo
@@ -1014,7 +1014,7 @@ venv-embed_shared-autobuild-tests: venv-clean venv2 venv3
 	venv3/bin/python setup.py install --flavor=embed_shared
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
-	venv3/bin/python  venv3/bin/pyozw_check	
+	venv3/bin/python  venv3/bin/pyozw_check
 	venv3/bin/python venv3/bin/pyozw_check -o raw|grep '(embed_shared-'
 
 	-rm -f libopenzwave*.so
@@ -1048,7 +1048,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	venv2/bin/pip install "Cython"
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py install
 	. venv2/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor=git
-	
+
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
@@ -1076,10 +1076,10 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	@echo
 
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py bdist_wheel --flavor=git
-	
-	-mkdir -p dist	
+
+	-mkdir -p dist
 	cp tmp/pypi_test/python_openzwave/dist/*.whl dist/
-	
+
 	$(MAKE) venv-bdist_wheel-autobuild-tests
 
 	@echo
@@ -1107,7 +1107,7 @@ venv-pypi-autobuild-tests: venv-clean pypi_package
 	. venv3/bin/activate && python venv3/bin/pyozw_check
 	. venv3/bin/activate && cd tmp/pypi_test/python_openzwave && python setup.py clean --all --flavor=git
 	find venv3/lib/ -iname device_classes.xml -type f -print|cat
-	
+
 	@echo
 	@echo
 	@echo "Tests for venv-pypi-autobuild-tests done."
@@ -1123,7 +1123,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 	@echo "Create tests whl for venv-bdist_wheel-autobuild-tests."
 	@echo
 	@echo
-	
+
 	-rm -f dist/*.whl
 
 	@echo
@@ -1147,7 +1147,7 @@ venv-bdist_wheel-whl-autobuild-tests: venv-clean venv2 venv3
 
 	venv3/bin/python setup.py install --flavor=git
 	venv3/bin/python setup.py bdist_wheel --flavor=git
-	
+
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests created."
@@ -1171,7 +1171,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
 	@echo
-	
+
 	-rm -Rf venv2
 	virtualenv --python=python2 venv2
 	chmod 755 venv2/bin/activate
@@ -1182,7 +1182,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean
 	venv2/bin/pip install "nose"
 #~ 	venv2/bin/pip install "Cython"
 	venv2/bin/pip install "urwid>=1.1.1"
-	
+
 	venv2/bin/pip install dist/python_openzwave-${python_openzwave_version}-cp2*
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
 	find venv2/lib/ -iname device_classes.xml -type f -exec cat '{}' \;|grep open-zwave
@@ -1214,7 +1214,7 @@ venv-bdist_wheel-autobuild-tests: venv-clean
 	test -f venv3/lib/python*/site-packages/libopenzwave*.so
 	venv3/bin/pip uninstall -y "${WHL_PYTHON3}"
 	#test ! -f venv3/lib/python*/site-packages/libopenzwave*.so
-	
+
 	@echo
 	@echo
 	@echo "Tests for venv-bdist_wheel-autobuild-tests done."
@@ -1248,7 +1248,7 @@ venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwa
 	venv2/bin/python setup-api.py install
 	venv2/bin/python setup-manager.py install
 	venv2/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild tests/manager/autobuild
-	venv2/bin/python  venv2/bin/pyozw_check	
+	venv2/bin/python  venv2/bin/pyozw_check
 
 	@echo
 	@echo ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1268,8 +1268,8 @@ venv-dev-autobuild-tests: venv-clean venv2 venv3 src-lib/libopenzwave/libopenzwa
 	venv3/bin/python setup-api.py install
 #~ 	venv3/bin/python setup-manager.py install
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
-	venv3/bin/python  venv3/bin/pyozw_check	
-	
+	venv3/bin/python  venv3/bin/pyozw_check
+
 	-rm -f libopenzwave*.so
 	@echo
 	@echo
@@ -1308,7 +1308,7 @@ venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 
 	venv3/bin/nosetests --verbose tests/lib/autobuild tests/api/autobuild
 	venv3/bin/python  venv3/bin/pyozw_check
-	
+
 	@echo
 	@echo
 	@echo "Tests for venv-shared-autobuild-tests done."
@@ -1318,7 +1318,7 @@ venv-shared-autobuild-tests: venv-clean venv2-shared venv3-shared
 	@echo
 
 buildso: openzwave/.lib/
-	cd openzwave && $(MAKE) install    
+	cd openzwave && $(MAKE) install
 
 uninstallso:
 	rm -f /usr/local/lib/x86_64-linux-gnu/pkgconfig/libopenzwave.pc
