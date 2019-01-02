@@ -668,10 +668,7 @@ def  convert_string(s):
         if isinstance(s, bytes):
             s = s.decode('utf-8')
     else:
-        if sys.platform.startswith('win'):
-            if not isinstance(s, unicode):
-                s = s.decode('utf-8')
-        elif isinstance(s, unicode):
+        if isinstance(s, unicode):
             s = s.encode('utf-8')
     return s
 
