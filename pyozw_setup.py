@@ -1032,14 +1032,37 @@ class build_openzwave(setuptools.Command):
         if sys.platform.startswith('win'):
             if 'bdist_wheel' not in sys.argv:
                 current_template.clean()
+                self.run_command('build_clib')
 
-            self.run_command('build_clib')
+                current_template.build()
+                if current_template.install_openzwave_so:
+                    current_template.install_so()
+            else:
+                self.run_command('build_clib')
+                ext = self.distribution.ext_modules[0]
+
+                build_ext = self.distribution.get_command_obj('build_ext')
+                build_ext.ensure_finalized()
+
+                ext_path = build_ext.get_ext_fullpath(ext.name)
+                if not os.path.exists(ext_path):
+                    current_template.build()
+                    if current_template.install_openzwave_so:
+                        current_template.install_so()
+                else:
+                    build = self.distribution.get_command_obj('build')
+                    build.get_sub_commands()
+
+                    for (cmd_name, method) in build.sub_commands[:]:
+                        if cmd_name == 'build_ext':
+                            build.sub_commands.remove((cmd_name, method))
+
         else:
             current_template.clean()
+            current_template.build()
+            if current_template.install_openzwave_so:
+                current_template.install_so()
 
-        current_template.build()
-        if current_template.install_openzwave_so:
-            current_template.install_so()
 
 class openzwave_config(setuptools.Command):
     description = 'Install config files from openzwave'
