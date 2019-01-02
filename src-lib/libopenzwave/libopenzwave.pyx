@@ -665,8 +665,8 @@ def configPath():
 
 def  convert_string(s):
     if PY3:
-        if not isinstance(s, bytes):
-            s = s.encode('utf-8')
+        if isinstance(s, bytes):
+            s = s.decode('utf-8')
     else:
         if not isinstance(s, unicode):
             s = s.decode('utf-8')
