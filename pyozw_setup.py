@@ -253,7 +253,19 @@ class Template(object):
         if 'install' in sys.argv or 'develop' in sys.argv or 'bdist_egg' in sys.argv:
             current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
-        return _build_ext
+
+
+        class BuildExt(_build_ext):
+            def build_extension(self, ext):
+                ext_path = self.get_ext_fullpath(ext.name)
+                if 'bdist_wheel' in sys.argv:
+                    if not os.path.exists(ext_path):
+                        _build_ext.build_extension(self, ext)
+                else:
+                    _build_ext.build_extension(self, ext)
+
+
+        return BuildExt
 
     @property
     def copy_openzwave_config(self):
@@ -1032,36 +1044,14 @@ class build_openzwave(setuptools.Command):
         if sys.platform.startswith('win'):
             if 'bdist_wheel' not in sys.argv:
                 current_template.clean()
-                self.run_command('build_clib')
-
-                current_template.build()
-                if current_template.install_openzwave_so:
-                    current_template.install_so()
-            else:
-                self.run_command('build_clib')
-                ext = self.distribution.ext_modules[0]
-
-                build_ext = self.distribution.get_command_obj('build_ext')
-                build_ext.ensure_finalized()
-
-                ext_path = build_ext.get_ext_fullpath(ext.name)
-                if not os.path.exists(ext_path):
-                    current_template.build()
-                    if current_template.install_openzwave_so:
-                        current_template.install_so()
-                else:
-                    build = self.distribution.get_command_obj('build')
-                    build.get_sub_commands()
-
-                    for (cmd_name, method) in build.sub_commands[:]:
-                        if cmd_name == 'build_ext':
-                            build.sub_commands.remove((cmd_name, method))
 
         else:
             current_template.clean()
-            current_template.build()
-            if current_template.install_openzwave_so:
-                current_template.install_so()
+
+        self.run_command('build_clib')
+        current_template.build()
+        if current_template.install_openzwave_so:
+            current_template.install_so()
 
 
 class openzwave_config(setuptools.Command):
