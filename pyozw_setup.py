@@ -257,13 +257,13 @@ class Template(object):
         if sys.platform.startswith("win"):
             return ['Cython']
         else:
-            return ['Cython==0.28.6']
+            return ['Cython']
 
     def build_requires(self):
         if sys.platform.startswith("win"):
             return ['Cython']
         else:
-            return ['Cython==0.28.6']
+            return ['Cython']
 
     def build(self):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
