@@ -72,9 +72,8 @@ class Template(object):
         self.flavor = flavor
         self.backend = backend
         self.sysargv = sysargv
-        """Specifics options for os ie windows
-        """
-        self.os_options = dict()
+        self.options = dict()
+        self.library = []
 
     def get_default_exts (self):
         exts = { "name": "libopenzwave",
@@ -140,8 +139,31 @@ class Template(object):
                 "{0}/cpp/src/platform".format(self.openzwave) ]
 
         if sys.platform.startswith("win"):
-            from pyozw_win import get_system_context
-            get_system_context(ctx, self.os_options, openzwave=os.path.abspath(self.openzwave), static=static)
+            from pyozw_win import Extension, Library
+
+            self.library += [Library(os.path.abspath(self.openzwave))]
+            self.options['build_clib'] = dict(
+                build_clib="openzwave\\build\\lib_build",
+                build_temp="openzwave\\build\\lib_build\\temp",
+                compiler='msvc'
+            )
+
+            extension = Extension(
+                os.path.abspath(self.openzwave),
+                self.flavor,
+                static,
+                self.backend
+            )
+
+            ctx['name'] = extension.name
+            ctx['extra_link_args'] = extension.extra_link_args
+            ctx['language'] = extension.language
+            ctx['extra_objects'] = extension.extra_objects
+            ctx['sources'] = extension.sources
+            ctx['include_dirs'] = extension.include_dirs
+            ctx['define_macros'] = extension.define_macros
+            ctx['libraries'] = extension.libraries
+            ctx['extra_compile_args'] = extension.extra_compile_args
 
         elif sys.platform.startswith("cygwin"):
             if static:
@@ -231,7 +253,19 @@ class Template(object):
         if 'install' in sys.argv or 'develop' in sys.argv or 'bdist_egg' in sys.argv:
             current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
-        return _build_ext
+
+
+        class BuildExt(_build_ext):
+            def build_extension(self, ext):
+                ext_path = self.get_ext_fullpath(ext.name)
+                if 'bdist_wheel' in sys.argv:
+                    if not os.path.exists(ext_path):
+                        _build_ext.build_extension(self, ext)
+                else:
+                    _build_ext.build_extension(self, ext)
+
+
+        return BuildExt
 
     @property
     def copy_openzwave_config(self):
@@ -308,24 +342,9 @@ class Template(object):
                     if identifier == 'STDERR':
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
-                    elif sys.platform.startswith("win"):
-                        progress_bar.write(line)
-
-            if sys.platform.startswith("win"):
-                progress_bar.close()
 
         if sys.platform.startswith("win"):
-            from pyozw_progressbar import ProgressBar
-            from pyozw_win import get_clean_command, get_build_command
-
-            cwd = os.path.split(self.os_options['solution_path'])[0]
-            build_command = get_build_command(**self.os_options)
-
-
-            log.info("Build openzwave ... be patient ...")
-
-            progress_bar = ProgressBar()
-            proc = Popen(build_command, stdout=PIPE, stderr=PIPE, cwd=cwd)
+            return True
 
         elif sys.platform.startswith("cygwin"):
             log.info("Build openzwave ... be patient ...")
@@ -400,7 +419,7 @@ class Template(object):
                         sys.stderr.write('{0}\n'.format(line))
                         log.error('{0}\n'.format(line))
         if sys.platform.startswith("win"):
-            proc = Popen([ 'copy', 'OpenZWave.dll' , '%SYSTEM32%\\' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
+            return True
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'install' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -433,8 +452,7 @@ class Template(object):
         tprinter.join()
 
         if sys.platform.startswith("win"):
-            log.info("Register dll ... be patient ...")
-            proc = Popen([ 'regsvr32', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.os_options['vsproject_build']))
+            return True
 
         elif sys.platform.startswith("cygwin"):
             import pyozw_pkgconfig
@@ -527,18 +545,9 @@ class Template(object):
                         log.error('{0}\n'.format(line))
         proc = None
         if sys.platform.startswith("win"):
-            from pyozw_win import get_clean_command
-            clean_command = get_clean_command(**self.os_options)
             log.info("Clean openzwave project ... be patient ...")
-            proc = Popen(
-                clean_command,
-                stdout=PIPE,
-                stderr=PIPE,
-                cwd=os.path.split(self.os_options['solution_path'])[0]
-            )
-                #~ proc.wait()
-            #~ proc = Popen([ 'regsvr32', '-u', 'OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
-            #~ proc = Popen([ 'del', '/F', '/Q', '/S', '%SYSTEM32%\OpenZWave.dll' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(os.path.abspath(self.openzwave)))
+            self.library[0].clean(None)
+            return True
 
         elif sys.platform.startswith("cygwin"):
             proc = Popen([ 'make', 'clean' ], stdout=PIPE, stderr=PIPE, cwd='{0}'.format(self.openzwave))
@@ -594,11 +603,8 @@ class Template(object):
 
     def check_minimal_config(self):
         if sys.platform.startswith("win"):
-            log.info("Found MSBuild.exe : {0}".format(self.os_options['msbuild_path']))
-            log.info("Found arch : {0}".format(self.os_options['arch']))
-            log.info("Found build configuration : {0}".format(self.os_options['build_type']))
-            log.info("Found Visual Studio project : {0}".format(self.os_options['solution_path']))
-            log.info("Found build path : {0}".format(self.os_options['build_path']))
+            from pyozw_win import environment
+            log.info(str(environment))
             log.info("Found cython : {0}".format(find_executable("cython")))
         else:
             log.info("Found g++ : {0}".format(find_executable("g++")))
@@ -616,18 +622,25 @@ class Template(object):
     def install_minimal_dependencies(self):
         if len(self.build_requires()) == 0:
             return
-        import pip
+
+        try:
+            from pip import main
+            from pip.utils import get_installed_distributions
+        except ImportError:
+            from pip._internal import main
+            from pip._internal.utils.misc import get_installed_distributions
+
         try:
             log.info("Get installed packages")
             try:
-                packages = pip.utils.get_installed_distributions()
+                packages = get_installed_distributions()
             except Exception:
                 packages = []
             for pyreq in self.build_requires():
                 if pyreq not in packages:
                     try:
                         log.info("Install minimal dependencies {0}".format(pyreq))
-                        pip.main(['install', pyreq])
+                        main(['install', pyreq])
                     except Exception:
                         log.warn("Fail to install minimal dependencies {0}".format(pyreq))
                 else:
@@ -693,14 +706,13 @@ class DevTemplate(Template):
         opzw_dir = LOCAL_OPENZWAVE
         if LOCAL_OPENZWAVE is None:
             if sys.platform.startswith("win"):
-                from pyozw_win import get_openzwave
-                get_openzwave('openzwave')
+                opzw_dir = 'openzwave'
             else:
                 return None
 
         if not os.path.isdir(opzw_dir):
             if sys.platform.startswith("win"):
-                from pyozw_win import get_openzwave
+                from pyozw_common import get_openzwave
                 get_openzwave(opzw_dir)
             else:
                 return None
@@ -1020,15 +1032,27 @@ class build_openzwave(setuptools.Command):
                 build = self.distribution.get_command_obj('build')
                 build.ensure_finalized()
                 self.openzwave_dir = os.path.join(build.build_lib, current_template.openzwave)
+        if sys.platform.startswith('win'):
+            build_clib = self.distribution.get_command_obj('build_clib')
+            build_clib.ensure_finalized()
         self.flavor = current_template.flavor
 
     def run(self):
         current_template.check_minimal_config()
         current_template.get_openzwave()
-        current_template.clean()
+
+        if sys.platform.startswith('win'):
+            if 'bdist_wheel' not in sys.argv:
+                current_template.clean()
+
+        else:
+            current_template.clean()
+
+        self.run_command('build_clib')
         current_template.build()
         if current_template.install_openzwave_so:
             current_template.install_so()
+
 
 class openzwave_config(setuptools.Command):
     description = 'Install config files from openzwave'
