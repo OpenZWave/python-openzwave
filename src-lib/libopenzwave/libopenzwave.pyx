@@ -75,6 +75,9 @@ logger.addHandler(NullHandler())
 
 from pkg_resources import get_distribution, DistributionNotFound
 
+
+PY3 = sys.version_info[0] > 2
+
 cdef extern from 'pyversion.h':
     string PY_LIB_VERSION_STRING
     string PY_LIB_FLAVOR_STRING
@@ -660,6 +663,17 @@ def configPath():
                 return os.path.join(libopenzwave_location, PY_OZWAVE_CONFIG_DIRECTORY)
     return None
 
+
+def  convert_string(s):
+    if PY3:
+        if isinstance(s, bytes):
+            s = s.decode('utf-8')
+    else:
+        if isinstance(s, unicode):
+            s = s.encode('utf-8')
+    return s
+
+
 cdef class PyOptions:
     """
     Manage options manager
@@ -692,25 +706,27 @@ cdef class PyOptions:
         if os.path.exists(config_path):
             if not os.path.exists(os.path.join(config_path, "zwcfg.xsd")):
                 raise LibZWaveException("Can't retrieve zwcfg.xsd from %s" % config_path)
-            self._config_path = config_path
+
+            self._config_path = convert_string(config_path)
         else:
             raise LibZWaveException("Can't find config directory %s" % config_path)
         if user_path is None:
             user_path = "."
         if os.path.exists(user_path):
             if os.access(user_path, os.W_OK)==True and os.access(user_path, os.R_OK)==True:
-                self._user_path = user_path
+                self._user_path = convert_string(user_path)
             else:
                 raise LibZWaveException("Can't write in user directory %s" % user_path)
         else:
             raise LibZWaveException("Can't find user directory %s" % user_path)
         if cmd_line is None:
             cmd_line=""
-        self._cmd_line = cmd_line
+
+        self._cmd_line = convert_string(cmd_line)
         self.create(self._config_path, self._user_path, self._cmd_line)
 
 
-    def create(self, str a, str b, str c):
+    def create(self, a, b, c):
         """
         .. _createoptions:
 
@@ -726,6 +742,10 @@ cdef class PyOptions:
         :see: destroyoptions_
 
         """
+        a = convert_string(a)
+        b = convert_string(b)
+        c = convert_string(c)
+
         self.options = CreateOptions(
             str_to_cppstr(a), str_to_cppstr(b), str_to_cppstr(c))
         return True
@@ -780,7 +800,7 @@ cdef class PyOptions:
         '''
         return self.options.AreLocked()
 
-    def addOptionBool(self, str name, value):
+    def addOptionBool(self, name, value):
         """
         .. _addOptionBool:
 
@@ -796,9 +816,10 @@ cdef class PyOptions:
         :see: addOption_, addOptionInt_, addOptionString_
 
         """
+        name = convert_string(name)
         return self.options.AddOptionBool(str_to_cppstr(name), value)
 
-    def addOptionInt(self, str name, value):
+    def addOptionInt(self, name, value):
         """
         .. _addOptionInt:
 
@@ -814,9 +835,10 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionString_
 
         """
+        name = convert_string(name)
         return self.options.AddOptionInt(str_to_cppstr(name), value)
 
-    def addOptionString(self, str name, str value, append=False):
+    def addOptionString(self, name, value, append=False):
         """
         .. _addOptionString:
 
@@ -836,6 +858,9 @@ cdef class PyOptions:
         :see: addOption_, addOptionBool_, addOptionInt_
 
         """
+        name = convert_string(name)
+        value = convert_string(value)
+
         return self.options.AddOptionString(
             str_to_cppstr(name), str_to_cppstr(value), append)
 
@@ -855,9 +880,12 @@ cdef class PyOptions:
         :see: addOptionBool_, addOptionInt_, addOptionString_
 
         """
+        name = convert_string(name)
+
         if name not in PyOptionList:
             return False
         if PyOptionList[name]['type'] == "String":
+            value = convert_string(value)
             return self.addOptionString(name, value)
         elif PyOptionList[name]['type'] == "Bool":
             return self.addOptionBool(name, value)
@@ -879,6 +907,7 @@ cdef class PyOptions:
         :see: getOptionAsBool_, getOptionAsInt_, getOptionAsString_
 
         """
+        name = convert_string(name)
         if name not in PyOptionList:
             return None
         if PyOptionList[name]['type'] == "String":
@@ -903,6 +932,7 @@ cdef class PyOptions:
         :see: getOption_, getOptionAsInt_, getOptionAsString_
 
         """
+        name = convert_string(name)
         cdef bool type_bool
         cret = self.options.GetOptionAsBool(str_to_cppstr(name), &type_bool)
         ret = type_bool if cret==True else None
@@ -922,6 +952,7 @@ cdef class PyOptions:
         :see: getOption_, getOptionAsBool_, getOptionAsString_
 
         """
+        name = convert_string(name)
         cdef int32_t type_int
         cret = self.options.GetOptionAsInt(str_to_cppstr(name), &type_int)
         ret = type_int if cret==True else None
@@ -941,6 +972,7 @@ cdef class PyOptions:
         :see: getOption_, getOptionAsBool_, getOptionAsInt_
 
         """
+        name = convert_string(name)
         cdef string type_string
         cret = self.options.GetOptionAsString(str_to_cppstr(name), &type_string)
         ret = cstr_to_str(type_string.c_str()) if cret==True else None
@@ -1211,7 +1243,7 @@ etc.
 # -----------------------------------------------------------------------------
 # Methods for adding and removing drivers and obtaining basic controller information.
 #
-    def addDriver(self, str serialport):
+    def addDriver(self, serialport):
         '''
 .. _addDriver:
 
@@ -1232,9 +1264,11 @@ Home ID is required by most of the OpenZWave Manager class methods.
 :see: removeDriver_
 
         '''
+        serialport = convert_string(serialport)
+
         self.manager.AddDriver(str_to_cppstr(serialport))
 
-    def removeDriver(self, str serialport):
+    def removeDriver(self, serialport):
         '''
 .. _removeDriver:
 
@@ -1250,6 +1284,7 @@ handled automatically.
 :see: addDriver_
 
         '''
+        serialport = convert_string(serialport)
         self.manager.RemoveDriver(str_to_cppstr(serialport))
 
     def getControllerInterfaceType(self, homeid):
@@ -1563,7 +1598,7 @@ Statistics:
 
        '''
         cdef DriverData_t data
-        self.manager.GetDriverStatistics( homeId, &data );
+        self.manager.GetDriverStatistics( homeId, &data )
         ret = {}
         ret['SOFCnt'] = data.m_SOFCnt
         ret['ACKWaiting'] = data.m_ACKWaiting
@@ -2356,7 +2391,7 @@ data.
         cdef string c_string = self.manager.GetNodeProductId(homeid, nodeid)
         return cstr_to_str(c_string.c_str())
 
-    def setNodeManufacturerName(self, homeid, nodeid, str manufacturerName):
+    def setNodeManufacturerName(self, homeid, nodeid, manufacturerName):
         '''
 .. _setNodeManufacturerName:
 
@@ -2379,10 +2414,11 @@ class Value object.
 :see: getNodeManufacturerName_, getNodeProductName_, setNodeProductName_
 
         '''
+        manufacturerName = convert_string(manufacturerName)
         self.manager.SetNodeManufacturerName(
             homeid, nodeid, str_to_cppstr(manufacturerName))
 
-    def setNodeProductName(self, homeid, nodeid, str productName):
+    def setNodeProductName(self, homeid, nodeid, productName):
         '''
 .. _setNodeProductName:
 
@@ -2405,9 +2441,10 @@ class Value object.
 :see: getNodeProductName_, getNodeManufacturerName_, setNodeManufacturerName_
 
         '''
+        productName = convert_string(productName)
         self.manager.SetNodeProductName(homeid, nodeid, str_to_cppstr(productName))
 
-    def setNodeName(self, homeid, nodeid, str name):
+    def setNodeName(self, homeid, nodeid, name):
         '''
 .. _setNodeName:
 
@@ -2430,9 +2467,10 @@ node name is 16 characters.
 :see: getNodeName_, getNodeLocation_, setNodeLocation_
 
         '''
+        name = convert_string(name)
         self.manager.SetNodeName(homeid, nodeid, str_to_cppstr(name))
 
-    def setNodeLocation(self, homeid, nodeid, str location):
+    def setNodeLocation(self, homeid, nodeid, location):
         '''
 .. _setNodeLocation:
 
@@ -2454,6 +2492,7 @@ Node Naming command class, the new location will be sent to the node.
 :see: getNodeLocation_, getNodeName_, setNodeName_
 
         '''
+        location = convert_string(location)
         self.manager.SetNodeLocation(homeid, nodeid, str_to_cppstr(location))
 
     def setNodeOn(self, homeid, nodeid):
@@ -2877,6 +2916,7 @@ if the Z-Wave message actually failed to get through.  Notification callbacks wi
                 cret = self.manager.SetValue(values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
+                value = convert_string(value)
                 if six.PY3:
                     type_string = str_to_cppstr(value)
                 else:
@@ -2933,7 +2973,7 @@ Gets the user-friendly label for the value
         else :
             return None
 
-    def setValueLabel(self, id, str label):
+    def setValueLabel(self, id, label):
         '''
 .. _setValueLabel:
 
@@ -2946,6 +2986,7 @@ Sets the user-friendly label for the value
 :see: getValueLabel_
 
         '''
+        label = convert_string(label)
         if values_map.find(id) != values_map.end():
             self.manager.SetValueLabel(values_map.at(id), str_to_cppstr(label))
 
@@ -2969,7 +3010,7 @@ Gets the units that the value is measured in.
         else :
             return None
 
-    def setValueUnits(self, id, str unit):
+    def setValueUnits(self, id, unit):
         '''
 .. _setValueUnits:
 
@@ -2982,6 +3023,7 @@ Sets the units that the value is measured in.
 :see: getValueUnits_
 
         '''
+        unit = convert_string(unit)
         if values_map.find(id) != values_map.end():
             self.manager.SetValueUnits(values_map.at(id), str_to_cppstr(unit))
 
@@ -3005,7 +3047,7 @@ Gets a help string describing the value's purpose and usage.
         else :
             return None
 
-    def setValueHelp(self, id, str help):
+    def setValueHelp(self, id, help):
         '''
 .. _setValueHelp:
 
@@ -3018,6 +3060,7 @@ Sets a help string describing the value's purpose and usage.
 :see: getValueHelp_
 
         '''
+        help = convert_string(help)
         if values_map.find(id) != values_map.end():
             self.manager.SetValueHelp(values_map.at(id), str_to_cppstr(help))
 
@@ -4776,6 +4819,7 @@ removeSceneValue_, setSceneValue_, sceneGetValues_
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
+                value = convert_string(value)
                 type_string = string(value)
                 cret = self.manager.AddSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
@@ -4864,6 +4908,7 @@ sceneGetValues_
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_short)
                 ret = 1 if cret else 0
             elif datatype == "String":
+                value = convert_string(value)
                 type_string = string(value)
                 cret = self.manager.SetSceneValue(sceneid, values_map.at(id), type_string)
                 ret = 1 if cret else 0
@@ -4898,7 +4943,7 @@ sceneGetValues_
         cdef string c_string = self.manager.GetSceneLabel(sceneid)
         return cstr_to_str(c_string.c_str())
 
-    def setSceneLabel(self, sceneid, str label):
+    def setSceneLabel(self, sceneid, label):
         '''
 .. _setSceneLabel:
 
@@ -4914,6 +4959,7 @@ getSceneLabel_, removeSceneValue_, addSceneValue_, setSceneValue_, \
 sceneGetValues_
 
         '''
+        label = convert_string(label)
         self.manager.SetSceneLabel(sceneid, str_to_cppstr(label))
 
     def sceneExists(self, sceneid):
