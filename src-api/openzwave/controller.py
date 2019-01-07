@@ -1402,6 +1402,7 @@ class ZWaveController(ZWaveObject):
                 f.write("#This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.")
         except Exception:
             logger.exception("Can't create %s", os.path.join(self.library_config_path, '__init__.py'))
+            
         shutil.rmtree(dest)
 
 
