@@ -419,7 +419,7 @@ commit: push
 	@echo "Commits for branches master pushed on github."
 
 tag:
-	git tag v${python_openzwave_version}
+	-git tag v${python_openzwave_version}
 	git push origin v${python_openzwave_version}
 	@echo
 	@echo "Tag pushed on github."
