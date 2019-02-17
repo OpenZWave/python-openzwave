@@ -658,6 +658,12 @@ class CommandClassBase(object):
 
 class Alarm(CommandClassBase):
 
+    """
+    Alarm Command Class
+
+    `COMMAND_CLASS_ALARM`
+    """
+
     ALARM_TYPES = [
         'General',
         'Smoke',
@@ -681,6 +687,30 @@ class Alarm(CommandClassBase):
 
     @property
     def source(self):
+        """
+        The device type
+
+        This property will return the type of device.
+        Possible returned values are:
+        <br></br>
+        * 'General'
+        * 'Smoke'
+        * 'Carbon Monoxide'
+        * 'Carbon Dioxide'
+        * 'Heat'
+        * 'Flood'
+        * 'Access Control'
+        * 'Burglar'
+        * 'Power Management'
+        * 'System'
+        * 'Emergency'
+        * 'Clock'
+        * 'Appliance'
+        * 'HomeHealth'
+
+        :return: device type
+        :rtype: str
+        """
         for value in self.values.values():
             if (
                 value == COMMAND_CLASS_ALARM and
@@ -690,6 +720,11 @@ class Alarm(CommandClassBase):
 
     @property
     def alarm_type(self):
+        """
+        Alarm Type
+
+        :return: alarm type
+        """
 
         for value in self.values.values():
             if (
@@ -711,6 +746,11 @@ class Alarm(CommandClassBase):
 
     @property
     def alarm_level(self):
+        """
+        Alarm level
+
+        :return: alarm level
+        """
         for value in self.values.values():
             if (
                 value == COMMAND_CLASS_ALARM and
@@ -720,6 +760,11 @@ class Alarm(CommandClassBase):
 
 
 class Antitheft(CommandClassBase):
+    """
+    Antitheft Command Class
+
+    `COMMAND_CLASS_ANTITHEFT`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -727,6 +772,11 @@ class Antitheft(CommandClassBase):
 
 
 class ApplicationCapability(CommandClassBase):
+    """
+    Application Capability Command Class
+
+    `COMMAND_CLASS_APPLICATION_CAPABILITY`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -734,6 +784,11 @@ class ApplicationCapability(CommandClassBase):
 
 
 class ApplicationStatus(CommandClassBase):
+    """
+    Application Status Command Class
+
+    `COMMAND_CLASS_APPLICATION_STATUS`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -741,16 +796,34 @@ class ApplicationStatus(CommandClassBase):
 
 
 class Association(CommandClassBase):
+    """
+    Association Command Class
+
+    `COMMAND_CLASS_ASSOCIATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_ASSOCIATION]
 
     def get_max_associations(self, groupidx):
+        """
+        Gets the max number of associations.
+
+        :param groupidx: association group
+        :type groupidx: int
+        :return: max associations
+        :rtype: int
+        """
         return self.get_max_associations(groupidx)
 
 
 class AssociationCommandConfiguration(CommandClassBase):
+    """
+    Association Command Configuration Command Class
+
+    `COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -758,6 +831,11 @@ class AssociationCommandConfiguration(CommandClassBase):
 
 
 class AssociationGrpInfo(CommandClassBase):
+    """
+    Association Group Info Command Class
+
+    `COMMAND_CLASS_ASSOCIATION_GRP_INFO`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -765,13 +843,32 @@ class AssociationGrpInfo(CommandClassBase):
 
     @property
     def groups(self):
+        """
+        Groups
+
+        :return: groups
+
+        """
         return self.groups()
 
     def groups_to_dict(self, extras=('all',)):
+        """
+        Groups to a python dictionary
+
+        :param extras: extra group fields to add to the dictionary
+        :type extras: tuple of str
+        :return: dictionary of groups
+        :rtype: dict
+        """
         return self.groups_to_dict(extras)
 
 
 class BarrierOperator(CommandClassBase):
+    """
+    Barrier Operator Command Class
+
+    `COMMAND_CLASS_BARRIER_OPERATOR`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -779,6 +876,11 @@ class BarrierOperator(CommandClassBase):
 
 
 class Basic(CommandClassBase):
+    """
+    Basic Command Class
+
+    `COMMAND_CLASS_BASIC`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -786,6 +888,11 @@ class Basic(CommandClassBase):
 
 
 class BasicTariffInfo(CommandClassBase):
+    """
+    Basic Tariff Info Command Class
+
+    `COMMAND_CLASS_BASIC_TARIFF_INFO`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -793,6 +900,11 @@ class BasicTariffInfo(CommandClassBase):
 
 
 class BasicWindowCovering(CommandClassBase):
+    """
+    Basic Window Covering Command Class
+
+    `COMMAND_CLASS_BASIC_WINDOW_COVERING`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -847,6 +959,11 @@ class BasicWindowCovering(CommandClassBase):
 
 
 class Battery(CommandClassBase):
+    """
+    Battery Command Class
+
+    `COMMAND_CLASS_BATTERY`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -894,6 +1011,11 @@ class Battery(CommandClassBase):
 
 
 class CentralScene(CommandClassBase):
+    """
+    Central Scene Command Class
+
+    `COMMAND_CLASS_CENTRAL_SCENE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -901,6 +1023,11 @@ class CentralScene(CommandClassBase):
 
 
 class ClimateControlSchedule(CommandClassBase):
+    """
+    Climate Control Schedule Command Class
+
+    `COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -908,6 +1035,11 @@ class ClimateControlSchedule(CommandClassBase):
 
 
 class Clock(CommandClassBase):
+    """
+    Clock Command Class
+
+    `COMMAND_CLASS_CLOCK`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -979,6 +1111,11 @@ class Clock(CommandClassBase):
 
 
 class Configuration(CommandClassBase):
+    """
+    Configuration Command Class
+
+    `COMMAND_CLASS_CONFIGURATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1037,6 +1174,11 @@ class Configuration(CommandClassBase):
 
 
 class ControllerReplication(CommandClassBase):
+    """
+    Controller Replication Command Class
+
+    `COMMAND_CLASS_CONTROLLER_REPLICATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1102,6 +1244,11 @@ class ControllerReplication(CommandClassBase):
 
 
 class Crc16Encap(CommandClassBase):
+    """
+    Crc 16 Encapsulation Command Class
+
+    `COMMAND_CLASS_CRC_16_ENCAP`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1109,6 +1256,11 @@ class Crc16Encap(CommandClassBase):
 
 
 class DcpConfig(CommandClassBase):
+    """
+    Dcp Config Command Class
+
+    `COMMAND_CLASS_DCP_CONFIG`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1116,6 +1268,11 @@ class DcpConfig(CommandClassBase):
 
 
 class DcpMonitor(CommandClassBase):
+    """
+    Dcp Monitor Command Class
+
+    `COMMAND_CLASS_DCP_MONITOR`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1123,6 +1280,11 @@ class DcpMonitor(CommandClassBase):
 
 
 class DeviceResetLocally(CommandClassBase):
+    """
+    Device Reset Locally Command Class
+
+    `COMMAND_CLASS_DEVICE_RESET_LOCALLY`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1130,6 +1292,11 @@ class DeviceResetLocally(CommandClassBase):
 
 
 class DoorLock(CommandClassBase):
+    """
+    Door Lock Command Class
+
+    `COMMAND_CLASS_DOOR_LOCK`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1156,6 +1323,11 @@ class DoorLock(CommandClassBase):
 
 
 class DoorLockLogging(CommandClassBase):
+    """
+    Door Lock Logging Command Class
+
+    `COMMAND_CLASS_DOOR_LOCK_LOGGING`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1172,6 +1344,11 @@ class DoorLockLogging(CommandClassBase):
 
 
 class EnergyProduction(CommandClassBase):
+    """
+    Energy Production Command Class
+
+    `COMMAND_CLASS_ENERGY_PRODUCTION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1179,6 +1356,11 @@ class EnergyProduction(CommandClassBase):
 
 
 class EntryControl(CommandClassBase):
+    """
+    Entry Control Command Class
+
+    `COMMAND_CLASS_ENTRY_CONTROL`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1186,6 +1368,11 @@ class EntryControl(CommandClassBase):
 
 
 class FirmwareUpdateMd(CommandClassBase):
+    """
+    Firmware Update Md Command Class
+
+    `COMMAND_CLASS_FIRMWARE_UPDATE_MD`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1193,6 +1380,11 @@ class FirmwareUpdateMd(CommandClassBase):
 
 
 class GeographicLocation(CommandClassBase):
+    """
+    Geographic Location Command Class
+
+    `COMMAND_CLASS_GEOGRAPHIC_LOCATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1200,6 +1392,11 @@ class GeographicLocation(CommandClassBase):
 
 
 class GroupingName(CommandClassBase):
+    """
+    Grouping Name Command Class
+
+    `COMMAND_CLASS_GROUPING_NAME`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1207,6 +1404,11 @@ class GroupingName(CommandClassBase):
 
 
 class Hail(CommandClassBase):
+    """
+    Hail Command Class
+
+    `COMMAND_CLASS_HAIL`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1214,6 +1416,11 @@ class Hail(CommandClassBase):
 
 
 class HrvControl(CommandClassBase):
+    """
+    Hrv Control Command Class
+
+    `COMMAND_CLASS_HRV_CONTROL`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1221,6 +1428,11 @@ class HrvControl(CommandClassBase):
 
 
 class HrvStatus(CommandClassBase):
+    """
+    Hrv Status Command Class
+
+    `COMMAND_CLASS_HRV_STATUS`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1229,6 +1441,11 @@ class HrvStatus(CommandClassBase):
 
 
 class HumidityControlMode(CommandClassBase):
+    """
+    Humidity Control Mode Command Class
+
+    `COMMAND_CLASS_HUMIDITY_CONTROL_MODE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1236,6 +1453,11 @@ class HumidityControlMode(CommandClassBase):
 
 
 class HumidityControlOperatingState(CommandClassBase):
+    """
+    Humidity Control Operating State Command Class
+
+    `COMMAND_CLASS_HUMIDITY_CONTROL_OPERATING_STATE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1243,6 +1465,11 @@ class HumidityControlOperatingState(CommandClassBase):
 
 
 class HumidityControlSetpoint(CommandClassBase):
+    """
+    Humidity Control Setpoint Command Class
+
+    `COMMAND_CLASS_HUMIDITY_CONTROL_SETPOINT`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1250,6 +1477,11 @@ class HumidityControlSetpoint(CommandClassBase):
 
 
 class InclusionController(CommandClassBase):
+    """
+    Inclusion Controller Command Class
+
+    `COMMAND_CLASS_INCLUSION_CONTROLLER`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1257,6 +1489,11 @@ class InclusionController(CommandClassBase):
 
 
 class Indicator(CommandClassBase):
+    """
+    Indicator Command Class
+
+    `COMMAND_CLASS_INDICATOR`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1264,6 +1501,11 @@ class Indicator(CommandClassBase):
 
 
 class IpAssociation(CommandClassBase):
+    """
+    IP Association Command Class
+
+    `COMMAND_CLASS_IP_ASSOCIATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1271,6 +1513,11 @@ class IpAssociation(CommandClassBase):
 
 
 class IpConfiguration(CommandClassBase):
+    """
+    IP Configuration Command Class
+
+    `COMMAND_CLASS_IP_CONFIGURATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1278,6 +1525,11 @@ class IpConfiguration(CommandClassBase):
 
 
 class Irrigation(CommandClassBase):
+    """
+    Irrigation Command Class
+
+    `COMMAND_CLASS_IRRIGATION`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1285,6 +1537,11 @@ class Irrigation(CommandClassBase):
 
 
 class Language(CommandClassBase):
+    """
+    Language Command Class
+
+    `COMMAND_CLASS_LANGUAGE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1292,6 +1549,11 @@ class Language(CommandClassBase):
 
 
 class Lock(CommandClassBase):
+    """
+    Lock Command Class
+
+    `COMMAND_CLASS_LOCK`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1299,6 +1561,11 @@ class Lock(CommandClassBase):
 
 
 class Mailbox(CommandClassBase):
+    """
+    Mailbox Command Class
+
+    `COMMAND_CLASS_MAILBOX`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1306,6 +1573,11 @@ class Mailbox(CommandClassBase):
 
 
 class ManufacturerProprietary(CommandClassBase):
+    """
+    Manufacturer Proprietary Command Class
+
+    `COMMAND_CLASS_MANUFACTURER_PROPRIETARY`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1313,6 +1585,11 @@ class ManufacturerProprietary(CommandClassBase):
 
 
 class ManufacturerSpecific(CommandClassBase):
+    """
+    Manufacturer Specific Command Class
+
+    `COMMAND_CLASS_MANUFACTURER_SPECIFIC`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1320,6 +1597,11 @@ class ManufacturerSpecific(CommandClassBase):
 
 
 class Mark(CommandClassBase):
+    """
+    Mark Command Class
+
+    `COMMAND_CLASS_MARK`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1327,6 +1609,11 @@ class Mark(CommandClassBase):
 
 
 class Meter(CommandClassBase):
+    """
+    Meter Command Class
+
+    `COMMAND_CLASS_METER`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1334,6 +1621,11 @@ class Meter(CommandClassBase):
 
 
 class MeterPulse(CommandClassBase):
+    """
+    Meter Pulse Command Class
+
+    `COMMAND_CLASS_METER_PULSE`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1341,6 +1633,11 @@ class MeterPulse(CommandClassBase):
 
 
 class MeterTblConfig(CommandClassBase):
+    """
+    Meter Tbl Config Command Class
+
+    `COMMAND_CLASS_METER_TBL_CONFIG`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1348,6 +1645,11 @@ class MeterTblConfig(CommandClassBase):
 
 
 class MeterTblMonitor(CommandClassBase):
+    """
+    Meter Tbl Monitor Command Class
+
+    `COMMAND_CLASS_METER_TBL_MONITOR`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1355,6 +1657,11 @@ class MeterTblMonitor(CommandClassBase):
 
 
 class MeterTblPush(CommandClassBase):
+    """
+    Meter Tbl Push Command Class
+
+    `COMMAND_CLASS_METER_TBL_PUSH`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
@@ -1362,13 +1669,23 @@ class MeterTblPush(CommandClassBase):
 
 
 class MtpWindowCovering(CommandClassBase):
+    """
+    Mtp Window Covering Command Class
+
+    `COMMAND_CLASS_MTP_WINDOW_COVERING`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
-        self._cls_ids += [COMMAND_CLASS_MTP_WINDOW_COVERING]
+        self._cls_ids += []
 
 
 class MultiChannel(CommandClassBase):
+    """
+    Multi Channel Command Class
+
+    `COMMAND_CLASS_MULTI_CHANNEL`
+    """
 
     def __init__(self):
         CommandClassBase.__init__(self)
