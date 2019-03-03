@@ -24,7 +24,6 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 from openzwave.object import ZWaveNodeInterface
-from threading import Timer
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -606,13 +605,6 @@ class ZWaveNodeSwitch(ZWaveNodeInterface):
             elif value < 0:
                 value = 0
             self.values[value_id].data = value
-            #Dimmers doesn't return the good level.
-            #Add a Timer to refresh the value
-            if value == 0:
-                timer1 = Timer(1, self.values[value_id].refresh)
-                timer1.start()
-                timer2 = Timer(2, self.values[value_id].refresh)
-                timer2.start()
             return True
         return False
 
