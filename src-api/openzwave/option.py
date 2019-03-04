@@ -92,7 +92,7 @@ class ZWaveOption(libopenzwave.PyOptions):
             device = _get_z_stick()
 
         if platform_system() == 'Windows':
-            if not device.startswith('\\\\.\\'):
+            if device and not device.startswith('\\\\.\\'):
                 device = '\\\\.\\' + device
 
             self._device = device
