@@ -105,10 +105,7 @@ install:
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
-  - ps: if ($env:PYTHON_VERSION -eq "2.7.x") { `
-          python -m pip install Louie } `
-        else { `
-          python -m pip install PyDispatcher }
+  - cmd: IF "%PYTHON_VERSION%" == "2.7.x" ( python -m pip install Louie ) ELSE ( python -m pip install PyDispatcher )
 
   - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
