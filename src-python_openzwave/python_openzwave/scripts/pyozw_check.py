@@ -65,7 +65,7 @@ def imports(args):
         time.sleep(0.5)
         print("Try to import openzwave (API)")
         import openzwave
-        
+
     elif args.output == 'raw':
         import libopenzwave
         from libopenzwave import PyLogLevels
@@ -96,7 +96,7 @@ def zwcallback(zwargs):
     if notify_type == "DriverReady":
         global home_id
         home_id = zwargs['homeId']
-    
+
     #~ print("Received {0} : {1}".format(notify_type,libopenzwave.PyNotifications[notify_type].doc))
     if args.output == 'txt':
         print("Received {0}".format(notify_type))
@@ -255,11 +255,11 @@ def list_nodes(args):
     print("Stop network")
     network.stop()
     print("Exit")
-                
+
 def pyozw_parser():
     parser = argparse.ArgumentParser(description='Run python_openzwave basics checks.')
     parser.add_argument('-o', '--output', action='store', help='The format (txt, raw, ...)', choices=['txt', 'raw'], default='txt')
-    parser.add_argument('-d', '--device', action='store', help='The device port', default='/dev/ttyUSB0')
+    parser.add_argument('-d', '--device', action='store', help='The device port', default=None)
     parser.add_argument('-m', '--imports', action='store_true', help='Import all libs', default=True)
     parser.add_argument('-i', '--init_device', action='store_true', help='Intialize the device', default=False)
     parser.add_argument('-l', '--list_nodes', action='store_true', help='List the nodes on zwave network', default=False)
@@ -278,7 +278,7 @@ def main():
         list_nodes(args)
     elif args.imports:
         imports(args)
-        
+
 if __name__ == '__main__':
     main()
 

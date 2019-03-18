@@ -43,6 +43,32 @@ except ImportError:
 logger = logging.getLogger('openzwave')
 logger.addHandler(NullHandler())
 
+
+VENDOR_IDS = ('0658',)
+
+
+def _get_z_stick():
+    try:
+        import serial.tools.list_ports
+    except ImportError:
+        return None
+
+    for port in serial.tools.list_ports.comports(include_links=False):
+        if port.vid is None:
+            continue
+        if port.product is not None and 'Zigbee' in port.product:
+            continue
+        if port.interface is not None and 'Zigbee' in port.interface:
+            continue
+        if port.description is not None and 'Zigbee' in port.description:
+            continue
+
+        for vid in VENDOR_IDS:
+            if vid.upper() == hex(port.vid)[2:].upper().zfill(4):
+                return port.device
+    return None
+
+
 class ZWaveOption(libopenzwave.PyOptions):
     """
     Represents a Zwave option used to start the manager.
@@ -52,7 +78,7 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         Create an option object and check that parameters are valid.
 
-        :param device: The device to use
+        :param device: The device to use or None for auto detection (pyserial needs to be installed for auto detection).
         :type device: str
         :param config_path: The openzwave config directory. If None, try to configure automatically.
         :type config_path: str
@@ -62,7 +88,13 @@ class ZWaveOption(libopenzwave.PyOptions):
         :type cmd_line: str
 
         """
+        if device is None:
+            device = _get_z_stick()
+
         if platform_system() == 'Windows':
+            if device and not device.startswith('\\\\.\\'):
+                device = '\\\\.\\' + device
+
             self._device = device
         else:
             #For linux
