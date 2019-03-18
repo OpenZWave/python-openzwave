@@ -43,6 +43,23 @@ except ImportError:
 logger = logging.getLogger('openzwave')
 logger.addHandler(NullHandler())
 
+
+def _expand_path(path):
+    if path is None:
+        return path
+
+    if '$' in path or '%' in path:
+        path = os.path.expandvars(path)
+
+    if '~' in path:
+        path = path.replace(
+            '~',
+            os.path.expanduser('~')
+        )
+
+    return os.path.abspath(path)
+
+
 class ZWaveOption(libopenzwave.PyOptions):
     """
     Represents a Zwave option used to start the manager.
@@ -79,6 +96,10 @@ class ZWaveOption(libopenzwave.PyOptions):
             except:
                 import sys, traceback
                 raise ZWaveException(u"Error when retrieving device %s : %s" % (device, traceback.format_exception(*sys.exc_info())))
+
+        config_path = _expand_path(config_path)
+        user_path = _expand_path(user_path)
+
         libopenzwave.PyOptions.__init__(self, config_path=config_path, user_path=user_path, cmd_line=cmd_line)
 
     def set_log_file(self, logfile):
@@ -89,6 +110,8 @@ class ZWaveOption(libopenzwave.PyOptions):
         :type logfile: str
 
         """
+
+        logfile = _expand_path(logfile)
         return self.addOptionString("LogFileName", logfile, False)
 
     def set_logging(self, status):
