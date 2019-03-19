@@ -963,7 +963,7 @@ def parse_template(sysargv):
 current_template = parse_template(sys.argv)
 
 def install_requires():
-    pkgs = ['six']
+    pkgs = ['six', 'pyserial']
     if (sys.version_info > (3, 0)):
          pkgs.append('PyDispatcher>=2.0.5')
     else:

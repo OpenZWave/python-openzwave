@@ -520,7 +520,7 @@ venv2:
 	virtualenv --python=python2 venv2
 	venv2/bin/python --version
 	venv2/bin/pip install nose
-	venv2/bin/pip install Cython==0.28.6 wheel six
+	venv2/bin/pip install Cython==0.28.6 wheel six pyserial
 	venv2/bin/pip install 'Louie>=1.1'
 	chmod 755 venv2/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
@@ -542,7 +542,7 @@ venv3:
 	virtualenv --python=python3 venv3
 	venv3/bin/python --version
 	venv3/bin/pip install nose
-	venv3/bin/pip install Cython==0.28.6 wheel six
+	venv3/bin/pip install Cython==0.28.6 wheel six pyserial
 	venv3/bin/pip install 'PyDispatcher>=2.0.5'
 	chmod 755 venv3/bin/activate
 	-rm -f src-lib/libopenzwave/libopenzwave.cpp
