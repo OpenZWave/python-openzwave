@@ -99,6 +99,7 @@ install:
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
   - "python -m pip install wheel"
+  - "python -m pip install pyserial"
   - "python -m pip install Cython six"
   - "python -m pip install nose"
   - "python -m pip install twine"
