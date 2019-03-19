@@ -49,7 +49,7 @@ def main():
         '-d', '--device',
         dest='device',
         type="str",
-        default="/dev/ttyUSB0",
+        default=None,
         help="The path to your ZWave device")
 
     parser.add_option(

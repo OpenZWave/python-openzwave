@@ -4,6 +4,12 @@
 Changelog
 =========
  
+python_openzwave 0.4.18.x:
+ * Fix python 2.7/appveyor
+ * Add serial port auto-detection
+ * Expand path variables
+
+
 python_openzwave 0.4.17.x:
  * Add wheels for Windows
 
