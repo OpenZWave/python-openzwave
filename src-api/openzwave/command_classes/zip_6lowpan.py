@@ -3,9 +3,10 @@
 This file is part of **python-openzwave**
 project https://github.com/OpenZWave/python-openzwave.
     :platform: Unix, Windows, MacOS X
-    :sinopsis: openzwave API
+    :synopsis: openzwave API
 
-.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com> &
+ kdschlosser aka Kevin Schlosser
 
 License : GPL(v3)
 
