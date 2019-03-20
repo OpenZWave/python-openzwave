@@ -7,8 +7,8 @@ env:
   - DOCKER_BASE=ubuntu:latest
   - DOCKER_BASE=debian:latest
   - DOCKER_BASE=i386/ubuntu:xenial
-  - DOCKER_BASE=arm32v7/ubuntu:xenial
-  - DOCKER_BASE=arm64v8/ubuntu:xenial
+  #~ - DOCKER_BASE=arm32v7/ubuntu:xenial
+  #~ - DOCKER_BASE=arm64v8/ubuntu:xenial
   #~ - DOCKER_BASE=resin/rpi-raspbian:latest
   - DOCS="true"
   global:
