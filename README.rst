@@ -65,14 +65,14 @@ python-openzwave 0.4.x is here !!!
   
     .. code-block:: bash
   
-        (venvX) pip install cython wheel six
+        (venvX) pip install cython wheel six pyserial
         (venvX) pip install 'Louie>=1.1'
 
  - on python 3 :
   
     .. code-block:: bash
   
-        (venvX) pip install cython wheel six
+        (venvX) pip install cython wheel six pyserial
         (venvX) pip install 'PyDispatcher>=2.0.5'
 
 - Choose your flavor :
