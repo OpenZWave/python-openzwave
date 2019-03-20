@@ -43,8 +43,44 @@ class DoorLockLogging(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_DOOR_LOCK_LOGGING]
 
     @property
-    def doorlock_logs(self):
+    def max_number_of_records(self):
+        key = ('Max Number of Record', COMMAND_CLASS_DOOR_LOCK_LOGGING)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def current_record_number(self):
+        key = ('Current Record Number', COMMAND_CLASS_DOOR_LOCK_LOGGING)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @current_record_number.setter
+    def current_record_number(self, value):
+        key = ('Current Record Number', COMMAND_CLASS_DOOR_LOCK_LOGGING)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def door_lock_records(self):
         res = []
-        for value in self[(None, COMMAND_CLASS_DOOR_LOCK_LOGGING)]:
-            res += [value.data]
+        for i in range(self.max_number_of_records):
+            res += [self.get_doorlock_log_record(i)]
+
         return res
+
+    def get_doorlock_log_record(self, record_num):
+
+        if record_num <= self.max_number_of_records:
+            self.current_record_number = record_num
+
+            key = ('Log Record', COMMAND_CLASS_DOOR_LOCK_LOGGING)
+            try:
+                return self[key].data
+            except KeyError:
+                return None

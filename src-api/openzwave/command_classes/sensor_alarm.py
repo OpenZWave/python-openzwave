@@ -46,7 +46,7 @@ class SensorAlarm(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_SENSOR_ALARM]
 
     @property
-    def sensors(self):
+    def alarm_sensors(self):
         res = []
         for value in self[(None, COMMAND_CLASS_SENSOR_ALARM)]:
             if value.label in self.SENSOR_TYPES:

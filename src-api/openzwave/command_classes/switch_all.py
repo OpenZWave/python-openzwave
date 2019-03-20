@@ -33,78 +33,37 @@ COMMAND_CLASS_SWITCH_ALL = 0x27
 # noinspection PyAbstractClass
 class SwitchAll(CommandClassBase):
 
+    SWITCH_ALL = [
+        'Disabled',
+        'Off Enabled',
+        'On Enabled',
+        'On and Off Enabled'
+    ]
+
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SWITCH_ALL]
 
-    def set_switch_all(self, value_id, value):
-        """
-        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
-        Set switches_all to value (using value value_id).
+    @property
+    def switch_all(self):
+        key = ('Switch All', COMMAND_CLASS_SWITCH_ALL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
 
-        :param value_id: The value to retrieve state
-        :type value_id: int
-        :param value: A predefined string
-        :type value: str
+    @switch_all.setter
+    def switch_all(self, value):
 
-        """
-        if value_id in self.values:
-            self.values[value_id].data = value
-            return True
-        return False
+        if isinstance(value, int):
+            try:
+                value = self.SWITCH_ALL[value]
+            except IndexError:
+                return
 
-    def get_switch_all_state(self, value_id):
-        """
-        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
-        Return the state (using value value_id) of a switch or a dimmer.
-
-        :param value_id: The value to retrieve state
-        :type value_id: int
-        :return: The state of the value
-        :rtype: bool
-
-        """
-        if value_id in self.values:
-            instance = self.values[value_id].instance
-            for switch in self.values:
-                if self.values[switch].instance == instance:
-                    return self.values[switch].data
-            for dimmer in self.values:
-                if self.values[dimmer].instance == instance:
-                    if self.values[dimmer].data == 0:
-                        return False
-                    else:
-                        return True
-        return None
-
-    def get_switch_all_item(self, value_id):
-        """
-        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
-        Return the current value (using value value_id) of a switch_all.
-
-        :param value_id: The value to retrieve switch_all value
-        :type value_id: int
-        :return: The value of the value
-        :rtype: str
-
-        """
-        if value_id in self.values:
-            return self.values[value_id].data
-        return None
-
-    def get_switch_all_items(self, value_id):
-        """
-        The command 0x27 (COMMAND_CLASS_SWITCH_ALL) of this node.
-        Return the all the possible values (using value value_id) of a
-        switch_all.
-
-        :param value_id: The value to retrieve items list
-        :type value_id: int
-        :return: The value of the value
-        :rtype: set()
-
-        """
-        if value_id in self.values:
-            return self.values[value_id].data_items
-        return None
+        key = ('Switch All', COMMAND_CLASS_SWITCH_ALL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
 

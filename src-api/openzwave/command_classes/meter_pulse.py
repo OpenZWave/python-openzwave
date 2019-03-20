@@ -41,3 +41,11 @@ class MeterPulse(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_METER_PULSE]
+
+    @property
+    def meter_pulse_count(self):
+        key = ('Count', COMMAND_CLASS_METER_PULSE)
+        try:
+            return self[key].data
+        except KeyError:
+            return None

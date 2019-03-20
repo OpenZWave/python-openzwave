@@ -41,3 +41,108 @@ class Meter(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_METER]
+
+    def meter_reset(self):
+        key = ('Reset', COMMAND_CLASS_METER)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    @property
+    def meter_gas(self):
+        key = ('Gas', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_water(self):
+        key = ('Water', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_exporting(self):
+        key = ('Exporting', COMMAND_CLASS_METER)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def meter_energy(self):
+        key = ('Energy', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_power(self):
+        key = ('Power', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_count(self):
+        key = ('Count', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_voltage(self):
+        key = ('Voltage', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_amperage(self):
+        key = ('Current', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_power_factor(self):
+        key = ('Power Factor', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_previous_reading(self):
+        key = ('Previous Reading', COMMAND_CLASS_METER)
+        try:
+            value = self[key]
+            return [value.data, value.units]
+        except KeyError:
+            return None
+
+    @property
+    def meter_reading_interval(self):
+        key = ('Interval', COMMAND_CLASS_METER)
+        try:
+            return self[key].data
+        except KeyError:
+            return None

@@ -41,18 +41,18 @@ class SwitchMultilevel(CommandClassBase):
         self.__event = threading.Event()
         self.__thread = None
 
-    def stop_ramp(self):
+    def switch_stop_ramp(self):
         if self.__thread is not None:
             self.__event.set()
             self.__thread.join()
 
-    def ramp_up(self, level, speed=0.17, step=1):
+    def switch_ramp_up(self, level, speed=0.17, step=1):
+        self.switch_stop_ramp()
+
         try:
             value = self[('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)]
         except KeyError:
             return
-
-        self.stop_ramp()
 
         def do(val, stp, spd, lvl):
             self.__event.clear()
@@ -83,13 +83,13 @@ class SwitchMultilevel(CommandClassBase):
         t.daemon = True
         t.start()
 
-    def ramp_down(self, level, speed=0.17, step=1):
+    def switch_ramp_down(self, level, speed=0.17, step=1):
+        self.switch_stop_ramp()
+
         try:
             value = self[('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)]
         except KeyError:
             return
-
-        self.stop_ramp()
 
         def do(val, stp, spd, lvl):
             self.__event.clear()
@@ -121,23 +121,129 @@ class SwitchMultilevel(CommandClassBase):
         t.start()
 
     @property
-    def level(self):
+    def switch_step_size(self):
+        key = ('Step Size', COMMAND_CLASS_SWITCH_MULTILEVEL)
         try:
-            return self[('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)].data
+            return self[key].data
         except KeyError:
             return None
 
-    @level.setter
-    def level(self, value):
+    @switch_step_size.setter
+    def switch_step_size(self, value):
+        key = ('Step Size', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def switch_dimming_duration(self):
+        key = ('Dimming Duration', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @switch_dimming_duration.setter
+    def switch_dimming_duration(self, value):
+        key = ('Dimming Duration', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def switch_light_level(self):
+        key = ('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @switch_light_level.setter
+    def switch_light_level(self, value):
         if 99 < value < 255:
             value = 99
         elif value < 0:
             value = 0
 
-        self.stop_ramp()
+        self.switch_stop_ramp()
 
+        key = ('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
         try:
-            self[('Level', COMMAND_CLASS_SWITCH_MULTILEVEL)].data = value
+            self[key].data = value
         except KeyError:
             pass
+
+    @property
+    def switch_ignore_start_level(self):
+        key = ('Ignore Start Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @switch_ignore_start_level.setter
+    def switch_ignore_start_level(self, value):
+        key = ('Ignore Start Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def switch_start_level(self):
+        key = ('Start Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @switch_start_level.setter
+    def switch_start_level(self, value):
+        key = ('Start Level', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    def switch_increase_level(self):
+        self.switch_stop_ramp()
+
+        key = ('Inc', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    def switch_decrease_level(self):
+        self.switch_stop_ramp()
+
+        key = ('Dec', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    def switch_on_bright(self):
+        self.switch_stop_ramp()
+
+        key = ('Bright', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    def switch_on_dim(self):
+        self.switch_stop_ramp()
+
+        key = ('Dim', COMMAND_CLASS_SWITCH_MULTILEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
 

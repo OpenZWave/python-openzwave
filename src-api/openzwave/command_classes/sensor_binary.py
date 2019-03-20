@@ -38,7 +38,7 @@ class SensorBinary(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_SENSOR_BINARY]
 
     @property
-    def state(self):
+    def sensor_reading(self):
         try:
             return self[('Sensor', COMMAND_CLASS_SENSOR_BINARY)].data
         except KeyError:

@@ -38,7 +38,7 @@ class Security(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_SECURITY]
 
     @property
-    def is_secure(self):
+    def secure(self):
         try:
             return self[('Secured', COMMAND_CLASS_SECURITY)].data
         except KeyError:

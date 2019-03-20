@@ -41,3 +41,35 @@ class EnergyProduction(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_ENERGY_PRODUCTION]
+
+    @property
+    def current_energy_production(self):
+        key = ('Instant energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def total_energy_production(self):
+        key = ('Total energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def energy_production_today(self):
+        key = ('Energy production today', COMMAND_CLASS_ENERGY_PRODUCTION)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def total_energy_production_time(self):
+        key = ('Total production time', COMMAND_CLASS_ENERGY_PRODUCTION)
+        try:
+            return self[key].data
+        except KeyError:
+            return None

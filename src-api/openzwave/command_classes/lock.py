@@ -41,3 +41,19 @@ class Lock(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_LOCK]
+
+    @property
+    def locked(self):
+        key = ('Locked', COMMAND_CLASS_LOCK)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @locked.setter
+    def locked(self, value):
+        key = ('Locked', COMMAND_CLASS_LOCK)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass

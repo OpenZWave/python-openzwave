@@ -41,3 +41,19 @@ class Indicator(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_INDICATOR]
+
+    @property
+    def indicator(self):
+        key = ('Indicator', COMMAND_CLASS_INDICATOR)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @indicator.setter
+    def indicator(self, value):
+        key = ('Indicator', COMMAND_CLASS_INDICATOR)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass

@@ -41,3 +41,35 @@ class Language(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_LANGUAGE]
+
+    @property
+    def language(self):
+        key = ('Language', COMMAND_CLASS_LANGUAGE)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @language.setter
+    def language(self, value):
+        key = ('Language', COMMAND_CLASS_LANGUAGE)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def country(self):
+        key = ('Country', COMMAND_CLASS_LANGUAGE)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @country.setter
+    def country(self, value):
+        key = ('Country', COMMAND_CLASS_LANGUAGE)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass

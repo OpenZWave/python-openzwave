@@ -37,84 +37,124 @@ class Powerlevel(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_POWERLEVEL]
 
-    def get_power_level(self, value_id=None):
-        """
-        The power level of this node.
-
-        :param value_id: The value to retrieve state. If None, retrieve the
-        first value
-        :type value_id: int
-        :return: The power level
-        :rtype: int
-        """
-
-        if value_id is None:
-            return self.power_levels[0]
+    @property
+    def power_level(self):
+        key = ('Powerlevel', COMMAND_CLASS_POWERLEVEL)
         try:
-            value = self[(value_id, COMMAND_CLASS_POWERLEVEL)]
-            if (
-                value.genre == 'User' and
-                value.type == 'Byte' and
-                value.readonly is True and
-                value.writeonly is False
-            ):
-                return value.data
-            else:
-                return None
-
-        except (KeyError, IndexError):
+            return self[key].data
+        except KeyError:
             return None
 
-    @property
-    def power_levels(self):
-        """
-        Retrieve the list of values to consider as power_levels.
-        Filter rules are :
-
-            command_class = 0x73
-            genre = "User"
-            type = "Byte"
-            readonly = True
-            writeonly = False
-
-        :return: The list of switches on this node
-        :rtype: dict()
-        """
-
-        res = []
-
-        for value in self[(None, COMMAND_CLASS_POWERLEVEL)]:
-            if (
-                value.genre == 'User' and
-                value.type == 'Byte' and
-                value.readonly is True and
-                value.writeonly is False
-            ):
-                res += [value.data]
-
-        return res
-
-    def test_power_level(self, db):
+    @power_level.setter
+    def power_level(self, value):
+        key = ('Powerlevel', COMMAND_CLASS_POWERLEVEL)
         try:
-            self[('Test Powerlevel', COMMAND_CLASS_POWERLEVEL)].data = db
+            self[key].data = value
         except KeyError:
             pass
 
-    def test_node(self):
-        for value in self[(None, COMMAND_CLASS_POWERLEVEL)]:
-            if value.label == 'Test Node':
-                value.data = 1
+    @property
+    def power_level_timeout(self):
+        key = ('Timeout', COMMAND_CLASS_POWERLEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @power_level_timeout.setter
+    def power_level_timeout(self, value):
+        key = ('Timeout', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
 
     @property
-    def acked_frames(self):
+    def power_level_test_node(self):
+        key = ('Test Node', COMMAND_CLASS_POWERLEVEL)
         try:
-            return self[('Acked Frames', COMMAND_CLASS_POWERLEVEL)].data
+            return self[key].data
+        except KeyError:
+            return None
+
+    @power_level_test_node.setter
+    def power_level_test_node(self, value):
+        key = ('Test Node', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def power_level_test(self):
+        key = ('Test Powerlevel', COMMAND_CLASS_POWERLEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @power_level_test.setter
+    def power_level_test(self, value):
+        key = ('Test Powerlevel', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def power_level_frame_count(self):
+        key = ('Frame Count', COMMAND_CLASS_POWERLEVEL)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @power_level_frame_count.setter
+    def power_level_frame_count(self, value):
+        key = ('Frame Count', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
+    def power_level_acked_frames(self):
+        key = ('Acked Frames', COMMAND_CLASS_POWERLEVEL)
+        try:
+            return self[key].data
         except KeyError:
             return None
 
     @property
-    def frame_count(self):
+    def power_level_test_results(self):
+        key = ('Test Status', COMMAND_CLASS_POWERLEVEL)
         try:
-            return self[('Frame Count', COMMAND_CLASS_POWERLEVEL)].data
+            return self[key].data
         except KeyError:
             return None
+
+    def power_level_save(self):
+        key = ('Set Powerlevel', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    def power_level_start_test(self):
+        key = ('Test', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    def power_level_reeport(self):
+        key = ('Report', COMMAND_CLASS_POWERLEVEL)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+
