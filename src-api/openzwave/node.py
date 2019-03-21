@@ -24,6 +24,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import sys
+import six
 from libopenzwave import PyStatNode
 from openzwave import command_classes
 from openzwave import device_classes
@@ -144,8 +145,8 @@ class ZWaveNodeInterfaceMeta(type):
         return ZWaveNodeInterfaceMeta.instances[(object_id, network)]
 
 
+@six.add_metaclass(ZWaveNodeInterfaceMeta)
 class ZWaveNodeInterface(object):
-    __metaclass__ = ZWaveNodeInterfaceMeta
 
     def __init__(self, *args, **kwargs):
         pass
