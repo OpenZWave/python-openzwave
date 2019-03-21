@@ -43,7 +43,7 @@ class AssociationCommandConfiguration(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION]
 
     @property
-    def max_command_length(self):
+    def association_max_command_length(self):
         key = (
             'Max Command Length',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -54,7 +54,7 @@ class AssociationCommandConfiguration(CommandClassBase):
             return None
 
     @property
-    def commands_are_values(self):
+    def association_commands_are_values(self):
         key = (
             'Commands are Values',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -65,7 +65,7 @@ class AssociationCommandConfiguration(CommandClassBase):
             return None
 
     @property
-    def commands_are_configurable(self):
+    def association_commands_are_configurable(self):
         key = (
             'Commands are Configurable',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -76,7 +76,7 @@ class AssociationCommandConfiguration(CommandClassBase):
             return None
 
     @property
-    def free_commands(self):
+    def association_free_commands(self):
         key = (
             'Free Commands',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -87,7 +87,7 @@ class AssociationCommandConfiguration(CommandClassBase):
             return None
 
     @property
-    def max_commands(self):
+    def association_max_commands(self):
         key = (
             'Max Commands',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION

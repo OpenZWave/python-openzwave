@@ -51,15 +51,15 @@ class ClimateControlSchedule(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE]
 
     @property
-    def monday(self):
+    def thermostat_schedule_monday(self):
         key = ('Monday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @monday.setter
-    def monday(self, value):
+    @thermostat_schedule_monday.setter
+    def thermostat_schedule_monday(self, value):
         key = ('Monday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -67,15 +67,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def tuesday(self):
+    def thermostat_schedule_tuesday(self):
         key = ('Tuesday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @tuesday.setter
-    def tuesday(self, value):
+    @thermostat_schedule_tuesday.setter
+    def thermostat_schedule_tuesday(self, value):
         key = ('Tuesday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -83,15 +83,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def wednesday(self):
+    def thermostat_schedule_wednesday(self):
         key = ('Wednesday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @wednesday.setter
-    def wednesday(self, value):
+    @thermostat_schedule_wednesday.setter
+    def thermostat_schedule_wednesday(self, value):
         key = ('Wednesday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -99,15 +99,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def thursday(self):
+    def thermostat_schedule_thursday(self):
         key = ('Thursday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @thursday.setter
-    def thursday(self, value):
+    @thermostat_schedule_thursday.setter
+    def thermostat_schedule_thursday(self, value):
         key = ('Thursday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -115,15 +115,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def friday(self):
+    def thermostat_schedule_friday(self):
         key = ('Friday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @friday.setter
-    def friday(self, value):
+    @thermostat_schedule_friday.setter
+    def thermostat_schedule_friday(self, value):
         key = ('Friday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -131,15 +131,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def saturday(self):
+    def thermostat_schedule_saturday(self):
         key = ('Saturday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @saturday.setter
-    def saturday(self, value):
+    @thermostat_schedule_saturday.setter
+    def thermostat_schedule_saturday(self, value):
         key = ('Saturday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -147,15 +147,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def sunday(self):
+    def thermostat_schedule_sunday(self):
         key = ('Sunday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @sunday.setter
-    def sunday(self, value):
+    @thermostat_schedule_sunday.setter
+    def thermostat_schedule_sunday(self, value):
         key = ('Sunday', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value
@@ -163,15 +163,15 @@ class ClimateControlSchedule(CommandClassBase):
             pass
 
     @property
-    def override_state(self):
+    def thermostat_schedule_override_state(self):
         key = ('Override State', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @override_state.setter
-    def override_state(self, value):
+    @thermostat_schedule_override_state.setter
+    def thermostat_schedule_override_state(self, value):
         key = ('Override State', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
 
         if isinstance(value, int):
@@ -187,15 +187,15 @@ class ClimateControlSchedule(CommandClassBase):
                 pass
 
     @property
-    def override_setback(self):
+    def thermostat_schedule_override_setback(self):
         key = ('Override Setback', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @override_setback.setter
-    def override_setback(self, value):
+    @thermostat_schedule_override_setback.setter
+    def thermostat_schedule_override_setback(self, value):
         key = ('Override Setback', COMMAND_CLASS_CLIMATE_CONTROL_SCHEDULE)
         try:
             self[key].data = value

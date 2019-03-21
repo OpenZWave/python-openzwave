@@ -39,15 +39,34 @@ class ThermostatSetpoint(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_SETPOINT]
 
     @property
-    def away_heating(self):
-        key = ('Away Heating', COMMAND_CLASS_THERMOSTAT_SETPOINT)
+    def thermostat_setpoint(self):
+        key = ('Setpoint', COMMAND_CLASS_THERMOSTAT_SETPOINT)
         try:
-            return self[key].data
+            value = self[key]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @away_heating.setter
-    def away_heating(self, value):
+    @thermostat_setpoint.setter
+    def thermostat_setpoint(self, value):
+        for val in self.values.values():
+            if (
+                val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
+                val.label == 'Setpoint'
+            ):
+                val.data = value
+
+    @property
+    def thermostat_away_heating_setpoint(self):
+        key = ('Away Heating', COMMAND_CLASS_THERMOSTAT_SETPOINT)
+        try:
+            value = self[key]
+            return [value.data, value.unit]
+        except KeyError:
+            return None
+
+    @thermostat_away_heating_setpoint.setter
+    def thermostat_away_heating_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -56,15 +75,16 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def cooling_econ(self):
+    def thermostat_cooling_econ_setpoint(self):
         key = ('Cooling Econ', COMMAND_CLASS_THERMOSTAT_SETPOINT)
         try:
-            return self[key].data
+            value = self[key]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @cooling_econ.setter
-    def cooling_econ(self, value):
+    @thermostat_cooling_econ_setpoint.setter
+    def thermostat_cooling_econ_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -73,15 +93,16 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def heating_econ(self):
+    def thermostat_heating_econ_setpoint(self):
         key = ('Heating Econ', COMMAND_CLASS_THERMOSTAT_SETPOINT)
         try:
-            return self[key].data
+            value = self[key]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @heating_econ.setter
-    def heating_econ(self, value):
+    @thermostat_heating_econ_setpoint.setter
+    def thermostat_heating_econ_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -90,15 +111,16 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def auto_changeover(self):
+    def thermostat_auto_changeover_setpoint(self):
         key = ('Auto Changeover', COMMAND_CLASS_THERMOSTAT_SETPOINT)
         try:
-            return self[key].data
+            value = self[key]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @auto_changeover.setter
-    def auto_changeover(self, value):
+    @thermostat_auto_changeover_setpoint.setter
+    def thermostat_auto_changeover_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -107,14 +129,15 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def moist_air(self):
+    def thermostat_moist_air_setpoint(self):
         try:
-            return self[('Moist Air', COMMAND_CLASS_THERMOSTAT_SETPOINT)].data
+            value = self[('Moist Air', COMMAND_CLASS_THERMOSTAT_SETPOINT)]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @moist_air.setter
-    def moist_air(self, value):
+    @thermostat_moist_air_setpoint.setter
+    def thermostat_moist_air_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -123,14 +146,16 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def dry_air(self):
+    def thermostat_dry_air_setpoint(self):
         try:
-            return self[('Dry Air', COMMAND_CLASS_THERMOSTAT_SETPOINT)].data
+            value = self[('Dry Air', COMMAND_CLASS_THERMOSTAT_SETPOINT)]
+            return [value.data, value.unit]
+
         except KeyError:
             return None
 
-    @dry_air.setter
-    def dry_air(self, value):
+    @thermostat_dry_air_setpoint.setter
+    def thermostat_dry_air_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -139,14 +164,15 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def furnace(self):
+    def thermostat_furnace_setpoint(self):
         try:
-            return self[('Furnace', COMMAND_CLASS_THERMOSTAT_SETPOINT)].data
+            value = self[('Furnace', COMMAND_CLASS_THERMOSTAT_SETPOINT)]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @furnace.setter
-    def furnace(self, value):
+    @thermostat_furnace_setpoint.setter
+    def thermostat_furnace_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -155,14 +181,15 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def heat(self):
+    def thermostat_heat_setpoint(self):
         try:
-            return self[('Heating 1', COMMAND_CLASS_THERMOSTAT_SETPOINT)].data
+            value = self[('Heating 1', COMMAND_CLASS_THERMOSTAT_SETPOINT)]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @heat.setter
-    def heat(self, value):
+    @thermostat_heat_setpoint.setter
+    def thermostat_heat_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
@@ -171,18 +198,61 @@ class ThermostatSetpoint(CommandClassBase):
                 val.data = value
 
     @property
-    def cool(self):
+    def thermostat_cool_setpoint(self):
         try:
-            return self[('Cooling 1', COMMAND_CLASS_THERMOSTAT_SETPOINT)].data
+            value = self[('Cooling 1', COMMAND_CLASS_THERMOSTAT_SETPOINT)]
+            return [value.data, value.unit]
         except KeyError:
             return None
 
-    @cool.setter
-    def cool(self, value):
+    @thermostat_cool_setpoint.setter
+    def thermostat_cool_setpoint(self, value):
         for val in self.values.values():
             if (
                 val == COMMAND_CLASS_THERMOSTAT_SETPOINT and
                 val.label == 'Cooling 1'
             ):
                 val.data = value
+
+    @property
+    def thermostat_setpoint_unit(self):
+        values = [
+            'Heating 1',
+            'Cooling 1',
+            'Furnace',
+            'Dry Air',
+            'Moist Air',
+            'Auto Changeover',
+            'Heating Econ',
+            'Cooling Econ',
+            'Away Heating'
+        ]
+
+        for value in values:
+            try:
+                return self[(value, COMMAND_CLASS_THERMOSTAT_SETPOINT)].unit
+            except KeyError:
+                pass
+
+    @thermostat_setpoint_unit.setter
+    def thermostat_setpoint_unit(self, value):
+        values = [
+            'Heating 1',
+            'Cooling 1',
+            'Furnace',
+            'Dry Air',
+            'Moist Air',
+            'Auto Changeover',
+            'Heating Econ',
+            'Cooling Econ',
+            'Away Heating'
+        ]
+
+        for val in values:
+            try:
+                self[(val, COMMAND_CLASS_THERMOSTAT_SETPOINT)].unit = value
+            except KeyError:
+                pass
+
+
 

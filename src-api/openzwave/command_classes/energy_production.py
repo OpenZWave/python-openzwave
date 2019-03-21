@@ -44,7 +44,7 @@ class EnergyProduction(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_ENERGY_PRODUCTION]
 
     @property
-    def current_energy_production(self):
+    def energy_production_current(self):
         key = ('Instant energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
@@ -52,7 +52,7 @@ class EnergyProduction(CommandClassBase):
             return None
 
     @property
-    def total_energy_production(self):
+    def energy_production_total(self):
         key = ('Total energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
@@ -68,7 +68,7 @@ class EnergyProduction(CommandClassBase):
             return None
 
     @property
-    def total_energy_production_time(self):
+    def energy_production_total_time(self):
         key = ('Total production time', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data

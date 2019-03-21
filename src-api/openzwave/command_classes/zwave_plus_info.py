@@ -38,3 +38,28 @@ class ZwavePlusInfo(CommandClassBase):
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_ZWAVE_PLUS_INFO]
+
+    @property
+    def zwave_plus_version(self):
+        key = ('ZWave+ Version', COMMAND_CLASS_ZWAVE_PLUS_INFO)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def zwave_plus_installer_icon(self):
+        key = ('InstallerIcon', COMMAND_CLASS_ZWAVE_PLUS_INFO)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def zwave_plus_user_icon(self):
+        key = ('UserIcon', COMMAND_CLASS_ZWAVE_PLUS_INFO)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+

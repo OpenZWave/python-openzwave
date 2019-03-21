@@ -47,7 +47,7 @@ class BasicWindowCovering(CommandClassBase):
         self.__event = threading.Event()
 
     @property
-    def is_window_covering_opening(self):
+    def window_covering_is_opening(self):
         key = ('Open', COMMAND_CLASS_BASIC_WINDOW_COVERING)
         try:
             return self[key].data is True
@@ -55,7 +55,7 @@ class BasicWindowCovering(CommandClassBase):
             return False
 
     @property
-    def is_window_covering_closing(self):
+    def window_covering_is_closing(self):
         key = ('Close', COMMAND_CLASS_BASIC_WINDOW_COVERING)
 
         try:
@@ -63,7 +63,7 @@ class BasicWindowCovering(CommandClassBase):
         except KeyError:
             return False
 
-    def open_window_covering(self, duration=0.0):
+    def window_covering_open(self, duration=0.0):
         key = ('Open', COMMAND_CLASS_BASIC_WINDOW_COVERING)
 
         self.stop_window_covering()
@@ -99,7 +99,7 @@ class BasicWindowCovering(CommandClassBase):
 
             return True
 
-    def stop_window_covering(self):
+    def window_covering_stop(self):
         if self.__thread is not None:
             self.__event.set()
             self.__thread.join()
@@ -112,10 +112,10 @@ class BasicWindowCovering(CommandClassBase):
             except KeyError:
                 pass
 
-    def close_window_covering(self, duration=0.0):
+    def window_covering_close(self, duration=0.0):
         key = ('Close', COMMAND_CLASS_BASIC_WINDOW_COVERING)
 
-        self.stop_window_covering()
+        self.window_covering_stop()
 
         if duration == 0:
             try:

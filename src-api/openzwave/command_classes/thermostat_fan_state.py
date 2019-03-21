@@ -39,7 +39,7 @@ class ThermostatFanState(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_FAN_STATE]
 
     @property
-    def fan_state(self):
+    def thermostat_fan_state(self):
         try:
             return self[('Fan State', COMMAND_CLASS_THERMOSTAT_FAN_STATE)].data
         except KeyError:

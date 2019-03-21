@@ -54,9 +54,15 @@ class TimeParameters(CommandClassBase):
 
     def set_date_time(self):
         try:
-            value = self[('Set Date/Time', COMMAND_CLASS_TIME_PARAMETERS)].data
+            self[('Set Date/Time', COMMAND_CLASS_TIME_PARAMETERS)].data = True
+            return True
         except KeyError:
-            return
+            return False
 
-        value.data = True
-
+    def refresh_date_time(self):
+        key = ('Refresh Date/Time', COMMAND_CLASS_TIME_PARAMETERS)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False

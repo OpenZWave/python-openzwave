@@ -55,28 +55,28 @@ class Clock(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_CLOCK]
 
     @property
-    def hour(self):
+    def clock_hour(self):
         try:
             return self[('Hour', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @hour.setter
-    def hour(self, value):
+    @clock_hour.setter
+    def clock_hour(self, value):
         try:
             self[('Hour', COMMAND_CLASS_CLOCK)].data = value
         except KeyError:
             pass
 
     @property
-    def day(self):
+    def clock_day(self):
         try:
             return self[('Day', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @day.setter
-    def day(self, value):
+    @clock_day.setter
+    def clock_day(self, value):
         if isinstance(value, int):
             try:
                 value = self.DAYS[value]
@@ -90,14 +90,14 @@ class Clock(CommandClassBase):
                 pass
 
     @property
-    def minute(self):
+    def clock_minute(self):
         try:
             return self[('Minute', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @minute.setter
-    def minute(self, value):
+    @clock_minute.setter
+    def clock_minute(self, value):
         try:
             self[('Minute', COMMAND_CLASS_CLOCK)].data = value
         except KeyError:

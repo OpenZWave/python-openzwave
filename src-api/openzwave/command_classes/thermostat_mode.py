@@ -55,14 +55,14 @@ class ThermostatMode(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_MODE]
 
     @property
-    def operating_mode(self):
+    def thermostat_operating_mode(self):
         try:
             return self[('Mode', COMMAND_CLASS_THERMOSTAT_MODE)].data
         except KeyError:
             return None
 
-    @operating_mode.setter
-    def operating_mode(self, value):
+    @thermostat_operating_mode.setter
+    def thermostat_operating_mode(self, value):
         if isinstance(value, int):
             try:
                 value = self.MODES[value]

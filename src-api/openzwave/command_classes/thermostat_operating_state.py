@@ -39,7 +39,7 @@ class ThermostatOperatingState(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_OPERATING_STATE]
 
     @property
-    def operating_state(self):
+    def thermostat_operating_state(self):
         key = ('Operating State', COMMAND_CLASS_THERMOSTAT_OPERATING_STATE)
         try:
             return self[key].data

@@ -39,20 +39,33 @@ class WakeUp(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_WAKE_UP]
 
     @property
+    def wakeup_interval(self):
+        key = ('Wake-up Interval', COMMAND_CLASS_WAKE_UP)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @wakeup_interval.setter
+    def wakeup_interval(self, value):
+        value = min(
+            self.wakeup_interval_max,
+            max(self.wakeup_interval_min, value)
+        )
+
+        key = ('Wake-up Interval', COMMAND_CLASS_WAKE_UP)
+        try:
+            self[key].data = value
+        except KeyError:
+            pass
+
+    @property
     def wakeup_interval_min(self):
         key = ('Minimum Wake-up Interval', COMMAND_CLASS_WAKE_UP)
         try:
             return self[key].data
         except KeyError:
             return None
-
-    @wakeup_interval_min.setter
-    def wakeup_interval_min(self, value):
-        key = ('Minimum Wake-up Interval', COMMAND_CLASS_WAKE_UP)
-        try:
-            self[key].data = value
-        except KeyError:
-            pass
 
     @property
     def wakeup_interval_max(self):
@@ -62,14 +75,6 @@ class WakeUp(CommandClassBase):
         except KeyError:
             return None
 
-    @wakeup_interval_max.setter
-    def wakeup_interval_max(self, value):
-        key = ('Maximum Wake-up Interval', COMMAND_CLASS_WAKE_UP)
-        try:
-            self[key].data = value
-        except KeyError:
-            pass
-
     @property
     def wakeup_interval_default(self):
         key = ('Default Wake-up Interval', COMMAND_CLASS_WAKE_UP)
@@ -78,14 +83,6 @@ class WakeUp(CommandClassBase):
         except KeyError:
             return None
 
-    @wakeup_interval_default.setter
-    def wakeup_interval_default(self, value):
-        key = ('Default Wake-up Interval', COMMAND_CLASS_WAKE_UP)
-        try:
-            self[key].data = value
-        except KeyError:
-            pass
-
     @property
     def wakeup_interval_step(self):
         key = ('Wake-up Interval Step', COMMAND_CLASS_WAKE_UP)
@@ -93,12 +90,4 @@ class WakeUp(CommandClassBase):
             return self[key].data
         except KeyError:
             return None
-
-    @wakeup_interval_step.setter
-    def wakeup_interval_step(self, value):
-        key = ('Wake-up Interval Step', COMMAND_CLASS_WAKE_UP)
-        try:
-            self[key].data = value
-        except KeyError:
-            pass
 

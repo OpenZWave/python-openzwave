@@ -65,7 +65,7 @@ class ControllerReplication(CommandClassBase):
             pass
 
     @property
-    def functions(self):
+    def replication_functions(self):
         try:
             return (
                 self[('Functions', COMMAND_CLASS_CONTROLLER_REPLICATION)].data
@@ -73,8 +73,8 @@ class ControllerReplication(CommandClassBase):
         except KeyError:
             return None
 
-    @functions.setter
-    def functions(self, value):
+    @replication_functions.setter
+    def replication_functions(self, value):
         if isinstance(value, int):
             try:
                 value = self.FUNCTIONS[value]

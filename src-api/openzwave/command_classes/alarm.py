@@ -63,7 +63,7 @@ class Alarm(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_ALARM]
 
     @property
-    def source(self):
+    def alarm_source_node(self):
         """
         The device type
 

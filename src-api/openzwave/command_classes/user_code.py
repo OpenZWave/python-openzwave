@@ -39,7 +39,31 @@ class UserCode(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_USER_CODE]
 
     @property
-    def codes(self):
+    def user_codes_count(self):
+        key = ('Code Count', COMMAND_CLASS_USER_CODE)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    def user_codes_refresh_all(self):
+        key = ('Refresh All UserCodes', COMMAND_CLASS_USER_CODE)
+        try:
+            self[key].data = True
+            return True
+        except KeyError:
+            return False
+
+    @property
+    def user_code_enrollment_code(self):
+        key = ('Enrollment Code', COMMAND_CLASS_USER_CODE)
+        try:
+            return self[key].data
+        except KeyError:
+            return None
+
+    @property
+    def user_codes(self):
         """
         Retrieves the list of value to consider as usercodes.
         Filter rules are :
@@ -57,66 +81,33 @@ class UserCode(CommandClassBase):
 
         res = []
         for value in self[(None, COMMAND_CLASS_USER_CODE)]:
-            if (
-                value.type == 'Raw' and
-                value.genre == 'User' and
-                value.readonly is False and
-                value.writeonly is False
-            ):
-                res += [value.data]
-
+            if value.label.startswith('Code'):
+                res += [self.Code(value)]
         return res
 
-    def get_code(self, index):
-        """
-        Retrieve particular usercode value by index.
-        Certain values such as user codes have index start from 0
-        to max number of usercode supported and is useful for getting
-        usercodes by the index.
 
-        :param index: The index of usercode value
-        :type index: int
-        :return: The user code at given index on this node
-        :rtype: ZWaveValue
+    class Code(object):
 
-        """
-        for value in self[(None, COMMAND_CLASS_USER_CODE)]:
-            if value.index == index:
-                return value.data
+        def __init__(self, value):
+            self.__value = value
 
-    def set_code(self, value_id, value):
-        """
-        The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
-        Sets usercode to value (using value_id).
+        def get(self):
+            return self.__value.data
 
-        :param value_id: The value to retrieve state from
-        :type value_id: int
-        :param value: User Code as string
-        :type value: str
+        def set(self, code):
+            self.__value.data = code
 
-        """
+        def name(self):
+            return self.__value.label
 
-        try:
-            self[(value_id, COMMAND_CLASS_USER_CODE)].data = value
-            return True
-        except (KeyError, IndexError):
-            return False
+        def __getattr__(self, item):
+            if item in self.__dict__:
+                return self.__dict__[item]
 
-    def set_code_at_index(self, index, value):
-        """
-        The command 0x63 (COMMAND_CLASS_USER_CODE) of this node.
-        Sets usercode to value (using index of value)
+            return getattr(self.__value, item)
 
-        :param index: The index of value to retrieve state from
-        :type index: int
-        :param value: User Code as string
-        :type value: str
-
-        """
-
-        for val in self[(None, COMMAND_CLASS_USER_CODE)]:
-            if val.index == index:
-                val.data = value
-                return True
-        return False
-
+        def __setattr__(self, key, value):
+            if key.startswith('__'):
+                object.__setattr__(self, key, value)
+            else:
+                setattr(self.__value, key, value)

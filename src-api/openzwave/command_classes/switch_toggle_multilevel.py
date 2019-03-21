@@ -39,21 +39,16 @@ class SwitchToggleMultilevel(CommandClassBase):
 
         self._cls_ids += [COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL]
 
-    def toggle(self):
+    def switch_toggle(self):
+        key = ('Level', COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL)
         try:
-            value = self[('Level', COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL)]
+            value = self[key].data
             if value.data:
                 value.data = 0
             else:
                 value.data = 255
+            return True
         except KeyError:
-            pass
+            return False
 
-    def toggle_all(self):
-        for value in self[(None, COMMAND_CLASS_SWITCH_TOGGLE_MULTILEVEL)]:
-            if value.label == 'Level':
-                if value.data:
-                    value.data = 0
-                else:
-                    value.data = 255
 

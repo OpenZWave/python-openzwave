@@ -46,14 +46,14 @@ class ThermostatFanMode(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_THERMOSTAT_FAN_MODE]
 
     @property
-    def fan_mode(self):
+    def thermostat_fan_mode(self):
         try:
             return self[('Fan Mode', COMMAND_CLASS_THERMOSTAT_FAN_MODE)].data
         except KeyError:
             return None
 
-    @fan_mode.setter
-    def fan_mode(self, value):
+    @thermostat_fan_mode.setter
+    def thermostat_fan_mode(self, value):
         if isinstance(value, int):
             try:
                 value = self.FAN_MODES[value]

@@ -38,14 +38,12 @@ class SwitchToggleBinary(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_SWITCH_TOGGLE_BINARY]
 
-    def toggle(self):
+    def switch_toggle(self):
         key = ('Toggle Switch', COMMAND_CLASS_SWITCH_TOGGLE_BINARY)
         try:
-            self[key].data = True
+            value = self[key].data
+            value.data = not value.data
+            return True
         except KeyError:
-            pass
+            return False
 
-    def toggle_all(self):
-        for value in self[(None, COMMAND_CLASS_SWITCH_TOGGLE_BINARY)]:
-            if value.label == 'Toggle Switch':
-                value.data = True

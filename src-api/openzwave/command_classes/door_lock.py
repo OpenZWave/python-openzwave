@@ -59,28 +59,28 @@ class DoorLock(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_DOOR_LOCK]
 
     @property
-    def locked(self):
+    def doorlock_locked(self):
         try:
             return self[('Locked', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @locked.setter
-    def locked(self, value):
+    @doorlock_locked.setter
+    def doorlock_locked(self, value):
         try:
             self[('Locked', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:
             pass
 
     @property
-    def locked_advanced(self):
+    def doorlock_locked_advanced(self):
         try:
             return self[('Locked (Advanced)', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @locked_advanced.setter
-    def locked_advanced(self, value):
+    @doorlock_locked_advanced.setter
+    def doorlock_locked_advanced(self, value):
 
         if isinstance(value, int):
             try:
@@ -95,15 +95,15 @@ class DoorLock(CommandClassBase):
                 pass
 
     @property
-    def outside_handle_control(self):
+    def doorlock_outside_handle_control(self):
         key = ('Outside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @outside_handle_control.setter
-    def outside_handle_control(self, value):
+    @doorlock_outside_handle_control.setter
+    def doorlock_outside_handle_control(self, value):
         key = ('Outside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
             self[key].data = value
@@ -111,15 +111,15 @@ class DoorLock(CommandClassBase):
             pass
 
     @property
-    def inside_handle_control(self):
+    def doorlock_inside_handle_control(self):
         key = ('Inside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @inside_handle_control.setter
-    def inside_handle_control(self, value):
+    @doorlock_inside_handle_control.setter
+    def doorlock_inside_handle_control(self, value):
         key = ('Inside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
             self[key].data = value
@@ -127,14 +127,14 @@ class DoorLock(CommandClassBase):
             pass
 
     @property
-    def timeout_mode(self):
+    def doorlock_timeout_mode(self):
         try:
             return self[('Timeout Mode', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @timeout_mode.setter
-    def timeout_mode(self, value):
+    @doorlock_timeout_mode.setter
+    def doorlock_timeout_mode(self, value):
 
         if isinstance(value, int):
             try:
@@ -149,28 +149,28 @@ class DoorLock(CommandClassBase):
                 pass
 
     @property
-    def timeout_minutes(self):
+    def doorlock_timeout_minutes(self):
         try:
             return self[('Timeout Minutes', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @timeout_minutes.setter
-    def timeout_minutes(self, value):
+    @doorlock_timeout_minutes.setter
+    def doorlock_timeout_minutes(self, value):
         try:
             self[('Timeout Minutes', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:
             pass
 
     @property
-    def timeout_seconds(self):
+    def doorlock_timeout_seconds(self):
         try:
             return self[('Timeout Seconds', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @timeout_seconds.setter
-    def timeout_seconds(self, value):
+    @doorlock_timeout_seconds.setter
+    def doorlock_timeout_seconds(self, value):
         try:
             self[('Timeout Seconds', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:

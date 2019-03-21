@@ -43,7 +43,7 @@ class Battery(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_BATTERY]
 
-    def get_battery_level(self, value_id=None):
+    def battery_get_level(self, value_id=None):
         """
         The battery level of this node.
 
