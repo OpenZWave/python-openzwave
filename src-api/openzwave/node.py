@@ -314,10 +314,6 @@ class ZWaveNode(ZWaveObject):
         """
         return self._network.manager.getNodeRoleString(self.home_id, self.object_id)
 
-    @property
-    def role_as_str(self):
-        role = self._network.manager.getNodeRole(self.home_id, self.object_id)
-        return zwave_device_classes.role_type_to_string(role)
 
     def to_dict(self, extras=['all']):
         """
