@@ -85,7 +85,7 @@ class Clock(CommandClassBase):
         Clock Day (`property`)
         
         Values:
-        
+        <br></br>
         * `'Monday'`
         * `'Tuesday'`
         * `'Wednesday'`
@@ -93,6 +93,7 @@ class Clock(CommandClassBase):
         * `'Friday'`
         * `'Saturday'`
         * `'Sunday'`
+        * `None`
 
         :param value: new clock day
         :type value: str
