@@ -44,6 +44,12 @@ class AssociationCommandConfiguration(CommandClassBase):
 
     @property
     def association_max_command_length(self):
+        """
+        Association Max Command Length (`property`)
+
+        :return: maximum command length
+        :rtype: int
+        """
         key = (
             'Max Command Length',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -55,6 +61,12 @@ class AssociationCommandConfiguration(CommandClassBase):
 
     @property
     def association_commands_are_values(self):
+        """
+        Association Commands are Values (`property`)
+
+        :return: `True`/`False`
+        :rtype: bool
+        """
         key = (
             'Commands are Values',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -66,6 +78,12 @@ class AssociationCommandConfiguration(CommandClassBase):
 
     @property
     def association_commands_are_configurable(self):
+        """
+        Association Commands are Configurable (`property`)
+
+        :return: `True`/`False`
+        :rtype: bool
+        """
         key = (
             'Commands are Configurable',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -77,6 +95,12 @@ class AssociationCommandConfiguration(CommandClassBase):
 
     @property
     def association_free_commands(self):
+        """
+        Association Free Commands (`property`)
+
+        :return: number of free commands
+        :rtype: int
+        """
         key = (
             'Free Commands',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
@@ -88,6 +112,12 @@ class AssociationCommandConfiguration(CommandClassBase):
 
     @property
     def association_max_commands(self):
+        """
+        Association Max Commands (`property`)
+
+        :return: total number of association commands available
+        :rtype: int
+        """
         key = (
             'Max Commands',
             COMMAND_CLASS_ASSOCIATION_COMMAND_CONFIGURATION
