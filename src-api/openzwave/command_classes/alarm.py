@@ -89,22 +89,23 @@ class Alarm(CommandClassBase):
 
         The type of device that triggered the alarm.
 
-        Possible returned values are:
+        Values:
         <br></br>
-        * 'General'
-        * 'Smoke'
-        * 'Carbon Monoxide'
-        * 'Carbon Dioxide'
-        * 'Heat'
-        * 'Flood'
-        * 'Access Control'
-        * 'Burglar'
-        * 'Power Management'
-        * 'System'
-        * 'Emergency'
-        * 'Clock'
-        * 'Appliance'
-        * 'HomeHealth'
+        * `'General'`
+        * `'Smoke'`
+        * `'Carbon Monoxide'`
+        * `'Carbon Dioxide'`
+        * `'Heat'`
+        * `'Flood'`
+        * `'Access Control'`
+        * `'Burglar'`
+        * `'Power Management'`
+        * `'System'`
+        * `'Emergency'`
+        * `'Clock'`
+        * `'Appliance'`
+        * `'HomeHealth'`
+        * `None`
 
         :return: sensor type that activated the alarm or None if command failed
         :rtype: str, None
