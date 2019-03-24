@@ -45,19 +45,16 @@ class Configuration(CommandClassBase):
 
     def get_configs(self, readonly='All', writeonly='All'):
         """
-        Retrieve the list of configuration parameters.
+        Get Configs
 
-        Filter rules are :
-            command_class = 0x70
-            genre = "Config"
-            readonly = "All" (default) or as passed in arg
+        Retrieve the list of configuration parameters.
 
         :param readonly: whether to retrieve readonly configs
         :type readonly: bool, str
         :param writeonly: whether to retrieve writeonly configs
         :type writeonly: bool, str
-        :return: a list of all configuration parameters
-        :rtype: list
+        :return: a list of value instances
+        :rtype: list of :class:`openzwave.value.ZWaveValue` instances
         """
 
         values = self[(None, COMMAND_CLASS_CONFIGURATION)]
@@ -83,12 +80,16 @@ class Configuration(CommandClassBase):
 
     def set_config(self, value_id, value):
         """
-        Set config to value (using value value_id)
+        Set config to value
 
-        :param value_id: The value to retrieve state
+        Sets supplied value id to supplied value
+
+        :param value_id: if the id of the value
         :type value_id: int
         :param value: Appropriate value for given config
         :type value: any
+        :return: command was successful `True`/`False`
+        :rtype: bool
         """
 
         try:
@@ -99,13 +100,16 @@ class Configuration(CommandClassBase):
 
     def get_config(self, value_id=None):
         """
-        Set config to value (using value value_id)
+        Get config
+
+        Gets the config for the supplied value id.
+
 
         :param value_id: The value to retrieve data from. If None, retrieve the
         first value
         :type value_id: int
-        :return: The level of this battery
-        :rtype: int
+        :return: value instance
+        :rtype: :class:`openzwave.value.ZWaveValue` instance
         """
 
         if value_id is None:
