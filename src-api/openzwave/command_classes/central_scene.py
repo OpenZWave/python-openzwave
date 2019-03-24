@@ -44,6 +44,14 @@ class CentralScene(CommandClassBase):
 
     @property
     def scene_count(self):
+        """
+        Number of Scenes (`property`)
+
+        Retrieves the number of scenes.
+
+        :return: number of scenes or None if command failed
+        :rtype: int, None
+        """
         try:
             return self[('Scene Count', COMMAND_CLASS_CENTRAL_SCENE)].data
         except KeyError:
