@@ -50,22 +50,51 @@ class ControllerReplication(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_CONTROLLER_REPLICATION]
 
-    @property
-    def replication_node_id(self):
+    __replication_node_id_doc = """
+        Replication Node Id (`property`)
+
+        :param value: new node id
+        :type value: int
+        :return: node id or None if command failed
+        :rtype: int, None
+    """
+
+    def __replication_node_id_get(self):
         try:
             return self[('Node', COMMAND_CLASS_CONTROLLER_REPLICATION)].data
         except KeyError:
             return None
 
-    @replication_node_id.setter
-    def replication_node_id(self, value):
+    def __replication_node_id_set(self, value):
         try:
             self[('Node', COMMAND_CLASS_CONTROLLER_REPLICATION)].data = value
         except KeyError:
             pass
 
-    @property
-    def replication_functions(self):
+    replication_node_id = property(
+        __replication_node_id_get,
+        __replication_node_id_set,
+        doc=__replication_node_id_doc
+    )
+
+    __replication_function_doc = """
+        Replication Function (`property`)
+        
+        Values:
+        <br><br\>
+        * `'Groups'`
+        * `'Group Names'`
+        * `'Scenes'`
+        * `'Scene Names'`
+        * `None`
+
+        :param value: function
+        :type value: str
+        :return: current function or None if command failed
+        :rtype: str, None
+    """
+
+    def __replication_function_get(self):
         try:
             return (
                 self[('Functions', COMMAND_CLASS_CONTROLLER_REPLICATION)].data
@@ -73,8 +102,7 @@ class ControllerReplication(CommandClassBase):
         except KeyError:
             return None
 
-    @replication_functions.setter
-    def replication_functions(self, value):
+    def __replication_function_set(self, value):
         if isinstance(value, int):
             try:
                 value = self.FUNCTIONS[value]
@@ -88,20 +116,26 @@ class ControllerReplication(CommandClassBase):
             except KeyError:
                 pass
 
-    @property
-    def replicate(self):
-        try:
-            return (
-                self[('Replicate', COMMAND_CLASS_CONTROLLER_REPLICATION)].data
-            )
-        except KeyError:
-            return None
+    replication_function = property(
+        __replication_function_get,
+        __replication_function_set,
+        doc=__replication_function_doc
+    )
 
-    @replicate.setter
-    def replicate(self, value):
+    def replicate(self):
+        """
+        Replicate
+
+        starts the replication process.
+
+        :return: if command was successful `True`/`False`
+        :rtype: bool
+        """
+        key = ('Replicate', COMMAND_CLASS_CONTROLLER_REPLICATION)
         try:
-            self[('Replicate', COMMAND_CLASS_CONTROLLER_REPLICATION)].data = (
-                value
-            )
+            self[key].data = True
+            return True
         except KeyError:
-            pass
+            return False
+
+
