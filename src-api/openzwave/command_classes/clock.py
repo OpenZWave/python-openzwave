@@ -54,29 +54,59 @@ class Clock(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_CLOCK]
 
-    @property
-    def clock_hour(self):
+    __clock_hour_doc = """
+        Clock Hour (`property`)
+
+        :param value: new clock hour
+        :type value: int
+        :return: hour the node is set to or None if command failed
+        :rtype: int, None
+    """
+
+    def __clock_hour_get(self):
         try:
             return self[('Hour', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @clock_hour.setter
-    def clock_hour(self, value):
+    def __clock_hour_set(self, value):
         try:
             self[('Hour', COMMAND_CLASS_CLOCK)].data = value
         except KeyError:
             pass
 
-    @property
-    def clock_day(self):
+    clock_hour = property(
+        __clock_hour_get,
+        __clock_hour_set,
+        doc=__clock_hour_doc
+    )
+
+    __clock_day_doc = """
+        Clock Day (`property`)
+        
+        Values:
+        
+        * `'Monday'`
+        * `'Tuesday'`
+        * `'Wednesday'`
+        * `'Thursday'`
+        * `'Friday'`
+        * `'Saturday'`
+        * `'Sunday'`
+
+        :param value: new clock day
+        :type value: str
+        :return:  day the node is set to or None if command failed
+        :rtype: str, None
+    """
+
+    def __clock_day_get(self):
         try:
             return self[('Day', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @clock_day.setter
-    def clock_day(self, value):
+    def __clock_day_set(self, value):
         if isinstance(value, int):
             try:
                 value = self.DAYS[value]
@@ -89,16 +119,35 @@ class Clock(CommandClassBase):
             except KeyError:
                 pass
 
-    @property
-    def clock_minute(self):
+    clock_day = property(
+        __clock_day_get,
+        __clock_day_set,
+        doc=__clock_day_doc
+    )
+
+    __clock_minute_doc = """
+        Clock Minute (`property`)
+
+        :param value: new clock minute
+        :type value: int
+        :return: minute the node is set to or None if command failed
+        :rtype: int, None
+    """
+
+    def __clock_minute_get(self):
         try:
             return self[('Minute', COMMAND_CLASS_CLOCK)].data
         except KeyError:
             return None
 
-    @clock_minute.setter
-    def clock_minute(self, value):
+    def __clock_minute_set(self, value):
         try:
             self[('Minute', COMMAND_CLASS_CLOCK)].data = value
         except KeyError:
             pass
+
+    clock_minute = property(
+        __clock_minute_get,
+        __clock_minute_set,
+        doc=__clock_minute_doc
+    )
