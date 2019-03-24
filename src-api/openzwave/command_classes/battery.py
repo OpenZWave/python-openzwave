@@ -50,8 +50,8 @@ class Battery(CommandClassBase):
         :param value_id: The value to retrieve state. If None, retrieve the
         first value
         :type value_id: int
-        :return: The level of this battery
-        :rtype: int
+        :return: The level of this battery or None if command failed
+        :rtype: int, None
         """
 
         if value_id is None:
