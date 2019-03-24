@@ -65,9 +65,29 @@ class Alarm(CommandClassBase):
     @property
     def alarm_source_node(self):
         """
-        The device type
+        Alarm Source Node (`property`)
 
-        This property will return the type of device.
+        Node that triggered the alarm.
+
+        :return: node instance that activated the alarm
+        :rtype: :class:`openzwave.node.ZWaveNode` instance
+
+        """
+
+        try:
+            value = self[('SourceNodeId', COMMAND_CLASS_ALARM)]
+        except KeyError:
+            return None
+
+        return self._network.nodes[value.data]
+
+    @property
+    def alarm_type(self):
+        """
+        Alarm Type (`property`)
+
+        The type of device that triggered the alarm.
+
         Possible returned values are:
         <br></br>
         * 'General'
@@ -85,23 +105,8 @@ class Alarm(CommandClassBase):
         * 'Appliance'
         * 'HomeHealth'
 
-        :return: device type
+        :return: sensor type that activated the alarm
         :rtype: str
-        """
-
-        try:
-            value = self[('SourceNodeId', COMMAND_CLASS_ALARM)]
-        except KeyError:
-            return None
-
-        return self._network.nodes[value.data]
-
-    @property
-    def alarm_type(self):
-        """
-        Alarm Type
-
-        :return: alarm type
         """
 
         try:
@@ -124,6 +129,7 @@ class Alarm(CommandClassBase):
         Alarm level
 
         :return: alarm level
+        :rtype: int
         """
         try:
             return self[('Alarm Level', COMMAND_CLASS_ALARM)].data
