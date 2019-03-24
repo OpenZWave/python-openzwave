@@ -46,104 +46,34 @@ class BasicWindowCovering(CommandClassBase):
         self.__thread = None
         self.__event = threading.Event()
 
-    @property
-    def window_covering_is_opening(self):
+    def window_covering_open(self):
+        """
+        Window Covering Open (`property`)
+
+        Opens the window covering.
+
+        :return: if command successfully sent `True`/`False`
+        :rtype: bool
+        """
         key = ('Open', COMMAND_CLASS_BASIC_WINDOW_COVERING)
         try:
-            return self[key].data is True
-        except KeyError:
+            self[key].data = True
+            return True
+        except AttributeError:
             return False
 
-    @property
-    def window_covering_is_closing(self):
-        key = ('Close', COMMAND_CLASS_BASIC_WINDOW_COVERING)
+    def window_covering_close(self):
+        """
+        Window Covering Close (`property`)
 
+        Closes the window covering.
+
+        :return: if command successfully sent `True`/`False`
+        :rtype: bool
+        """
+        key = ('Close', COMMAND_CLASS_BASIC_WINDOW_COVERING)
         try:
-            return self[key].data is False
-        except KeyError:
+            self[key].data = True
+            return True
+        except AttributeError:
             return False
-
-    def window_covering_open(self, duration=0.0):
-        key = ('Open', COMMAND_CLASS_BASIC_WINDOW_COVERING)
-
-        self.stop_window_covering()
-
-        if duration == 0:
-            try:
-                self[key].data = True
-                return True
-            except KeyError:
-                return False
-        else:
-            def run(dur):
-                try:
-                    self[key].data = True
-                    self.__event.wait(dur)
-                except KeyError:
-                    pass
-
-                try:
-                    self[key].data = False
-                except KeyError:
-                    pass
-
-                self.__thread = None
-                self.__event.clear()
-
-            self.__thread = threading.Thread(
-                target=run,
-                args=(duration,)
-            )
-            self.__thread.daemon = True
-            self.__thread.start()
-
-            return True
-
-    def window_covering_stop(self):
-        if self.__thread is not None:
-            self.__event.set()
-            self.__thread.join()
-
-        for key in ('Open', 'Close'):
-            key = (key, COMMAND_CLASS_BASIC_WINDOW_COVERING)
-
-            try:
-                self[key].data = False
-            except KeyError:
-                pass
-
-    def window_covering_close(self, duration=0.0):
-        key = ('Close', COMMAND_CLASS_BASIC_WINDOW_COVERING)
-
-        self.window_covering_stop()
-
-        if duration == 0:
-            try:
-                self[key].data = True
-                return True
-            except KeyError:
-                return False
-        else:
-            def run(dur):
-                try:
-                    self[key].data = True
-                    self.__event.wait(dur)
-                except KeyError:
-                    pass
-
-                try:
-                    self[key].data = False
-                except KeyError:
-                    pass
-
-                self.__thread = None
-                self.__event.clear()
-
-            self.__thread = threading.Thread(
-                target=run,
-                args=(duration,)
-            )
-            self.__thread.daemon = True
-            self.__thread.start()
-
-            return True
