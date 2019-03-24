@@ -47,8 +47,8 @@ class AssociationCommandConfiguration(CommandClassBase):
         """
         Association Max Command Length (`property`)
 
-        :return: maximum command length
-        :rtype: int
+        :return: maximum command length or None if command failed
+        :rtype: int, None
         """
         key = (
             'Max Command Length',
@@ -64,8 +64,8 @@ class AssociationCommandConfiguration(CommandClassBase):
         """
         Association Commands are Values (`property`)
 
-        :return: `True`/`False`
-        :rtype: bool
+        :return: `True`/`False` or None if command failed
+        :rtype: bool, None
         """
         key = (
             'Commands are Values',
@@ -81,8 +81,8 @@ class AssociationCommandConfiguration(CommandClassBase):
         """
         Association Commands are Configurable (`property`)
 
-        :return: `True`/`False`
-        :rtype: bool
+        :return: `True`/`False` or None if command failed
+        :rtype: bool, None
         """
         key = (
             'Commands are Configurable',
@@ -98,8 +98,8 @@ class AssociationCommandConfiguration(CommandClassBase):
         """
         Association Free Commands (`property`)
 
-        :return: number of free commands
-        :rtype: int
+        :return: number of free commands or None if command failed
+        :rtype: int, None
         """
         key = (
             'Free Commands',
@@ -115,8 +115,9 @@ class AssociationCommandConfiguration(CommandClassBase):
         """
         Association Max Commands (`property`)
 
-        :return: total number of association commands available
-        :rtype: int
+        :return: total number of association commands available or None
+        if command failed
+        :rtype: int, None
         """
         key = (
             'Max Commands',
