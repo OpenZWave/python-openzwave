@@ -64,14 +64,9 @@ class Battery(CommandClassBase):
     @property
     def battery_levels(self):
         """
-        Retrieve the list of values to consider as batteries.
-        Filter rules are :
+        Battery Levels ('property')
 
-            command_class = COMMAND_CLASS_BATTERY
-            genre = "User"
-            type = "Byte"
-            readonly = True
-            writeonly = False
+        Retrieve a list of battery levels.
 
         :return: list of levels
         :rtype: list
