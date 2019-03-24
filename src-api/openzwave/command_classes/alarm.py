@@ -69,8 +69,9 @@ class Alarm(CommandClassBase):
 
         Node that triggered the alarm.
 
-        :return: node instance that activated the alarm
-        :rtype: :class:`openzwave.node.ZWaveNode` instance
+        :return: node instance that activated the alarm or None if
+        command failed
+        :rtype: :class:`openzwave.node.ZWaveNode` instance, None
 
         """
 
@@ -105,8 +106,8 @@ class Alarm(CommandClassBase):
         * 'Appliance'
         * 'HomeHealth'
 
-        :return: sensor type that activated the alarm
-        :rtype: str
+        :return: sensor type that activated the alarm or None if command failed
+        :rtype: str, None
         """
 
         try:
@@ -128,8 +129,8 @@ class Alarm(CommandClassBase):
         """
         Alarm level
 
-        :return: alarm level
-        :rtype: int
+        :return: alarm level or None if command failed
+        :rtype: int, None
         """
         try:
             return self[('Alarm Level', COMMAND_CLASS_ALARM)].data
