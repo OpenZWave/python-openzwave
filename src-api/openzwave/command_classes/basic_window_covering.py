@@ -48,7 +48,7 @@ class BasicWindowCovering(CommandClassBase):
 
     def window_covering_open(self):
         """
-        Window Covering Open (`property`)
+        Window Covering Open
 
         Opens the window covering.
 
@@ -64,7 +64,7 @@ class BasicWindowCovering(CommandClassBase):
 
     def window_covering_close(self):
         """
-        Window Covering Close (`property`)
+        Window Covering Close
 
         Closes the window covering.
 
