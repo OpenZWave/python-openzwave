@@ -26,6 +26,8 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
 import warnings
+import six
+from .singleton import Singleton
 try:  # Python 2.7+
     from logging import NullHandler
 except ImportError:
@@ -91,6 +93,7 @@ class ZWaveCommandClassException(ZWaveException):
     msg = u"Z-Wave Command Class Exception"
 
 
+@six.add_metaclass(Singleton)
 class ZWaveObject(object):
     """
     Represents a Zwave object. Values, nodes, ... can be changer by

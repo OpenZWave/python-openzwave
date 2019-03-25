@@ -31,6 +31,7 @@ from openzwave import device_classes
 from openzwave.object import ZWaveObject
 from openzwave.group import ZWaveGroup
 from openzwave.value import ZWaveValue
+from .singleton import Singleton
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -54,20 +55,15 @@ logger.addHandler(NullHandler())
 # you through what is happening
 
 
-class ZWaveNodeInterfaceMeta(type):
-    # this class variable is used to hold the node instances. This metaclass is
-    # doubles as a singleton class. the key used to store the instances
-    # is a tuple containing the network instance and the id of the node
-    instances = {}
-
+class ZWaveNodeInterfaceMeta(Singleton):
     # this is what gets called when a new instance of ZWaveNodeInterface
     # is needed. we either return a stored instance if an instance with the
     # same network and id has been created already, or we dynamically build a
     # Node class and store it's instance then return it
 
-    def __call__(cls, id, network=None, use_cache=True):
+    def __call__(cls, id, network=None, *args, **kwargs):
 
-        if (id, network) not in ZWaveNodeInterfaceMeta.instances:
+        if (id, network) not in cls._instances:
             # we need to set the bases of the node. ZWaveNode being the
             # primary parent class.
             bases = (ZWaveNode,)
@@ -138,11 +134,11 @@ class ZWaveNodeInterfaceMeta(type):
                 bases,
                 {"__init__": __init__, '__bases__': bases}
             )
-            ZWaveNodeInterfaceMeta.instances[(id, network)] = (
-                node(id, network, use_cache)
+            cls._instances[(id, network)] = (
+                node(id, network, *args, **kwargs)
             )
 
-        return ZWaveNodeInterfaceMeta.instances[(id, network)]
+        return cls._instances[(id, network)]
 
 
 @six.add_metaclass(ZWaveNodeInterfaceMeta)

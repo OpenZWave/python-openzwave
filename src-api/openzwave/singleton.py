@@ -24,19 +24,19 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 
+
 class Singleton(type):
-    """ Singleton metaclass
     """
-    def __init__(self, *args, **kwargs):
-        """ Init the metaclass
-        @ivar __instances: instance of the class
-        @type __instance: object
-        """
-        super(Singleton, self).__init__(*args, **kwargs)
+    Singleton metaclass
+    """
+    def __init__(cls, *args, **kwargs):
+        """ Init the metaclass"""
+        cls._instances = {}
+        super(Singleton, cls).__init__(*args, **kwargs)
 
-        self.__instance = None
-
-    def __call__(self, *args, **kwargs):
-        if self.__instance is None:
-            self.__instance = super(Singleton, self).__call__(*args, **kwargs)
-        return self.__instance
+    def __call__(cls, id, network=None, *args, **kwargs):
+        if (id, network) not in cls._instances:
+            cls._instances[(id, network)] = (
+                super(Singleton, cls).__call__(id, network, *args, **kwargs)
+            )
+        return cls._instances[(id, network)]
