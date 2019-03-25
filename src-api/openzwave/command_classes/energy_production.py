@@ -45,6 +45,12 @@ class EnergyProduction(CommandClassBase):
 
     @property
     def energy_production_current(self):
+        """
+        Current Energy Production (`property`)
+
+        :return: current production
+        :rtype: int
+        """
         key = ('Instant energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
@@ -53,6 +59,12 @@ class EnergyProduction(CommandClassBase):
 
     @property
     def energy_production_total(self):
+        """
+        Total Energy Production (`property`)
+
+        :return: total production
+        :rtype: int
+        """
         key = ('Total energy production', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
@@ -61,6 +73,12 @@ class EnergyProduction(CommandClassBase):
 
     @property
     def energy_production_today(self):
+        """
+        Energy Production Today (`property`)
+
+        :return: energy production
+        :rtype: int
+        """
         key = ('Energy production today', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
@@ -69,6 +87,12 @@ class EnergyProduction(CommandClassBase):
 
     @property
     def energy_production_total_time(self):
+        """
+        Total Energy Production Time (`property`)
+
+        :return: total time in seconds
+        :rtype: int
+        """
         key = ('Total production time', COMMAND_CLASS_ENERGY_PRODUCTION)
         try:
             return self[key].data
