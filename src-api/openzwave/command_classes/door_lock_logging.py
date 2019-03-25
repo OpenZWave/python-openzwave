@@ -45,30 +45,58 @@ class DoorLockLogging(CommandClassBase):
 
     @property
     def doorlock_logging_max_number_of_records(self):
+        """
+        Door Lock Logging Max Number of Records (`property`)
+
+        :return: max number of records or None if command failed
+        :rtype: int, None
+        """
         key = ('Max Number of Record', COMMAND_CLASS_DOOR_LOCK_LOGGING)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @property
-    def doorlock_logging_current_record_number(self):
+    __doorlock_logging_current_record_number_doc = """
+        Door Lock Logging Current Record Number (`property`)
+
+        :param value: record number
+        :type value: int
+        :return: record number or None if command failed
+        :rtype: int, None
+    """
+
+    def __doorlock_logging_current_record_number_get(self):
         key = ('Current Record Number', COMMAND_CLASS_DOOR_LOCK_LOGGING)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @doorlock_logging_current_record_number.setter
-    def doorlock_logging_current_record_number(self, value):
+    def __doorlock_logging_current_record_number_set(self, value):
         key = ('Current Record Number', COMMAND_CLASS_DOOR_LOCK_LOGGING)
         try:
             self[key].data = value
         except KeyError:
             pass
 
+    doorlock_logging_current_record_number = property(
+        __doorlock_logging_current_record_number_get,
+        __doorlock_logging_current_record_number_set,
+        doc=__doorlock_logging_current_record_number_doc
+    )
+
     @property
     def doorlock_logging_door_lock_records(self):
+        """
+        Door Lock Logging Records (`property`)
+
+        List of door lock change records
+
+        :return: list of records
+        :rtype: list
+        """
+
         res = []
         for i in range(self.doorlock_logging_max_number_of_records):
             res += [self.doorlock_logging_log_record(i)]
@@ -76,6 +104,14 @@ class DoorLockLogging(CommandClassBase):
         return res
 
     def doorlock_logging_log_record(self, record_num):
+        """
+        Door Lock Logging Record
+
+        :param record_num: record number to retrieve
+        :type record_num: int
+        :return: logging entry
+        :rtype: str
+        """
 
         if record_num <= self.doorlock_logging_max_number_of_records:
             self.doorlock_logging_current_record_number = record_num
