@@ -34,6 +34,13 @@ COMMAND_CLASS_PROTECTION = 0x75
 # noinspection PyAbstractClass
 class Protection(CommandClassBase):
 
+    PROTECTION_STATES = [
+        'Unprotected',
+        'Protection by Sequence',
+        'No Operation Possible',
+        'Unknown'
+    ]
+
     def __init__(self):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_PROTECTION]
@@ -41,70 +48,74 @@ class Protection(CommandClassBase):
     @property
     def protections(self):
         """
-        Retrieve the list of values to consider as protection.
-        Filter rules are :
+        Protection states
 
-            command_class = 0x75
-            genre = "User"
-            readonly = True
-            writeonly = False
+        Retrieves a list of the set protection states
 
-        :return: The list of switches on this node
-        :rtype: dict()
-
+        :return: list of states
+        :rtype: list
         """
-        return self.get_values(
-            class_id=COMMAND_CLASS_PROTECTION,
-            genre='System',
-            type='List',
-            readonly=False,
-            writeonly=False
-        )
+        res = []
+        for value in self[(None, COMMAND_CLASS_PROTECTION)]:
+            if value.label != 'Protection':
+                continue
+
+            res += [value.data]
+        return res
 
     def set_protection(self, value_id, value):
         """
-        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
-        Set protection to value (using value value_id).
+        Set Protection State
 
-        :param value_id: The value to set protection
+        Values:
+        <br></br>
+        * `'Unprotected'`
+        * `'Protection by Sequence'`
+        * `'No Operation Possible'`
+        * `'Unknown'`
+
+        :param value_id: value id of the protection
         :type value_id: int
-        :param value: A predefined string
-        :type value: str
-
+        :param value: protection state
+        :type value: int, str
+        :return: command successful `True`/`False`
+        :rtype: bool
         """
-        protections = self.protections
-        if value_id in protections:
-            protections[value_id].data = value
-            return True
+        if isinstance(value, int):
+            try:
+                value = self.PROTECTION_STATES[value]
+            except IndexError:
+                return False
+
+        if value in self.PROTECTION_STATES:
+
+            key = (value_id, COMMAND_CLASS_PROTECTION)
+            try:
+                self[key].data = value
+                return True
+            except (IndexError, KeyError):
+                pass
+
         return False
 
-    def get_protection_item(self, value_id):
+    def get_protection_state(self, value_id):
         """
-        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
-        Return the current value (using value value_id) of a protection.
+        Get Protection State
 
-        :param value_id: The value to retrieve protection value
+        Values:
+        <br></br>
+        * `'Unprotected'`
+        * `'Protection by Sequence'`
+        * `'No Operation Possible'`
+        * `'Unknown'`
+
+        :param value_id: value id of the protection
         :type value_id: int
-        :return: The value of the value
-        :rtype: str
-
+        :return: protection state or None if command failed
+        :rtype: str, None
         """
-        protections = self.protections
-        if value_id in protections:
-            return protections[value_id].data
-
-    def get_protection_items(self, value_id):
-        """
-        The command 0x75 (COMMAND_CLASS_PROTECTION) of this node.
-        Return the all the possible values (using value value_id) of a
-        protection.
-
-        :param value_id: The value to retrieve items list
-        :type value_id: int
-        :return: The value of the value
-        :rtype: set()
-
-        """
-        protections = self.protections
-        if value_id in protections:
-            return protections[value_id].data_items
+        key = (value_id, COMMAND_CLASS_PROTECTION)
+        try:
+            return self[key].data
+        except (IndexError, KeyError):
+            return None
