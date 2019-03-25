@@ -43,18 +43,31 @@ class Lock(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_LOCK]
 
-    @property
-    def lock_locked(self):
+    __lock_locked_doc = """
+        Lock Locked (`property`)
+
+        :param value: state `True`/`False`
+        :type value: bool
+        :return: `True`/`False` or None if command failed
+        :rtype: bool, None
+    """
+
+    def __lock_locked_get(self):
         key = ('Locked', COMMAND_CLASS_LOCK)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @lock_locked.setter
-    def lock_locked(self, value):
+    def __lock_locked_set(self, value):
         key = ('Locked', COMMAND_CLASS_LOCK)
         try:
             self[key].data = value
         except KeyError:
             pass
+
+    lock_locked = property(
+        __lock_locked_get,
+        __lock_locked_set,
+        doc=__lock_locked_doc
+    )
