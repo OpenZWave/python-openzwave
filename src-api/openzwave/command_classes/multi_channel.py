@@ -46,15 +46,13 @@ class MultiChannel(CommandClassBase):
     @property
     def channels(self):
         """
-        Retrieve the list of values to consider as protection.
-        Filter rules are :
-            command_class = 0x60
-            genre = "User"
-            readonly = False
-            writeonly = False
+        Multi-Instance Channels (`property`)
 
-        :return: Multi Channel values
-        :rtype: dict
+        If you have a Z-Wave device that has more then one item to
+        control/collect information from this is where that gets done.
+
+        :return: multi channel values
+        :rtype: list of :class:`openzwave.value.ZWaveValue` instances
 
         """
         res = []
