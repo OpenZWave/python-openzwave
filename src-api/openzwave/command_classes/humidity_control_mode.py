@@ -29,25 +29,7 @@ from .command_class_base import CommandClassBase
 # Humidity Control Mode Command Class - Active
 # Application
 COMMAND_CLASS_HUMIDITY_CONTROL_MODE = 0x6D
-HUMIDITY_CONTROL_MODE_SET = 0x01
-HUMIDITY_CONTROL_MODE_GET = 0x02
-HUMIDITY_CONTROL_MODE_REPORT = 0x03
-HUMIDITY_CONTROL_MODE_SUPPORTED_GET = 0x04
-HUMIDITY_CONTROL_MODE_SUPPORTED_REPORT = 0x05
 
-
-HUMIDITY_CONTROL_MODE = [
-    "Off",
-    "Humidify",
-    "De-humidify",
-    "Auto"
-]
-
-HUMIDITY_CONTROL_MODE_SUPPORTED = [
-    "Reserved",
-    "Humidifier",
-    "De-humidifier"
-]
 
 # noinspection PyAbstractClass
 class HumidityControlMode(CommandClassBase):
