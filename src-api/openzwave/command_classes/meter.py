@@ -44,6 +44,14 @@ class Meter(CommandClassBase):
         self._cls_ids += [COMMAND_CLASS_METER]
 
     def meter_reset(self):
+        """
+        Reset Meter
+
+        Resets meter to 0
+
+        :return: command send successfully `True`\`False`
+        :rtype: bool
+        """
         key = ('Reset', COMMAND_CLASS_METER)
         try:
             self[key].data = True
@@ -53,15 +61,29 @@ class Meter(CommandClassBase):
 
     @property
     def meter_gas(self):
+        """
+        Gas Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Gas', COMMAND_CLASS_METER)
         try:
             value = self[key]
-            return [value.data, value.units]
+            return value.data, value.units
         except KeyError:
             return None
 
     @property
     def meter_water(self):
+        """
+        Water Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Water', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -71,6 +93,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_exporting(self):
+        """
+        Gas Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Exporting', COMMAND_CLASS_METER)
         try:
             return self[key].data
@@ -79,6 +108,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_energy(self):
+        """
+        Energy Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Energy', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -88,6 +124,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_power(self):
+        """
+        Power Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Power', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -97,6 +140,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_count(self):
+        """
+        Count Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Count', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -106,6 +156,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_voltage(self):
+        """
+        Voltage Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Voltage', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -115,6 +172,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_amperage(self):
+        """
+        Amperage Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Current', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -124,6 +188,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_power_factor(self):
+        """
+        Power Factor Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Power Factor', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -133,6 +204,13 @@ class Meter(CommandClassBase):
 
     @property
     def meter_previous_reading(self):
+        """
+        Previous Reading (`property`)
+
+        :return: (reading, unit of measure) or None if command
+        not successful
+        :rtype: (float, str) or None
+        """
         key = ('Previous Reading', COMMAND_CLASS_METER)
         try:
             value = self[key]
@@ -142,6 +220,12 @@ class Meter(CommandClassBase):
 
     @property
     def meter_reading_interval(self):
+        """
+        Gas Reading (`property`)
+
+        :return: interval or None if command not successful
+        :rtype: int, None
+        """
         key = ('Interval', COMMAND_CLASS_METER)
         try:
             return self[key].data
