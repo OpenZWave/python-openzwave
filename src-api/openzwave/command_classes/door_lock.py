@@ -58,29 +58,61 @@ class DoorLock(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_DOOR_LOCK]
 
-    @property
-    def doorlock_locked(self):
+    __doorlock_locked_doc = """
+        Door Lock Locked (`property`)
+
+        :param value: locked state `True`/`False`
+        :type value: bool
+        :return: locked state `True`/`False` or None if command failed
+        :rtype: bool, None
+    """
+
+    def __doorlock_locked_get(self):
         try:
             return self[('Locked', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @doorlock_locked.setter
-    def doorlock_locked(self, value):
+    def __doorlock_locked_set(self, value):
         try:
             self[('Locked', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:
             pass
 
-    @property
-    def doorlock_locked_advanced(self):
+    doorlock_locked = property(
+        __doorlock_locked_get,
+        __doorlock_locked_set,
+        doc=__doorlock_locked_doc
+    )
+
+    __doorlock_locked_advanced_doc = """
+        Door Lock Locked (Advanced) (`property`)
+        
+        Values:
+        <br></br>
+        * `'Unsecure'`
+        * `'Unsecured with Timeout'`
+        * `'Inside Handle Unsecured'`
+        * `'Inside Handle Unsecured with Timeout'`
+        * `'Outside Handle Unsecured'`
+        * `'Outside Handle Unsecured with Timeout'`
+        * `'Secured'`
+        * `None`
+        
+
+        :param value: locked state
+        :type value: str
+        :return: locked state or None if command failed
+        :rtype: str, None
+    """
+
+    def __doorlock_locked_advanced_get(self):
         try:
             return self[('Locked (Advanced)', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @doorlock_locked_advanced.setter
-    def doorlock_locked_advanced(self, value):
+    def __doorlock_locked_advanced_set(self, value):
 
         if isinstance(value, int):
             try:
@@ -94,53 +126,103 @@ class DoorLock(CommandClassBase):
             except KeyError:
                 pass
 
-    @property
-    def doorlock_outside_handle_control(self):
+    doorlock_locked_advanced = property(
+        __doorlock_locked_advanced_get,
+        __doorlock_locked_advanced_set,
+        doc=__doorlock_locked_advanced_doc
+    )
+
+    __doorlock_outside_handle_control_doc = """
+        Outside Handle Control (`property`)
+        
+        Controls if the outside handle functions or not.
+
+        :param value: handle state `True`/`False`
+        :type value: bool
+        :return: handle state `True`/`False` or None if command failed
+        :rtype: bool, None
+    """
+
+    def __doorlock_outside_handle_control_get(self):
         key = ('Outside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
-            return self[key].data
+            return bool(self[key].data)
         except KeyError:
             return None
 
-    @doorlock_outside_handle_control.setter
-    def doorlock_outside_handle_control(self, value):
+    def __doorlock_outside_handle_control_set(self, value):
         key = ('Outside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
-            self[key].data = value
+            self[key].data = int(value)
         except KeyError:
             pass
 
-    @property
-    def doorlock_inside_handle_control(self):
+    doorlock_outside_handle_control = property(
+        __doorlock_outside_handle_control_get,
+        __doorlock_outside_handle_control_set,
+        doc=__doorlock_outside_handle_control_doc
+    )
+
+    __doorlock_inside_handle_control_doc = """
+        Inside Handle Control (`property`)
+        
+        Controls if the inside handle functions or not.
+
+        :param value: handle state `True`/`False`
+        :type value: bool
+        :return: handle state `True`/`False` or None if command failed
+        :rtype: bool, None
+    """
+
+    def __doorlock_inside_handle_control_get(self):
         key = ('Inside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
-            return self[key].data
+            return bool(self[key].data)
         except KeyError:
             return None
 
-    @doorlock_inside_handle_control.setter
-    def doorlock_inside_handle_control(self, value):
+    def __doorlock_inside_handle_control_set(self, value):
         key = ('Inside Handle Control', COMMAND_CLASS_DOOR_LOCK)
         try:
-            self[key].data = value
+            self[key].data = bool(value)
         except KeyError:
             pass
 
-    @property
-    def doorlock_timeout_mode(self):
+    doorlock_inside_handle_control = property(
+        __doorlock_inside_handle_control_get,
+        __doorlock_inside_handle_control_set,
+        doc=__doorlock_inside_handle_control_doc
+    )
+
+    __doorlock_timeout_mode_doc = """
+        Door Lock Timeout Mode (`property`)
+        
+        Values:
+        <br></br>
+        * `'No Timeout'`
+        * `'Secure Lock after Timeout'`
+        * `None`
+        
+        :param value: timeout mode
+        :type value: str
+        :return: timeout mode or None if command failed
+        :rtype: str, None
+    """
+
+    def __doorlock_timeout_mode_get(self):
         try:
             return self[('Timeout Mode', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @doorlock_timeout_mode.setter
-    def doorlock_timeout_mode(self, value):
+    def __doorlock_timeout_mode_set(self, value):
 
         if isinstance(value, int):
             try:
                 value = self.TIMEOUT_MODES[value]
             except IndexError:
                 return
+
         if value in self.TIMEOUT_MODES:
             key = ('Timeout Mode', COMMAND_CLASS_DOOR_LOCK)
             try:
@@ -148,30 +230,62 @@ class DoorLock(CommandClassBase):
             except KeyError:
                 pass
 
-    @property
-    def doorlock_timeout_minutes(self):
+    doorlock_timeout_mode = property(
+        __doorlock_timeout_mode_get,
+        __doorlock_timeout_mode_set,
+        doc=__doorlock_timeout_mode_doc
+    )
+
+    __doorlock_timeout_minutes_doc = """
+        Door Lock Timeout Minutes (`property`)
+
+        :param value: minutes
+        :type value: int
+        :return: miniutes or None if command failed
+        :rtype: int, None
+    """
+
+    def __doorlock_timeout_minutes_get(self):
         try:
             return self[('Timeout Minutes', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @doorlock_timeout_minutes.setter
-    def doorlock_timeout_minutes(self, value):
+    def __doorlock_timeout_minutes_set(self, value):
         try:
             self[('Timeout Minutes', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:
             pass
 
-    @property
-    def doorlock_timeout_seconds(self):
+    doorlock_timeout_minutes = property(
+        __doorlock_timeout_minutes_get,
+        __doorlock_timeout_minutes_set,
+        doc=__doorlock_timeout_minutes_doc
+    )
+
+    __doorlock_timeout_seconds_doc = """
+        Door Lock Timeout Seconds (`property`)
+
+        :param value: seconds
+        :type value: int
+        :return: seconds or None if command failed
+        :rtype: int, None
+    """
+
+    def __doorlock_timeout_seconds_get(self):
         try:
             return self[('Timeout Seconds', COMMAND_CLASS_DOOR_LOCK)].data
         except KeyError:
             return None
 
-    @doorlock_timeout_seconds.setter
-    def doorlock_timeout_seconds(self, value):
+    def __doorlock_timeout_seconds_set(self, value):
         try:
             self[('Timeout Seconds', COMMAND_CLASS_DOOR_LOCK)].data = value
         except KeyError:
             pass
+
+    doorlock_timeout_seconds = property(
+        __doorlock_timeout_seconds_get,
+        __doorlock_timeout_seconds_set,
+        doc=__doorlock_timeout_seconds_doc
+    )
