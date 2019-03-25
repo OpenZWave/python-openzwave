@@ -45,6 +45,12 @@ class MeterPulse(CommandClassBase):
 
     @property
     def meter_pulse_count(self):
+        """
+        Meter Pulse Count (`property`)
+
+        :return: meter pulse count or None if command not successful
+        :rtype: int, None
+        """
         key = ('Count', COMMAND_CLASS_METER_PULSE)
         try:
             return self[key].data
