@@ -66,4 +66,4 @@ class SensorAlarm(CommandClassBase):
 
         @property
         def reading(self):
-            return self.__value.data
+            return self.__value.data, self.__value.units

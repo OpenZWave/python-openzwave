@@ -84,7 +84,7 @@ class SensorMultilevel(CommandClassBase):
 
         @property
         def reading(self):
-            return [self.__value.data, self.__value.units]
+            return self.__value.data, self.__value.units
 
     @property
     def multilevel_sensors(self):
