@@ -43,34 +43,60 @@ class Language(CommandClassBase):
         CommandClassBase.__init__(self)
         self._cls_ids += [COMMAND_CLASS_LANGUAGE]
 
-    @property
-    def language(self):
+    __language_doc = """
+        Language (`property`)
+
+        :param value: language
+        :type value: str
+        :return: language or None if command failed
+        :rtype: str, None
+    """
+
+    def __language_get(self):
         key = ('Language', COMMAND_CLASS_LANGUAGE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @language.setter
-    def language(self, value):
+    def __language_set(self, value):
         key = ('Language', COMMAND_CLASS_LANGUAGE)
         try:
             self[key].data = value
         except KeyError:
             pass
 
-    @property
-    def country(self):
+    language = property(
+        __language_get,
+        __language_set,
+        doc=__language_doc
+    )
+
+    __country_doc = """
+        Country (`property`)
+
+        :param value: country
+        :type value: str
+        :return: country or None if command failed
+        :rtype: str, None
+    """
+
+    def __country_get(self):
         key = ('Country', COMMAND_CLASS_LANGUAGE)
         try:
             return self[key].data
         except KeyError:
             return None
 
-    @country.setter
-    def country(self, value):
+    def __country_set(self, value):
         key = ('Country', COMMAND_CLASS_LANGUAGE)
         try:
             self[key].data = value
         except KeyError:
             pass
+
+    country = property(
+        __country_get,
+        __country_set,
+        doc=__country_doc
+    )
