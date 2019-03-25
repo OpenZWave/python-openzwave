@@ -29,8 +29,6 @@ class CommandClassBase(object):
 
     def __init__(self):
         self._cls_ids = getattr(self, '_cls_ids', [])
-        self.values = getattr(self, 'values', {})
-        self._network = getattr(self, '_network', None)
 
     def get_values(self, *_, **__):
         raise NotImplementedError
@@ -121,6 +119,151 @@ class CommandClassBase(object):
                 return found_value
 
             raise KeyError('No Value with the label ' + key)
+
+    @property
+    def values(self):
+        raise NotImplementedError
+
+    @property
+    def network(self):
+        raise NotImplementedError
+
+    @property
+    def id(self):
+        raise NotImplementedError
+
+    @property
+    def home_id(self):
+        raise NotImplementedError
+
+    def has_command_class(self, class_id):
+        """
+        Check that this node use this commandClass.
+
+        :param class_id: the COMMAND_CLASS to check
+        :type class_id: int
+        :rtype: bool
+
+        """
+        return self == class_id
+
+    @property
+    def command_classes(self):
+        """
+        The commandClasses of the node.
+
+        :rtype: set()
+
+        """
+        return self._cls_ids[:]
+
+    @property
+    def command_classes_as_string(self):
+        """
+        Return the command classes of the node as string.
+
+        :rtype: set()
+
+        """
+        commands = self.command_classes
+        command_str = set()
+        for cls in commands:
+            command_str.add(self.network.manager.COMMAND_CLASS_DESC[cls])
+        return ', '.join(c for c in command_str)
+
+    def get_command_class_as_string(self, class_id):
+        """
+        Return the command class representation as string.
+
+        :param class_id: the COMMAND_CLASS to get string representation
+        :type class_id: hexadecimal code
+        :rtype: str
+
+        """
+        return self.network.manager.COMMAND_CLASS_DESC[class_id]
+
+    def get_command_class_genres(self):
+        """
+        Return the list of genres of command classes
+
+        :rtype: set()
+
+        """
+
+        res = set()
+        for value in self.values:
+            res.add(value.genre)
+
+        return res
+
+    def get_values_by_command_classes(
+        self,
+        genre='All',
+        type='All',
+        readonly='All',
+        writeonly='All'
+    ):
+        """
+        Retrieve values in a dict() of dicts(). The dict is indexed on the
+        COMMAND_CLASS.
+
+        This allows to browse values grouped by the COMMAND_CLASS.You can
+        optionally filter for a command class, a genre and/or a type. You can
+        also filter readonly and writeonly params.
+
+        This method always filter the values.
+        If you want to get all the nodes values, use the property
+        self.values instead.
+
+        :param genre: the genre of value
+        :type genre: 'All' or PyGenres
+        :param type: the type of value
+        :type type: 'All' or PyValueTypes
+        :param readonly: Is this value readonly
+        :type readonly: 'All' or True or False
+        :param writeonly: Is this value writeonly
+        :type writeonly: 'All' or True or False
+        :rtype: dict(command_class : dict(valueids))
+
+        """
+        values = dict()
+        for value_id, value in self.values.items():
+
+            if (
+                genre in ('All', value.genre) and
+                type in ('All', value.type) and
+                readonly in ('All', value.is_read_only) and
+                writeonly in ('All', value.is_write_only)
+            ):
+                if value.command_class not in values:
+                    values[value.command_class] = dict()
+
+                values[value.command_class][value_id] = value
+
+        return values
+
+    def get_values_for_command_class(self, class_id):
+        """
+        Retrieve the set of values for a command class.
+        Deprecated
+        For backward compatibility only.
+        Use get_values instead
+
+        :param class_id: the COMMAND_CLASS to get values
+        :type class_id: hexadecimal code or string
+        :type writeonly: 'All' or True or False
+        :rtype: set() of classId
+
+        """
+        # print class_id
+
+        res = []
+
+        for value in self.values.values():
+            if value.command_class == class_id:
+                res += [value]
+
+        return res
 
 
 # noinspection PyAbstractClass

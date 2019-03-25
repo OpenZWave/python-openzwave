@@ -150,6 +150,16 @@ class ZWaveObject(object):
         return False
 
     @property
+    def id(self):
+        """
+        The id of the node.
+
+        :rtype: int
+
+        """
+        return self._object_id
+
+    @property
     def home_id(self):
         """
         The home_id of the node.
