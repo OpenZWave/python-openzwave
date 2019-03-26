@@ -4950,3 +4950,25 @@ sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
+
+    def sendRawData(self, homeId, nodeId, logText, msgType, sendSecure, content):
+        '''
+.. _sendRawData:
+
+Send a custom message to a node.
+
+:param homeId: The ID of the network.
+:type homeId: int
+:param nodeId: The ID of the target node.
+:type nodeId: int
+:param logText: The text to prefix the resulting log message.
+:type logText: str
+:param msgType: The type of the message.
+:type msgType: int
+:param sendSecure: Indicates whether the packet should be encrypted (if the CC accepts it).
+:type sendSecure: bool
+:param content: The message content.
+:type content: bytes
+        '''
+        return self.manager.SendRawData(homeId, nodeId, logText, msgType, sendSecure, content, len(content))
+

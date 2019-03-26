@@ -246,6 +246,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SetSceneLabel( uint8_t sceneId, string value )
         bool SceneExists( uint8_t sceneId )
         bool ActivateScene( uint8_t sceneId )
+        void SendRawData( uint32_t _homeId, uint8_t _nodeId, string _logText, uint8_t _msgType, bool _sendSecure, uint8_t* _content, uint8_t _length )
 
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()
