@@ -167,9 +167,6 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool RemoveSwitchPoint(ValueID& valueid, uint8_t hours, uint8_t minutes)
         bool ClearSwitchPoints(ValueID& valueid)
         bool GetSwitchPoint(ValueID& valueid, uint8_t idx, uint8_t* o_hours, uint8_t* o_minutes, int8_t* o_setback)
-        # // SwitchAll
-        void SwitchAllOn(uint32_t homeid)
-        void SwitchAllOff(uint32_t homeid)
         # // Configuration Parameters
         bool SetConfigParam(uint32_t homeid, uint8_t nodeid, uint8_t param, uint32_t value, uint8_t size)
         void RequestConfigParam(uint32_t homeid, uint8_t nodeid, uint8_t aram)
@@ -190,8 +187,6 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         # // Controller Commands
         void ResetController(uint32_t homeid)
         void SoftReset(uint32_t homeid)
-        #Deprecated
-        bool BeginControllerCommand(uint32_t homeid, ControllerCommand _command, pfnControllerCallback_t _callback, void* _context, bool _highPower, uint8_t _nodeId, uint8_t _arg )
         bool CancelControllerCommand(uint32_t homeid)
         bool AddNode(uint32_t homeid, bool _doSecurity)
 
@@ -210,6 +205,12 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool ReceiveConfiguration(uint32_t homeid)
         bool CreateButton(uint32_t homeid, uint8_t nodeid, uint8_t buttonid)
         bool DeleteButton(uint32_t homeid, uint8_t nodeid, uint8_t buttonid)
+
+        # ***** DEPRECATED
+        bool BeginControllerCommand(uint32_t homeid, ControllerCommand _command, pfnControllerCallback_t _callback, void* _context, bool _highPower, uint8_t _nodeId, uint8_t _arg )
+        # // SwitchAll
+        void SwitchAllOn(uint32_t homeid)
+        void SwitchAllOff(uint32_t homeid)
         # // Scene commands
         uint8_t GetNumScenes()
         uint8_t GetAllScenes(uint8_t** sceneIds)
@@ -246,6 +247,14 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SetSceneLabel( uint8_t sceneId, string value )
         bool SceneExists( uint8_t sceneId )
         bool ActivateScene( uint8_t sceneId )
+        # *****
+
+        # Config file revision checks and downloads
+        bool checkLatestConfigFileRevision( uint32_t _homeId, uint8_t _nodeId )
+        bool checkLatestMFSRevision( uint32_t _homeId )
+        bool downloadLatestConfigFileRevision( uint32_t _homeId, uint8_t _nodeId )
+        bool downloadLatestMFSRevision( uint32_t _homeId )
+
 
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()

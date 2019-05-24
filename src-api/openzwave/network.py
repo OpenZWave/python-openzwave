@@ -34,7 +34,7 @@ from .controller import ZWaveController
 from .node import ZWaveNode
 from .option import ZWaveOption
 from .scene import ZWaveScene
-from .singleton import Singleton
+from ._utils import deprecated
 
 if six.PY3:
     from pydispatch import dispatcher
@@ -1614,6 +1614,34 @@ class ZWaveNetwork(ZWaveObject):
         """
         self._manager.writeConfig(self.home_id)
         logger.info(u'ZWave configuration written to user directory.')
+
+    def check_latest_mfs_revision(self):
+        """
+        Check the Latest Revision of the Manufacturer_Specific.xml file.
+
+        optionally update to the latest version.
+
+        Outdated Config Revisions are signaled via Notifications
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+        """
+        return self._network.manager.checkLatestMFSRevision(self.home_id)
+
+    def download_latest_mfs_revision(self):
+        """
+        Download the latest Config File Revision.
+
+        The ManufacturerSpecific File will be updated, and any new Config
+        Files will also be downloaded. Existing Config Files will not be
+        checked/updated.
+
+        Errors are signaled via Notifications
+
+        :return: True if the request was sent successfully.
+        :rtype: bool
+        """
+        return self.manager.downloadLatestMFSRevision(self.home_id)
 
 """
     initialization callback sequence:

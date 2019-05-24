@@ -4591,7 +4591,7 @@ Notification::Type_ControllerCommand
         return self.manager.DeleteButton(homeid, nodeid, buttonid)
 
 #-----------------------------------------------------------------------------
-# Scene commands
+# Scene commands   ***** DEPRECATED *****
 #-----------------------------------------------------------------------------
 
     def getNumScenes(self):
@@ -4997,3 +4997,88 @@ sceneGetValues_
 
         '''
         return self.manager.ActivateScene(sceneid)
+
+#-----------------------------------------------------------------------------
+# Device file updating
+#-----------------------------------------------------------------------------
+
+    def checkLatestConfigFileRevision(self, homeid, nodeid):
+        '''
+.. _checkLatestConfigFileRevision:
+
+Check the Latest Revision of the Config File for this device.
+
+and optionally update the local database with the latest version Config Revisions are exposed on the ManufacturerSpecific CC. (both the latest and loaded version)
+
+Outdated Config Revisions are signaled via Notifications
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the request was sent successfully.
+:rtype: bool
+
+        '''
+        return self.manager.checkLatestConfigFileRevision(homeid, nodeid)
+
+    def checkLatestMFSRevision(self, homeid):
+        '''
+.. _checkLatestMFSRevision:
+
+Check the Latest Revision of the Manufacturer_Specific.xml file.
+
+and optionally update to the latest version.
+
+Outdated Config Revisions are signaled via Notifications
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+
+:return: True if the request was sent successfully.
+:rtype: bool
+
+        '''
+        return self.manager.checkLatestMFSRevision(homeid)
+
+    def downloadLatestConfigFileRevision(self, homeid, nodeid):
+        '''
+.. _downloadLatestConfigFileRevision:
+
+Download the latest Config File Revision.
+
+The Node will be reloaded depending upon the Option "ReloadAfterUpdate" Valid Options include:
+
+    Never - Never Reload a Node after updating the Config File. Manual Reload is Required.
+    Immediate - Reload the Node Immediately after downloading the latest revision
+    Awake - Reload Nodes only when they are awake (Always-On Nodes will reload immediately, Sleeping Nodes will reload when they wake up
+
+Errors are signaled via Notifications
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:param nodeId: The ID of the node to query.
+:type nodeId: int
+:return: True if the request was sent successfully.
+:rtype: bool
+
+        '''
+        return self.manager.downloadLatestConfigFileRevision(homeid, nodeid)
+
+    def downloadLatestMFSRevision(self, homeid):
+        '''
+.. _downloadLatestMFSRevision:
+
+Download the latest Config File Revision.
+
+The ManufacturerSpecific File will be updated, and any new Config Files will also be downloaded. Existing Config Files will not be checked/updated.
+
+Errors are signaled via Notifications
+
+:param homeId: The Home ID of the Z-Wave controller that manages the node.
+:type homeId: int
+:return: True if the request was sent successfully.
+:rtype: bool
+
+        '''
+        return self.manager.downloadLatestMFSRevision(homeid)
