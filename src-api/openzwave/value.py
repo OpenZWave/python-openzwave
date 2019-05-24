@@ -540,6 +540,15 @@ class ZWaveValue(ZWaveObject):
         logger.debug(u'Set change verified %s for valueId [%s]', verify, self.value_id)
         self._network.manager.setChangeVerified(self.value_id, verify)
 
+    @property
+    def instance_label(self):
+        """
+        Gets the Instance label for this value
+
+        :rtype: str, None
+        """
+        return self._network.manager.getInstanceLabel(self.value_id)
+
     def to_dict(self, extras=['all']):
         """
         Return a dict representation of the node.

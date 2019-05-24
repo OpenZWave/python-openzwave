@@ -393,6 +393,14 @@ PyLogLevels = {
 
 cdef map[uint64_t, ValueID] values_map
 
+cdef getInstanceLabel(Manager *manager, valueId):
+    """
+    Gets the instance label for a value
+    """
+
+    if values_map.find(valueId) != values_map.end():
+        return manager.GetInstanceLabel(values_map.at(valueId))
+
 cdef getValueFromType(Manager *manager, valueId):
     """
     Translate a value in the right type
@@ -5138,3 +5146,17 @@ Gets a metedata item for a node
 
         '''
         return self.manager.GetMetaData(homeid, nodeid, metadata)
+
+#-----------------------------------------------------------------------------
+# Value instance labels
+#-----------------------------------------------------------------------------
+    def getInstanceLabel(self, valueid):
+        '''
+.. _getInstanceLabel:
+
+Gets the label for
+
+:param valueid: The ValueId for the instance you want to get the label for
+:type valueid: int
+        '''
+        return getInstanceLabel(self.manager, valueid)

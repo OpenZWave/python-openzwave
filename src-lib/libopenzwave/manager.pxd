@@ -259,6 +259,10 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         ChangeLogEntry GetChangeLog( uint32_t _homeId, uint8_t _nodeId, uint32_t revision )
         string GetMetaData( uint32_t _homeId, uint8_t _nodeId, MetaDataFields _metadata )
 
+        # value instance labels
+        string GetInstanceLabel( ValueID& _id)
+        string GetInstanceLabel(uint32_t _homeId, uint8_t _node, uint8_t _cc, uint8_t _instance);
+
 
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()
