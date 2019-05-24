@@ -25,9 +25,9 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 
 import logging
-
 from six import string_types
-from openzwave.object import ZWaveObject
+
+from .object import ZWaveObject
 
 
 logger = logging.getLogger('openzwave')

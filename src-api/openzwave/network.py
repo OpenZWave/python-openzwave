@@ -25,33 +25,32 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 import os
 import logging
-#from collections import namedtuple
-import time
-import sys
 import six
+import threading
+
+import libopenzwave
+from .object import ZWaveException, ZWaveObject
+from .controller import ZWaveController
+from .node import ZWaveNode
+from .option import ZWaveOption
+from .scene import ZWaveScene
+from .singleton import Singleton
+
 if six.PY3:
     from pydispatch import dispatcher
 else:
     from louie import dispatcher
-import threading
-
-import libopenzwave
-import openzwave
-from openzwave.object import ZWaveException, ZWaveTypeException, ZWaveObject
-from openzwave.controller import ZWaveController
-from openzwave.node import ZWaveNode
-from openzwave.option import ZWaveOption
-from openzwave.scene import ZWaveScene
-from openzwave.singleton import Singleton
-
 
 try:
     import sqlite3 as lite
 except ImportError:
-    logger.warning('pysqlite is not installed')
+    lite = None
 
 
 logger = logging.getLogger(__name__)
+
+if lite is None:
+    logger.warning('pysqlite is not installed')
 
 
 class ZWaveNetwork(ZWaveObject):

@@ -25,14 +25,14 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 import logging
 
-import sys
 from libopenzwave import PyStatNode
-from openzwave.object import ZWaveObject
-from openzwave.group import ZWaveGroup
-from openzwave.value import ZWaveValue
-from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
-from openzwave.command import ZWaveNodeSensor, ZWaveNodeThermostat
-from openzwave.command import ZWaveNodeSecurity, ZWaveNodeDoorLock
+from .object import ZWaveObject
+from .group import ZWaveGroup
+from .value import ZWaveValue
+from .command import ZWaveNodeBasic, ZWaveNodeSwitch
+from .command import ZWaveNodeSensor, ZWaveNodeThermostat
+from .command import ZWaveNodeSecurity, ZWaveNodeDoorLock
+
 
 logger = logging.getLogger(__name__)
 

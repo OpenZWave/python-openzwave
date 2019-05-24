@@ -29,9 +29,8 @@ import logging
 from platform import system as platform_system
 
 import libopenzwave
-from libopenzwave import PyLogLevels
-from openzwave.object import ZWaveException
-from openzwave.singleton import Singleton
+from .object import ZWaveException
+from .singleton import Singleton
 
 
 logger = logging.getLogger(__name__)
@@ -186,7 +185,7 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
         """
-        return self.addOptionInt("SaveLogLevel", PyLogLevels[level]['value'])
+        return self.addOptionInt("SaveLogLevel", libopenzwave.PyLogLevels[level]['value'])
 
     def set_queue_log_level(self, level):
         """
@@ -208,7 +207,7 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
         """
-        return self.addOptionInt("QueueLogLevel", PyLogLevels[level])
+        return self.addOptionInt("QueueLogLevel", libopenzwave.PyLogLevels[level])
 
     def set_dump_trigger_level(self, level):
         """
@@ -230,7 +229,7 @@ class ZWaveOption(libopenzwave.PyOptions):
             * 'Internal':"Used only within the log class (uses existing timestamp, etc.)"
 
         """
-        return self.addOptionInt("DumpTriggerLevel", PyLogLevels[level])
+        return self.addOptionInt("DumpTriggerLevel", libopenzwave.PyLogLevels[level])
 
     def set_associate(self, status):
         """

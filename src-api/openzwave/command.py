@@ -25,9 +25,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 
 import logging
-
-from openzwave.object import ZWaveNodeInterface
 from threading import Timer
+
+from .object import ZWaveNodeInterface
+
 
 logger = logging.getLogger(__name__)
 

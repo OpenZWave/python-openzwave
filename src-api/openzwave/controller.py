@@ -24,14 +24,8 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-import os, sys
+import os
 import six
-if six.PY3:
-    from pydispatch import dispatcher
-    from urllib.request import urlopen
-else:
-    from louie import dispatcher
-    from urllib2 import urlopen
 import zipfile
 import tempfile
 import threading
@@ -39,8 +33,17 @@ import shutil
 import time
 import logging
 
-from openzwave.object import ZWaveObject, deprecated
+
+from object import ZWaveObject, deprecated
 from libopenzwave import PyStatDriver, PyControllerState
+
+
+if six.PY3:
+    from pydispatch import dispatcher
+    from urllib.request import urlopen
+else:
+    from louie import dispatcher
+    from urllib2 import urlopen
 
 
 logger = logging.getLogger(__name__)
