@@ -192,7 +192,7 @@ class Library(pyozw_common.Library):
 
         sources = pyozw_common.get_sources(
             os.path.abspath(os.path.join(openzwave, 'cpp')),
-            ignore=['unix', 'winrt', 'mac', 'linux', 'examples', 'libusb']
+            ignore=['unix', 'winrt', 'mac', 'linux', 'examples', 'libusb', 'test']
         )
 
         define_macros = [
