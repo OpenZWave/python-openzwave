@@ -275,6 +275,8 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NOTIFICATION = 'Notification'
     SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
     SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
+    SIGNAL_USER_ALERTS = 'UserAlerts'
+    SIGNAL_MANUFACTURER_SPECIFIC_DB_READY = 'ManufacturerSpecificDBReady'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -895,101 +897,116 @@ class ZWaveNetwork(ZWaveObject):
         self.manager.setPollInterval(milliseconds, bIntervalBetweenPolls)
 
     def zwcallback(self, args):
+        # noinspection PyPep8
         """
         The Callback Handler used with the libopenzwave.
 
         n['valueId'] = {
 
-            * 'home_id' : v.GetHomeId(),
-            * 'node_id' : v.GetNodeId(),
-            * 'commandClass' : PyManager.COMMAND_CLASS_DESC[v.GetCommandClassId()],
-            * 'instance' : v.GetInstance(),
-            * 'index' : v.GetIndex(),
-            * 'id' : v.GetId(),
-            * 'genre' : PyGenres[v.GetGenre()],
-            * 'type' : PyValueTypes[v.GetType()],
-            * #'value' : value.c_str(),
-            * 'value' : getValueFromType(manager,v.GetId()),
-            * 'label' : label.c_str(),
-            * 'units' : units.c_str(),
+            * 'home_id' : v.GetHomeId()
+            * 'node_id' : v.GetNodeId()
+            * 'commandClass' : COMMAND_CLASS_DESC[v.GetCommandClassId()]
+            * 'instance' : v.GetInstance()
+            * 'index' : v.GetIndex()
+            * 'id' : v.GetId()
+            * 'genre' : PyGenres[v.GetGenre()]
+            * 'type' : PyValueTypes[v.GetType()]
+            * 'value' : getValueFromType(manager,v.GetId())
+            * 'label' : label.c_str()
+            * 'units' : units.c_str()
             * 'readOnly': manager.IsValueReadOnly(v)
 
         }
 
-        :param args: A dict containing informations about the state of the controller
-        :type args: dict()
-
+        :param args: A dict containing information about the state of the
+        controller
+        :type args: dict
         """
+        notification_mapping = {
+            self.SIGNAL_DRIVER_FAILED: self._handle_driver_failed,
+            self.SIGNAL_DRIVER_READY: self._handle_driver_ready,
+            self.SIGNAL_DRIVER_RESET: self._handle_driver_reset,
+            self.SIGNAL_NODE_ADDED: self._handle_node_added,
+            self.SIGNAL_NODE_EVENT: self._handle_node_event,
+            self.SIGNAL_NODE_NAMING: self._handle_node_naming,
+            self.SIGNAL_NODE_NEW: self._handle_node_new,
+            self.SIGNAL_NODE_PROTOCOL_INFO: self._handle_node_protocol_info,
+            self.SIGNAL_NODE_READY: self._handleNodeReady,
+            self.SIGNAL_NODE_REMOVED: self._handle_node_removed,
+            self.SIGNAL_GROUP: self._handle_group,
+            self.SIGNAL_SCENE_EVENT: self._handle_scene_event,
+            self.SIGNAL_VALUE_ADDED: self._handle_value_added,
+            self.SIGNAL_VALUE_CHANGED: self._handle_value_changed,
+            self.SIGNAL_VALUE_REFRESHED: self._handle_value_refreshed,
+            self.SIGNAL_VALUE_REMOVED: self._handle_value_removed,
+            self.SIGNAL_POLLING_DISABLED: self._handle_polling_disabled,
+            self.SIGNAL_POLLING_ENABLED: self._handle_polling_enabled,
+            self.SIGNAL_CREATE_BUTTON: self._handle_create_button,
+            self.SIGNAL_DELETE_BUTTON: self._handle_delete_button,
+            self.SIGNAL_BUTTON_ON: self._handle_button_on,
+            self.SIGNAL_BUTTON_OFF: self._handle_button_off,
+            self.SIGNAL_ALL_NODES_QUERIED: self._handle_all_nodes_queried,
+            self.SIGNAL_AWAKE_NODES_QUERIED: self._handle_awake_nodes_queried,
+            self.SIGNAL_MSG_COMPLETE: self._handle_msg_complete,
+            self.SIGNAL_NOTIFICATION: self._handle_notification,
+            self.SIGNAL_DRIVER_REMOVED: self._handle_driver_removed,
+            self.SIGNAL_CONTROLLER_COMMAND: self._handle_controller_command,
+            self.SIGNAL_USER_ALERTS: self._handle_user_alerts,
+            self.SIGNAL_MANUFACTURER_SPECIFIC_DB_READY: (
+                self._handle_manufacturer_specific_db_ready
+            ),
+            self.SIGNAL_ALL_NODES_QUERIED_SOME_DEAD: (
+                self._handle_all_nodes_queried_some_dead
+            ),
+            self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE: (
+                self._handle_essential_node_queries_complete
+            ),
+            self.SIGNAL_NODE_QUERIES_COMPLETE: (
+                self._handle_node_queries_complete
+            ),
+        }
+
         logger.debug('zwcallback args=[%s]', args)
         try:
             notify_type = args['notificationType']
-            if notify_type == self.SIGNAL_DRIVER_FAILED:
-                self._handle_driver_failed(args)
-            elif notify_type == self.SIGNAL_DRIVER_READY:
-                self._handle_driver_ready(args)
-            elif notify_type == self.SIGNAL_DRIVER_RESET:
-                self._handle_driver_reset(args)
-            elif notify_type == self.SIGNAL_NODE_ADDED:
-                self._handle_node_added(args)
-            elif notify_type == self.SIGNAL_NODE_EVENT:
-                self._handle_node_event(args)
-            elif notify_type == self.SIGNAL_NODE_NAMING:
-                self._handle_node_naming(args)
-            elif notify_type == self.SIGNAL_NODE_NEW:
-                self._handle_node_new(args)
-            elif notify_type == self.SIGNAL_NODE_PROTOCOL_INFO:
-                self._handle_node_protocol_info(args)
-            elif notify_type == self.SIGNAL_NODE_READY:
-                self._handleNodeReady(args)
-            elif notify_type == self.SIGNAL_NODE_REMOVED:
-                self._handle_node_removed(args)
-            elif notify_type == self.SIGNAL_GROUP:
-                self._handle_group(args)
-            elif notify_type == self.SIGNAL_SCENE_EVENT:
-                self._handle_scene_event(args)
-            elif notify_type == self.SIGNAL_VALUE_ADDED:
-                self._handle_value_added(args)
-            elif notify_type == self.SIGNAL_VALUE_CHANGED:
-                self._handle_value_changed(args)
-            elif notify_type == self.SIGNAL_VALUE_REFRESHED:
-                self._handle_value_refreshed(args)
-            elif notify_type == self.SIGNAL_VALUE_REMOVED:
-                self._handle_value_removed(args)
-            elif notify_type == self.SIGNAL_POLLING_DISABLED:
-                self._handle_polling_disabled(args)
-            elif notify_type == self.SIGNAL_POLLING_ENABLED:
-                self._handle_polling_enabled(args)
-            elif notify_type == self.SIGNAL_CREATE_BUTTON:
-                self._handle_create_button(args)
-            elif notify_type == self.SIGNAL_DELETE_BUTTON:
-                self._handle_delete_button(args)
-            elif notify_type == self.SIGNAL_BUTTON_ON:
-                self._handle_button_on(args)
-            elif notify_type == self.SIGNAL_BUTTON_OFF:
-                self._handle_button_off(args)
-            elif notify_type == self.SIGNAL_ALL_NODES_QUERIED:
-                self._handle_all_nodes_queried(args)
-            elif notify_type == self.SIGNAL_ALL_NODES_QUERIED_SOME_DEAD:
-                self._handle_all_nodes_queried_some_dead(args)
-            elif notify_type == self.SIGNAL_AWAKE_NODES_QUERIED:
-                self._handle_awake_nodes_queried(args)
-            elif notify_type == self.SIGNAL_ESSENTIAL_NODE_QUERIES_COMPLETE:
-                self._handle_essential_node_queries_complete(args)
-            elif notify_type == self.SIGNAL_NODE_QUERIES_COMPLETE:
-                self._handle_node_queries_complete(args)
-            elif notify_type == self.SIGNAL_MSG_COMPLETE:
-                self._handle_msg_complete(args)
-            elif notify_type == self.SIGNAL_NOTIFICATION:
-                self._handle_notification(args)
-            elif notify_type == self.SIGNAL_DRIVER_REMOVED:
-                self._handle_driver_removed(args)
-            elif notify_type == self.SIGNAL_CONTROLLER_COMMAND:
-                self._handle_controller_command(args)
-            else:
-                logger.warning(u'Skipping unhandled notification [%s]', args)
+
+            try:
+                notification_mapping[notify_type](args)
+            except KeyError:
+                logger.warning('Skipping unhandled notification [%s]', args)
         except:
-            import sys, traceback
-            logger.exception(u'Error in manager callback')
+            import sys
+
+            logger.exception('Error in manager callback')
+
+    def _handle_user_notification(self, args):
+        """
+        User Alert.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        dispatcher.send(self.SIGNAL_USER_ALERTS, **{'network': self, 'node': node, 'user_alert': user_alert})
+
+        """
+        user_alert = args['userAlerts']
+        node = self.nodes[args['nodeId']]
+
+        dispatcher.send(self.SIGNAL_USER_ALERTS, **{'network': self, 'node': node, 'user_alert': user_alert})
+
+    def _handle_manufacturer_specific_db_ready(self, args):
+        """
+        Manufacturer Specific DB Ready.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        dispatcher.send(self.SIGNAL_MANUFACTURER_SPECIFIC_DB_READY, **{'network': self, 'node': node})
+
+        """
+        node = self.nodes[args['nodeId']]
+
+        dispatcher.send(self.SIGNAL_MANUFACTURER_SPECIFIC_DB_READY, **{'network': self, 'node': node})
 
     def _handle_driver_failed(self, args):
         """
