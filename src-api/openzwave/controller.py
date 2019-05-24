@@ -33,10 +33,9 @@ import shutil
 import time
 import logging
 
-
-from object import ZWaveObject, deprecated
 from libopenzwave import PyStatDriver, PyControllerState
-
+from object import ZWaveObject
+from ._utils import deprecated
 
 if six.PY3:
     from pydispatch import dispatcher
@@ -92,28 +91,6 @@ class ZWaveController(ZWaveObject):
         - Driver::ControllerState_Failed : will be sent if the command fails for any reason.
 
     '''
-    #@deprecated
-    SIGNAL_CTRL_NORMAL = 'Normal'
-    #@deprecated
-    SIGNAL_CTRL_STARTING = 'Starting'
-    #@deprecated
-    SIGNAL_CTRL_CANCEL = 'Cancel'
-    #@deprecated
-    SIGNAL_CTRL_ERROR = 'Error'
-    #@deprecated
-    SIGNAL_CTRL_WAITING = 'Waiting'
-    #@deprecated
-    SIGNAL_CTRL_SLEEPING = 'Sleeping'
-    #@deprecated
-    SIGNAL_CTRL_INPROGRESS = 'InProgress'
-    #@deprecated
-    SIGNAL_CTRL_COMPLETED = 'Completed'
-    #@deprecated
-    SIGNAL_CTRL_FAILED = 'Failed'
-    #@deprecated
-    SIGNAL_CTRL_NODEOK = 'NodeOK'
-    #@deprecated
-    SIGNAL_CTRL_NODEFAILED = 'NodeFailed'
 
     STATE_NORMAL = 'Normal'
     STATE_STARTING = 'Starting'
@@ -139,45 +116,50 @@ class ZWaveController(ZWaveObject):
     INT_NODEOK = 9
     INT_NODEFAILED = 10
 
-    #@deprecated
-    SIGNAL_CONTROLLER = 'Message'
-
     SIGNAL_CONTROLLER_STATS = 'ControllerStats'
 
-    #@deprecated
-    CMD_NONE = 0
-    #@deprecated
-    CMD_ADDDEVICE = 1
-    #@deprecated
-    CMD_CREATENEWPRIMARY = 2
-    #@deprecated
-    CMD_RECEIVECONFIGURATION = 3
-    #@deprecated
-    CMD_REMOVEDEVICE = 4
-    #@deprecated
-    CMD_REMOVEFAILEDNODE = 5
-    #@deprecated
-    CMD_HASNODEFAILED = 6
-    #@deprecated
-    CMD_REPLACEFAILEDNODE = 7
-    #@deprecated
-    CMD_TRANSFERPRIMARYROLE = 8
-    #@deprecated
-    CMD_REQUESTNETWORKUPDATE = 9
-    #@deprecated
-    CMD_REQUESTNODENEIGHBORUPDATE = 10
-    #@deprecated
-    CMD_ASSIGNRETURNROUTE = 11
-    #@deprecated
-    CMD_DELETEALLRETURNROUTES = 12
-    #@deprecated
-    CMD_SENDNODEINFORMATION = 13
-    #@deprecated
-    CMD_REPLICATIONSEND = 14
-    #@deprecated
-    CMD_CREATEBUTTON = 15
-    #@deprecated
-    CMD_DELETEBUTTON = 16
+    # ------DEPRECATED
+    SIGNAL_CONTROLLER = deprecated('Message')
+
+    CMD_NONE = deprecated(0)
+    CMD_ADDDEVICE = deprecated(1)
+    CMD_CREATENEWPRIMARY = deprecated(2)
+    CMD_RECEIVECONFIGURATION = deprecated(3)
+    CMD_REMOVEDEVICE = deprecated(4)
+    CMD_REMOVEFAILEDNODE = deprecated(5)
+    CMD_HASNODEFAILED = deprecated(6)
+    CMD_REPLACEFAILEDNODE = deprecated(7)
+    CMD_TRANSFERPRIMARYROLE = deprecated(8)
+    CMD_REQUESTNETWORKUPDATE = deprecated(9)
+    CMD_REQUESTNODENEIGHBORUPDATE = deprecated(10)
+    CMD_ASSIGNRETURNROUTE = deprecated(11)
+    CMD_DELETEALLRETURNROUTES = deprecated(12)
+    CMD_SENDNODEINFORMATION = deprecated(13)
+    CMD_REPLICATIONSEND = deprecated(14)
+    CMD_CREATEBUTTON = deprecated(15)
+    CMD_DELETEBUTTON = deprecated(16)
+
+    SIGNAL_CTRL_NORMAL = deprecated('Normal', 'use STATE_NORMAL instead')
+    SIGNAL_CTRL_STARTING = deprecated('Starting', 'use STATE_STARTING instead')
+    SIGNAL_CTRL_CANCEL = deprecated('Cancel', 'use STATE_CANCEL instead')
+    SIGNAL_CTRL_ERROR = deprecated('Error', 'use STATE_ERROR instead')
+    SIGNAL_CTRL_WAITING = deprecated('Waiting', 'use STATE_WAITING instead')
+    SIGNAL_CTRL_SLEEPING = deprecated('Sleeping', 'use STATE_SLEEPING instead')
+
+    SIGNAL_CTRL_FAILED = deprecated('Failed', 'use STATE_FAILED instead')
+    SIGNAL_CTRL_NODEOK = deprecated('NodeOK', 'use STATE_NODEOK instead')
+    SIGNAL_CTRL_INPROGRESS = deprecated(
+        'InProgress',
+        'use STATE_INPROGRESS instead'
+    )
+    SIGNAL_CTRL_COMPLETED = deprecated(
+        'Completed',
+        'use STATE_COMPLETED instead'
+    )
+    SIGNAL_CTRL_NODEFAILED = deprecated(
+        'NodeFailed',
+        'use STATE_NODEFAILED instead'
+    )
 
     def __init__(self, controller_id, network, options=None):
         """
