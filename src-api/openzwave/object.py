@@ -23,18 +23,12 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-# Set default logging handler to avoid "No handler found" warnings.
+
 import logging
 import warnings
-try:  # Python 2.7+
-    from logging import NullHandler
-except ImportError:
-    class NullHandler(logging.Handler):
-        """NullHandler logger for python 2.6"""
-        def emit(self, record):
-            pass
-logger = logging.getLogger('openzwave')
-logger.addHandler(NullHandler())
+
+logger = logging.getLogger(__name__)
+
 
 def deprecated(func):
     """This is a decorator which can be used to mark functions

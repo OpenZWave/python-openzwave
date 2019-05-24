@@ -37,21 +37,14 @@ import tempfile
 import threading
 import shutil
 import time
+import logging
 
 from openzwave.object import ZWaveObject, deprecated
 from libopenzwave import PyStatDriver, PyControllerState
 
-# Set default logging handler to avoid "No handler found" warnings.
-import logging
-try:  # Python 2.7+
-    from logging import NullHandler
-except ImportError:
-    class NullHandler(logging.Handler):
-        """NullHandler logger for python 2.6"""
-        def emit(self, record):
-            pass
-logger = logging.getLogger('openzwave')
-logger.addHandler(NullHandler())
+
+logger = logging.getLogger(__name__)
+
 
 class ZWaveController(ZWaveObject):
     '''
@@ -1402,7 +1395,7 @@ class ZWaveController(ZWaveObject):
                 f.write("#This file is part of **python-openzwave** project https://github.com/OpenZWave/python-openzwave.")
         except Exception:
             logger.exception("Can't create %s", os.path.join(self.library_config_path, '__init__.py'))
-            
+
         shutil.rmtree(dest)
 
 

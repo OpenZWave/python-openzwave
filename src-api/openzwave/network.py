@@ -24,6 +24,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
 import os
+import logging
 #from collections import namedtuple
 import time
 import sys
@@ -43,22 +44,15 @@ from openzwave.option import ZWaveOption
 from openzwave.scene import ZWaveScene
 from openzwave.singleton import Singleton
 
-# Set default logging handler to avoid "No handler found" warnings.
-import logging
-try:  # Python 2.7+
-    from logging import NullHandler
-except ImportError:
-    class NullHandler(logging.Handler):
-        """NullHandler logger for python 2.6"""
-        def emit(self, record):
-            pass
-logger = logging.getLogger('openzwave')
-logger.addHandler(NullHandler())
 
 try:
     import sqlite3 as lite
 except ImportError:
     logger.warning('pysqlite is not installed')
+
+
+logger = logging.getLogger(__name__)
+
 
 class ZWaveNetwork(ZWaveObject):
     """

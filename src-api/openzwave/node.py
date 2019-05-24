@@ -23,6 +23,8 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+import logging
+
 import sys
 from libopenzwave import PyStatNode
 from openzwave.object import ZWaveObject
@@ -32,17 +34,8 @@ from openzwave.command import ZWaveNodeBasic, ZWaveNodeSwitch
 from openzwave.command import ZWaveNodeSensor, ZWaveNodeThermostat
 from openzwave.command import ZWaveNodeSecurity, ZWaveNodeDoorLock
 
-# Set default logging handler to avoid "No handler found" warnings.
-import logging
-try:  # Python 2.7+
-    from logging import NullHandler
-except ImportError:
-    class NullHandler(logging.Handler):
-        """NullHandler logger for python 2.6"""
-        def emit(self, record):
-            pass
-logger = logging.getLogger('openzwave')
-logger.addHandler(NullHandler())
+logger = logging.getLogger(__name__)
+
 
 class ZWaveNode(ZWaveObject,
                 ZWaveNodeBasic, ZWaveNodeSwitch,
