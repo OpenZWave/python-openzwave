@@ -27,6 +27,7 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 import logging
 
 from .object import ZWaveObject
+from ._utils import deprecated
 
 
 logger = logging.getLogger(__name__)
@@ -70,6 +71,7 @@ class ZWaveScene(ZWaveObject):
         """
         return self._object_id
 
+    @deprecated
     @property
     def label(self):
         """
@@ -80,6 +82,7 @@ class ZWaveScene(ZWaveObject):
         """
         return self._network.manager.getSceneLabel(self.object_id)
 
+    @deprecated
     @label.setter
     def label(self, value):
         """
@@ -91,6 +94,7 @@ class ZWaveScene(ZWaveObject):
         """
         self._network.manager.setSceneLabel(self.object_id, value)
 
+    @deprecated
     def create(self, label=None):
         """
         Create a new zwave scene on the network and update the object_id field
@@ -109,6 +113,7 @@ class ZWaveScene(ZWaveObject):
                 self.label = label
         return scene_id
 
+    @deprecated
     def add_value(self, value_id, value_data):
         """
         Add a value with data value_data to the zwave scene.
@@ -124,6 +129,7 @@ class ZWaveScene(ZWaveObject):
             return True
         return False
 
+    @deprecated
     def set_value(self, value_id, value_data):
         """
         Set a value data to value_data in the zwave scene.
@@ -139,6 +145,7 @@ class ZWaveScene(ZWaveObject):
             return True
         return False
 
+    @deprecated
     def get_values(self):
         """
         Get all the values of the scene
@@ -156,6 +163,7 @@ class ZWaveScene(ZWaveObject):
             ret[val] = {'value':value, 'data':values[val]}
         return ret
 
+    @deprecated
     def get_values_by_node(self):
         """
         Get all the values of the scene grouped by nodes
@@ -176,6 +184,7 @@ class ZWaveScene(ZWaveObject):
                 ret[value.node.node_id][val] = {'value':value, 'data':values[val]}
         return ret
 
+    @deprecated
     def remove_value(self, value_id):
         """
         Remove a value from the scene.
@@ -188,6 +197,7 @@ class ZWaveScene(ZWaveObject):
         """
         return self._network.manager.removeSceneValue(self.scene_id, value_id)
 
+    @deprecated
     def activate(self):
         """
         Activate the zwave scene.
@@ -198,6 +208,7 @@ class ZWaveScene(ZWaveObject):
         """
         return self._network.manager.activateScene(self.object_id)
 
+    @deprecated
     def to_dict(self, extras=['kvals']):
         """
         Return a dict representation of the node.

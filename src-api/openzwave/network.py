@@ -630,6 +630,7 @@ class ZWaveNetwork(ZWaveObject):
         else:
             self._nodes = dict()
 
+    @deprecated
     def switch_all(self, state):
         """
         Method for switching all devices on or off together.  The devices must support
@@ -730,6 +731,7 @@ class ZWaveNetwork(ZWaveObject):
                     return val
         return None
 
+    @deprecated
     def get_scenes(self):
         """
         The scenes of the network.
@@ -747,6 +749,7 @@ class ZWaveNetwork(ZWaveObject):
         else:
             return self._load_scenes()
 
+    @deprecated
     def scenes_to_dict(self, extras=['all']):
         """
         Return a JSONifiable dict representation of the scenes.
@@ -763,6 +766,7 @@ class ZWaveNetwork(ZWaveObject):
             ret[scnid] = scenes[scnid].to_dict(extras=extras)
         return ret
 
+    @deprecated
     def _load_scenes(self):
         """
         Load the scenes of the network.
@@ -779,6 +783,7 @@ class ZWaveNetwork(ZWaveObject):
             ret[scene_id] = scene
         return ret
 
+    @deprecated
     def create_scene(self, label=None):
         """
         Create a new scene on the network.
@@ -796,6 +801,7 @@ class ZWaveNetwork(ZWaveObject):
         scene = ZWaveScene(None, network=self)
         return scene.create(label)
 
+    @deprecated
     def scene_exists(self, scene_id):
         """
         Check that the scene exists
@@ -808,6 +814,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._network.manager.sceneExists(scene_id)
 
+    @deprecated
     @property
     def scenes_count(self):
         """
@@ -819,6 +826,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         return self._network.manager.getNumScenes()
 
+    @deprecated
     def remove_scene(self, scene_id):
         """
         Delete the scene on the network.
