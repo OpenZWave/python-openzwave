@@ -1652,10 +1652,18 @@ class ZWaveNetwork(ZWaveObject):
     [driverRemoved]
 """
 
+
 class ZWaveNetworkSingleton(ZWaveNetwork):
     """
     Represents a singleton Zwave network.
 
     """
-    __metaclass__ = Singleton
+    def __init__(self, *args, **kwargs):
+        ZWaveNetwork.__init__(self, *args, **kwargs)
+
+    __init__ = deprecated(
+        __init__,
+        'The ZWaveNetwork class is now an instance singleton,'
+        ' the ZWaveNetworkSingleton is no longer needed.'
+    )
 
