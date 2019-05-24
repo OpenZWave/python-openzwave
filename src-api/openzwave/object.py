@@ -26,6 +26,10 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 import logging
 import warnings
+import six
+
+from .singleton import InstanceSingleton
+
 
 logger = logging.getLogger(__name__)
 
@@ -93,6 +97,8 @@ class ZWaveCommandClassException(ZWaveException):
     def __str__(self):
         return repr(self.msg+' : '+self.value)
 
+
+@six.add_metaclass(InstanceSingleton)
 class ZWaveObject(object):
     """
     Represents a Zwave object. Values, nodes, ... can be changer by

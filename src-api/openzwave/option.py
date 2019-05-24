@@ -26,11 +26,12 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 import os
 import logging
+import six
 from platform import system as platform_system
 
 import libopenzwave
 from .object import ZWaveException
-from .singleton import Singleton
+from .singleton import InstanceSingleton
 
 
 logger = logging.getLogger(__name__)
@@ -75,6 +76,8 @@ def _get_z_stick():
                 return port.device
     return None
 
+
+@six.add_metaclass(InstanceSingleton)
 class ZWaveOption(libopenzwave.PyOptions):
     """
     Represents a Zwave option used to start the manager.
@@ -386,7 +389,5 @@ class ZWaveOption(libopenzwave.PyOptions):
 class ZWaveOptionSingleton(ZWaveOption):
     """
     Represents a singleton Zwave option used to start the manager.
-
     """
-    __metaclass__ = Singleton
-
+    pass
