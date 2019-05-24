@@ -292,9 +292,14 @@ class ZWaveValue(ZWaveObject):
         Get the value data as String.
 
         :rtype: str
-
         """
+        if self.type == 'BitSet':
+            value = self._network.manager.getValue(self.value_id)
+            value = "{0:b}".format(value)
+            return str(list(bool(int(item)) for item in list(value)))[1:-1]
+
         return self._network.manager.getValueAsString(self.value_id)
+
 
     @property
     def data_items(self):
@@ -548,6 +553,55 @@ class ZWaveValue(ZWaveObject):
         :rtype: str, None
         """
         return self._network.manager.getInstanceLabel(self.value_id)
+
+    def get_bit(self, pos):
+        """
+        Get a single bit value.
+
+        This method is only for BitSet value types.
+
+        :param pos: Bit position.
+        :type pos: int
+        :return: Can be one of the following values.
+
+            Possible Values:
+
+                * `True`: The bit is set.
+                * `False`: The bit is not set.
+                * `None`: The value type is not BitSet
+
+        :rtype: bool, None
+        """
+        if self.type == 'BitSet':
+            return self._network.manager.getValueAsBitSet(self.value_id, pos)
+
+    def set_bit(self, pos, value):
+        """
+        Get a single bit value.
+
+        This method is only for BitSet value types.
+
+        :param pos: Bit position.
+        :type pos: int
+        :param value: Can be one of the following values.
+
+            Allowed Values:
+
+                * `True`: sets the bit
+                * `False`: un-sets the bit
+
+        :return: Can be one of the following values.
+
+            Possible Values:
+
+                * `True`: Command was sent.
+                * `False`: Command failed.
+                * `None`: the value type is not BitSet
+
+        :rtype: bool, None
+        """
+        if self.type == 'BitSet':
+            return self._network.manager.setValue(self.value_id, value, pos)
 
     def to_dict(self, extras=['all']):
         """

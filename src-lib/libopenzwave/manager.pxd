@@ -147,6 +147,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueListSelection(ValueID& valueid, int32_t* o_value)
         bool GetValueListItems(ValueID& valueid, vector[string]* o_value)
         bool GetValueListValues(ValueID& valueid, vector[int32_t]* o_value)
+        bool SetValue(ValueID& valueid, uint8_t pos, bool value)
         bool SetValue(ValueID& valueid, bool value)
         bool SetValue(ValueID& valueid, uint8_t value)
         bool SetValue(ValueID& valueid, float value)
