@@ -79,7 +79,7 @@ setup(
         find_packages('src-api', exclude=["scripts"]) +
         find_packages('src-manager', exclude=["scripts"]) +
         find_packages('src-python_openzwave', exclude=["scripts"]),
-  install_requires = install_requires(),
+  install_requires = install_requires() + ['six'],
   description = 'python_openzwave is a python wrapper for the openzwave c++ library.',
   long_description = 'A full API to map the ZWave network in Python objects. Look at examples at : https://github.com/OpenZWave/python-openzwave',
   download_url = 'https://raw.githubusercontent.com/OpenZWave/python-openzwave/master/archives/python_openzwave-{0}.zip'.format(pyozw_version),
