@@ -80,6 +80,7 @@ setup(
         find_packages('src-manager', exclude=["scripts"]) +
         find_packages('src-python_openzwave', exclude=["scripts"]),
   install_requires=[
+    'pyserial',
     'pydispatch;python_version>="3.0"',
     'louie;python_version<"3.0"',
     'six'
