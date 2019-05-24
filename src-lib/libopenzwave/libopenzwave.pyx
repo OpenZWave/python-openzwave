@@ -334,6 +334,7 @@ PyOptionList = {
     'SecurityStrategy' : {'doc' : "Should we encrypt CC's that are available via both clear text and Security CC?.", 'type' : "String", 'value' : 'SUPPORTED'},
     'CustomSecuredCC' : {'doc' : "What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.", 'type' : "String", 'value' : '0x62,0x4c,0x63'},
     'EnforceSecureReception' : {'doc' : "If we recieve a clear text message for a CC that is Secured, should we drop the message", 'type' : "Bool"},
+    'ReloadAfterUpdate' : {'doc' : "Changes the node reloading after downloading a new device config file", 'type' : "String"},
 }
 
 PyStatDriver = {
