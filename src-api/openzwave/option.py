@@ -235,6 +235,25 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         return self.addOptionInt("DumpTriggerLevel", libopenzwave.PyLogLevels[level])
 
+    def set_reload_nodes_after_config_update(self, option):
+        """
+        The Node will be reloaded depending upon the Option
+        "ReloadAfterUpdate"
+        :param option: Valid Options include:
+
+            * `"Never"`: Never Reload a Node after updating the Config File.
+            Manual Reload is Required.
+            * `"Immediate"`: Reload the Node Immediately after downloading
+            the latest revision
+            * `"Awake"`: Reload Nodes only when they are awake
+            (Always-On Nodes will reload immediately, Sleeping Nodes will
+            reload when they wake up
+
+        :type option: str
+        """
+
+        return self.addOptionString("ReloadAfterUpdate", option, False)
+
     def set_associate(self, status):
         """
         Enable automatic association of the controller with group one of every device.
