@@ -22,6 +22,29 @@ from mylibc cimport string
 
 cdef extern from "Node.h" namespace "OpenZWave::Node":
 
+    cdef enum MetaDataFields:
+        MetaData_OzwInfoPage_URL = 0
+        MetaData_ZWProductPage_URL = 1
+        MetaData_ProductPic = 2
+        MetaData_Description = 3
+        MetaData_ProductManual_URL = 4
+        MetaData_ProductPage_URL = 5
+        MetaData_InclusionHelp = 6
+        MetaData_ExclusionHelp = 7
+        MetaData_ResetHelp = 8
+        MetaData_WakeupHelp = 9
+        MetaData_ProductSupport_URL = 10
+        MetaData_Frequency = 11
+        MetaData_Name = 12
+        MetaData_Identifier = 13
+        MetaData_Invalid= 255
+
+    cdef struct ChangeLogEntry:
+        string  author
+        string  date
+        int revision
+        string  description
+
     cdef enum SecurityFlag:
         SecurityFlag_Security = 0x01,
         SecurityFlag_Controller = 0x02,

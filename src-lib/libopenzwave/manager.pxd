@@ -255,6 +255,10 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool downloadLatestConfigFileRevision( uint32_t _homeId, uint8_t _nodeId )
         bool downloadLatestMFSRevision( uint32_t _homeId )
 
+        # node metadata
+        ChangeLogEntry GetChangeLog( uint32_t _homeId, uint8_t _nodeId, uint32_t revision )
+        string GetMetaData( uint32_t _homeId, uint8_t _nodeId, MetaDataFields _metadata )
+
 
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()

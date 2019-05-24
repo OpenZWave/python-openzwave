@@ -1134,3 +1134,52 @@ class ZWaveNode(ZWaveObject,
             self.home_id,
             self.node_id
         )
+
+    def get_change_log(self, revision):
+        """
+        Gets a nodes changlog information
+
+        :param revision: revision of the change log to get
+        :type revision: int
+        :return: dict
+        :rtype: dict
+
+        """
+        return self._network.manager.getChangeLog(
+            self.home_id,
+            self.node_id,
+            revision
+        )
+
+    def get_meta_data(self, metadata):
+        """
+        Gets a metadata item for a node
+
+        :param metadata: can be one of the following:
+
+            * `0`: OZW Info page URL
+            * `1`: OZW Product page URL
+            * `2`: Product picture
+            * `3`: Product description
+            * `4`: Product manual URL
+            * `5`: Product page URL
+            * `6`: Inclusion help
+            * `7`: Exclusion help
+            * `8`: Reset help
+            * `9`: Wakeup help
+            * `10`: Product support URL
+            * `11`: Device frequency
+            * `12`: Name
+            * `13`: Identifier
+
+        :type metadata: int
+        :return: str
+        :rtype: str
+
+        """
+        return self._network.manager.getMetaData(
+            self.home_id,
+            self.node_id,
+            metadata
+        )
+
