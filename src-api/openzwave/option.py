@@ -32,6 +32,7 @@ from platform import system as platform_system
 import libopenzwave
 from .object import ZWaveException
 from .singleton import InstanceSingleton
+from ._utils import deprecated
 
 
 logger = logging.getLogger(__name__)
@@ -390,4 +391,12 @@ class ZWaveOptionSingleton(ZWaveOption):
     """
     Represents a singleton Zwave option used to start the manager.
     """
-    pass
+
+    def __init__(self, *args, **kwargs):
+        ZWaveOption.__init__(self, *args, **kwargs)
+
+    __init__ = deprecated(
+        __init__,
+        'The ZWaveOption class is now an instance singleton, '
+        'please use that instead of the ZWaveOptionSingleton class'
+    )
