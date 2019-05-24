@@ -24,7 +24,7 @@ from libcpp.vector cimport vector
 from libc.stdint cimport uint32_t, int32_t, uint16_t, int16_t, uint8_t, int8_t
 #from libcpp.string cimport string
 from mylibc cimport string
-from node cimport NodeData
+from node cimport NodeData, ChangeLogEntry, MetaDataFields
 from driver cimport DriverData_t, DriverData
 from group cimport InstanceAssociation_t, InstanceAssociation
 from driver cimport ControllerInterface, ControllerCommand, ControllerState, pfnControllerCallback_t
