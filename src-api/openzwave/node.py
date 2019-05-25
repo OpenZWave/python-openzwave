@@ -32,6 +32,7 @@ from .value import ZWaveValue
 from .command import ZWaveNodeBasic, ZWaveNodeSwitch
 from .command import ZWaveNodeSensor, ZWaveNodeThermostat
 from .command import ZWaveNodeSecurity, ZWaveNodeDoorLock
+from .user_codes import ZWaveUserCodes
 from .value_indexes import ValueIndexMapping
 
 
@@ -41,7 +42,8 @@ logger = logging.getLogger(__name__)
 class ZWaveNode(ZWaveObject,
                 ZWaveNodeBasic, ZWaveNodeSwitch,
                 ZWaveNodeSensor, ZWaveNodeThermostat,
-                ZWaveNodeSecurity, ZWaveNodeDoorLock):
+                ZWaveNodeSecurity, ZWaveNodeDoorLock,
+                ZWaveUserCodes):
     """
     Represents a single Node within the Z-Wave Network.
 
