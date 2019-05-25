@@ -182,6 +182,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         string GetGroupLabel(uint32_t homeid, uint8_t nodeid, uint8_t groupidx)
         void AddAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid, uint8_t instance)
         void RemoveAssociation(uint32_t homeid, uint8_t nodeid, uint8_t groupidx, uint8_t targetnodeid, uint8_t instance)
+        bool IsMultiInstance(uint32_t homeid, uint8_t nodeid, uint8_t groupIdx)
         bool AddWatcher(pfnOnNotification_t notification, void* context)
         bool RemoveWatcher(pfnOnNotification_t notification, void* context)
         # void NotifyWatchers(Notification*)

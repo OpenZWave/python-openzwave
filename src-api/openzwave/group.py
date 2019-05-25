@@ -153,6 +153,18 @@ class ZWaveGroup(ZWaveObject):
         """
         self._network.manager.removeAssociation(self._network.home_id, self._node_id, self.index, target_node_id, instance)
 
+    @property
+    def is_multi_instance(self):
+        """
+        Is Multi Instance
+
+        Does this group support multiple instances
+
+        :return: `True`/`False`
+        :rtype: bool
+        """
+        return self._network.manager.isMultiInstance(self._network.home_id, self.node_id, self.index)
+
     def to_dict(self, extras=['all']):
         """
         Return a dict representation of the group.

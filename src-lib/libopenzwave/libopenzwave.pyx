@@ -1207,7 +1207,7 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x64: 'COMMAND_CLASS_GARAGE_DOOR',
         0x66: 'COMMAND_CLASS_BARRIER_OPERATOR',
         0x70: 'COMMAND_CLASS_CONFIGURATION',
-        0x71: 'COMMAND_CLASS_ALARM',
+        0x71: 'COMMAND_CLASS_NOTIFICATION',
         0x72: 'COMMAND_CLASS_MANUFACTURER_SPECIFIC',
         0x73: 'COMMAND_CLASS_POWERLEVEL',
         0x75: 'COMMAND_CLASS_PROTECTION',
@@ -4012,6 +4012,19 @@ AddAssociation and RemoveAssociation will be a number between 1 and 4.
 
         '''
         return self.manager.GetNumGroups(homeid, nodeid)
+
+    def isMultiInstance(self, homeid, nodeid, groupIdx):
+        '''
+.. _isMultiInstance:
+Get whether the node supports MultiInstance Associations
+:param homeid: The Home ID of the Z-Wave controller that manages the node.
+:type homeid: int
+:param nodeid: The ID of the node to query.
+:type nodeid: int
+:return: True if the node supports MultiInstance Associations
+:rtype: bool
+        '''
+        return self.manager.IsMultiInstance(homeid, nodeid, groupIdx)
 
     def getAssociations(self, homeid, nodeid, groupidx):
         '''
