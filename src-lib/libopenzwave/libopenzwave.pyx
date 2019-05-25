@@ -478,10 +478,10 @@ cdef sendRawData(Manager *manager, homeid, nodeid, log_text, msg_type, send_secu
     manager.SendRawData(
         homeid,
         nodeid,
-        string* l_text,
+        l_text,
         msg_type,
         secure,
-        uint8_t* cont,
+        &cont,
         leng
     )
 

@@ -95,7 +95,7 @@ class ZWaveUserCodes(object):
 
         self._indices.remove_code.data = code
         return True
-        
+
     def __radd__(self, other):
         for code in other:
             if not self.append(code):

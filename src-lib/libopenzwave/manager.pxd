@@ -116,8 +116,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         void SetNodeLevel(uint32_t homeid, uint8_t nodeid, uint8_t level)
         bool IsNodeInfoReceived(uint32_t homeid, uint8_t nodeid)
         bool IsNodePlusInfoReceived(uint32_t homeid, uint8_t nodeid)
-        bool GetNodeClassInformation( uint32_t homeId, uint8_t nodeId, uint8_t commandClassId,
-                          string *className, uint8_t *classVersion)
+        bool GetNodeClassInformation( uint32_t homeId, uint8_t nodeId, uint8_t commandClassId, string *className, uint8_t *classVersion)
         bool IsNodeAwake(uint32_t homeid, uint8_t nodeid)
         bool IsNodeFailed(uint32_t homeid, uint8_t nodeid)
         string GetNodeQueryStage(uint32_t homeid, uint8_t nodeid)
@@ -147,6 +146,7 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         bool GetValueListSelection(ValueID& valueid, int32_t* o_value)
         bool GetValueListItems(ValueID& valueid, vector[string]* o_value)
         bool GetValueListValues(ValueID& valueid, vector[int32_t]* o_value)
+        bool GetValueAsBitSet(ValueID& valueid, uint8_t _pos, bool* o_value)
         bool SetValue(ValueID& valueid, uint8_t pos, bool value)
         bool SetValue(ValueID& valueid, bool value)
         bool SetValue(ValueID& valueid, uint8_t value)
