@@ -235,6 +235,19 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         return self.addOptionInt("DumpTriggerLevel", libopenzwave.PyLogLevels[level])
 
+    def include_instance_label(self, flag):
+
+        """
+        IncludeInstanceLabel
+
+        Should we include the Instance Label in Value Labels on
+        MultiInstance Devices
+
+        :param flag: `True`/`False`
+        :return: bool
+        """
+        return self.addOptionBool("IncludeInstanceLabel", flag)
+
     def set_reload_nodes_after_config_update(self, option):
         """
         The Node will be reloaded depending upon the Option

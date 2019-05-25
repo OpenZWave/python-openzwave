@@ -48,9 +48,8 @@ from openzwave.node import ZWaveNode
 from openzwave.value import ZWaveValue
 from openzwave.scene import ZWaveScene
 from openzwave.controller import ZWaveController
-from openzwave.network import ZWaveNetwork, ZWaveNetworkSingleton
-from openzwave.option import ZWaveOption, ZWaveOptionSingleton
-from openzwave.singleton import Singleton
+from openzwave.network import ZWaveNetwork
+from openzwave.option import ZWaveOption
 from tests.common import pyozw_version
 from tests.common import SLEEP
 from tests.api.common import TestApi
@@ -84,30 +83,32 @@ class TestNetworkApi(TestPyZWave):
         self.rmFile('ttyUSBO_fake')
 
     def test_900_api_singleton(self):
-        self.skipPython3()
-        class SingletonTest(object):
-            __metaclass__ = Singleton
+        pass
+        # self.skipPython3()
+        # class SingletonTest(object):
+        #     __metaclass__ = Singleton
 
-        s1 = SingletonTest()
-        s2 = SingletonTest()
-        self.assertIs(s1, s2)
+        # s1 = SingletonTest()
+        # s2 = SingletonTest()
+        # self.assertIs(s1, s2)
 
     def test_905_network_singleton(self):
-        self.skipPython3()
-        self.touchFile('ttyUSBO_fake')
-        self.options = ZWaveOptionSingleton(device='ttyUSBO_fake', user_path=self.userpath)
-        self.options.set_log_file("OZW_Log.log")
-        self.options.set_append_log_file(False)
-        self.options.set_console_output(False)
-        self.options.set_save_log_level("Debug")
-        self.options.set_logging(True)
-        self.options.lock()
-        options2 = ZWaveOptionSingleton(device='ttyUSBO_fake', user_path=self.userpath)
-        self.assertIs(self.options, options2)
-        self.network = ZWaveNetworkSingleton(self.options, autostart=False)
-        network2 = ZWaveNetworkSingleton(self.options, autostart=False)
-        self.assertIs(self.network, network2)
-        self.rmFile('ttyUSBO_fake')
+        pass
+        # self.skipPython3()
+        # self.touchFile('ttyUSBO_fake')
+        # self.options = ZWaveOptionSingleton(device='ttyUSBO_fake', user_path=self.userpath)
+        # self.options.set_log_file("OZW_Log.log")
+        # self.options.set_append_log_file(False)
+        # self.options.set_console_output(False)
+        # self.options.set_save_log_level("Debug")
+        # self.options.set_logging(True)
+        # self.options.lock()
+        # options2 = ZWaveOptionSingleton(device='ttyUSBO_fake', user_path=self.userpath)
+        # self.assertIs(self.options, options2)
+        # self.network = ZWaveNetworkSingleton(self.options, autostart=False)
+        # network2 = ZWaveNetworkSingleton(self.options, autostart=False)
+        # self.assertIs(self.network, network2)
+        # self.rmFile('ttyUSBO_fake')
 
 if __name__ == '__main__':
     sys.argv.append('-v')

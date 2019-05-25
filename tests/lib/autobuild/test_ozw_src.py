@@ -55,17 +55,21 @@ class TestOzwSrc(TestLib):
             if not (header.endswith('CommandClass.h') or header.endswith('CommandClasses.h')):
                 with open(header, 'r') as f:
                     lines = f.readlines()
-                    for line in lines:
-                        match = CLASSID.search(line)
+                for line in lines:
+                    match = CLASSID.search(line)
+                    if match:
+                        classid = match.group(1)
+                    else:
+                        match = CLASSST.search(line)
                         if match:
-                            classid = match.group(1)
-                        else:
-                            match = CLASSST.search(line)
-                            if match:
-                                classst = match.group(1)
-                    print(header)
-                    print(classid, ':', classst)
-                    self.assertEqual(classst, manager.COMMAND_CLASS_DESC[int(classid,16)])
+                            classst = match.group(1)
+                print(header)
+                print(classid, ':', classst)
+
+                if None in (classid, classst):
+                    continue
+
+                self.assertEqual(classst, manager.COMMAND_CLASS_DESC[int(classid,16)])
 
     def test_020_notification_types(self):
         with open(os.path.join (OZWDIR, 'cpp', 'src', 'Notification.h'), 'r') as f:
@@ -203,8 +207,8 @@ class TestOzwSrc(TestLib):
                 self.assertEqual(libopenzwave.PyLogLevels[j]['value'], i)
 
     def test_130_manager_functions(self):
-        PRIVATES = ['SetDriverReady', 'NotifyWatchers']
-        RENAMES = [('SoftReset', ['SoftResetController']), 
+        PRIVATES = ['SetDriverReady', 'NotifyWatchers', 'HasExtendedTxStatus', 'SetBitMask', 'GetBitMask', 'GetBitSetSize']
+        RENAMES = [('SoftReset', ['SoftResetController']),
                     ('GetValueListSelection', ['GetValueListSelectionStr','GetValueListSelectionNum']),
                     ('SetValueListSelection', ['SetValue']),
                     ('AddSceneValueListSelection', ['AddSceneValue','AddSceneValue']),

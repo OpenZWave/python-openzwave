@@ -28,6 +28,7 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
+from __future__ import print_function
 from cython.operator cimport dereference as deref
 from libcpp.map cimport map, pair
 from libcpp cimport bool
@@ -392,6 +393,7 @@ PyOptionList = {
     'CustomSecuredCC' : {'doc' : "What List of Custom CC should we always encrypt if SecurityStrategy is CUSTOM.", 'type' : "String", 'value' : '0x62,0x4c,0x63'},
     'EnforceSecureReception' : {'doc' : "If we recieve a clear text message for a CC that is Secured, should we drop the message", 'type' : "Bool"},
     'ReloadAfterUpdate' : {'doc' : "Changes the node reloading after downloading a new device config file", 'type' : "String"},
+    'IncludeInstanceLabel': {'doc': "Should we include the Instance Label in Value Labels on MultiInstance Devices", 'type' : "Bool"}
 }
 
 PyStatDriver = {
@@ -779,12 +781,21 @@ def configPath():
 
 def  convert_string(s):
     if PY3:
-        if isinstance(s, bytes):
-            s = s.decode('utf-8')
-    else:
-        if isinstance(s, unicode):
+        if not isinstance(s, bytes):
             s = s.encode('utf-8')
+    else:
+        try:
+            s = s.decode('utf-8')
+        except UnicodeEncodeError:
+            s = s.encode('utf-8').decode('utf-8')
     return s
+    # if PY3:
+    #     if isinstance(s, bytes):
+    #         s = s.decode('utf-8')
+    # else:
+    #     if isinstance(s, unicode):
+    #         s = s.encode('utf-8')
+    # return s
 
 
 cdef class PyOptions:
@@ -1224,7 +1235,6 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x51: 'COMMAND_CLASS_MTP_WINDOW_COVERING',
         0x56: 'COMMAND_CLASS_CRC_16_ENCAP',
         0x5A: 'COMMAND_CLASS_DEVICE_RESET_LOCALLY',
-        0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
         0x5E: 'COMMAND_CLASS_ZWAVEPLUS_INFO',
         0x60: 'COMMAND_CLASS_MULTI_INSTANCE/CHANNEL',
         0x61: 'COMMAND_CLASS_DISPLAY',
@@ -1240,7 +1250,6 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x76: 'COMMAND_CLASS_LOCK',
         0x77: 'COMMAND_CLASS_NODE_NAMING',
         0x78: 'COMMAND_CLASS_ACTUATOR_MULTILEVEL',
-        0x79: 'COMMAND_CLASS_KICK',
         0x7A: 'COMMAND_CLASS_FIRMWARE_UPDATE_MD',
         0x7B: 'COMMAND_CLASS_GROUPING_NAME',
         0x7C: 'COMMAND_CLASS_REMOTE_ASSOCIATION_ACTIVATE',
@@ -1265,7 +1274,6 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x91: 'COMMAND_CLASS_MANUFACTURER_PROPRIETARY',
         0x92: 'COMMAND_CLASS_SCREEN_MD',
         0x93: 'COMMAND_CLASS_SCREEN_ATTRIBUTES',
-        0x94: 'COMMAND_CLASS_SIMPLE_AV_CONTROL',
         0x95: 'COMMAND_CLASS_AV_CONTENT_DIRECTORY_MD',
         0x96: 'COMMAND_CLASS_AV_RENDERER_STATUS',
         0x97: 'COMMAND_CLASS_AV_CONTENT_SEARCH_MD',
@@ -1277,7 +1285,10 @@ sleeping) have been polled, an "AllNodesQueried" notification is sent.
         0x9D: 'COMMAND_CLASS_SILENCE_ALARM',
         0x9E: 'COMMAND_CLASS_SENSOR_CONFIGURATION',
         0xEF: 'COMMAND_CLASS_MARK',
-        0xF0: 'COMMAND_CLASS_NON_INTEROPERABLE'
+        0xF0: 'COMMAND_CLASS_NON_INTEROPERABLE',
+        0x94: 'COMMAND_CLASS_SIMPLE_AV_CONTROL',
+        0x5B: 'COMMAND_CLASS_CENTRAL_SCENE',
+        0x79: 'COMMAND_CLASS_SOUND_SWITCH',
     }
     '''
     The command classes

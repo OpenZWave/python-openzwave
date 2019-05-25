@@ -300,6 +300,15 @@ class Library(pyozw_common.Library):
         thread_event = threading.Event()
 
         def do(files):
+            # files = list(
+            #     f for f in files
+            #     if not os.path.exists(
+            #         os.path.join(
+            #             command_class.build_temp,
+            #             f
+            #         ).replace('.cpp', '.obj').replace('.c', '.obj')
+            #     )
+            # )
             objs = command_class.compiler.compile(
                 files,
                 output_dir=command_class.build_temp,

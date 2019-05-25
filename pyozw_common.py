@@ -85,7 +85,7 @@ def get_sources(src_path, ignore):
 
             found += get_sources(src, ignore)
         elif src_f.endswith('.c') or src_f.endswith('.cpp'):
-            found += [src]
+            found += [os.path.relpath(src)]
     return found
 
 

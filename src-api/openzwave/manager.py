@@ -70,8 +70,8 @@ else:
             if item in self.__dict__:
                 return self.__dict__[item]
 
-            if hasattr(self.__dict__['__manager'], item):
-                attr = getattr(self.__dict__['__manager'], item)
+            if hasattr(self.__manager, item):
+                attr = getattr(self.__manager, item)
 
                 if inspect.ismethod(attr) or inspect.isfunction(attr):
                     self.__dict__[item] = attr = MethodWrapper(attr)
@@ -79,9 +79,3 @@ else:
                 return attr
 
             raise AttributeError(item)
-
-        def __setattr__(self, key, value):
-            if key == '__manager':
-                self.__dict__[key] = value
-            else:
-                setattr(self.__dict__['__manager'], key, value)
