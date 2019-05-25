@@ -265,6 +265,9 @@ cdef extern from "Manager.h" namespace "OpenZWave":
         string GetInstanceLabel( ValueID& _id)
         string GetInstanceLabel(uint32_t _homeId, uint8_t _node, uint8_t _cc, uint8_t _instance);
 
+        # raw data
+        void SendRawData( uint32_t _homeId, uint8_t _nodeId, string& _logText, uint8_t _msgType, bool _sendSecure, uint8_t* _content, uint8_t _length )
+
 
 cdef extern from "Manager.h" namespace "OpenZWave::Manager":
     Manager* Create()

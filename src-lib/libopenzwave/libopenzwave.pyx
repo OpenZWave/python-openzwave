@@ -460,6 +460,32 @@ cdef getInstanceLabel(Manager *manager, valueId):
     if values_map.find(valueId) != values_map.end():
         return manager.GetInstanceLabel(values_map.at(valueId))
 
+
+cdef sendRawData(Manager *manager, homeid, nodeid, log_text, msg_type, send_secure, content, length):
+
+    cdef string l_text
+    cdef uint8_t cont
+    cdef bool secure
+    cdef uint8_t leng
+    cdef uint8_t m_type
+
+    l_text = log_text
+    cont = content
+    secure = send_secure
+    leng = length
+    m_type = msg_type
+
+    manager.SendRawData(
+        homeid,
+        nodeid,
+        string* l_text,
+        msg_type,
+        secure,
+        uint8_t* cont,
+        leng
+    )
+
+
 cdef getValueFromType(Manager *manager, valueId, pos=None):
     """
     Translate a value in the right type
@@ -5278,3 +5304,11 @@ Gets the label for
 :type valueid: int
         '''
         return getInstanceLabel(self.manager, valueid)
+
+#-----------------------------------------------------------------------------
+# Send Raw Data
+#-----------------------------------------------------------------------------
+
+    def sendRawData(self, homeid, nodeid, log_text, msg_type, send_secure, content, length):
+        sendRawData(self.manager, homeid, nodeid, log_text, msg_type, send_secure, content, length)
+
