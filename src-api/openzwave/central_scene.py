@@ -33,6 +33,9 @@ class ZWaveNodeCentralScene(ZWaveNodeInterface):
     def scenes(self):
         """
         Gets Scenes associated with this node.
+
+        COMMAND_CLASS_CENTRAL_SCENE
+
         :return: list of class:`openzwave.value.ZWaveValue` instances
         :rtype: list
         """

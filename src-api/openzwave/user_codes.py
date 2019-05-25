@@ -30,6 +30,9 @@ class ZWaveUserCodes(object):
     def __init__(self, indices):
         self._indices = indices
 
+    def __delitem__(self, key):
+        self.remove(key)
+
     def __setitem__(self, key, value):
         start = self._indices.indexes.start
         end = self._indices.indexes.end
@@ -65,21 +68,39 @@ class ZWaveUserCodes(object):
         start = self._indices.indexes.start
 
         try:
-            self[start + len(self)] = code
+            self._indices[start + len(self)].data = code
             return True
         except IndexError:
             return False
 
-    def remove(self, code):
-        if code in self:
-            self._indices.remove_code.data = code
-            return True
-        return False
+    def remove(self, item):
+        start = self._indices.indexes.start
+        end = self._indices.indexes.end
 
+        if isinstance(item, int):
+            if start <= item <= end:
+                code = self._indices[item].data
+            else:
+                return False
+        else:
+            for i in range(start, end + 1):
+                if (
+                    self._indices[i] is not None and
+                    self._indices[i].label == item
+                ):
+                    code = self._indices[i].data
+                    break
+            else:
+                return False
+
+        self._indices.remove_code.data = code
+        return True
+        
     def __radd__(self, other):
         for code in other:
             if not self.append(code):
                 break
+        return self
 
     def __contains__(self, item):
         start = self._indices.indexes.start
@@ -99,6 +120,10 @@ class ZWaveUserCodes(object):
             if not self.append(code):
                 return False
         return True
+
+    def set_label(self, index, label):
+        if self._indices[index] is not None:
+            self._indices[index].label = label
 
     def __len__(self):
         return self._indices.count.data
