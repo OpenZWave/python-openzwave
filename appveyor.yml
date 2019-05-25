@@ -115,6 +115,7 @@ install:
   - "python -m pip install Cython six"
   - "python -m pip install nose"
   - "python -m pip install twine"
+  - "python -m pip install pyserial"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
