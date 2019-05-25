@@ -337,3 +337,7 @@ class ZWaveNodeInterface(object):
 
         """
         self._class = "unknown"
+
+        self.get_values = None
+        self.values = None
+        self._value_index_mapping = dict()

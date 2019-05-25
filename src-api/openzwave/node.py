@@ -29,21 +29,39 @@ from libopenzwave import PyStatNode
 from .object import ZWaveObject
 from .group import ZWaveGroup
 from .value import ZWaveValue
-from .command import ZWaveNodeBasic, ZWaveNodeSwitch
-from .command import ZWaveNodeSensor, ZWaveNodeThermostat
-from .command import ZWaveNodeSecurity, ZWaveNodeDoorLock
-from .user_codes import ZWaveUserCodes
+from .command import ZWaveNodeBasic
+from .av_control import ZWaveNodeSimpleAVControl
+from .central_scene import ZWaveNodeCentralScene
+from .door_lock import ZWaveNodeDoorLock
+from .notification import ZWaveNodeNotification
+from .security import ZWaveNodeSecurity
+from .sensor import ZWaveNodeSensor
+from .sound_switch import ZWaveNodeSoundSwitch
+from .switch import ZWaveNodeSwitch
+from .thermostat import ZWaveNodeThermostat
 from .value_indexes import ValueIndexMapping
 
 
 logger = logging.getLogger(__name__)
 
 
-class ZWaveNode(ZWaveObject,
-                ZWaveNodeBasic, ZWaveNodeSwitch,
-                ZWaveNodeSensor, ZWaveNodeThermostat,
-                ZWaveNodeSecurity, ZWaveNodeDoorLock,
-                ZWaveUserCodes):
+
+
+
+
+class ZWaveNode(
+    ZWaveObject,
+    ZWaveNodeBasic,
+    ZWaveNodeSimpleAVControl,
+    ZWaveNodeCentralScene,
+    ZWaveNodeDoorLock,
+    ZWaveNodeNotification,
+    ZWaveNodeSecurity,
+    ZWaveNodeSensor,
+    ZWaveNodeSoundSwitch,
+    ZWaveNodeSwitch,
+    ZWaveNodeThermostat
+):
     """
     Represents a single Node within the Z-Wave Network.
 
@@ -530,8 +548,11 @@ class ZWaveNode(ZWaveObject,
         :rtype: bool
 
         """
+
         if value_id in self.values:
+            value = self.values[value_id]
             logger.debug("Remove value : %s", self.values[value_id])
+            self._value_index_mapping[value.command_class][value.index] = None
             del self.values[value_id]
             return True
         return False
