@@ -784,7 +784,7 @@ def  convert_string(s):
         try:
             s = s.decode('utf-8')
         except UnicodeEncodeError:
-            s = s.encode('utf-8').decode('utf-8')
+            s = s.decode('utf-8').encode('utf-8')
     else:
         try:
             s = s.decode('utf-8')

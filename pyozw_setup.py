@@ -1159,6 +1159,8 @@ class install(_install):
     def run(self):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
-        self.run_command('build_openzwave')
-        self.run_command('openzwave_config')
+
+        self.distribution.command_obj['build'] = build_openzwave
         _install.run(self)
+        self.run_command('openzwave_config')
+
