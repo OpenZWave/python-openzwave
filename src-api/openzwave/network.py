@@ -35,6 +35,7 @@ from .node import ZWaveNode
 from .option import ZWaveOption
 from .scene import ZWaveScene
 from ._utils import deprecated
+from .manager import ZWaveManager
 
 if six.PY3:
     from pydispatch import dispatcher
@@ -301,12 +302,13 @@ class ZWaveNetwork(ZWaveObject):
         :type kvals: bool
 
         """
+
         logger.debug("Create network object.")
         self.log = log
         self._options = options
         ZWaveObject.__init__(self, None, self)
         self._controller = ZWaveController(1, self, options)
-        self._manager = libopenzwave.PyManager()
+        self._manager = ZWaveManager()
         self._manager.create()
         self._state = self.STATE_STOPPED
         self.nodes = None
@@ -1632,6 +1634,7 @@ class ZWaveNetwork(ZWaveObject):
         dispatcher.send(self.SIGNAL_MSG_COMPLETE, \
             **{'network': self})
 
+    @deprecated
     def write_config(self):
         """
         The last message that was sent is now complete.
