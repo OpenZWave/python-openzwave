@@ -81,7 +81,7 @@ setup(
         find_packages('src-python_openzwave', exclude=["scripts"]),
   install_requires=[
     'pyserial',
-    'PyDispatcher;python_version>="3.0"',
+    'PyDispatcher>=2.0.5;python_version>="3.0"',
     'louie;python_version<"3.0"',
     'six'
   ] + install_requires(),
