@@ -32,6 +32,7 @@ from .value import ZWaveValue
 from .command import ZWaveNodeBasic, ZWaveNodeSwitch
 from .command import ZWaveNodeSensor, ZWaveNodeThermostat
 from .command import ZWaveNodeSecurity, ZWaveNodeDoorLock
+from .value_indexes import ValueIndexMapping
 
 
 logger = logging.getLogger(__name__)
@@ -64,6 +65,7 @@ class ZWaveNode(ZWaveObject,
         self.values = dict()
         self._is_locked = False
         self._isReady = False
+        self._value_index_mapping = dict()
 
     def __str__(self):
         """
@@ -481,6 +483,17 @@ class ZWaveNode(ZWaveObject,
 
         """
         value = ZWaveValue(value_id, network=self.network, parent=self)
+
+        command_class = value.command_class
+        index = value.index
+
+        if command_class not in self._value_index_mapping:
+            self._value_index_mapping[command_class] = (
+                ValueIndexMapping(command_class)
+            )
+
+        self._value_index_mapping[command_class][index] = value
+
         self.values[value_id] = value
 
     def change_value(self, value_id):

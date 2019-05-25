@@ -6,7 +6,7 @@ This file is part of **python-openzwave** project https://github.com/OpenZWave/p
     :platform: Unix, Windows, MacOS X
     :sinopsis: openzwave API
 
-.. moduleauthor: bibi21000 aka Sébastien GALLET <bibi21000@gmail.com>
+.. moduleauthor: Kevin Schlosser (@kdschlosser)
 
 License : GPL(v3)
 
