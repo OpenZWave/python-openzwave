@@ -105,7 +105,7 @@ install:
   # about it being out of date.
   - "python -m pip install --disable-pip-version-check --user --upgrade pip"
   - "python -m pip install --upgrade setuptools"
-  
+
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
@@ -116,10 +116,9 @@ install:
   - "python -m pip install nose"
   - "python -m pip install twine"
 
-
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
-  # - cmd: IF "%PYTHON_VERSION%" == "2.7.x" ( python -m pip install Louie ) ELSE ( python -m pip install PyDispatcher )
+  - cmd: IF "%PYTHON_VERSION%" == "2.7.x" ( python -m pip install Louie ) ELSE ( python -m pip install PyDispatcher )
 
   - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
