@@ -170,7 +170,7 @@ NIX
 
 
 Windows
----
+-------
 
 - Advanced checks supplying the port:
 
@@ -288,9 +288,9 @@ Windows
          ...
 
 
- - The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
+ The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 
- - libopenzwave and openzwave python modules are packaged in the python_openzwave.
+ libopenzwave and openzwave python modules are packaged in the python_openzwave.
    So developers needs to update their install_requires (it works fine with pyozw_manager).
    They can use the following code to update softly :
 
@@ -312,13 +312,12 @@ Windows
             return ['python_openzwave == %s' % pyozw_version]
 
 
- - If you already have an 0.4.x version installed, you should update your installation as usual.
+ If you already have an 0.4.x version installed, you should update your installation as usual.
 
- - Support for OSX is not tested. We do not have a Mac at our disposal for testing.
- Please feel free to test it and report bugs and or patches.
+ Support for OSX is not tested. We do not have a Mac at our disposal for testing. Please feel free to test it and report bugs and or patches.
 
 
- - Please report your successful installations here : https://github.com/OpenZWave/python-openzwave/issues/73
+ Please report your successful installations here : https://github.com/OpenZWave/python-openzwave/issues/73
 
 Support
 =======
