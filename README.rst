@@ -13,7 +13,7 @@
 .. image:: https://img.shields.io/pypi/format/python_openzwave.svg
     :target: https://pypi.python.org/pypi/python_openzwave
     :alt: Pypi format
-    
+
 .. image:: https://img.shields.io/badge/Documentation-ok-brightgreen.svg?style=flat
    :target: http://openzwave.github.io/python-openzwave/index.html
    :alt: Documentation
@@ -32,92 +32,157 @@ python-openzwave is a python wrapper for the openzwave c++ library : https://git
  * many examples
  * `Full documentation <http://openzwave.github.io/python-openzwave/index.html>`_
 
-python-openzwave 0.4.x is here !!!
-==================================
- 
-- New installation process via pip
- 
+----------------------------------
+python-openzwave 0.5.x is here !!!
+----------------------------------
+
+Installation
+============
+
+
+NIX systems.
+------------
+
 - First, you need some build tools and libs. On ubuntu, you should use :
 
      .. code-block:: bash
 
         sudo apt-get install --force-yes -y make libudev-dev g++ libyaml-dev
 
-- Make your virtualenv and activate it : 
- 
+- Make your virtualenv and activate it :
+
     .. code-block:: bash
 
         virtualenv --python=python3 venv3
         source venv3/bin/activate
 
-- Install the default flavor  :       
- 
-    .. code-block:: bash
-    
-        (venvX) pip install python_openzwave
-    
-- The previous command try to install python_openzwave with the flavor 'shared'. 
-  If it can't find a precompiled library of openzwave, it will use the flavor 'embed' with sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
-  You can change this using flavor option. 
-  There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :
- 
- - on python 2.7 :
-  
-    .. code-block:: bash
-  
-        (venvX) pip install cython wheel six
-        (venvX) pip install 'Louie>=1.1'
 
- - on python 3 :
-  
+- Install the default flavor:
+
     .. code-block:: bash
-  
-        (venvX) pip install cython wheel six
-        (venvX) pip install 'PyDispatcher>=2.0.5'
+
+        pip install python_openzwave
+
+
+- The previous command try to install python_openzwave with the flavor 'shared'.
+  If it can't find a precompiled library of openzwave, it will use the flavor 'embed' with sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
+  You can change this using flavor option.
 
 - Choose your flavor :
- 
+
     - embed : the default one. Download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives and
       build them. Python_openzwave is statically build using a cythonized version of libopenzwave. No need to install cython.
     - shared : if you have install openzwave as module manually, you can link python_openzwave to it.
     - git : download sources from openzwave github and link statically to it.
-    - embed_shared : download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives, build and install as module on the system. 
+    - embed_shared : download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives, build and install as module on the system.
       Python_openzwave use it. Need root access to install openzwave libs.
     - git_shared : download sources from openzwave github, build and install them as module on the system.
       Python_openzwave use it. Need root access to install openzwave libs.
     - ozwdev and ozwdev_shared : use the dev branch of openzwave on github.
     - dev : for python_openzwave developers. Look for openzwave sources in a local folder specified by the LOCAL_OPENZWAVE environment variable (defaults to 'openzwave').
-   
+
 - Install it :
- 
+
     .. code-block:: bash
-    
-        (venvX) pip install python_openzwave  --no-deps --install-option="--flavor=git"
+
+        (venvX) pip install python_openzwave --install-option="--flavor=git"
 
 - You can update to the last version of openzwave using the git flavor :
-       
+
     .. code-block:: bash
-    
+
         (venvX) pip uninstall -y python_openzwave
-        (venvX) pip install python_openzwave --no-cache-dir --no-deps --install-option="--flavor=git"
-        
-    
+        (venvX) pip install python_openzwave --no-cache-dir --install-option="--flavor=git"
+
+
+Windows
+-------
+- Installs a prebuilt wheel:
+
+    .. code-block:: cmd
+
+        pip install python_openzwave
+
+If you happen to want to install the latest code from a Github clone you will
+need to have a Microsoft Visual C (MSVC) compiler installed and also the SDK that
+will work with that compiler version.
+
+The Windows build portion of the setup supports these MSVC compiler versions:
+
+MSVC++ 10.0  - Visual Studio 2010 - Visual C++ 10.0 - Windows SDK v7.0a, v7.1, v7.1a
+MSVC++ 11.0  - Visual Studio 2012 - Visual C++ 11.0 - Windows SDK v8.0, v8.0a
+MSVC++ 12.0  - Visual Studio 2013 - Visual C++ 12.0 - Windows SDK v8.1, v8.1a
+MSVC++ 14.0  - Visual Studio 2015 - Visual C++ 2015 - Windows SDK v8.1, v10.0
+MSVC++ 14.1  - Visual Studio 2017 version 15.0 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.11 - Visual Studio 2017 version 15.3 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.12 - Visual Studio 2017 version 15.5 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.13 - Visual Studio 2017 version 15.6 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.14 - Visual Studio 2017 version 15.7 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.15 - Visual Studio 2017 version 15.8 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.16 - Visual Studio 2017 version 15.9 - Visual C++ 2017 - Windows SDK v8.1, v10.0
+MSVC++ 14.2  - Visual Studio 2019 Version 16.0 - Visual C++ 2019 - Windows SDK v8.1, v10.0
+
+The build system will also locate any of the Visual Studio Build Tools versions as well.
+
+You do not need to do anything other then have Visual Studio installed with the proper SDK.
+You do not need to set up any kind of an environment, it is all handled by python-openzwave.
+
+You are going to run one of the following commands
+
+- To build and not install:
+
+    .. code-block:: cmd
+
+        python setup.py build --flavor=dev
+
+- To build and install:
+
+    .. code-block:: cmd
+
+        python setup.py install --flavor=dev
+
+
+
+NIX and Windows
+---------------
+
 - At last, you can launch pyozw_check to test your installation :
 
-   If no usb stick is connected to the machine, launch :
+
+
+
+   If no usb stick is connected to the machine,
+   or you have a Silicon Labs based ZStick and want to have it autodetect the port
+   launch :
 
     .. code-block:: bash
 
-        (venvX) pyozw_check
+        pyozw_check
 
-   If you've one, use it for advanced checks : 
-    
+NIX
+---
+
+- Advanced checks supplying the port:
+
     .. code-block:: bash
 
-        (venvX) pyozw_check -i -d /dev/ttyUSB0
+        pyozw_check -i -d /dev/ttyUSB0
+
+
+Windows
+---
+
+- Advanced checks supplying the port:
+
+    .. code-block:: cmd
+
+        pyozw_check -i -d COM**
+
+
+- Example output
 
     .. code-block:: bash
-    
+
         -------------------------------------------------------------------------------
         Import libs
         Try to import libopenzwave
@@ -162,12 +227,27 @@ python-openzwave 0.4.x is here !!!
         Try to remove watcher
         Try to destroy manager
         Try to destroy options
-    
-   You can list the nodes on your network using : 
-    
+
+
+- You can list the nodes on your network using :
+
+NIX
+---
+
     .. code-block:: bash
 
-        (venvX) pyozw_check -l -d /dev/ttyUSB0 -t 60
+        pyozw_check -l -d /dev/ttyUSB0 -t 60
+
+Windows
+-------
+
+   .. code-block:: cmd
+
+        pyozw_check -l -d COM** -t 60
+
+
+
+- Example output
 
     .. code-block:: bash
 
@@ -193,7 +273,7 @@ python-openzwave 0.4.x is here !!!
          1 - Is sleeping : False / Can wake-up : False / Battery level : None
 
         ...
-        
+
         ------------------------------------------------------------
         4 - Name :  ( Location :  )
          4 - Ready : True / Awake : True / Failed : False
@@ -204,20 +284,20 @@ python-openzwave 0.4.x is here !!!
          4 - Capabilities : {'listening', 'routing', 'beaming'}
          4 - Neigbors : {1} / Power level : None
          4 - Is sleeping : False / Can wake-up : False / Battery level : None
-         
+
          ...
-         
+
 
  - The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 
- - libopenzwave and openzwave python modules are packaged in the python_openzwave. 
-   So developers needs to update their install_requires (it works fine with pyozw_manager). 
+ - libopenzwave and openzwave python modules are packaged in the python_openzwave.
+   So developers needs to update their install_requires (it works fine with pyozw_manager).
    They can use the following code to update softly :
 
     .. code-block:: python
-    
+
         pyozw_version='0.4.1'
-    
+
         def install_requires():
             try:
                 import python_openzwave
@@ -232,11 +312,11 @@ python-openzwave 0.4.x is here !!!
             return ['python_openzwave == %s' % pyozw_version]
 
 
- - If you already have an 0.3.x version installed, you should update your installation as usual. Don't install it with pip as it can break your installation (maybe not if you don't remove old modules)
+ - If you already have an 0.4.x version installed, you should update your installation as usual.
 
- - Support for windows, macosx, ... is not tested. Feel free to report bug and patches. We can try to support these plateforms. Don't have Windows at home so I can't help. Same for mac.
+ - Support for OSX is not tested. We do not have a Mac at our disposal for testing.
+ Please feel free to test it and report bugs and or patches.
 
- - Old installation process is deprecated and reserved for python-openzwave-developers and alternatives machines.
 
  - Please report your successful installations here : https://github.com/OpenZWave/python-openzwave/issues/73
 
@@ -244,7 +324,7 @@ Support
 =======
 You can ask for support on the google group : http://groups.google.com/d/forum/python-openzwave-discuss.
 
-Please don't ask for support in github issues or by email.
+Please don't ask for support by email.
 
 Pull requests
 =============
