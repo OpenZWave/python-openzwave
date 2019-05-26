@@ -107,20 +107,20 @@ If you happen to want to install the latest code from a Github clone you will
 need to have a Microsoft Visual C (MSVC) compiler installed and also the SDK that
 will work with that compiler version.
 
-The Windows build portion of the setup supports these MSVC compiler versions:
+- The Windows build portion of the setup supports these MSVC compiler versions:
 
-MSVC++ 10.0  - Visual Studio 2010 - Visual C++ 10.0 - Windows SDK v7.0a, v7.1, v7.1a
-MSVC++ 11.0  - Visual Studio 2012 - Visual C++ 11.0 - Windows SDK v8.0, v8.0a
-MSVC++ 12.0  - Visual Studio 2013 - Visual C++ 12.0 - Windows SDK v8.1, v8.1a
-MSVC++ 14.0  - Visual Studio 2015 - Visual C++ 2015 - Windows SDK v8.1, v10.0
-MSVC++ 14.1  - Visual Studio 2017 version 15.0 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.11 - Visual Studio 2017 version 15.3 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.12 - Visual Studio 2017 version 15.5 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.13 - Visual Studio 2017 version 15.6 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.14 - Visual Studio 2017 version 15.7 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.15 - Visual Studio 2017 version 15.8 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.16 - Visual Studio 2017 version 15.9 - Visual C++ 2017 - Windows SDK v8.1, v10.0
-MSVC++ 14.2  - Visual Studio 2019 Version 16.0 - Visual C++ 2019 - Windows SDK v8.1, v10.0
+    - MSVC++ 10.0:  Visual Studio 2010, Visual C++ 10.0 - Windows SDK v7.0a, v7.1, v7.1a
+    - MSVC++ 11.0:  Visual Studio 2012, Visual C++ 11.0 - Windows SDK v8.0, v8.0a
+    - MSVC++ 12.0:  Visual Studio 2013, Visual C++ 12.0 - Windows SDK v8.1, v8.1a
+    - MSVC++ 14.0:  Visual Studio 2015, Visual C++ 2015 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.1:  Visual Studio 2017 (v15.0), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.11: Visual Studio 2017 (v15.3), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.12: Visual Studio 2017 (v15.5), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.13: Visual Studio 2017 (v15.6), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.14: Visual Studio 2017 (v15.7), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.15: Visual Studio 2017 (v15.8), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.16: Visual Studio 2017 (v15.9), Visual C++ 2017 - Windows SDK v8.1, v10.0
+    - MSVC++ 14.2:  Visual Studio 2019 (v16.0), Visual C++ 2019 - Windows SDK v8.1, v10.0
 
 The build system will also locate any of the Visual Studio Build Tools versions as well.
 
