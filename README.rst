@@ -288,11 +288,12 @@ Windows
          ...
 
 
- The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
+The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 
- libopenzwave and openzwave python modules are packaged in the python_openzwave.
-   So developers needs to update their install_requires (it works fine with pyozw_manager).
-   They can use the following code to update softly :
+libopenzwave and openzwave python modules are packaged in the python_openzwave. So developers needs to update their install_requires (it works fine with pyozw_manager).
+
+
+They can use the following code to update softly :
 
     .. code-block:: python
 
