@@ -89,10 +89,6 @@ class Template(object):
         return exts
 
     def cython_context(self):
-        try:
-            from Cython.Distutils import build_ext
-        except ImportError:
-            return None
         exts = self.get_default_exts()
         exts['define_macros'] += [('PY_SSIZE_T_CLEAN',1)]
         exts['sources'] = ["src-lib/libopenzwave/libopenzwave.pyx"]
@@ -254,7 +250,6 @@ class Template(object):
             current_template.install_minimal_dependencies()
         from Cython.Distutils import build_ext as _build_ext
 
-
         class BuildExt(_build_ext):
             def build_extension(self, ext):
                 ext_path = self.get_ext_fullpath(ext.name)
@@ -263,7 +258,6 @@ class Template(object):
                         _build_ext.build_extension(self, ext)
                 else:
                     _build_ext.build_extension(self, ext)
-
 
         return BuildExt
 
@@ -288,16 +282,10 @@ class Template(object):
         return ctx
 
     def install_requires(self):
-        if sys.platform.startswith("win"):
-            return ['Cython']
-        else:
-            return ['Cython']
+        return ['Cython']
 
     def build_requires(self):
-        if sys.platform.startswith("win"):
-            return ['Cython']
-        else:
-            return ['Cython']
+        return ['Cython']
 
     def build(self):
         if len(self.ctx['extra_objects']) == 1 and os.path.isfile(self.ctx['extra_objects'][0]):
@@ -718,9 +706,6 @@ class DevTemplate(Template):
                 return None
         self.openzwave = opzw_dir
         ctx = self.cython_context()
-        if ctx is None:
-            log.error("Can't find Cython")
-            return None
         ctx = self.system_context(ctx, static=True)
         return ctx
 
@@ -734,9 +719,6 @@ class GitTemplate(Template):
 
     def get_context(self):
         ctx = self.cython_context()
-        if ctx is None:
-            log.error("Can't find Cython")
-            return None
         ctx = self.system_context(ctx, static=True)
         return ctx
 
@@ -766,9 +748,6 @@ class GitSharedTemplate(GitTemplate):
 
     def get_context(self):
         ctx = self.cython_context()
-        if ctx is None:
-            log.error("Can't find Cython")
-            return None
         ctx = self.system_context(ctx, static=False)
         while '' in ctx['extra_compile_args']:
             ctx['extra_compile_args'].remove('')
@@ -891,9 +870,6 @@ class SharedTemplate(Template):
 
     def get_context(self):
         ctx = self.cython_context()
-        if ctx is None:
-            log.error("Can't find Cython")
-            return None
         ctx = self.system_context(ctx, static=False)
         return ctx
 
@@ -947,11 +923,7 @@ def parse_template(sysargv):
         try:
             import pyozw_pkgconfig
             if pyozw_pkgconfig.exists('libopenzwave'):
-                try:
-                    from Cython.Distutils import build_ext
-                    flavor = 'shared'
-                except ImportError:
-                    log.info("Can't find cython")
+                flavor = 'shared'
         except:
             log.info("Can't find pkg-config")
         #Default template
@@ -975,13 +947,7 @@ def parse_template(sysargv):
 current_template = parse_template(sys.argv)
 
 def install_requires():
-    pkgs = ['six']
-    if (sys.version_info > (3, 0)):
-         pkgs.append('PyDispatcher>=2.0.5')
-    else:
-         pkgs.append('Louie>=1.1')
-    pkgs += current_template.install_requires()
-    return pkgs
+    return current_template.install_requires()
 
 def build_requires():
     return current_template.build_requires()
@@ -1054,43 +1020,6 @@ class build_openzwave(setuptools.Command):
             current_template.install_so()
 
 
-class openzwave_config(setuptools.Command):
-    description = 'Install config files from openzwave'
-
-    user_options = [
-        ('install-dir=', None,
-         'the installation directory where openzwave configuration should be stored'),
-    ]
-
-    def initialize_options(self):
-        self.install_dir = None
-
-    def finalize_options(self):
-        if self.install_dir is None:
-            install = self.distribution.get_command_obj('install')
-            install.ensure_finalized()
-            self.install_dir = install.install_lib
-
-    def run(self):
-        if self.install_dir is None:
-            log.warning("Can't install ozw_config to None")
-            return
-        if not current_template.copy_openzwave_config:
-            log.info("Don't install ozw_config for template {0}".format(current_template))
-            return
-        log.info("Install ozw_config for template {0}".format(current_template))
-        dest = os.path.join(self.install_dir, 'python_openzwave', "ozw_config")
-        if os.path.isdir(dest):
-            #Try to remove old config
-            try:
-                import shutil
-                shutil.rmtree(dest)
-            except Exception:
-                log.exception("Can't remove old config directory")
-        if not os.path.isdir(dest):
-            os.makedirs(dest)
-        self.copy_tree(os.path.join(current_template.openzwave,'config'), dest)
-
 class build(_build):
     sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
@@ -1106,6 +1035,7 @@ except NameError:
     class bdist_wheel(bdist_egg):
         pass
 
+
 class clean(_clean):
     def run(self):
         if getattr(self, 'all', False):
@@ -1113,6 +1043,7 @@ class clean(_clean):
         else:
             current_template.clean()
         _clean.run(self)
+
 
 class develop(_develop):
     description = 'Develop python_openzwave'
@@ -1139,6 +1070,7 @@ class develop(_develop):
         #~ self.run_command('build_openzwave')
         _develop.run(self)
 
+
 class install(_install):
     description = 'Install python_openzwave'
 
@@ -1159,8 +1091,61 @@ class install(_install):
     def run(self):
         build_openzwave = self.distribution.get_command_obj('build_openzwave')
         build_openzwave.develop = True
+        build_openzwave.ensure_finalized()
+        build_openzwave.run()
 
-        self.distribution.command_obj['build'] = build_openzwave
-        _install.run(self)
-        self.run_command('openzwave_config')
+        easy_install = self.distribution.get_command_class('easy_install')
+
+        cmd = easy_install(
+            self.distribution, args="x", root=self.root, record=self.record,
+        )
+        cmd.ensure_finalized()  # finalize before bdist_egg munges install cmd
+        cmd.always_copy_from = '.'  # make sure local-dir eggs get installed
+
+        # pick up setup-dir .egg files only: no .egg-info
+        cmd.package_index.scan(glob.glob('*.egg'))
+
+        self.run_command('bdist_egg')
+        args = [self.distribution.get_command_obj('bdist_egg').egg_output]
+
+        if setuptools.bootstrap_install_from:
+            # Bootstrap self-installation of setuptools
+            args.insert(0, setuptools.bootstrap_install_from)
+
+        cmd.args = args
+        cmd.run()
+        setuptools.bootstrap_install_from = None
+
+        if current_template.copy_openzwave_config:
+            install_path = cmd.local_index['python-openzwave'][0].location
+
+            log.info(
+                "Install ozw_config for template {0}".format(current_template)
+            )
+
+            dest = os.path.join(install_path, 'python_openzwave', "ozw_config")
+            if os.path.isdir(dest):
+                # Try to remove old config
+                try:
+                    import shutil
+                    shutil.rmtree(dest)
+                except OSError:
+                    log.error("Can't remove old config directory")
+
+            if not os.path.isdir(dest):
+                os.makedirs(dest)
+
+            self.copy_tree(
+                os.path.join(current_template.openzwave,'config'),
+                dest
+            )
+
+        else:
+            log.info(
+                "Don't install ozw_config for template {0}".format(
+                    current_template
+                )
+            )
+
+        log.info('\nFinished!\n')
 

@@ -64,18 +64,22 @@ data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/ht
 data_files.extend(data_files_config('share/doc/python-openzwave','docs/_build/html','*.gif'))
 
 setup(
-  name = 'openzwave',
-  author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
-  author_email='bibi21000@gmail.com',
-  url='https://github.com/OpenZWave/python-openzwave',
-  version = pyozw_version,
-  zip_safe = False,
-  package_dir = {'' : 'src-api'},
-  #packages = find_packages(),
-  #packages = ['openzwave'],
-  packages = find_packages('src-api', exclude=["scripts"]),
-  #The following line install documentation in share/python-openzwave
-  #data_files = data_files,
-  #recommend : "pysqlite >= 2.6",
-  install_requires=install_requires()+[ 'libopenzwave == %s' % pyozw_version ]
+    name='openzwave',
+    author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
+    author_email='bibi21000@gmail.com',
+    url='https://github.com/OpenZWave/python-openzwave',
+    version=pyozw_version,
+    zip_safe=False,
+    package_dir=dict(
+        openzwave='src-api/openzwave'
+    ),
+    # packages = find_packages(),
+    # packages = ['openzwave'],
+    packages=find_packages('src-api', exclude=["scripts"]),
+    # The following line install documentation in share/python-openzwave
+    # data_files = data_files,
+    # recommend : "pysqlite >= 2.6",
+    install_requires=[
+        'libopenzwave == %s' % pyozw_version
+    ] + install_requires()
 )

@@ -21,21 +21,19 @@ You should have received a copy of the GNU General Public License
 along with python-openzwave. If not, see http://www.gnu.org/licenses.
 
 """
-from setuptools import setup, find_packages
-import glob
-import os
-import sys
-import pyozw_version 
+from setuptools import setup
+import pyozw_version
+
 
 setup(
-  name = 'pyozwman',
-  author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
-  author_email='bibi21000@gmail.com',
-  url='https://github.com/OpenZWave/python-openzwave',
-  version = pyozw_version.pyozw_version,
-  zip_safe = False,
-  #~ scripts=['src-manager/scripts/pyozw_shell'],
-  package_dir = {'' : 'src-manager' },
-  packages = find_packages('src-manager'),
-  install_requires=pyozw_version.install_requires() + [ "urwid>=1.1.1"],
+    name='pyozwman',
+    author='Sébastien GALLET aka bibi2100 <bibi21000@gmail.com>',
+    author_email='bibi21000@gmail.com',
+    url='https://github.com/OpenZWave/python-openzwave',
+    version=pyozw_version.pyozw_version,
+    zip_safe=False,
+    # ~ scripts=['src-manager/scripts/pyozw_shell'],
+    package_dir=dict(pyozwman='src-manager/pyozwman'),
+    packages=['pyozwman'],
+    install_requires=pyozw_version.install_requires() + ["urwid>=1.1.1"],
 )

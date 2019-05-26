@@ -104,7 +104,16 @@ install:
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+
+  # we need to update setup tools to ensure that the new setup program will
+  # run properly.
   - "python -m pip install --upgrade setuptools"
+
+  # the installation of the dependencies is not handled internally in the setup
+  # program. This is not longer the need to have a user explicitly install
+  # any additional modules. Not even Cython. The only additional modules that
+  # are installed by Appveyor are the ones needed for packaging into a wheel
+  # and running the unittests.
 
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
@@ -112,14 +121,10 @@ install:
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
   - "python -m pip install wheel"
-  - "python -m pip install Cython six"
   - "python -m pip install nose"
   - "python -m pip install twine"
-  - "python -m pip install pyserial"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
-
-  - cmd: IF "%PYTHON_VERSION%" == "2.7.x" ( python -m pip install Louie ) ELSE ( python -m pip install PyDispatcher )
 
   - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
