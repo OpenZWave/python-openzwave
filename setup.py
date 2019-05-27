@@ -30,6 +30,7 @@ Build process :
     --pybind : use pybind alternative (not tested)
     --auto (default) : try static, shared and cython, fails if it can't
 """
+import os
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from pyozw_common import build_clib
@@ -37,12 +38,23 @@ from pyozw_version import pyozw_version
 from pyozw_setup import LOCAL_OPENZWAVE, SETUP_DIR
 from pyozw_setup import current_template, parse_template, get_dirs, data_files_config, install_requires, build_requires
 from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, SharedTemplate
-from pyozw_setup import bdist_egg, build_openzwave, build, clean, develop, install
+from pyozw_setup import bdist_egg, bdist_wheel, build_openzwave, build, clean, develop, install
 
 
 print(current_template)
 print(current_template.ctx)
 print(install_requires())
+
+options = current_template.options
+options.update(dict(
+    bdist_wheel=dict(
+        bdist_dir=os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            'build',
+            'bdist_wheel'
+        ),
+    )
+))
 
 
 setup(
@@ -54,7 +66,7 @@ setup(
     zip_safe=False,
     url='https://github.com/OpenZWave/python-openzwave',
     ext_modules=[Extension(**current_template.ctx)],
-    options=current_template.options,
+    options=options,
     libraries=current_template.library,
     install_requires=[
         'pyserial',
@@ -66,6 +78,7 @@ setup(
         build_ext=current_template.build_ext,
         build_clib=build_clib,
         bdist_egg=bdist_egg,
+        bdist_wheel=bdist_wheel,
         build=build,
         build_openzwave=build_openzwave,
         clean=clean,

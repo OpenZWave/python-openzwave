@@ -40,15 +40,12 @@ from setuptools import setup, find_packages
 from distutils.extension import Extension
 from distutils.spawn import find_executable
 from distutils import log
+from distutils.core import Command
 from setuptools.command.install import install as _install
 from distutils.command.build import build as _build
 from distutils.command.clean import clean as _clean
-from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
 from setuptools.command.develop import develop as _develop
-try:
-    from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
-except ImportError:
-    log.warn("ImportError in : from wheel.bdist_wheel import bdist_wheel as _bdist_wheel")
+
 from platform import system as platform_system
 import glob
 
@@ -969,12 +966,6 @@ def data_files_config(target, source, pattern):
                 os.path.join(source,rd), pattern))
     return ret
 
-class bdist_egg(_bdist_egg):
-    def run(self):
-        build_openzwave = self.distribution.get_command_obj('build_openzwave')
-        build_openzwave.develop = True
-        self.run_command('build_openzwave')
-        _bdist_egg.run(self)
 
 class build_openzwave(setuptools.Command):
     description = 'download and build openzwave'
@@ -1023,17 +1014,285 @@ class build_openzwave(setuptools.Command):
 class build(_build):
     sub_commands = [('build_openzwave', None)] + _build.sub_commands
 
-try:
-    class bdist_wheel(_bdist_wheel):
-        def run(self):
-            build_openzwave = self.distribution.get_command_obj('build_openzwave')
-            build_openzwave.develop = True
-            self.run_command('build_openzwave')
-            _bdist_wheel.run(self)
-except NameError:
-    log.warn("NameError in : class bdist_wheel(_bdist_wheel) - Use bdist_egg instead")
-    class bdist_wheel(bdist_egg):
-        pass
+
+from setuptools.command.bdist_egg import bdist_egg as _bdist_egg
+
+
+class bdist_egg(_bdist_egg):
+
+    def run(self):
+        build_openzwave = self.distribution.get_command_obj('build_openzwave')
+        build_openzwave.develop = True
+        self.run_command('build_openzwave')
+        _bdist_egg.run(self)
+
+
+class bdist_wheel(Command):
+    description = 'Create a wheel.'
+
+    user_options = [
+        ('bdist-dir=', None, 'temporary install path'),
+    ]
+
+    def initialize_options(self):
+        options = self.distribution.get_option_dict('bdist_wheel')
+        self.bdist_dir = options['bdist_dir'][1]
+        os.environ['PYTHONPATH'] = self.bdist_dir
+
+    def finalize_options(self):
+        install_options = dict(install_lib=('setup script', self.bdist_dir))
+        self.distribution.command_options['install'] = install_options
+
+    def run(self):
+        if not os.path.exists(self.bdist_dir):
+            os.makedirs(self.bdist_dir)
+
+        self.run_command('install')
+
+        log.info('Collecting wheel data.')
+
+        wheel_dir = os.path.join(self.bdist_dir, 'wheel')
+
+        if not os.path.exists(wheel_dir):
+            os.mkdir(wheel_dir)
+
+        for f in os.listdir(self.bdist_dir):
+            if f.startswith('python_openzwave'):
+                tag = f[:-4].split('-', 2)[-1]
+                install_dir = os.path.join(self.bdist_dir, f)
+                dist_info = os.path.join(
+                    wheel_dir,
+                    f.replace(tag, '')[:-5] + '.dist-info'
+                )
+                break
+        else:
+            raise RuntimeError(
+                'Unable to locate python-openzwave temporary installation.'
+            )
+
+        tag_ver = tag.split('-')[0]
+        new_tag_ver = tag_ver.replace('py', 'cp')
+        new_tag_ver = new_tag_ver + '-' + new_tag_ver + 'm'
+        new_tag_ver = new_tag_ver.replace('.', '')
+
+        dist_directory = os.path.join(self.bdist_dir, '..', '..', 'dist')
+        dist_directory = os.path.abspath(dist_directory)
+        if not os.path.exists(dist_directory):
+            os.mkdir(dist_directory)
+
+        log.info('Creating wheel dist-info.')
+
+        license_ = os.path.join(self.bdist_dir, '..', '..', 'COPYRIGHT.txt')
+        pkg_info = os.path.join(install_dir, 'EGG-INFO', 'PKG-INFO')
+        requires = os.path.join(install_dir, 'EGG-INFO', 'requires.txt')
+        top_level = os.path.join(install_dir, 'EGG-INFO', 'top_level.txt')
+        entry_points = os.path.join(install_dir, 'EGG-INFO', 'entry_points.txt')
+
+        wheel = (
+            'Wheel-Version: 1.0\n'
+            'Generator: bdist_wheel (0.33.1)\n'
+            'Root-Is-Purelib: false\n'
+            'Tag: '
+        )
+
+        wheel += new_tag_ver
+
+        with open(pkg_info, 'r') as f:
+            pkg_info = f.read()
+
+        with open(requires, 'r') as f:
+            requires = f.read()
+
+        with open(top_level, 'r') as f:
+            top_level = f.read()
+
+        with open(entry_points, 'r') as f:
+            entry_points = f.read()
+
+        with open(license_, 'r') as f:
+            license_ = f.read()
+
+        pkg_info = pkg_info.rstrip()
+
+        requires_dist = None
+        for line in requires.split('\n'):
+            if not line.strip():
+                continue
+
+            if line.startswith('['):
+                requires_dist = line[2:-1]
+            else:
+                for oper in ('>=', '<=', '=='):
+                    if oper in line:
+                        line, ver = line.split(oper)
+                        line += ' (' + oper + ver + ')'
+                        break
+
+                pkg_info += '\nRequires-Dist: ' + line
+                if requires_dist is not None:
+                    pkg_info += '; (' + requires_dist + ')'
+                    requires_dist = None
+
+        beg, description = pkg_info.split('Description: ')
+        description, end = description.split('\n', 1)
+        metadata = beg + end
+        metadata += '\n\n' + description
+
+        import hashlib
+        import base64
+
+        record = []
+
+        def get_file_hash(path):
+            dirs = []
+
+            for src in os.listdir(path):
+                src = os.path.join(path, src)
+
+                if 'EGG-INFO' in src:
+                    continue
+                if '__pycache__' in src:
+                    continue
+
+                if src.endswith('.pyc'):
+                    continue
+                if src.endswith('.pyo'):
+                    continue
+
+                if os.path.isdir(src):
+                    dirs += [src]
+                    continue
+
+                sha256_hash = hashlib.sha256()
+                # Read and update hash string value in blocks of 4K
+                byte_count = 0
+                pth = src.replace(install_dir, '')[1:]
+                dst = os.path.join(wheel_dir, pth)
+
+                dst_dir = os.path.split(dst)[0]
+
+                if not os.path.exists(dst_dir):
+                    os.makedirs(dst_dir)
+
+                dst = open(dst, 'wb')
+
+                with open(src, "rb") as sha_f:
+
+                    for byte_block in iter(lambda: sha_f.read(4096), b""):
+                        sha256_hash.update(byte_block)
+                        byte_count += len(byte_block)
+                        dst.write(byte_block)
+
+                add_sha(src, byte_count, sha256_hash.hexdigest())
+
+                dst.close()
+
+            for d in dirs:
+                get_file_hash(d)
+
+        def add_sha(src, byte_count, hex_digest):
+            if PY3:
+                hex_digest = hex_digest.encode()
+
+            sha_256 = base64.urlsafe_b64encode(hex_digest)
+
+            if PY3:
+                sha_256 = sha_256.decode()
+
+            record.append(
+                '{path},sha256={sha_256},{byte_count}'.format(
+                    path=src.replace(install_dir, '')[1:],
+                    sha_256=sha_256.replace('=', ''),
+                    byte_count=byte_count
+                )
+            )
+
+        log.info('Hashing wheel files.')
+
+        get_file_hash(install_dir)
+
+        if not os.path.exists(dist_info):
+            os.mkdir(dist_info)
+
+        with open(os.path.join(dist_info, 'top_level.txt'), 'w') as f:
+            f.write(top_level)
+
+        with open(os.path.join(dist_info, 'entry_points.txt'), 'w') as f:
+            f.write(entry_points)
+
+        with open(os.path.join(dist_info, 'LICENSE'), 'w') as f:
+            f.write(license_)
+
+        with open(os.path.join(dist_info, 'METADATA'), 'w') as f:
+            f.write(metadata)
+
+        with open(os.path.join(dist_info, 'WHEEL'), 'w') as f:
+            f.write(wheel)
+
+        add_sha(
+            os.path.join(dist_info, 'top_level.txt').replace(wheel_dir, '')[1:],
+            len(top_level),
+            hashlib.sha256(top_level.encode()).hexdigest()
+        )
+        add_sha(
+            os.path.join(dist_info, 'entry_points.txt').replace(wheel_dir, '')[1:],
+            len(entry_points),
+            hashlib.sha256(entry_points.encode()).hexdigest()
+        )
+        add_sha(
+            os.path.join(dist_info, 'LICENSE').replace(wheel_dir, '')[1:],
+            len(license_),
+            hashlib.sha256(license_.encode()).hexdigest()
+        )
+        add_sha(
+            os.path.join(dist_info, 'METADATA').replace(wheel_dir, '')[1:],
+            len(metadata),
+            hashlib.sha256(metadata.encode()).hexdigest()
+        )
+        add_sha(
+            os.path.join(dist_info, 'WHEEL').replace(wheel_dir, '')[1:],
+            len(wheel),
+            hashlib.sha256(wheel.encode()).hexdigest()
+        )
+
+        record.append(
+            os.path.join(dist_info, 'RECORD').replace(wheel_dir, '')[1:] +
+            ',,'
+        )
+
+        with open(os.path.join(dist_info, 'RECORD'), 'w') as f:
+            f.write('\n'.join(record))
+
+        import zipfile
+
+        for wheel_file in os.listdir(dist_directory):
+            if (
+                wheel_file.startswith('python_openzwave') and
+                wheel_file.endswith('egg')
+            ):
+                break
+        else:
+            raise RuntimeError(
+                'Unable to locate egg file to create wheel from.'
+            )
+
+        wheel_file = wheel_file.replace(tag.split('-', 1)[0], new_tag_ver)[:-3]
+        wheel_file = os.path.join(dist_directory, wheel_file + 'whl')
+
+        log.info('Writing wheel file: ' + wheel_file)
+
+        cwd = os.getcwd()
+        os.chdir(wheel_dir)
+
+        zip_file = zipfile.ZipFile(wheel_file, 'w', zipfile.ZIP_DEFLATED)
+        for root, dirs, files in os.walk(wheel_dir):
+            for f in files:
+                f = os.path.relpath(os.path.join(root, f))
+                zip_file.write(f)
+
+        zip_file.close()
+
+        os.chdir(cwd)
 
 
 class clean(_clean):
