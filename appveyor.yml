@@ -12,12 +12,18 @@ environment:
 
   matrix:
 
-    # there are only 3 compilers used to compile python
-    # Python 3.5, 3.6 and 3.7 were compiled with MSVC 14 (VS2017)
-    # Python 3.3 and 3.4 were compiled with MSVC 10 (VS2010)
-    # Python 2.6, 2.7, 3.0, 3.1 and 3.2 were compiled with MSVC 9 (VS2008)
-    # because of the code incompatibility with python-openzwave and the MSVC 9
-    # compiler we are going to compile with MSVC 10 instead
+    # Because of the generation of wheel files we are forced to compile for
+    # each of the versions of python that Appveyor supports.
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7.x"
+      PYTHON_ARCH: "32"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python37"
+      PYTHON_VERSION: "3.7.x"
+      PYTHON_ARCH: "64"
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python36"
@@ -29,22 +35,42 @@ environment:
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python35"
+      PYTHON_VERSION: "3.5.x"
+      PYTHON_ARCH: "32"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python35-x64"
+      PYTHON_VERSION: "3.5.x"
+      PYTHON_ARCH: "64"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.x"
       PYTHON_ARCH: "32"
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python34-x64"
       PYTHON_VERSION: "3.4.x"
       PYTHON_ARCH: "64"
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python33"
+      PYTHON_VERSION: "3.3.x"
+      PYTHON_ARCH: "32"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python33-x64"
+      PYTHON_VERSION: "3.3.x"
+      PYTHON_ARCH: "64"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x"
       PYTHON_ARCH: "32"
 
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.x"
       PYTHON_ARCH: "64"
@@ -86,11 +112,11 @@ install:
   #~ - ECHO "Installed SDKs:"
   #~ - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
 
-  - ECHO "Installed prgrams:"
-  - ps: "ls \"C:/Program Files/\""
-  - ps: "ls \"C:/Program Files (x86)/\""
-  - ps: "ls \"C:/Program Files (x86)/MSBuild/\""
-  - ps: "ls \"C:/Program Files (x86)/Windows Kits/\""
+  # - ECHO "Installed prgrams:"
+  # - ps: "ls \"C:/Program Files/\""
+  # - ps: "ls \"C:/Program Files (x86)/\""
+  # - ps: "ls \"C:/Program Files (x86)/MSBuild/\""
+  # - ps: "ls \"C:/Program Files (x86)/Windows Kits/\""
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -98,8 +124,8 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
   # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+  # - "python --version"
+  # - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
