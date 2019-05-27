@@ -25,7 +25,6 @@ along with python-openzwave. If not, see http://www.gnu.org/licenses.
 """
 
 import logging
-import warnings
 import six
 
 from .singleton import InstanceSingleton
