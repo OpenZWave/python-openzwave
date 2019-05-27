@@ -782,9 +782,9 @@ def configPath():
 def  convert_string(s):
     if PY3:
         try:
-            s = s.decode('utf-8')
+            s = s.encode('utf-8').decode('utf-8')
         except UnicodeEncodeError:
-            s = s.decode('utf-8').encode('utf-8')
+            s = s.decode('utf-8')
     else:
         try:
             s = s.decode('utf-8')

@@ -26,10 +26,14 @@ h = logging.NullHandler()
 logger = logging.getLogger(__name__).addHandler(h)
 import time
 import argparse
+import os
 
 network_state = None
 home_id = None
 args = None
+
+base_path = os.path.dirname(__file__)
+config_path = os.path.join(base_path, '..', 'ozw_config')
 
 def imports(args):
     if args.timeout is None:
@@ -69,7 +73,7 @@ def imports(args):
     elif args.output == 'raw':
         import libopenzwave
         from libopenzwave import PyLogLevels
-        options = libopenzwave.PyOptions(user_path=".", cmd_line="--logging false")
+        options = libopenzwave.PyOptions(config_path=args.config_path, user_path=".", cmd_line="--logging false")
         options.lock()
         time.sleep(0.5)
         manager = libopenzwave.PyManager()
@@ -264,7 +268,7 @@ def pyozw_parser():
     parser.add_argument('-i', '--init_device', action='store_true', help='Intialize the device', default=False)
     parser.add_argument('-l', '--list_nodes', action='store_true', help='List the nodes on zwave network', default=False)
     parser.add_argument('-t', '--timeout', action='store',type=int, help='The default timeout for zwave network sniffing', default=None)
-    parser.add_argument('--config_path', action='store', help='The config_path for openzwave', default=None)
+    parser.add_argument('--config_path', action='store', help='The config_path for openzwave', default=config_path)
     parser.add_argument('--user_path', action='store', help='The user_path for openzwave', default=".")
     return parser
 

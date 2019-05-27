@@ -72,12 +72,12 @@ setup(
         develop=develop,
         install=install,
     ),
-    packages=[
-        'libopenzwave',
-        'python_openzwave',
-        'python_openzwave.ozw_config',
-        'pyozwman'
-    ] + find_packages('src-api', exclude=["scripts"]),
+    packages=(
+        find_packages('src-lib') +
+        find_packages('src-api') +
+        find_packages('src-manager') +
+        find_packages('src-python_openzwave')
+    ),
     entry_points=dict(
         console_scripts=[
             'pyozw_check=python_openzwave.scripts.pyozw_check:main',

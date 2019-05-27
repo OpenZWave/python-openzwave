@@ -1089,10 +1089,35 @@ class install(_install):
         return _install.finalize_options(self)
 
     def run(self):
-        build_openzwave = self.distribution.get_command_obj('build_openzwave')
-        build_openzwave.develop = True
-        build_openzwave.ensure_finalized()
-        build_openzwave.run()
+        # here we are going to check to see if python_openzwave is already
+        # installed.
+
+        # if it is already installed we want to backup the config files so we
+        # can iterate over them and check them against the ones being
+        # installed. we do not want to remove any config files that may have
+        # been updatedby the user. or any they may have created.
+
+        from pkg_resources import resource_filename
+        import tempfile
+
+        python_path = os.path.dirname(sys.executable)
+
+        try:
+            config_path = resource_filename(
+                'python_openzwave.ozw_config',
+                '__init__.py'
+            )
+            config_path = os.path.dirname(config_path)
+        except:
+            temp_dir = None
+        else:
+            temp_dir = os.path.join(tempfile.mkdtemp(), 'config')
+            shutil.copytree(config_path, temp_dir)
+
+        build_ozw = self.distribution.get_command_obj('build_openzwave')
+        build_ozw.develop = True
+
+        self.run_command('build_openzwave')
 
         easy_install = self.distribution.get_command_class('easy_install')
 
@@ -1113,32 +1138,116 @@ class install(_install):
             args.insert(0, setuptools.bootstrap_install_from)
 
         cmd.args = args
+
         cmd.run()
         setuptools.bootstrap_install_from = None
 
+        install_path = cmd.local_index['python-openzwave'][0].location
+        dst = os.path.join(install_path, 'python_openzwave', "ozw_config")
+
+        if temp_dir is not None:
+            shutil.rmtree(dst)
+            shutil.copytree(temp_dir, dst)
+            shutil.rmtree(temp_dir)
+
         if current_template.copy_openzwave_config:
-            install_path = cmd.local_index['python-openzwave'][0].location
+
+            def get_newer_config_file(old, new):
+                new_revision = new.split(b'Revision="', 1)[-1]
+                old_revision = old.split(b'Revision="', 1)[-1]
+
+                new_revision = new_revision.split(b'"', 1)[0]
+                old_revision = old_revision.split(b'"', 1)[0]
+
+                if new_revision.isdigit() and old_revision.isdigit():
+                    if int(new_revision) > int(old_revision):
+                        return new
+                    elif int(new_revision) < int(old_revision):
+                        return old
+
+                if len(new) > len(old):
+                    return new
+
+                return old
+
+            src = os.path.join(current_template.openzwave, 'config')
 
             log.info(
                 "Install ozw_config for template {0}".format(current_template)
             )
 
-            dest = os.path.join(install_path, 'python_openzwave', "ozw_config")
-            if os.path.isdir(dest):
-                # Try to remove old config
-                try:
-                    import shutil
-                    shutil.rmtree(dest)
-                except OSError:
-                    log.error("Can't remove old config directory")
+            def check_config(root):
+                head = root
+                tail = []
+                while head and head != src:
+                    head, t = os.path.split(head)
+                    tail.insert(0, t)
 
-            if not os.path.isdir(dest):
-                os.makedirs(dest)
+                if tail:
+                    new_root = os.path.join(dst, *tail)
+                else:
+                    new_root = dst
 
-            self.copy_tree(
-                os.path.join(current_template.openzwave,'config'),
-                dest
-            )
+                files = os.listdir(root)
+
+                for f in files:
+                    old_f = os.path.join(new_root, f)
+                    new_f = os.path.join(root, f)
+
+                    if os.path.isdir(new_f):
+                        if not os.path.exists(old_f):
+                            log.info(
+                                'Creating directory: ' +
+                                old_f.replace(python_path, '')
+                            )
+                            os.mkdir(old_f)
+
+                        check_config(new_f)
+                    else:
+                        with open(new_f, 'rb') as tmp_f:
+                            new_data = tmp_f.read()
+
+                        if new_f.endswith('.xml') and os.path.isfile(old_f):
+                            with open(old_f, 'rb') as tmp_f:
+                                old_data = tmp_f.read()
+
+                            if old_data == new_data:
+                                log.info(
+                                    'No update needed: ' +
+                                    old_f.replace(python_path, '')
+                                )
+                                continue
+
+                            data = get_newer_config_file(
+                                old_data,
+                                new_data
+                            )
+
+                            if data != old_data:
+                                log.info(
+                                    'Copying file: ' +
+                                    new_f +
+                                    ' ---> ' +
+                                    old_f.replace(python_path, '')
+                                )
+                            else:
+                                log.info(
+                                    'Keeping existing file: ' +
+                                    old_f.replace(python_path, '')
+                                )
+                                continue
+                        else:
+                            log.info(
+                                'Copying file: ' +
+                                new_f +
+                                ' ---> ' +
+                                old_f.replace(python_path, '')
+                            )
+
+                        with open(old_f, 'wb') as tmp_f:
+                            tmp_f.write(new_data)
+
+            check_config(src)
 
         else:
             log.info(
