@@ -34,7 +34,7 @@ import time
 import logging
 
 from libopenzwave import PyStatDriver, PyControllerState
-from object import ZWaveObject
+from .object import ZWaveObject
 from ._utils import deprecated
 
 if six.PY3:

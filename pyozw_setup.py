@@ -231,7 +231,7 @@ class Template(object):
 
         else:
             # Unknown systemm
-            raise RuntimeError("Can't detect plateform {0}".format(sys.platform))
+            raise RuntimeError("Can't detect platform {0}".format(sys.platform))
 
         return ctx
 
