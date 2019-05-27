@@ -291,11 +291,10 @@ class Library(pyozw_common.Library):
         pass
 
     def build(self, command_class):
-        if os.path.exists(
-            os.path.join(self.build_path + '\\lib_build', 'OpenZWave.lib')
-        ):
-            return
 
+        if 'bdist_wheel' in sys.argv:
+            return
+        
         objects = []
         thread_event = threading.Event()
 
@@ -360,7 +359,9 @@ class Library(pyozw_common.Library):
         )
 
     def clean(self, _):
-        return
+        if 'bdist_wheel' in sys.argv:
+            return
+
         build_path = os.path.join(self.openzwave, 'build')
         try:
             shutil.rmtree(build_path)
