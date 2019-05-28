@@ -1407,6 +1407,16 @@ class install(_install):
         cmd.run()
         setuptools.bootstrap_install_from = None
 
+        options = self.distribution.get_option_dict('bdist_wheel')
+        bdist_dir = options['bdist_dir'][1]
+
+        if bdist_dir:
+            dst = os.path.join(bdist_dir, 'wheel', 'python_openzwave', "ozw_config")
+            shutil.rmtree(dst)
+            shutil.copytree(temp_dir, dst)
+            shutil.rmtree(temp_dir)
+            return
+        
         install_path = cmd.local_index['python-openzwave'][0].location
         dst = os.path.join(install_path, 'python_openzwave', "ozw_config")
 

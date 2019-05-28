@@ -147,14 +147,11 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
-  - "%PYTHON%/python -m pip install Cython"
   - "%PYTHON%/python -m pip install wheel"
-  - "%PYTHON%/python -m pip install nose"
-  - "%PYTHON%/python -m pip install twine"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
-  - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
+  # - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
 
 build_script:
   # Build the compiled extension
@@ -163,6 +160,7 @@ build_script:
 
 test_script:
   # Run the project tests
+  - "%PYTHON%/python -m pip install nose"
   - "%PYTHON%/scripts/pyozw_check"
   - "%PYTHON%/scripts/nosetests --verbose tests/lib/autobuild tests/api/autobuild"
 
@@ -170,9 +168,7 @@ after_test:
   # If tests are successful, create binary packages for the project.
   - "SET"
   - "%PYTHON%/python setup.py bdist_wheel --flavor=dev"
-  #~ - "python setup.py bdist_wininst"
   - ps: "ls build/bdist_wheel/wheel"
-  #~ - "%PYTHON%/python setup.py bdist_msi"
   - ps: "ls dist"
 
 artifacts:
@@ -181,6 +177,7 @@ artifacts:
     name: windowswheels
 
 deploy_script:
+  - "%PYTHON%/python -m pip install twine"
   # upload to pypi for Windows
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheels")
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (set HOME=%USERPROFILE%)
