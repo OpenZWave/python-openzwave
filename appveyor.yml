@@ -147,6 +147,7 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
+  - "%PYTHON%/python -m pip install Cython"
   - "%PYTHON%/python -m pip install wheel"
   - "%PYTHON%/python -m pip install nose"
   - "%PYTHON%/python -m pip install twine"
@@ -183,5 +184,5 @@ deploy_script:
   # upload to pypi for Windows
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheels")
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (set HOME=%USERPROFILE%)
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (%PYTHON%/scripts/twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Finished Artifact Deployment" )
