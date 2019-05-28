@@ -32,13 +32,16 @@ import pyozw_version
 # then the environment is set to only use a specific compiler version.
 if 'PYTHON_VERSION' in os.environ and 'PYTHON_ARCH' in os.environ:
     python_version = os.environ['PYTHON_VERSION']
-
-    if python_version == '3.6.x':
-        environment = pyozw_msvc.Environment(strict_visual_c_version=14.0)
+    if python_version == '3.7.x':
+        environment = pyozw_msvc.Environment(minimum_visual_c_version=14.0)
+    elif python_version == '3.6.x':
+        environment = pyozw_msvc.Environment(minimum_visual_c_version=14.0)
+    elif python_version == '3.5.x':
+        environment = pyozw_msvc.Environment(minimum_visual_c_version=12.0)
     elif python_version == '3.4.x':
-        environment = pyozw_msvc.Environment(strict_visual_c_version=10.0)
+        environment = pyozw_msvc.Environment(minimum_visual_c_version=12.0)
     elif python_version == '2.7.x':
-        environment = pyozw_msvc.Environment(strict_visual_c_version=10.0)
+        environment = pyozw_msvc.Environment(minimum_visual_c_version=10.0)
     else:
         environment = pyozw_msvc.Environment(minimum_visual_c_version=10.0)
 else:
