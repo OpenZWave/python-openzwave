@@ -8,7 +8,7 @@ environment:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
 
@@ -121,7 +121,8 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # - "SET PATH=%PYTHON%;%PYTHON%/Scripts;%PATH%"
+  - "SET PYTHONPATH="
 
   # Check that we have the expected version and architecture for Python
   # - "python --version"
@@ -129,11 +130,11 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+  - "%PYTHON%/python -m pip install --disable-pip-version-check --user --upgrade pip"
 
   # we need to update setup tools to ensure that the new setup program will
   # run properly.
-  - "python -m pip install --upgrade setuptools"
+  - "%PYTHON%/python -m pip install --upgrade setuptools"
 
   # the installation of the dependencies is not handled internally in the setup
   # program. This is not longer the need to have a user explicitly install
@@ -146,9 +147,9 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% pip install Cython six"
-  - "python -m pip install wheel"
-  - "python -m pip install nose"
-  - "python -m pip install twine"
+  - "%PYTHON%/python -m pip install wheel"
+  - "%PYTHON%/python -m pip install nose"
+  - "%PYTHON%/python -m pip install twine"
 
   - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
 
@@ -157,18 +158,20 @@ install:
 build_script:
   # Build the compiled extension
   # "python pyozw_win.py"
-  - "python setup.py install --flavor=dev"
+  - "%PYTHON%/python setup.py install --flavor=dev"
 
 test_script:
   # Run the project tests
-  - "pyozw_check"
-  - "nosetests --verbose tests/lib/autobuild tests/api/autobuild"
+  - "%PYTHON%/scripts/pyozw_check"
+  - "%PYTHON%/scripts/nosetests --verbose tests/lib/autobuild tests/api/autobuild"
 
 after_test:
   # If tests are successful, create binary packages for the project.
   - python setup.py bdist_wheel --flavor=dev
   #~ - "python setup.py bdist_wininst"
-  #~ - "%CMD_IN_ENV% python setup.py bdist_msi"
+  - ps: "set"
+  - ps: "ls build/bdist_wheel/wheel"
+  #~ - "%PYTHON%/python setup.py bdist_msi"
   - ps: "ls dist"
 
 artifacts:
