@@ -1360,7 +1360,7 @@ class install(_install):
         # if it is already installed we want to backup the config files so we
         # can iterate over them and check them against the ones being
         # installed. we do not want to remove any config files that may have
-        # been updatedby the user. or any they may have created.
+        # been updated by the user. or any they may have created.
 
         from pkg_resources import resource_filename
         import tempfile
@@ -1411,14 +1411,25 @@ class install(_install):
         bdist_dir = options['bdist_dir'][1]
 
         if bdist_dir:
-            dst = os.path.join(bdist_dir, 'wheel', 'python_openzwave', "ozw_config")
+            for install_path in os.listdir(bdist_dir):
+                if install_path.startswith('python_openzwave'):
+                    break
+            else:
+                raise RuntimeError('Unable to locate installation folder.')
+
+            dst = os.path.join(
+                bdist_dir,
+                install_path,
+                'python_openzwave',
+                'ozw_config'
+            )
             shutil.rmtree(dst)
             shutil.copytree(temp_dir, dst)
             shutil.rmtree(temp_dir)
             return
-        
+
         install_path = cmd.local_index['python-openzwave'][0].location
-        dst = os.path.join(install_path, 'python_openzwave', "ozw_config")
+        dst = os.path.join(install_path, 'python_openzwave', 'ozw_config')
 
         if temp_dir is not None:
             shutil.rmtree(dst)

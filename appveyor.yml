@@ -4,12 +4,6 @@ environment:
   PYPI_PASSWORD:
     secure: UpISOsYyHdCzurReV6FcTA==
 
-  # global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
-
   matrix:
 
     # Because of the generation of wheel files we are forced to compile for
@@ -75,20 +69,11 @@ environment:
       PYTHON_VERSION: "2.7.x"
       PYTHON_ARCH: "64"
 
-# This is so you can login via RDP to the appveyor VM. I needed
-# to use this to isolate some issue with the build process for windows.
-# appveyor was nice enough to not transfer over all of the registry keys for
-# the build tools they have installed into the VM. So I had to locate ones
-# that were available that would provide data that would identify some of the
-# components needed to build openzwave and libopenzave on windows.
 
-# when you uncomment the lines below. after the build process has completed
-# failed or not the program will stop and not exit. It will display
-# ip:host, username (always appveyor) and a random password. This is what is
-# needed to log into the VM
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# allows RDP login to Appveyor when finished
+# connection details will be shown
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 deploy:
   - provider: Environment
@@ -106,56 +91,20 @@ install:
         https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
-  - ECHO "Filesystem root:"
-  # - ps: "ls \"C:/\""
 
-  #~ - ECHO "Installed SDKs:"
-  #~ - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-
-  # - ECHO "Installed prgrams:"
-  # - ps: "ls \"C:/Program Files/\""
-  # - ps: "ls \"C:/Program Files (x86)/\""
-  # - ps: "ls \"C:/Program Files (x86)/MSBuild/\""
-  # - ps: "ls \"C:/Program Files (x86)/Windows Kits/\""
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
   - "SET PATH=%PYTHON%/Scripts;%PATH%"
   - "SET PYTHONPATH=%PYTHON%"
-
-  # Check that we have the expected version and architecture for Python
-  # - "python --version"
-  # - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - "%PYTHON%/python -m pip install --disable-pip-version-check --user --upgrade pip"
 
-  # we need to update setup tools to ensure that the new setup program will
+  # We need to update setup tools to ensure that the new setup program will
   # run properly.
   - "%PYTHON%/python -m pip install --upgrade setuptools"
 
-  # the installation of the dependencies is not handled internally in the setup
-  # program. This is not longer the need to have a user explicitly install
-  # any additional modules. Not even Cython. The only additional modules that
-  # are installed by Appveyor are the ones needed for packaging into a wheel
-  # and running the unittests.
-
-  # Install the build dependencies of the project. If some dependencies contain
-  # compiled extensions and are not provided as pre-built wheel packages,
-  # pip will build them from source using the MSVC compiler matching the
-  # target Python version and architecture
-  # - "%CMD_IN_ENV% pip install Cython six"
-  - "%PYTHON%/python -m pip install wheel"
-
-  - ps: Write-Host "PYTHON_VERSION $env:PYTHON_VERSION"
-
-  # - git clone git://github.com/OpenZWave/open-zwave.git C:\projects\python-openzwave\openzwave
-
 build_script:
   # Build the compiled extension
-  # "python pyozw_win.py"
   - "%PYTHON%/python setup.py install --flavor=dev"
 
 test_script:
@@ -166,20 +115,17 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - "SET"
   - "%PYTHON%/python setup.py bdist_wheel --flavor=dev"
-  - ps: "ls build/bdist_wheel/wheel"
-  - ps: "ls dist"
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist/*
-    name: windowswheels
+  - path: dist/*.whl
+    name: wheel
 
 deploy_script:
   - "%PYTHON%/python -m pip install twine"
   # upload to pypi for Windows
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheels")
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheel")
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (set HOME=%USERPROFILE%)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Finished Artifact Deployment" )
