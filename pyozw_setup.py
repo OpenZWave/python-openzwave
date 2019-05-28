@@ -1408,7 +1408,11 @@ class install(_install):
         setuptools.bootstrap_install_from = None
 
         options = self.distribution.get_option_dict('bdist_wheel')
-        bdist_dir = options['bdist_dir'][1]
+
+        if 'bdist_dir' in options:
+            bdist_dir = options['bdist_dir'][1]
+        else:
+            bdist_dir = ''
 
         if bdist_dir:
             for install_path in os.listdir(bdist_dir):
