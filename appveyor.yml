@@ -6,9 +6,6 @@ environment:
 
   matrix:
 
-    # Because of the generation of wheel files we are forced to compile for
-    # each of the versions of python that Appveyor supports.
-
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python37"
       PYTHON_VERSION: "3.7.x"
@@ -37,26 +34,6 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       PYTHON: "C:\\Python35-x64"
       PYTHON_VERSION: "3.5.x"
-      PYTHON_ARCH: "64"
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x"
-      PYTHON_ARCH: "32"
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x"
-      PYTHON_ARCH: "64"
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.x"
-      PYTHON_ARCH: "32"
-
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.x"
       PYTHON_ARCH: "64"
 
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
@@ -104,7 +81,7 @@ install:
   - "%PYTHON%/python -m pip install --upgrade setuptools"
 
 build_script:
-  # Build the compiled extension
+  # Install python-openzwave
   - "%PYTHON%/python setup.py install --flavor=dev"
 
 test_script:
@@ -114,17 +91,17 @@ test_script:
   - "%PYTHON%/scripts/nosetests --verbose tests/lib/autobuild tests/api/autobuild"
 
 after_test:
-  # If tests are successful, create binary packages for the project.
+  # If tests are successful, create a wheel for the project.
   - "%PYTHON%/python setup.py bdist_wheel --flavor=dev"
 
 artifacts:
-  # Archive the generated packages in the ci.appveyor.com build report.
+  # Archive the wheel in the ci.appveyor.com build report.
   - path: dist/*.whl
     name: wheel
 
 deploy_script:
   - "%PYTHON%/python -m pip install twine"
-  # upload to pypi for Windows
+  # upload the wheel to pypi (windows only)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheel")
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (set HOME=%USERPROFILE%)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
