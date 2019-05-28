@@ -33,6 +33,7 @@ Build process :
 import os
 import sys
 
+print('bdist_wheel' in sys.argv)
 if 'bdist_wheel' in sys.argv:
     bdist_dir = os.path.join(
         os.path.abspath(os.path.dirname(__file__)),
@@ -54,9 +55,9 @@ from pyozw_setup import Template, DevTemplate, GitTemplate, EmbedTemplate, Share
 from pyozw_setup import bdist_egg, bdist_wheel, build_openzwave, build, clean, develop, install
 
 
-print(current_template)
-print(current_template.ctx)
-print(install_requires())
+# print(current_template)
+# print(current_template.ctx)
+# print(install_requires())
 
 options = current_template.options
 options.update(dict(bdist_wheel=dict(bdist_dir=bdist_dir)))
