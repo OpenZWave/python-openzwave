@@ -87,8 +87,8 @@ environment:
 # ip:host, username (always appveyor) and a random password. This is what is
 # needed to log into the VM
 
-# on_finish:
-#  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+on_finish:
+  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 
 deploy:
   - provider: Environment
@@ -121,8 +121,8 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  # - "SET PATH=%PYTHON%;%PYTHON%/Scripts;%PATH%"
-  - "SET PYTHONPATH="
+  - "SET PATH=%PYTHON%/Scripts;%PATH%"
+  - "SET PYTHONPATH=%PYTHON%"
 
   # Check that we have the expected version and architecture for Python
   # - "python --version"
@@ -184,5 +184,5 @@ deploy_script:
   # upload to pypi for Windows
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Uploading wheels")
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (set HOME=%USERPROFILE%)
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (%PYTHON%/scripts/twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (twine upload dist/*.whl --repository-url https://upload.pypi.org/legacy/ -u %PYPI_USER% -p %PYPI_PASSWORD%)
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" (echo "Finished Artifact Deployment" )
