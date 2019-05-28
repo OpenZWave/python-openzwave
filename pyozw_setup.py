@@ -1037,7 +1037,6 @@ class bdist_wheel(Command):
     def initialize_options(self):
         options = self.distribution.get_option_dict('bdist_wheel')
         self.bdist_dir = options['bdist_dir'][1]
-        os.environ['PYTHONPATH'] = self.bdist_dir
 
     def finalize_options(self):
         install_options = dict(install_lib=('setup script', self.bdist_dir))
@@ -1229,30 +1228,37 @@ class bdist_wheel(Command):
         with open(os.path.join(dist_info, 'WHEEL'), 'w') as f:
             f.write(wheel)
 
+        if PY3:
+            top_level = top_level.encode()
+            entry_points = entry_points.encode()
+            license_ = license_.encode()
+            metadata = metadata.encode()
+            wheel = wheel.encode()
+
         add_sha(
             os.path.join(dist_info, 'top_level.txt').replace(wheel_dir, '')[1:],
             len(top_level),
-            hashlib.sha256(top_level.encode()).hexdigest()
+            hashlib.sha256(top_level).hexdigest()
         )
         add_sha(
             os.path.join(dist_info, 'entry_points.txt').replace(wheel_dir, '')[1:],
             len(entry_points),
-            hashlib.sha256(entry_points.encode()).hexdigest()
+            hashlib.sha256(entry_points).hexdigest()
         )
         add_sha(
             os.path.join(dist_info, 'LICENSE').replace(wheel_dir, '')[1:],
             len(license_),
-            hashlib.sha256(license_.encode()).hexdigest()
+            hashlib.sha256(license_).hexdigest()
         )
         add_sha(
             os.path.join(dist_info, 'METADATA').replace(wheel_dir, '')[1:],
             len(metadata),
-            hashlib.sha256(metadata.encode()).hexdigest()
+            hashlib.sha256(metadata).hexdigest()
         )
         add_sha(
             os.path.join(dist_info, 'WHEEL').replace(wheel_dir, '')[1:],
             len(wheel),
-            hashlib.sha256(wheel.encode()).hexdigest()
+            hashlib.sha256(wheel).hexdigest()
         )
 
         record.append(

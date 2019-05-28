@@ -294,7 +294,7 @@ class Library(pyozw_common.Library):
 
         if 'bdist_wheel' in sys.argv:
             return
-        
+
         objects = []
         thread_event = threading.Event()
 

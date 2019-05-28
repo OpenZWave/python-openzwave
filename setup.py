@@ -31,6 +31,19 @@ Build process :
     --auto (default) : try static, shared and cython, fails if it can't
 """
 import os
+import sys
+
+if 'bdist_wheel' in sys.argv:
+    bdist_dir = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)),
+        'build',
+        'bdist_wheel'
+    )
+
+    os.environ['PYTHONPATH'] = bdist_dir
+else:
+    bdist_dir = ''
+
 from setuptools import setup, find_packages
 from distutils.extension import Extension
 from pyozw_common import build_clib
@@ -46,16 +59,7 @@ print(current_template.ctx)
 print(install_requires())
 
 options = current_template.options
-options.update(dict(
-    bdist_wheel=dict(
-        bdist_dir=os.path.join(
-            os.path.abspath(os.path.dirname(__file__)),
-            'build',
-            'bdist_wheel'
-        ),
-    )
-))
-
+options.update(dict(bdist_wheel=dict(bdist_dir=bdist_dir)))
 
 setup(
     name='python_openzwave',
