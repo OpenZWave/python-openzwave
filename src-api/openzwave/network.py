@@ -731,8 +731,8 @@ class ZWaveNetwork(ZWaveObject):
         :rtype: ZWaveValue
 
         """
-        for node in self.nodes.itervalues():
-            for val in node.values.itervalues():
+        for node in self.nodes.values():
+            for val in node.values.values():
                 if val.id_on_network == id_on_network:
                     return val
         return None
