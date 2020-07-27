@@ -37,7 +37,7 @@ python-openzwave 0.4.x is here !!!
  
 - New installation process via pip
  
-- First, you need some build tools and libs. On ubuntu, you should use :
+- First, you need to download some build tools and libs. On ubuntu, you should use :
 
      .. code-block:: bash
 
@@ -56,9 +56,9 @@ python-openzwave 0.4.x is here !!!
     
         (venvX) pip install python_openzwave
     
-- The previous command try to install python_openzwave with the flavor 'shared'. 
+- The previous command will try to install python_openzwave with the flavor 'shared'. 
   If it can't find a precompiled library of openzwave, it will use the flavor 'embed' with sources downloaded from https://github.com/OpenZWave/python-openzwave/tree/master/archives.
-  You can change this using flavor option. 
+  You can change this using the flavor option. 
   There is a bug in the package dependencies and flavors on some systems. You may need to install dependencies manualy :
  
  - on python 2.7 :
@@ -79,12 +79,12 @@ python-openzwave 0.4.x is here !!!
  
     - embed : the default one. Download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives and
       build them. Python_openzwave is statically build using a cythonized version of libopenzwave. No need to install cython.
-    - shared : if you have install openzwave as module manually, you can link python_openzwave to it.
+    - shared : if you have installed openzwave as a module manually, you can link python_openzwave to it.
     - git : download sources from openzwave github and link statically to it.
-    - embed_shared : download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives, build and install as module on the system. 
-      Python_openzwave use it. Need root access to install openzwave libs.
+    - embed_shared : download sources from https://github.com/OpenZWave/python-openzwave/tree/master/archives, build and install as a module on the system. 
+      Python_openzwave uses it. Need root access to install the openzwave libs.
     - git_shared : download sources from openzwave github, build and install them as module on the system.
-      Python_openzwave use it. Need root access to install openzwave libs.
+      Python_openzwave uses it. Need root access to install the openzwave libs.
     - ozwdev and ozwdev_shared : use the dev branch of openzwave on github.
     - dev : for python_openzwave developers. Look for openzwave sources in a local folder specified by the LOCAL_OPENZWAVE environment variable (defaults to 'openzwave').
    
@@ -94,7 +94,7 @@ python-openzwave 0.4.x is here !!!
     
         (venvX) pip install python_openzwave  --no-deps --install-option="--flavor=git"
 
-- You can update to the last version of openzwave using the git flavor :
+- You can update to the latest version of openzwave using the git flavor :
        
     .. code-block:: bash
     
@@ -110,7 +110,7 @@ python-openzwave 0.4.x is here !!!
 
         (venvX) pyozw_check
 
-   If you've one, use it for advanced checks : 
+   If you have a USB stick, use it for advanced checks : 
     
     .. code-block:: bash
 
@@ -211,8 +211,8 @@ python-openzwave 0.4.x is here !!!
  - The old manager is now available via the pyozw_shell command. You need to install module "urwid>=1.1.1" with pip before using it.
 
  - libopenzwave and openzwave python modules are packaged in the python_openzwave. 
-   So developers needs to update their install_requires (it works fine with pyozw_manager). 
-   They can use the following code to update softly :
+   So developers need to update their install_requires (it works fine with pyozw_manager). 
+   They can use the following code to update it softly :
 
     .. code-block:: python
     
@@ -234,7 +234,7 @@ python-openzwave 0.4.x is here !!!
 
  - If you already have an 0.3.x version installed, you should update your installation as usual. Don't install it with pip as it can break your installation (maybe not if you don't remove old modules)
 
- - Support for windows, macosx, ... is not tested. Feel free to report bug and patches. We can try to support these plateforms. Don't have Windows at home so I can't help. Same for mac.
+ - Support for windows, macosx, ... is not tested. Feel free to report bug and patches. We can try to support these plateforms. I don't have Windows at home so I can't help. Same for mac.
 
  - Old installation process is deprecated and reserved for python-openzwave-developers and alternatives machines.
 
