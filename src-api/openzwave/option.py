@@ -123,6 +123,17 @@ class ZWaveOption(libopenzwave.PyOptions):
         """
         return self.addOptionString("LogFileName", logfile, False)
 
+    def set_log_file_path(self, logfilePath):
+        """
+        Set the log file location (directory).  The logfile parameter just sets
+        the name, and defaults to userpath.  Uncool if you want logs in RAM, e.g.
+
+        :param logfilePath: The location of the log file
+        :type logfilePath: str
+
+        """
+        return self.addOptionString("LogFilePath", logfilePath, False)
+
     def set_logging(self, status):
         """
         Set the status of logging.

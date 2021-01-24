@@ -105,6 +105,8 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_NOTIFICATION = 'Notification'
         * SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
         * SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
+        * SIGNAL_LEVEL_CHANGE_START = 'LevelChangeStart'
+        * SIGNAL_LEVEL_CHANGE_STOP = 'LevelChangeStop'
 
     The table presented below sets notifications in the order they might typically be received,
     and grouped into a few logically related categories.  Of course, given the variety
@@ -282,6 +284,8 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NOTIFICATION = 'Notification'
     SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
     SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
+    SIGNAL_LEVEL_CHANGE_START = 'LevelChangeStart'
+    SIGNAL_LEVEL_CHANGE_STOP = 'LevelChangeStop'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -984,6 +988,10 @@ class ZWaveNetwork(ZWaveObject):
                 self._handle_driver_removed(args)
             elif notify_type == self.SIGNAL_CONTROLLER_COMMAND:
                 self._handle_controller_command(args)
+            elif notify_type == self.SIGNAL_LEVEL_CHANGE_START:
+                self._handle_level_change_start(args)
+            elif notify_type == self.SIGNAL_LEVEL_CHANGE_STOP:
+                self._handle_level_change_stop(args)
             else:
                 logger.warning(u'Skipping unhandled notification [%s]', args)
         except:
@@ -1180,7 +1188,7 @@ class ZWaveNetwork(ZWaveObject):
         """
         logger.debug(u'Z-Wave Notification NodeEvent : %s', args)
         dispatcher.send(self.SIGNAL_NODE_EVENT,
-                        **{'network': self, 'node': self.nodes[args['nodeId']], 'value': args['event']})
+                        **{'network': self, 'node': self.nodes[args['nodeId']], 'value': args['event'], 'instance': args['instance']})
 
     def _handle_node_naming(self, args):
         """
@@ -1613,6 +1621,55 @@ class ZWaveNetwork(ZWaveObject):
         logger.debug(u'Z-Wave Notification MsgComplete : %s', args)
         dispatcher.send(self.SIGNAL_MSG_COMPLETE, \
             **{'network': self})
+
+    def _handle_level_change_start(self, args):
+        """
+        A command-class event of multilevel switch start or color change start was received.  You get this FROM a switch, when it starts
+        the switching state (e.g., holding a button that starts a dimmer action).  It'll be terminated by an end event.
+
+        dispatcher.send(self.SIGNAL_LEVEL_CHANGE_START, **{'network': self, 'node': self.nodes[args['nodeId']], 'instance': args['instance']})
+        ... plus all the start parameters: primaryDirection, secondaryDirection, ignoreStartLevel, primarySwitchStartLevel,
+        durationSeconds, secondaryStepSize -- see the ZWave doc for these.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logger.debug(u'Z-Wave Notification Level Change start : %s', args)
+        parameters = {
+            'network' : self,
+            'node' : self.nodes[args['nodeId']],
+            'instance' : args['instance'],
+            'type' : args['type'],
+            'primaryDirection' : args['primaryDirection'],
+            'secondaryDirection' : args['secondaryDirection'],
+            'ignoreStartLevel' : args['ignoreStartLevel'],
+            'primaryStartLevel' : args['primaryStartLevel'],
+            'durationSeconds' : args['durationSeconds'],
+            'secondaryStepSize' : args['secondaryStepSize'],
+            'colorTarget' : args['colorTarget']
+        }
+        dispatcher.send(self.SIGNAL_LEVEL_CHANGE_START, **parameters )
+
+    def _handle_level_change_stop ( self, args ):
+        """
+        A command-class event of multilevel switch or color change stop was received.  You get this FROM a switch, when it ENDS
+        the switching state (e.g., holding a button that starts a dimmer action, this is the button release).
+
+        dispatcher.send(self.SIGNAL_LEVEL_CHANGE_STOP, **{'network': self, 'node': self.nodes[args['nodeId']], 'instance': args['instance']})
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logger.debug( u'Z-Wave Notification Level Change stop : %s', args )
+        parameters = {
+            'network': self,
+            'node': self.nodes[ args[ 'nodeId' ] ],
+            'instance': args[ 'instance' ],
+            'type' : args[ 'type' ]
+        }
+        dispatcher.send( self.SIGNAL_LEVEL_CHANGE_STOP, **parameters )
 
     def write_config(self):
         """
