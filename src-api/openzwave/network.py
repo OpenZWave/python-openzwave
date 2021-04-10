@@ -105,6 +105,8 @@ class ZWaveNetwork(ZWaveObject):
         * SIGNAL_NOTIFICATION = 'Notification'
         * SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
         * SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
+        * SIGNAL_USER_ALERTS = 'UserAlerts'
+        * SIGNAL_MANUFACTURER_SPECIFIC_DB_READY = 'ManufacturerSpecificDBReady'
 
     The table presented below sets notifications in the order they might typically be received,
     and grouped into a few logically related categories.  Of course, given the variety
@@ -282,6 +284,8 @@ class ZWaveNetwork(ZWaveObject):
     SIGNAL_NOTIFICATION = 'Notification'
     SIGNAL_CONTROLLER_COMMAND = 'ControllerCommand'
     SIGNAL_CONTROLLER_WAITING = 'ControllerWaiting'
+    SIGNAL_USER_ALERTS = 'UserAlerts'
+    SIGNAL_MANUFACTURER_SPECIFIC_DB_READY = 'ManufacturerSpecificDBReady'
 
     STATE_STOPPED = 0
     STATE_FAILED = 1
@@ -984,6 +988,10 @@ class ZWaveNetwork(ZWaveObject):
                 self._handle_driver_removed(args)
             elif notify_type == self.SIGNAL_CONTROLLER_COMMAND:
                 self._handle_controller_command(args)
+            elif notify_type == self.SIGNAL_USER_ALERTS:
+                self._handle_user_alerts(args)
+            elif notify_type == self.SIGNAL_MANUFACTURER_SPECIFIC_DB_READY:
+                self._handle_manufacturer_specific_db_ready(args)
             else:
                 logger.warning(u'Skipping unhandled notification [%s]', args)
         except:
@@ -1599,6 +1607,32 @@ class ZWaveNetwork(ZWaveObject):
 
         """
         self._controller._handle_controller_command(args)
+
+    def _handle_user_alerts(self, args):
+        """
+        Called when the library generates a warning or notification for the user
+        (e.g. out-of-date config files).  The actual warning text is missing from the args dict,
+        but it shows up in the C++ logging output.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logger.info(u'Z-Wave Notification UserAlert, see OZW_Log for details : %s', args)
+        dispatcher.send(self.SIGNAL_USER_ALERTS, \
+            **{'network': self})
+
+    def _handle_manufacturer_specific_db_ready(self, args):
+        """
+        Called when the ManufacturerSpecific database is ready.
+
+        :param args: data sent by the notification
+        :type args: dict()
+
+        """
+        logger.debug(u'Z-Wave Notification ManufacturerSpecificDBReady : %s', args)
+        dispatcher.send(self.SIGNAL_MANUFACTURER_SPECIFIC_DB_READY, \
+            **{'network': self})
 
     def _handle_msg_complete(self, args):
         """
